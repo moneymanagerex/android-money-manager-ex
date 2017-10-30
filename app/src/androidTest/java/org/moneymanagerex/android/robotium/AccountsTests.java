@@ -37,71 +37,71 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Accounts list tests.
  */
-@RunWith(AndroidJUnit4.class)
-public class AccountsTests
-        extends ActivityInstrumentationTestCase2<AccountListActivity> {
-
-    private Solo solo;
-
-    public AccountsTests() {
-        super(AccountListActivity.class);
-    }
-
-    @Before
-    public void setUp() {
-        solo = UiTestHelpersRobotium.setUp(this);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
-
-        UiTestHelpersRobotium.tearDown(solo);
-    }
-
-//    @Test
-//    public void formOpens() {
-//        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+//@RunWith(AndroidJUnit4.class)
+//public class AccountsTests
+//        extends ActivityInstrumentationTestCase2<AccountListActivity> {
+//
+//    private Solo solo;
+//
+//    public AccountsTests() {
+//        super(AccountListActivity.class);
 //    }
-
-    @Test
-    public void canCreateAndDeleteAccount() {
-        // Given
-
-        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
-        final String accountName = "Test Account";
-
-        // When
-
-        robot.clickOnFloatingButton();
-
-        solo.waitForDialogToOpen();
-        View view = solo.getView(R.id.editTextAccountName);
-        EditText editText = (EditText) view;
-        solo.enterText(editText, accountName);
-        robot.clickDone();
-        solo.waitForDialogToClose();
-
-        // delete
-//        solo.clickLongOnText(accountName);
-        solo.clickOnText(accountName);
-        solo.clickOnText("Delete");
-        solo.clickOnText("OK");
-
-        // Then
-
-//        assertThat(solo.searchText(accountName)).isFalse();
-    }
-
-    @Test
-    public void getNotificationForAccountThatCanNotBeDeleted() {
-        solo.clickOnText("cash, EUR");
-        solo.clickOnText("Delete");
-
-        solo.waitForDialogToOpen();
-
-//        assertThat(solo.searchText("can not be deleted")).isTrue();
-
-        solo.clickOnText("OK");
-    }
-}
+//
+//    @Before
+//    public void setUp() {
+//        solo = UiTestHelpersRobotium.setUp(this);
+//    }
+//
+//    @After
+//    public void tearDown() throws Exception {
+//        super.tearDown();
+//
+//        UiTestHelpersRobotium.tearDown(solo);
+//    }
+//
+////    @Test
+////    public void formOpens() {
+////        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+////    }
+//
+//    @Test
+//    public void canCreateAndDeleteAccount() {
+//        // Given
+//
+//        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+//        final String accountName = "Test Account";
+//
+//        // When
+//
+//        robot.clickOnFloatingButton();
+//
+//        solo.waitForDialogToOpen();
+//        View view = solo.getView(R.id.editTextAccountName);
+//        EditText editText = (EditText) view;
+//        solo.enterText(editText, accountName);
+//        robot.clickDone();
+//        solo.waitForDialogToClose();
+//
+//        // delete
+////        solo.clickLongOnText(accountName);
+//        solo.clickOnText(accountName);
+//        solo.clickOnText("Delete");
+//        solo.clickOnText("OK");
+//
+//        // Then
+//
+////        assertThat(solo.searchText(accountName)).isFalse();
+//    }
+//
+//    @Test
+//    public void getNotificationForAccountThatCanNotBeDeleted() {
+//        solo.clickOnText("cash, EUR");
+//        solo.clickOnText("Delete");
+//
+//        solo.waitForDialogToOpen();
+//
+////        assertThat(solo.searchText("can not be deleted")).isTrue();
+//
+//        solo.clickOnText("OK");
+//    }
+//}

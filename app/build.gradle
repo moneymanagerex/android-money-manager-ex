@@ -23,28 +23,28 @@ apply plugin: 'io.fabric'
 // See https://stackoverflow.com/a/44840413/6008532
 // Bug report https://issuetracker.google.com/issues/37124066
 
-final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
-
-android.applicationVariants.all { variant ->
-
-    // Add the application id to the strings resources
-    // We do this so that in the future if google fixes the
-    // processing of the shortcuts.xml we can leave this
-    // and remove the `mergeResources.doLast` block below
-    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
-
-    // Manually replace @string/application_id with `variant.applicationId`
-    variant.mergeResources.doLast {
-        println("variant = ${variant.applicationId}")
-
-        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
-        final String content = valuesFile.getText('UTF-8')
-        final String updatedContent = content
-                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
-
-        valuesFile.write(updatedContent, 'UTF-8')
-    }
-}
+//final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
+//
+//android.applicationVariants.all { variant ->
+//
+//    // Add the application id to the strings resources
+//    // We do this so that in the future if google fixes the
+//    // processing of the shortcuts.xml we can leave this
+//    // and remove the `mergeResources.doLast` block below
+//    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
+//
+//    // Manually replace @string/application_id with `variant.applicationId`
+//    variant.mergeResources.doLast {
+//        println("variant = ${variant.applicationId}")
+//
+//        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
+//        final String content = valuesFile.getText('UTF-8')
+//        final String updatedContent = content
+//                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
+//
+//        valuesFile.write(updatedContent, 'UTF-8')
+//    }
+//}
 
 //endregion
 
@@ -136,14 +136,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
+                variant.outputs.all { output ->
                     // append the version to the file name.
                     def version = "-" + defaultConfig.versionName
                     // + "_r" + defaultConfig.versionCode
-                    def fileName = output.outputFile.name.replace("app-", "ammx-")
+                    def fileName = output.outputFile.name
+                            .replace("app-", "ammx-")
                             .replace(".apk", version + ".apk")
-                    output.outputFile = new File(output.outputFile.parent, fileName)
-                    //outputFileName = fileName
+                    //output.outputFile = new File(output.outputFile.parent, fileName)
+                    outputFileName = fileName
                 }
             }
 

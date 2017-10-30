@@ -90,38 +90,38 @@ public class AssetAllocationTests {
 //        assertThat(solo.waitForActivity(AssetClassEditActivity.class)).isTrue();
 //    }
 
-    @Test
-    public void createAndDeleteAssetClass() {
-        // Given
-
-        String assetClassName = "cash";
-        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
-
-        robot.clickOnFloatingButton();
-        solo.waitForActivity(AssetClassEditActivity.class);
-
-        EditText editText = (EditText) solo.getView(R.id.nameEdit);
-        solo.enterText(editText, assetClassName);
-
-        solo.clickOnView(solo.getView(R.id.allocationEdit));
-        robot.enterInNumericInput("2.54");
-        solo.clickOnText("OK");
-
-        // update
-        robot.clickDone();
-
-        // confirm that the new item is listed
-//        assertThat(solo.searchText(assetClassName)).isTrue();
-
-//        solo.clickLongOnText(assetClassName);
-        solo.clickOnText(assetClassName);
-        solo.clickOnText("Delete");
-        solo.clickOnText("OK");
-
-        // Then
-
-//        assertThat(solo.searchText(assetClassName)).isFalse();
-    }
+//    @Test
+//    public void createAndDeleteAssetClass() {
+//        // Given
+//
+//        String assetClassName = "cash";
+//        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+//
+//        robot.clickOnFloatingButton();
+//        solo.waitForActivity(AssetClassEditActivity.class);
+//
+//        EditText editText = (EditText) solo.getView(R.id.nameEdit);
+//        solo.enterText(editText, assetClassName);
+//
+//        solo.clickOnView(solo.getView(R.id.allocationEdit));
+//        robot.enterInNumericInput("2.54");
+//        solo.clickOnText("OK");
+//
+//        // update
+//        robot.clickDone();
+//
+//        // confirm that the new item is listed
+////        assertThat(solo.searchText(assetClassName)).isTrue();
+//
+////        solo.clickLongOnText(assetClassName);
+//        solo.clickOnText(assetClassName);
+//        solo.clickOnText("Delete");
+//        solo.clickOnText("OK");
+//
+//        // Then
+//
+////        assertThat(solo.searchText(assetClassName)).isFalse();
+//    }
 
     /*
       todo: Tasks

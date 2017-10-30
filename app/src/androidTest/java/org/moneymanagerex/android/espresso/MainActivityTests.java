@@ -38,43 +38,43 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
  * Espresso tests for the Main Activity.
  */
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTests {
-
-    @Rule
-    public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void openDashboard() {
-        onView(withText("Money Manager Ex"))
-                .check(matches(isDisplayed()));
-
-        onView(withId(R.id.drawerLayout))
-                .perform(DrawerActions.open());
-
-        onView(withText("Entities"))
-            .check(matches(isDisplayed()));
-
-    }
-
-    @Test
-    public void isWelcomeViewDisplayed() {
-        onView(withText("Welcome to MoneyManagerEx!"))
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void isAccountsListDisplayed() {
-        onView(withText("Bank Accounts"))
-                .check(matches(isDisplayed()));
-    }
-
-}
+//@RunWith(AndroidJUnit4.class)
+//public class MainActivityTests {
+//
+//    @Rule
+//    public final ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+//
+//    @Before
+//    public void setUp() throws Exception {
+//    }
+//
+//    @After
+//    public void tearDown() throws Exception {
+//    }
+//
+//    @Test
+//    public void openDashboard() {
+//        onView(withText("Money Manager Ex"))
+//                .check(matches(isDisplayed()));
+//
+//        onView(withId(R.id.drawerLayout))
+//                .perform(DrawerActions.open());
+//
+//        onView(withText("Entities"))
+//            .check(matches(isDisplayed()));
+//
+//    }
+//
+//    @Test
+//    public void isWelcomeViewDisplayed() {
+//        onView(withText("Welcome to MoneyManagerEx!"))
+//                .check(matches(isDisplayed()));
+//    }
+//
+//    @Test
+//    public void isAccountsListDisplayed() {
+//        onView(withText("Bank Accounts"))
+//                .check(matches(isDisplayed()));
+//    }
+//
+//}

@@ -153,16 +153,17 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
+
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".transactions.CheckingTransactionEditActivity"
             android:label="@string/new_edit_transaction">
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
 
             <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
                 <!-- <data android:scheme="content" /> -->
             </intent-filter>
@@ -170,20 +171,28 @@
         <activity
             android:name=".PayeeActivity"
             android:label="@string/payee">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
         </activity>
         <activity android:name=".account.AccountListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
         </activity>
         <activity android:name=".common.CategoryListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
         </activity>
         <activity android:name=".currency.list.CurrencyListActivity">
-            <action android:name="android.intent.action.PICK" />
-            <action android:name="android.intent.action.EDIT" />
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".about.AboutActivity"
@@ -191,21 +200,27 @@
         <activity
             android:name=".currency.CurrencyEditActivity"
             android:label="@string/new_edit_currency">
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.INSERT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".account.AccountEditActivity"
             android:label="@string/account_list">
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.INSERT" />
+            </intent-filter>
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
         <activity
             android:name=".recurring.transactions.RecurringTransactionEditActivity"
             android:label="@string/new_edit_repeating_transaction">
-            <action android:name="android.intent.action.EDIT" />
-            <action android:name="android.intent.action.INSERT" />
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.INSERT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".settings.SettingsActivity"

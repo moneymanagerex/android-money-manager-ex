@@ -37,28 +37,28 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
  * Look and Feel preferences
  */
-@RunWith(AndroidJUnit4.class)
-public class SettingsLookFeelTests {
-    @Rule
-    public final ActivityTestRule<LookFeelSettingsActivity> activityRule =
-            new ActivityTestRule<>(LookFeelSettingsActivity.class);
-
-    @Test
-    public void activityOpens() {
-        onView(withText("Look & Feel"))
-            .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void changeTheme() {
-        onView(withText("Theme"))
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-        onView(withText("Material Dark"))
-            .perform(click());
-
-        // TODO: 25/09/2015 confirm that the color has changed
-
-    }
-}
+//@RunWith(AndroidJUnit4.class)
+//public class SettingsLookFeelTests {
+//    @Rule
+//    public final ActivityTestRule<LookFeelSettingsActivity> activityRule =
+//            new ActivityTestRule<>(LookFeelSettingsActivity.class);
+//
+//    @Test
+//    public void activityOpens() {
+//        onView(withText("Look & Feel"))
+//            .check(matches(isDisplayed()));
+//    }
+//
+//    @Test
+//    public void changeTheme() {
+//        onView(withText("Theme"))
+//            .check(matches(isDisplayed()))
+//            .perform(click());
+//
+//        onView(withText("Material Dark"))
+//            .perform(click());
+//
+//        // TODO: 25/09/2015 confirm that the color has changed
+//
+//    }
+//}

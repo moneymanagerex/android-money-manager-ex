@@ -41,51 +41,51 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  *
  * Various Search activity tests.
  */
-public class SearchTests {
-    @Rule
-    public final ActivityTestRule<SearchActivity> activityRule =
-        new ActivityTestRule<>(SearchActivity.class);
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    @Test
-    public void formOpens() {
-//        Espresso.onView(allOf(withText("Search")))
-        onView(withId(R.id.action_search))
-            .check(matches(isDisplayed()));
-    }
-
-    /**
-     * This test illustrates another bug in Espresso. It is next to impossible to select a
-     * child menu in expandable list view, in this case a SubCategory.
-     */
-    @Test
-    public void searchForSubcategory() {
-        formOpens();
-
-        onView(withHint("Select Category"))
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-        onView(withText("Food"))
-            .check(matches(isDisplayed()))
-            .perform(click());
-
-//        onData(allOf(is(instanceOf(Category.class))))
-//            .atPosition(5)
-//            .onChildView(withId(R.id.selector))
+//public class SearchTests {
+//    @Rule
+//    public final ActivityTestRule<SearchActivity> activityRule =
+//        new ActivityTestRule<>(SearchActivity.class);
+//
+//    @Before
+//    public void setUp() {
+//    }
+//
+//    @After
+//    public void tearDown() {
+//    }
+//
+//    @Test
+//    public void formOpens() {
+////        Espresso.onView(allOf(withText("Search")))
+//        onView(withId(R.id.action_search))
+//            .check(matches(isDisplayed()));
+//    }
+//
+//    /**
+//     * This test illustrates another bug in Espresso. It is next to impossible to select a
+//     * child menu in expandable list view, in this case a SubCategory.
+//     */
+//    @Test
+//    public void searchForSubcategory() {
+//        formOpens();
+//
+//        onView(withHint("Select Category"))
+//            .check(matches(isDisplayed()))
 //            .perform(click());
-
-        formOpens();
-
-        onView(withHint("Select Category"))
-            .check(matches(isDisplayed()))
-            .check(matches(withText("Food : Dining out")));
-    }
-}
+//
+//        onView(withText("Food"))
+//            .check(matches(isDisplayed()))
+//            .perform(click());
+//
+////        onData(allOf(is(instanceOf(Category.class))))
+////            .atPosition(5)
+////            .onChildView(withId(R.id.selector))
+////            .perform(click());
+//
+//        formOpens();
+//
+//        onView(withHint("Select Category"))
+//            .check(matches(isDisplayed()))
+//            .check(matches(withText("Food : Dining out")));
+//    }
+//}

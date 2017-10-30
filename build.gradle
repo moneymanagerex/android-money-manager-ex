@@ -22,7 +22,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // robolectric
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
 //        classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
     }
