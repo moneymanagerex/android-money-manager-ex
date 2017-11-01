@@ -127,7 +127,7 @@ public class AccountEditActivity
         mIsDefault = mAccount.getId().equals(defaultAccountId);
 
         // Compose layout
-        setContentView(R.layout.activity_edit_account);
+        setContentView(R.layout.activity_account_edit);
 
 //        showStandardToolbarActions();
         setDisplayHomeAsUpEnabled(true);

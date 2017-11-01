@@ -36,7 +36,7 @@ The environment variables start with org_gradle_project, i.e. ORG_GRADLE_PROJECT
 
 # License
 
-    Copyright 2012-2015 The Android Money Manager Ex Project Team
+    Copyright 2012-2017 The Android Money Manager Ex Project Team
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
