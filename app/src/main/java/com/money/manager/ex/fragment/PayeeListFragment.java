@@ -380,7 +380,7 @@ public class PayeeListFragment
             edtPayeeName.setSelection(payeeName.length());
         }
 
-        UIHelper ui = new UIHelper(getActivity());
+        UIHelper ui = new UIHelper(getContext());
 
         new AlertDialogWrapper(getContext())
             .setView(viewDialog)

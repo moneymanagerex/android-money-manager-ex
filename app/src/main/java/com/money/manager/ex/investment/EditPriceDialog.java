@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -109,9 +110,11 @@ public class EditPriceDialog
 
         // Create dialog.
 
+        UIHelper ui = new UIHelper(getContext());
+
         AlertDialogWrapper builder = new AlertDialogWrapper(getContext())
                 .setTitle(mPrice.symbol)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_euro));
+                .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_euro_symbol));
 
         View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stock_price, null);
         builder.setView(viewDialog);

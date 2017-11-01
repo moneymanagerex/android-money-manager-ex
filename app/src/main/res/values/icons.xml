@@ -23,7 +23,7 @@
     <string name="ic_settings">c</string>
     <string name="ic_gift">d</string>
     <string name="ic_building">e</string>
-    <string name="ic_euro">f</string>
+    <!--<string name="ic_euro">f</string>-->
     <string name="ic_briefcase">g</string>
     <string name="ic_open_folder">h</string>
     <string name="ic_dropbox">i</string>
@@ -51,7 +51,7 @@
     <string name="ic_share_square">E</string>
     <string name="ic_split">F</string>
     <string name="ic_alert">G</string>
-    <string name="ic_user">H</string>
+    <!--<string name="ic_user">H</string>-->
     <string name="ic_clipboard">I</string>
     <string name="ic_calendar">J</string>
     <string name="ic_globe_outline">K</string>
