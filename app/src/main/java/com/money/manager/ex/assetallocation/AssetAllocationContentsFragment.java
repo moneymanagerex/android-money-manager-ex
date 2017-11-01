@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
@@ -327,9 +328,11 @@ public class AssetAllocationContentsFragment
     }
 
     private void confirmDelete(final MatrixCursorColumns item) {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

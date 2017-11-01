@@ -38,6 +38,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -303,10 +304,12 @@ public class RecurringTransactionListFragment
     // private
 
     private void confirmDelete(final int id) {
+        UIHelper ui = new UIHelper(getContext());
+
         // create alert binaryDialog
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete_repeating_transaction)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -331,9 +334,11 @@ public class RecurringTransactionListFragment
     }
 
     private void confirmSkip(final int id) {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.skip_next_occurrence)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.skip_next_occurrence_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
@@ -112,9 +113,11 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
                 .title(R.string.delete_currency)
-                .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
                 .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -134,9 +137,11 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogImportAllCurrencies() {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.attention)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.question_import_currencies)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -156,9 +161,11 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogUpdateExchangeRates() {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.download)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.question_update_currency_exchange_rates)
             .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

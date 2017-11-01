@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -497,9 +498,11 @@ public class WatchlistItemsFragment
     }
 
     private void showDeleteConfirmationDialog(final int id) {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.delete_transaction)
-                .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
                 .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

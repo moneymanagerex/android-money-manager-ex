@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
@@ -459,9 +460,11 @@ public class WatchlistFragment
     }
 
     private void confirmPriceUpdate() {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.download)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.confirm_price_download)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -617,9 +620,11 @@ public class WatchlistFragment
     }
 
     private void purgePriceHistory() {
+        UIHelper ui = new UIHelper(getContext());
+
         new MaterialDialog.Builder(getContext())
             .title(R.string.purge_history)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
             .content(R.string.purge_history_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

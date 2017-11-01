@@ -264,7 +264,7 @@ dependencies {
             , 'com.mikepenz:iconics-core:2.9.4@aar' // also update in the icon module.
             , 'com.mikepenz:iconics-views:2.9.4@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
-            // implementation 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
+            , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
