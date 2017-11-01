@@ -19,7 +19,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 //apply plugin: 'com.jakewharton.butterknife'
 
-// region: Fix shortcuts.xml by manually replacing @string/application_id
+// region Fix shortcuts.xml by manually replacing @string/application_id
 // See https://stackoverflow.com/a/44840413/6008532
 // Bug report https://issuetracker.google.com/issues/37124066
 
@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 960
+        versionCode 961
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
