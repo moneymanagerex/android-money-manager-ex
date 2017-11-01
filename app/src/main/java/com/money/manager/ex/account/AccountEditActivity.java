@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
@@ -38,6 +39,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -376,6 +378,10 @@ public class AccountEditActivity
                 startActivityForResult(intent, RequestCodes.CURRENCY);
             }
         });
+
+        // Notes
+        UIHelper ui = new UIHelper(this);
+        mViewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
 
         // Display data.
 

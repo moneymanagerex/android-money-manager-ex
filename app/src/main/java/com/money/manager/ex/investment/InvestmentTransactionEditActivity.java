@@ -30,6 +30,7 @@ import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -294,6 +295,11 @@ public class InvestmentTransactionEditActivity
         initAccountSelectors(mViewHolder);
 
         displayStock(mStock, mViewHolder);
+
+        // Icons
+        UIHelper ui = new UIHelper(this);
+        mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
+        mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
     }
 
     /**

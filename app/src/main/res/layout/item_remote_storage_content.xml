@@ -28,7 +28,7 @@
     android:paddingEnd="@dimen/mmx_list_item_padding_side"
     android:paddingRight="@dimen/mmx_list_item_padding_side">
 
-    <com.money.manager.ex.view.RobotoTextViewFontIcon
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
