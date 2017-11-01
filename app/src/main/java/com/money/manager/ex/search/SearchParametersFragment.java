@@ -195,6 +195,10 @@ public class SearchParametersFragment
         // Date to
 //        viewHolder.txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateTo));
 
+        // Icons
+        UIHelper ui = new UIHelper(getContext());
+        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null,null);
+
         // Store search criteria values into the controls.
         displaySearchCriteria(view);
 

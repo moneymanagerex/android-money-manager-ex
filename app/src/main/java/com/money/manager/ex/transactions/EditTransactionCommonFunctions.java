@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
@@ -552,6 +553,10 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setNotes(editable.toString());
             }
         });
+
+        // Icon
+        UIHelper ui = new UIHelper(getContext());
+        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
     }
 
     public void initPayeeControls() {

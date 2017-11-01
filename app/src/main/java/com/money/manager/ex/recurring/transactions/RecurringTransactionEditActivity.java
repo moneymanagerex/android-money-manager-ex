@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -381,6 +382,10 @@ public class RecurringTransactionEditActivity
                 datePicker.show(getSupportFragmentManager(), TAG_DATEPICKER);
             }
         });
+
+        // Icon
+        UIHelper ui = new UIHelper(this);
+        mViewHolder.paymentDateTextView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
 
         mViewHolder.paymentPreviousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override

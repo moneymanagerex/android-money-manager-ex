@@ -30,6 +30,7 @@ import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -368,6 +369,11 @@ public class InvestmentTransactionEditActivity
                 datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
+
+        // Icon
+        UIHelper ui = new UIHelper(this);
+        viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
+
         // prev/next day
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override

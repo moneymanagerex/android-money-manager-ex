@@ -18,7 +18,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <string name="ic_tutorial_accounts">a</string>
+    <!--<string name="ic_tutorial_accounts">a</string>-->
     <string name="ic_tutorial_transactions">b</string>
     <string name="ic_tutorial_global">c</string>
     <string name="ic_tutorial_overview">d</string>

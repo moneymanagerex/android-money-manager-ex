@@ -73,7 +73,7 @@
                         android:textSize="@dimen/fonticon_drawer"
                         android:background="?attr/selectableItemBackground" />
 
-                    <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewDate"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="0dp"
@@ -82,7 +82,6 @@
                         android:drawablePadding="@dimen/mmx_padding"
                         android:hint="@string/purchase_date"
                         android:textStyle="bold"
-                        app:iconLeft="@xml/ic_calendar_small"
                         android:background="?attr/selectableItemBackground" />
 
                     <com.shamanland.fonticon.FontIconView

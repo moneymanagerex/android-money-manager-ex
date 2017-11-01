@@ -21,7 +21,9 @@ import android.view.View;
 import android.widget.Spinner;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoEditText;
 import com.money.manager.ex.view.RobotoEditTextFontIcon;
+import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.shamanland.fonticon.FontIconView;
 
@@ -30,22 +32,22 @@ import com.shamanland.fonticon.FontIconView;
  */
 public class InvestmentTransactionViewHolder {
     public InvestmentTransactionViewHolder(View view) {
-        accountSpinner = (Spinner) view.findViewById(R.id.spinnerAccount);
-        dateView = (RobotoTextViewFontIcon) view.findViewById(R.id.textViewDate);
-        numSharesView = (RobotoTextViewFontIcon) view.findViewById(R.id.numSharesView);
-        stockNameEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.stockNameEdit);
-        symbolEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.symbolEdit);
-        notesEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.notesEdit);
-        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
-        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
+        accountSpinner = view.findViewById(R.id.spinnerAccount);
+        dateView = view.findViewById(R.id.textViewDate);
+        numSharesView = view.findViewById(R.id.numSharesView);
+        stockNameEdit = view.findViewById(R.id.stockNameEdit);
+        symbolEdit = view.findViewById(R.id.symbolEdit);
+        notesEdit = view.findViewById(R.id.notesEdit);
+        previousDayButton = view.findViewById(R.id.previousDayButton);
+        nextDayButton = view.findViewById(R.id.nextDayButton);
     }
 
     public Spinner accountSpinner;
-    public RobotoTextViewFontIcon dateView;
-    public RobotoTextViewFontIcon numSharesView;
-    public RobotoEditTextFontIcon stockNameEdit;
-    public RobotoEditTextFontIcon symbolEdit;
-    public RobotoEditTextFontIcon notesEdit;
+    public RobotoTextView dateView;
+    public RobotoTextView numSharesView;
+    public RobotoEditText stockNameEdit;
+    public RobotoEditText symbolEdit;
+    public RobotoEditText notesEdit;
     public FontIconView previousDayButton;
     public FontIconView nextDayButton;
 }
