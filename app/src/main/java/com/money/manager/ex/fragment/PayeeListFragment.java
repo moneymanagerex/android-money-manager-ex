@@ -380,9 +380,11 @@ public class PayeeListFragment
             edtPayeeName.setSelection(payeeName.length());
         }
 
+        UIHelper ui = new UIHelper(getActivity());
+
         new AlertDialogWrapper(getContext())
             .setView(viewDialog)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_user))
+            .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
             .setTitle(R.string.edit_payeeName)
         .setPositiveButton(android.R.string.ok,
                 new MaterialDialog.SingleButtonCallback() {
