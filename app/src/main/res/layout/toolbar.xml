@@ -24,7 +24,8 @@
     android:background="?attr/colorPrimary"
     android:elevation="@dimen/mmx_toolbar_elevation"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="?attr/toolbarAppPopupTheme"/>
+    app:popupTheme="?attr/toolbarAppPopupTheme"
+    app:layout_scrollFlags="scroll|enterAlways"/>
 
 <!--<android.support.v7.widget.Toolbar-->
 <!--android:id="@+id/toolbar"-->

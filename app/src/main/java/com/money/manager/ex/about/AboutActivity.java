@@ -17,9 +17,10 @@
 package com.money.manager.ex.about;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
-import com.astuetz.PagerSlidingTabStrip;
+//import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
@@ -41,7 +42,7 @@ public class AboutActivity
         setContentView(R.layout.about_activity);
         setDisplayHomeAsUpEnabled(true);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager = findViewById(R.id.viewpager);
         mViewPager.setAdapter(new AboutTabAdapter(getSupportFragmentManager(),
             new String[]{
                 getString(R.string.about),
@@ -50,10 +51,14 @@ public class AboutActivity
                 getString(R.string.libraries)
             }));
 
-        // Give the PagerSlidingTabStrip the ViewPager
-        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        // Attach the view pager to the tab strip
-        tabsStrip.setViewPager(mViewPager);
+//        // Give the PagerSlidingTabStrip the ViewPager
+//        PagerSlidingTabStrip tabsStrip = findViewById(R.id.tabs);
+//            // Attach the view pager to the tab strip
+//            tabsStrip.setViewPager(mViewPager);
+
+        // Tab Layout
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -67,40 +72,6 @@ public class AboutActivity
         super.onRestoreInstanceState(savedInstanceState);
         mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
     }
-
-//    @Override
-//    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-//        Fragment fragment = null;
-//        switch (tab.getPosition()) {
-//            case 0: //about
-//                fragment = new AboutFragment();
-//                break;
-//            case 1: //changelog
-////                fragment = new AboutChangelogFragment();
-//                fragment = WebChangelogFragment.newInstance();
-//                break;
-//            case 2: //credits
-//                fragment = new AboutCreditsFragment();
-//                break;
-//            case 3: // libraries
-//                fragment = new LibsBuilder().supportFragment();
-//                break;
-//            default:
-//                break;
-//        }
-//        if (fragment != null)
-//            fragmentTransaction.replace(android.R.id.content, fragment);
-//    }
-//
-//    @Override
-//    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-//
-//    }
-//
-//    @Override
-//    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-//
-//    }
 
     @Override
     protected void setTheme() {
