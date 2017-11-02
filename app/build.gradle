@@ -17,7 +17,6 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'com.jakewharton.butterknife'
 
 // region Fix shortcuts.xml by manually replacing @string/application_id
 // See https://stackoverflow.com/a/44840413/6008532
@@ -54,7 +53,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 962
+        versionCode 963
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -226,8 +225,6 @@ dependencies {
             // , 'com.afollestad.material-dialogs:commons:0.9.0.2'
             , 'com.melnykov:floatingactionbutton:1.3.0'
             , 'com.github.pedrovgs:lynx:1.6'
-//            , 'com.astuetz:pagerslidingtabstrip:1.0.1'      // tab strip in About page
-//            , 'com.aurelhubert:ahbottomnavigation:2.1.0'    // bottom navigation in About page
             , 'de.hdodenhof:circleimageview:2.2.0'
             , 'me.relex:circleindicator:1.2.2'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.code-troopers.betterpickers:library:3.1.0'
