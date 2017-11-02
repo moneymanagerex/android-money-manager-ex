@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
-//import com.astuetz.PagerSlidingTabStrip;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
@@ -50,11 +49,6 @@ public class AboutActivity
                 getString(R.string.credits),
                 getString(R.string.libraries)
             }));
-
-//        // Give the PagerSlidingTabStrip the ViewPager
-//        PagerSlidingTabStrip tabsStrip = findViewById(R.id.tabs);
-//            // Attach the view pager to the tab strip
-//            tabsStrip.setViewPager(mViewPager);
 
         // Tab Layout
         TabLayout tabLayout = findViewById(R.id.tabs);
