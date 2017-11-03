@@ -48,7 +48,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -301,6 +300,7 @@ public class InvestmentTransactionEditActivity
         UIHelper ui = new UIHelper(this);
         mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
         mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
+        mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
     }
 
     /**
@@ -392,7 +392,7 @@ public class InvestmentTransactionEditActivity
     }
 
     private void showCommission() {
-        RobotoTextView view = (RobotoTextView) this.findViewById(R.id.commissionView);
+        RobotoTextView view = this.findViewById(R.id.commissionView);
         if (view == null) return;
 
         // todo: format the number of shares based on selected locale.
@@ -400,13 +400,13 @@ public class InvestmentTransactionEditActivity
     }
 
     private void showCurrentPrice() {
-        RobotoTextView view = (RobotoTextView) this.findViewById(R.id.currentPriceView);
+        RobotoTextView view = this.findViewById(R.id.currentPriceView);
         // todo: format the number of shares based on selected locale.
         view.setText(mStock.getCurrentPrice().toString());
     }
 
     private void showNumberOfShares() {
-        RobotoTextViewFontIcon view = (RobotoTextViewFontIcon) this.findViewById(R.id.numSharesView);
+        RobotoTextView view = this.findViewById(R.id.numSharesView);
         if (view == null) return;
 
         // todo: format the number of shares based on selected locale?
@@ -415,13 +415,13 @@ public class InvestmentTransactionEditActivity
     }
 
     private void showPurchasePrice() {
-        RobotoTextView view = (RobotoTextView) this.findViewById(R.id.purchasePriceView);
+        RobotoTextView view = this.findViewById(R.id.purchasePriceView);
         // todo: format the number of shares based on selected locale.
         view.setText(mStock.getPurchasePrice().toString());
     }
 
     private void showValue() {
-        RobotoTextView view = (RobotoTextView) this.findViewById(R.id.valueView);
+        RobotoTextView view = this.findViewById(R.id.valueView);
         //mViewHolder.
         view.setText(mStock.getValue().toString());
     }

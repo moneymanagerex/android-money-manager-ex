@@ -160,14 +160,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/number_of_shares" />
 
-                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/numSharesView"
                     style="@style/Money.TextView.Widget.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:textStyle="bold"
-                    app:iconLeft="@xml/ic_hash_small" />
+                    android:textStyle="bold" />
 
                 <!-- Purchase Price -->
                 <com.money.manager.ex.view.RobotoTextView

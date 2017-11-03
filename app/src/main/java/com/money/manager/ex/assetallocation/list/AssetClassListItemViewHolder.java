@@ -22,7 +22,7 @@ import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
+import com.money.manager.ex.view.RobotoTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,16 +34,16 @@ public class AssetClassListItemViewHolder
 
     public int id;
 
-    public RobotoTextViewFontIcon nameView;
+    public RobotoTextView nameView;
 
     public AssetClassListItemViewHolder(View itemView) {
         super(itemView);
 
-        nameView = (RobotoTextViewFontIcon) itemView.findViewById(R.id.nameView);
+        nameView = itemView.findViewById(R.id.nameView);
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RobotoTextViewFontIcon textView = (RobotoTextViewFontIcon) v;
+                RobotoTextView textView = (RobotoTextView) v;
                 EventBus.getDefault().post(new ListItemClickedEvent(id, textView.getText().toString(), v));
             }
         });

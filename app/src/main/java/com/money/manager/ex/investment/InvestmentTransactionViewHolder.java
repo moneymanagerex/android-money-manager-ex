@@ -22,9 +22,7 @@ import android.widget.Spinner;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoEditText;
-import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.shamanland.fonticon.FontIconView;
 
 /**

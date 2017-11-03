@@ -26,7 +26,7 @@
     android:layout_height="@dimen/mmx_list_item_height"
     android:gravity="center_vertical">
 
-    <com.money.manager.ex.view.RobotoTextViewFontIcon
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/nameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

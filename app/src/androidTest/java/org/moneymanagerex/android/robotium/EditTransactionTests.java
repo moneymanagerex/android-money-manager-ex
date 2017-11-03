@@ -22,7 +22,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -112,7 +111,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //        Date expectedDate = calendar.getTime();
 //        String expectedDateDisplay = dateFormat.format(expectedDate);
 //
-//        RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) solo.getView(R.id.textViewDate);
+//        RobotoTextView dateView = solo.getView(R.id.textViewDate);
 //        String displayedDate = dateView.getText().toString();
 //
 ////        assertThat(displayedDate).isEqualTo(todayFormatted);

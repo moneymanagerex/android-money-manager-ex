@@ -22,7 +22,7 @@ import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
+import com.money.manager.ex.view.RobotoTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,7 +41,7 @@ public class CloudItemViewHolder
     public int itemPosition;
     public String itemPath;
     // view elements
-    public RobotoTextViewFontIcon nameTextView;
+    public RobotoTextView nameTextView;
 
     private void initialize(View view) {
         // e clicks on the parent element
@@ -52,6 +52,6 @@ public class CloudItemViewHolder
             }
         });
 
-        nameTextView = (RobotoTextViewFontIcon) view.findViewById(R.id.nameTextView);
+        nameTextView = view.findViewById(R.id.nameTextView);
     }
 }

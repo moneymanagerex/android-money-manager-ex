@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
-import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +32,7 @@ import butterknife.ButterKnife;
 public class AssetClassEditViewHolder {
     public AssetClassEditViewHolder(View view) {
         // initialize
-//        parentAssetClass = (RobotoTextViewFontIcon) view.findViewById(R.id.parentAssetClass);
+//        parentAssetClass = view.findViewById(R.id.parentAssetClass);
         ButterKnife.bind(this, view);
     }
 
