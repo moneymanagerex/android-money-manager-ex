@@ -553,10 +553,6 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setNotes(editable.toString());
             }
         });
-
-        // Icon
-        UIHelper ui = new UIHelper(getContext());
-        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
     }
 
     public void initPayeeControls() {
