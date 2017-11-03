@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -536,7 +537,7 @@ public class CategoryListFragment
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
 
-        final EditText edtCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
+        final EditText edtCategName = viewDialog.findViewById(R.id.editTextCategName);
         // set category description
         edtCategName.setText(categoryName);
         if (!TextUtils.isEmpty(categoryName)) {
@@ -547,9 +548,11 @@ public class CategoryListFragment
                 ? R.string.add_category
                 : R.string.edit_categoryName;
 
+        UIHelper ui = new UIHelper(getActivity());
+
         new MaterialDialog.Builder(getContext())
-                .customView(viewDialog, true)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .customView(viewDialog, true)
+            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
             .title(titleId)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -627,9 +630,11 @@ public class CategoryListFragment
                 ? R.string.add_subcategory
                 : R.string.edit_categoryName;
 
+        UIHelper ui = new UIHelper(getActivity());
+
         new MaterialDialog.Builder(getContext())
             .customView(viewDialog, true)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
             .title(titleId)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

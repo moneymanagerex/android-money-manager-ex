@@ -32,20 +32,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <com.shamanland.fonticon.FontIconButton
+        <com.mikepenz.iconics.view.IconicsButton
             android:id="@+id/editButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="@string/edit"
-            app:iconLeft="@xml/ic_pencil_small" />
-        <com.shamanland.fonticon.FontIconButton
-            android:id="@+id/favouriteButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1" />
+        <com.mikepenz.iconics.view.IconicsButton
+            android:id="@+id/favouriteButton"
             android:text="@string/favourite"
-            app:iconLeft="@xml/ic_star_outline" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
     <!-- add setting for the default account -->

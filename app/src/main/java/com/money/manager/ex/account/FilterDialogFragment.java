@@ -29,8 +29,12 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsButton;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.shamanland.fonticon.FontIconButton;
@@ -150,7 +154,7 @@ public class FilterDialogFragment
     private void initializeControls(View view) {
         // Edit account.
 
-        Button editButton = (Button) view.findViewById(R.id.editButton);
+        Button editButton = view.findViewById(R.id.editButton);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,9 +165,12 @@ public class FilterDialogFragment
             }
         });
 
+        UIHelper ui = new UIHelper(getActivity());
+        editButton.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_pencil), null, null, null);
+
         // Favourite account
 
-        FontIconButton favouriteButton = (FontIconButton) view.findViewById(R.id.favouriteButton);
+        IconicsButton favouriteButton = view.findViewById(R.id.favouriteButton);
         favouriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,15 +190,14 @@ public class FilterDialogFragment
     }
 
     private void showFavouriteStatus(View view) {
-        if (view == null) {
-            return;
-        }
+        if (view == null) return;
 
-        FontIconButton favouriteButton = (FontIconButton) view.findViewById(R.id.favouriteButton);
-        int favouriteXmlId = mAccount.getFavorite() ? R.xml.ic_star : R.xml.ic_star_outline;
-        FontIconDrawable iconDrawable = FontIconDrawable.inflate(getActivity(), favouriteXmlId);
-        favouriteButton.setCompoundDrawables(iconDrawable, null, null, null);
-        //favouriteButton.setCompoundDrawablesWithIntrinsicBounds();
-//        favouriteButton.updateCompoundDrawables();
+        IconicsButton favouriteButton = view.findViewById(R.id.favouriteButton);
+
+        UIHelper ui = new UIHelper(getActivity());
+        IconicsDrawable icon = mAccount.getFavorite()
+                ? ui.getIcon(FontAwesome.Icon.faw_star)
+                : ui.getIcon(FontAwesome.Icon.faw_star_o);
+        favouriteButton.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
     }
 }
