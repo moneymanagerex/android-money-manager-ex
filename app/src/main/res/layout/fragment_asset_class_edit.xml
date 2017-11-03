@@ -105,12 +105,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sort_order"/>
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/sortOrderEdit"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_sort_asc"
                 android:textStyle="bold"
                 android:gravity="end" />
 

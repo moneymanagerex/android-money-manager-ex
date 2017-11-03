@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import butterknife.BindView;
@@ -36,6 +37,6 @@ public class AssetClassEditViewHolder {
         ButterKnife.bind(this, view);
     }
 
-    @BindView(R.id.parentAssetClass) RobotoTextViewFontIcon parentAssetClass;
+    @BindView(R.id.parentAssetClass) RobotoTextView parentAssetClass;
     @BindView(R.id.allocationEdit) TextView allocationTextView;
 }

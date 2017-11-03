@@ -28,11 +28,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.list.AssetClassListActivity;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
@@ -45,7 +47,7 @@ import info.javaperformance.money.MoneyFactory;
 public class AssetClassEditFragment
     extends Fragment {
 
-    public static final int CONTEXT_MENU_DELETE = 1;
+//    public static final int CONTEXT_MENU_DELETE = 1;
     public static final int REQUEST_ASSET_CLASS_PARENT = 1;
 
     public AssetClassEditFragment() {
@@ -186,7 +188,7 @@ public class AssetClassEditFragment
     }
 
     private void initializeSortOrderInput(View view) {
-        TextView textView = (TextView) view.findViewById(R.id.sortOrderEdit);
+        TextView textView = view.findViewById(R.id.sortOrderEdit);
         if (textView == null) return;
 
         textView.setText(assetClass.getSortOrder().toString());
@@ -202,6 +204,9 @@ public class AssetClassEditFragment
                         .show(RequestCodes.SORT_ORDER);
             }
         });
+
+        UIHelper ui = new UIHelper(getContext());
+        textView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_sort_amount_asc), null, null, null);
     }
 
     private void displayAllocation() {
