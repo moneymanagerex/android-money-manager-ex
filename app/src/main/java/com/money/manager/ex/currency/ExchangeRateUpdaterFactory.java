@@ -43,11 +43,9 @@ public class ExchangeRateUpdaterFactory {
 //                updater = new MorningstarPriceUpdater(context);
 //                break;
             case YahooYql:
-                //updater = new YqlSecurityPriceUpdater(context, feedback);
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
                 break;
             case YahooCsv:
-//                updater = new YahooCsvSecurityPriceUpdater(context);
                 updater = new YahooCsvQuoteDownloaderRetrofit(context);
                 break;
             default:

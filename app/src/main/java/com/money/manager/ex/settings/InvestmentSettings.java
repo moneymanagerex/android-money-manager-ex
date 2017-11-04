@@ -29,6 +29,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Investment preferences / preferences.
@@ -96,7 +97,13 @@ public class InvestmentSettings
             return defaultValue;
         }
 
-        QuoteProviders provider = QuoteProviders.valueOf(value);
+        QuoteProviders provider = null;
+        try {
+            provider = QuoteProviders.valueOf(value);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+
         // default value returned if none set.
         return provider != null ? provider : defaultValue;
     }

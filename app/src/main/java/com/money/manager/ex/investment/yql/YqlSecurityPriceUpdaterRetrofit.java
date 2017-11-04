@@ -144,7 +144,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // check whether there is only one item or more
         JsonElement results = root.get("query").getAsJsonObject()
                 .get("results");
-        if (results == null) return null;
+        if (results == null || results.isJsonNull()) return null;
 
         JsonObject resultsJson = results.getAsJsonObject();
         if (resultsJson == null) return null;

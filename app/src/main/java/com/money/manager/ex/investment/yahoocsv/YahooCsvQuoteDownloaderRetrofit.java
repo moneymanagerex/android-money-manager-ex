@@ -106,6 +106,7 @@ public class YahooCsvQuoteDownloaderRetrofit
 
         if (content == null) {
             new UIHelper(getContext()).showToast(getContext().getString(R.string.error_updating_rates));
+            closeProgressDialog();
             return;
         }
 
