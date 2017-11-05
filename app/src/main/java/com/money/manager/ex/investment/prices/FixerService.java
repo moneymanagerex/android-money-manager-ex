@@ -18,6 +18,7 @@
 package com.money.manager.ex.investment.prices;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -33,6 +34,8 @@ import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,9 +124,10 @@ public class FixerService
         }
         closeProgressDialog();
 
-        // Notify user that all the prices have been downloaded.
-        uiHelper.showToast(R.string.download_complete + " (" + updatedCurrencies.toString() + ")");
-
+        // Notify the user of the prices that have been downloaded.
+        String message = getContext().getString(R.string.download_complete) +
+            " (" + updatedCurrencies.toString().substring(0, updatedCurrencies.toString().length() - 1) + ")";
+        uiHelper.showToast(message, Toast.LENGTH_LONG);
     }
 
     private IFixerService getService() {
@@ -142,7 +146,7 @@ public class FixerService
         JsonObject rates = root.get("rates").getAsJsonObject();
         if (rates == null || rates.isJsonNull()) return null;
 
-        // get the rates
+        // prices
         Set<Map.Entry<String, JsonElement>> entries = rates.entrySet();
         for (Map.Entry<String, JsonElement> entry : entries)
         {
@@ -174,7 +178,10 @@ public class FixerService
             return null;
         }
 
-        priceModel.price = MoneyFactory.fromString(priceString);
+        Money retrievedPrice = MoneyFactory.fromString(priceString);
+        // invert the price. Round to 10 decimals.
+        BigDecimal invertedPrice = BigDecimal.ONE.divide(retrievedPrice.toBigDecimal(), 10, RoundingMode.HALF_EVEN);
+        priceModel.price = MoneyFactory.fromBigDecimal(invertedPrice);
 
         // Date
 
