@@ -64,6 +64,9 @@ public class Currency
         setString(CENT_NAME, value);
     }
 
+    /**
+     * @return Currency symbol in ISO format.
+     */
     public String getCode() {
         return getString(CURRENCY_SYMBOL);
     }

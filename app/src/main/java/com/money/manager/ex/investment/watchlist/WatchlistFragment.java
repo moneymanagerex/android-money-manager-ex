@@ -56,7 +56,7 @@ import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvExport;
 import com.money.manager.ex.investment.QuoteProviders;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
@@ -66,7 +66,6 @@ import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.InvestmentSettings;
 import com.money.manager.ex.sync.SyncManager;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

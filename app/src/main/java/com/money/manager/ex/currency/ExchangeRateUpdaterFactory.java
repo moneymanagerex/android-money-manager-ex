@@ -19,9 +19,10 @@ package com.money.manager.ex.currency;
 
 import android.content.Context;
 
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.QuoteProviders;
-import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
+import com.money.manager.ex.investment.ExchangeRateProviders;
+import com.money.manager.ex.investment.prices.IExchangeRateUpdater;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.FixerService;
 import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
 import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
@@ -31,26 +32,29 @@ import com.money.manager.ex.settings.InvestmentSettings;
  * Set here when changing the updater.
  */
 public class ExchangeRateUpdaterFactory {
-    public static ISecurityPriceUpdater getUpdaterInstance(Context context) {
-        ISecurityPriceUpdater updater;
+
+    public static IExchangeRateUpdater getUpdaterInstance(Context context) {
+        IExchangeRateUpdater updater;
 
         // check preferences to see which downloader to use.
         InvestmentSettings settings = new InvestmentSettings(context);
-        QuoteProviders provider = settings.getExchangeRateProvider();
+        ExchangeRateProviders provider = settings.getExchangeRateProvider();
 
         switch (provider) {
 //            case Morningstar:
 //                updater = new MorningstarPriceUpdater(context);
 //                break;
-            case YahooYql:
-                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+            case Fixer:
+                updater = new FixerService(context);
                 break;
-            case YahooCsv:
-                updater = new YahooCsvQuoteDownloaderRetrofit(context);
-                break;
+//            case YahooYql:
+//                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+//                break;
+//            case YahooCsv:
+//                updater = new YahooCsvQuoteDownloaderRetrofit(context);
+//                break;
             default:
-                // yql
-                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+                updater = new FixerService(context);
                 break;
         }
 

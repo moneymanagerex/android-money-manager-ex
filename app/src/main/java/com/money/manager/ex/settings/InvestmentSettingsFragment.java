@@ -25,6 +25,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.investment.ExchangeRateProviders;
 import com.money.manager.ex.investment.QuoteProviders;
 
 import org.greenrobot.eventbus.EventBus;
@@ -131,8 +132,7 @@ public class InvestmentSettingsFragment
 
         final InvestmentSettings settings = new InvestmentSettings(getContext());
         QuoteProviders currentProvider = settings.getQuoteProvider();
-        preference.setSummary(currentProvider.name()); // show current value
-//        preference.setValue(currentProvider.name());
+        preference.setSummary(currentProvider.name()); // show current price provider
         displayQuotesProvider(currentProvider.name());
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
@@ -155,14 +155,13 @@ public class InvestmentSettingsFragment
         if (preference == null) return;
 
         // initialize
-        preference.setEntries(QuoteProviders.names());
-        preference.setEntryValues(QuoteProviders.names());
-        preference.setDefaultValue(QuoteProviders.YahooYql.name());
+        preference.setEntries(ExchangeRateProviders.names());
+        preference.setEntryValues(ExchangeRateProviders.names());
+        preference.setDefaultValue(ExchangeRateProviders.Fixer.name());
 
         final InvestmentSettings settings = new InvestmentSettings(getContext());
-        QuoteProviders currentProvider = settings.getExchangeRateProvider();
-        preference.setSummary(currentProvider.name()); // show current value
-//        preference.setValue(currentProvider.name());
+        ExchangeRateProviders currentProvider = settings.getExchangeRateProvider();
+        preference.setSummary(currentProvider.name()); // show current exchange provider.
         displayExchangeRatesProvider(currentProvider.name());
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
@@ -170,7 +169,7 @@ public class InvestmentSettingsFragment
             public boolean onPreferenceChange(Preference preference, Object o) {
                 // update
                 String name = (String) o;
-                QuoteProviders provider = QuoteProviders.valueOf(name);
+                ExchangeRateProviders provider = ExchangeRateProviders.valueOf(name);
                 settings.setExchangeRateProvider(provider);
 
                 displayExchangeRatesProvider(name);

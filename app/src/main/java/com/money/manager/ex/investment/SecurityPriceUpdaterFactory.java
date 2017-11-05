@@ -19,17 +19,11 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 
-import com.money.manager.ex.investment.morningstar.IMorningstarService;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
-import com.money.manager.ex.investment.yahoocsv.IYahooCsvService;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
-import com.money.manager.ex.investment.yql.IYqlService;
 import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Factory for security price updater.

@@ -15,19 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.investment;
+package com.money.manager.ex.utils;
 
 import java.util.List;
 
 /**
- * Interface for security price updater functionality.
- * Any module that downloads prices should implement this so that it is easy to replace
- * different implementations of price providers.
+ * Utilities that help with Lists.
  */
-public interface ISecurityPriceUpdater {
-    /**
-     * Download prices for all the securities and update the values.
-     * Store the values in the history table.
-     */
-    void downloadPrices(List<String> symbols);
+
+public class ListUtils {
+    public final String SEPARATOR = ",";
+
+    public String toCommaDelimitedString(List<String> list) {
+        StringBuilder csvBuilder = new StringBuilder();
+
+        for(String item : list){
+            csvBuilder.append(item);
+            csvBuilder.append(SEPARATOR);
+        }
+
+        String csv = csvBuilder.toString();
+        return csv;
+    }
 }

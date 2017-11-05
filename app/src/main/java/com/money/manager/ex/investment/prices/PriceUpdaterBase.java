@@ -15,23 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.prices;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
 
-import java.util.List;
-
 import timber.log.Timber;
 
 /**
  * Base class for price updaters. Contains some common and useful code.
  */
-public class PriceUpdaterBase
-    implements ISecurityPriceUpdater {
-
+public class PriceUpdaterBase {
     public PriceUpdaterBase(Context context) {
         mContext = context;
     }
@@ -39,17 +35,11 @@ public class PriceUpdaterBase
     private Context mContext;
     private ProgressDialog mDialog = null;
 
-    @Override
-    public void downloadPrices(List<String> symbols) {
-
-    }
-
     public Context getContext() {
         return mContext;
     }
 
     protected void showProgressDialog(Integer max) {
-//        Context context = getContext();
         mDialog = new ProgressDialog(getContext());
 
         mDialog.setMessage(getContext().getString(R.string.starting_price_update));
@@ -77,5 +67,4 @@ public class PriceUpdaterBase
             Timber.e(e, "closing binaryDialog");
         }
     }
-
 }

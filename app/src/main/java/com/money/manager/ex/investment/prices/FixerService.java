@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment.yql;
+
+package com.money.manager.ex.investment.prices;
 
 import android.content.Context;
 
@@ -23,12 +24,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.prices.PriceUpdaterBase;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.ListUtils;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,47 +43,32 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import timber.log.Timber;
 
 /**
- * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
+ * Fixer.io service implementation.
+ * Exchange rates provider.
  */
-public class YqlSecurityPriceUpdaterRetrofit
-    extends PriceUpdaterBase
-    implements ISecurityPriceUpdater {
 
-    /**
-     *
-     * @param context Executing context
-     */
-    public YqlSecurityPriceUpdaterRetrofit(Context context) {
+public class FixerService
+    extends PriceUpdaterBase
+    implements IExchangeRateUpdater {
+
+    public FixerService(Context context) {
         super(context);
     }
 
-    // https://query.yahooapis.com/v1/public/yql
-    // ?q=... url escaped
-    // &format=json
-    // &diagnostics=true
-    // &env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
-    // &callback=
-
-    /**
-     * Update prices for all the symbols in the list.
-     */
-    public void downloadPrices(List<String> symbols) {
+    @Override
+    public void downloadPrices(String baseCurrency, List<String> symbols) {
         if (symbols == null) return;
         int items = symbols.size();
-        if (symbols.isEmpty()) return;
+        if (items == 0) return;
 
         showProgressDialog(items);
 
-        YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
-        String query = queryGenerator.getQueryFor(symbols);
+        IFixerService service = getService();
 
-        IYqlService yql = getYqlService();
-
-        // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
@@ -92,25 +77,23 @@ public class YqlSecurityPriceUpdaterRetrofit
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                Timber.e(t, "fetching price");
                 closeProgressDialog();
+                Timber.e(t, "fetching price");
             }
         };
 
+        // parameters
+        String symbolsString = new ListUtils().toCommaDelimitedString(symbols);
+
         try {
-            // This would be the synchronous call.
-//            prices = yql.getPrices(query).execute().body();
-            yql.getPrices(query).enqueue(callback);
-        } catch (Exception e) {
-            Timber.e(e, "fetching prices");
+            service.getPrices(baseCurrency, symbolsString).enqueue(callback);
+        } catch (Exception ex) {
+            Timber.e(ex, "downloading quotes");
         }
+
     }
 
-    /**
-     * Called when the file is downloaded and the contents read.
-     * Here we have all the prices.
-     */
-    public void onContentDownloaded(JsonElement response) {
+    private void onContentDownloaded(JsonElement response) {
         UIHelper uiHelper = new UIHelper(getContext());
 
         if (response == null) {
@@ -119,7 +102,6 @@ public class YqlSecurityPriceUpdaterRetrofit
             return;
         }
 
-        // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
         if (pricesList == null) {
             uiHelper.showToast(R.string.error_no_price_found_for_symbol);
@@ -134,6 +116,16 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Notify user that all the prices have been downloaded.
         uiHelper.showToast(R.string.download_complete);
+
+    }
+
+    private IFixerService getService() {
+        String BASE_URL = "https://api.fixer.io";
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IFixerService.class);
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
@@ -206,16 +198,6 @@ public class YqlSecurityPriceUpdaterRetrofit
         return priceModel;
     }
 
-    public IYqlService getYqlService() {
-        String BASE_URL = "https://query.yahooapis.com";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
-        return retrofit.create(IYqlService.class);
-    }
-
     private Money readPrice(String priceString, JsonObject quote) {
         UIHelper ui = new UIHelper(getContext());
         Money price = MoneyFactory.fromString(priceString);
@@ -244,4 +226,5 @@ public class YqlSecurityPriceUpdaterRetrofit
         }
         return price;
     }
+
 }

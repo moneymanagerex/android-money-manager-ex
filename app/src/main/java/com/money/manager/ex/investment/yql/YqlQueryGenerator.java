@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * YQL query generator
- * Created by Alen on 25/09/2015.
  */
 public class YqlQueryGenerator {
     //    private String source = "yahoo.finance.quote";

@@ -34,7 +34,8 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.CurrencyRepositorySql;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.IExchangeRateUpdater;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.domainmodel.Account;
@@ -493,19 +494,21 @@ public class CurrencyService
         if (currencies == null || currencies.size() <= 0) return;
 
         ArrayList<String> currencySymbols = new ArrayList<>();
-        String symbol;
+//        String symbol;
         String baseCurrencySymbol = getBaseCurrencyCode();
 
-        for (Currency currency : currencies) {
-            symbol = currency.getCode();
-            if (symbol == null) continue;
-            if (symbol.equals(baseCurrencySymbol)) continue;
+        // todo: move this into yahoo currency exchange rates provider (new file), if the service
+        // is ever re-enabled.
+//        for (Currency currency : currencies) {
+//            symbol = currency.getCode();
+//            if (symbol == null) continue;
+//            if (symbol.equals(baseCurrencySymbol)) continue;
+//
+//            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
+//        }
 
-            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
-        }
-
-        ISecurityPriceUpdater updater = ExchangeRateUpdaterFactory.getUpdaterInstance(getContext());
-        updater.downloadPrices(currencySymbols);
+        IExchangeRateUpdater updater = ExchangeRateUpdaterFactory.getUpdaterInstance(getContext());
+        updater.downloadPrices(baseCurrencySymbol, currencySymbols);
         // result received via event
     }
 

@@ -21,9 +21,9 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvParser;
-import com.money.manager.ex.investment.PriceUpdaterBase;
+import com.money.manager.ex.investment.prices.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 

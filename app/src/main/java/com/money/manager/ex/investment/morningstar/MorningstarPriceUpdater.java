@@ -24,8 +24,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
-import com.money.manager.ex.investment.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.PriceUpdaterBase;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;

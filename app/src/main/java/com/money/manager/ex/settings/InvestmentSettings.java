@@ -24,6 +24,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.investment.ExchangeRateProviders;
 import com.money.manager.ex.investment.QuoteProviders;
 import com.money.manager.ex.servicelayer.InfoService;
 
@@ -88,8 +89,8 @@ public class InvestmentSettings
         service.setInfoValue(InfoKeys.QUOTE_PROVIDER, value.name());
     }
 
-    public QuoteProviders getExchangeRateProvider() {
-        QuoteProviders defaultValue = QuoteProviders.YahooYql;
+    public ExchangeRateProviders getExchangeRateProvider() {
+        ExchangeRateProviders defaultValue = ExchangeRateProviders.Fixer;
 
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER);
@@ -97,9 +98,9 @@ public class InvestmentSettings
             return defaultValue;
         }
 
-        QuoteProviders provider = null;
+        ExchangeRateProviders provider = null;
         try {
-            provider = QuoteProviders.valueOf(value);
+            provider = ExchangeRateProviders.valueOf(value);
         } catch (Exception e) {
             Timber.e(e);
         }
@@ -108,7 +109,7 @@ public class InvestmentSettings
         return provider != null ? provider : defaultValue;
     }
 
-    public void setExchangeRateProvider(QuoteProviders value) {
+    public void setExchangeRateProvider(ExchangeRateProviders value) {
         InfoService service = new InfoService(getContext());
         service.setInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER, value.name());
     }
