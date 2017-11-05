@@ -26,6 +26,7 @@ import timber.log.Timber;
 
 /**
  * Base class for price updaters. Contains some common and useful code.
+ * Inherited by exchange rate and security price updaters.
  */
 public class PriceUpdaterBase {
     public PriceUpdaterBase(Context context) {

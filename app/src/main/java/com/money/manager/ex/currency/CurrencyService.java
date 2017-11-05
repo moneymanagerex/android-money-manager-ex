@@ -493,19 +493,19 @@ public class CurrencyService
     public void updateExchangeRates(List<Currency> currencies){
         if (currencies == null || currencies.size() <= 0) return;
 
-        ArrayList<String> currencySymbols = new ArrayList<>();
-//        String symbol;
+        String symbol;
         String baseCurrencySymbol = getBaseCurrencyCode();
+        ArrayList<String> currencySymbols = new ArrayList<>();
 
-        // todo: move this into yahoo currency exchange rates provider (new file), if the service
-        // is ever re-enabled.
-//        for (Currency currency : currencies) {
-//            symbol = currency.getCode();
-//            if (symbol == null) continue;
-//            if (symbol.equals(baseCurrencySymbol)) continue;
-//
+        for (Currency currency : currencies) {
+            symbol = currency.getCode();
+            if (symbol == null) continue;
+            if (symbol.equals(baseCurrencySymbol)) continue;
+
+            // todo: move this into yahoo currency exchange rates provider (new file).
 //            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
-//        }
+            currencySymbols.add(symbol);
+        }
 
         IExchangeRateUpdater updater = ExchangeRateUpdaterFactory.getUpdaterInstance(getContext());
         updater.downloadPrices(baseCurrencySymbol, currencySymbols);

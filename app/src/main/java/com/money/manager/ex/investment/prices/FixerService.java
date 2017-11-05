@@ -36,6 +36,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -43,6 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import timber.log.Timber;
 
@@ -103,11 +106,15 @@ public class FixerService
         }
 
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
+        StringBuilder updatedCurrencies = new StringBuilder();
         if (pricesList == null) {
             uiHelper.showToast(R.string.error_no_price_found_for_symbol);
         } else {
             // Send the parsed price data to the listener(s).
             for (SecurityPriceModel model : pricesList) {
+                updatedCurrencies.append(model.symbol);
+                updatedCurrencies.append(",");
+
                 // Notify the caller.
                 EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
             }
@@ -115,14 +122,14 @@ public class FixerService
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        uiHelper.showToast(R.string.download_complete);
+        uiHelper.showToast(R.string.download_complete + " (" + updatedCurrencies.toString() + ")");
 
     }
 
     private IFixerService getService() {
         String BASE_URL = "https://api.fixer.io";
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
         return retrofit.create(IFixerService.class);
@@ -131,48 +138,32 @@ public class FixerService
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
         ArrayList<SecurityPriceModel> result = new ArrayList<>();
 
-        // check whether there is only one item or more
-        JsonElement results = root.get("query").getAsJsonObject()
-                .get("results");
-        if (results == null || results.isJsonNull()) return null;
+        String dateString = root.get("date").getAsString();
+        JsonObject rates = root.get("rates").getAsJsonObject();
+        if (rates == null || rates.isJsonNull()) return null;
 
-        JsonObject resultsJson = results.getAsJsonObject();
-        if (resultsJson == null) return null;
+        // get the rates
+        Set<Map.Entry<String, JsonElement>> entries = rates.entrySet();
+        for (Map.Entry<String, JsonElement> entry : entries)
+        {
+            SecurityPriceModel priceModel = getSecurityPriceFor(entry, dateString);
+            if (priceModel == null) continue;
 
-        JsonElement quoteElement = resultsJson.get("quote");
-        if (quoteElement instanceof JsonArray) {
-            JsonArray quotes = quoteElement.getAsJsonArray();
-
-            for (int i = 0; i < quotes.size(); i++) {
-                JsonObject quote = quotes.get(i).getAsJsonObject();
-                // process individual quote
-                SecurityPriceModel priceModel = getSecurityPriceFor(quote);
-                if (priceModel == null) continue;
-
-                result.add(priceModel);
-            }
-        } else {
-            // Single quote
-            JsonObject quote = quoteElement.getAsJsonObject();
-
-            SecurityPriceModel priceModel = getSecurityPriceFor(quote);
-            if (priceModel != null) {
-                result.add(priceModel);
-            }
+            result.add(priceModel);
         }
 
         return result;
     }
 
-    private SecurityPriceModel getSecurityPriceFor(JsonObject quote) {
+    private SecurityPriceModel getSecurityPriceFor(Map.Entry<String, JsonElement> quote, String dateString) {
         SecurityPriceModel priceModel = new SecurityPriceModel();
-        priceModel.symbol = quote.get("symbol").getAsString();
+        priceModel.symbol = quote.getKey();
 
         UIHelper ui = new UIHelper(getContext());
 
         // Price
 
-        JsonElement priceElement = quote.get("LastTradePriceOnly");
+        JsonElement priceElement = quote.getValue();
         if (priceElement == JsonNull.INSTANCE) {
             ui.showToast(getContext().getString(R.string.error_no_price_found_for_symbol) + " " + priceModel.symbol);
             return null;
@@ -183,48 +174,13 @@ public class FixerService
             return null;
         }
 
-        priceModel.price = readPrice(priceString, quote);
+        priceModel.price = MoneyFactory.fromString(priceString);
 
         // Date
 
-        Date date = new MmxDate().toDate();
-        JsonElement dateElement = quote.get("LastTradeDate");
-        if (dateElement != JsonNull.INSTANCE) {
-            // Sometimes the date is not available. For now we will use today's date.
-            date = new MmxDate(dateElement.getAsString(), "MM/dd/yyyy").toDate();
-        }
+        Date date = new MmxDate(dateString).toDate();
         priceModel.date = date;
 
         return priceModel;
     }
-
-    private Money readPrice(String priceString, JsonObject quote) {
-        UIHelper ui = new UIHelper(getContext());
-        Money price = MoneyFactory.fromString(priceString);
-
-        /**
-         LSE stocks are expressed in GBp (pence), not Pounds.
-         From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-         */
-        JsonElement currencyElement = quote.get("Currency");
-
-        // validation
-        if (currencyElement == null || currencyElement.isJsonNull()) {
-            ui.showToast(R.string.error_downloading_symbol);
-            return MoneyFactory.fromDouble(0);
-        }
-
-        String currency;
-        try {
-            currency = currencyElement.getAsString();
-        } catch (UnsupportedOperationException ex) {
-            Timber.e(ex, "reading currency from downloaded price");
-            currency = "";
-        }
-        if (currency.equals("GBp")) {
-            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
-        }
-        return price;
-    }
-
 }
