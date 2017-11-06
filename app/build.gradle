@@ -241,7 +241,7 @@ dependencies {
             // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
-            , 'org.jsoup:jsoup:1.10.3'              // HTML parsing.
+            , 'org.jsoup:jsoup:1.11.1'              // HTML parsing.
             , 'com.google.guava:guava:23.0-android' // collection libraries
             , 'com.android.support:multidex:1.0.2'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
@@ -290,10 +290,10 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.4.2',
+            'org.robolectric:robolectric:3.5.1',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.3.2',
-            'org.robolectric:shadows-httpclient:3.3.2',
+            'org.robolectric:shadows-multidex:3.5.1',
+            'org.robolectric:shadows-httpclient:3.5.1',
             //'com.squareup.assertj:assertj-android:1.1.1',
             //'org.assertj:assertj-core:3.8.0',
             // Matchers
