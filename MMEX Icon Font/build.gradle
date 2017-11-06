@@ -50,7 +50,7 @@ if (project.hasProperty('pushall') || project.hasProperty('MMEXIconFontonly')) {
 dependencies {
 //    compile project(':library-core')
     compile(
-            "com.mikepenz:iconics-core:2.9.3@aar",
-            "com.mikepenz:iconics-views:2.9.3@aar"
+            "com.mikepenz:iconics-core:2.9.4@aar",
+            "com.mikepenz:iconics-views:2.9.5@aar"
     )
 }
