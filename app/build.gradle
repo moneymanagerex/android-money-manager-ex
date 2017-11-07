@@ -59,7 +59,7 @@ android {
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 15 // 4.0.3
-        targetSdkVersion 26
+        targetSdkVersion 27
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -138,11 +138,9 @@ android {
                 variant.outputs.all { output ->
                     // append the version to the file name.
                     def version = "-" + defaultConfig.versionName
-                    // + "_r" + defaultConfig.versionCode
                     def fileName = output.outputFile.name
                             .replace("app-", "ammx-")
                             .replace(".apk", version + ".apk")
-                    //output.outputFile = new File(output.outputFile.parent, fileName)
                     outputFileName = fileName
                 }
             }

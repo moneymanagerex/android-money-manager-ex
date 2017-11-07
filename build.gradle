@@ -29,7 +29,7 @@ buildscript {
 
 ext {
     compileSdkVersion = 26
-    buildToolsVersion = '27.0.0'
+    buildToolsVersion = '27.0.1'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
     supportLibrary = '27.0.0'
