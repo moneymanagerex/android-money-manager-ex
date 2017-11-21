@@ -82,7 +82,7 @@
   <string name="account_status">Rekeningstatus</string>
   <string name="favourite_account">Voorkeursrekening</string>
   <string name="select_currency">Selecteer valuta</string>
-  <string name="checking">Betaalrekening</string>
+  <string name="checking">Zichtrekening</string>
   <string name="investment">InvesteringsRekening</string>
   <string name="investment_accounts">Investeringsrekeningen</string>
   <string name="term">Termijnrekening</string>
@@ -711,4 +711,6 @@
   <!-- Settings -->
   <string name="per_database_settings">Per-Database</string>
   <string name="save">Opslaan</string>
+  <string name="shares">Aandelen</string>
+  <string name="loan">Lening</string>
 </resources>
