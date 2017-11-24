@@ -894,6 +894,10 @@ public class HomeFragment
                     totalForType.setAccountName(getString(R.string.credit_card_accounts));
                 } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                     totalForType.setAccountName(getString(R.string.investment_accounts));
+                } else if (AccountTypes.LOAN.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName("Loan Accounts");
+                } else if (AccountTypes.SHARES.toString().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName("Shares Accounts");
                 }
                 mTotalsByType.put(accountType, totalForType);
             }
