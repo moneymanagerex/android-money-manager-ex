@@ -200,7 +200,7 @@ dependencies {
 //    compile(name:'cloudrail-si-debug', ext:'aar')
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , project(':MMEX Icon Font')
+            , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.21.0'

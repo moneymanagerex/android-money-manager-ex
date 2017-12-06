@@ -15,4 +15,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12', ':money', ':MMEX Icon Font'
+include ':app', ':androidSVG_12', ':money', ':MMEX_Icon_Font'
