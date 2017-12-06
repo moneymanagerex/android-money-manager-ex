@@ -20,6 +20,7 @@ buildscript {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }  // Fabric
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // robolectric
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -62,6 +63,7 @@ allprojects {
 //            dirs 'libs'
 //        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
+        google()
     }
 
     /**
