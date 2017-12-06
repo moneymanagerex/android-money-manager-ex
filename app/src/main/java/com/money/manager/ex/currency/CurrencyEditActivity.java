@@ -28,6 +28,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -223,10 +224,12 @@ public class CurrencyEditActivity
         currency.setSfxSymbol(holder.edtSuffix.getText().toString().trim());
         currency.setDecimalPoint(holder.edtDecimal.getText().toString().trim());
         currency.setGroupSeparator(holder.edtGroup.getText().toString().trim());
-        // todo: convert to integer
-        currency.contentValues.put(Currency.SCALE, holder.edtScale.getText().toString().trim());
-        // todo: convert to double
-        currency.contentValues.put(Currency.BASECONVRATE, holder.edtConversion.getText().toString().trim());
+
+        int scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
+        currency.contentValues.put(Currency.SCALE, scale);
+
+        BigDecimal rate = new BigDecimal(holder.edtConversion.getText().toString().trim());
+        currency.contentValues.put(Currency.BASECONVRATE, rate.doubleValue());
 //        currency.setConversionRate();
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());

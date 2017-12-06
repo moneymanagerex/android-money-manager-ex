@@ -4,7 +4,7 @@ See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.o
 
 #### Basic information
 
-Money Manager Ex for Android is an port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It implements the most important features of the desktop version, while adding mobility and synchronization.
+Money Manager Ex for Android is a mobile companion to PC/desktop personal finance applications currently available for Windows, Mac OSX and LINUX. It can be used with the same database used by MoneyManagerEx Desktop, or as an addition to GnuCash or other applications that import transactions via .qif files.
 
 #### Links
 

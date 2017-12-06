@@ -94,8 +94,6 @@ public class TextFileExport {
     public File createExportFile(String fileName) throws IOException {
         File path = getExportDirectory();
 
-//        tempFile = File.createTempFile(localPath, ".qif", path);
-
         File file = new File(path, fileName);
         boolean fileCreated = file.createNewFile();
         if (!fileCreated) {
