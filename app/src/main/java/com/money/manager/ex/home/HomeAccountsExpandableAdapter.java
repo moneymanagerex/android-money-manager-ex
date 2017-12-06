@@ -174,9 +174,11 @@ public class HomeAccountsExpandableAdapter
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase)
                         .sizeDp(iconSize).color(iconColor);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.LOAN.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)
                         .sizeDp(iconSize).color(iconColor);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.SHARES.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
                         .sizeDp(iconSize).color(iconColor);
