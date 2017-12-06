@@ -27,7 +27,10 @@ public enum AccountTypes {
     CHECKING ("Checking"),
     INVESTMENT ("Investment"),
     TERM ("Term"),
-    CREDIT_CARD ("Credit Card");
+    CREDIT_CARD ("Credit Card"),
+    LOAN ("Loan"),
+    SHARES ("Shares");
+
 
     public static AccountTypes get(String name) {
         for (AccountTypes type : AccountTypes.values()) {
