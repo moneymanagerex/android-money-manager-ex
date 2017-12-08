@@ -35,7 +35,7 @@
             android:id="@+id/imageViewAccountType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_money_safe"/>
+            android:src="@drawable/ic_money_safe" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewItemAccountName"
@@ -44,7 +44,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="@string/account_name"/>
+            android:text="@string/account_name" />
     </LinearLayout>
 
     <LinearLayout
