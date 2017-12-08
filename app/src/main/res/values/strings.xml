@@ -787,5 +787,9 @@
 
     <string name="title_budget_show_simple_view">Show simple budget view</string>
     <string name="summary_budget_show_simple_view">If checked budgets use the simplified view</string>
+    <string name="shares">Shares</string>
+    <string name="loan">Loan</string>
+    <string name="loan_account">Loan Accounts</string>
+    <string name="shares_accounts">Shares Accounts</string>
 
 </resources>
