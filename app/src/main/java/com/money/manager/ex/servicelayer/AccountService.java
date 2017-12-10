@@ -219,6 +219,8 @@ public class AccountService
         list.add(AccountTypes.CHECKING);
         list.add(AccountTypes.TERM);
         list.add(AccountTypes.CREDIT_CARD);
+        list.add(AccountTypes.LOAN);
+        list.add(AccountTypes.SHARES);
 
         return list;
     }

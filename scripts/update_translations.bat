@@ -1,5 +1,7 @@
-:: copy translations from the below location.
-:: Set the correct location to the root of the unzipped translations file from Crowdin.
+:: To update the translations, build and download the zip file from Crowdin.
+:: Unzip translations into the below location (src_root).
+:: Set the correct paths for src_root and dest_root.
+:: Run this script.
 @echo off
 
 set src_root=d:\temp
