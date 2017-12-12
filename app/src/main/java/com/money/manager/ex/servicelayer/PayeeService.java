@@ -93,6 +93,8 @@ public class PayeeService
 
         Payee payee = new Payee();
         payee.setName(name);
+        payee.setCategoryId(-1);
+        payee.setSubcategoryId(-1);
 
         int id = this.payeeRepository.add(payee);
 
