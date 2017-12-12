@@ -79,6 +79,8 @@
         <item>@string/investment</item>
         <item>@string/term</item>
         <item>@string/credit_card</item>
+        <item>@string/loan</item>
+        <item>@string/shares</item>
     </string-array>
 
     <!-- Accountstatus items and values -->
