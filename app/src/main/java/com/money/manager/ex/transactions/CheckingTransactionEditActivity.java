@@ -33,6 +33,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.PayeeRepository;
@@ -65,6 +66,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import icepick.State;
+import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
 /**
@@ -510,7 +512,61 @@ public class CheckingTransactionEditActivity
                 task.execute();
             }
 
-            externalIntegration(intent);
+            if (intent.getData() != null) {
+                externalIntegration(intent);
+            }else{
+
+                Bundle extras = intent.getExtras();
+
+                if(extras != null) {
+
+                    AccountRepository accountRepository = new AccountRepository(this);
+
+                    if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
+                    {
+                        mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                        mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+
+                        //convert the to amount from the both currency details
+                        CurrencyService currencyService = new CurrencyService(this);
+                        mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                                mCommon.transactionEntity.getAmount(),
+                                accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+
+                    }
+
+                    mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
+                    mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
+
+                    mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
+                    mCommon.transactionEntity.setDate(new MmxDate().toDate());
+
+                    if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
+                    {
+                        if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
+                            Core core = new Core(this);
+                            Payee payee = core.getLastPayeeUsed();
+
+                            if (payee != null) {
+                                mCommon.transactionEntity.setPayeeId(payee.getId());
+                                mCommon.payeeName = payee.getName();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                        mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+                    }
+
+                    mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+
+                    mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+                    extras = null;
+                }
+            }
+
 
             // Select the default account if none set.
             Integer account = mCommon.transactionEntity.getAccountId();

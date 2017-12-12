@@ -83,6 +83,8 @@
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
+    <string name="pref_sms_auto_trans">pref_sms_automatic_transactions</string>
+
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>

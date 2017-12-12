@@ -67,6 +67,14 @@ public class BehaviourSettings
         );
     }
 
+    public boolean getBankSmsTrans() {
+        return get(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS, false);
+    }
+
+    public void setBankSmsTrans(boolean status) {
+        set(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS, status);
+    }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

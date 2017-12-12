@@ -73,6 +73,14 @@
     <string name="sync_on_app_start">Synchronize on app start.</string>
     <string name="sync_on_start">Sync on start</string>
 
+    <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">Process bank transaction SMS</string>
+    <string name="summary_sms_auto_trans">Read the bank transaction update SMS and create transaction automatically</string>
+    <string name="deny_receive_sms_error">You have denied the permission to receive the SMS, so your bank transaction SMS will not be processed</string>
+    <string name="granted_receive_sms_access">Permission already granted for RECEIVE_SMS</string>
+    <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
+
+
     <!-- account -->
     <string name="account">Account</string>
     <string name="account_list">Account List</string>

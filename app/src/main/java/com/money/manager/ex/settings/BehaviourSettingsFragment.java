@@ -16,9 +16,15 @@
  */
 package com.money.manager.ex.settings;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.Toast;
 
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
@@ -47,6 +53,7 @@ public class BehaviourSettingsFragment
         addPreferencesFromResource(R.xml.preferences_behaviour);
 
         initializeNotificationTime();
+        initializeSmsAutomation();
     }
 
     @Override
@@ -106,4 +113,53 @@ public class BehaviourSettingsFragment
             .setThemeDark();
         timePicker.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);
     }
+
+    //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates
+    private void initializeSmsAutomation()
+    {
+        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+
+        Preference preference = findPreference(getString(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS));
+
+        if (preference == null) return;
+
+        Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    //Check the permission exists, if not request the permission from the user
+                    int result = ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.RECEIVE_SMS);
+
+                    if (settings.getBankSmsTrans()==true)
+                    {
+                        if (result == PackageManager.PERMISSION_GRANTED)
+                        {
+                            Toast.makeText(getActivity(), R.string.granted_receive_sms_access, Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            // request for the permission
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECEIVE_SMS}, 1);
+                        }
+                    }
+                    else
+                    {
+                        // remove the permissions
+                        Toast.makeText(getActivity(), R.string.revoke_receive_sms_access, Toast.LENGTH_LONG).show();
+                        settings.setBankSmsTrans(false);
+
+                    }
+                }
+
+                return true;
+            }
+        };
+        preference.setOnPreferenceClickListener(listener);
+    }
+
 }

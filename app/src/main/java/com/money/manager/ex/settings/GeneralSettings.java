@@ -83,4 +83,12 @@ public class GeneralSettings
         String lightTheme = Constants.THEME_LIGHT;
         return get(R.string.pref_theme, lightTheme);
     }
+
+    public Integer getBaseCurrencytId() {
+        InfoService service = new InfoService(getContext());
+        String value = service.getInfoValue(InfoKeys.BASECURRENCYID);
+
+        return NumericHelper.toInteger(value);
+    }
+
 }
