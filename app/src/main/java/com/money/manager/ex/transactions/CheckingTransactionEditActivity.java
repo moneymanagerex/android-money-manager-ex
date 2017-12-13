@@ -69,6 +69,8 @@ import icepick.State;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * Activity for editing Checking Account Transaction
  */
@@ -514,59 +516,77 @@ public class CheckingTransactionEditActivity
 
             if (intent.getData() != null) {
                 externalIntegration(intent);
-            }else{
+            }
+            else
+            {
+                try
+                {
+                    Bundle extras = intent.getExtras();
 
-                Bundle extras = intent.getExtras();
+                    if(extras != null) {
 
-                if(extras != null) {
+                        AccountRepository accountRepository = new AccountRepository(this);
 
-                    AccountRepository accountRepository = new AccountRepository(this);
+                        if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
+                        {
+                            mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
-                    if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
-                    {
-                        mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
-                        mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                            //convert the to amount from the both currency details
+                            CurrencyService currencyService = new CurrencyService(this);
+                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                                    mCommon.transactionEntity.getAmount(),
+                                    accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
 
-                        //convert the to amount from the both currency details
-                        CurrencyService currencyService = new CurrencyService(this);
-                        mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
-                                mCommon.transactionEntity.getAmount(),
-                                accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+                        }
 
-                    }
+                        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
+                        mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
 
-                    mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
-                    mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
+                        mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
+                        mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
-                    mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
-                    mCommon.transactionEntity.setDate(new MmxDate().toDate());
+                        if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
+                        {
+                            if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                    .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
+                                Core core = new Core(this);
+                                Payee payee = core.getLastPayeeUsed();
 
-                    if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
-                    {
-                        if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
-                            Core core = new Core(this);
-                            Payee payee = core.getLastPayeeUsed();
-
-                            if (payee != null) {
-                                mCommon.transactionEntity.setPayeeId(payee.getId());
-                                mCommon.payeeName = payee.getName();
+                                if (payee != null) {
+                                    mCommon.transactionEntity.setPayeeId(payee.getId());
+                                    mCommon.payeeName = payee.getName();
+                                    mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
-                        mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
-                    }
+                        else
+                        {
+                            mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                            mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+                            mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+                        }
 
-                    mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+                        //keeping the Category or Sub from the intent if payee name is empty or not defaulted
+                        if(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
+                        {
+                            String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
+                            String subCatID = extras.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
 
-                    mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
-                    extras = null;
+                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
+
+                            if (!subCatID.isEmpty()) { mCommon.transactionEntity.setSubcategoryId(parseInt(subCatID)); }
+                        }
+
+                        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+                        extras = null;
+                    }
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(this, "MMEX: Bank Transaction Process EXCEPTION --> " +  e, Toast.LENGTH_LONG).show();
                 }
             }
-
 
             // Select the default account if none set.
             Integer account = mCommon.transactionEntity.getAccountId();
