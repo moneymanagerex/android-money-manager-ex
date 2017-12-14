@@ -339,7 +339,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, strExtracted + "\n\n" + mCommon.transactionEntity.getNotes());
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES,  mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
 
                             if (validateData()) {
