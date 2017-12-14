@@ -209,8 +209,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         //get the trans amount
                         String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
 
-                        //if no ac no (like XXXX1234) and no amt, then this is not valid sms to do transaction
-                        if (!fromAccountDetails[6].isEmpty() && !transAmount.isEmpty()) {
+                        //if no amt, then this is not valid sms to do transaction
+                        if (!transAmount.isEmpty()) {
                             mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
 
                             String[] transPayee = extractTransPayee(msgBody);
@@ -465,7 +465,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "C.CURRENCY_SYMBOL, C.DECIMAL_POINT, C.GROUP_SEPARATOR " +
                                 "FROM ACCOUNTLIST_V1 A " +
                                 "INNER JOIN CURRENCYFORMATS_V1 C ON C.CURRENCYID = A.CURRENCYID " +
-                                "WHERE A.STATU='Open' AND A.ACCOUNTNUM LIKE '%" + reqMatch + "%' " +
+                                "WHERE A.STATUS='Open' AND A.ACCOUNTNUM LIKE '%" + reqMatch + "%' " +
                                 "ORDER BY A.ACCOUNTID " +
                                 "LIMIT 1";
 
