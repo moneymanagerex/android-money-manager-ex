@@ -517,7 +517,7 @@ public class CheckingTransactionEditActivity
             if (intent.getData() != null) {
                 externalIntegration(intent);
             }
-            else
+            else //start activity from SMS Receiver Transaction
             {
                 try
                 {
@@ -548,6 +548,8 @@ public class CheckingTransactionEditActivity
 
                         if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
                         {
+                            mCommon.payeeName="";
+
                             if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
                                 Core core = new Core(this);
@@ -568,7 +570,7 @@ public class CheckingTransactionEditActivity
                         }
 
                         //keeping the Category or Sub from the intent if payee name is empty or not defaulted
-                        if(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
+                        if(mCommon.payeeName.isEmpty())
                         {
                             String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
                             String subCatID = extras.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
@@ -576,6 +578,8 @@ public class CheckingTransactionEditActivity
                             if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
 
                             if (!subCatID.isEmpty()) { mCommon.transactionEntity.setSubcategoryId(parseInt(subCatID)); }
+
+                            mCommon.loadCategoryName();
                         }
 
                         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());

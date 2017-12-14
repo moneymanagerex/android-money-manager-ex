@@ -155,7 +155,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                             mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
                         }
+
                         mCommon.payeeName = "";
+
                     } else if (isWithdrawal == true) {
                         transType = "Withdrawal";
                         mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
@@ -337,7 +339,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, strExtracted + "\n\n" + mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
 
                             if (validateData()) {
@@ -427,8 +429,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         String reqMatch = "";
         String[] searchFor = {"((\\s)?(\\d+)?[X]+(\\d+)\\s)", "((\\s)?(\\d+)?[x]+(\\d+)\\s)",
-                "(.aytm)"};
-        int[] getGroup = {4, 4, 3, 1};
+                "(.ay.m\\s.allet)", "(.ay.m)"};
+        int[] getGroup = {4, 4, 1, 1};
         int mFound = 1;
         String[] accountDetails = new String[]{"", "", "", "", "", "", ""};
 
@@ -463,7 +465,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "C.CURRENCY_SYMBOL, C.DECIMAL_POINT, C.GROUP_SEPARATOR " +
                                 "FROM ACCOUNTLIST_V1 A " +
                                 "INNER JOIN CURRENCYFORMATS_V1 C ON C.CURRENCYID = A.CURRENCYID " +
-                                "WHERE A.ACCOUNTNUM LIKE '%" + reqMatch + "%' " +
+                                "WHERE A.STATU='Open' AND A.ACCOUNTNUM LIKE '%" + reqMatch + "%' " +
                                 "ORDER BY A.ACCOUNTID " +
                                 "LIMIT 1";
 
@@ -615,8 +617,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         {
             if(!payeeName.trim().isEmpty()) {
 
-                String sql =
-                        "SELECT PAYEEID, PAYEENAME, CATEGID, SUBCATEGID " +
+                String sql = "SELECT PAYEEID, PAYEENAME, CATEGID, SUBCATEGID " +
                                 "FROM PAYEE_V1 " +
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
@@ -732,6 +733,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         Core core = new Core(mContext);
+
+        if (mCommon.transactionEntity.getAccountId() == Constants.NOT_SET) {
+            //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         if (isTransfer) {
             if (mCommon.transactionEntity.getAccountToId() == Constants.NOT_SET) {
