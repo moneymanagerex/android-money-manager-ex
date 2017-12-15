@@ -40,6 +40,7 @@ android:
   # This fixes the required permissions for gradle build.
   before_install:
     - chmod +x gradlew
+    - yes | sdkmanager "platforms;android-27"
 
   install:
     # Check install section: http://docs.travis-ci.com/user/build-configuration/#install
