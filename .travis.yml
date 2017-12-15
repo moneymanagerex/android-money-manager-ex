@@ -34,6 +34,8 @@ android:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'intel-android-extra-license.+'
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'google-gdk-license-.+'
 
   # This fixes the required permissions for gradle build.
   before_install:
