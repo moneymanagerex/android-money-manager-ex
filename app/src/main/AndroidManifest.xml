@@ -32,6 +32,10 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
+    <!-- SMS Interface -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
@@ -109,6 +113,13 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_single_account" />
+        </receiver>
+
+        <receiver android:name=".notifications.SmsReceiverTransactions"
+            android:label="SMS Receiver">
+            <intent-filter >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
         </receiver>
 
         <!-- activities -->

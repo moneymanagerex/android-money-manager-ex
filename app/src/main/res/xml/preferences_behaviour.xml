@@ -56,6 +56,13 @@
 
     <SwitchPreferenceCompat
         android:icon="@null"
+        android:defaultValue="false"
+        android:key="@string/pref_sms_auto_trans"
+        android:summary="@string/summary_sms_auto_trans"
+        android:title="@string/title_sms_auto_trans" />
+
+    <SwitchPreferenceCompat
+        android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_show_tutorial"
         android:title="@string/title_show_tutorial"
