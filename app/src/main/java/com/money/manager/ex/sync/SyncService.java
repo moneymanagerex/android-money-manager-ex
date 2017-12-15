@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
@@ -60,7 +61,7 @@ import timber.log.Timber;
  * It displays the sync notification and invokes the cloud api.
  */
 public class SyncService
-    extends IntentService {
+        extends IntentService {
 
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
     private static final String NOTIFICATION_CHANNEL = "Sync_notification_channel";
@@ -69,7 +70,8 @@ public class SyncService
         super("com.money.manager.ex.sync.SyncService");
     }
 
-    @Inject RecentDatabasesProvider recentDatabasesProvider;
+    @Inject
+    RecentDatabasesProvider recentDatabasesProvider;
 
     private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
@@ -86,15 +88,26 @@ public class SyncService
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();
-            startForeground(1, new Notification());
+            startForeground(1, getNotificationOreo());
         }
+    }
+
+    private Notification getNotificationOreo() {
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getBaseContext(), NOTIFICATION_CHANNEL)
+                .setContentTitle(getBaseContext().getString(R.string.sync_notification_title))
+                .setAutoCancel(false)
+                .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
+                .setContentText(getBaseContext().getString(R.string.sync_downloading))
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setColor(getBaseContext().getResources().getColor(R.color.md_primary));
+        return notification.build();
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent != null
-            ? intent.getAction()
-            : "null";
+                ? intent.getAction()
+                : "null";
         Timber.d("Running sync service: %s", action);
         sendStartEvent();
 
@@ -212,26 +225,26 @@ public class SyncService
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
         compositeSubscription.add(
-            sync.downloadSingle(remoteFile, tempFile)
-                    // do not run on another thread as then the service will be destroyed.
+                sync.downloadSingle(remoteFile, tempFile)
+                        // do not run on another thread as then the service will be destroyed.
 //                    .subscribeOn(Schedulers.io())
-                    .subscribe(new SingleSubscriber<Void>() {
-                        @Override
-                        public void onSuccess(Void value) {
-                            //onDownloadHandler.onPostExecute(true);
-                            afterDownload(notificationManager, tempFile, localFile,
-                                    remoteFile, sync);
-                            sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
-                            sendStopEvent();
-                        }
+                        .subscribe(new SingleSubscriber<Void>() {
+                            @Override
+                            public void onSuccess(Void value) {
+                                //onDownloadHandler.onPostExecute(true);
+                                afterDownload(notificationManager, tempFile, localFile,
+                                        remoteFile, sync);
+                                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                                sendStopEvent();
+                            }
 
-                        @Override
-                        public void onError(Throwable error) {
-                            Timber.e(error, "async download");
-                            sendMessage(SyncServiceMessage.ERROR);
-                            sendStopEvent();
-                        }
-                    })
+                            @Override
+                            public void onError(Throwable error) {
+                                Timber.e(error, "async download");
+                                sendMessage(SyncServiceMessage.ERROR);
+                                sendStopEvent();
+                            }
+                        })
         );
     }
 
@@ -307,7 +320,7 @@ public class SyncService
         // are there local changes?
         boolean isLocalModified = false;
         DatabaseMetadata currentDb = this.recentDatabasesProvider
-            .get(localFile.getAbsolutePath());
+                .get(localFile.getAbsolutePath());
         // todo remove the null-check below after the default record is established.
         if (currentDb != null) {
             isLocalModified = currentDb.isLocalFileChanged;
