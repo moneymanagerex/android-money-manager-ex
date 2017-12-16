@@ -89,8 +89,8 @@ public class MainActivityTests {
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(activity, TutorialActivity.class));
 //        assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
 
-        TutorialActivity tutorialActivity = Robolectric.buildActivity(TutorialActivity.class)
-                .withIntent(expectedIntent)
+        TutorialActivity tutorialActivity = Robolectric
+                .buildActivity(TutorialActivity.class, expectedIntent)
                 .create().get();
 //        assertThat(tutorialActivity).isNotNull();
 
