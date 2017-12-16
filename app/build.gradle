@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 970
+        versionCode 971
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -198,7 +198,7 @@ android {
 
 dependencies {
 //    compile(name:'cloudrail-si-debug', ext:'aar')
-    compile(
+    implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
@@ -266,26 +266,26 @@ dependencies {
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.1'
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
     }
-    compile('com.mikepenz:aboutlibraries:5.9.7@aar') {
+    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
         transitive = true
     }
     // Parceler
-    compile 'org.parceler:parceler-api:1.1.9'
+    implementation 'org.parceler:parceler-api:1.1.9'
     annotationProcessor 'org.parceler:parceler:1.1.9'
     // Dagger 2
-    compile 'com.google.dagger:dagger:2.13'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+    implementation 'com.google.dagger:dagger:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.12'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
     // IcePick
-    compile 'frankiesardo:icepick:3.2.0'
+    implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
-    testCompile(
+    testImplementation(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
             'org.robolectric:robolectric:3.5.1',
@@ -304,13 +304,13 @@ dependencies {
             // "org.mockito:mockito-core:1.+"
             , 'io.selendroid:selendroid-client:0.17.0'
     )
-    testCompile('io.selendroid:selendroid-standalone:0.17.0') {
+    testImplementation('io.selendroid:selendroid-standalone:0.17.0') {
         exclude group: 'io.selendroid', module: 'selendroid-server'
         exclude group: 'io.selendroid', module: 'android-driver-app'
     }
 
     // UI testing
-    androidTestCompile(
+    androidTestImplementation(
             'com.android.support.test:runner:0.5',
             // Set this dependency to use JUnit 4 rules
             'com.android.support.test:rules:0.5',

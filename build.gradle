@@ -52,7 +52,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://maven.google.com" }               // google
-        //todo google()
+        google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.fabric.io/public' }          // fabric
@@ -63,7 +63,6 @@ allprojects {
 //            dirs 'libs'
 //        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
-        google()
     }
 
     /**
