@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.regex.*;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -35,6 +36,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsMessage;
@@ -95,6 +97,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         int baseAccountID, fromAccountID, toAccountID;
         String baseCurrencySymbl, fromAccCurrencySymbl, toAccCurrencySymbl;
         String baseAccountName, fromAccountName, toAccountName;
+
+        Boolean autoTransactionStatus = false;
 
         try {
             //------- if settings enabled the parse the sms and create trans ---------------
@@ -346,14 +350,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
 
+                            // validate and save the transaction
                             if (validateData()) {
                                 if (saveTransaction()) {
                                     Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
-                                } else {
-                                    startActivity(mContext, t_intent, null);
-                                    //showNotification(t_intent, strExtracted);
+                                    autoTransactionStatus = true;
                                 }
-                            } else {
+                            }
+
+                            //if transaction is not created automatically, then invoke notification or activity screen
+                            if(autoTransactionStatus == false){
                                 startActivity(mContext, t_intent, null);
                                 //showNotification(t_intent, strExtracted);
                             }
@@ -811,26 +817,27 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     private void showNotification(Intent intent, String notificationText) {
 
-        String NOTIFICATION_CHANNEL_ID = "android_mmex_1910"; // The id of the channel.
-
         int NOTIFICATION_ID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
+        String NOTIFICATION_CHANNEL_ID = "ammex_" + String.valueOf(NOTIFICATION_ID); // The id of the channel.
 
         intent.putExtra("NOTIFICATION_ID", NOTIFICATION_ID);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1910, intent, 0);
 
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotificationManager =  (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
         //Get an instance of NotificationManager//
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Transaction Failed")
+                .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Auto Transaction Failed")
                 .setContentText(notificationText)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)
+                .setNumber(1)
                 .setOngoing(true)
                 .setAutoCancel(true);
-
-        // Gets an instance of the NotificationManager service//
-        NotificationManager mNotificationManager =  (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
