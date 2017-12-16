@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.regex.*;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -35,6 +36,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsMessage;
@@ -96,6 +98,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String baseCurrencySymbl, fromAccCurrencySymbl, toAccCurrencySymbl;
         String baseAccountName, fromAccountName, toAccountName;
 
+        Boolean autoTransactionStatus = false;
+
         try {
             //------- if settings enabled the parse the sms and create trans ---------------
             if (behav_settings.getBankSmsTrans() == true) {
@@ -130,17 +134,20 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     if (isDeposit == true) {
                         if (isWithdrawal == true) {
+
                             transType = "Transfer";
                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
                             if (!transCategory[0].isEmpty()) {
                                 mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
                             }
+
                             if (!transCategory[1].isEmpty()) {
                                 mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
                             }
 
                             mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
+
                         } else {
                             transType = "Deposit";
                             String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
@@ -209,8 +216,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         //get the trans amount
                         String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
 
-                        //if no amt, then this is not valid sms to do transaction
-                        if (!transAmount.isEmpty()) {
+                        //If there is no account no in the msg & no amt, then this is not valid sms to do transaction
+                        if (!fromAccountDetails[6].isEmpty() && !transAmount.isEmpty()) {
                             mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
 
                             String[] transPayee = extractTransPayee(msgBody);
@@ -330,6 +337,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     + "Trans Type = " + transType + "\n";
 
                             // Set the content for a transaction);
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountToId()));
@@ -339,17 +347,19 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES,  mCommon.transactionEntity.getNotes());
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
 
+                            // validate and save the transaction
                             if (validateData()) {
                                 if (saveTransaction()) {
                                     Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
-                                } else {
-                                    startActivity(mContext, t_intent, null);
-                                    //showNotification(t_intent, strExtracted);
+                                    autoTransactionStatus = true;
                                 }
-                            } else {
+                            }
+
+                            //if transaction is not created automatically, then invoke notification or activity screen
+                            if(autoTransactionStatus == false){
                                 startActivity(mContext, t_intent, null);
                                 //showNotification(t_intent, strExtracted);
                             }
@@ -807,26 +817,27 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     private void showNotification(Intent intent, String notificationText) {
 
-        String NOTIFICATION_CHANNEL_ID = "android_mmex_1910"; // The id of the channel.
-
         int NOTIFICATION_ID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
+        String NOTIFICATION_CHANNEL_ID = "ammex_" + String.valueOf(NOTIFICATION_ID); // The id of the channel.
 
         intent.putExtra("NOTIFICATION_ID", NOTIFICATION_ID);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1910, intent, 0);
 
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotificationManager =  (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
         //Get an instance of NotificationManager//
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Transaction Failed")
+                .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Auto Transaction Failed")
                 .setContentText(notificationText)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)
+                .setNumber(1)
                 .setOngoing(true)
                 .setAutoCancel(true);
-
-        // Gets an instance of the NotificationManager service//
-        NotificationManager mNotificationManager =  (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }

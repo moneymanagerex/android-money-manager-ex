@@ -78,6 +78,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.IntentDataParameters;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
@@ -187,6 +188,7 @@ public class HomeFragment
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
+                intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "HomeFragment.java");
                 intent.setAction(Intent.ACTION_INSERT);
                 startActivity(intent);
             }
@@ -514,6 +516,8 @@ public class HomeFragment
         // open a new transaction screen to create a transaction to balance to the entered amount.
         Intent intent = new Intent(getContext(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "HomeFragment.java");
+
         // add balance and transaction type and payee
         IntentDataParameters params = new IntentDataParameters();
         params.accountName = account.getAccountName();

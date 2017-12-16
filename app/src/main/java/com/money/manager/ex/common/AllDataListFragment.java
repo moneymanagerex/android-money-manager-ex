@@ -815,6 +815,10 @@ public class AllDataListFragment
     private void startEditAccountTransactionActivity(Integer transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
+
+        //Set the source
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "AllDataListFragment.java");
+
         // check transId not null
         if (transId != null) {
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
@@ -949,6 +953,7 @@ public class AllDataListFragment
             intents[i] = new Intent(getActivity(), CheckingTransactionEditActivity.class);
             intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, ids[i]);
             intents[i].setAction(Intent.ACTION_PASTE);
+            intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "AllDataListFragment.java");
         }
         getActivity().startActivities(intents);
     }

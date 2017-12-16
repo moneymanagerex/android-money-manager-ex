@@ -523,8 +523,10 @@ public class CheckingTransactionEditActivity
                 {
                     Bundle extras = intent.getExtras();
 
-                    if(extras != null) {
-
+                    if(extras != null &&
+                            extras.getString(EditTransactionActivityConstants.KEY_TRANS_SOURCE)
+                                    .contentEquals("SmsReceiverTransactions.java"))
+                    {
                         AccountRepository accountRepository = new AccountRepository(this);
 
                         if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
