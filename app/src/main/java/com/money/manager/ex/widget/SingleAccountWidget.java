@@ -38,6 +38,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
 import info.javaperformance.money.Money;
 import timber.log.Timber;
@@ -212,7 +213,7 @@ public class SingleAccountWidget
     private void initializeNewTransactionCommand(Context context, RemoteViews views) {
         Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
-
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SingelAccountWidget.java");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);

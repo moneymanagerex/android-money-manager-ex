@@ -130,17 +130,20 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     if (isDeposit == true) {
                         if (isWithdrawal == true) {
+
                             transType = "Transfer";
                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
                             if (!transCategory[0].isEmpty()) {
                                 mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
                             }
+
                             if (!transCategory[1].isEmpty()) {
                                 mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
                             }
 
                             mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
+
                         } else {
                             transType = "Deposit";
                             String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
@@ -209,8 +212,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         //get the trans amount
                         String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
 
-                        //if no amt, then this is not valid sms to do transaction
-                        if (!transAmount.isEmpty()) {
+                        //If there is no account no in the msg & no amt, then this is not valid sms to do transaction
+                        if (!fromAccountDetails[6].isEmpty() && !transAmount.isEmpty()) {
                             mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
 
                             String[] transPayee = extractTransPayee(msgBody);
@@ -330,6 +333,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     + "Trans Type = " + transType + "\n";
 
                             // Set the content for a transaction);
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountToId()));
@@ -339,7 +343,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES,  mCommon.transactionEntity.getNotes());
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
 
                             if (validateData()) {

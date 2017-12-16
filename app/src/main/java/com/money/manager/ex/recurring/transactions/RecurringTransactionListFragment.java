@@ -438,6 +438,7 @@ public class RecurringTransactionListFragment
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, recurringTransactionId);
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
         // start for insert new transaction
         startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
     }
