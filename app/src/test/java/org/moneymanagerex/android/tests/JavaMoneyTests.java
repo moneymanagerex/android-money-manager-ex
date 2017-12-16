@@ -25,9 +25,7 @@ import com.money.manager.ex.domainmodel.Currency;
 
 import org.javamoney.moneta.FastMoney;
 import org.javamoney.moneta.Money;
-import org.javamoney.moneta.convert.ConversionOperators;
 import org.javamoney.moneta.function.MonetaryOperators;
-import org.javamoney.moneta.function.MonetaryUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +44,6 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
-import javax.money.MonetaryQuery;
 import javax.money.MonetaryRounding;
 import javax.money.RoundingQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
