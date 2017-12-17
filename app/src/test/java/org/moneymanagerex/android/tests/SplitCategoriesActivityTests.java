@@ -35,6 +35,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.parceler.Parcels;
 import org.robolectric.Robolectric;
@@ -51,7 +52,7 @@ import info.javaperformance.money.MoneyFactory;
  * Unit tests for Split Categories activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SplitCategoriesActivityTests {
 
     private ActivityController<SplitCategoriesActivity> controller;

@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -31,7 +32,7 @@ import org.robolectric.annotation.Config;
  * Test creation of records in the database.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class DataGenerationTests {
     @Before
     public void setUp() {

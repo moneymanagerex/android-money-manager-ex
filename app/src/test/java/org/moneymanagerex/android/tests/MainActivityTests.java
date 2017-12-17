@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -47,7 +48,7 @@ import static junit.framework.Assert.assertNotNull;
  * Test the MainActivity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MainActivityTests {
 
     private ActivityController<MainActivity> controller;

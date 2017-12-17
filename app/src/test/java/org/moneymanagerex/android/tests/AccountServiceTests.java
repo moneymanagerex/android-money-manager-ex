@@ -26,20 +26,16 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AccountService;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -78,7 +74,7 @@ public class AccountServiceTests {
         testObject = null;
     }
 
-    @Test
+    //@Test
     public void instantiation() {
         assertThat(testObject, notNullValue());
         //assertNotNull(testObject);
