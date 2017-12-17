@@ -41,3 +41,6 @@ scripts/deployment/node_modules
 
 # Build results
 ammx-*.apk
+
+# What is this?! Something from Robolectric.
+session_analytics_to_send
