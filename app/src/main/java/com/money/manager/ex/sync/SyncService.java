@@ -97,7 +97,7 @@ public class SyncService
                 .setContentTitle(getBaseContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
                 .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
-                .setContentText(getBaseContext().getString(R.string.sync_downloading))
+                .setContentText(getBaseContext().getString(R.string.synchronization))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(getBaseContext().getResources().getColor(R.color.md_primary));
         return notification.build();
