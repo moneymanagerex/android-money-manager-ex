@@ -180,8 +180,16 @@ public class MmexApplication
         initializeDependencyInjection();
 
         // Job Manager initialization.
+        initializeJobManager();
+    }
+
+    /**
+     * Initializes job manager.
+     * Implemented as a separate method so that it can be overridden in unit tests.
+     */
+    public void initializeJobManager() {
         JobManager.create(this)
-            .addJobCreator(new SyncJobCreator());
+                .addJobCreator(new SyncJobCreator());
     }
 
     /**

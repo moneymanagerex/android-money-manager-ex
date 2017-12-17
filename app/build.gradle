@@ -190,8 +190,12 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-        unitTests.all {
-            systemProperty 'robolectric.offline', 'true'
+//        unitTests.all {
+//            systemProperty 'robolectric.offline', 'true'
+//        }
+        // http://robolectric.org/getting-started/
+        unitTests {
+            includeAndroidResources = true
         }
     }
 }
@@ -286,9 +290,12 @@ dependencies {
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
     testImplementation(
-            'commons-io:commons-io:2.5',
+            // Robolectric
             'junit:junit:4.12',
+            'org.assertj:assertj-core:3.8.0',
             'org.robolectric:robolectric:3.5.1',
+
+            'commons-io:commons-io:2.5',
             'org.robolectric:shadows-support-v4:3.3.2',
             'org.robolectric:shadows-multidex:3.5.1',
             'org.robolectric:shadows-httpclient:3.5.1',
