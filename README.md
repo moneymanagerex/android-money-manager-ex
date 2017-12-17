@@ -4,7 +4,7 @@ See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.o
 
 Dev [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=dev)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
 
-Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=dev)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
+Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=master)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
 
 #### Basic information
 
