@@ -34,6 +34,7 @@ import com.money.manager.ex.view.RobotoTextView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
@@ -48,6 +49,10 @@ import java.util.ArrayList;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+
 /**
  * Unit tests for Split Categories activity.
  */
@@ -58,12 +63,12 @@ public class SplitCategoriesActivityTests {
     private ActivityController<SplitCategoriesActivity> controller;
 //    private SplitCategoriesActivity activity;
 
-    //@BeforeClass
+    @BeforeClass
     public static void suiteSetup() {
         // can't initialize content provider here as the static context does not have an application.
     }
 
-    //@Before
+    @Before
     public void setUp() {
         // set up the content provider
         UnitTestHelper.setupContentProvider();
@@ -72,19 +77,16 @@ public class SplitCategoriesActivityTests {
         this.controller = UnitTestHelper.getController(SplitCategoriesActivity.class);
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.controller.destroy();
-
-        // destroy db helper
-        UnitTestHelper.teardownDatabase();
     }
 
-//    @Test
-//    public void activityRunsStandalone() {
-//        SplitCategoriesActivity activity = UnitTestHelper.getActivity(this.controller);
-//        assertThat(activity).isNotNull();
-//    }
+    @Test
+    public void activityRunsStandalone() {
+        SplitCategoriesActivity activity = UnitTestHelper.getActivity(this.controller);
+        assertThat(activity, notNullValue());
+    }
 
     /**
      * Confirm that the displayed amount after entry contains the correctly formatted currency,

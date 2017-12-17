@@ -39,6 +39,10 @@ import org.robolectric.annotation.Config;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+
 /**
  * Unit tests for asset allocation service.
  */
@@ -48,22 +52,21 @@ public class AssetAllocationTests {
 
     private AssetAllocationService testObject;
 
-    //@Before
+    @Before
     public void setup() {
         this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
         UnitTestHelper.setupContentProvider();
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.testObject = null;
-        UnitTestHelper.teardownDatabase();
     }
 
-//    @Test
-//    public void testInstantiation() {
-//        assertThat(testObject).isNotNull();
-//    }
+    @Test
+    public void testInstantiation() {
+        assertThat(testObject, notNullValue());
+    }
 
     //@Test
     public void testDataLayer() {

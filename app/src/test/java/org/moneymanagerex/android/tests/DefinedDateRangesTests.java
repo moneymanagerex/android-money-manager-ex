@@ -63,7 +63,7 @@ public class DefinedDateRangesTests {
         return this.context;
     }
 
-    //@Test
+    @Test
     public void testInstantiation() {
         DefinedDateRanges ranges = create();
 

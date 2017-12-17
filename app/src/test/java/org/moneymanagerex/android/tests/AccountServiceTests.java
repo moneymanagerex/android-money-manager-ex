@@ -30,6 +30,7 @@ import com.money.manager.ex.servicelayer.AccountService;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
@@ -65,19 +66,15 @@ public class AccountServiceTests {
 
     @After
     public void tearDown() {
-        // Reset database instance between tests.
-        UnitTestHelper.teardownDatabase();
-
         // Destroy the activity controller.
 //        this.controller.destroy();
 
         testObject = null;
     }
 
-    //@Test
+    @Test
     public void instantiation() {
         assertThat(testObject, notNullValue());
-        //assertNotNull(testObject);
     }
 
     //@Test

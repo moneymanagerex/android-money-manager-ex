@@ -16,6 +16,7 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -42,7 +43,10 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.robolectric.Shadows.shadowOf;
+
 
 /**
  * Test the MainActivity.
@@ -54,7 +58,7 @@ public class MainActivityTests {
     private ActivityController<MainActivity> controller;
     private MainActivity activity;
 
-    //@Before
+    @Before
     public void setUp() {
         UnitTestHelper.setupContentProvider();
 
@@ -62,11 +66,16 @@ public class MainActivityTests {
         this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.controller.destroy();
+    }
 
-        UnitTestHelper.teardownDatabase();
+    @Test
+    public void testInstantiation() {
+        Activity mainActivity = Robolectric.setupActivity(MainActivity.class);
+
+        assertThat(mainActivity, notNullValue());
     }
 
     /**
@@ -82,10 +91,10 @@ public class MainActivityTests {
         Intent expectedIntent;
 
         homeFragment = UnitTestHelper.getFragment(activity, HomeFragment.class.getSimpleName());
-//        assertThat(homeFragment).isNotNull();
+        assertThat(homeFragment, notNullValue());
 
         // Confirm Tutorial is shown.
-        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(activity);
         expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(activity, TutorialActivity.class));
 //        assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
@@ -93,11 +102,11 @@ public class MainActivityTests {
         TutorialActivity tutorialActivity = Robolectric
                 .buildActivity(TutorialActivity.class, expectedIntent)
                 .create().get();
-//        assertThat(tutorialActivity).isNotNull();
+        assertThat(tutorialActivity, notNullValue());
 
         // Close tutorial
         View view = tutorialActivity.findViewById(R.id.skipTextView);
-        assertNotNull("Tutorial close not found", view);
+        assertThat(view, notNullValue()); // "Tutorial close not found"
         view.performClick();
 
         // Home Fragment is set-up.
@@ -105,13 +114,13 @@ public class MainActivityTests {
 
         // Click Add New Account button.
         view = homeFragment.getView().findViewById(R.id.buttonAddAccount);
-        assertNotNull("Add Account button not found", view);
+        assertThat(view, notNullValue()); // "Add Account button not found"
         view.performClick();
 
         // Add Account opens up.
         expectedIntent = new Intent(activity, AccountEditActivity.class);
         expectedIntent.setAction(Intent.ACTION_INSERT);
-//        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
+        assertThat(shadowOf(activity).getNextStartedActivity(), equalTo(expectedIntent));
     }
 
     //@Test

@@ -111,10 +111,11 @@ public class UnitTestHelper {
 
     /**
      * Reset database helper instance. Use after every test on @After.
+     * This may not be necessary any more as open helper is not a singleton.
      */
-    public static void teardownDatabase() {
-        resetSingleton(MmxOpenHelper.class, "mInstance");
-    }
+//    public static void teardownDatabase() {
+//        resetSingleton(MmxOpenHelper.class, "mInstance");
+//    }
 
     public static void setupLog() {
         ShadowLog.stream = System.out;

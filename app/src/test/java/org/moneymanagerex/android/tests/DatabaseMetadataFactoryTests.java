@@ -30,6 +30,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+
 /**
  * Test the factory
  */
@@ -40,21 +44,21 @@ public class DatabaseMetadataFactoryTests {
 
     private DatabaseMetadataFactory _testObject;
 
-    //@Before
+    @Before
     public void setUp() throws Exception {
         _testObject = new DatabaseMetadataFactory(RuntimeEnvironment.application);
     }
 
-    //@After
+    @After
     public void tearDown() throws Exception {
         _testObject = null;
     }
 
-//    @Test
-//    public void createDefaultItem() {
-//        DatabaseMetadata empty = _testObject.createDefaultEntry();
-//
-//        assertThat(empty).isNotNull();
-//    }
+    @Test
+    public void createDefaultItem() {
+        DatabaseMetadata empty = _testObject.createDefaultEntry();
+
+        assertThat(empty, notNullValue());
+    }
 
 }
