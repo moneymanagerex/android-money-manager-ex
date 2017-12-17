@@ -392,10 +392,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             Cursor currencyCursor = db.query("CURRENCYFORMATS_V1", reqCurrFields, "CURRENCYID = ?",
                     new String[] { String.valueOf(currencyID)}, null, null, null );
 
-            if(currencyCursor.getCount() > 0) {
-                currencyCursor.moveToFirst();
+            if(currencyCursor.moveToFirst()) {
                 currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndex("CURRENCY_SYMBOL"));
             }
+
+            currencyCursor.close();
         }
         catch(Exception e)
         {
@@ -481,9 +482,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 Cursor accountCursor = db.rawQuery(sql, null);
 
-                if(accountCursor.getCount() > 0)
+                if(accountCursor.moveToFirst())
                 {
-                    accountCursor.moveToFirst();
                     accountDetails = new String[] {
                             accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTID")),
                             accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTNAME")),
@@ -494,6 +494,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             reqMatch
                     };
                 }
+
+                accountCursor.close();
             }
 
         }
@@ -634,9 +636,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 Cursor payeeCursor = db.rawQuery(sql, null);
 
-                if(payeeCursor.getCount() > 0)
+                if(payeeCursor.moveToFirst())
                 {
-                    payeeCursor.moveToFirst();
                     payeeDetails = new String[] {
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEEID")),
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEENAME")),
@@ -644,6 +645,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             payeeCursor.getString(payeeCursor.getColumnIndex("SUBCATEGID"))
                     };
                 }
+
+                payeeCursor.close();
             }
         }
         catch(Exception e)
@@ -671,11 +674,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 Cursor txnCursor = db.rawQuery(sql, null);
 
-                if(txnCursor.getCount() > 0)
+                if(txnCursor.moveToFirst())
                 {
-                    txnCursor.moveToFirst();
                     txnId = parseInt(txnCursor.getString(txnCursor.getColumnIndex("TRANSID")));
                 }
+
+                txnCursor.close();
             }
         }
         catch(Exception e)
@@ -703,9 +707,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 Cursor cCursor = db.rawQuery(sql, null);
 
-                if(cCursor.getCount() > 0)
+                if(cCursor.moveToFirst())
                 {
-                    cCursor.moveToFirst();
                     cTran = new String[]{
                             cCursor.getString(cCursor.getColumnIndex("CATEGID")),
                             cCursor.getString(cCursor.getColumnIndex("SUBCATEGID"))
@@ -720,15 +723,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     cCursor = db.rawQuery(sql, null);
 
-                    if(cCursor.getCount() > 0)
+                    if(cCursor.moveToFirst())
                     {
-                        cCursor.moveToFirst();
                         cTran = new String[]{
                                 cCursor.getString(cCursor.getColumnIndex("CATEGID")),
                                 "-1"
                         };
                     }
                 }
+
+                cCursor.close();
             }
         }
         catch(Exception e)
