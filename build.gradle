@@ -37,6 +37,7 @@ ext {
     supportDependencies = [
             core             :      "com.android.support:support-core-utils:${supportLibrary}",
             support          :      "com.android.support:support-v4:${supportLibrary}",
+            support_compat   :      "com.android.support:support-compat:${supportLibrary}",
             appCompat        :      "com.android.support:appcompat-v7:${supportLibrary}",
             cardView         :      "com.android.support:cardview-v7:${supportLibrary}",
             design           :      "com.android.support:design:${supportLibrary}",

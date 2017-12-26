@@ -67,8 +67,10 @@ import timber.log.Timber;
 public class SyncService
         extends JobIntentService {
 
+    public static final int SYNC_JOB_ID = 1000;
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
     private static final String NOTIFICATION_CHANNEL = "Sync_notification_channel";
+
 
 //    public SyncService() {
 //        super("com.money.manager.ex.sync.SyncService");
@@ -194,7 +196,13 @@ public class SyncService
         super.onDestroy();
     }
 
-    // private
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
+    }
+
+    /*
+        Private
+    */
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel() {

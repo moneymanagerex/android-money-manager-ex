@@ -46,16 +46,12 @@ public class SyncBroadcastReceiver
 
 		// Trigger synchronization
 
-		Intent service = new Intent(context, SyncService.class);
-		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
+		Intent myIntent = new Intent(context, SyncService.class);
+		myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
-		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
+		myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
+		myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            context.startService(service);
-        } else {
-            context.startForegroundService(service);
-        }
+		SyncService.enqueueWork(context, myIntent);
 	}
 }

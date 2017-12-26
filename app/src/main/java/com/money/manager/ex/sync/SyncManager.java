@@ -22,6 +22,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.Service;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -284,11 +285,7 @@ public class SyncManager {
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
                 localFile, remoteFile, messenger);
         // start service
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            getContext().startService(syncServiceIntent);
-        } else {
-            getContext().startForegroundService(syncServiceIntent);
-        }
+        SyncService.enqueueWork(getContext(), syncServiceIntent);
 
         // Reset any other scheduled uploads as the current operation will modify the files.
         abortScheduledUpload();
@@ -480,18 +477,13 @@ public class SyncManager {
         String remoteFile = db.remotePath;
 
         // trigger upload
-        Intent service = new Intent(getContext(), SyncService.class);
-        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
-        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+        Intent intent = new Intent(getContext(), SyncService.class);
+        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
 
         // start service
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            getContext().startService(service);
-        } else {
-            getContext().startForegroundService(service);
-        }
-
+        SyncService.enqueueWork(getContext(), intent);
     }
 
     /**

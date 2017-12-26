@@ -18,8 +18,11 @@
 package com.money.manager.ex.notifications;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.JobIntentService;
+
+import com.evernote.android.job.Job;
 
 /**
  * Background service that triggers notifications about recurring transactions.
@@ -29,6 +32,8 @@ import android.support.v4.app.JobIntentService;
  */
 public class RecurringTransactionIntentService
 	extends JobIntentService {
+
+    public static int JOB_ID = 1001;
 
 //	public RecurringTransactionIntentService() {
 //		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");
@@ -40,4 +45,8 @@ public class RecurringTransactionIntentService
 		RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(getApplicationContext());
 		notifications.notifyRepeatingTransaction();
 	}
+
+	public static void enqueueWork(Context context, Intent intent) {
+	    enqueueWork(context, RecurringTransactionIntentService.class, JOB_ID, intent);
+    }
 }

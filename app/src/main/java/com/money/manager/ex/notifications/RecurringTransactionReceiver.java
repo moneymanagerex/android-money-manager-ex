@@ -35,13 +35,8 @@ public class RecurringTransactionReceiver
                 .getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true);
         if (!notify) return;
 
-		Intent service = new Intent(context, RecurringTransactionIntentService.class);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            context.startService(service);
-        } else {
-            context.startForegroundService(service);
-        }
-
+		Intent myIntent = new Intent(context, RecurringTransactionIntentService.class);
+        RecurringTransactionIntentService.enqueueWork(context, myIntent);
     }
 
 }
