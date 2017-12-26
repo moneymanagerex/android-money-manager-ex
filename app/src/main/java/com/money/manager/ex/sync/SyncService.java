@@ -70,8 +70,6 @@ public class SyncService
 
     public static final int SYNC_JOB_ID = 1000;
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
-    private static final String NOTIFICATION_CHANNEL = "Sync_notification_channel";
-
 
 //    public SyncService() {
 //        super("com.money.manager.ex.sync.SyncService");
@@ -93,22 +91,6 @@ public class SyncService
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
         MmexApplication.getApp().iocComponent.inject(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationUtils.createNotificationChannel(getBaseContext(), NOTIFICATION_CHANNEL);
-            startForeground(1, getNotificationOreo());
-        }
-    }
-
-    private Notification getNotificationOreo() {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getBaseContext(), NOTIFICATION_CHANNEL)
-                .setContentTitle(getBaseContext().getString(R.string.sync_notification_title))
-                .setAutoCancel(false)
-                .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
-                .setContentText(getBaseContext().getString(R.string.synchronization))
-                .setSmallIcon(R.drawable.ic_stat_notification)
-                .setColor(getBaseContext().getResources().getColor(R.color.md_primary));
-        return notification.build();
     }
 
     @Override

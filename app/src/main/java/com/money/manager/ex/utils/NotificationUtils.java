@@ -53,6 +53,8 @@ public class NotificationUtils {
 
         channel.setDescription(NOTIFICATION_CHANNEL_NAME);
 
+        //channel.setSound();
+
         channel.enableLights(true);
         channel.setLightColor(Color.RED);
         channel.enableVibration(true);
