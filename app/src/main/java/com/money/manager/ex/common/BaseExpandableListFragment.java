@@ -41,6 +41,8 @@ import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.PreferenceConstants;
 
+import timber.log.Timber;
+
 public abstract class BaseExpandableListFragment
         extends ExpandableListFragment {
 
@@ -59,12 +61,11 @@ public abstract class BaseExpandableListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // set theme
-//        Core core = new Core(getActivity().getApplicationContext());
         UIHelper uiHelper = new UIHelper(getActivity().getApplicationContext());
         try {
             getActivity().setTheme(uiHelper.getThemeId());
         } catch (Exception e) {
-            Log.e(BaseExpandableListFragment.class.getSimpleName(), e.getMessage());
+            Timber.e(e);
         }
         super.onCreate(savedInstanceState);
     }

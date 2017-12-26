@@ -590,7 +590,9 @@ public class CheckingTransactionEditActivity
                 }
                 catch(Exception e)
                 {
-                    Toast.makeText(this, "MMEX: Bank Transaction Process EXCEPTION --> " +  e, Toast.LENGTH_LONG).show();
+                    Timber.e(e);
+                    Toast.makeText(this, "MMEX: Bank Transaction Process EXCEPTION --> "
+                            +  e, Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -111,7 +111,7 @@ public class TextFileExport {
             writer.write(content);
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return false;
         }
 

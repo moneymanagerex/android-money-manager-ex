@@ -34,6 +34,8 @@ import com.money.manager.ex.core.MyWebChromeClient;
 
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 /**
  * Used for PayPal online donations handling.
  */
@@ -166,6 +168,7 @@ public class WebViewActivity
             try {
                 postData = postDataString.getBytes("BASE64");
             } catch (Exception e) {
+                Timber.w(e);
                 postData = postDataString.getBytes();
             }
 
