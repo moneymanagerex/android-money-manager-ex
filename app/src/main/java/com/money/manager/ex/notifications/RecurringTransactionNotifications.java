@@ -71,28 +71,15 @@ public class RecurringTransactionNotifications {
         if (cursor == null) return;
 
         if (cursor.getCount() > 0) {
-            showNotification(cursor);
+            SyncNotificationModel model = getNotificationContent(cursor);
+            showNotification(model);
         }
         cursor.close();
     }
 
-    private void showNotification(Cursor cursor) {
-        CurrencyService currencyService = new CurrencyService(mContext);
+    private void showNotification(SyncNotificationModel model) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
-        while (cursor.moveToNext()) {
-            String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
-            // check if payee name is null, then put toAccountName
-            if (TextUtils.isEmpty(payeeName))
-                payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
-            // compose text
-            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
-                    " " + payeeName +
-                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
-                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
-            // add line
-            inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
-        }
+        inboxStyle.addLine(model.inboxLine);
 
         NotificationManager notificationManager = (NotificationManager) getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -124,7 +111,7 @@ public class RecurringTransactionNotifications {
                     .setSmallIcon(R.drawable.ic_stat_notification)
                     .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
                     .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                    .setNumber(cursor.getCount())
+                    .setNumber(model.number)
                     .setStyle(inboxStyle)
                     .setColor(mContext.getResources().getColor(R.color.md_primary))
 //                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
@@ -137,6 +124,30 @@ public class RecurringTransactionNotifications {
         } catch (Exception e) {
             Timber.e(e, "showing notification for recurring transaction");
         }
+    }
+
+    private SyncNotificationModel getNotificationContent(Cursor cursor) {
+        SyncNotificationModel result = new SyncNotificationModel();
+
+        result.number = cursor.getCount();
+
+        CurrencyService currencyService = new CurrencyService(mContext);
+
+        while (cursor.moveToNext()) {
+            String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+            // check if payee name is null, then put toAccountName
+            if (TextUtils.isEmpty(payeeName))
+                payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
+            // compose text
+            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+                    " " + payeeName +
+                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
+
+            result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
+        }
+
+        return result;
     }
 
     private Context getContext() {
