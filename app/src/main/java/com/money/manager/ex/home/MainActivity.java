@@ -207,7 +207,8 @@ public class MainActivity
         handleDeviceRotation();
 
         // Close any existing notifications.
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                .cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
         showCurrentDatabasePath(this);
 

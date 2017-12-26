@@ -30,6 +30,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.utils.NotificationUtils;
 
 /**
  * Creates notifications for sync messages.
@@ -50,7 +51,10 @@ public class SyncNotificationFactory {
      * @return notification
      */
     public Notification getNotificationForDownload() {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+        String channel_id = NotificationUtils.CHANNEL_ID_DOWNLOADING;
+        NotificationUtils.createNotificationChannel(getContext(), channel_id);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), channel_id)
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
                 .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
@@ -59,13 +63,6 @@ public class SyncNotificationFactory {
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(getContext().getResources().getColor(R.color.md_primary));
 
-        // only for previous version!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
-            notification.setContentIntent(pendingIntent);
-        }
-
         return notification.build();
     }
 
@@ -73,13 +70,16 @@ public class SyncNotificationFactory {
      * Get notification builder for download complete
      */
     public Notification getNotificationDownloadComplete(PendingIntent pendingIntent) {
+        String channel_id = "Mmex Download Complete";
+        NotificationUtils.createNotificationChannel(getContext(), channel_id);
+
         // compose notification big view
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getContext().getString(R.string.sync_notification_title));
         inboxStyle.addLine(getContext().getString(R.string.dropbox_file_ready_for_use));
         inboxStyle.addLine(getContext().getString(R.string.dropbox_open_database_downloaded));
 
-        return new NotificationCompat.Builder(getContext())
+        return new NotificationCompat.Builder(getContext(), channel_id)
             .addAction(R.drawable.ic_action_folder_open_dark, getContext().getString(R.string.open_database), pendingIntent)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
@@ -97,7 +97,10 @@ public class SyncNotificationFactory {
      * Get the builder of a notification for upload
      */
     public Notification getNotificationUploading() {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+        String channel_id = NotificationUtils.CHANNEL_ID_UPLOADING;
+        NotificationUtils.createNotificationChannel(getContext(), channel_id);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), channel_id)
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
 //                .setContentInfo(getContext().getString(R.string.sync_uploading))
@@ -105,13 +108,6 @@ public class SyncNotificationFactory {
                 //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(getContext().getResources().getColor(R.color.md_primary));
-
-        // only for previous version!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
-            notification.setContentIntent(pendingIntent);
-        }
 
         return notification.build();
     }
@@ -125,7 +121,10 @@ public class SyncNotificationFactory {
         inboxStyle.setBigContentTitle(getContext().getString(R.string.sync_notification_title));
         inboxStyle.addLine(getContext().getString(R.string.upload_file_complete));
 
-        Notification notification = new NotificationCompat.Builder(getContext())
+        String channel_id = NotificationUtils.CHANNEL_ID_UPLOAD_COMPLETE;
+        NotificationUtils.createNotificationChannel(getContext(), channel_id);
+
+        Notification notification = new NotificationCompat.Builder(getContext(), channel_id)
                 //.addAction(R.drawable.ic_action_folder_open_dark, context.getString(R.string.open_database), pendingIntent)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -162,7 +161,10 @@ public class SyncNotificationFactory {
 //                .color(uiHelper.getSecondaryColor())
 //                .sizeDp(Constants.NotificationBigIconSize);
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+        String channel_id = NotificationUtils.CHANNEL_ID_CONFLICT;
+        NotificationUtils.createNotificationChannel(getContext(), channel_id);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), channel_id)
             .setContentTitle(getContext().getString(R.string.sync_notification_title))
             .setAutoCancel(false)
             .setSubText(getContext().getString(R.string.sync_conflict))

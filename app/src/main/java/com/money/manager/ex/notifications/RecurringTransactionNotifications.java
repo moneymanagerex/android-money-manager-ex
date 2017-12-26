@@ -30,12 +30,14 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
+import com.money.manager.ex.utils.NotificationUtils;
 
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
 public class RecurringTransactionNotifications {
 
+    public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
 
     public RecurringTransactionNotifications(Context context) {
@@ -92,7 +94,8 @@ public class RecurringTransactionNotifications {
             inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
         }
 
-        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         // create pending intent
         Intent intent = new Intent(getContext(), RecurringTransactionListActivity.class);
@@ -110,7 +113,9 @@ public class RecurringTransactionNotifications {
 
         // create notification
         try {
-            Notification notification = new NotificationCompat.Builder(getContext())
+            NotificationUtils.createNotificationChannel(getContext(), CHANNEL_ID);
+
+            Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(mContext.getString(R.string.application_name))
@@ -125,6 +130,7 @@ public class RecurringTransactionNotifications {
 //                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
 //                    .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
                     .build();
+
             // notify
             notificationManager.cancel(ID_NOTIFICATION);
             notificationManager.notify(ID_NOTIFICATION, notification);

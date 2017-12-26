@@ -43,6 +43,7 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.money.manager.ex.utils.NotificationUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -88,12 +89,13 @@ public class SyncService
         super.onCreate();
 
         compositeSubscription = new CompositeSubscription();
-        mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         MmexApplication.getApp().iocComponent.inject(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
+            NotificationUtils.createNotificationChannel(getBaseContext(), NOTIFICATION_CHANNEL);
             startForeground(1, getNotificationOreo());
         }
     }
@@ -203,21 +205,6 @@ public class SyncService
     /*
         Private
     */
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        Context context = getBaseContext();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        CharSequence name = context.getString(R.string.app_name);
-        String description = "Sync service notification";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, name, importance);
-        channel.setDescription(description);
-
-        notificationManager.createNotificationChannel(channel);
-    }
 
     private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
         final SyncManager sync = new SyncManager(getApplicationContext());
