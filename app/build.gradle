@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 973
+        versionCode 974
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -207,7 +207,7 @@ dependencies {
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.0'
+            , 'com.cloudrail:cloudrail-si-android:2.21.4'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -280,8 +280,8 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.9'
     annotationProcessor 'org.parceler:parceler:1.1.9'
     // Dagger 2
-    implementation 'com.google.dagger:dagger:2.13'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.12'
+    implementation 'com.google.dagger:dagger:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     // ButterKnife
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
@@ -293,12 +293,12 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.8.0',
-            'org.robolectric:robolectric:3.5.1',
+            'org.robolectric:robolectric:3.6.1',
 
             'commons-io:commons-io:2.5',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.5.1',
-            'org.robolectric:shadows-httpclient:3.5.1',
+            'org.robolectric:shadows-multidex:3.6.1',
+            'org.robolectric:shadows-httpclient:3.6.1',
             //'com.squareup.assertj:assertj-android:1.1.1',
             //'org.assertj:assertj-core:3.8.0',
             // Matchers

@@ -291,10 +291,6 @@ public class SyncManager {
         abortScheduledUpload();
 
         // The messages from the service are received via messenger.
-
-        // todo use JobManager
-//        scheduledJobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
-//                .setExecutionWindow()
     }
 
     /**
