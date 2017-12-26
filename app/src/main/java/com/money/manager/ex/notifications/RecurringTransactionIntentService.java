@@ -19,19 +19,23 @@ package com.money.manager.ex.notifications;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.v4.app.JobIntentService;
 
 /**
  * Background service that triggers notifications about recurring transactions.
+ *
+ * Updated to JobIntentService as per
+ * https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f
  */
 public class RecurringTransactionIntentService
-	extends IntentService {
+	extends JobIntentService {
 
-	public RecurringTransactionIntentService() {
-		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");
-	}
+//	public RecurringTransactionIntentService() {
+//		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");
+//	}
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
+	protected void onHandleWork(Intent intent) {
 		// start repeating transaction
 		RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(getApplicationContext());
 		notifications.notifyRepeatingTransaction();

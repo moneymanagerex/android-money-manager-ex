@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,6 +28,7 @@ import android.os.Build;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
@@ -59,16 +59,20 @@ import timber.log.Timber;
  * The background service that synchronizes the database file.
  * It is being invoked by the timer.
  * It displays the sync notification and invokes the cloud api.
+ *
+ * Changed to JobIntentService as per
+ * https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f
+ * to make it compatible with Android 8 Oreo.
  */
 public class SyncService
-        extends IntentService {
+        extends JobIntentService {
 
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
     private static final String NOTIFICATION_CHANNEL = "Sync_notification_channel";
 
-    public SyncService() {
-        super("com.money.manager.ex.sync.SyncService");
-    }
+//    public SyncService() {
+//        super("com.money.manager.ex.sync.SyncService");
+//    }
 
     @Inject
     RecentDatabasesProvider recentDatabasesProvider;
@@ -104,7 +108,7 @@ public class SyncService
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
         String action = intent != null
                 ? intent.getAction()
                 : "null";
