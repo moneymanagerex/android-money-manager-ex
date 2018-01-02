@@ -402,7 +402,7 @@
         <service android:name=".notifications.RecurringTransactionIntentService" />
         <service
             android:name=".widget.AccountBillsWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS, android.permission.BIND_JOB_SERVICE" />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".widget.SummaryDashExtension"
             android:icon="@drawable/ic_stat_notification"
