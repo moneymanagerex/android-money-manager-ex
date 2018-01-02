@@ -5,6 +5,8 @@
 
 :: set VAR="%~1"
 
+::echo Processing %~1 %~2 %~3 %~4 %~5
+
 set src_root=%~1
 set src_lang=%~2
 set src_locale=%~3

@@ -718,4 +718,8 @@
   <string name="save">Sauvegarder</string>
   <string name="title_budget_show_simple_view">Afficher le budget simple</string>
   <string name="summary_budget_show_simple_view">Si les budgets sont vérifiés, utilisez l\'affichage simplifié</string>
+  <string name="shares">Partages</string>
+  <string name="loan">Prêt</string>
+  <string name="loan_account">Comptes de prêt</string>
+  <string name="shares_accounts">Comptes Titres</string>
 </resources>

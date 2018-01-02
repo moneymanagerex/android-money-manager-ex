@@ -671,6 +671,7 @@
   <string name="select_remote_file">Vyberte vzdialený súbor z cloudového ukladacieho priestoru</string>
   <string name="confirm_download">Chcete teraz prevziať vzdialený súbor?</string>
   <string name="file_exists">Súbor už existuje</string>
+  <string name="synchronization_disabled">Synchronizácia je vypnutá.</string>
   <string name="sync_conflict">Konflikt synchronizácie</string>
   <string name="no_remote_file">Vyberte vzdialený súbor na synchronizáciu.</string>
   <!-- Warnings -->
@@ -684,4 +685,5 @@
   <!-- Settings -->
   <string name="save">Uložiť</string>
   <string name="title_budget_show_simple_view">Zobrazenie jednoduchého rozpočtu</string>
+  <string name="loan">Pôžička</string>
 </resources>

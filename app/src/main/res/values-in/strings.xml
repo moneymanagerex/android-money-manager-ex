@@ -19,13 +19,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
-  <string name="application_name">Money Manager Ex</string>
-  <string name="application_definition">Sederhana dan mudah-ke-menggunakan aplikasi untuk mengelola keuangan pribadi, rekening bank, anggaran keluarga, dan seterusnya.</string>
-  <string name="application_credits">MoneyManagerEx untuk proyek Android menggunakan perpustakaan ActionBarSherlock</string>
-  <string name="application_license">Open source lisensi</string>
+  <string name="application_name">Manajer Uang Mantan</string>
+  <string name="application_definition">Aplikasi yang sederhana dan mudah digunakan untuk mengelola keuangan pribadi, rekening bank, anggaran keluarga, dan sebagainya.</string>
+  <string name="application_credits">MoneyManagerEx untuk Android Project menggunakan perpustakaan ActionBarSherlock</string>
+  <string name="application_license">Lisensi sumber terbuka</string>
   <!-- database -->
   <string name="db_insert_failed">Memasukkan data gagal</string>
-  <string name="db_delete_failed">Gagal Menghapus data</string>
+  <string name="db_delete_failed">Menghapus data gagal</string>
   <string name="db_update_failed">Gagal Memperbarui data</string>
   <!-- menu -->
   <!--<string name="menu">Menu</string>-->
@@ -361,15 +361,28 @@
   <string name="top_withdrawals_last_30_days">Penarikan teratas: 30 hari terakhir</string>
   <string name="top_payees_last_30_days">Penerima Teratas: 30 hari terakhir</string>
   <!--<string name="transaction_statistics">Transaction Statistics</string>-->
+  <string name="upcoming_transactions">Transaksi yang akan Datang</string>
+  <string name="quantity">Kuantitas</string>
+  <string name="dashboard">Dasbor</string>
   <!-- 20130808 -->
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
+  <string name="last3months">3 bulan terakhir</string>
+  <string name="last6months">6 bulan terakhir</string>
   <!-- 20130816 -->
+  <string name="empty_category">Kategori Kosong</string>
+  <string name="empty_payee">Penerima Pembayaran Kosong</string>
   <!-- 20130831 -->
+  <string name="help">Membantu</string>
   <!-- 20130927 -->
+  <string name="delete_repeating_transaction">Hapus Transaksi Berulang</string>
   <!-- 20131007 -->
   <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
   <!--<string name="term_accounts_total">Term Accounts Total</string>-->
   <!-- 20131104 -->
+  <string name="last">Terakhir</string>
+  <string name="accounts">Akun</string>
+  <string name="to_account">Ke rekening</string>
+  <string name="from_account">Dari akun</string>
   <string name="default_status">Status Bawaan</string>
   <string name="default_payee">Penerima pembayaran bawaan</string>
   <string name="edit_transaction">Mengubah transaksi</string>
@@ -462,6 +475,12 @@
   <string name="pref_transaction_hide_reconciled_amounts_summary">Sembunyikan jumlah yang disesuaikan dari rekening pada dashboard.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Sembunyikan Jumlah Yang Disesuaikan</string>
   <string name="pref_transaction_sort_by_type_summary">Mengatur transaksi harian oleh jenis transaksi (setoran, transfer, penarikan)</string>
+  <string name="pref_transaction_sort_by_type_title">Urutkan Transaksi menurut Jenis</string>
+  <string name="warning">PERINGATAN</string>
+  <string name="no_transfer_splits">Anda telah memilih untuk beralih ke Transfer tapi ada Kategori Split pada transaksi. Apakah Anda ingin melanjutkan dan menghapus Kategori Split?</string>
+  <string name="qif_export">Qif Ekspor</string>
+  <string name="update_prices">Perbarui harga</string>
+  <string name="update_price">Perbarui harga</string>
   <string name="download_price">Mengunduh harga</string>
   <string name="edit_price">Mengubah harga</string>
   <string name="price_updated">Harga Diperbarui</string>
@@ -509,34 +528,198 @@
   <string name="select_account">Pilih akun</string>
   <string name="invalid_transaction_number">Nomor transaksi tidak valid</string>
   <string name="budgets">Anggaran</string>
+  <string name="budget">Anggaran</string>
   <string name="budget_list">Daftar anggaran</string>
+  <string name="actual">Sebenarnya</string>
+  <string name="base_currency_not_set">Mata uang dasar belum ditetapkan</string>
+  <string name="error">Kesalahan</string>
+  <string name="unhandled_crash">Kesalahan tak terduga. Kirimkan log kami.</string>
+  <string name="title_activity_currency_rates_report">Harga mata uang</string>
+  <string name="frequency">Frekuensi</string>
+  <string name="update_available">Pembaruan tersedia</string>
+  <string name="update_available_online">Ada file database terbaru yang tersedia secara online. Apakah Anda ingin memperbarui?</string>
+  <string name="currency_not_found">Mata uang tidak ditemukan</string>
+  <string name="homepage">Homepage kami adalah http://android.moneymanagerex.org/</string>
+  <string name="current_database">Database saat ini</string>
+  <string name="about_logcat_header">Anda bisa mengirimkan log aplikasi dengan mengklik tombol di bawah ini.</string>
+  <string name="transaction_type_filter">Filter menurut Jenis Transaksi</string>
+  <string name="status_filter">Filter menurut Status</string>
+  <string name="filter_options_info">Pilihan dan Info Filter</string>
   <!-- Password entry activity -->
+  <string name="title_activity_password">Masukkan password database</string>
+  <string name="income_expense_period">Periode Penghasilan / Beban</string>
+  <string name="income_expense_period_summary">Periode untuk ikhtisar pendapatan / biaya di footer layar awal.</string>
+  <string name="appwidget_text">CONTOH</string>
+  <string name="configure">Konfigurasikan</string>
+  <string name="add_widget">Tambahkan widget</string>
+  <string name="single_account">Akun tunggal</string>
+  <string name="watchlist">Daftar pantauan</string>
   <!-- edit investment transaction -->
+  <string name="purchase_date">Tanggal Pembelian</string>
+  <string name="stock_name">Nama saham</string>
+  <string name="symbol">Simbol</string>
+  <string name="number_of_shares">Jumlah dibagikan</string>
+  <string name="purchase_price">Harga pembelian</string>
+  <string name="current_price">Harga sekarang</string>
+  <string name="price_date">Tanggal harga</string>
+  <string name="commission">Komisi</string>
+  <string name="value">Nilai</string>
+  <string name="view_transactions">Melihat transaksi</string>
+  <string name="error_downloading_symbol">Kesalahan saat mengunduh harga simbol</string>
+  <string name="error_updating_rates">Kesalahan memperbarui tarif</string>
+  <string name="error_no_price_found_for_symbol">Tidak ada harga yang ditemukan untuk simbol</string>
+  <string name="other">Lain</string>
+  <string name="cleared">Dibersihkan</string>
+  <string name="delete_success">Item dihapus</string>
   <!-- asset allocation -->
+  <string name="asset_allocation">Alokasi aset</string>
+  <string name="asset_classes_empty">Tidak ada kelas aset yang telah ditentukan. Untuk membuatnya, tekan tombol hijau plus.</string>
+  <string name="title_activity_asset_class_edit">Edit Kelas Aset</string>
+  <string name="asset_class_name">Nama kelas aset</string>
+  <string name="asset_class">Kelas aset</string>
+  <string name="allocation">Alokasi</string>
+  <string name="current_allocation">Alokasi saat ini</string>
+  <string name="move_up">Pindah ke atas</string>
+  <string name="move_down">Pindah ke bawah</string>
+  <string name="securities">Efek</string>
+  <string name="no_records_found_create">Tidak ditemukan catatan. Untuk membuatnya, tekan tombol hijau plus.</string>
+  <string name="current_value">Nilai sekarang</string>
+  <string name="current">Arus</string>
+  <string name="parent">Induk</string>
+  <string name="name">Nama</string>
+  <string name="stock">Persediaan</string>
   <string name="all_accounts">Semua akun</string>
+  <string name="records">catatan</string>
   <!-- db password entry -->
+  <string name="enter_password">Masukkan kata kunci</string>
+  <string name="success">Operasi sukses</string>
+  <string name="overview">Ikhtisar</string>
+  <string name="title_activity_asset_allocation_overview">Ikhtisar Alokasi Aset</string>
+  <string name="asset_allocation_diff_threshold">Ambang Batas Alokasi Asset</string>
+  <string name="asset_allocation_diff_threshold_summary">Ambang batas itu akan memicu pewarnaan nilai perbedaan.</string>
+  <string name="error_saving_record">Kesalahan menyimpan catatan</string>
+  <string name="error_loading_currency">Kesalahan saat memuat mata uang</string>
+  <string name="symbol_required">Simbol diperlukan</string>
+  <string name="recurrence_type_not_set">Tipe rekurensi tidak disetel</string>
+  <string name="invalid_recurrence_type">Tipe rekurensi tidak valid</string>
+  <string name="account_not_found">Akun tidak ditemukan</string>
+  <string name="favourite">Favorit</string>
+  <string name="split_reset_notice">Perlu diketahui bahwa ada beberapa kategori terbagi dalam transaksi ini. Anda perlu menghapusnya secara manual.</string>
   <!-- budgets -->
+  <string name="add_budget">Tambahkan Anggaran</string>
+  <string name="budget_name">Nama anggaran</string>
+  <string name="budget_year">Tahun Anggaran</string>
+  <string name="budget_month">Bulan Anggaran</string>
+  <string name="copy">Salinan</string>
+  <string name="app_restart">Aplikasi sekarang akan mendekati untuk menerapkan perubahan. Silakan restart.</string>
+  <string name="print">Mencetak</string>
+  <string name="min_19">Anda memerlukan setidaknya Android 4.4 untuk bisa mencetak dokumen.</string>
+  <string name="save_as_html">Simpan sebagai HTML</string>
+  <string name="no_network">Tidak ada jaringan yang tersedia.</string>
   <!-- Currencies -->
+  <string name="currencies">Mata uang</string>
+  <string name="currencies_used">Mata uang, digunakan</string>
+  <string name="open_currencies">Mata uang terbuka</string>
+  <string name="import_all_currencies">Mata uang impor</string>
+  <string name="import_currencies_in_progress">Mengimpor mata uang Mohon tunggu&#8230;</string>
+  <string name="question_import_currencies">Apakah Anda ingin mengimpor mata uang?</string>
+  <string name="start_currency_exchange_rates">Memperbarui nilai tukar mata uang. Mohon tunggu&#8230;</string>
+  <string name="update_currency_exchange_rates">Memperbarui nilai tukar:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Semua nilai tukar mata uang telah berhasil diupdate</string>
+  <string name="update_menu_currency_exchange_rates">Perbarui Nilai Tukar</string>
+  <string name="question_update_currency_exchange_rates">Apakah Anda ingin memperbarui nilai tukar?</string>
+  <string name="error_update_currency_exchange_rate">Terjadi kesalahan saat memperbarui tarif</string>
+  <string name="currencies_empty">Tidak ada mata uang yang ditemukan. Untuk membuatnya, tekan tombol hijau plus.</string>
+  <string name="active_currencies">Mata Uang Aktif</string>
+  <string name="inactive_currencies">Mata uang tidak aktif</string>
+  <string name="all_currencies">Semua mata uang</string>
+  <string name="show_only_used">Tampilkan hanya digunakan</string>
   <!-- Investment -->
   <string name="portfolio">Portofolio</string>
+  <string name="change_provider">Ubah penyedia</string>
+  <string name="quote_provider">Penyedia pilihan</string>
+  <string name="exchange_rate_provider">Penyedia nilai tukar</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Ada update database pada Dropbox</string>
   <string name="dropbox_file_ready_for_use">Database Anda telah diunduh</string>
   <string name="dropbox_open_database_downloaded">Untuk menggunakan database download, sentuh Buka Database</string>
+  <string name="click_to_select_file_dropbox">Sentuh untuk memilih file yang akan digunakan dari Dropbox</string>
+  <string name="download_from_drobpox">Download dari Dropbox</string>
+  <string name="summary_download_from_drobpox">Sentuh untuk mendownload file terkait secara manual dari folder Dropbox</string>
+  <string name="upload_to_drobpox">Upload ke Dropbox</string>
+  <string name="summary_upload_to_drobpox">Sentuh untuk mengupload file terkait secara manual ke folder Dropbox</string>
+  <string name="dropbox_how_it_works">Bagaimana cara kerja Dropbox untuk Money Manager Ex\?</string>
+  <string name="dropbox_link">Link ke Dropbox</string>
+  <string name="dropbox_unlink">Hapus tautan dari Dropbox</string>
+  <string name="dropbox_downloadProgress">Mengunduh file dari Dropbox. Mohon tunggu&#8230;</string>
+  <string name="dropbox_uploadProgress">Mengunggah file ke Dropbox. Mohon tunggu&#8230;</string>
+  <string name="dropbox_linkedFile">File dropbox</string>
+  <string name="dropbox_file_summary_all">File dimanapun di Dropbox</string>
+  <string name="db_not_dropbox">Database Anda saat ini tidak disinkronkan. Harap siapkan sinkronisasi Dropbox.</string>
   <!-- Synchronization -->
+  <string name="synchronization">Sinkronisasi</string>
+  <string name="sync_enabled">Sinkronisasi diaktifkan</string>
+  <string name="sync_provider">Pemberi</string>
+  <string name="remote_file">File jauh</string>
+  <string name="please_wait">Mohon tunggu</string>
+  <string name="invalid_database">Ekstensi ini tidak dikenali sebagai database yang valid.</string>
+  <string name="reset_preferences">Setel ulang preferensi</string>
+  <string name="preferences_reset">Preferensi sinkronisasi telah diatur ulang.</string>
+  <string name="cloud_download">Download file database dari penyimpanan awan.</string>
+  <string name="cloud_upload">Upload file database ke penyimpanan awan.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sync</string>
+  <string name="sync_downloading">Men-download database Mohon tunggu&#8230;</string>
+  <string name="sync_uploading">Mengupload database Mohon tunggu&#8230;</string>
+  <string name="syncProgress">Sinkronisasi file. Mohon tunggu&#8230;</string>
+  <string name="database_is_synchronized">Database sudah up to date</string>
+  <string name="upload_file_complete">Database anda telah berhasil diunggah</string>
   <string name="every_5_minutes">Setiap 5 menit</string>
+  <string name="every_10_minutes">Setiap 10 menit</string>
   <string name="every_15_minutes">Setiap 15 menit</string>
   <string name="every_30_minutes">Setiap 30 menit</string>
   <string name="every_hour">Setiap jam</string>
   <string name="every_2_hours">Setiap 2 jam</string>
+  <string name="every_3_hours">Setiap 3 jam</string>
   <string name="every_6_hours">Setiap 6 jam</string>
   <string name="every_12_hours">Setiap 12 jam</string>
   <string name="never">Tidak pernah</string>
+  <string name="checking_remote_for_changes">Memeriksa penyimpanan jarak jauh untuk modifikasi basis data.</string>
+  <string name="title_sync_upload_immediate">Upload database segera setelah perubahan</string>
+  <string name="summary_sync_upload_immediate">Pilihan ini memungkinkan untuk mengunggah secara otomatis segera setelah Anda mengubah database</string>
   <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
+  <string name="select_remote_file">Pilih file jauh dari penyimpanan awan</string>
+  <string name="confirm_download">Apakah Anda ingin mendownload file remote sekarang?</string>
+  <string name="file_exists">File ada</string>
+  <string name="file_exists_long">File dengan nama yang sama sudah ada di penyimpanan lokal. Apakah Anda ingin menimpa file ini?</string>
+  <string name="synchronization_disabled">Sinkronisasi dinonaktifkan.</string>
+  <string name="filenames_differ">Nama file jauh dan lokal berbeda. Aborting sinkronisasi.</string>
+  <string name="both_files_modified">Baik file database lokal maupun remote telah dimodifikasi!</string>
+  <string name="sync_conflict">Sinkronkan konflik</string>
+  <string name="no_remote_file">Silakan pilih file remote yang akan digunakan untuk sinkronisasi.</string>
   <!-- Warnings -->
+  <string name="no_accounts_available_for_selection">Tidak ada akun yang tersedia untuk seleksi. Harap sesuaikan preferensi Anda untuk penyaringan akun atau tandai beberapa akun sebagai favorit.</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Error parsing nilai masuk</string>
+  <string name="remote_file_not_found">File jarak jauh tidak ditemukan</string>
+  <string name="error_checking_remote">Kesalahan memeriksa perubahan jarak jauh.</string>
+  <string name="no_remote_change_date">Tanggal perubahan jarak jauh tidak ditemukan di metadata.</string>
   <!-- Select database screen -->
+  <string name="intro_text">Untuk mulai menggunakan Ex Money Manager, Anda harus memiliki file database untuk menyimpan data Anda. Silahkan pilih salah satu pilihan yang tersedia di bawah ini.</string>
+  <string name="intro_create_db">Anda dapat membuat file baru dan menyiapkan preferensi awal.</string>
+  <string name="intro_open_db">Atau Anda dapat memilih file yang ada dari perangkat Anda.</string>
+  <string name="intro_sync">Sebagai alternatif, Anda dapat mengatur sinkronisasi dengan layanan awan dan mendownload file database Anda dari penyimpanan online untuk memulai.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Pilih bahasa</string>
+  <string name="run">Jalankan Money Manager Ex</string>
+  <string name="create_db_info_1">Lokasi database default adalah:</string>
   <!-- Settings -->
   <string name="per_database_settings">Pe-Basis Data</string>
+  <string name="save">Simpan</string>
+  <string name="title_budget_show_simple_view">Tampilkan tampilan anggaran sederhana</string>
+  <string name="summary_budget_show_simple_view">Jika anggaran yang diperiksa menggunakan tampilan yang disederhanakan</string>
+  <string name="shares">Saham</string>
+  <string name="loan">Pinjaman</string>
+  <string name="loan_account">Rekening pinjaman</string>
+  <string name="shares_accounts">Rekening Saham</string>
 </resources>
