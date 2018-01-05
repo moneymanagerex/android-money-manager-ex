@@ -545,6 +545,7 @@ public class CheckingTransactionEditActivity
                         mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
                         mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
 
+                        mCommon.transactionEntity.setTransactionNumber(extras.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER));
                         mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
                         mCommon.transactionEntity.setDate(new MmxDate().toDate());
 

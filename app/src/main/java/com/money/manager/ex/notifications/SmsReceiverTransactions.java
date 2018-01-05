@@ -83,6 +83,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     public static MmxOpenHelper MmxHelper;
     public static SQLiteDatabase db;
 
+    static String[] fromAccountDetails;
+    static String[] toAccountDetails;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context.getApplicationContext();
@@ -95,10 +98,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         //App Settings
         int baseCurencyID, fromCurrencyID, toCurrencyID;
         int baseAccountID, fromAccountID, toAccountID;
+
         String baseCurrencySymbl, fromAccCurrencySymbl, toAccCurrencySymbl;
         String baseAccountName, fromAccountName, toAccountName;
 
         Boolean autoTransactionStatus = false;
+        Boolean skipSaveTrans = false;
 
         try {
             //------- if settings enabled the parse the sms and create trans ---------------
@@ -125,16 +130,17 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     mCommon = new EditTransactionCommonFunctions(null, model, database);
 
                     // find out the trans type using reg ex
-                    String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)"};
-                    String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)"};
+                    String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(\\s)(to)(\\s)", "(\\s)(towards)(\\s)", "(\\s)(in(\\s)your)(\\s)"};
+                    String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(\\s)(from)(\\s)"};
                     String transType = "";
 
                     Boolean isDeposit = validateTransType(key_credit_search, msgBody.toLowerCase());
                     Boolean isWithdrawal = validateTransType(key_debit_search, msgBody.toLowerCase());
 
-                    if (isDeposit == true) {
-                        if (isWithdrawal == true) {
-
+                    if (isDeposit == true)
+                    {
+                        if (isWithdrawal == true)
+                        {
                             transType = "Transfer";
                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
@@ -163,14 +169,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
                         }
 
-                        mCommon.payeeName = "";
-
                     } else if (isWithdrawal == true) {
                         transType = "Withdrawal";
                         mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
                     }
 
                     mCommon.transactionEntity.setStatus("");
+                    mCommon.payeeName = "";
 
                     if (transType != "" && msgBody.toLowerCase().contains("otp") == false) { // if not from blank, then nothing to do with sms
 
@@ -200,7 +205,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         fromAccCurrencySymbl = baseCurrencySymbl;
 
                         //get te from acount details
-                        String[] fromAccountDetails = extractAccountDetails(msgBody, 1);
+                        extractAccountDetails(msgBody, transType);
 
                         if (!fromAccountDetails[0].isEmpty()) {
                             fromAccountID = parseInt(fromAccountDetails[0]);
@@ -215,24 +220,29 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                         //get the trans amount
                         String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
+                        String[] transPayee = extractTransPayee(msgBody);
 
-                        //If there is no account no in the msg & no amt, then this is not valid sms to do transaction
-                        if (!fromAccountDetails[6].isEmpty() && !transAmount.isEmpty()) {
+                        //If there is no account no. or payee in the msg & no amt, then this is not valid sms to do transaction
+                        if ((!fromAccountDetails[6].isEmpty() || !toAccountDetails[6].isEmpty() ||
+                                !transPayee[1].isEmpty()) && !transAmount.isEmpty()) {
+
                             mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
 
-                            String[] transPayee = extractTransPayee(msgBody);
                             String transRefNo = extractTransRefNo(msgBody);
 
-                            int txnId = getTxnId(transRefNo.trim(), transType, mCommon.transactionEntity.getDateString());
+                            //set the ref no. if exists
+                            if(!transRefNo.isEmpty()){
+                                mCommon.transactionEntity.setTransactionNumber(transRefNo);
+                            }
 
-                            switch (txnId) {
+                            int txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
+
+                            switch (txnId)
+                            {
                                 case 0: //add new trnsaction
-                                    //if it is transfer
-                                    if (transType == "Transfer")
-                                    {
-                                        //get the to account details
-                                        String[] toAccountDetails = extractAccountDetails(msgBody, 2);
 
+                                    if (transType == "Transfer") //if it is transfer
+                                    {
                                         if (!toAccountDetails[0].isEmpty()) // if id exists then considering as account transfer
                                         {
                                             toAccountID = parseInt(toAccountDetails[0]);
@@ -270,14 +280,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
                                     }
 
-                                    if (!transPayee[0].isEmpty()) { //if payee not found then use the last payee
+                                    if (!transPayee[0].isEmpty()) {
 
                                         mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
                                         mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
                                         mCommon.transactionEntity.setSubcategoryId(parseInt(transPayee[3]));
-                                    } else {
-                                        mCommon.payeeName = "";
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
@@ -297,12 +305,21 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                             AccountRepository accountRepository = new AccountRepository(mContext);
 
-                                            toAccountID = fromAccountID;
-                                            toCurrencyID = fromCurrencyID;
-                                            fromCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                            if(txn.getTransactionType() == TransactionTypes.Deposit)
+                                            {
+                                                toAccountID = txn.getAccountId();
+                                                toCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                            }
+                                            else
+                                            {
+                                                toAccountID = fromAccountID;
+                                                toCurrencyID = fromCurrencyID;
+                                                fromCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                            }
 
                                             mCommon.transactionEntity = txn;
                                             mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
+                                            mCommon.transactionEntity.setAccountId(fromAccountID);
                                             mCommon.transactionEntity.setAccountToId(toAccountID);
 
                                             //convert the to amount from the both currency details
@@ -320,11 +337,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             }
 
                                             mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
+
+                                            t_intent.setAction(Intent.ACTION_EDIT); //Set the action
+                                        }
+                                        else //if transfer already exists, then do nothing
+                                        {
+                                            skipSaveTrans = true;
                                         }
 
                                     }
 
-                                    t_intent.setAction(Intent.ACTION_EDIT); //Set the action
                             }
 
                             // Capture the details the for Toast
@@ -335,6 +357,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     + "Sub Category ID = " + transPayee[3] + "\n"
                                     + "Trans Ref No. = " + transRefNo + "\n"
                                     + "Trans Type = " + transType + "\n";
+
+                            //Must be commented for released version
+                            //mCommon.transactionEntity.setNotes(strExtracted);
 
                             // Set the content for a transaction);
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
@@ -349,27 +374,35 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                             t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
+                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
 
                             // validate and save the transaction
-                            if (validateData()) {
-                                if (saveTransaction()) {
-                                    Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
-                                    autoTransactionStatus = true;
+                            if(skipSaveTrans == false) {
+                                if (validateData()) {
+                                    if (saveTransaction()) {
+                                        Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
+                                        autoTransactionStatus = true;
+                                    }
+                                }
+
+                                //if transaction is not created automatically, then invoke notification or activity screen
+                                if (autoTransactionStatus == false) {
+                                    startActivity(mContext, t_intent, null);
+                                    //showNotification(t_intent, strExtracted);
                                 }
                             }
-
-                            //if transaction is not created automatically, then invoke notification or activity screen
-                            if(autoTransactionStatus == false){
-                                startActivity(mContext, t_intent, null);
-                                //showNotification(t_intent, strExtracted);
+                            else{
+                                Toast.makeText(context, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, Toast.LENGTH_LONG).show();
                             }
 
                             //reset the value
-                            bundle = null;
-                            msgs = null;
                             msgBody = "";
                             msgSender = "";
+                            bundle = null;
+                            msgs = null;
                             mCommon = null;
+                            skipSaveTrans = false;
+
                         }
                     }
                 }
@@ -377,7 +410,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            Toast.makeText(context, "MMEX: Bank Transaction Process EXCEPTION --> " +  e, Toast.LENGTH_LONG).show();
+            Timber.e(e, "MMEX: Bank Transaction Process EXCEPTION");
         }
     }
 
@@ -400,7 +433,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:" + e);
+            Timber.e(e, "getCurrencySymbl");
         }
 
         return  currencySymbl;
@@ -430,26 +463,99 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:" + e);
+            Timber.e(e, "validateTransType");
         }
 
         return reqMatch;
     }
 
-    private static String[] extractAccountDetails(String smsMsg, int mIndx)
+    private static void extractAccountDetails(String smsMsg, String transType)
     {
-        String reqMatch = "";
-        String[] searchFor = {"((\\s)?(\\d+)?[X]+(\\d+)\\s)", "((\\s)?(\\d+)?[x]+(\\d+)\\s)",
-                "(.ay.m\\s.allet)", "(.ay.m)"};
-        int[] getGroup = {4, 4, 1, 1};
-        int mFound = 1;
-        String[] accountDetails = new String[]{"", "", "", "", "", "", ""};
+        String[] reqMatch =  new String[]{"", ""};
+
+        fromAccountDetails = new String[]{"", "", "", "", "", "", ""};
+        toAccountDetails = new String[]{"", "", "", "", "", "", ""};
+
+        int[] mIndx;
+
+        if(transType == "Transfer") { mIndx = new int[] {1, 2}; }
+        else { mIndx = new int[] {1}; }
+
+        try
+        {
+            //find the match for UPI transfer which has "from" or "to" string
+            boolean isUPI = smsMsg.contains("@");
+
+            switch (String.valueOf(isUPI))
+            {
+                case "false": //find the match for non UPI transfer or credit or debit
+
+                    for(int j=0; j<=mIndx.length-1; j++)
+                    {
+                        reqMatch[j] = searchForAccountNum(smsMsg, mIndx[j]);
+                    }
+                    break;
+
+                case "true": //UPI transfer based on from and to account
+
+                    String fromACNum = "";
+                    String toACNum = "";
+
+                    int fromIndex = smsMsg.indexOf(" from");
+                    int toIndex = smsMsg.indexOf(" to");
+
+                    if(fromIndex > 0) {
+                        reqMatch[0] = searchForAccountNum(smsMsg.substring(smsMsg.indexOf(" from")), 1);
+                    }
+
+                    if(toIndex > 0) {
+                        reqMatch[1] = searchForAccountNum(smsMsg.substring(smsMsg.indexOf(" to")), 1);
+                    }
+
+                    if(fromIndex == -1) { reqMatch[0] = searchForAccountNum(smsMsg, 1); }
+                    if(toIndex == -1) { reqMatch[1] = searchForAccountNum(smsMsg, 1); }
+
+                    //if both the str are same then, reset 2nd index
+                    if(reqMatch[0].contains(reqMatch[1])) { reqMatch[1] = ""; }
+
+                    break;
+            }
+
+            getAccountDetails(reqMatch);
+
+        }
+        catch(Exception e)
+        {
+            Timber.e(e, "extractAccountDetails");
+        }
+    }
+
+    private static String searchForAccountNum(String smsMsg, int mIndx)
+    {
+        String reqMatch =  "";
+
+        String[] searchFor =
+                {
+                        "((\\s)?(\\d+)?[X]+(\\d+)(\\s)?)", "((\\s)?(\\d+)?[x]+(\\d+)(\\s)?)",
+                        "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
+                        "([\\[](\\d+)[\\]])", "(.ay.m\\s.allet)", "(.ay.m)"
+                };
+
+        int[] getGroup =
+                {
+                        4, 4,
+                        2, 2, 2,
+                        2, 1, 1
+                };
+
+        int mFound;
 
         try
         {
             for(int i=0; i<=searchFor.length-1; i++)
             {
                 mFound = 1;
+
                 Pattern p = Pattern.compile(searchFor[i]);
                 Matcher m = p.matcher(smsMsg);
 
@@ -466,45 +572,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     }
                 }
             }
-
-            if (reqMatch != "") {
-
-                accountDetails = new String[] {"", "", "", "", "", "", reqMatch };
-
-                String sql =
-                        "SELECT A.ACCOUNTID, A.ACCOUNTNAME, A.ACCOUNTNUM, A.CURRENCYID, " +
-                                "C.CURRENCY_SYMBOL, C.DECIMAL_POINT, C.GROUP_SEPARATOR " +
-                                "FROM ACCOUNTLIST_V1 A " +
-                                "INNER JOIN CURRENCYFORMATS_V1 C ON C.CURRENCYID = A.CURRENCYID " +
-                                "WHERE A.STATUS='Open' AND A.ACCOUNTNUM LIKE '%" + reqMatch + "%' " +
-                                "ORDER BY A.ACCOUNTID " +
-                                "LIMIT 1";
-
-                Cursor accountCursor = db.rawQuery(sql, null);
-
-                if(accountCursor.moveToFirst())
-                {
-                    accountDetails = new String[] {
-                            accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTID")),
-                            accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTNAME")),
-                            accountCursor.getString(accountCursor.getColumnIndex("CURRENCYID")),
-                            accountCursor.getString(accountCursor.getColumnIndex("CURRENCY_SYMBOL")),
-                            accountCursor.getString(accountCursor.getColumnIndex("DECIMAL_POINT")),
-                            accountCursor.getString(accountCursor.getColumnIndex("GROUP_SEPARATOR")),
-                            reqMatch
-                    };
-                }
-
-                accountCursor.close();
-            }
-
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:" + e);
+            Timber.e(e, "searchForAccountNum");
         }
 
-        return accountDetails;
+        return reqMatch;
     }
 
     private static String extractTransAmount(String smsMsg, String fromAccCurrencySymbl)
@@ -543,7 +617,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "extractTransAmount");
         }
 
         return reqMatch;
@@ -552,9 +626,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String[] extractTransPayee(String smsMsg)
     {
         String[] searchFor = {
-                "((\\s)at+(.*?)\\s+on)", "((\\s)favoring+(.*?)\\s+is)",
-                "((\\s)to+(.*?)\\s+at)", "((\\s)to+(.*?)[.])", "((\\s)at+(.*?)[.])", "([\\*](.*?)[.])",
-                "((\\s)FROM+(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(.ay.m)"};
+                "((\\s)at\\s(.*?)\\s+on)", "((\\s)favoring\\s(.*?)\\s+is)",
+                "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])", "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
+                "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(\\s.ay.m)"};
 
         int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 1};
         String[] reqMatch = new String[]{"", "", "", ""};
@@ -581,7 +655,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "extractTransPayee");
         }
 
         return reqMatch;
@@ -590,11 +664,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
-        String[] searchFor = {"(IMPS+\\sRef\\s+no+\\s(\\d+))", "(\\/+(\\d+)+\\/)",
-                "((ID(.)?(:)?)+(\\d+))", "((id is+\\s(:)?)+(\\d+))",
-                "(Info(:)+(\\s)?[A-Z]+([-][A-Z]+)?[\\*]?(\\d+)[\\*]?[-]?[a-zA-Z]+(\\s)?[A-Za-z]+[.])",
-                "(Info(:)+(\\s)?(\\d+)[:])"};
-        int[] getGroup = {2, 2, 5, 4, 5, 4};
+        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s+no+\\s(\\d+))", "(\\/+(\\d+)+\\/)",
+                "((ID(.)?(:)?)+(\\d+))", "((id is+\\s(:)?)+(\\d+))", "((Reference:)(\\s)?(\\d+))",
+                "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)", "((reference number)(.*?)(\\d+))"};
+        int[] getGroup = {2, 2, 2, 5, 4, 4, 2, 4, 4};
 
         try
         {
@@ -615,7 +688,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "extractTransRefNo");
         }
 
         return reqMatch;
@@ -651,13 +724,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "getPayeeDetails");
         }
 
         return payeeDetails;
     }
 
-    private static Integer getTxnId(String refNumber, String transType, String transDate)
+    private static Integer getTxnId(String refNumber, String transDate)
     {
         int txnId = 0;
 
@@ -666,9 +739,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             if(!refNumber.trim().isEmpty()) {
 
                 String sql =
-                        "SELECT TRANSID, NOTES, TRANSDATE " +
+                        "SELECT TRANSID " +
                                 "FROM CHECKINGACCOUNT_V1 " +
-                                "WHERE NOTES LIKE '%" + refNumber + "%' AND TRANSCODE <> '" + transType + "' " +
+                                "WHERE TRANSACTIONNUMBER  LIKE '%" + refNumber + "%' " +
                                 "AND TRANSDATE ='" + transDate + "' " +
                                 "ORDER BY TRANSID LIMIT 1";
 
@@ -684,7 +757,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            //System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "getTxnId");
         }
 
         return txnId;
@@ -737,10 +810,66 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
         catch(Exception e)
         {
-            System.err.println("EXCEPTION:"+e);
+            Timber.e(e, "getCategoryOrSubCategoryByName");
         }
 
         return cTran;
+    }
+
+    private static void getAccountDetails(String[] reqMatch)
+    {
+        String[] accountDetails = new String[]{"", "", "", "", "", "", ""};
+
+        try
+        {
+            for(int j=0; j<=reqMatch.length-1; j++)
+            {
+                if (reqMatch[j] != "") {
+
+                    accountDetails = new String[] {"", "", "", "", "", "", reqMatch[j] };
+
+                    String sql =
+                            "SELECT A.ACCOUNTID, A.ACCOUNTNAME, A.ACCOUNTNUM, A.CURRENCYID, " +
+                                    "C.CURRENCY_SYMBOL, C.DECIMAL_POINT, C.GROUP_SEPARATOR " +
+                                    "FROM ACCOUNTLIST_V1 A " +
+                                    "INNER JOIN CURRENCYFORMATS_V1 C ON C.CURRENCYID = A.CURRENCYID " +
+                                    "WHERE A.STATUS='Open' AND A.ACCOUNTNUM LIKE '%" + reqMatch[j] + "%' " +
+                                    "ORDER BY A.ACCOUNTID " +
+                                    "LIMIT 1";
+
+                    Cursor accountCursor = db.rawQuery(sql, null);
+
+                    if(accountCursor.moveToFirst())
+                    {
+                        accountDetails = new String[] {
+                                accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTID")),
+                                accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTNAME")),
+                                accountCursor.getString(accountCursor.getColumnIndex("CURRENCYID")),
+                                accountCursor.getString(accountCursor.getColumnIndex("CURRENCY_SYMBOL")),
+                                accountCursor.getString(accountCursor.getColumnIndex("DECIMAL_POINT")),
+                                accountCursor.getString(accountCursor.getColumnIndex("GROUP_SEPARATOR")),
+                                reqMatch[j]
+                        };
+                    }
+
+                    switch (j)
+                    {
+                        case 0: //from account
+                            fromAccountDetails = accountDetails;
+                            break;
+                        case 1: //to account
+                            toAccountDetails = accountDetails;
+                            break;
+                    }
+
+                    accountCursor.close();
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            Timber.e(e, "getAccountDetails");
+        }
     }
 
     public boolean validateData() {
@@ -837,12 +966,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Auto Transaction Failed")
                 .setContentText(notificationText)
+                .addAction(R.drawable.ic_action_folder_open_dark, "Edit", pendingIntent)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setNumber(1)
-                .setOngoing(true)
-                .setAutoCancel(true);
+                .setNumber(NOTIFICATION_ID)
+                .setAutoCancel(false);
 
+        mNotificationManager.cancel(NOTIFICATION_ID);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }
