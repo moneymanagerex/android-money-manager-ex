@@ -130,8 +130,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     mCommon = new EditTransactionCommonFunctions(null, model, database);
 
                     // find out the trans type using reg ex
-                    String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(\\s)(to)(\\s)", "(\\s)(towards)(\\s)", "(\\s)(in(\\s)your)(\\s)"};
-                    String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(\\s)(from)(\\s)"};
+                    String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(refunded)",
+                            "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)",
+                            "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
+
+                    String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)",
+                            "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)"};
+
                     String transType = "";
 
                     Boolean isDeposit = validateTransType(key_credit_search, msgBody.toLowerCase());
@@ -224,7 +229,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                         //If there is no account no. or payee in the msg & no amt, then this is not valid sms to do transaction
                         if ((!fromAccountDetails[6].isEmpty() || !toAccountDetails[6].isEmpty() ||
-                                !transPayee[1].isEmpty()) && !transAmount.isEmpty()) {
+                                !transPayee[0].isEmpty()) && !transAmount.isEmpty()) {
 
                             mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
 
@@ -387,8 +392,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 //if transaction is not created automatically, then invoke notification or activity screen
                                 if (autoTransactionStatus == false) {
-                                    startActivity(mContext, t_intent, null);
-                                    //showNotification(t_intent, strExtracted);
+                                    //startActivity(mContext, t_intent, null);
+                                    showNotification(t_intent, strExtracted);
                                 }
                             }
                             else{
@@ -498,22 +503,41 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 case "true": //UPI transfer based on from and to account
 
-                    String fromACNum = "";
-                    String toACNum = "";
+                    String fromString = " from";
+                    String toString = " to";
+                    String nonUPIMsg = smsMsg;
 
-                    int fromIndex = smsMsg.indexOf(" from");
-                    int toIndex = smsMsg.indexOf(" to");
+                    int fromIndex = smsMsg.indexOf(fromString);
+                    int toIndex = smsMsg.indexOf(toString);
+
+                    // sometime str "to" not exists, in place use str "in your"
+                    if(toIndex == -1){
+                        toString = " in your";
+                        toIndex = smsMsg.indexOf(toString);
+                    }
 
                     if(fromIndex > 0) {
-                        reqMatch[0] = searchForAccountNum(smsMsg.substring(smsMsg.indexOf(" from")), 1);
+                        if(fromIndex > toIndex) {
+                            reqMatch[0] = searchForAccountNum(smsMsg.substring(fromIndex), 1);
+                            if(toIndex == -1) { nonUPIMsg = smsMsg.substring(0, fromIndex); }
+                        }else{
+                            reqMatch[0] = searchForAccountNum(smsMsg.substring(fromIndex, toIndex), 1);
+                            nonUPIMsg = smsMsg.substring(0, fromIndex);
+                        }
                     }
 
                     if(toIndex > 0) {
-                        reqMatch[1] = searchForAccountNum(smsMsg.substring(smsMsg.indexOf(" to")), 1);
+                        if(toIndex > fromIndex) {
+                            reqMatch[1] = searchForAccountNum(smsMsg.substring(toIndex), 1);
+                            if(toIndex == -1) { nonUPIMsg = smsMsg.substring(0, toIndex); }
+                        }else{
+                            reqMatch[1] = searchForAccountNum(smsMsg.substring(toIndex, fromIndex), 1);
+                            nonUPIMsg = smsMsg.substring(0, toIndex);
+                        }
                     }
 
-                    if(fromIndex == -1) { reqMatch[0] = searchForAccountNum(smsMsg, 1); }
-                    if(toIndex == -1) { reqMatch[1] = searchForAccountNum(smsMsg, 1); }
+                    if(fromIndex == -1) { reqMatch[0] = searchForAccountNum(nonUPIMsg, 1); }
+                    if(toIndex == -1) { reqMatch[1] = searchForAccountNum(nonUPIMsg, 1); }
 
                     //if both the str are same then, reset 2nd index
                     if(reqMatch[0].contains(reqMatch[1])) { reqMatch[1] = ""; }
