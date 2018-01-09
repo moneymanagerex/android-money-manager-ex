@@ -392,8 +392,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 //if transaction is not created automatically, then invoke notification or activity screen
                                 if (autoTransactionStatus == false) {
-                                    //startActivity(mContext, t_intent, null);
-                                    showNotification(t_intent, strExtracted);
+                                    startActivity(mContext, t_intent, null);
+                                    //showNotification(t_intent, strExtracted);
                                 }
                             }
                             else{
@@ -562,14 +562,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         "((\\s)?(\\d+)?[X]+(\\d+)(\\s)?)", "((\\s)?(\\d+)?[x]+(\\d+)(\\s)?)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
-                        "([\\[](\\d+)[\\]])", "(.ay.m\\s.allet)", "(.ay.m)"
+                        "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)", "(.ay.m)"
                 };
 
         int[] getGroup =
                 {
                         4, 4,
                         2, 2, 2,
-                        2, 1, 1
+                        2, 2, 1, 1
                 };
 
         int mFound;
