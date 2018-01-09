@@ -115,8 +115,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 String msgBody = "";
                 String msgSender = "";
 
-                if (bundle != null) {
-                    //---retrieve the SMS message received---
+                if (bundle != null) { //---retrieve the SMS message received---
+
                     Object[] pdus = (Object[]) bundle.get("pdus");
                     msgs = new SmsMessage[pdus.length];
 
@@ -126,288 +126,296 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody().toString();
                     }
 
-                    ITransactionEntity model = AccountTransaction.create();
-                    mCommon = new EditTransactionCommonFunctions(null, model, database);
+                    //msgSender = "AT-SIBSMS";
 
-                    // find out the trans type using reg ex
-                    String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(refunded)",
-                            "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
-                            "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
+                    if(isTransactionSms(msgSender)) {
+                        // Transaction Sms sender will have format like this AT-SIBSMS,
+                        // Promotional sms will have sender like AT-012345
+                        // Not sure how this format will be in out side of India. May I need to update if i get sample
 
-                    String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)",
-                            "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)"};
+                        ITransactionEntity model = AccountTransaction.create();
+                        mCommon = new EditTransactionCommonFunctions(null, model, database);
 
-                    String transType = "";
+                        // find out the trans type using reg ex
+                        String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(refunded)",
+                                "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
+                                "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
 
-                    Boolean isDeposit = validateTransType(key_credit_search, msgBody.toLowerCase());
-                    Boolean isWithdrawal = validateTransType(key_debit_search, msgBody.toLowerCase());
+                        String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)",
+                                "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)"};
 
-                    if (isDeposit == true)
-                    {
-                        if (isWithdrawal == true)
+                        String transType = "";
+
+                        Boolean isDeposit = validateTransType(key_credit_search, msgBody.toLowerCase());
+                        Boolean isWithdrawal = validateTransType(key_debit_search, msgBody.toLowerCase());
+
+                        if (isDeposit == true)
                         {
-                            transType = "Transfer";
-                            String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
-
-                            if (!transCategory[0].isEmpty()) {
-                                mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
-                            }
-
-                            if (!transCategory[1].isEmpty()) {
-                                mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
-                            }
-
-                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
-
-                        } else {
-                            transType = "Deposit";
-                            String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
-
-                            if (!incomeCategory[0].isEmpty()) {
-                                mCommon.transactionEntity.setCategoryId(parseInt(incomeCategory[0]));
-                            }
-
-                            if (!incomeCategory[1].isEmpty()) {
-                                mCommon.transactionEntity.setSubcategoryId(parseInt(incomeCategory[1]));
-                            }
-
-                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
-                        }
-
-                    } else if (isWithdrawal == true) {
-                        transType = "Withdrawal";
-                        mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
-                    }
-
-                    mCommon.transactionEntity.setStatus("");
-                    mCommon.payeeName = "";
-
-                    if (transType != "" && msgBody.toLowerCase().contains("otp") == false) { // if not from blank, then nothing to do with sms
-
-                        //Create the intent that’ll fire when the user taps the notification//
-                        Intent t_intent = new Intent(mContext, CheckingTransactionEditActivity.class);
-
-                        // Db setup
-                        MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
-                        db = MmxHelper.getReadableDatabase();
-
-                        baseCurencyID = gen_settings.getBaseCurrencytId();
-                        baseAccountID = gen_settings.getDefaultAccountId();
-                        baseAccountName = "";
-                        fromAccountID = -1;
-                        fromCurrencyID = -1;
-                        fromAccountName = "";
-
-                        //if default account id selected
-                        if (baseAccountID > 0) {
-                            fromAccountID = baseAccountID;
-                            fromAccountName = baseAccountName;
-                            fromCurrencyID = baseCurencyID;
-                        }
-
-                        //Get the base currency sysmbl
-                        baseCurrencySymbl = getCurrencySymbl(baseCurencyID);
-                        fromAccCurrencySymbl = baseCurrencySymbl;
-
-                        //get te from acount details
-                        extractAccountDetails(msgBody, transType);
-
-                        if (!fromAccountDetails[0].isEmpty()) {
-                            fromAccountID = parseInt(fromAccountDetails[0]);
-                            fromAccountName = fromAccountDetails[1];
-                            fromCurrencyID = parseInt(fromAccountDetails[2]);
-                            fromAccCurrencySymbl = fromAccountDetails[3];
-                            mCommon.transactionEntity.setAccountId(fromAccountID);
-                        }
-
-                        mCommon.transactionEntity.setNotes(msgBody);
-                        mCommon.transactionEntity.setDate(new MmxDate().toDate());
-
-                        //get the trans amount
-                        String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
-                        String[] transPayee = extractTransPayee(msgBody);
-
-                        //If there is no account no. or payee in the msg & no amt, then this is not valid sms to do transaction
-                        if ((!fromAccountDetails[6].isEmpty() || !toAccountDetails[6].isEmpty() ||
-                                !transPayee[0].isEmpty()) && !transAmount.isEmpty()) {
-
-                            mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
-
-                            String transRefNo = extractTransRefNo(msgBody);
-
-                            //set the ref no. if exists
-                            if(!transRefNo.isEmpty()){
-                                mCommon.transactionEntity.setTransactionNumber(transRefNo);
-                            }
-
-                            int txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
-
-                            switch (txnId)
+                            if (isWithdrawal == true)
                             {
-                                case 0: //add new trnsaction
+                                transType = "Transfer";
+                                String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
-                                    if (transType == "Transfer") //if it is transfer
-                                    {
-                                        if (!toAccountDetails[0].isEmpty()) // if id exists then considering as account transfer
+                                if (!transCategory[0].isEmpty()) {
+                                    mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                }
+
+                                if (!transCategory[1].isEmpty()) {
+                                    mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
+                                }
+
+                                mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
+
+                            } else {
+                                transType = "Deposit";
+                                String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
+
+                                if (!incomeCategory[0].isEmpty()) {
+                                    mCommon.transactionEntity.setCategoryId(parseInt(incomeCategory[0]));
+                                }
+
+                                if (!incomeCategory[1].isEmpty()) {
+                                    mCommon.transactionEntity.setSubcategoryId(parseInt(incomeCategory[1]));
+                                }
+
+                                mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
+                            }
+
+                        } else if (isWithdrawal == true) {
+                            transType = "Withdrawal";
+                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
+                        }
+
+                        mCommon.transactionEntity.setStatus("");
+                        mCommon.payeeName = "";
+
+                        if (transType != "" && msgBody.toLowerCase().contains("otp") == false) { // if not from blank, then nothing to do with sms
+
+                            //Create the intent that’ll fire when the user taps the notification//
+                            Intent t_intent = new Intent(mContext, CheckingTransactionEditActivity.class);
+
+                            // Db setup
+                            MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
+                            db = MmxHelper.getReadableDatabase();
+
+                            baseCurencyID = gen_settings.getBaseCurrencytId();
+                            baseAccountID = gen_settings.getDefaultAccountId();
+                            baseAccountName = "";
+                            fromAccountID = -1;
+                            fromCurrencyID = -1;
+                            fromAccountName = "";
+
+                            //if default account id selected
+                            if (baseAccountID > 0) {
+                                fromAccountID = baseAccountID;
+                                fromAccountName = baseAccountName;
+                                fromCurrencyID = baseCurencyID;
+                            }
+
+                            //Get the base currency sysmbl
+                            baseCurrencySymbl = getCurrencySymbl(baseCurencyID);
+                            fromAccCurrencySymbl = baseCurrencySymbl;
+
+                            //get te from acount details
+                            extractAccountDetails(msgBody, transType);
+
+                            if (!fromAccountDetails[0].isEmpty()) {
+                                fromAccountID = parseInt(fromAccountDetails[0]);
+                                fromAccountName = fromAccountDetails[1];
+                                fromCurrencyID = parseInt(fromAccountDetails[2]);
+                                fromAccCurrencySymbl = fromAccountDetails[3];
+                                mCommon.transactionEntity.setAccountId(fromAccountID);
+                            }
+
+                            mCommon.transactionEntity.setNotes(msgBody);
+                            mCommon.transactionEntity.setDate(new MmxDate().toDate());
+
+                            //get the trans amount
+                            String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
+                            String[] transPayee = extractTransPayee(msgBody);
+
+                            //If there is no account no. or payee in the msg & no amt, then this is not valid sms to do transaction
+                            if ((!fromAccountDetails[6].isEmpty() || !toAccountDetails[6].isEmpty() ||
+                                    !transPayee[0].isEmpty()) && !transAmount.isEmpty()) {
+
+                                mCommon.transactionEntity.setAmount(MoneyFactory.fromString(transAmount));
+
+                                String transRefNo = extractTransRefNo(msgBody);
+
+                                //set the ref no. if exists
+                                if(!transRefNo.isEmpty()){
+                                    mCommon.transactionEntity.setTransactionNumber(transRefNo);
+                                }
+
+                                int txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
+
+                                switch (txnId)
+                                {
+                                    case 0: //add new trnsaction
+
+                                        if (transType == "Transfer") //if it is transfer
                                         {
-                                            toAccountID = parseInt(toAccountDetails[0]);
-                                            toAccountName = toAccountDetails[1];
-                                            toCurrencyID = parseInt(toAccountDetails[2]);
-                                            toAccCurrencySymbl = toAccountDetails[3];
+                                            if (!toAccountDetails[0].isEmpty()) // if id exists then considering as account transfer
+                                            {
+                                                toAccountID = parseInt(toAccountDetails[0]);
+                                                toAccountName = toAccountDetails[1];
+                                                toCurrencyID = parseInt(toAccountDetails[2]);
+                                                toAccCurrencySymbl = toAccountDetails[3];
 
-                                            mCommon.transactionEntity.setAccountToId(toAccountID);
+                                                mCommon.transactionEntity.setAccountToId(toAccountID);
 
-                                            //convert the to amount from the both currency details
-                                            CurrencyService currencyService = new CurrencyService(mContext);
-                                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
-                                                    mCommon.transactionEntity.getAmount(),
-                                                    toCurrencyID));
+                                                //convert the to amount from the both currency details
+                                                CurrencyService currencyService = new CurrencyService(mContext);
+                                                mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
+                                                        mCommon.transactionEntity.getAmount(),
+                                                        toCurrencyID));
 
-                                            mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
+                                                mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
 
-                                        } else { // if not, then IMPS transfer tp 3rd party
+                                            } else { // if not, then IMPS transfer tp 3rd party
 
-                                            transType = "Withdrawal";
-                                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
+                                                transType = "Withdrawal";
+                                                mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
+                                                mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
+                                                mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
+
+                                                //if there is no to account found from mmex db, then check for payee
+                                                //This will helps me to handle 3rd party transfer thru IMPS
+                                                if (!toAccountDetails[6].isEmpty() && transPayee[0].isEmpty()) {
+                                                    transPayee = getPayeeDetails(toAccountDetails[6].trim());
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
                                             mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
                                             mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
-
-                                            //if there is no to account found from mmex db, then check for payee
-                                            //This will helps me to handle 3rd party transfer thru IMPS
-                                            if (!toAccountDetails[6].isEmpty() && transPayee[0].isEmpty()) {
-                                                transPayee = getPayeeDetails(toAccountDetails[6].trim());
-                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
-                                        mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
-                                    }
 
-                                    if (!transPayee[0].isEmpty()) {
+                                        if (!transPayee[0].isEmpty()) {
 
-                                        mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
-                                        mCommon.payeeName = transPayee[1];
-                                        mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
-                                        mCommon.transactionEntity.setSubcategoryId(parseInt(transPayee[3]));
-                                    }
+                                            mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
+                                            mCommon.payeeName = transPayee[1];
+                                            mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
+                                            mCommon.transactionEntity.setSubcategoryId(parseInt(transPayee[3]));
+                                        }
 
-                                    t_intent.setAction(Intent.ACTION_INSERT); //Set the action
+                                        t_intent.setAction(Intent.ACTION_INSERT); //Set the action
 
-                                    break;
+                                        break;
 
-                                default: //Update existing transaction
+                                    default: //Update existing transaction
 
-                                    transType = "Transfer";
+                                        transType = "Transfer";
 
-                                    AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
-                                    AccountTransaction txn = repo.load(txnId);
+                                        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+                                        AccountTransaction txn = repo.load(txnId);
 
-                                    if (txn != null) {
+                                        if (txn != null) {
 
-                                        if (txn.getTransactionType() != TransactionTypes.Transfer) {
+                                            if (txn.getTransactionType() != TransactionTypes.Transfer) {
 
-                                            AccountRepository accountRepository = new AccountRepository(mContext);
+                                                AccountRepository accountRepository = new AccountRepository(mContext);
 
-                                            if(txn.getTransactionType() == TransactionTypes.Deposit)
+                                                if(txn.getTransactionType() == TransactionTypes.Deposit)
+                                                {
+                                                    toAccountID = txn.getAccountId();
+                                                    toCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                                }
+                                                else
+                                                {
+                                                    toAccountID = fromAccountID;
+                                                    toCurrencyID = fromCurrencyID;
+                                                    fromCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                                }
+
+                                                mCommon.transactionEntity = txn;
+                                                mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
+                                                mCommon.transactionEntity.setAccountId(fromAccountID);
+                                                mCommon.transactionEntity.setAccountToId(toAccountID);
+
+                                                //convert the to amount from the both currency details
+                                                CurrencyService currencyService = new CurrencyService(mContext);
+                                                mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
+                                                        mCommon.transactionEntity.getAmount(),
+                                                        toCurrencyID));
+
+                                                mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
+
+                                                String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
+                                                if (!transCategory[0].isEmpty()) {
+                                                    mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                                    mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
+                                                }
+
+                                                mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
+
+                                                t_intent.setAction(Intent.ACTION_EDIT); //Set the action
+                                            }
+                                            else //if transfer already exists, then do nothing
                                             {
-                                                toAccountID = txn.getAccountId();
-                                                toCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
-                                            }
-                                            else
-                                            {
-                                                toAccountID = fromAccountID;
-                                                toCurrencyID = fromCurrencyID;
-                                                fromCurrencyID = accountRepository.loadCurrencyIdFor(txn.getAccountId());
+                                                skipSaveTrans = true;
                                             }
 
-                                            mCommon.transactionEntity = txn;
-                                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
-                                            mCommon.transactionEntity.setAccountId(fromAccountID);
-                                            mCommon.transactionEntity.setAccountToId(toAccountID);
-
-                                            //convert the to amount from the both currency details
-                                            CurrencyService currencyService = new CurrencyService(mContext);
-                                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
-                                                    mCommon.transactionEntity.getAmount(),
-                                                    toCurrencyID));
-
-                                            mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
-
-                                            String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
-                                            if (!transCategory[0].isEmpty()) {
-                                                mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
-                                                mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
-                                            }
-
-                                            mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
-
-                                            t_intent.setAction(Intent.ACTION_EDIT); //Set the action
-                                        }
-                                        else //if transfer already exists, then do nothing
-                                        {
-                                            skipSaveTrans = true;
                                         }
 
-                                    }
-
-                            }
-
-                            // Capture the details the for Toast
-                            String strExtracted = "Account = " + fromAccountName + "-" + fromAccountDetails[6] + "\n"
-                                    + "Trans Amt = " + fromAccCurrencySymbl + " " + transAmount + ",\n"
-                                    + "Payyee Name= " + transPayee[1] + "\n"
-                                    + "Category ID = " + transPayee[2] + "\n"
-                                    + "Sub Category ID = " + transPayee[3] + "\n"
-                                    + "Trans Ref No. = " + transRefNo + "\n"
-                                    + "Trans Type = " + transType + "\n";
-
-                            //Must be commented for released version
-                            //mCommon.transactionEntity.setNotes(strExtracted);
-
-                            // Set the content for a transaction);
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountId()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountToId()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommon.getTransactionType());
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_ID, String.valueOf(mCommon.transactionEntity.getPayeeId()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommon.payeeName);
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
-                            t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
-
-                            // validate and save the transaction
-                            if(skipSaveTrans == false) {
-                                if (validateData()) {
-                                    if (saveTransaction()) {
-                                        Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
-                                        autoTransactionStatus = true;
-                                    }
                                 }
 
-                                //if transaction is not created automatically, then invoke notification or activity screen
-                                if (autoTransactionStatus == false) {
-                                    startActivity(mContext, t_intent, null);
-                                    //showNotification(t_intent, strExtracted);
+                                // Capture the details the for Toast
+                                String strExtracted = "Account = " + fromAccountName + "-" + fromAccountDetails[6] + "\n"
+                                        + "Trans Amt = " + fromAccCurrencySymbl + " " + transAmount + ",\n"
+                                        + "Payyee Name= " + transPayee[1] + "\n"
+                                        + "Category ID = " + transPayee[2] + "\n"
+                                        + "Sub Category ID = " + transPayee[3] + "\n"
+                                        + "Trans Ref No. = " + transRefNo + "\n"
+                                        + "Trans Type = " + transType + "\n";
+
+                                //Must be commented for released version
+                                //mCommon.transactionEntity.setNotes(strExtracted);
+
+                                // Set the content for a transaction);
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountToId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommon.getTransactionType());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_ID, String.valueOf(mCommon.transactionEntity.getPayeeId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommon.payeeName);
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
+
+                                // validate and save the transaction
+                                if(skipSaveTrans == false) {
+                                    if (validateData()) {
+                                        if (saveTransaction()) {
+                                            Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
+                                            autoTransactionStatus = true;
+                                        }
+                                    }
+
+                                    //if transaction is not created automatically, then invoke notification or activity screen
+                                    if (autoTransactionStatus == false) {
+                                        startActivity(mContext, t_intent, null);
+                                        //showNotification(t_intent, strExtracted);
+                                    }
                                 }
-                            }
-                            else{
-                                Toast.makeText(context, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, Toast.LENGTH_LONG).show();
-                            }
+                                else{
+                                    Toast.makeText(context, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, Toast.LENGTH_LONG).show();
+                                }
 
-                            //reset the value
-                            msgBody = "";
-                            msgSender = "";
-                            bundle = null;
-                            msgs = null;
-                            mCommon = null;
-                            skipSaveTrans = false;
+                                //reset the value
+                                msgBody = "";
+                                msgSender = "";
+                                bundle = null;
+                                msgs = null;
+                                mCommon = null;
+                                skipSaveTrans = false;
 
+                            }
                         }
                     }
                 }
@@ -443,6 +451,32 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         return  currencySymbl;
 
+    }
+
+    private static boolean isTransactionSms(String smsSender)
+    {
+        boolean reqMatch = false;
+
+        try
+        {
+            Pattern p = Pattern.compile("(-[A-Z]+)");
+            Matcher m = p.matcher(smsSender);
+
+            if (m != null)
+            {
+                while(m.find())
+                {
+                    reqMatch = true;
+                    break;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            Timber.e(e, "isTransactionSms");
+        }
+
+        return reqMatch;
     }
 
     private static boolean validateTransType(String[] keySearch, String smsMsg)
