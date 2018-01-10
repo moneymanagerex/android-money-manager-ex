@@ -67,6 +67,10 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // enable crashlytics/fabric
+            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
+            ext.enableCrashlytics = true
         }
         release {
             minifyEnabled false
@@ -292,6 +296,7 @@ static def getVersionAsDate() {
 
 /*
     Dynamically generate fabric.properties from environment variables.
+    See https://github.com/plastiv/CrashlyticsDemo
  */
 afterEvaluate {
     initFabricPropertiesIfNeeded()

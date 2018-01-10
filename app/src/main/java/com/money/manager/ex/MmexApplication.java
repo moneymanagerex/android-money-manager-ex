@@ -165,10 +165,12 @@ public class MmexApplication
         registerCustomFonts();
 
         // Exception reporting. Disabled for debug builds.
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-        Fabric.with(this, crashlyticsKit); // new Crashlytics()
+        if (BuildConfig.USE_CRASHLYTICS) {
+            Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                    .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                    .build();
+            Fabric.with(this, crashlyticsKit); // new Crashlytics()
+        }
 
         // Loggers
         if (BuildConfig.DEBUG) {
