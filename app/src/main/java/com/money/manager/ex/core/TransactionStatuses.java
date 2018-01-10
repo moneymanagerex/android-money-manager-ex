@@ -39,6 +39,9 @@ public enum TransactionStatuses {
     }
 
     public static TransactionStatuses get(String code) {
+        if (code.equals("N")) {
+            return TransactionStatuses.NONE;
+        }
         for (TransactionStatuses value : TransactionStatuses.values()) {
             String currentCode = value.getCode();
             if (currentCode.equals(code)) {
