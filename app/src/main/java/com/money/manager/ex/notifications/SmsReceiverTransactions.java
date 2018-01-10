@@ -686,9 +686,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String[] searchFor = {
                 "((\\s)at\\s(.*?)\\s+on)", "((\\s)favoring\\s(.*?)\\s+is)",
                 "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])", "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
-                "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(\\s.ay.m)"};
+                "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)"};
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 1};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
