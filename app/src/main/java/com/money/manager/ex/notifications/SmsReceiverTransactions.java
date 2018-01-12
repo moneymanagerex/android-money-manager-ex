@@ -596,6 +596,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
+                        "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))",
                         "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)"
                 };
 
@@ -603,6 +604,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         3, 3, 3,
                         2, 2, 2,
+                        4,
                         2, 2, 1
                 };
 
@@ -724,8 +726,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String reqMatch = "";
         String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s+no+\\s(\\d+))", "(\\/+(\\d+)+\\/)",
                 "((ID(.)?(:)?)+(\\d+))", "((id is+\\s(:)?)+(\\d+))", "((Reference:)(\\s)?(\\d+))",
-                "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)", "((reference number)(.*?)(\\d+))"};
-        int[] getGroup = {2, 2, 2, 5, 4, 4, 2, 4, 4};
+                "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)", "((reference number)(.*?)(\\d+))",
+                "(\\s)?#(\\s?)(\\d+)(\\s?)"};
+        int[] getGroup = {2, 2, 2, 5, 4, 4, 2, 4, 4, 3};
 
         try
         {
