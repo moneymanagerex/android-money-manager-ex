@@ -126,7 +126,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody().toString();
                     }
 
-                    //msgSender = "AT-SIBSMS";
+                    msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
