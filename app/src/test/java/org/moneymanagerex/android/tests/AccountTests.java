@@ -27,6 +27,7 @@ import com.money.manager.ex.domainmodel.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -39,7 +40,7 @@ import static junit.framework.Assert.assertTrue;
  * Test Account model.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountTests {
 
     private Account account;

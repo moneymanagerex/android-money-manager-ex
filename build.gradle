@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }  // Fabric
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // robolectric
         google()
@@ -29,14 +30,15 @@ buildscript {
 }
 
 ext {
-    compileSdkVersion = 26
-    buildToolsVersion = '27.0.2'
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
     supportLibrary = '27.0.2'
     supportDependencies = [
             core             :      "com.android.support:support-core-utils:${supportLibrary}",
             support          :      "com.android.support:support-v4:${supportLibrary}",
+            support_compat   :      "com.android.support:support-compat:${supportLibrary}",
             appCompat        :      "com.android.support:appcompat-v7:${supportLibrary}",
             cardView         :      "com.android.support:cardview-v7:${supportLibrary}",
             design           :      "com.android.support:design:${supportLibrary}",
@@ -52,7 +54,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://maven.google.com" }               // google
-        //todo google()
+        google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.fabric.io/public' }          // fabric
@@ -63,7 +65,6 @@ allprojects {
 //            dirs 'libs'
 //        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
-        google()
     }
 
     /**

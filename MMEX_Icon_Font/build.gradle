@@ -24,7 +24,7 @@ android {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
         versionCode 1000
@@ -49,8 +49,9 @@ if (project.hasProperty('pushall') || project.hasProperty('MMEXIconFontonly')) {
 
 dependencies {
 //    compile project(':library-core')
-    compile(
-            "com.mikepenz:iconics-core:2.9.4@aar",
-            "com.mikepenz:iconics-views:2.9.5@aar"
+    implementation(
+    //compile(
+            "com.mikepenz:iconics-core:3.0.0@aar",
+            "com.mikepenz:iconics-views:3.0.0@aar"
     )
 }

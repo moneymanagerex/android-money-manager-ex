@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -165,10 +165,12 @@ public class MmexApplication
         registerCustomFonts();
 
         // Exception reporting. Disabled for debug builds.
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-        Fabric.with(this, crashlyticsKit); // new Crashlytics()
+        if (BuildConfig.USE_CRASHLYTICS) {
+            Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                    .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                    .build();
+            Fabric.with(this, crashlyticsKit); // new Crashlytics()
+        }
 
         // Loggers
         if (BuildConfig.DEBUG) {
@@ -180,8 +182,16 @@ public class MmexApplication
         initializeDependencyInjection();
 
         // Job Manager initialization.
+        initializeJobManager();
+    }
+
+    /**
+     * Initializes job manager.
+     * Implemented as a separate method so that it can be overridden in unit tests.
+     */
+    public void initializeJobManager() {
         JobManager.create(this)
-            .addJobCreator(new SyncJobCreator());
+                .addJobCreator(new SyncJobCreator());
     }
 
     /**

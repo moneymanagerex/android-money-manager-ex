@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,12 +30,14 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
+import com.money.manager.ex.utils.NotificationUtils;
 
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
 public class RecurringTransactionNotifications {
 
+    public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
 
     public RecurringTransactionNotifications(Context context) {
@@ -69,30 +71,18 @@ public class RecurringTransactionNotifications {
         if (cursor == null) return;
 
         if (cursor.getCount() > 0) {
-            showNotification(cursor);
+            SyncNotificationModel model = getNotificationContent(cursor);
+            showNotification(model);
         }
         cursor.close();
     }
 
-    private void showNotification(Cursor cursor) {
-        CurrencyService currencyService = new CurrencyService(mContext);
+    private void showNotification(SyncNotificationModel model) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        inboxStyle.addLine(model.inboxLine);
 
-        while (cursor.moveToNext()) {
-            String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
-            // check if payee name is null, then put toAccountName
-            if (TextUtils.isEmpty(payeeName))
-                payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
-            // compose text
-            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
-                    " " + payeeName +
-                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
-                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
-            // add line
-            inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
-        }
-
-        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         // create pending intent
         Intent intent = new Intent(getContext(), RecurringTransactionListActivity.class);
@@ -110,7 +100,9 @@ public class RecurringTransactionNotifications {
 
         // create notification
         try {
-            Notification notification = new NotificationCompat.Builder(getContext())
+            NotificationUtils.createNotificationChannel(getContext(), CHANNEL_ID);
+
+            Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(mContext.getString(R.string.application_name))
@@ -119,18 +111,43 @@ public class RecurringTransactionNotifications {
                     .setSmallIcon(R.drawable.ic_stat_notification)
                     .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
                     .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                    .setNumber(cursor.getCount())
+                    .setNumber(model.number)
                     .setStyle(inboxStyle)
                     .setColor(mContext.getResources().getColor(R.color.md_primary))
 //                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
 //                    .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
                     .build();
+
             // notify
             notificationManager.cancel(ID_NOTIFICATION);
             notificationManager.notify(ID_NOTIFICATION, notification);
         } catch (Exception e) {
             Timber.e(e, "showing notification for recurring transaction");
         }
+    }
+
+    private SyncNotificationModel getNotificationContent(Cursor cursor) {
+        SyncNotificationModel result = new SyncNotificationModel();
+
+        result.number = cursor.getCount();
+
+        CurrencyService currencyService = new CurrencyService(mContext);
+
+        while (cursor.moveToNext()) {
+            String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+            // check if payee name is null, then put toAccountName
+            if (TextUtils.isEmpty(payeeName))
+                payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
+            // compose text
+            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+                    " " + payeeName +
+                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
+
+            result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
+        }
+
+        return result;
     }
 
     private Context getContext() {

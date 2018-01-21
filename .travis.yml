@@ -1,4 +1,14 @@
 language: android
+# https://medium.com/@harmittaa/travis-ci-android-example-357f6e632fc4
+sudo: required
+
+env:
+  global:
+    - ANDROID_API=27
+    - EMULATOR_API=21
+    - ANDROID_BUILD_TOOLS=27.0.3
+    - ADB_INSTALL_TIMEOUT=5 # minutes
+
 android:
   components:
     # Uncomment the lines below if you want to
@@ -8,13 +18,9 @@ android:
     - tools
 
     # The BuildTools version used by your project
-    - build-tools-27.0.2
-
+    - build-tools-$ANDROID_BUILD_TOOLS
     # The SDK version used to compile your project
-    # - android-22
-    #- android-24
-    #- android-25
-    - android-27
+    - android-$ANDROID_API
 
     # Additional components
     #- extra-google-google_play_services
@@ -34,10 +40,13 @@ android:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'intel-android-extra-license.+'
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'google-gdk-license-.+'
 
   # This fixes the required permissions for gradle build.
   before_install:
     - chmod +x gradlew
+    - yes | sdkmanager "platforms;android-27"
 
   install:
     # Check install section: http://docs.travis-ci.com/user/build-configuration/#install

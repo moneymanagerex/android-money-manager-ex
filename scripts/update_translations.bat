@@ -61,6 +61,12 @@ set src_locale=%src_lang%-rFR
 set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
+:: Filipino
+set src_lang=fil
+set src_locale=%src_lang%-rPH
+set dest_lang=%src_lang%
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
 :: German
 set src_lang=de
 set src_locale=%src_lang%-rDE
@@ -136,6 +142,12 @@ call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_l
 :: Slovak
 set src_lang=sk
 set src_locale=%src_lang%-rSK
+set dest_lang=%src_lang%
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
+:: Slovenian
+set src_lang=sl
+set src_locale=%src_lang%-rSI
 set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 

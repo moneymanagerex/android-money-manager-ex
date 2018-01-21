@@ -2,6 +2,10 @@
 
 See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.org/) for more user-oriented information.
 
+Dev [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=dev)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
+
+Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=master)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
+
 #### Basic information
 
 Money Manager Ex for Android is a mobile companion to PC/desktop personal finance applications currently available for Windows, Mac OSX and LINUX. It can be used with the same database used by MoneyManagerEx Desktop, or as an addition to GnuCash or other applications that import transactions via .qif files.
@@ -9,6 +13,15 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 #### Links
 
 [![MoneyManagerEx for Android on PlayStore](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](http://play.google.com/store/apps/details?id=com.money.manager.ex)
+
+#### Contributing
+
+There are several ways you can contribute to the project:
+
+- code
+- translation
+- beta testing
+- donations
 
 #### Translate
 
@@ -22,15 +35,16 @@ You can install the Beta version from [Google Play](https://play.google.com/stor
 
 To build the project, the following settings are recommended:
 
-- current stable version of Android Studio, 2.3.2;
-- use JDK 1.8.0.112, (embedded JDK runs out of memory on compilation);
-- Gradle 3.5;
+- current stable version of Android Studio,
+- use embedded JDK,
+- use gradle wrapper.
 
 You will need to generate a custom "fabric.properties" file in "app" directory.
 
-## Travis CI
+## Continuous Integration
 
-Travis CI build is active for the project.
+Travis CI build is active for the project. It runs a build on every check-in and a pull request.
+
 Useful content is available at the Fabric/Travis [demo](https://github.com/plastiv/CrashlyticsDemo). It explains how to generate fabric.properties file during the build, using environment variables.
 The environment variables start with org_gradle_project, i.e. ORG_GRADLE_PROJECT_crashlyticsdemoApikey.
 

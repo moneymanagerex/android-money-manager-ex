@@ -31,6 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -38,31 +39,34 @@ import org.robolectric.annotation.Config;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+
 /**
  * Unit tests for asset allocation service.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AssetAllocationTests {
 
     private AssetAllocationService testObject;
 
-    //@Before
+    @Before
     public void setup() {
         this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
         UnitTestHelper.setupContentProvider();
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.testObject = null;
-        UnitTestHelper.teardownDatabase();
     }
 
-//    @Test
-//    public void testInstantiation() {
-//        assertThat(testObject).isNotNull();
-//    }
+    @Test
+    public void testInstantiation() {
+        assertThat(testObject, notNullValue());
+    }
 
     //@Test
     public void testDataLayer() {

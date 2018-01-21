@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ public class AboutFragment extends Fragment {
         // + " (" + getString(R.string.build) + " " + build + ")"
 
         // Send Feedback
-        TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
+        TextView txtFeedback = view.findViewById(R.id.textViewLinkFeedback);
         text = "<u>" + txtFeedback.getText() + "</u>";
         txtFeedback.setText(Html.fromHtml(text));
         txtFeedback.setOnClickListener(new OnClickListener() {
@@ -89,13 +89,14 @@ public class AboutFragment extends Fragment {
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
                 } catch (Exception e) {
+                    Timber.e(e);
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         // rate application
-        TextView txtRate = (TextView) view.findViewById(R.id.textViewLinkRate);
+        TextView txtRate = view.findViewById(R.id.textViewLinkRate);
         text = "<u>" + txtRate.getText() + "</u>";
         txtRate.setText(Html.fromHtml(text));
         txtRate.setMovementMethod(LinkMovementMethod.getInstance());
@@ -104,7 +105,7 @@ public class AboutFragment extends Fragment {
         txtRate.setOnClickListener(clickListenerRate);
 
         // application issue tracker
-        TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
+        TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
         text = "<u>" + txtIssues.getText() + "</u>";
         txtIssues.setText(Html.fromHtml(text));
         txtIssues.setMovementMethod(LinkMovementMethod.getInstance());
@@ -212,6 +213,7 @@ public class AboutFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
                 startActivity(intent);
             } catch (Exception e) {
+                Timber.e(e);
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }

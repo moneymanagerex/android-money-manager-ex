@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,6 +39,9 @@ public enum TransactionStatuses {
     }
 
     public static TransactionStatuses get(String code) {
+        if (code.equals("N")) {
+            return TransactionStatuses.NONE;
+        }
         for (TransactionStatuses value : TransactionStatuses.values()) {
             String currentCode = value.getCode();
             if (currentCode.equals(code)) {

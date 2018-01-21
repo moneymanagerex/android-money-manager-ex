@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
@@ -45,17 +46,21 @@ import org.robolectric.shadows.ShadowActivity;
 
 import info.javaperformance.money.MoneyFactory;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+
 /**
  * Test Search activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SearchActivityTests {
 
     private ActivityController<SearchActivity> controller;
     private SearchActivity activity;
 
-    //@Before
+    @Before
     public void setUp() {
         this.controller = UnitTestHelper.getController(SearchActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
@@ -64,16 +69,15 @@ public class SearchActivityTests {
         UnitTestHelper.setupLog();
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.controller.destroy();
-        UnitTestHelper.teardownDatabase();
     }
 
-//    @Test
-//    public void activityOpens() {
-//        assertThat(this.activity).isNotNull();
-//    }
+    @Test
+    public void activityOpens() {
+        assertThat(this.activity, notNullValue());
+    }
 
     /**
      * Add two transaction for Dining Out. Search for this sub/category and confirm that the
@@ -164,7 +168,7 @@ public class SearchActivityTests {
         Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(this.activity,
 //            CategoryListActivity.class));
-//        assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
+        assertThat(shadowActivity.getNextStartedActivity(), equalTo(expectedIntent));
 
         // Now simulate that we received the category.
 
@@ -197,7 +201,7 @@ public class SearchActivityTests {
         View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
 //        assertThat(totalNumberView).isInstanceOf(TextView.class);
         TextView totalNumberTextView = (TextView) totalNumberView;
-//        assertThat(totalNumberTextView.getText()).isEqualTo("KM 0.00");
+        assertThat(totalNumberTextView.getText().toString(), equalTo("KM 0.00"));
     }
 
 }

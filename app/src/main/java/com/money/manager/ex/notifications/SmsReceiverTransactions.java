@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1012,6 +1012,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return true;
     }
 
+    /**
+     * Note: Check the new NotificationUtils for creation of notification channel and the code that
+     * utilizes it.
+     * @param intent
+     * @param notificationText
+     */
     private void showNotification(Intent intent, String notificationText) {
 
         int NOTIFICATION_ID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);

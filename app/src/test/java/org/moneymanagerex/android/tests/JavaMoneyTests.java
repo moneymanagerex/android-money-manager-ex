@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,13 +25,12 @@ import com.money.manager.ex.domainmodel.Currency;
 
 import org.javamoney.moneta.FastMoney;
 import org.javamoney.moneta.Money;
-import org.javamoney.moneta.convert.ConversionOperators;
 import org.javamoney.moneta.function.MonetaryOperators;
-import org.javamoney.moneta.function.MonetaryUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -46,7 +45,6 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.MonetaryOperator;
-import javax.money.MonetaryQuery;
 import javax.money.MonetaryRounding;
 import javax.money.RoundingQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
@@ -54,10 +52,11 @@ import javax.money.format.MonetaryFormats;
 
 import timber.log.Timber;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Testing the new JavaMoney library and types. JSR 354
@@ -65,7 +64,7 @@ import static junit.framework.Assert.assertTrue;
  * http://www.baeldung.com/java-money-and-currency
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class JavaMoneyTests {
 
     @Before
@@ -82,23 +81,23 @@ public class JavaMoneyTests {
     public void createInstances() {
         // currency
         CurrencyUnit euro = Monetary.getCurrency("EUR");
-        assertEquals(euro.getCurrencyCode(), "EUR");
+        assertThat(euro.getCurrencyCode(), equalTo("EUR"));
 
         CurrencyUnit aussie = Monetary.getCurrency("AUD");
 
         //MonetaryAmount amount = 20;
 
         Money money = Money.of(150, euro);
-        assertEquals(money.getCurrency().getCurrencyCode(), "EUR");
+        assertThat(money.getCurrency().getCurrencyCode(), equalTo("EUR"));
 
 //        Money division = money.divide(2.54);
 //        Log.d("test", division.toString());
 
         FastMoney fast = FastMoney.of(250, euro);
-        assertEquals(fast.getCurrency().getCurrencyCode(), "EUR");
-        assertEquals(fast.getNumber().toString(), "250.00000");
-        assertEquals(fast.getPrecision(), 2);
-        assertEquals(fast.getScale(), 5);
+        assertThat(fast.getCurrency().getCurrencyCode(), equalTo("EUR"));
+        assertThat(fast.getNumber().toString(), equalTo("250.00000"));
+        assertThat(fast.getPrecision(), equalTo(2));
+        assertThat(fast.getScale(), equalTo(5));
 
         // maximum size for fast money
         // FastMoney maxFast = FastMoney.MAX_VALUE;
@@ -117,7 +116,7 @@ public class JavaMoneyTests {
         cash = cash.add(change);
 
         Money expected = Money.of(12.54, euro);
-        assertEquals(cash, expected);
+        assertThat(cash, equalTo(expected));
     }
 
     @Test
@@ -220,13 +219,13 @@ public class JavaMoneyTests {
         Currency aud = repo.loadCurrency("AUD");
         aud.setConversionRate(2.0);
         boolean saved = repo.update(aud);
-        assertTrue(saved);
+        assertThat(saved, is(true));
 
         // Set USD to 1.5
         Currency usd = repo.loadCurrency("USD");
         usd.setConversionRate(1.5);
         saved = repo.update(usd);
-        assertTrue(saved);
+        assertThat(saved, is(true));
 
     }
 
@@ -280,7 +279,7 @@ public class JavaMoneyTests {
         assertEquals(maximum.toString(), "XXX 92233720368547.75807");
 
         MonetaryAmount zero = FastMoney.of(0, xxx);
-        assertTrue(zero.isZero());
+        assertThat(zero.isZero(), is(true));
 
         MonetaryAmount random = FastMoney.of(358.46, xxx);
         MonetaryAmount copy  = FastMoney.from(random);
@@ -288,7 +287,7 @@ public class JavaMoneyTests {
 
         // change currency
         MonetaryAmount euros = FastMoney.of(random.getNumber(), "EUR");
-        assertEquals(euros.getNumber().doubleValueExact(), random.getNumber().doubleValueExact());
+        assertThat(euros.getNumber().doubleValueExact(), equalTo(random.getNumber().doubleValueExact()));
         assertFalse(euros.getCurrency().equals(random.getCurrency()));
 
         // comparison
@@ -306,12 +305,12 @@ public class JavaMoneyTests {
         MonetaryAmount amount = FastMoney.of(150.545, euro);
         MonetaryRounding rounding = Monetary.getRounding(euro);
         MonetaryAmount rounded = amount.divide(4.5).with(rounding);
-        assertEquals(rounded.toString(), "EUR 33.33");
+        assertThat(rounded.toString(), equalTo("EUR 33.45000"));
 
         // Custom. Arithmetic.
         MonetaryRounding custom = Monetary.getRounding(RoundingQueryBuilder.of()
             .setScale(2).set(RoundingMode.HALF_UP).build());
-        assertEquals(amount.with(custom).toString(), "EUR 150.54");
+        assertThat(amount.with(custom).toString(), equalTo("EUR 150.55000"));
 
         // Custom. Cash.
 //        MonetaryRounding cash = Monetary.getRounding(RoundingQueryBuilder.of()
@@ -319,7 +318,7 @@ public class JavaMoneyTests {
 
         // Default
         MonetaryRounding defaultRounding = Monetary.getDefaultRounding();
-        assertEquals(amount.with(defaultRounding).toString(), "EUR 150.55");
+        assertThat(amount.with(defaultRounding).toString(), equalTo("EUR 150.54000"));
     }
 
 //    @Test
@@ -346,7 +345,7 @@ public class JavaMoneyTests {
     public void canUseJavaMoney() {
         CurrencyUnit usd = Monetary.getCurrency("USD");
 
-        assertNotNull(usd);
+        assertThat(usd, notNullValue());
         assertEquals(usd.getCurrencyCode(), "USD");
         assertEquals(usd.getNumericCode(), 840);
         assertEquals(usd.getDefaultFractionDigits(), 2);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+
+import timber.log.Timber;
 
 import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
@@ -109,7 +111,7 @@ public class DatabaseMigrator14To20 {
         try {
             copy(legacyFile, newFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e);
             return result;
         }
 

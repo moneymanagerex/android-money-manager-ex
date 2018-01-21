@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,6 +28,8 @@ import android.os.Build;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.JobIntentService;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
@@ -42,6 +43,7 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.money.manager.ex.utils.NotificationUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,18 +60,23 @@ import timber.log.Timber;
  * The background service that synchronizes the database file.
  * It is being invoked by the timer.
  * It displays the sync notification and invokes the cloud api.
+ *
+ * Changed to JobIntentService as per
+ * https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f
+ * to make it compatible with Android 8 Oreo.
  */
 public class SyncService
-    extends IntentService {
+        extends JobIntentService {
 
+    public static final int SYNC_JOB_ID = 1000;
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
-    private static final String NOTIFICATION_CHANNEL = "Sync_notification_channel";
 
-    public SyncService() {
-        super("com.money.manager.ex.sync.SyncService");
-    }
+//    public SyncService() {
+//        super("com.money.manager.ex.sync.SyncService");
+//    }
 
-    @Inject RecentDatabasesProvider recentDatabasesProvider;
+    @Inject
+    RecentDatabasesProvider recentDatabasesProvider;
 
     private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
@@ -80,21 +87,17 @@ public class SyncService
         super.onCreate();
 
         compositeSubscription = new CompositeSubscription();
-        mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         MmexApplication.getApp().iocComponent.inject(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
-            startForeground(1, new Notification());
-        }
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
         String action = intent != null
-            ? intent.getAction()
-            : "null";
+                ? intent.getAction()
+                : "null";
         Timber.d("Running sync service: %s", action);
         sendStartEvent();
 
@@ -177,22 +180,13 @@ public class SyncService
         super.onDestroy();
     }
 
-    // private
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        Context context = getBaseContext();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        CharSequence name = context.getString(R.string.app_name);
-        String description = "Sync service notification";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, name, importance);
-        channel.setDescription(description);
-
-        notificationManager.createNotificationChannel(channel);
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
     }
+
+    /*
+        Private
+    */
 
     private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
         final SyncManager sync = new SyncManager(getApplicationContext());
@@ -212,26 +206,26 @@ public class SyncService
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
         compositeSubscription.add(
-            sync.downloadSingle(remoteFile, tempFile)
-                    // do not run on another thread as then the service will be destroyed.
+                sync.downloadSingle(remoteFile, tempFile)
+                        // do not run on another thread as then the service will be destroyed.
 //                    .subscribeOn(Schedulers.io())
-                    .subscribe(new SingleSubscriber<Void>() {
-                        @Override
-                        public void onSuccess(Void value) {
-                            //onDownloadHandler.onPostExecute(true);
-                            afterDownload(notificationManager, tempFile, localFile,
-                                    remoteFile, sync);
-                            sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
-                            sendStopEvent();
-                        }
+                        .subscribe(new SingleSubscriber<Void>() {
+                            @Override
+                            public void onSuccess(Void value) {
+                                //onDownloadHandler.onPostExecute(true);
+                                afterDownload(notificationManager, tempFile, localFile,
+                                        remoteFile, sync);
+                                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                                sendStopEvent();
+                            }
 
-                        @Override
-                        public void onError(Throwable error) {
-                            Timber.e(error, "async download");
-                            sendMessage(SyncServiceMessage.ERROR);
-                            sendStopEvent();
-                        }
-                    })
+                            @Override
+                            public void onError(Throwable error) {
+                                Timber.e(error, "async download");
+                                sendMessage(SyncServiceMessage.ERROR);
+                                sendStopEvent();
+                            }
+                        })
         );
     }
 
@@ -307,7 +301,7 @@ public class SyncService
         // are there local changes?
         boolean isLocalModified = false;
         DatabaseMetadata currentDb = this.recentDatabasesProvider
-            .get(localFile.getAbsolutePath());
+                .get(localFile.getAbsolutePath());
         // todo remove the null-check below after the default record is established.
         if (currentDb != null) {
             isLocalModified = currentDb.isLocalFileChanged;

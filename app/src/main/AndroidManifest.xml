@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -35,6 +35,9 @@
     <!-- SMS Interface -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- for compatibility of Job Scheduler with Android versions prior to 8. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <supports-screens
         android:largeScreens="true"
@@ -399,7 +402,7 @@
         <service android:name=".notifications.RecurringTransactionIntentService" />
         <service
             android:name=".widget.AccountBillsWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".widget.SummaryDashExtension"
             android:icon="@drawable/ic_stat_notification"
@@ -440,7 +443,8 @@
         </service>
         <service
             android:name=".sync.SyncService"
-            android:exported="false">
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE">
             <intent-filter>
                 <action android:name="${applicationId}.sync.action.SYNC" />
                 <action android:name="${applicationId}.sync.action.DOWNLOAD" />
