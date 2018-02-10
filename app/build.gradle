@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 977
+        versionCode 978
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -150,7 +150,7 @@ dependencies {
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.4'
+            , 'com.cloudrail:cloudrail-si-android:2.21.5'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -204,14 +204,14 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:3.0.0@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:3.0.0@aar'
+            , 'com.mikepenz:iconics-core:3.0.2@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:3.0.2@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
-            , 'com.evernote:android-job:1.2.1'
+            , 'com.evernote:android-job:1.2.4'
     )
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
@@ -240,7 +240,7 @@ dependencies {
 
             'commons-io:commons-io:2.5',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.6.1',
+            'org.robolectric:shadows-multidex:3.7',
             'org.robolectric:shadows-httpclient:3.6.1',
             //'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
