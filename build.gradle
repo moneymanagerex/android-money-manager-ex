@@ -17,11 +17,13 @@
 
 buildscript {
     repositories {
+        google()
         jcenter()
-        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }  // Fabric
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // robolectric
-        google()
+        maven { url "https://clojars.org/repo/" }               // icepick
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -52,19 +54,19 @@ ext {
 // This applies to the projects underneath.
 allprojects {
     repositories {
-        jcenter()
-        maven { url "https://maven.google.com" }               // google
         google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
+        jcenter()
+//        maven { url "https://maven.google.com" }                // google
         maven { url 'https://maven.fabric.io/public' }          // fabric
         maven { url 'http://maven.cloudrail.com' }              // cloudrail
-        maven {url "https://clojars.org/repo/"}                 // icepick
+        maven { url "https://clojars.org/repo/" }               // icepick
 //        flatDir {
 //            // use libs directory as a Maven repository.
 //            dirs 'libs'
 //        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 
     /**

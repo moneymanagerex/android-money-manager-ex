@@ -187,7 +187,7 @@ dependencies {
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.11.2'              // HTML parsing.
-            , 'com.google.guava:guava:23.0-android' // collection libraries
+            , 'com.google.guava:guava:24.0-jre'     // collection libraries
             , 'com.android.support:multidex:1.0.2'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
@@ -223,11 +223,11 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.10'
     annotationProcessor 'org.parceler:parceler:1.1.10'
     // Dagger 2
-    implementation 'com.google.dagger:dagger:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.12'
+    implementation 'com.google.dagger:dagger:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     // ButterKnife
-    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // IcePick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
