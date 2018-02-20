@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 978
+        versionCode 979
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -150,7 +150,7 @@ dependencies {
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.5'
+            , 'com.cloudrail:cloudrail-si-android:2.21.6'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -195,7 +195,7 @@ dependencies {
             , 'io.reactivex:rxjava:1.3.3'
             // , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2'
-            , 'com.jakewharton.timber:timber:4.6.0'
+            , 'com.jakewharton.timber:timber:4.6.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
             // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
             // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
@@ -204,8 +204,8 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:3.0.2@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:3.0.2@aar'
+            , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:3.0.3@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
@@ -236,12 +236,11 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.0',
-            'org.robolectric:robolectric:3.6.1',
-
             'commons-io:commons-io:2.5',
+            'org.robolectric:robolectric:3.7.1',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.7',
-            'org.robolectric:shadows-httpclient:3.6.1',
+            'org.robolectric:shadows-multidex:3.7.1',
+            'org.robolectric:shadows-httpclient:3.7.1',
             //'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
