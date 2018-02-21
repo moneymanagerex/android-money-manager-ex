@@ -27,8 +27,6 @@ import android.util.Log;
 
 import com.caverock.androidsvg.CSSParser.Ruleset;
 
-import org.xml.sax.SAXException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,8 +58,9 @@ import java.util.Set;
  * 
  * <pre>
  * {@code
+ * SVG.registerExternalFileResolver(myResolver);
+ *
  * SVG  svg = SVG.getFromAsset(getContext().getAssets(), svgPath);
- * svg.registerExternalFileResolver(myResolver);
  *
  * Bitmap  newBM = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
  * Canvas  bmcanvas = new Canvas(newBM);
@@ -85,16 +84,19 @@ public class SVG
 
    private static final double  SQRT2 = 1.414213562373095;
 
+   // Resolver
+   private static SVGExternalFileResolver  externalFileResolver = null;
 
+   // Parser configuration
+   private static boolean  enableInternalEntities = true;
+
+   // The root svg element
    private Svg     rootElement = null;
 
    // Metadata
    private String  title = "";
    private String  desc = "";
 
-   // Resolver
-   private SVGExternalFileResolver  fileResolver = null;
-   
    // DPI to use for rendering
    private float   renderDPI = 96f;   // default is 96
 
@@ -128,6 +130,7 @@ public class SVG
    }
 
 
+   /* package private */
    SVG()
    {
    }
@@ -144,7 +147,7 @@ public class SVG
    public static SVG  getFromInputStream(InputStream is) throws SVGParseException
    {
       SVGParser  parser = new SVGParser();
-      return parser.parse(is);
+      return parser.parse(is, enableInternalEntities);
    }
 
 
@@ -159,7 +162,7 @@ public class SVG
    public static SVG  getFromString(String svg) throws SVGParseException
    {
       SVGParser  parser = new SVGParser();
-      return parser.parse(new ByteArrayInputStream(svg.getBytes()));
+      return parser.parse(new ByteArrayInputStream(svg.getBytes()), enableInternalEntities);
    }
 
 
@@ -192,7 +195,7 @@ public class SVG
       SVGParser    parser = new SVGParser();
       InputStream  is = resources.openRawResource(resourceId);
       try {
-         return parser.parse(is);
+         return parser.parse(is, enableInternalEntities);
       } finally {
          try {
            is.close();
@@ -218,7 +221,7 @@ public class SVG
       SVGParser    parser = new SVGParser();
       InputStream  is = assetManager.open(filename);
       try {
-         return parser.parse(is);
+         return parser.parse(is, enableInternalEntities);
       } finally {
          try {
            is.close();
@@ -233,15 +236,60 @@ public class SVG
 
 
    /**
+    * Tells the parser whether to allow the expansion of internal entities.
+    * An example of document containing an internal entities is:
+    *
+    * {@code
+    * <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+    *   <!ENTITY hello "Hello World!">
+    * ]>
+    * <svg>
+    *    <text>&hello;</text>
+    * </svg>
+    * }
+    *
+    * Entities are useful in some circumstances, but SVG files that use them are quite rare.  Note
+    * also that enabling entity expansion makes you vulnerable to the
+    * <a href="https://en.wikipedia.org/wiki/Billion_laughs_attack">Billion Laughs Attack</a>
+    *
+    * Entity expansion is enabled by default.
+    *
+    * @param enable Set true if you want to enable entity expansion by the parser.
+    * @since 1.3
+    */
+   public static void  setInternalEntitiesEnabled(boolean enable)
+   {
+      enableInternalEntities = enable;
+   }
+
+   /**
+    * @return true if internal entity expansion is enabled in the parser
+    * @since 1.3
+    */
+   public static boolean  isInternalEntitiesEnabled()
+   {
+      return enableInternalEntities;
+   }
+
+
+   /**
     * Register an {@link SVGExternalFileResolver} instance that the renderer should use when resolving
-    * external references such as images and fonts.
+    * external references such as images, fonts, and CSS stylesheets.
     * 
     * @param fileResolver the resolver to use.
     */
-   @SuppressWarnings({"WeakerAccess", "unused"})
-   public void  registerExternalFileResolver(SVGExternalFileResolver fileResolver)
+   public static void  registerExternalFileResolver(SVGExternalFileResolver fileResolver)
    {
-      this.fileResolver = fileResolver;
+      externalFileResolver = fileResolver;
+   }
+
+
+   /**
+    * De-register the current {@link SVGExternalFileResolver} instance.
+    */
+   public static void  deregisterExternalFileResolver()
+   {
+      externalFileResolver = null;
    }
 
 
@@ -319,7 +367,7 @@ public class SVG
     * 
     * @param widthInPixels the width of the initial viewport
     * @param heightInPixels the height of the initial viewport
-    * @return a Picture object suitable for later rendering using {@code Canvas.darwPicture()}
+    * @return a Picture object suitable for later rendering using {@code Canvas.drawPicture()}
     */
    @SuppressWarnings({"WeakerAccess", "unused"})
    public Picture  renderToPicture(int widthInPixels, int heightInPixels)
@@ -629,11 +677,7 @@ public class SVG
       if (this.rootElement == null)
          throw new IllegalArgumentException("SVG document is empty");
 
-      try {
-        this.rootElement.width = SVGParser.parseLength(value);
-      } catch (SAXException e) {
-         throw new SVGParseException(e.getMessage());
-      }
+      this.rootElement.width = SVGParser.parseLength(value);
    }
 
 
@@ -690,11 +734,7 @@ public class SVG
       if (this.rootElement == null)
          throw new IllegalArgumentException("SVG document is empty");
 
-      try {
-        this.rootElement.height = SVGParser.parseLength(value);
-      } catch (SAXException e) {
-         throw new SVGParseException(e.getMessage());
-      }
+      this.rootElement.height = SVGParser.parseLength(value);
    }
 
 
@@ -1030,7 +1070,7 @@ public class SVG
       SvgPaint   stroke;
       Float      strokeOpacity;
       Length     strokeWidth;
-      LineCaps   strokeLineCap;
+      LineCap    strokeLineCap;
       LineJoin   strokeLineJoin;
       Float      strokeMiterLimit;
       Length[]   strokeDashArray;
@@ -1090,7 +1130,7 @@ public class SVG
          EvenOdd
       }
 
-      public enum LineCaps
+      public enum LineCap
       {
          Butt,
          Round,
@@ -1157,7 +1197,7 @@ public class SVG
          def.stroke = null;         // none
          def.strokeOpacity = 1f;
          def.strokeWidth = new Length(1f);
-         def.strokeLineCap = LineCaps.Butt;
+         def.strokeLineCap = LineCap.Butt;
          def.strokeLineJoin = LineJoin.Miter;
          def.strokeMiterLimit = 4f;
          def.strokeDashArray = null;
@@ -1230,12 +1270,14 @@ public class SVG
    {
    }
 
+
    static class Colour extends SvgPaint
    {
       int colour;
       
       static final Colour BLACK = new Colour(0xff000000);  // Black singleton - a common default value.
-      
+      static final Colour TRANSPARENT = new Colour(0);     // Transparent black
+
       Colour(int val)
       {
          this.colour = val;
@@ -1246,6 +1288,7 @@ public class SVG
          return String.format("#%08x", colour);
       }
    }
+
 
    // Special version of Colour that indicates use of 'currentColor' keyword
    static class CurrentColor extends SvgPaint
@@ -1457,18 +1500,20 @@ public class SVG
 
 
    // Any object in the tree that corresponds to an SVG element
-   static class SvgElementBase extends SvgObject
+   static abstract class SvgElementBase extends SvgObject
    {
       String        id = null;
       Boolean       spacePreserve = null;
       Style         baseStyle = null;   // style defined by explicit style attributes in the element (eg. fill="black")
       Style         style = null;       // style expressed in a 'style' attribute (eg. style="fill:black")
       List<String>  classNames = null;  // contents of the 'class' attribute
+
+      abstract String  getNodeName();
    }
 
 
    // Any object in the tree that corresponds to an SVG element
-   static class SvgElement extends SvgElementBase
+   static abstract class SvgElement extends SvgElementBase
    {
       Box     boundingBox = null;
    }
@@ -1491,7 +1536,7 @@ public class SVG
 
 
    // Any element that can appear inside a <switch> element.
-   static class  SvgConditionalElement extends SvgElement implements SvgConditional
+   static abstract class  SvgConditionalElement extends SvgElement implements SvgConditional
    {
       Set<String>  requiredFeatures = null;
       String       requiredExtensions = null;
@@ -1525,11 +1570,11 @@ public class SVG
    interface SvgContainer
    {
       List<SvgObject>  getChildren();
-      void             addChild(SvgObject elem) throws SAXException;
+      void             addChild(SvgObject elem) throws SVGParseException;
    }
 
 
-   static class SvgConditionalContainer extends SvgElement implements SvgContainer, SvgConditional
+   static abstract class SvgConditionalContainer extends SvgElement implements SvgContainer, SvgConditional
    {
       List<SvgObject> children = new ArrayList<>();
 
@@ -1542,7 +1587,7 @@ public class SVG
       @Override
       public List<SvgObject>  getChildren() { return children; }
       @Override
-      public void addChild(SvgObject elem) throws SAXException  { children.add(elem); }
+      public void addChild(SvgObject elem) throws SVGParseException  { children.add(elem); }
 
       @Override
       public void setRequiredFeatures(Set<String> features) { this.requiredFeatures = features; }
@@ -1573,13 +1618,13 @@ public class SVG
    }
 
 
-   static class SvgPreserveAspectRatioContainer extends SvgConditionalContainer
+   static abstract class SvgPreserveAspectRatioContainer extends SvgConditionalContainer
    {
       PreserveAspectRatio  preserveAspectRatio = null;
    }
 
 
-   static class SvgViewBoxContainer extends SvgPreserveAspectRatioContainer
+   static abstract class SvgViewBoxContainer extends SvgPreserveAspectRatioContainer
    {
       Box  viewBox;
    }
@@ -1592,6 +1637,9 @@ public class SVG
       Length  width;
       Length  height;
       public String  version;
+
+      @Override
+      String  getNodeName() { return "svg"; }
    }
 
 
@@ -1602,6 +1650,9 @@ public class SVG
 
       @Override
       public void setTransform(Matrix transform) { this.transform = transform; }
+
+      @Override
+      String  getNodeName() { return "group"; }
    }
 
 
@@ -1614,6 +1665,8 @@ public class SVG
    // referenced from other parts of the file.
    static class Defs extends Group implements NotDirectlyRendered
    {
+      @Override
+      String  getNodeName() { return "defs"; }
    }
 
 
@@ -1642,6 +1695,9 @@ public class SVG
    {
       PathDefinition  d;
       Float           pathLength;
+
+      @Override
+      String  getNodeName() { return "path"; }
    }
 
 
@@ -1653,6 +1709,9 @@ public class SVG
       Length  height;
       Length  rx;
       Length  ry;
+
+      @Override
+      String  getNodeName() { return "rect"; }
    }
 
 
@@ -1661,6 +1720,9 @@ public class SVG
       Length  cx;
       Length  cy;
       Length  r;
+
+      @Override
+      String  getNodeName() { return "circle"; }
    }
 
 
@@ -1670,6 +1732,9 @@ public class SVG
       Length  cy;
       Length  rx;
       Length  ry;
+
+      @Override
+      String  getNodeName() { return "ellipse"; }
    }
 
 
@@ -1679,17 +1744,25 @@ public class SVG
       Length  y1;
       Length  x2;
       Length  y2;
+
+      @Override
+      String  getNodeName() { return "line"; }
    }
 
 
    static class PolyLine extends GraphicsElement
    {
       float[]  points;
+
+      @Override
+      String  getNodeName() { return "polyline"; }
    }
 
 
    static class Polygon extends PolyLine
    {
+      @Override
+      String  getNodeName() { return "polygon"; }
    }
 
 
@@ -1706,20 +1779,20 @@ public class SVG
    }
    
 
-   static class  TextContainer extends SvgConditionalContainer
+   static abstract class  TextContainer extends SvgConditionalContainer
    {
       @Override
-      public void  addChild(SvgObject elem) throws SAXException
+      public void  addChild(SvgObject elem) throws SVGParseException
       {
          if (elem instanceof TextChild)
             children.add(elem);
          else
-            throw new SAXException("Text content elements cannot contain "+elem+" elements.");
+            throw new SVGParseException("Text content elements cannot contain "+elem+" elements.");
       }
    }
 
 
-   static class  TextPositionedContainer extends TextContainer
+   static abstract class  TextPositionedContainer extends TextContainer
    {
       List<Length>  x;
       List<Length>  y;
@@ -1734,6 +1807,8 @@ public class SVG
 
       @Override
       public void setTransform(Matrix transform) { this.transform = transform; }
+      @Override
+      String  getNodeName() { return "text"; }
    }
 
 
@@ -1745,6 +1820,8 @@ public class SVG
       public void  setTextRoot(TextRoot obj) { this.textRoot = obj; }
       @Override
       public TextRoot  getTextRoot() { return this.textRoot; }
+      @Override
+      String  getNodeName() { return "tspan"; }
    }
 
 
@@ -1781,6 +1858,8 @@ public class SVG
       public void  setTextRoot(TextRoot obj) { this.textRoot = obj; }
       @Override
       public TextRoot  getTextRoot() { return this.textRoot; }
+      @Override
+      String  getNodeName() { return "tref"; }
    }
 
 
@@ -1795,6 +1874,8 @@ public class SVG
       public void  setTextRoot(TextRoot obj) { this.textRoot = obj; }
       @Override
       public TextRoot  getTextRoot() { return this.textRoot; }
+      @Override
+      String  getNodeName() { return "textPath"; }
    }
 
 
@@ -1806,6 +1887,8 @@ public class SVG
 
    static class Symbol extends SvgViewBoxContainer implements NotDirectlyRendered
    {
+      @Override
+      String  getNodeName() { return "symbol"; }
    }
 
 
@@ -1817,10 +1900,13 @@ public class SVG
       Length   markerWidth;
       Length   markerHeight;
       Float    orient;
+
+      @Override
+      String  getNodeName() { return "marker"; }
    }
 
 
-   static class GradientElement extends SvgElementBase implements SvgContainer
+   static abstract class GradientElement extends SvgElementBase implements SvgContainer
    {
       List<SvgObject> children = new ArrayList<>();
 
@@ -1836,12 +1922,12 @@ public class SVG
       }
 
       @Override
-      public void addChild(SvgObject elem) throws SAXException
+      public void addChild(SvgObject elem) throws SVGParseException
       {
          if (elem instanceof Stop)
             children.add(elem);
          else
-            throw new SAXException("Gradient elements cannot contain "+elem+" elements.");
+            throw new SVGParseException("Gradient elements cannot contain "+elem+" elements.");
       }
    }
 
@@ -1855,7 +1941,9 @@ public class SVG
       @Override
       public List<SvgObject> getChildren() { return Collections.emptyList(); }
       @Override
-      public void addChild(SvgObject elem) throws SAXException { /* do nothing */ }
+      public void addChild(SvgObject elem) throws SVGParseException { /* do nothing */ }
+      @Override
+      String  getNodeName() { return "stop"; }
    }
 
 
@@ -1865,6 +1953,9 @@ public class SVG
       Length  y1;
       Length  x2;
       Length  y2;
+
+      @Override
+      String  getNodeName() { return "linearGradient"; }
    }
 
 
@@ -1875,12 +1966,18 @@ public class SVG
       Length  r;
       Length  fx;
       Length  fy;
+
+      @Override
+      String  getNodeName() { return "radialGradient"; }
    }
 
 
    static class ClipPath extends Group implements NotDirectlyRendered
    {
       Boolean  clipPathUnitsAreUser;
+
+      @Override
+      String  getNodeName() { return "clipPath"; }
    }
 
 
@@ -1894,6 +1991,9 @@ public class SVG
       Length   width;
       Length   height;
       String   href;
+
+      @Override
+      String  getNodeName() { return "pattern"; }
    }
 
 
@@ -1908,11 +2008,15 @@ public class SVG
 
       @Override
       public void setTransform(Matrix transform) { this.transform = transform; }
+      @Override
+      String  getNodeName() { return "image"; }
    }
 
 
    protected static class View extends SvgViewBoxContainer implements NotDirectlyRendered
    {
+      @Override
+      String  getNodeName() { return "view"; }
    }
 
 
@@ -1924,6 +2028,9 @@ public class SVG
       Length   y;
       Length   width;
       Length   height;
+
+      @Override
+      String  getNodeName() { return "mask"; }
    }
 
 
@@ -1938,7 +2045,9 @@ public class SVG
       @Override
       public List<SvgObject> getChildren() { return Collections.emptyList(); }
       @Override
-      public void addChild(SvgObject elem) throws SAXException { /* do nothing */ }
+      public void addChild(SvgObject elem) throws SVGParseException { /* do nothing */ }
+      @Override
+      String  getNodeName() { return "solidColor"; }
    }
 
 
@@ -1958,9 +2067,9 @@ public class SVG
    }
 
 
-   SVGExternalFileResolver  getFileResolver()
+   static SVGExternalFileResolver  getFileResolver()
    {
-      return fileResolver;
+      return externalFileResolver;
    }
 
 

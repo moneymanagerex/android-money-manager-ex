@@ -16,21 +16,18 @@
 
 package com.caverock.androidsvg;
 
-import org.xml.sax.SAXException;
-
 /**
- * Thrown by the parser if a problem is found in the SVG file.
- * Extends SAXException rather than Exception to avoid unnecessary casts in the SAX parser handling code.
+ * Thrown by the CSS parser if a problem is found while parsing a CSS file.
  */
 
-public class SVGParseException extends SAXException
+public class CSSParseException extends Exception
 {
-   SVGParseException(String msg)
+   CSSParseException(String msg)
    {
       super(msg);
    }
 
-   SVGParseException(String msg, Exception cause)
+   CSSParseException(String msg, Exception cause)
    {
       super(msg, cause);
    }
