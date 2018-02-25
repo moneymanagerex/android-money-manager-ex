@@ -16,12 +16,6 @@
 
 package com.caverock.androidsvg;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import org.xml.sax.SAXException;
-
 import android.util.Log;
 
 import com.caverock.androidsvg.SVG.SvgContainer;
@@ -29,19 +23,24 @@ import com.caverock.androidsvg.SVG.SvgElementBase;
 import com.caverock.androidsvg.SVG.SvgObject;
 import com.caverock.androidsvg.SVGParser.TextScanner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 /**
- * A very simple CSS parser that is not very compliant with the CSS spec but
+ * A very simple CSS parser that is not entirely compliant with the CSS spec but
  * hopefully parses almost all the CSS we are likely to strike in an SVG file.
- * The main goals are to (a) be small, and (b) parse the CSS in a Corel Draw SVG file.
  */
 public class CSSParser
 {
    private static final String  TAG = "AndroidSVG CSSParser";
 
+   static final String  CSS_MIME_TYPE = "text/css";
+
    private static final String  ID = "id";
    private static final String  CLASS = "class";
 
-   private MediaType  rendererMediaType = null;
+   private MediaType deviceMediaType = null;
 
    private boolean  inMediaRule = false;
 
@@ -50,15 +49,16 @@ public class CSSParser
    enum MediaType
    {
       all,
-      aural,
-      braille,
-      embossed,
-      handheld,
+      aural,       // deprecated
+      braille,     // deprecated
+      embossed,    // deprecated
+      handheld,    // deprecated
       print,
-      projection,
+      projection,  // deprecated
       screen,
-      tty,
-      tv
+      speech,
+      tty,         // deprecated
+      tv           // deprecated
    }
 
    private enum Combinator
@@ -173,7 +173,7 @@ public class CSSParser
          if (this.rules == null)
             this.rules = new ArrayList<>(rules.rules.size());
          for (Rule rule: rules.rules) {
-            this.rules.add(rule);
+            this.add(rule);
          }
       }
 
@@ -277,13 +277,19 @@ public class CSSParser
 
 
    
-   CSSParser(MediaType rendererMediaType)
+   CSSParser()
    {
-      this.rendererMediaType = rendererMediaType;
+      this.deviceMediaType = MediaType.screen;
    }
 
 
-   Ruleset  parse(String sheet) throws SAXException
+   CSSParser(MediaType rendererMediaType)
+   {
+      this.deviceMediaType = rendererMediaType;
+   }
+
+
+   Ruleset  parse(String sheet)
    {
       CSSTextScanner  scan = new CSSTextScanner(sheet);
       scan.skipWhitespace();
@@ -292,13 +298,11 @@ public class CSSParser
    }
 
 
-   static boolean mediaMatches(String mediaListStr, MediaType rendererMediaType) throws SAXException
+   static boolean mediaMatches(String mediaListStr, MediaType rendererMediaType)
    {
       CSSTextScanner  scan = new CSSTextScanner(mediaListStr);
       scan.skipWhitespace();
       List<MediaType>  mediaList = parseMediaList(scan);
-      if (!scan.empty())
-         throw new SAXException("Invalid @media type list");
       return mediaMatches(mediaList, rendererMediaType);
    }
 
@@ -379,7 +383,7 @@ public class CSSParser
        * Returns true if it found one.
        * Returns false if there was an error or the input is empty.
        */
-      boolean  nextSimpleSelector(Selector selector) throws SAXException
+      boolean  nextSimpleSelector(Selector selector) throws CSSParseException
       {
          if (empty())
             return false;
@@ -418,7 +422,7 @@ public class CSSParser
                   selectorPart = new SimpleSelector(combinator, null);
                String  value = nextIdentifier();
                if (value == null)
-                  throw new SAXException("Invalid \".class\" selector in <style> element");
+                  throw new CSSParseException("Invalid \".class\" selector");
                selectorPart.addAttrib(CLASS, AttribOp.EQUALS, value);
                selector.addedAttributeOrPseudo();
                continue;
@@ -431,7 +435,7 @@ public class CSSParser
                   selectorPart = new SimpleSelector(combinator, null);
                String  value = nextIdentifier();
                if (value == null)
-                  throw new SAXException("Invalid \"#id\" selector in <style> element");
+                  throw new CSSParseException("Invalid \"#id\" selector");
                selectorPart.addAttrib(ID, AttribOp.EQUALS, value);
                selector.addedIdAttribute();
             }
@@ -446,7 +450,7 @@ public class CSSParser
                String  attrName = nextIdentifier();
                String  attrValue = null;
                if (attrName == null)
-                  throw new SAXException("Invalid attribute selector in <style> element");
+                  throw new CSSParseException("Invalid attribute selector");
                skipWhitespace();
                AttribOp  op = null;
                if (consume('='))
@@ -459,11 +463,11 @@ public class CSSParser
                   skipWhitespace();
                   attrValue = nextAttribValue();
                   if (attrValue == null)
-                     throw new SAXException("Invalid attribute selector in <style> element");
+                     throw new CSSParseException("Invalid attribute selector");
                   skipWhitespace();
                }
                if (!consume(']'))
-                  throw new SAXException("Invalid attribute selector in <style> element");
+                  throw new CSSParseException("Invalid attribute selector");
                selectorPart.addAttrib(attrName, (op == null) ? AttribOp.EXISTS : op, attrValue);
                selector.addedAttributeOrPseudo();
                continue;
@@ -539,13 +543,156 @@ public class CSSParser
          return null;
       }
 
+      /*
+       * Scans for a string token
+       */
+      String  nextCSSString()
+      {
+         if (empty())
+            return null;
+         int  ch = input.charAt(position);
+         int  endQuote = ch;
+         if (ch != '\'' && ch != '"')
+            return null;
+
+         StringBuffer  sb = new StringBuffer();
+         position++;
+         ch = nextChar();
+         while (ch != -1 && ch != endQuote)
+         {
+            if (ch == '\\') {
+              // Escaped char sequence
+               ch = nextChar();
+               if (ch == -1)    // EOF: do nothing
+                  continue;
+               if (ch == '\n' || ch == '\r' || ch == '\f') {  // a CSS newline
+                  ch = nextChar();
+                  continue;     // Newline: consume it
+               }
+               int  hc = hexChar(ch);
+               if (hc != -1) {
+                  int  codepoint = hc;
+                  for (int i=1; i<=5; i++) {
+                     ch = nextChar();
+                     hc = hexChar(ch);
+                     if (hc == -1)
+                        break;
+                     codepoint = codepoint * 16 + hc;
+                  }
+                  sb.append((char) codepoint);
+                  continue;
+               }
+               // Other chars just unescape to themselves
+               // Fall through to append
+            }
+            sb.append((char) ch);
+            ch = nextChar();
+         }
+         return sb.toString();
+      }
+
+
+      private int  hexChar(int ch)
+      {
+         if (ch >= '0' && ch <= '9')
+            return ((int)ch - (int)'0');
+         if (ch >= 'A' && ch <= 'F')
+            return ((int)ch - (int)'A') + 10;
+         if (ch >= 'a' && ch <= 'f')
+            return ((int)ch - (int)'a') + 10;
+         return -1;
+      }
+
+
+      /*
+       * Scans for a url("...")
+       * Called a <url> in the CSS spec.
+       */
+      String  nextURL()
+      {
+         if (empty())
+            return null;
+         int  start = position;
+         if (!consume("url("))
+            return null;
+
+         skipWhitespace();
+
+         String url = nextCSSString();
+         if (url == null)
+            url = nextLegacyURL();  // legacy quote-less url(...).  Called a <url-token> in the CSS3 spec.
+
+         if (url == null) {
+            position = start;
+            return null;
+         }
+
+         skipWhitespace();
+
+         if (empty() || consume(")"))
+            return url;
+
+         position = start;
+         return null;
+      }
+
+
+      /*
+       * Scans for a legacy URL string
+       * See nextURLToken().
+       */
+      String  nextLegacyURL()
+      {
+         StringBuffer  sb = new StringBuffer();
+
+         while (!empty())
+         {
+            int  ch = input.charAt(position);
+
+            if (ch == '\'' || ch == '"' || ch == '(' || ch == ')' || isWhitespace(ch) || Character.isISOControl(ch))
+               break;
+
+            position++;
+            if (ch == '\\')
+            {
+               if (empty())    // EOF: do nothing
+                  continue;
+               // Escaped char sequence
+               ch = input.charAt(position++);
+               if (ch == '\n' || ch == '\r' || ch == '\f') {  // a CSS newline
+                  continue;     // Newline: consume it
+               }
+               int  hc = hexChar(ch);
+               if (hc != -1) {
+                  int  codepoint = hc;
+                  for (int i=1; i<=5; i++) {
+                     if (empty())
+                        break;
+                     hc = hexChar( input.charAt(position) );
+                     if (hc == -1)  // Not a hex char
+                        break;
+                     position++;
+                     codepoint = codepoint * 16 + hc;
+                  }
+                  sb.append((char) codepoint);
+                  continue;
+               }
+               // Other chars just unescape to themselves
+               // Fall through to append
+            }
+            sb.append((char) ch);
+         }
+         if (sb.length() == 0)
+            return null;
+         return sb.toString();
+      }
    }
 
 
    //==============================================================================
 
 
-   // Returns true if 'rendererMediaType' matches one of the media types in 'mediaList'
+   // Returns true if 'deviceMediaType' matches one of the media types in 'mediaList'
    private static boolean mediaMatches(List<MediaType> mediaList, MediaType rendererMediaType)
    {
       for (MediaType type: mediaList) {
@@ -556,15 +703,17 @@ public class CSSParser
    }
 
 
-   private static List<MediaType> parseMediaList(CSSTextScanner scan) throws SAXException
+   private static List<MediaType> parseMediaList(CSSTextScanner scan)
    {
       ArrayList<MediaType>  typeList = new ArrayList<>();
       while (!scan.empty()) {
-         String  type = scan.nextToken(',');
+         String  type = scan.nextWord();
+         if (type == null)
+            break;
          try {
             typeList.add(MediaType.valueOf(type));
          } catch (IllegalArgumentException e) {
-            throw new SAXException("Invalid @media type list");
+            // Ignore invalid media types
          }
          // If there is a comma, keep looping, otherwise break
          if (!scan.skipCommaWhitespace())
@@ -574,20 +723,20 @@ public class CSSParser
    }
 
 
-   private void  parseAtRule(Ruleset ruleset, CSSTextScanner scan) throws SAXException
+   private void  parseAtRule(Ruleset ruleset, CSSTextScanner scan) throws CSSParseException
    {
       String  atKeyword = scan.nextIdentifier();
       scan.skipWhitespace();
       if (atKeyword == null)
-         throw new SAXException("Invalid '@' rule in <style> element");
+         throw new CSSParseException("Invalid '@' rule");
       if (!inMediaRule && atKeyword.equals("media"))
       {
          List<MediaType>  mediaList = parseMediaList(scan);
          if (!scan.consume('{'))
-            throw new SAXException("Invalid @media rule: missing rule set");
+            throw new CSSParseException("Invalid @media rule: missing rule set");
             
          scan.skipWhitespace();
-         if (mediaMatches(mediaList, rendererMediaType)) {
+         if (mediaMatches(mediaList, deviceMediaType)) {
             inMediaRule = true;
             ruleset.addAll( parseRuleset(scan) );
             inMediaRule = false;
@@ -595,12 +744,32 @@ public class CSSParser
             parseRuleset(scan);  // parse and ignore accompanying ruleset
          }
 
-         if (!scan.consume('}'))
-            throw new SAXException("Invalid @media rule: expected '}' at end of rule set");
+         if (!scan.empty() && !scan.consume('}'))
+            throw new CSSParseException("Invalid @media rule: expected '}' at end of rule set");
 
-      //} else if (atKeyword.equals("charset")) {
-      //} else if (atKeyword.equals("import")) {
       }
+      else if (!inMediaRule && atKeyword.equals("import"))
+      {
+         String  file = scan.nextURL();
+         if (file == null)
+            file = scan.nextCSSString();
+         if (file == null)
+            throw new CSSParseException("Invalid @import rule: expected string or url()");
+
+         scan.skipWhitespace();
+         List<MediaType>  mediaList = parseMediaList(scan);
+
+         if (!scan.empty() && !scan.consume(';'))
+            throw new CSSParseException("Invalid @media rule: expected '}' at end of rule set");
+
+         if (SVG.getFileResolver() != null && mediaMatches(mediaList, deviceMediaType)) {
+            String  css = SVG.getFileResolver().resolveCSSStyleSheet(file);
+            if (css == null)
+               return;
+            ruleset.addAll( parse(css) );
+         }
+      }
+      //} else if (atKeyword.equals("charset")) {
       else
       {
          // Unknown/unsupported at-rule
@@ -630,37 +799,46 @@ public class CSSParser
    }
 
 
-   private Ruleset  parseRuleset(CSSTextScanner scan) throws SAXException
+   private Ruleset  parseRuleset(CSSTextScanner scan)
    {
       Ruleset  ruleset = new Ruleset(); 
-      while (!scan.empty())
+      try
       {
-         if (scan.consume("<!--"))
-            continue;
-         if (scan.consume("-->"))
-            continue;
+         while (!scan.empty())
+         {
+            if (scan.consume("<!--"))
+               continue;
+            if (scan.consume("-->"))
+               continue;
 
-         if (scan.consume('@')) {
-            parseAtRule(ruleset, scan);
-            continue;
+            if (scan.consume('@')) {
+               parseAtRule(ruleset, scan);
+               continue;
+            }
+            if (parseRule(ruleset, scan))
+               continue;
+
+            // Nothing recognisable found. Could be end of rule set. Return.
+            break;
          }
-         if (parseRule(ruleset, scan))
-            continue;
-
-         // Nothing recognisable found. Could be end of rule set. Return.
-         break;
+      }
+      catch (CSSParseException e)
+      {
+         Log.e(TAG, "CSS parser terminated early due to error: " + e.getMessage());
+         if (LibConfig.DEBUG)
+            Log.e(TAG,"Stacktrace:", e);
       }
       return ruleset;
    }
 
 
-   private boolean  parseRule(Ruleset ruleset, CSSTextScanner scan) throws SAXException
+   private boolean  parseRule(Ruleset ruleset, CSSTextScanner scan) throws CSSParseException
    {
       List<Selector>  selectors = parseSelectorGroup(scan);
       if (selectors != null && !selectors.isEmpty())
       {
          if (!scan.consume('{'))
-            throw new SAXException("Malformed rule block in <style> element: missing '{'");
+            throw new CSSParseException("Malformed rule block: expected '{'");
          scan.skipWhitespace();
          SVG.Style  ruleStyle = parseDeclarations(scan);
          scan.skipWhitespace();
@@ -679,7 +857,7 @@ public class CSSParser
    /*
     * Parse a selector group (eg. E, F, G). In many/most cases there will be only one entry.
     */
-   private List<Selector>  parseSelectorGroup(CSSTextScanner scan) throws SAXException
+   private List<Selector>  parseSelectorGroup(CSSTextScanner scan) throws CSSParseException
    {
       if (scan.empty())
          return null;
@@ -707,7 +885,7 @@ public class CSSParser
 
 
    // Parse a list of
-   private SVG.Style  parseDeclarations(CSSTextScanner scan) throws SAXException
+   private SVG.Style  parseDeclarations(CSSTextScanner scan) throws CSSParseException
    {
       SVG.Style  ruleStyle = new SVG.Style();
       while (true)
@@ -715,30 +893,29 @@ public class CSSParser
          String  propertyName = scan.nextIdentifier();
          scan.skipWhitespace();
          if (!scan.consume(':'))
-            break;  // Syntax error. Stop processing CSS rules.
+            throw new CSSParseException("Expected ':'");
          scan.skipWhitespace();
          String  propertyValue = scan.nextPropertyValue();
          if (propertyValue == null)
-            break;  // Syntax error
+            throw new CSSParseException("Expected property value");
          // Check for !important flag.
          scan.skipWhitespace();
          if (scan.consume('!')) {
             scan.skipWhitespace();
             if (!scan.consume("important")) {
-               throw new SAXException("Malformed rule set in <style> element: found unexpected '!'");
+               throw new CSSParseException("Malformed rule set: found unexpected '!'");
             }
             // We don't do anything with these. We just ignore them.
             scan.skipWhitespace();
          }
          scan.consume(';');
+         // TODO: support CSS only values such as "inherit"
          SVGParser.processStyleProperty(ruleStyle, propertyName, propertyValue);
          scan.skipWhitespace();
-         if (scan.consume('}'))
-            return ruleStyle;
-         if (scan.empty())
+         if (scan.empty() || scan.consume('}'))
             break;
       }
-      throw new SAXException("Malformed rule set in <style> element");
+      return ruleStyle;
    }
 
 
@@ -881,19 +1058,9 @@ public class CSSParser
    private static boolean selectorMatch(SimpleSelector sel, List<SvgContainer> ancestors, int ancestorsPos, SvgElementBase obj)
    {
       // Check tag name. tag==null means tag is "*" which matches everything.
-      if (sel.tag != null) {
-         // The Group object does not match its tag ("<g>"), so we have to handle it as a special case.
-         if (sel.tag.equalsIgnoreCase("G"))
-         {
-            if (!(obj instanceof SVG.Group))
-               return false;
-         }
-         // all other element classes should match their tag names
-         else if (!sel.tag.equals(obj.getClass().getSimpleName().toLowerCase(Locale.US)))
-         {
-            return false;
-         }
-      }
+      if (sel.tag != null && !sel.tag.equals(obj.getNodeName().toLowerCase(Locale.US)))
+         return false;
+
       // If here, then tag part matched
 
       // Check the attributes

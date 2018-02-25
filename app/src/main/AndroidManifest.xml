@@ -399,7 +399,9 @@
 
         <!-- services -->
 
-        <service android:name=".notifications.RecurringTransactionIntentService" />
+        <service
+            android:name=".notifications.RecurringTransactionIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_JOB_SERVICE" />

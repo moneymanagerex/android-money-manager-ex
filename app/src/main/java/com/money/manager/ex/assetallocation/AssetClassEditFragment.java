@@ -47,9 +47,6 @@ import info.javaperformance.money.MoneyFactory;
 public class AssetClassEditFragment
     extends Fragment {
 
-//    public static final int CONTEXT_MENU_DELETE = 1;
-    public static final int REQUEST_ASSET_CLASS_PARENT = 1;
-
     public AssetClassEditFragment() {
     }
 
@@ -175,7 +172,7 @@ public class AssetClassEditFragment
                 // send the allocation id to exclude from the selection list.
                 Intent intent = new Intent(getContext(), AssetClassListActivity.class);
                 intent.putExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, assetClass.getId());
-                startActivityForResult(intent, REQUEST_ASSET_CLASS_PARENT);
+                startActivityForResult(intent, RequestCodes.ASSET_CLASS);
             }
         };
 

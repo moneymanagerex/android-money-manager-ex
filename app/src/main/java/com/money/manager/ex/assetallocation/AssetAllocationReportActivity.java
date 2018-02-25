@@ -112,6 +112,10 @@ public class AssetAllocationReportActivity
     }
 
     private String createHtml(AssetClass allocation) {
+        if (allocation == null) {
+            return "N/A";
+        }
+
         String html = "<html>";
         // Styles
         html += "<head>" +
