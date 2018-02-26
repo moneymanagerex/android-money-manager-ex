@@ -1,6 +1,9 @@
 :: To update the translations, build and download the zip file from Crowdin.
 :: Unzip translations into the below location (src_root).
-:: Set the correct paths for src_root and dest_root.
+:: Set the correct paths for src_root and dest_root:
+:: - src_lang = name of the language folder in crowdin .zip file;
+:: - src_locale = language part of the "values" folder inside the src_lang folder;
+:: - dest_lang = folder in android source code
 :: Run this script.
 @echo off
 
@@ -167,6 +170,18 @@ call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_l
 set src_lang=uk
 set src_locale=%src_lang%-rUA
 set dest_lang=%src_lang%
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
+:: Urdu, India
+set src_lang=ur-IN
+set src_locale=ur-rIN
+set dest_lang=ur-rIN
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
+:: Urdu, Pakistan
+set src_lang=ur-PK
+set src_locale=ur-rPK
+set dest_lang=ur-rPK
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Vietnamese
