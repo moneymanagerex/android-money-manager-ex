@@ -17,6 +17,7 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+//apply plugin: 'com.chaquo.python'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -35,6 +36,15 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+//        python {
+////            version "3.6.4"
+//            version "2.7.10"
+//            // staticProxy
+//            ndk {
+//                abiFilters "armeabi-v7a", "x86"
+//            }
+//        }
     }
 
     sourceSets {

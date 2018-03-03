@@ -24,10 +24,12 @@ buildscript {
         maven { url "https://clojars.org/repo/" }               // icepick
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url "https://chaquo.com/maven" } // Chaquopy, Python
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
+//        classpath 'com.chaquo.python:gradle:0.6.0'              // Chaquopy
     }
 }
 
