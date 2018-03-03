@@ -37,14 +37,14 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-//        python {
-////            version "3.6.4"
+        python {
+            version "3.6.3"
 //            version "2.7.10"
-//            // staticProxy
-//            ndk {
-//                abiFilters "armeabi-v7a", "x86"
-//            }
-//        }
+            // staticProxy
+            ndk {
+                abiFilters "armeabi-v7a", "x86"
+            }
+        }
     }
 
     sourceSets {
@@ -160,7 +160,7 @@ dependencies {
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.6'
+            , 'com.cloudrail:cloudrail-si-android:2.21.7'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
