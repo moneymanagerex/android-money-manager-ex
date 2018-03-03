@@ -37,14 +37,13 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        python {
-            version "3.6.3"
-//            version "2.7.10"
-            // staticProxy
-            ndk {
-                abiFilters "armeabi-v7a", "x86"
-            }
-        }
+//        python {
+//            version "3.6.3"
+//            // staticProxy
+//            ndk {
+//                abiFilters "armeabi-v7a", "x86"
+//            }
+//        }
     }
 
     sourceSets {
