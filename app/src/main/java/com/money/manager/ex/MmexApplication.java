@@ -29,7 +29,6 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
-import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
@@ -183,6 +182,10 @@ public class MmexApplication
 
         // Job Manager initialization.
         initializeJobManager();
+
+//        if (! Python.isStarted()) {
+//            Python.start(new AndroidPlatform(this));
+//        }
     }
 
     /**
