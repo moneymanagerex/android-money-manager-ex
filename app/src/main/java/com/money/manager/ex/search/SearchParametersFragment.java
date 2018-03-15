@@ -86,7 +86,7 @@ public class SearchParametersFragment
 
     private SearchParametersViewHolder viewHolder;
 
-    private Spinner spinAccount, spinStatus;
+    private Spinner spinAccount, spinStatus, spinCurrency;
     private EditText txtNotes;
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
@@ -155,6 +155,11 @@ public class SearchParametersFragment
         ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
+
+        // Currency
+        //ArrayAdapter<String> currencyAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
+        //adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinStatus.setAdapter(adapterStatus);
 
         //Payee
         viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
