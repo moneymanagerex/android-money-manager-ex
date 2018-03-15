@@ -799,5 +799,5 @@
     <string name="loan">Loan</string>
     <string name="loan_account">Loan Accounts</string>
     <string name="shares_accounts">Shares Accounts</string>
-
+    <string name="currency">Currency</string>
 </resources>

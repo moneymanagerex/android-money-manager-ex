@@ -15,7 +15,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
@@ -98,6 +97,20 @@
                     android:maxLines="1" />
             </LinearLayout>
 
+            <!-- Currency -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/currency" />
+
+            <Spinner
+                android:id="@+id/spinnerCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/currency" />
+
+            <!-- Status -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
@@ -110,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:prompt="@string/status" />
 
+            <!-- Amount From -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
