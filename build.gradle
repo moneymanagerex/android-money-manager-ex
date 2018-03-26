@@ -36,9 +36,9 @@ buildscript {
 ext {
     compileSdkVersion = 27
     buildToolsVersion = '27.0.3'
+    supportLibrary = '27.1.0'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '27.0.2'
     supportDependencies = [
             core             :      "com.android.support:support-core-utils:${supportLibrary}",
             support          :      "com.android.support:support-v4:${supportLibrary}",
@@ -61,10 +61,6 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }          // fabric
         maven { url 'http://maven.cloudrail.com' }              // cloudrail
         maven { url "https://clojars.org/repo/" }               // icepick
-//        flatDir {
-//            // use libs directory as a Maven repository.
-//            dirs 'libs'
-//        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
         mavenCentral()
         maven { url 'https://jitpack.io' }
