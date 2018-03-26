@@ -1,14 +1,14 @@
 # Money Manager Ex for Android
 
-- <a href="User Manual#Introduction">Introduction</a>
+- [Introduction](#Introduction)
 - [[Concepts]]
 - [[Database]]
 - [[Cloud Synchronization]]
 - Entities
-  - [Accounts](User Manual#Accounts)
+  - [Accounts](#Accounts)
   - [Categories](Categories)
   - [Currencies](Currencies)
-  - <a href="User Manual#Payees">Payees</a>
+  - [Payees](#Payees)
 - [[Transactions]]
   - [Account Transactions List](Account Transactions List)
   - [Void transaction](Void-Transaction)
@@ -16,8 +16,8 @@
   - [Transfers](Transfers)
   - [Transaction Status Filter](Transaction Status Filter)
 - [[Recurring Transactions]]
-<li><a href="User Manual#Transaction_Filter">Transaction Filter</a></li>
-- [[Asset Allocation]]
+- [Transaction Filter](#Transaction_Filter)
+- [Asset Allocation](asset-allocation)
 - [[Settings]]
 - [[FAQ]]
 - [[Search]]
