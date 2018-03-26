@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 981
+        versionCode 982
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -36,14 +36,6 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-//        python {
-//            version "3.6.3"
-//            // staticProxy
-//            ndk {
-//                abiFilters "armeabi-v7a", "x86"
-//            }
-//        }
     }
 
     sourceSets {
@@ -188,10 +180,10 @@ dependencies {
             , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8.2'
-            , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
-            , 'com.squareup.retrofit2:converter-gson:2.3.0'
-            , 'com.squareup.retrofit2:converter-scalars:2.3.0'
-            , 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+            , 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
+            , 'com.squareup.retrofit2:converter-gson:2.4.0'
+            , 'com.squareup.retrofit2:converter-scalars:2.4.0'
+            , 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
             // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
@@ -220,7 +212,7 @@ dependencies {
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
-            , 'com.evernote:android-job:1.2.4'
+            , 'com.evernote:android-job:1.2.5'
     )
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
@@ -246,10 +238,10 @@ dependencies {
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.1',
             'commons-io:commons-io:2.5',
-            'org.robolectric:robolectric:3.7.1',
+            'org.robolectric:robolectric:3.8',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.7.1',
-            'org.robolectric:shadows-httpclient:3.7.1',
+            'org.robolectric:shadows-multidex:3.8',
+            'org.robolectric:shadows-httpclient:3.8',
             //'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
