@@ -36,14 +36,6 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-//        python {
-//            version "3.6.3"
-//            // staticProxy
-//            ndk {
-//                abiFilters "armeabi-v7a", "x86"
-//            }
-//        }
     }
 
     sourceSets {

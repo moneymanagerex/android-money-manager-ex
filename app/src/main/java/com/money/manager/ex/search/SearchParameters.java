@@ -40,6 +40,9 @@ public class SearchParameters {
     // Account
     public Integer accountId;
 
+    // Currency
+    public Integer currencyId;
+
     // Transaction Type
     public boolean deposit;
     public boolean transfer;
