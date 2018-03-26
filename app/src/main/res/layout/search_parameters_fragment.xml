@@ -34,17 +34,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- reset form -->
-            <!--<Button-->
-                <!--android:id="@+id/resetButton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_margin="10dp"-->
-                <!--android:paddingLeft="30dp"-->
-                <!--android:paddingRight="30dp"-->
-                <!--android:text="@string/reset" />-->
-
             <!-- Account -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
