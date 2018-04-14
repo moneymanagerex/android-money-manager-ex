@@ -126,11 +126,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     for (int i = 0; i < msgs.length; i++) {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                        msgSender = "AT-SIBSMS" ;//msgs[i].getOriginatingAddress();
+                        msgSender = msgs[i].getOriginatingAddress();
                         msgBody += msgs[i].getMessageBody().toString();
                     }
 
-                    msgSender = "AT-SIBSMS";
+                    //msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
