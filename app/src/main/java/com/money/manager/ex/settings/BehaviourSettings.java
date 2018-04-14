@@ -75,6 +75,14 @@ public class BehaviourSettings
         set(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS, status);
     }
 
+    public boolean getSmsTransStatusNotification() {
+        return get(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, false);
+    }
+
+    public void setSmsTransStatusNotification(boolean status) {
+        set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
+    }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

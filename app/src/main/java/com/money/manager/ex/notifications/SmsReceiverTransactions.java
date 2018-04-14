@@ -60,6 +60,7 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.NotificationUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
@@ -85,6 +86,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     static String[] fromAccountDetails;
     static String[] toAccountDetails;
+
+    public static String CHANNEL_ID = "SmsTransaction_NotificationChannel";
+    private static final int ID_NOTIFICATION = 0x000A;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -122,16 +126,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     for (int i = 0; i < msgs.length; i++) {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                        msgSender = msgs[i].getOriginatingAddress();
+                        msgSender = "AT-SIBSMS" ;//msgs[i].getOriginatingAddress();
                         msgBody += msgs[i].getMessageBody().toString();
                     }
 
-                    //msgSender = "AT-SIBSMS";
+                    msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
                         // Promotional sms will have sender like AT-012345
-                        // Not sure how this format will be in out side of India. May I need to update if i get sample
+                        // Not sure how this format will be in out side of India. I may need to update if i get sample
 
                         ITransactionEntity model = AccountTransaction.create();
                         mCommon = new EditTransactionCommonFunctions(null, model, database);
@@ -142,9 +146,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
 
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)",
-                                "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)"};
+                                "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)" }; //
 
                         String transType = "";
+
+                        //Handle the string
+                        msgBody = msgBody.replaceAll("[\\t\\n\\r]+"," ");
+                        msgBody = msgBody.replaceAll("  "," ");
 
                         Boolean isDeposit = validateTransType(key_credit_search, msgBody.toLowerCase());
                         Boolean isWithdrawal = validateTransType(key_debit_search, msgBody.toLowerCase());
@@ -231,7 +239,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
                             //get the trans amount
-                            String transAmount = extractTransAmount(msgBody, fromAccCurrencySymbl);
+                            String transAmount = extractTransAmount(0, msgBody, fromAccCurrencySymbl);
+                            String balanceAmount = extractTransAmount(1, msgBody, fromAccCurrencySymbl);
                             String[] transPayee = extractTransPayee(msgBody);
 
                             //If there is no account no. or payee in the msg & no amt, then this is not valid sms to do transaction
@@ -272,12 +281,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                                 mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
 
-                                            } else { // if not, then IMPS transfer tp 3rd party
-
-                                                transType = "Withdrawal";
-                                                mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
-                                                mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
-                                                mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
+                                            } else { // if not, then may be IMPS transfer to 3rd party
 
                                                 //if there is no to account found from mmex db, then check for payee
                                                 //This will helps me to handle 3rd party transfer thru IMPS
@@ -286,13 +290,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                                 }
                                             }
                                         }
-                                        else
-                                        {
-                                            mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
-                                            mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
-                                        }
 
                                         if (!transPayee[0].isEmpty()) {
+
+                                            transType = "Withdrawal";
+
+                                            mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
+                                            mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
+                                            mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
 
                                             mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
                                             mCommon.payeeName = transPayee[1];
@@ -354,6 +359,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             }
                                             else //if transfer already exists, then do nothing
                                             {
+                                                mCommon.transactionEntity = txn;
+                                                t_intent.setAction(Intent.ACTION_EDIT); //Set the action
+
                                                 skipSaveTrans = true;
                                             }
 
@@ -392,19 +400,49 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 if(skipSaveTrans == false) {
                                     if (validateData()) {
                                         if (saveTransaction()) {
-                                            Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
+
                                             autoTransactionStatus = true;
+
+                                            if (behav_settings.getSmsTransStatusNotification()==true)
+                                            {
+                                                t_intent.setAction(Intent.ACTION_EDIT);
+                                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
+
+                                                showNotification(t_intent, msgBody, msgSender, "Successful");
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(context, "MMEX: Bank Transaction Processed for: \n\n" + strExtracted, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (behav_settings.getSmsTransStatusNotification()==true)
+                                            { showNotification(t_intent, msgBody, msgSender, "Save Failed"); }
+                                            else
+                                            { startActivity(mContext, t_intent, null); }
                                         }
                                     }
 
                                     //if transaction is not created automatically, then invoke notification or activity screen
                                     if (autoTransactionStatus == false) {
-                                        startActivity(mContext, t_intent, null);
-                                        //showNotification(t_intent, strExtracted);
+
+                                        if (behav_settings.getSmsTransStatusNotification()==true)
+                                        { showNotification(t_intent, msgBody, msgSender, "Auto Failed"); }
+                                        else
+                                        { startActivity(mContext, t_intent, null); }
                                     }
                                 }
-                                else{
-                                    Toast.makeText(context, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, Toast.LENGTH_LONG).show();
+                                else
+                                {
+                                    if (behav_settings.getSmsTransStatusNotification()==true)
+                                    {
+                                        showNotification(t_intent, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, msgSender, "Already Exists");
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, Toast.LENGTH_LONG).show();
+                                    }
                                 }
 
                                 //reset the value
@@ -596,15 +634,15 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
-                        "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))",
+                        "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
                         "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)"
                 };
 
         int[] getGroup =
                 {
-                        3, 3, 3,
+                        5, 5, 5,
                         2, 2, 2,
-                        4,
+                        4, 2,
                         2, 2, 1
                 };
 
@@ -625,7 +663,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     {
                         if(mFound == mIndx)
                         {
-                            reqMatch = m.group(getGroup[i]).trim();
+                            reqMatch = "X" + m.group(getGroup[i]).trim(); // X added bcz acc no start with X
                             break;
                         }
                         else { mFound = mFound + 1; }
@@ -641,12 +679,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String extractTransAmount(String smsMsg, String fromAccCurrencySymbl)
+    private static String extractTransAmount(int indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
     {
         String reqMatch = "";
         smsMsg = smsMsg.replace(",", "");
         String searchFor = "((\\s)?##SEARCH4CURRENCY##(.)?(\\s)?((\\d+)(\\.\\d+)?))";
         int[] getGroup = {5};
+        int indx = 0;
 
         //Handle multiple symbol for currency
         String[] searchCurrency;
@@ -668,8 +707,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                     while(m.find())
                     {
-                        reqMatch = m.group(getGroup[0]).trim();
-                        break;
+                        if (indx==indexOfAmt){
+                            reqMatch = m.group(getGroup[0]).trim();
+                            break;
+                        }
+
+                        indx = indx + 1;
                     }
                 }
             }
@@ -687,10 +730,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         String[] searchFor = {
                 "((\\s)at\\s(.*?)\\s+on)", "((\\s)favoring\\s(.*?)\\s+is)",
-                "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])", "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
-                "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)"};
+                "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
+                "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
+                "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
+                "((\\s)paid\\s(.*?)\\s)"};
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
@@ -1018,31 +1063,57 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
      * @param intent
      * @param notificationText
      */
-    private void showNotification(Intent intent, String notificationText) {
+    private void showNotification(Intent intent, String notificationText, String msgSender, String txnStatus) {
 
-        int NOTIFICATION_ID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+        try {
 
-        String NOTIFICATION_CHANNEL_ID = "ammex_" + String.valueOf(NOTIFICATION_ID); // The id of the channel.
+            String GROUP_KEY_AMMEX = "com.android.example.MoneyManagerEx";
+            int ID_NOTIFICATION =  (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 
-        intent.putExtra("NOTIFICATION_ID", NOTIFICATION_ID);
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1910, intent, 0);
+            NotificationManager notificationManager = (NotificationManager) mContext
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotificationManager =  (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Create the NotificationChannel
+                NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
+                nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
 
-        //Get an instance of NotificationManager//
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentTitle(mContext.getString(R.string.application_name) + " - SMS Auto Transaction Failed")
-                .setContentText(notificationText)
-                .addAction(R.drawable.ic_action_folder_open_dark, "Edit", pendingIntent)
-                .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setNumber(NOTIFICATION_ID)
-                .setAutoCancel(false);
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                notificationManager.createNotificationChannel(nChannel);
+            }
 
-        mNotificationManager.cancel(NOTIFICATION_ID);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+            Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(mContext.getString(R.string.notification_process_sms_transaction_status) + ": " + txnStatus)
+                    .setSubText(mContext.getString(R.string.notification_click_to_edit_transaction))
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(msgSender + " : " + notificationText))
+                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                    .setGroup(GROUP_KEY_AMMEX)
+                    .build();
+
+            // Change the notification color based on the status
+            switch(txnStatus){
+                case "Auto Failed":
+                    notification.color = mContext.getResources().getColor(R.color.md_red);
+                    break;  //optional
+                case "Already Exists":
+                    notification.color = mContext.getResources().getColor(R.color.md_indigo);
+                    break;  //optional
+                default:
+                    notification.color = mContext.getResources().getColor(R.color.md_primary);
+            }
+
+            // notify
+            notificationManager.notify(ID_NOTIFICATION, notification);
+
+            } catch (Exception e) {
+                Timber.e(e, "showing notification for sms transaction");
+            }
     }
 }

@@ -152,6 +152,7 @@ public class BehaviourSettingsFragment
                         // remove the permissions
                         Toast.makeText(getActivity(), R.string.revoke_receive_sms_access, Toast.LENGTH_LONG).show();
                         settings.setBankSmsTrans(false);
+                        settings.setSmsTransStatusNotification(false);
 
                     }
                 }
