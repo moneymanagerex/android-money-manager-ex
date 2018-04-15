@@ -633,6 +633,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String[] searchFor =
                 {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
+                        "((\\s)?Account\\s?No(.*?)\\s?(\\d+)(\\s)?)", "((\\s)?A/.\\s?No(.*?)\\s?(\\d+)(\\s)?)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
                         "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
                         "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)"
@@ -641,6 +642,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         int[] getGroup =
                 {
                         5, 5, 5,
+                        4, 4,
                         2, 2, 2,
                         4, 2,
                         2, 2, 1
