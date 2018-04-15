@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -66,6 +67,7 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.passcode.FingerprintHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -312,14 +314,20 @@ public class MainActivity
                 isAuthenticated = false;
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
-                    Passcode passcode = new Passcode(getApplicationContext());
                     String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                    String passDb = passcode.getPasscode();
-                    if (passIntent != null && passDb != null) {
-                        isAuthenticated = passIntent.equals(passDb);
-                        if (!isAuthenticated) {
-                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                    if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
+                        Passcode passcode = new Passcode(getApplicationContext());
+                        String passDb = passcode.getPasscode();
+
+                        if (passIntent != null && passDb != null) {
+                            isAuthenticated = passIntent.equals(passDb);
+                            if (!isAuthenticated) {
+                                Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                            }
                         }
+                    }
+                    else {
+                        isAuthenticated = true;
                     }
                 }
                 // close if not authenticated

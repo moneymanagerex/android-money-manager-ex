@@ -608,6 +608,11 @@
     <string name="filter_options_info">Filter Options and Info</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Enter database password</string>
+    <string name="fingerprint_info">Scan your fingerprint to unlock</string>
+    <string name="fingerprint_no_hardware">Your device does not support fingerprint authentication</string>
+    <string name="fingerprint_check_permission">Please enable the fingerprint permission</string>
+    <string name="fingerprint_has_enrolled">No fingerprint configured. Please register at least one fingerprint in your device Settings</string>
+    <string name="fingerprint_is_keyguard_secure">Please enable lockscreen security in your device Settings</string>
 
     <string name="income_expense_period">Income/Expense period</string>
     <string name="income_expense_period_summary">The period for the income/expense overview at the home screen footer.</string>
