@@ -192,7 +192,6 @@ public class PasscodeActivity extends AppCompatActivity {
 						cryptoObject = new FingerprintManager.CryptoObject(cipher);
 						FingerprintHandler helper = new FingerprintHandler(this);
 						helper.startAuth(fingerprintManager, cryptoObject);
-						helper.cancelAuthentication(fingerprintManager, cryptoObject);
 					}
 				}
 			}

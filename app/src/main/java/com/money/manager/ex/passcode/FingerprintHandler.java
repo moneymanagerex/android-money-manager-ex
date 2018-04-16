@@ -32,11 +32,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
     }
 
-    public void cancelAuthentication(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject) {
-        cancellationSignal = new CancellationSignal();
-        manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
-    }
-
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
         Toast.makeText(context, "Authentication Error:\n" + errString, Toast.LENGTH_LONG).show();
