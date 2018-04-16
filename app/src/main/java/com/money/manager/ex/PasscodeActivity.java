@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -127,6 +128,7 @@ public class PasscodeActivity extends AppCompatActivity {
 				}
 			}
 		};
+
 		// arrays of button id
 		int ids[] = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
 			R.id.buttonPasscode3,
@@ -136,9 +138,11 @@ public class PasscodeActivity extends AppCompatActivity {
 			Button button = (Button) findViewById(i);
 			button.setOnClickListener(clickListener);
 		}
+
 		// textview message
 		TextView textView = (TextView) findViewById(R.id.textViewMessage);
 		textView.setText(null);
+
 		// intent and action
 		if (getIntent() != null && getIntent().getAction() != null) {
 			if (INTENT_REQUEST_PASSWORD.equals(getIntent().getAction())) {
@@ -160,30 +164,36 @@ public class PasscodeActivity extends AppCompatActivity {
 			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
 			if (!fingerprintManager.isHardwareDetected()) {
-				Toast.makeText(this, R.string.fingerprint_no_hardware, Toast.LENGTH_LONG).show();
-			}
-
-			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-				Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
-			}
-
-			if (!fingerprintManager.hasEnrolledFingerprints()) {
-				Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
-			}
-
-			if (!keyguardManager.isKeyguardSecure()) {
-				Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
-			}
+				((ImageView) findViewById(R.id.fpImageView))
+						.setVisibility(View.GONE);
+				((com.money.manager.ex.view.RobotoTextView) findViewById(R.id.fingerprintInfo))
+						.setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
+		}
 			else {
-				try {
-					generateKey();
-				} catch (FingerprintException e) {
-					e.printStackTrace();
+
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+					Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
 				}
-				if (initCipher()) {
-					cryptoObject = new FingerprintManager.CryptoObject(cipher);
-					FingerprintHandler helper = new FingerprintHandler(this);
-					helper.startAuth(fingerprintManager, cryptoObject);
+
+				if (!fingerprintManager.hasEnrolledFingerprints()) {
+					Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
+				}
+
+				if (!keyguardManager.isKeyguardSecure()) {
+					Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
+				}
+				else {
+					try {
+						generateKey();
+					} catch (FingerprintException e) {
+						e.printStackTrace();
+					}
+					if (initCipher()) {
+						cryptoObject = new FingerprintManager.CryptoObject(cipher);
+						FingerprintHandler helper = new FingerprintHandler(this);
+						helper.startAuth(fingerprintManager, cryptoObject);
+						helper.cancelAuthentication(fingerprintManager, cryptoObject);
+					}
 				}
 			}
 		}
