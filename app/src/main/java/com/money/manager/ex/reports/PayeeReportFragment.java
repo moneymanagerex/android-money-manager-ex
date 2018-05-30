@@ -28,6 +28,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -115,7 +116,7 @@ public class PayeeReportFragment
             whereClause = "/** */";
         }
         // use token to replace criteria
-        whereClause += "(" + ViewMobileData.PAYEE + " Like '%" + newText + "%')/** */";
+        whereClause += "(" + ViewMobileData.Payee + " Like '%" + newText + "%')/** */";
 
         //create arguments
         Bundle args = new Bundle();
@@ -168,16 +169,16 @@ public class PayeeReportFragment
         ViewMobileData mobileData = new ViewMobileData(getContext());
         //data to compose builder
         String[] projectionIn = new String[]{ ViewMobileData.PAYEEID + " AS _id",
-                ViewMobileData.PAYEEID, ViewMobileData.PAYEE,
+                ViewMobileData.PAYEEID, ViewMobileData.Payee,
                 "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
         String selection = ViewMobileData.Status + "<>'V' AND " +
                 ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
-        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.PAYEE;
+        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.Payee;
         String having = null;
-        String sortOrder = ViewMobileData.PAYEE;
+        String sortOrder = ViewMobileData.Payee;
         String limit = null;
         //compose builder
         builder.setTables(mobileData.getSource());
@@ -298,11 +299,15 @@ public class PayeeReportFragment
 
         Cursor cursor = (Cursor) item;
         Payee payee = new Payee();
+        /*for (String col : cursor.getColumnNames()) {
+            int idx = cursor.getColumnIndex(col);
+            Log.d("PayeeReportFragment", " Name " + col + "\t Type " + cursor.getType(idx) + "\t Value " + cursor.getString(idx));
+        }*/
 //        payee.loadFromCursor(cursor);
         // The fields are different! Can't use standard loadFromCursor.
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PAYEEID,
+        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData._ID,
                 payee.contentValues, Payee.PAYEEID);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.PAYEE,
+        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Payee,
                 payee.contentValues, Payee.PAYEENAME);
 
         return payee;

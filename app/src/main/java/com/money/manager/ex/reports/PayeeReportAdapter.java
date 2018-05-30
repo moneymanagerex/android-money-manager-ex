@@ -21,15 +21,18 @@ import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.ViewMobileData;
 
 import info.javaperformance.money.MoneyFactory;
@@ -39,6 +42,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class PayeeReportAdapter
     extends CursorAdapter {
+    private static final String TAG = "PayeeReportAdapter";
     private LayoutInflater mInflater;
 
     @SuppressWarnings("deprecation")
@@ -52,8 +56,8 @@ public class PayeeReportAdapter
         TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)))) {
-            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)));
+        if (cursor.getColumnIndex(ViewMobileData.Payee) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
+            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
         } else {
             txtColumn1.setText(context.getString(R.string.empty_payee));
         }
