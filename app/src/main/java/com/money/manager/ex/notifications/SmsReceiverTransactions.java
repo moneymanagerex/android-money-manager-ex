@@ -667,7 +667,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     {
                         if(mFound == mIndx)
                         {
-                            reqMatch = "X" + m.group(getGroup[i]).trim(); // X added bcz acc no start with X
+                            // Append X with acc no, bcz start with X for non UPI trans
+                            if (m.group(getGroup[i]).trim().toLowerCase().contains("@") == false) {
+                                reqMatch = "X" + m.group(getGroup[i]).trim();
+                            }
+                            else{
+                                m.group(getGroup[i]).trim();
+                            }
                             break;
                         }
                         else { mFound = mFound + 1; }
