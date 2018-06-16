@@ -780,7 +780,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         String reqMatch = "";
         String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s+no+\\s(\\d+))", "(\\/+(\\d+)+\\/)",
-                "(I[D-d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D-d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
+                "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)"};
         int[] getGroup = {2, 2, 2,
