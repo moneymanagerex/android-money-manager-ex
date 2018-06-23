@@ -135,7 +135,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
                         // Promotional sms will have sender like AT-012345
-                        // Not sure how this format will be in out side of India. I may need to update if i get sample
+                        // Not sure how this format will be in out side of India. I may need to update if I get sample
 
                         ITransactionEntity model = AccountTransaction.create();
                         mCommon = new EditTransactionCommonFunctions(null, model, database);
@@ -145,7 +145,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
                                 "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
 
-                        String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)",
+                        String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
                                 "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)" }; //
 
                         String transType = "";
@@ -672,7 +672,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 reqMatch = "X" + m.group(getGroup[i]).trim();
                             }
                             else{
-                                m.group(getGroup[i]).trim();
+                                reqMatch = m.group(getGroup[i]).trim();
                             }
                             break;
                         }
