@@ -145,8 +145,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
                                 "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)"};
 
+                        // - Sales Draft added for LBP currency. Request from HussienH
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
-                                "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)" }; //
+                                "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)",
+                                "(Sales\\sDraft)"}; //
 
                         String transType = "";
 
@@ -630,11 +632,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         String reqMatch =  "";
 
+        // - ((\s)using\scard\s(.*?)\s.emaining) added for LBP currency. Request from HussienH
         String[] searchFor =
                 {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
                         "((\\s)?Account\\s?No(.*?)\\s?(\\d+)(\\s)?)", "((\\s)?A/.\\s?No(.*?)\\s?(\\d+)(\\s)?)",
-                        "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'",
+                        "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'", "((\\s)using\\scard\\s(.*?)\\s.emaining)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
                         "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
                         "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)"
@@ -644,7 +647,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         5, 5, 5,
                         4, 4,
-                        4,
+                        4, 3,
                         2, 2, 2,
                         4, 2,
                         2, 2, 1
@@ -668,7 +671,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         if(mFound == mIndx)
                         {
                             // Append X with acc no, bcz start with X for non UPI trans
-                            if (m.group(getGroup[i]).trim().toLowerCase().contains("@") == false) {
+                            if (m.group(getGroup[i]).trim().matches("\\d+") == true &&
+                                m.group(getGroup[i]).trim().matches("[a-zA-Z@]+") == false )
+                            {
                                 reqMatch = "X" + m.group(getGroup[i]).trim();
                             }
                             else{
@@ -738,14 +743,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     private static String[] extractTransPayee(String smsMsg)
     {
+        // - ((\s)at\s(.*?)\s+using) added for LBP currency. Request from HussienH
         String[] searchFor = {
                 "((\\s)at\\s(.*?)\\s+on)", "((\\s)favoring\\s(.*?)\\s+is)",
                 "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
-                "((\\s)paid\\s(.*?)\\s)"};
+                "((\\s)paid\\s(.*?)\\s)",
+                "((\\s)at\\s(.*?)\\s+using)" };
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
