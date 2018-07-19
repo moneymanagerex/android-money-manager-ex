@@ -499,7 +499,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         try
         {
-            Pattern p = Pattern.compile("(-[a-zA-Z]+)");
+            Pattern p = Pattern.compile("(-?[a-zA-Z]+)");
             Matcher m = p.matcher(smsSender);
 
             if (m != null)
