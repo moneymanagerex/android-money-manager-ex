@@ -16,8 +16,14 @@
  */
 package com.money.manager.ex;
 
+import android.Manifest;
+import android.app.KeyguardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,12 +31,32 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyPermanentlyInvalidatedException;
+import android.security.keystore.KeyProperties;
+import android.widget.Toast;
+
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
+import com.money.manager.ex.passcode.FingerprintHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,12 +65,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class PasscodeActivity
-	extends AppCompatActivity {
+public class PasscodeActivity extends AppCompatActivity {
 
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
 	public static final String INTENT_RESULT_PASSCODE = "INTENT_RESULT_PASSCODE";
+
+	private static final String KEY_NAME = "yourKey";
+	private Cipher cipher;
+	private KeyStore keyStore;
+	private KeyGenerator keyGenerator;
+	private FingerprintManager.CryptoObject cryptoObject;
+	private FingerprintManager fingerprintManager;
+	private KeyguardManager keyguardManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +128,7 @@ public class PasscodeActivity
 				}
 			}
 		};
+
 		// arrays of button id
 		int ids[] = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
 			R.id.buttonPasscode3,
@@ -104,9 +138,11 @@ public class PasscodeActivity
 			Button button = (Button) findViewById(i);
 			button.setOnClickListener(clickListener);
 		}
+
 		// textview message
 		TextView textView = (TextView) findViewById(R.id.textViewMessage);
 		textView.setText(null);
+
 		// intent and action
 		if (getIntent() != null && getIntent().getAction() != null) {
 			if (INTENT_REQUEST_PASSWORD.equals(getIntent().getAction())) {
@@ -120,19 +156,57 @@ public class PasscodeActivity
 		ImageButton buttonKeyBack = (ImageButton) findViewById(R.id.buttonPasscodeKeyBack);
 		buttonKeyBack.setImageDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_backspace)
             .color(ui.getPrimaryTextColor()));
+
+		//Handle fingerprint
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+			keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+
+			if (!fingerprintManager.isHardwareDetected()) {
+				((ImageView) findViewById(R.id.fpImageView))
+						.setVisibility(View.GONE);
+				((com.money.manager.ex.view.RobotoTextView) findViewById(R.id.fingerprintInfo))
+						.setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
+		}
+			else {
+
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+					Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
+				}
+
+				if (!fingerprintManager.hasEnrolledFingerprints()) {
+					Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
+				}
+
+				if (!keyguardManager.isKeyguardSecure()) {
+					Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
+				}
+				else {
+					try {
+						generateKey();
+					} catch (FingerprintException e) {
+						e.printStackTrace();
+					}
+					if (initCipher()) {
+						cryptoObject = new FingerprintManager.CryptoObject(cipher);
+						FingerprintHandler helper = new FingerprintHandler(this);
+						helper.startAuth(fingerprintManager, cryptoObject);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 		EventBus.getDefault().register(this);
 	}
 
 	@Override
 	protected void onStop() {
 		EventBus.getDefault().unregister(this);
-
 		super.onStop();
 	}
 
@@ -173,6 +247,72 @@ public class PasscodeActivity
 					((EditText) findViewById(R.id.editTextPasscode4)).setText(null);
 				}
 			}
-		}	}
+		}
+	}
+
+	// Fingerprint methods
+	private void generateKey() throws FingerprintException {
+		try {
+
+			keyStore = KeyStore.getInstance("AndroidKeyStore");
+			keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+
+			keyStore.load(null);
+			keyGenerator.init(new
+					KeyGenParameterSpec.Builder(KEY_NAME,
+					KeyProperties.PURPOSE_ENCRYPT |
+							KeyProperties.PURPOSE_DECRYPT)
+					.setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+					.setUserAuthenticationRequired(true)
+					.setEncryptionPaddings(
+							KeyProperties.ENCRYPTION_PADDING_PKCS7)
+					.build());
+
+			keyGenerator.generateKey();
+
+		} catch (KeyStoreException
+				| NoSuchAlgorithmException
+				| NoSuchProviderException
+				| InvalidAlgorithmParameterException
+				| CertificateException
+				| IOException exc) {
+			exc.printStackTrace();
+			throw new FingerprintException(exc);
+		}
+
+	}
+
+	public boolean initCipher() {
+		try {
+			cipher = Cipher.getInstance(
+					KeyProperties.KEY_ALGORITHM_AES + "/"
+							+ KeyProperties.BLOCK_MODE_CBC + "/"
+							+ KeyProperties.ENCRYPTION_PADDING_PKCS7);
+		} catch (NoSuchAlgorithmException |
+				NoSuchPaddingException e) {
+			throw new RuntimeException("Failed to get Cipher", e);
+		}
+
+		try {
+			keyStore.load(null);
+			SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME,
+					null);
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			return true;
+		} catch (KeyPermanentlyInvalidatedException e) {
+			return false;
+		} catch (KeyStoreException | CertificateException
+				| UnrecoverableKeyException | IOException
+				| NoSuchAlgorithmException | InvalidKeyException e) {
+			throw new RuntimeException("Failed to init Cipher", e);
+		}
+	}
+
+	private class FingerprintException extends Exception {
+
+		public FingerprintException(Exception e) {
+			super(e);
+		}
+	}
 
 }

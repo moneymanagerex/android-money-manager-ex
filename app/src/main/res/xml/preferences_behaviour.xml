@@ -60,6 +60,13 @@
         android:key="@string/pref_sms_auto_trans"
         android:summary="@string/summary_sms_auto_trans"
         android:title="@string/title_sms_auto_trans" />
+    <SwitchPreferenceCompat
+        android:icon="@null"
+        android:defaultValue="false"
+        android:key="@string/pref_sms_trans_status_notification"
+        android:dependency="@string/pref_sms_auto_trans"
+        android:summary="@string/summary_sms_trans_status_notification"
+        android:title="@string/title_sms_trans_status_notification" />
 
     <SwitchPreferenceCompat
         android:icon="@null"

@@ -74,12 +74,16 @@
     <string name="sync_on_start">Sync on start</string>
 
     <!-- Receive SMS strings -->
-    <string name="title_sms_auto_trans">Process bank transaction SMS</string>
+    <string name="title_sms_auto_trans">Process Bank Transaction SMS</string>
     <string name="summary_sms_auto_trans">Read the bank transaction update SMS and create transaction automatically</string>
     <string name="deny_receive_sms_error">You have denied the permission to receive the SMS, so your bank transaction SMS will not be processed</string>
     <string name="granted_receive_sms_access">Permission already granted for RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
-
+    <string name="title_sms_trans_status_notification">SMS Transaction Status Notification</string>
+    <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg or New Transaction screen</string>
+    <string name="notification_click_to_edit_transaction">Touch to edit the transaction...</string>
+    <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
+    <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
 
     <!-- account -->
     <string name="account">Account</string>
@@ -604,6 +608,11 @@
     <string name="filter_options_info">Filter Options and Info</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Enter database password</string>
+    <string name="fingerprint_info">Scan your fingerprint to unlock</string>
+    <string name="fingerprint_no_hardware">Your device does not support fingerprint authentication</string>
+    <string name="fingerprint_check_permission">Please enable the fingerprint permission</string>
+    <string name="fingerprint_has_enrolled">No fingerprint configured. Please register at least one fingerprint in your device Settings</string>
+    <string name="fingerprint_is_keyguard_secure">Please enable lockscreen security in your device Settings</string>
 
     <string name="income_expense_period">Income/Expense period</string>
     <string name="income_expense_period_summary">The period for the income/expense overview at the home screen footer.</string>
