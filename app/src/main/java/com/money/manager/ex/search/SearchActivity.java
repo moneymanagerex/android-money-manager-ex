@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -154,6 +155,7 @@ public class SearchActivity
         SearchParameters searchParameters = Parcels.unwrap(searchParcel);
 
         if (searchParameters != null) {
+            Log.d("SearchActivity", "-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
             getSearchFragment().setSearchParameters(searchParameters);
             performSearch();
         }

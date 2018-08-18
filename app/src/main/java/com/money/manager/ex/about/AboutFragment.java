@@ -44,6 +44,7 @@ import com.money.manager.ex.core.Core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 import timber.log.Timber;
 
@@ -74,6 +75,11 @@ public class AboutFragment extends Fragment {
 //        build = core.getAppVersionBuild();
         txtVersion.setText(getString(R.string.version) + " " + version);
         // + " (" + getString(R.string.build) + " " + build + ")"
+        //Copyright
+        TextView textViewCopyright = (TextView) view.findViewById(R.id.textViewCopyright);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String copyrightString = getString(R.string.application_copyright, currentYear);
+        textViewCopyright.setText(copyrightString);
 
         // Send Feedback
         TextView txtFeedback = view.findViewById(R.id.textViewLinkFeedback);

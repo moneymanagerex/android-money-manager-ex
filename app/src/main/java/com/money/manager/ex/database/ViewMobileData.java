@@ -51,6 +51,7 @@ public class ViewMobileData
 	public static final String CATEGID = "CATEGID";
 	public static final String SubcategID = "SubcategID";
 	public static final String PAYEE = "PAYEE";
+	public static final String Payee = "Payee";
 	public static final String PAYEEID = "PAYEEID";
 	public static final String TransactionNumber = "TransactionNumber";
 	public static final String Status = "Status";
