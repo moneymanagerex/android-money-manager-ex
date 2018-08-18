@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 982
+        versionCode 983
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
@@ -151,8 +151,8 @@ dependencies {
             , project(':MMEX_Icon_Font')
             , project(':androidSVG_12')
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.7'
-            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+            , 'com.cloudrail:cloudrail-si-android:2.22.2'
+//            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
             , supportDependencies.appCompat
