@@ -46,7 +46,7 @@ import java.util.Set;
  * Typically, you will call one of the SVG loading and parsing classes then call the renderer,
  * passing it a canvas to draw upon.
  * 
- * <h4>Usage summary</h4>
+ * <h3>Usage summary</h3>
  * 
  * <ul>
  * <li>Use one of the static {@code getFromX()} methods to read and parse the SVG file.  They will
@@ -54,7 +54,7 @@ import java.util.Set;
  * <li>Call one of the {@code renderToX()} methods to render the document.
  * </ul>
  * 
- * <h4>Usage example</h4>
+ * <h3>Usage example</h3>
  * 
  * <pre>
  * {@code
@@ -75,9 +75,9 @@ import java.util.Set;
 
 public class SVG
 {
-   private static final String  TAG = "AndroidSVG";
+   static final String  TAG = "AndroidSVG";
 
-   private static final String  VERSION = "1.2.3-beta-1";
+   private static final String  VERSION = "1.3";
 
    private static final int     DEFAULT_PICTURE_WIDTH = 512;
    private static final int     DEFAULT_PICTURE_HEIGHT = 512;
@@ -188,6 +188,7 @@ public class SVG
     * @param resourceId the resource identifier of the SVG document.
     * @return an SVG instance on which you can call one of the render methods.
     * @throws SVGParseException if there is an error parsing the document.
+    * @since 1.2.1
     */
    @SuppressWarnings("WeakerAccess")
    public static SVG  getFromResource(Resources resources, int resourceId) throws SVGParseException
@@ -275,8 +276,15 @@ public class SVG
    /**
     * Register an {@link SVGExternalFileResolver} instance that the renderer should use when resolving
     * external references such as images, fonts, and CSS stylesheets.
+    *
+    * <p>
+    * <em>Note: prior to release 1.3, this was an instance method of (@code SVG}.  In 1.3, it was
+    * changed to a static method so that users can resolve external references to CSSS files while
+    * the SVG is being parsed.</em>
+    * </p>
     * 
     * @param fileResolver the resolver to use.
+    * @since 1.3
     */
    public static void  registerExternalFileResolver(SVGExternalFileResolver fileResolver)
    {
@@ -335,58 +343,106 @@ public class SVG
    @SuppressWarnings("WeakerAccess")
    public Picture  renderToPicture()
    {
-      // Determine the initial viewport. See SVG spec section 7.2.
-      Length  width = rootElement.width;
-      if (width != null)
+      return renderToPicture(null);
+   }
+
+
+   /**
+    * Renders this SVG document to a {@link Picture}.
+    * 
+    * @param widthInPixels the width of the initial viewport
+    * @param heightInPixels the height of the initial viewport
+    * @return a Picture object suitable for later rendering using {@link Canvas#drawPicture(Picture)}
+    */
+   @SuppressWarnings({"WeakerAccess", "unused"})
+   public Picture  renderToPicture(int widthInPixels, int heightInPixels)
+   {
+      return renderToPicture(widthInPixels, heightInPixels, null);
+   }
+
+
+
+   /**
+    * Renders this SVG document to a {@link Picture}.
+    *
+    * @param renderOptions options that describe how to render this SVG on the Canvas.
+    * @return a Picture object suitable for later rendering using {@link Canvas#drawPicture(Picture)}
+    * @since 1.3
+    */
+   @SuppressWarnings({"WeakerAccess", "unused"})
+   public Picture  renderToPicture(RenderOptions renderOptions)
+   {
+      Box  viewBox = (renderOptions != null && renderOptions.hasViewBox()) ? renderOptions.viewBox
+                                                                           : rootElement.viewBox;
+
+      // If a viewPort was supplied in the renderOptions, then use its maxX and maxY as the Picture size
+      if (renderOptions != null && renderOptions.hasViewPort())
       {
-         float w = width.floatValue(this.renderDPI);
-         float h;
-         Box  rootViewBox = rootElement.viewBox;
-         
-         if (rootViewBox != null) {
-            h = w * rootViewBox.height / rootViewBox.width;
-         } else {
-            Length  height = rootElement.height;
-            if (height != null) {
-               h = height.floatValue(this.renderDPI);
-            } else {
-               h = w;
-            }
-         }
-         return renderToPicture( (int) Math.ceil(w), (int) Math.ceil(h) );
+         float w = renderOptions.viewPort.maxX();
+         float h = renderOptions.viewPort.maxY();
+         return renderToPicture( (int) Math.ceil(w), (int) Math.ceil(h), renderOptions );
+      }
+      else if (rootElement.width != null && rootElement.width.unit != Unit.percent &&
+               rootElement.height != null && rootElement.height.unit != Unit.percent)
+      {
+         float w = rootElement.width.floatValue(this.renderDPI);
+         float h = rootElement.height.floatValue(this.renderDPI);
+         return renderToPicture( (int) Math.ceil(w), (int) Math.ceil(h), renderOptions );
+      }
+      else if (rootElement.width != null && viewBox != null)
+      {
+         // Width and viewBox supplied, but no height
+         // Determine the Picture size and initial viewport. See SVG spec section 7.12.
+         float  w = rootElement.width.floatValue(this.renderDPI);
+         float  h = w * viewBox.height / viewBox.width;
+         return renderToPicture( (int) Math.ceil(w), (int) Math.ceil(h), renderOptions );
+      }
+      else if (rootElement.height != null && viewBox != null)
+      {
+         // Height and viewBox supplied, but no width
+         float  h = rootElement.height.floatValue(this.renderDPI);
+         float  w = h * viewBox.width / viewBox.height;
+         return renderToPicture( (int) Math.ceil(w), (int) Math.ceil(h), renderOptions );
       }
       else
       {
-         return renderToPicture(DEFAULT_PICTURE_WIDTH, DEFAULT_PICTURE_HEIGHT);
+         return renderToPicture(DEFAULT_PICTURE_WIDTH, DEFAULT_PICTURE_HEIGHT, renderOptions);
       }
    }
 
 
    /**
-    * Renders this SVG document to a Picture object.
-    * 
-    * @param widthInPixels the width of the initial viewport
-    * @param heightInPixels the height of the initial viewport
-    * @return a Picture object suitable for later rendering using {@code Canvas.drawPicture()}
+    * Renders this SVG document to a {@link Picture}.
+    *
+    * @param widthInPixels the width of the {@code Picture}
+    * @param heightInPixels the height of the {@code Picture}
+    * @param renderOptions options that describe how to render this SVG on the Canvas.
+    * @return a Picture object suitable for later rendering using {@link Canvas#drawPicture(Picture)}
+    * @since 1.3
     */
    @SuppressWarnings({"WeakerAccess", "unused"})
-   public Picture  renderToPicture(int widthInPixels, int heightInPixels)
+   public Picture  renderToPicture(int widthInPixels, int heightInPixels, RenderOptions renderOptions)
    {
       Picture  picture = new Picture();
       Canvas   canvas = picture.beginRecording(widthInPixels, heightInPixels);
-      Box      viewPort = new Box(0f, 0f, (float) widthInPixels, (float) heightInPixels);
+
+      if (renderOptions == null || renderOptions.viewPort == null) {
+         renderOptions = (renderOptions == null) ? new RenderOptions() : new RenderOptions(renderOptions);
+         renderOptions.viewPort(0f, 0f, (float) widthInPixels, (float) heightInPixels);
+      }
 
       SVGAndroidRenderer  renderer = new SVGAndroidRenderer(canvas, this.renderDPI);
 
-      renderer.renderDocument(this, viewPort, null, null);
+      renderer.renderDocument(this, renderOptions);
 
       picture.endRecording();
       return picture;
    }
 
 
+
    /**
-    * Renders this SVG document to a Picture object using the specified view defined in the document.
+    * Renders this SVG document to a {@link Picture} using the specified view defined in the document.
     * <p>
     * A View is an special element in a SVG document that describes a rectangular area in the document.
     * Calling this method with a {@code viewId} will result in the specified view being positioned and scaled
@@ -401,26 +457,16 @@ public class SVG
    @SuppressWarnings({"WeakerAccess", "unused"})
    public Picture  renderViewToPicture(String viewId, int widthInPixels, int heightInPixels)
    {
-      SvgObject  obj = this.getElementById(viewId);
-      if (obj == null)
-         return null;
-      if (!(obj instanceof SVG.View))
-         return null;
-
-      SVG.View  view = (SVG.View) obj;
-      
-      if (view.viewBox == null) {
-         Log.w(TAG, "View element is missing a viewBox attribute.");
-         return null;
-      }
+      RenderOptions  renderOptions = new RenderOptions();
+      renderOptions.view(viewId)
+                   .viewPort(0f, 0f, (float) widthInPixels, (float) heightInPixels);
 
       Picture  picture = new Picture();
       Canvas   canvas = picture.beginRecording(widthInPixels, heightInPixels);
-      Box      viewPort = new Box(0f, 0f, (float) widthInPixels, (float) heightInPixels);
 
       SVGAndroidRenderer  renderer = new SVGAndroidRenderer(canvas, this.renderDPI);
 
-      renderer.renderDocument(this, viewPort, view.viewBox, view.preserveAspectRatio);
+      renderer.renderDocument(this, renderOptions);
 
       picture.endRecording();
       return picture;
@@ -436,11 +482,12 @@ public class SVG
     * will be used as the viewport into which the document will be rendered.
     * 
     * @param canvas the canvas to which the document should be rendered.
+    * @since 1.3
     */
    @SuppressWarnings({"WeakerAccess", "unused"})
    public void  renderToCanvas(Canvas canvas)
    {
-      renderToCanvas(canvas, null);
+      renderToCanvas(canvas, (RenderOptions) null);
    }
 
 
@@ -453,17 +500,40 @@ public class SVG
    @SuppressWarnings({"WeakerAccess", "unused"})
    public void  renderToCanvas(Canvas canvas, RectF viewPort)
    {
-      Box  canvasViewPort;
+      RenderOptions  renderOptions = new RenderOptions();
 
       if (viewPort != null) {
-         canvasViewPort = Box.fromLimits(viewPort.left, viewPort.top, viewPort.right, viewPort.bottom);
+         renderOptions.viewPort(viewPort.left, viewPort.top, viewPort.width(), viewPort.height());
       } else {
-         canvasViewPort = new Box(0f, 0f, (float) canvas.getWidth(), (float) canvas.getHeight());
+         renderOptions.viewPort(0f, 0f, (float) canvas.getWidth(), (float) canvas.getHeight());
       }
 
       SVGAndroidRenderer  renderer = new SVGAndroidRenderer(canvas, this.renderDPI);
 
-      renderer.renderDocument(this, canvasViewPort, null, null);
+      renderer.renderDocument(this, renderOptions);
+   }
+
+
+   /**
+    * Renders this SVG document to a Canvas object.
+    *
+    * @param canvas the canvas to which the document should be rendered.
+    * @param renderOptions options that describe how to render this SVG on the Canvas.
+    * @since 1.3
+    */
+   @SuppressWarnings({"WeakerAccess", "unused"})
+   public void  renderToCanvas(Canvas canvas, RenderOptions renderOptions)
+   {
+      if (renderOptions == null)
+         renderOptions = new RenderOptions();
+
+      if (!renderOptions.hasViewPort()) {
+         renderOptions.viewPort(0f, 0f, (float) canvas.getWidth(), (float) canvas.getHeight());
+      }
+
+      SVGAndroidRenderer  renderer = new SVGAndroidRenderer(canvas, this.renderDPI);
+
+      renderer.renderDocument(this, renderOptions);
    }
 
 
@@ -483,7 +553,7 @@ public class SVG
    @SuppressWarnings({"WeakerAccess", "unused"})
    public void  renderViewToCanvas(String viewId, Canvas canvas)
    {
-      renderViewToCanvas(viewId, canvas, null);
+      renderToCanvas(canvas, RenderOptions.create().view(viewId));
    }
 
 
@@ -504,30 +574,13 @@ public class SVG
    @SuppressWarnings({"WeakerAccess", "unused"})
    public void  renderViewToCanvas(String viewId, Canvas canvas, RectF viewPort)
    {
-      SvgObject  obj = this.getElementById(viewId);
-      if (obj == null)
-         return;
-      if (!(obj instanceof SVG.View))
-         return;
-
-      SVG.View  view = (SVG.View) obj;
-      
-      if (view.viewBox == null) {
-         Log.w(TAG, "View element is missing a viewBox attribute.");
-         return;
-      }
-
-      Box  canvasViewPort;
+      RenderOptions  renderOptions = RenderOptions.create().view(viewId);
 
       if (viewPort != null) {
-         canvasViewPort = Box.fromLimits(viewPort.left, viewPort.top, viewPort.right, viewPort.bottom);
-      } else {
-         canvasViewPort = new Box(0f, 0f, (float) canvas.getWidth(), (float) canvas.getHeight());
+         renderOptions.viewPort(viewPort.left, viewPort.top, viewPort.width(), viewPort.height());
       }
 
-      SVGAndroidRenderer  renderer = new SVGAndroidRenderer(canvas, this.renderDPI);
-
-      renderer.renderDocument(this, canvasViewPort, view.viewBox, view.preserveAspectRatio);
+      renderToCanvas(canvas, renderOptions);
    }
 
 
@@ -960,11 +1013,17 @@ public class SVG
    }
 
 
+   void  clearRenderCSSRules()
+   {
+      this.cssRules.removeFromSource(CSSParser.Source.RenderOptions);
+   }
+
+
    //===============================================================================
    // Object sub-types used in the SVG object tree
 
 
-   static class  Box implements Cloneable
+   static class  Box
    {
       float  minX, minY, width, height;
 
@@ -987,6 +1046,11 @@ public class SVG
       static Box  fromLimits(float minX, float minY, float maxX, float maxY)
       {
          return new Box(minX, minY, maxX-minX, maxY-minY);
+      }
+
+      static Box  fromRectF(RectF rect)
+      {
+         return Box.fromLimits(rect.left, rect.top, rect.right, rect.bottom);
       }
 
       RectF  toRectF()
@@ -1058,7 +1122,7 @@ public class SVG
                                                           | SPECIFIED_VIEWPORT_FILL_OPACITY | SPECIFIED_VECTOR_EFFECT;
    */
 
-   protected static class  Style implements Cloneable
+   static class  Style implements Cloneable
    {
       // Which properties have been explicitly specified by this element
       long       specifiedFlags = 0;
@@ -1681,13 +1745,16 @@ public class SVG
    }
 
 
-   protected static class Use extends Group
+   static class Use extends Group
    {
       String  href;
       Length  x;
       Length  y;
       Length  width;
       Length  height;
+
+      @Override
+      String  getNodeName() { return "use"; }
    }
 
 
@@ -1801,7 +1868,7 @@ public class SVG
    }
 
 
-   protected static class Text extends TextPositionedContainer implements TextRoot, HasTransform
+   static class Text extends TextPositionedContainer implements TextRoot, HasTransform
    {
       Matrix  transform;
 
@@ -1882,6 +1949,8 @@ public class SVG
    // An SVG element that can contain other elements.
    static class Switch extends Group
    {
+      @Override
+      String  getNodeName() { return "switch"; }
    }
 
 
@@ -1997,7 +2066,7 @@ public class SVG
    }
 
 
-   protected static class Image extends SvgPreserveAspectRatioContainer implements HasTransform
+   static class Image extends SvgPreserveAspectRatioContainer implements HasTransform
    {
       String  href;
       Length  x;
@@ -2013,7 +2082,7 @@ public class SVG
    }
 
 
-   protected static class View extends SvgViewBoxContainer implements NotDirectlyRendered
+   static class View extends SvgViewBoxContainer implements NotDirectlyRendered
    {
       @Override
       String  getNodeName() { return "view"; }
@@ -2239,7 +2308,7 @@ public class SVG
    }
 
 
-   private SvgObject  getElementById(String id)
+   SvgElementBase  getElementById(String id)
    {
       if (id == null || id.length() == 0)
          return null;

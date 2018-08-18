@@ -147,35 +147,27 @@ class SVGParser
       use,
       view,
       UNSUPPORTED;
-      
-      private static final Map<String,SVGElem>  cache = new HashMap<>();
-      
-      public static SVGElem  fromString(String str)
-      {
-         // First check cache to see if it is there
-         SVGElem  elem = cache.get(str);
-         if (elem != null)
-            return elem;
-         // Manual check for "switch" which is in upper case because it's a Java reserved identifier
-         if (str.equals("switch")) {
-            cache.put(str, SWITCH);
-            return SWITCH;
-         }
-         // Do the (slow) Enum.valueOf()
-         try
-         {
-            elem = valueOf(str);
-            if (elem != SWITCH) {  // Don't allow matches with "SWITCH"
-               cache.put(str, elem);
-               return elem;
+
+      private static final Map<String, SVGElem> cache = new HashMap<>();
+
+      static {
+         for (SVGElem elem : values()) {
+            if (elem == SWITCH) {
+               cache.put("switch", elem);
+            } else if (elem != UNSUPPORTED) {
+               final String key = elem.name();
+               cache.put(key, elem);
             }
-         } 
-         catch (IllegalArgumentException e)
-         {
-            // Do nothing
          }
-         // Unknown element name
-         cache.put(str, UNSUPPORTED);
+      }
+
+      public static SVGElem fromString(String str) {
+         // First check cache to see if it is there
+         SVGElem elem = cache.get(str);
+         if (elem != null) {
+            return elem;
+         }
+
          return UNSUPPORTED;
       }
    }
@@ -314,41 +306,29 @@ class SVGParser
       visibility,
       UNSUPPORTED;
 
-      private static final Map<String,SVGAttr>  cache = new HashMap<>();
-      
-      public static SVGAttr  fromString(String str)
-      {
-         // First check cache to see if it is there
-         SVGAttr  attr = cache.get(str);
-         if (attr != null)
-            return attr;
-         // Do the (slow) Enum.valueOf()
-         if (str.equals("class")) {
-            cache.put(str, CLASS);
-            return CLASS;
-         }
-         // Check for underscore in attribute - it could potentially confuse us
-         if (str.indexOf('_') != -1) {
-            cache.put(str, UNSUPPORTED);
-            return UNSUPPORTED;
-         }
-         try
-         {
-            attr = valueOf(str.replace('-', '_'));
-            if (attr != CLASS) {
-               cache.put(str, attr);
-               return attr;
+      private static final Map<String, SVGAttr> cache = new HashMap<>();
+
+      static {
+         for (SVGAttr attr : values()) {
+            if (attr == CLASS) {
+               cache.put("class", attr);
+            } else if (attr != UNSUPPORTED) {
+               final String key = attr.name().replace('_', '-');
+               cache.put(key, attr);
             }
-         } 
-         catch (IllegalArgumentException e)
-         {
-            // Do nothing
          }
-         // Unknown attribute name
-         cache.put(str, UNSUPPORTED);
-         return UNSUPPORTED;
       }
 
+      public static SVGAttr fromString(String str)
+      {
+         // First check cache to see if it is there
+         SVGAttr attr = cache.get(str);
+         if (attr != null) {
+            return attr;
+         }
+
+         return UNSUPPORTED;
+      }
    }
 
 
@@ -566,16 +546,16 @@ class SVGParser
    private static class AspectRatioKeywords {
       private static final Map<String, PreserveAspectRatio.Alignment> aspectRatioKeywords = new HashMap<>(10);
       static {
-         aspectRatioKeywords.put(NONE, PreserveAspectRatio.Alignment.None);
-         aspectRatioKeywords.put("xMinYMin", PreserveAspectRatio.Alignment.XMinYMin);
-         aspectRatioKeywords.put("xMidYMin", PreserveAspectRatio.Alignment.XMidYMin);
-         aspectRatioKeywords.put("xMaxYMin", PreserveAspectRatio.Alignment.XMaxYMin);
-         aspectRatioKeywords.put("xMinYMid", PreserveAspectRatio.Alignment.XMinYMid);
-         aspectRatioKeywords.put("xMidYMid", PreserveAspectRatio.Alignment.XMidYMid);
-         aspectRatioKeywords.put("xMaxYMid", PreserveAspectRatio.Alignment.XMaxYMid);
-         aspectRatioKeywords.put("xMinYMax", PreserveAspectRatio.Alignment.XMinYMax);
-         aspectRatioKeywords.put("xMidYMax", PreserveAspectRatio.Alignment.XMidYMax);
-         aspectRatioKeywords.put("xMaxYMax", PreserveAspectRatio.Alignment.XMaxYMax);
+         aspectRatioKeywords.put(NONE, PreserveAspectRatio.Alignment.none);
+         aspectRatioKeywords.put("xMinYMin", PreserveAspectRatio.Alignment.xMinYMin);
+         aspectRatioKeywords.put("xMidYMin", PreserveAspectRatio.Alignment.xMidYMin);
+         aspectRatioKeywords.put("xMaxYMin", PreserveAspectRatio.Alignment.xMaxYMin);
+         aspectRatioKeywords.put("xMinYMid", PreserveAspectRatio.Alignment.xMinYMid);
+         aspectRatioKeywords.put("xMidYMid", PreserveAspectRatio.Alignment.xMidYMid);
+         aspectRatioKeywords.put("xMaxYMid", PreserveAspectRatio.Alignment.xMaxYMid);
+         aspectRatioKeywords.put("xMinYMax", PreserveAspectRatio.Alignment.xMinYMax);
+         aspectRatioKeywords.put("xMidYMax", PreserveAspectRatio.Alignment.xMidYMax);
+         aspectRatioKeywords.put("xMaxYMax", PreserveAspectRatio.Alignment.xMaxYMax);
       }
 
       static PreserveAspectRatio.Alignment get(String aspectRatio) {
@@ -3563,9 +3543,15 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
 
 
    /*
-    * 
+    * Parse a preserveAspectRation attribute
     */
    private static void  parsePreserveAspectRatio(SVG.SvgPreserveAspectRatioContainer obj, String val) throws SVGParseException
+   {
+      obj.preserveAspectRatio = parsePreserveAspectRatio(val);
+   }
+
+
+   static PreserveAspectRatio  parsePreserveAspectRatio(String val) throws SVGParseException
    {
       TextScanner scan = new TextScanner(val);
       scan.skipWhitespace();
@@ -3585,14 +3571,14 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
          String meetOrSlice = scan.nextToken();
          switch (meetOrSlice) {
             case "meet":
-               scale = PreserveAspectRatio.Scale.Meet; break;
+               scale = PreserveAspectRatio.Scale.meet; break;
             case "slice":
-               scale = PreserveAspectRatio.Scale.Slice; break;
+               scale = PreserveAspectRatio.Scale.slice; break;
             default:
                throw new SVGParseException("Invalid preserveAspectRatio definition: " + val);
          }
       }
-      obj.preserveAspectRatio = new PreserveAspectRatio(align, scale);
+      return new PreserveAspectRatio(align, scale);
    }
 
 
@@ -4497,7 +4483,7 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
 
    private void  parseCSSStyleSheet(String sheet)
    {
-      CSSParser  cssp = new CSSParser(MediaType.screen);
+      CSSParser  cssp = new CSSParser(MediaType.screen, CSSParser.Source.Document);
       svgDocument.addCSSRules(cssp.parse(sheet));
    }
 
