@@ -39,7 +39,8 @@ To build the project, the following settings are recommended:
 - use embedded JDK,
 - use gradle wrapper.
 
-You will need to generate a custom "fabric.properties" file in "app" directory.
+You will need to generate a custom "fabric.properties" file in "app" directory, containing apiSecret and apiKey values.
+More info at [Fabric API Keys](https://docs.fabric.io/android/fabric/settings/api-keys.html).
 
 ## Continuous Integration
 

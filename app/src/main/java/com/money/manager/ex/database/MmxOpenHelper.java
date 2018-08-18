@@ -130,11 +130,11 @@ public class MmxOpenHelper
         new SyncManager(getContext()).dataChanged();
     }
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // nothing to do for now.
-        Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
-    }
+//    @Override
+//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        // nothing to do for now.
+//        Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
+//    }
 
 //    @Override
 //    public synchronized void close() {
