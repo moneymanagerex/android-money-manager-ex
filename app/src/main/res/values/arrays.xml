@@ -367,6 +367,7 @@
     <!-- sync providers -->
     <string-array name="cloud_provider_names">
         <!--<item>None</item>-->
+        <item>PCloud</item>
         <item>Dropbox</item>
         <item>OneDrive</item>
         <item>Google Drive</item>
@@ -374,6 +375,7 @@
     </string-array>
     <string-array name="cloud_provider_values">
         <!--<item>0</item>-->
+        <item>PCLOUD</item>
         <item>DROPBOX</item>
         <item>ONEDRIVE</item>
         <item>GOOGLEDRIVE</item>

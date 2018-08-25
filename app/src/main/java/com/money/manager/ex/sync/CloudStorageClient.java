@@ -26,6 +26,7 @@ import com.cloudrail.si.services.Box;
 import com.cloudrail.si.services.Dropbox;
 import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
+import com.cloudrail.si.services.PCloud;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.SyncPreferences;
@@ -62,8 +63,8 @@ class CloudStorageClient {
 
         // Use current provider.
         // todo read from the current db entry
-        String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
-        CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
+        String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.PCLOUD.name());
+        CloudStorageProviderEnum provider = CloudStorageProviderEnum.PCLOUD;
         if (CloudStorageProviderEnum.contains(providerCode)) {
             provider = CloudStorageProviderEnum.valueOf(providerCode);
         }
@@ -74,6 +75,7 @@ class CloudStorageClient {
     private final AtomicReference<CloudStorage> box = new AtomicReference<>();
     private final AtomicReference<CloudStorage> googledrive = new AtomicReference<>();
     private final AtomicReference<CloudStorage> onedrive = new AtomicReference<>();
+    private final AtomicReference<CloudStorage> pcloud = new AtomicReference<>();
 
     private Context mContext;
     private AtomicReference<CloudStorage> currentProvider;
@@ -192,9 +194,12 @@ class CloudStorageClient {
                 // Box
                 currentProvider = box;
                 break;
+            case PCLOUD:
+                currentProvider = pcloud;
+                break;
             default:
                 // default provider
-                currentProvider = dropbox;
+                currentProvider = pcloud;
                 break;
         }
     }
@@ -211,6 +216,9 @@ class CloudStorageClient {
         }
         if (onedrive.get() != null) {
             getPreferences().set(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        }
+        if (pcloud.get() != null) {
+            getPreferences().set(R.string.pref_pcloud_persistent, pcloud.get().saveAsString());
         }
     }
 
@@ -234,6 +242,8 @@ class CloudStorageClient {
             googledrive.set(new GoogleDrive(context, "576599958315-eplsbf760onv3hljsp5h6mmrk34btg5s.apps.googleusercontent.com",
                     "", "com.money.manager.ex:/oauth2redirect", ""));
             ((GoogleDrive) googledrive.get()).useAdvancedAuthentication();
+
+            pcloud.set(new PCloud(context, "zoluOCxOzWu", "67qvV5owVuYIyDS47H1JYyboTJJV"));
         } catch (Exception e) {
             Timber.e(e, "creating cloud providers");
         }
@@ -263,6 +273,9 @@ class CloudStorageClient {
 
             persistent = getPreferences().loadPreference(R.string.pref_onedrive_persistent, null);
             if (persistent != null) onedrive.get().loadAsString(persistent);
+
+            persistent = getPreferences().loadPreference(R.string.pref_pcloud_persistent, null);
+            if (persistent != null) pcloud.get().loadAsString(persistent);
         } catch (Exception e) {
             if (e instanceof ParseException) {
                 Timber.w(e.getMessage());
