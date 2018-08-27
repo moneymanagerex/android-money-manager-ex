@@ -501,7 +501,8 @@ public class SyncManager {
 
         // Transfer the file.
         try {
-            mStorageClient.upload(remoteFile, input, localFile.length(), true);
+            long length = localFile.length();
+            mStorageClient.upload(remoteFile, input, length, true);
         } catch (Exception e) {
             Timber.e(e, "uploading database file");
             return false;
