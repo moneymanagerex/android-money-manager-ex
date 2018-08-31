@@ -786,14 +786,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
-        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s+no+\\s(\\d+))", "(\\/+(\\d+)+\\/)",
+        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\sno(:)?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
-                "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)"};
-        int[] getGroup = {2, 2, 2,
+                "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)"};
+        int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 4,
-                          4, 3};
+                          4, 3, 2};
 
         try
         {
