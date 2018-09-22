@@ -382,7 +382,7 @@
         <provider
             android:name=".MmxContentProvider"
             android:authorities="${applicationId}.provider"
-            android:exported="true" />
+            android:exported="false" />
         <!-- used for qif export -->
         <provider
             android:name="android.support.v4.content.FileProvider"
