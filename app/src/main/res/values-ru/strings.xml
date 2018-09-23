@@ -60,12 +60,12 @@
   <string name="build">сборка</string>
   <string name="path">Путь к базе данных</string>
   <string name="database_version">Версия базы данных</string>
-  <string name="title_show_tutorial">Показать учебник</string>
+  <string name="title_show_tutorial">Показать руководство</string>
   <string name="summary_show_tutorial">Показать учебник при следующем запуске?</string>
   <string name="preferences_behaviour_focus_filter_title">Фокус на поле фильтра</string>
   <string name="preferences_behaviour_focus_filter_summary">Фокус на поле фильтра при выборе сущностей. Иначе просмотр.</string>
-  <string name="auto_sync_via_wifi">Авто-синхр только через WiFi</string>
-  <string name="auto_sync_via_wifi_summary">Авто-синхронизация только при WiFi соединении.</string>
+  <string name="auto_sync_via_wifi">Авто-синхронизация только через WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Авто-синхронизация только при соединении с WiFi.</string>
   <string name="sync_on_app_start">Синхронизация при запуске приложения.</string>
   <string name="sync_on_start">Синхронизация на старте</string>
   <!-- account -->
@@ -139,11 +139,11 @@
   <string name="status_none">Нет</string>
   <string name="transfer">Перевод</string>
   <string name="transfer_amount">Сумма перевода</string>
-  <string name="transaction_type">Тип проводки</string>
+  <string name="transaction_type">Тип транзакции</string>
   <string name="transaction_status">Статус</string>
   <string name="withdrawal">Снятие</string>
-  <string name="db_checking_insert_failed">Ошибка добавления проводки</string>
-  <string name="db_checking_update_failed">Ошибка обновления проводки</string>
+  <string name="db_checking_insert_failed">Ошибка добавления транзакции</string>
+  <string name="db_checking_update_failed">Ошибка обновления транзакции</string>
   <string name="delete_transaction">Удалить транзакцию</string>
   <string name="new_transaction">Новая проводка</string>
   <string name="error_payee_not_selected">Требуется указать контрагента</string>

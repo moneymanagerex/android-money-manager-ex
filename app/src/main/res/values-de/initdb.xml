@@ -35,7 +35,7 @@
   <string name="category_15">Andere Ausgaben</string>
   <string name="category_16">Transaktion</string>
   <!-- default subcategory -->
-  <string name="subcategory_1">Telephon</string>
+  <string name="subcategory_1">Telefon</string>
   <string name="subcategory_2">Strom</string>
   <string name="subcategory_3">Kraftstoff</string>
   <string name="subcategory_4">Internet</string>
@@ -43,9 +43,9 @@
   <string name="subcategory_6">Kabel TV</string>
   <string name="subcategory_7">Wasser</string>
   <string name="subcategory_8">Lebensmittel</string>
-  <string name="subcategory_9">Essen auswärts</string>
+  <string name="subcategory_9">auswärts Essen</string>
   <string name="subcategory_10">Filme</string>
-  <string name="subcategory_11">Videoausleihung</string>
+  <string name="subcategory_11">Videoausleihen</string>
   <string name="subcategory_12">Zeitschriften</string>
   <string name="subcategory_13">Unterhalt</string>
   <string name="subcategory_14">Kraftstoff</string>

@@ -719,4 +719,5 @@
   <string name="title_budget_show_simple_view">Mostrar orçamento simples vista</string>
   <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
   <string name="loan">Empréstimo</string>
+  <string name="loan_account">Contas de empréstimo</string>
 </resources>
