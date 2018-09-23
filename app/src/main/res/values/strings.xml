@@ -311,8 +311,6 @@
     <string name="date_format">Date Format</string>
     <string name="financial_year_start_day">Financial Year: Start Day</string>
     <string name="financial_year_start_month">Financial Year: Start Month</string>
-    <!--<string name="release_date">Release Date</string>-->
-    <!-- 20130121 -->
     <string name="menu_move_database_to_external_storage">Export database</string>
     <string name="database_has_been_moved">The database has been moved: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
@@ -320,7 +318,6 @@
 
     <!-- Split Categories -->
     <string name="split_transaction">Split Transaction</string>
-    <!--<string name="split_category">Split Category</string>-->
     <string name="split">Split</string>
     <string name="error_split_transaction_empty">At least one of split transaction is required</string>
     <string name="swipe_to_dismiss">Swipe items to remove.</string>
@@ -330,7 +327,6 @@
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
 
-    <!-- 20130220 -->
     <string name="donate_header">MoneyManagerEx for Android is provided for free. If you like the application, you can support the development team with a donation.</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
     <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
@@ -346,23 +342,16 @@
     <string name="donate_button_text">Donate</string>
     <string name="homepage_button">Open homepage</string>
 
-    <!-- 20130225 -->
     <string name="android_sqlite_vesion">SQLite Version</string>
-    <!-- 20130301 -->
-    <!--<string name="sort">Sort</string>-->
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="sorting_month">Sorting Months</string>
-    <!-- 20130305 -->
     <string name="last_modified">Last modified</string>
-    <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
     <string name="dont_show_again">Don\'t show again</string>
     <string name="open_database">Open Database</string>
     <string name="synchronization_interval">Synchronization Interval</string>
     <string name="summary_synchronization_interval">How often should synchronize?</string>
-    <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
     <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the Dropbox sync need to update the configuration.\nThe authentication and the selection of the database is located in the Settings.\nAs of version 1.2.0, Money Manager Ex for Android can automatically synchronize the database.</string>
-    <!-- 20130426 -->
     <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
     <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
     <string name="menu_open_database">Open database</string>
@@ -377,38 +366,23 @@
     <string name="Default">Default</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>
-    <!-- 20130606 -->
     <string name="menu_report_where_money_goes">Where the Money Goes</string>
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
-    <!-- 20130728 -->
     <string name="title_check_repeating_transaction">Notification time</string>
     <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
-    <!-- 20130730 -->
     <string name="credits">Credits</string>
     <string name="libraries">Libraries</string>
-    <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-    <!-- 20130801 -->
     <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>
     <string name="top_payees_last_30_days">Top Payees: Last 30 Days</string>
-    <!--<string name="transaction_statistics">Transaction Statistics</string>-->
     <string name="upcoming_transactions">Upcoming Transactions</string>
     <string name="quantity">Quantity</string>
     <string name="dashboard">Dashboard</string>
-    <!-- 20130808 -->
-    <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
     <string name="last3months">Last 3 months</string>
     <string name="last6months">Last 6 months</string>
-    <!-- 20130816 -->
     <string name="empty_category">Empty Category</string>
     <string name="empty_payee">Empty Payee</string>
-    <!-- 20130831 -->
     <string name="help">Help</string>
-    <!-- 20130927 -->
     <string name="delete_repeating_transaction">Delete Recurring Transaction</string>
-    <!-- 20131007 -->
-    <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-    <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-    <!-- 20131104 -->
     <string name="last">Last</string>
     <string name="accounts">Accounts</string>
     <string name="to_account">To Account</string>
@@ -441,23 +415,18 @@
     <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Either adjust the filter for visible accounts in the Settings, or select one of the options below.</string>
     <string name="welcome_body_dropbox">If you already use MoneyManagerEx on Windows, Linux or Mac, you can link to a cloud storage provider to synchronize your database</string>
     <string name="configure_sync">Configure Synchronization</string>
-    <!-- 20140115 -->
     <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
     <string name="search_text_contain_summary">Search payee, categories, currencies, etc… by contents and not by starting characters</string>
     <string name="rate_application">Rate Application</string>
-
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
     <string name="android_website">MMEx for Android Website</string>
-
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
-
     <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
     <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
-
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>
     <string name="loading">Loading…</string>
@@ -470,7 +439,6 @@
     <string name="sort_by_usage">Sort by usage</string>
     <string name="choose_sorting">Choose sorting</string>
     <string name="credit_card">Credit Card</string>
-
     <string name="cash_accounts">Cash Accounts</string>
     <string name="bank_accounts">Bank Accounts</string>
     <string name="term_accounts">Term Accounts</string>
@@ -719,7 +687,6 @@
     <string name="exchange_rate_provider">Exchange rate provider</string>
 
     <!-- deprecated / Dropbox -->
-    <!--<string name="dropbox">Dropbox</string>-->
     <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
     <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
