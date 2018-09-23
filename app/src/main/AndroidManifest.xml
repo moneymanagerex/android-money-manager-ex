@@ -26,11 +26,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- sync authenticator -->
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <!--<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />-->
     <!-- sync adapter -->
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <!--<uses-permission android:name="android.permission.READ_SYNC_STATS" />-->
+    <!--<uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />-->
 
     <!-- SMS Interface -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
