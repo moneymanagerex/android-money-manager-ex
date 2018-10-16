@@ -19,7 +19,7 @@ package com.money.manager.ex.log;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -37,11 +37,11 @@ public class CrashReportingTree extends Timber.Tree {
             return;
         }
 
-        Crashlytics.log(priority, tag, message);
+//        Crashlytics.log(priority, tag, message);
 
         if (t != null) {
             if (priority == Log.ERROR) {
-                Crashlytics.logException(t);
+//                Crashlytics.logException(t);
             }
 //            else if (priority == Log.WARN) {
 //                Crashlytics.log.logWarning(t);
