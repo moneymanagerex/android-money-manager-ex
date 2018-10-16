@@ -25,8 +25,8 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
+//import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.core.CrashlyticsCore;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -50,7 +50,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelClass;
@@ -164,12 +164,12 @@ public class MmexApplication
         registerCustomFonts();
 
         // Exception reporting. Disabled for debug builds.
-        if (BuildConfig.USE_CRASHLYTICS) {
-            Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                    .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                    .build();
-            Fabric.with(this, crashlyticsKit); // new Crashlytics()
-        }
+//        if (BuildConfig.USE_CRASHLYTICS) {
+//            Crashlytics crashlyticsKit = new Crashlytics.Builder()
+//                    .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+//                    .build();
+//            Fabric.with(this, crashlyticsKit); // new Crashlytics()
+//        }
 
         // Loggers
         if (BuildConfig.DEBUG) {

@@ -40,8 +40,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
+//import com.crashlytics.android.answers.Answers;
+//import com.crashlytics.android.answers.CustomEvent;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -127,7 +127,7 @@ public class WatchlistFragment
 
         mUpdateCounter = 0;
 
-        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Watchlist.name()));
+//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Watchlist.name()));
     }
 
     @Override
