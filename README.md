@@ -39,15 +39,9 @@ To build the project, the following settings are recommended:
 - use embedded JDK,
 - use gradle wrapper.
 
-You will need to generate a custom "fabric.properties" file in "app" directory, containing apiSecret and apiKey values.
-More info at [Fabric API Keys](https://docs.fabric.io/android/fabric/settings/api-keys.html).
-
 ## Continuous Integration
 
-Travis CI build is active for the project. It runs a build on every check-in and a pull request.
-
-Useful content is available at the Fabric/Travis [demo](https://github.com/plastiv/CrashlyticsDemo). It explains how to generate fabric.properties file during the build, using environment variables.
-The environment variables start with org_gradle_project, i.e. ORG_GRADLE_PROJECT_crashlyticsdemoApikey.
+Travis CI build is active for the project. It runs a build on every check-in and a pull request. Sometimes it fails when the new build tools are introduced in the project but not on Travis.
 
 # License
 
