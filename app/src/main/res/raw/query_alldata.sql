@@ -27,14 +27,14 @@ SELECT 	TX.TransID AS ID,
 	ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) as ToCurrencyId,
 	( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS Splitted,
 	ifnull( CAT.CategId, -1 ) AS CategID,
-	ifnull( SUBCAT.SubCategID, -1 ) AS SubCategID,
+	ifnull( SUBCAT.SubCategID, -1 ) AS SubcategID,
 	ifnull( PAYEE.PayeeName, '') AS Payee,
 	ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
 	TX.TRANSACTIONNUMBER AS TransactionNumber,
 	d.year AS Year,
 	d.month AS Month,
 	d.day AS Day,
-	d.finyear AS FinYear
+	d.finyear AS finyear
 FROM CHECKINGACCOUNT_V1 TX 
 	LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
 	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = TX.SUBCATEGID AND SUBCAT.CATEGID = TX.CATEGID
