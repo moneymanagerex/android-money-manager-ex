@@ -36,19 +36,29 @@ public class IntentDataParameters {
     public static final String PARAM_TRANSACTION_TYPE = "transactionType";
     // account name!
     public static final String PARAM_ACCOUNT = "account";
+    public static final String PARAM_ACCOUNT_TO = "accountTo";
     public static final String PARAM_AMOUNT = "amount";
+    public static final String PARAM_AMOUNT_TO = "amountTo";
     public static final String PARAM_PAYEE = "payee";
     public static final String PARAM_CATEGORY = "category";
-
+    public static final String PARAM_SUBCATEGORY = "subcategory";
+    public static final String PARAM_NOTES = "notes";
+    public static final String PARAM_SILENT_MODE = "silent";
 
     public TransactionTypes transactionType;
     public int accountId;
+    public int accountToId;
     public String accountName;
     public int payeeId;
     public String payeeName;
     public Money amount;
+    public Money amountTo;
     public int categoryId;
     public String categoryName;
+    public int subcategoryId;
+    public String subcategoryName;
+    public String notes;
+    public boolean isSilentMode;
 
     public static IntentDataParameters parseData(Context context, Uri data) {
         IntentDataParameters parameters = new IntentDataParameters();
@@ -65,6 +75,12 @@ public class IntentDataParameters {
             int accountId = account.loadIdByName(accountName);
             parameters.accountId = accountId;
         }
+        String accountToName = data.getQueryParameter(PARAM_ACCOUNT_TO);
+        if (accountToName != null) {
+            AccountRepository accountTo = new AccountRepository(context);
+            int accountToId = accountTo.loadIdByName(accountToName);
+            parameters.accountToId = accountToId;
+        }
 
         parameters.payeeName = data.getQueryParameter(PARAM_PAYEE);
         if (parameters.payeeName != null) {
@@ -76,12 +92,27 @@ public class IntentDataParameters {
         String amount = data.getQueryParameter(PARAM_AMOUNT);
         parameters.amount = MoneyFactory.fromString(amount);
 
+        String amountTo = data.getQueryParameter(PARAM_AMOUNT_TO);
+        if (amountTo != null){
+            parameters.amountTo = MoneyFactory.fromString(amountTo);
+        }
+
         parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
         if (parameters.categoryName != null) {
             CategoryService category = new CategoryService(context);
             int categoryId = category.loadIdByName(parameters.categoryName);
             parameters.categoryId = categoryId;
         }
+
+        parameters.subcategoryName = data.getQueryParameter(PARAM_SUBCATEGORY);
+        if (parameters.subcategoryName != null) {
+            CategoryService category = new CategoryService(context);
+            int subcategoryId = category.loadSubcategoryIdByName(parameters.subcategoryName, parameters.categoryId);
+            parameters.subcategoryId = subcategoryId;
+        }
+
+        parameters.notes = data.getQueryParameter(PARAM_NOTES);
+        parameters.isSilentMode = Boolean.parseBoolean(data.getQueryParameter(PARAM_SILENT_MODE));
 
         return parameters;
     }
