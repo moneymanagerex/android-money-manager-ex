@@ -330,10 +330,13 @@ public class CheckingTransactionEditActivity
             mCommon.categoryName = parameters.categoryName;
         } else {
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null) {
+            if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
                 CategoryService newCategory = new CategoryService(this);
                 mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
                 mCommon.categoryName = parameters.categoryName;
+            } else {
+                // try to resolve the category from the payee
+                mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
             }
         }
 
@@ -343,7 +346,7 @@ public class CheckingTransactionEditActivity
             mCommon.subCategoryName = parameters.subcategoryName;
         } else {
             // No id sent. Create a subcategory if it was sent but does not exist (id not found by the parser).
-            if (parameters.subcategoryName != null) {
+            if (parameters.subcategoryName != null && !parameters.subcategoryName.isEmpty()) {
                 CategoryService categorySvc = new CategoryService(this);
                 mCommon.transactionEntity.setSubcategoryId(categorySvc.createNewSubcategory(parameters.subcategoryName, mCommon.transactionEntity.getCategoryId()));
                 mCommon.subCategoryName = parameters.subcategoryName;

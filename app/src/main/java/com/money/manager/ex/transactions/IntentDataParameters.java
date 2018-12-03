@@ -90,10 +90,11 @@ public class IntentDataParameters {
         }
 
         String amount = data.getQueryParameter(PARAM_AMOUNT);
-        parameters.amount = MoneyFactory.fromString(amount);
-
+        if (amount != null && !amount.isEmpty()) {
+            parameters.amount = MoneyFactory.fromString(amount);
+        }
         String amountTo = data.getQueryParameter(PARAM_AMOUNT_TO);
-        if (amountTo != null){
+        if (amountTo != null && !amountTo.isEmpty()){
             parameters.amountTo = MoneyFactory.fromString(amountTo);
         }
 
