@@ -224,8 +224,8 @@ public class PayeeReportFragment
             ValuePieEntry item = new ValuePieEntry();
             // total
             double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)))) {
-                item.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)));
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
+                item.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
             } else {
                 item.setText(getString(R.string.empty_payee));
             }
