@@ -275,11 +275,14 @@ public class CheckingTransactionEditActivity
      * from Tasker or any external caller.
      * @param intent The intent received.
      */
-    private void externalIntegration(Intent intent) {
+    private boolean externalIntegration(Intent intent) {
         Uri data = intent.getData();
-        if (data == null) return;
+        if (data == null) return false;
 
         IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
+
+        // current date
+        mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
         // transaction type
         mCommon.transactionEntity.setTransactionType(parameters.transactionType);
@@ -287,7 +290,26 @@ public class CheckingTransactionEditActivity
         if (parameters.accountId > 0) {
             this.mCommon.transactionEntity.setAccountId(parameters.accountId);
         }
+        if (parameters.accountToId > 0) {
+            this.mCommon.transactionEntity.setAccountToId(parameters.accountToId);
+        }
+
         mCommon.transactionEntity.setAmount(parameters.amount);
+
+        // transfer amount
+        if (parameters.transactionType == TransactionTypes.Transfer){
+            if (parameters.amountTo != null){
+                mCommon.transactionEntity.setAmountTo(parameters.amountTo);
+            } else {
+                //convert the to amount from the both currency details
+                CurrencyService currencyService = new CurrencyService(this);
+                AccountRepository accountRepository = new AccountRepository(this);
+                mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                        mCommon.transactionEntity.getAmount(),
+                        accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+            }
+        }
+
         // payee
         if (parameters.payeeId > 0) {
             this.mCommon.transactionEntity.setPayeeId(parameters.payeeId);
@@ -308,12 +330,36 @@ public class CheckingTransactionEditActivity
             mCommon.categoryName = parameters.categoryName;
         } else {
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null) {
+            if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
                 CategoryService newCategory = new CategoryService(this);
                 mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
                 mCommon.categoryName = parameters.categoryName;
+            } else {
+                // try to resolve the category from the payee
+                mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
             }
         }
+
+        // subcategory
+        if (parameters.subcategoryId > 0) {
+            mCommon.transactionEntity.setSubcategoryId(parameters.subcategoryId);
+            mCommon.subCategoryName = parameters.subcategoryName;
+        } else {
+            // No id sent. Create a subcategory if it was sent but does not exist (id not found by the parser).
+            if (parameters.subcategoryName != null && !parameters.subcategoryName.isEmpty()) {
+                CategoryService categorySvc = new CategoryService(this);
+                mCommon.transactionEntity.setSubcategoryId(categorySvc.createNewSubcategory(parameters.subcategoryName, mCommon.transactionEntity.getCategoryId()));
+                mCommon.subCategoryName = parameters.subcategoryName;
+            }
+        }
+
+        // notes
+        mCommon.transactionEntity.setNotes(parameters.notes);
+
+        // stop further handling if Silent Mode is requested
+        if (parameters.isSilentMode && saveData()) return false;
+
+        return true;
     }
 
     private void initializeInputControls() {
@@ -515,7 +561,7 @@ public class CheckingTransactionEditActivity
             }
 
             if (intent.getData() != null) {
-                externalIntegration(intent);
+                if (!externalIntegration(intent)) return false;
             }
             else //start activity from SMS Receiver Transaction
             {
