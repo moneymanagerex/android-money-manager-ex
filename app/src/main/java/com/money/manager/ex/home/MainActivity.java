@@ -451,7 +451,7 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
-        openDatabasePicker();
+        openDatabaseFilePicker();
     }
 
     @Subscribe
@@ -591,7 +591,7 @@ public class MainActivity
                 sync.startSyncServiceHeartbeat();
                 break;
             case R.id.menu_open_database:
-                openDatabasePicker();
+                openDatabaseFilePicker();
                 break;
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
@@ -807,14 +807,14 @@ public class MainActivity
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
     }
 
-    public void openDatabasePicker() {
-        //pickFile(Environment.getDefaultDatabaseDirectory());
+    public void openDatabaseFilePicker() {
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
-
         // Environment.getDefaultDatabaseDirectory().getPath()
+
         try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
+            pickFile(dbDirectory);
+            //UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
         } catch (Exception e) {
             Timber.e(e, "displaying the open-database picker");
         }
@@ -1269,28 +1269,28 @@ public class MainActivity
         changeDatabase(recentDb);
     }
 
-//    /**
-//     * Pick the database file to use with any registered provider in the user's system.
-//     * @param startFolder start folder
-//     */
-//    private void pickFile(File startFolder) {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-//        intent.setType("file/*");
-//
-//        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
-//            try {
-//                startActivityForResult(intent, REQUEST_PICKFILE);
-//            } catch (Exception e) {
-//                Timber.e(e, "selecting a database file");
-//            }
-//        } else {
-//            Toast.makeText(this, R.string.error_intent_pick_file,
-//                    Toast.LENGTH_LONG).show();
-//        }
-//
-//        // Note that the selected file is handled in onActivityResult.
-//    }
+    /**
+     * Pick the database file to use with any registered provider in the user's system.
+     * @param startFolder start folder
+     */
+    private void pickFile(File startFolder) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
+        intent.setType("file/*");
+
+        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
+            try {
+                startActivityForResult(intent, REQUEST_PICKFILE);
+            } catch (Exception e) {
+                Timber.e(e, "selecting a database file");
+            }
+        } else {
+            Toast.makeText(this, R.string.error_intent_pick_file,
+                    Toast.LENGTH_LONG).show();
+        }
+
+        // Note that the selected file is handled in onActivityResult.
+    }
 
 //    private void requestDatabasePassword() {
 //        // request password for the current database.

@@ -30,7 +30,7 @@ android {
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 15 // 4.0.3
+        minSdkVersion 19 // Android 4.4
         targetSdkVersion 28
 
         multiDexEnabled true

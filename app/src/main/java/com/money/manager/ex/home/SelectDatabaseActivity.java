@@ -110,7 +110,8 @@ public class SelectDatabaseActivity
 
         // show the file picker
         try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
+            //UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
+            UIHelper.openFileStorageDialog();
         } catch (Exception e) {
             Timber.e(e, "opening file picker");
         }

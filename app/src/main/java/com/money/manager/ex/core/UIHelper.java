@@ -51,8 +51,27 @@ import timber.log.Timber;
  */
 public class UIHelper {
 
-    public static void pickFileDialog(Activity activity, String location, int requestCode) {
-// This always works
+    /**
+     * Opens a file dialog using the storage API.
+     * @param activity host activity
+     * @param requestCode the code reference for the intent
+     */
+    public static void openFileStorageDialog(Activity activity, int requestCode) {
+        // request
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        activity.startActivityForResult(intent, requestCode);
+
+        // the result is sent directly to the host activity's onActivityResult.
+    }
+
+    /**
+     * Shows a file picker. The results from the picker will be sent to the host activity.
+     * @param activity host activity
+     * @param initialLocation
+     * @param requestCode
+     */
+    public static void pickFileDialog(Activity activity, String initialLocation, int requestCode) {
+        // This always works
         Intent i = new Intent(activity, FilePickerActivity.class);
         // This works if you defined the intent filter
         // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -66,7 +85,7 @@ public class UIHelper {
         // You could specify a String like "/storage/emulated/0/", but that can
         // dangerous. Always use Android's API calls to get paths to the SD-card or
         // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, location);
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, initialLocation);
         // Environment.getExternalStorageDirectory().getPath()
 
         activity.startActivityForResult(i, requestCode);
