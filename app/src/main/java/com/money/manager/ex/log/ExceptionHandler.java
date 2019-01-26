@@ -25,7 +25,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -85,7 +85,7 @@ public class ExceptionHandler
         showMessage(errorMessage);
 
         //Crashlytics.getInstance().crash();
-        Crashlytics.logException(t);
+//        Crashlytics.logException(t);
     }
 
     private String getLogcat() {
@@ -240,7 +240,7 @@ public class ExceptionHandler
             return Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             String message = "could not retrieve build number";
-            Crashlytics.log(message);
+//            Crashlytics.log(message);
             return message;
         }
     }

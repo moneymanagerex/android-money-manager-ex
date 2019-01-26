@@ -21,18 +21,14 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.app.Service;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.evernote.android.job.JobManager;
-import com.evernote.android.job.JobRequest;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -501,7 +497,8 @@ public class SyncManager {
 
         // Transfer the file.
         try {
-            mStorageClient.upload(remoteFile, input, localFile.length(), true);
+            long length = localFile.length();
+            mStorageClient.upload(remoteFile, input, length, true);
         } catch (Exception e) {
             Timber.e(e, "uploading database file");
             return false;

@@ -50,7 +50,7 @@ public class ViewMobileData
 	public static final String Splitted  = "SPLITTED";
 	public static final String CATEGID = "CATEGID";
 	public static final String SubcategID = "SubcategID";
-	public static final String PAYEE = "PAYEE";
+	public static final String Payee = "Payee";
 	public static final String PAYEEID = "PAYEEID";
 	public static final String TransactionNumber = "TransactionNumber";
 	public static final String Status = "Status";
@@ -74,7 +74,7 @@ public class ViewMobileData
 		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
 				Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
-                SubcategID, PAYEE, PAYEEID, TransactionNumber, Status, Notes, currency, finyear,
+                SubcategID, Payee, PAYEEID, TransactionNumber, Status, Notes, currency, finyear,
                 AmountBaseConvRate};
 	}
 

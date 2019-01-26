@@ -100,7 +100,7 @@ public class SimpleAssetResolver extends SVGExternalFileResolver
 
 
    /**
-    * Attempt to find the specified image file in the "assets" folder and return a decoded Bitmap.
+    * Attempt to find the specified image file in the <code>assets</code> folder and return a decoded Bitmap.
     */
    @Override
    public Bitmap  resolveImage(String filename)
@@ -132,18 +132,27 @@ public class SimpleAssetResolver extends SVGExternalFileResolver
 
    /**
     * Attempt to find the specified stylesheet file in the "assets" folder and return its string contents.
+    * @since 1.3
     */
    @Override
    public String  resolveCSSStyleSheet(String url)
    {
       Log.i(TAG, "resolveCSSStyleSheet("+url+")");
+      return getAssetAsString(url);
+   }
 
-      InputStream  is = null;
+
+   /*
+    * Read the contents of the asset whose name is given by "url" and return it as a String.
+    */
+   private String getAssetAsString(String url)
+   {
+      InputStream is = null;
       try
       {
          is = assetManager.open(url);
 
-         Reader         r = new InputStreamReader(is, Charset.forName("UTF-8"));
+         Reader r = new InputStreamReader(is, Charset.forName("UTF-8"));
          char[]         buffer = new char[4096];
          StringBuilder  sb = new StringBuilder();
          int            len = r.read(buffer);

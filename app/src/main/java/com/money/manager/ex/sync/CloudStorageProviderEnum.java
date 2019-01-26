@@ -24,7 +24,8 @@ public enum CloudStorageProviderEnum {
     DROPBOX,
     ONEDRIVE,
     GOOGLEDRIVE,
-    BOX;
+    BOX,
+    PCLOUD;
 
     public static boolean contains(String name) {
         for (CloudStorageProviderEnum provider : CloudStorageProviderEnum.values()) {

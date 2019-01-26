@@ -19,8 +19,8 @@ package com.money.manager.ex.investment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
+//import com.crashlytics.android.answers.Answers;
+//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -52,7 +52,7 @@ public class PortfolioActivity
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
 
-        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Portfolio.name()));
+//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Portfolio.name()));
     }
 
 

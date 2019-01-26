@@ -718,4 +718,8 @@
   <string name="save">Speichern</string>
   <string name="title_budget_show_simple_view">Zeige die einfache Budget-Ansicht</string>
   <string name="summary_budget_show_simple_view">Falls Budgets ausgewählt, einfache Ansicht benutzen</string>
+  <string name="shares">Aktien</string>
+  <string name="loan">Darlehen</string>
+  <string name="loan_account">Darlehenskonten</string>
+  <string name="shares_accounts">Aktienkonto</string>
 </resources>

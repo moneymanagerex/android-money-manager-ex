@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 
 import com.money.manager.ex.R;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles sync-related preferences.
@@ -62,7 +62,7 @@ public class SyncPreferences
     public int getSyncInterval() {
         int defaultSchedule = 30;   // time in minutes
         String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));
-        if (!NumberUtils.isCreatable(setSchedule)) return defaultSchedule;
+        if (!StringUtils.isNumeric(setSchedule)) return defaultSchedule;
 
         return Integer.parseInt(setSchedule);
     }

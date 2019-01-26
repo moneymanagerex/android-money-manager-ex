@@ -34,4 +34,8 @@ public class Subcategory
     public String getName() {
         return getString(SUBCATEGNAME);
     }
+
+    public int getId() {
+        return getInt(SUBCATEGID);
+    }
 }

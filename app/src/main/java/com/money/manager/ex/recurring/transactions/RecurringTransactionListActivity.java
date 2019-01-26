@@ -21,8 +21,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
+//import com.crashlytics.android.answers.Answers;
+//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AnswersEvents;
@@ -69,7 +69,7 @@ public class RecurringTransactionListActivity
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
 
-        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.RecurringTransactionList.name()));
+//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.RecurringTransactionList.name()));
     }
 
     @Override

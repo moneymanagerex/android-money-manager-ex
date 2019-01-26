@@ -54,4 +54,16 @@ public class SubcategoryRepository
 
         return subcategory;
     }
+
+    public int loadIdByName(String name, int categoryId) {
+        Subcategory temp = (Subcategory) first(Subcategory.class,
+                new String[] { Subcategory.SUBCATEGID },
+                Subcategory.CATEGID + "=? AND " + Subcategory.SUBCATEGNAME + "=?",
+                new String[] { Integer.toString(categoryId), name },
+                null);
+
+        if (temp == null) return Constants.NOT_SET;
+
+        return temp.getId();
+    }
 }

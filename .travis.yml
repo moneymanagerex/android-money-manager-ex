@@ -6,7 +6,7 @@ env:
   global:
     - ANDROID_API=27
     - EMULATOR_API=21
-    - ANDROID_BUILD_TOOLS=27.0.3
+    - ANDROID_BUILD_TOOLS=28.0.3
     - ADB_INSTALL_TIMEOUT=5 # minutes
 
 android:
@@ -69,3 +69,14 @@ script:
   # By default Travis-ci executes './gradlew build connectedCheck' if no 'script:' section found.
   - ./gradlew build --stacktrace 
   # add --info or --verbose for more output
+
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: "FILE TO UPLOAD"
+#   skip_cleanup: true
+#   draft: true
+#   on:
+#     tags: true
+      # publish only master branch? Use this condition to set-up both Beta and Release builds.
+#     branch: master

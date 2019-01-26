@@ -51,8 +51,8 @@
   <string name="preferences_dispaly">المظهر &amp; الشكل</string>
   <string name="preferences_behaviour">السلوك</string>
   <string name="base_currency">العملة الأساسية</string>
-  <string name="base_currency_changed">تغيير العملة الأساسية</string>
-  <string name="base_currency_change_notification">لقد تم تغيير العملة. الرجاء تحديث أسعار صرف العملات للحصول على المبالغ الصحيحة بالعملة الجديدة.</string>
+  <string name="base_currency_changed">تم تغيير العملة الأساسية</string>
+  <string name="base_currency_change_notification">لقد تم تغيير العملة الأساسية. الرجاء تحديث سعر صرف العملات للحصول على القيم الصحيحة بالعملة الجديدة.</string>
   <string name="view_accounts_opened">عرض الحسابات المفتوحة</string>
   <string name="if_not_selected_willShowAllAccounts">إذا لم يتم الإختيار سوف تظهر كافة الحسابات</string>
   <string name="view_accounts_favorites">عرض الحسابات المفضلة</string>
@@ -100,19 +100,19 @@
   <string name="edit_payeeName">تحرير المستفيد</string>
   <string name="delete_payee">حذف المستفيد</string>
   <string name="payee">المستفيد</string>
-  <string name="select_payee">حدد المستفيد</string>
-  <string name="payee_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
+  <string name="select_payee">إختر المستفيد</string>
+  <string name="payee_empty_list">لم يتم العثور على مُتسفيد. لإنشاء مُستفيد إضغط على الزر \"+\" الأخضر.</string>
   <string name="from">من</string>
   <string name="db_payee_update_failed">فشل تحديث المستفيد</string>
   <!-- category / subcategory -->
   <string name="category">الفئة</string>
   <string name="subcategory">فئة فرعية</string>
-  <string name="category_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
-  <string name="select_category">اختيار فئة</string>
+  <string name="category_empty_list">لم يتم العثور على فئة. لإنشاء فئة إضغط على الزر \"+\" الأخضر.</string>
+  <string name="select_category">إختر الفئة</string>
   <string name="add_category">إضافة فئة</string>
   <string name="add_subcategory">إضافة فئة فرعية</string>
-  <string name="edit_categoryName">تحرير فئة</string>
-  <string name="delete_category">حذف فئة</string>
+  <string name="edit_categoryName">تحرير الفئة</string>
+  <string name="delete_category">حذف الفئة</string>
   <!-- currency -->
   <string name="currency_name">اسم العملة</string>
   <string name="currency_symbol">رمز العملة</string>
@@ -131,6 +131,14 @@
   <string name="amount">المبلغ</string>
   <string name="total_amount">المبلغ الإجمالي</string>
   <string name="deposit">إيداع</string>
+  <string name="status">الحالة</string>
+  <string name="status_reconciled">تم تسويتها</string>
+  <string name="status_void">ملغية</string>
+  <string name="status_follow_up">متابعة</string>
+  <string name="status_duplicate">تكرار</string>
+  <string name="status_none">لا شيء</string>
+  <string name="transfer">تحويل</string>
+  <string name="transfer_amount">تحويل القيمة</string>
   <string name="transaction_type">نوع المعاملة</string>
   <string name="transaction_status">الحالة</string>
   <string name="withdrawal">السحب</string>
@@ -145,6 +153,7 @@
   <string name="error_transfer_to_same_account">لابد ان تكون الحسابات مختلفة</string>
   <string name="about">حول</string>
   <string name="add">أضف</string>
+  <string name="confirmDelete">هل أنت متأكد من حذف السجل؟</string>
   <string name="date">التاريخ</string>
   <string name="delete">حذف</string>
   <string name="download">تحميل</string>
@@ -166,6 +175,7 @@
   <string name="website">الموقع الالكتروني</string>
   <string name="contact">إتصال</string>
   <string name="access_info">الوصول للمعلومات</string>
+  <string name="initial_balance">الرصيد الافتتاحي</string>
   <string name="notes">ملاحظات</string>
   <string name="closed">مغلق</string>
   <string name="theme_application">السمة</string>
@@ -179,9 +189,40 @@
   <string name="payee_can_not_deleted">لا يمكن حذف المستفيد المحدد لأنه مرجع</string>
   <string name="account_can_not_deleted">لا يمكن حذف الحساب المحدد لأنه مرجع</string>
   <string name="currency_can_not_deleted">لا يمكن حذف العملة المحددة لأنه مرجع</string>
+  <string name="category_can_not_deleted">لا يمكن حذف الفئة المحددة لأنه هُنالك مُعاملات مرتبطة بها</string>
   <!-- transaction list periods -->
+  <string name="all_transaction">كافة المعاملات</string>
+  <string name="today">اليوم</string>
+  <string name="last7days">آخر 7 أيام</string>
+  <string name="last15days">آخر أسبوعين</string>
+  <string name="current_month">الشهر الحالي</string>
+  <string name="current_year">السنة الحالية</string>
+  <string name="future_transactions">المعاملات المستقبلية</string>
+  <string name="show_transaction">عرض المعاملة</string>
+  <string name="changelog">سِجل التغييرات</string>
+  <string name="transaction_number">رقم المعاملة</string>
   <string name="widget_summary">مُلخص</string>
+  <string name="widget_all_accounts">كافة الحسابات</string>
+  <string name="widget_add_transaction">إضافة مُعاملة</string>
   <!-- Recurring Transactions -->
+  <string name="none">لا شيء</string>
+  <string name="once">مرة واحدة</string>
+  <string name="weekly">أسبوعيّا</string>
+  <string name="bi_weekly">مرة كل إسبوعان</string>
+  <string name="monthly">شهرياً</string>
+  <string name="bi_monthly">نصف شهري</string>
+  <string name="quaterly">ربع سنوي</string>
+  <string name="half_year">نصف سنوي</string>
+  <string name="yearly">سنوياً</string>
+  <string name="four_months">أربعة أشهر</string>
+  <string name="four_weeks">أربعة أسابيع</string>
+  <string name="daily">يومياً</string>
+  <string name="in_x_days">خلال (×) يوم</string>
+  <string name="in_x_months">خلال (×) شهر</string>
+  <string name="every_x_days">كل (×) يوم</string>
+  <string name="every_x_months">كل (×) شهر</string>
+  <string name="due_date">تاريخ الاستحقاق</string>
+  <string name="payment_date">تاريخ الدفع</string>
   <string name="due_date_required">مطلوب تاريخ الاستحقاق</string>
   <string name="error_next_occurrence_not_populate">التواجد التالي مطلوب</string>
   <string name="enter_next_occurrence">أدخل التكرار التالي</string>
@@ -230,50 +271,72 @@
   <string name="number_transaction_found">عدد المعاملات التي تم العثور عليها: %1$d</string>
   <!-- 20130108 -->
   <string name="date_format">تنسيق التاريخ</string>
-  <string name="financial_year_start_day">السنة المالية: يوم البدء</string>
-  <string name="financial_year_start_month">السنة المالية: شهر البدء</string>
+  <string name="financial_year_start_day">السنة المالية: اليوم الأول</string>
+  <string name="financial_year_start_month">السنة المالية: الشهر الأول</string>
   <!--<string name="release_date">Release Date</string>-->
   <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">تصدير قاعدة البيانات</string>
-  <string name="database_has_been_moved">تم نقل قاعدة البيانات:</string>
-  <string name="copy_database_on_external_storage_failed">فشل في نسخ قاعدة البيانات على وحدات التخزين الخارجية</string>
-  <string name="path_database_using">كنت تستخدم قاعدة البيانات المحفوظة في: %1$s</string>
+  <string name="database_has_been_moved">تم نقل قاعدة البيانات: %1$s</string>
+  <string name="copy_database_on_external_storage_failed">فشل نسخ قاعدة البيانات إلى الذاكرة الخارجية</string>
+  <string name="path_database_using">مسار قاعدة البيانات الحالية: %1$s</string>
   <!-- Split Categories -->
-  <string name="split_transaction">عملية تقسيم</string>
+  <string name="split_transaction">تقسيم المُعاملة</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">تقسيم</string>
   <string name="error_split_transaction_empty">واحد على الأقل من معاملات التقسيم مطلوب</string>
   <string name="swipe_to_dismiss">التمرير السريع لإزالة البنود.</string>
-  <string name="export_data_to_csv">تصدير بيانات إلى ملف CSV</string>
-  <string name="export_data_in_progress">تصدير البيانات. أرجو الإنتظار&#8230;</string>
-  <string name="export_file_complete">تم بنجاح تصدير البيانات إلى  ملف</string>
-  <string name="export_file_failed">فشل تصدير ملف </string>
+  <string name="export_data_to_csv">تصدير البيانات إلى ملف CSV</string>
+  <string name="export_data_in_progress">جاري تصدير البيانات. الرجاء الانتظار&#8230;</string>
+  <string name="export_file_complete">تم تصدير البيانات بنجاح إلى الملف %1$s</string>
+  <string name="export_file_failed">فشل تصدير الملف %1$s</string>
   <!-- 20130220 -->
-  <string name="donate_header">Money Manager Ex for Android is provided for free. If you like the application, you can support the development team with a donation.</string>
-  <string name="donate_in_app_title">فواتير  تطبيق جوجل</string>
-  <string name="donate_in_app_description">تبرع عبر في Google Play الفوترة داخل التطبيق.</string>
-  <string name="donate_in_app_spinner_text">تحديد مبلغ التبرع</string>
+  <string name="donate_header">هذا التطبيق متوفر مجاناً للجميع. إذا أعجبك، يُمكنك دعم فريق التطوير عن طريق التبرع.</string>
+  <string name="donate_in_app_title">الدفع عن طريق جوجل Play</string>
+  <string name="donate_in_app_description">التبرع عن طريق منصة جوجل Play.</string>
+  <string name="donate_in_app_spinner_text">حدد قيمة التبرع</string>
   <string name="donate_in_app_button">التبرع</string>
+  <string name="donate_thank_you">شكراً لتبرعك!</string>
   <string name="donate">التبرع</string>
+  <string name="no_thanks">لا، شكراً</string>
+  <string name="donate_exlamation">تبرع!</string>
   <string name="donate_button_text">التبرع</string>
   <!-- 20130225 -->
   <!-- 20130301 -->
   <!--<string name="sort">Sort</string>-->
+  <string name="ascending">تصاعدي</string>
+  <string name="descending">تنازلي</string>
   <!-- 20130305 -->
+  <string name="last_modified">آخر تعديل</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
+  <string name="dont_show_again">لا تُظهر مجدّدًا</string>
+  <string name="open_database">فتح قاعدة البيانات</string>
+  <string name="synchronization_interval">المزامنة كل...</string>
+  <string name="summary_synchronization_interval">كل كم تجب المُزامنة؟</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the Dropbox sync need to update the configuration. The authentication and the selection of the database is located in the Settings. ofversion 1.2.0, Money Manager Ex for Android can automatically synchronize the database.</string>
   <!-- 20130426 -->
+  <string name="title_transaction_shown_balance">عرض الرصيد لكل مُعاملة</string>
+  <string name="summary_transaction_shown_balance">يتم إظهار الرصيد بعد كل عملية. قد يجعل التطبيق أبطئ.</string>
+  <string name="menu_open_database">فتح قاعدة البيانات</string>
+  <string name="database">قاعدة البيانات</string>
+  <string name="tips">تلميحات</string>
+  <string name="title_application_font">خط التطبيق</string>
+  <string name="summary_application_font">حدد الخط الذي تريد إستخدامه في التطبيق.</string>
   <!-- 20130606 -->
   <!-- 20130728 -->
   <!-- 20130730 -->
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
+  <string name="top_payees_last_30_days">أعلى المٌستفيدون: آخر 30 يوماً</string>
   <!--<string name="transaction_statistics">Transaction Statistics</string>-->
+  <string name="upcoming_transactions">المُعاملات القادمة</string>
+  <string name="quantity">الكمية</string>
   <!-- 20130808 -->
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <!-- 20130816 -->
+  <string name="empty_category">الفئة فارغة</string>
   <!-- 20130831 -->
+  <string name="help">المساعدة</string>
   <!-- 20130927 -->
   <!-- 20131007 -->
   <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
@@ -281,20 +344,51 @@
   <!-- 20131104 -->
   <string name="from_account">من حساب</string>
   <string name="default_status">الحالة الافتراضية</string>
+  <string name="default_payee">المستفيد الإفتراضي</string>
+  <string name="edit_transaction">تحرير المعاملة</string>
+  <string name="delete_one_selected_transaction">هل أنت متأكد من حذف المُعاملة المختارة؟</string>
+  <string name="delete_others_selected_transaction">هل أنت متأكد من حذف المُعاملات %d المختارة؟</string>
+  <string name="categories">الفئات</string>
+  <string name="payees">المستفيدون</string>
+  <string name="recurring_transactions">المعاملات المتكررة</string>
+  <string name="new_account">حساب جديد</string>
+  <string name="create_new_account">إنشاء حساب جديد</string>
+  <string name="amount_greater_or_equal">القيمة أكبر من أو تساوي</string>
+  <string name="amount_less_or_equal">القيمة أصغر من أو تساوي</string>
+  <string name="reset">إعادة تعيين</string>
+  <string name="new_repeating_transaction">إضافة مُعاملة متكررة</string>
+  <string name="add_transaction">إضافة مُعاملة</string>
   <string name="welcome_header">Welcome to Money Manager Ex!</string>
   <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.You currently have no visible accounts. Either adjust the filter for visible accounts in the Settings, or select one of the options below.</string>
   <string name="welcome_body_dropbox">If you already use Money Manager Ex on Windows, Linux or Mac, you can link to a cloud storage provider to synchronize your database</string>
+  <string name="configure_sync">ضبط المُزامنة</string>
   <!-- 20140115 -->
+  <string name="withdrawal_from">السحب من %1$s</string>
+  <string name="deposit_to">الإيداع إلى %1$s</string>
   <string name="mmex_website">Money Manager Ex Website</string>
+  <string name="android_website">موقع MMEx للأندرويد</string>
   <string name="donate_in_app_already_donate">You already supported the development of Money Manager Ex for Android with your donation. Thank you from development team!</string>
+  <string name="entities">الكيانات</string>
+  <string name="loading">جاري التحميل&#8230;</string>
+  <string name="cash_accounts">الحسابات النقدية</string>
+  <string name="bank_accounts">الحسابات المصرفية</string>
   <!-- languages -->
   <string name="action_settings">إعدادات</string>
   <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
   <!-- Password entry activity -->
   <!-- edit investment transaction -->
+  <string name="commission">العمولة</string>
+  <string name="view_transactions">عرض المُعاملات</string>
   <!-- asset allocation -->
+  <string name="all_accounts">كافة الحسابات</string>
   <!-- db password entry -->
   <!-- budgets -->
+  <string name="add_budget">أضِف ميزانية</string>
+  <string name="budget_name">اسم الميزانية</string>
+  <string name="budget_year">سنة الميزانية</string>
+  <string name="budget_month">شهر الميزانية</string>
+  <string name="print">طباعة</string>
+  <string name="save_as_html">حفظ كملف HTML</string>
   <!-- Currencies -->
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
@@ -302,13 +396,26 @@
   <string name="dropbox_how_it_works"> How does Dropbox work for Money Manager Ex\?</string>
   <!-- Synchronization -->
   <string name="sync_notification_title">Money Manager Ex - Sync</string>
+  <string name="every_5_minutes">كل 5 دقائق</string>
+  <string name="every_10_minutes">كل 10 دقائق</string>
+  <string name="every_15_minutes">كل 15 دقيقة</string>
+  <string name="every_30_minutes">كل 30 دقيقة</string>
+  <string name="every_hour">كل ساعة</string>
+  <string name="every_2_hours">كل ساعتين</string>
+  <string name="every_3_hours">كل 3 ساعات</string>
+  <string name="every_6_hours">كل 6 ساعات</string>
+  <string name="every_12_hours">كل 12 ساعة</string>
+  <string name="never">ابداً</string>
   <string name="dropbox_empty_folder">The folder in Dropbox /Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
   <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
   <!-- Create Database screen -->
+  <string name="select_language">اختر اللغة</string>
   <string name="run">Run Money Manager Ex</string>
+  <string name="create_db_info_1">موقع قاعدة البيانات الإفتراضي:</string>
   <!-- Settings -->
   <string name="per_database_settings">في قاعدة البيانات</string>
+  <string name="save">حفظ</string>
 </resources>

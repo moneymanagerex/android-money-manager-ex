@@ -246,14 +246,14 @@ public class DashboardFragment
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
         String[] projectionIn = new String[]{"ROWID AS _id",
-                ViewMobileData.PAYEEID, ViewMobileData.PAYEE,
+                ViewMobileData.PAYEEID, ViewMobileData.Payee,
                 "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
                 "COUNT(*) AS NUM"};
 
         String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType
                 + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.PAYEE;
+        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.Payee;
         String having = null;
         String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
@@ -372,7 +372,7 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE));
+            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row

@@ -39,18 +39,13 @@ To build the project, the following settings are recommended:
 - use embedded JDK,
 - use gradle wrapper.
 
-You will need to generate a custom "fabric.properties" file in "app" directory.
-
 ## Continuous Integration
 
-Travis CI build is active for the project. It runs a build on every check-in and a pull request.
-
-Useful content is available at the Fabric/Travis [demo](https://github.com/plastiv/CrashlyticsDemo). It explains how to generate fabric.properties file during the build, using environment variables.
-The environment variables start with org_gradle_project, i.e. ORG_GRADLE_PROJECT_crashlyticsdemoApikey.
+Travis CI build is active for the project. It runs a build on every check-in and a pull request. Sometimes it fails when the new build tools are introduced in the project but not on Travis.
 
 # License
 
-    Copyright 2012-2017 The Android Money Manager Ex Project Team
+    Copyright 2012-2018 The Android Money Manager Ex Project Team
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
