@@ -17,7 +17,9 @@
 
 package com.money.manager.ex.home;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +28,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.FileStorageHelper;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
@@ -72,7 +75,7 @@ public class SelectDatabaseActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode != RESULT_OK) {
-            // todo: show some message?
+            Timber.w("The activity result is not OK");
             return;
         }
 
@@ -87,6 +90,13 @@ public class SelectDatabaseActivity
 
                 onDatabaseSelected(selectedPath);
                 break;
+
+            case RequestCodes.SELECT_DOCUMENT:
+                // file selected at a Storage Access Framework.
+                Timber.i("database selected in a document provider");
+                FileStorageHelper storageHelper = new FileStorageHelper(this);
+                Uri docUri = storageHelper.getDatabaseFromProvider(data);
+                storageHelper.getFileMetadata(docUri);
         }
     }
 
@@ -110,16 +120,8 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
-
-        // show the file picker
-        try {
-            //UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
-            UIHelper.openFileStorageDialog(this, RequestCodes.SELECT_FILE);
-        } catch (Exception e) {
-            Timber.e(e, "opening file picker");
-        }
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showSelectFileInStorage();
     }
 
     @OnClick(R.id.setupSyncButton)

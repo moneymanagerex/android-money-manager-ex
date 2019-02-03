@@ -64,6 +64,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
 import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
@@ -452,7 +453,8 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
-        openDatabaseFilePicker();
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showSelectFileInStorage();
     }
 
     @Subscribe
@@ -591,15 +593,20 @@ public class MainActivity
                 // re-set the sync timer.
                 sync.startSyncServiceHeartbeat();
                 break;
+
             case R.id.menu_open_database:
-                openDatabaseFilePicker();
+                FileStorageHelper helper = new FileStorageHelper(this);
+                helper.showSelectFileInStorage();
                 break;
+
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
                 break;
+
             case R.id.menu_category:
                 showFragment(CategoryListFragment.class);
                 break;
+
             case R.id.menu_currency:
                 // Show Currency list.
                 intent = new Intent(MainActivity.this, CurrencyListActivity.class);
@@ -806,20 +813,6 @@ public class MainActivity
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-    }
-
-    public void openDatabaseFilePicker() {
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
-        // Environment.getDefaultDatabaseDirectory().getPath()
-
-        try {
-            pickFile(dbDirectory);
-            //UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
-        } catch (Exception e) {
-            Timber.e(e, "displaying the open-database picker");
-        }
-        // continues in onActivityResult
     }
 
     /*
@@ -1197,7 +1190,7 @@ public class MainActivity
 
     private void initializeDrawer() {
         // navigation drawer
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawer = findViewById(R.id.drawerLayout);
 
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer == null) return;
@@ -1233,15 +1226,15 @@ public class MainActivity
     }
 
     private void initializeDrawerVariables() {
-        mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
+        mDrawerLayout = findViewById(R.id.linearLayoutDrawer);
 
         // repeating transaction
-        LinearLayout mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
+        LinearLayout mDrawerLinearRepeating = findViewById(R.id.linearLayoutRepeatingTransaction);
         if (mDrawerLinearRepeating != null) {
             mDrawerLinearRepeating.setVisibility(View.GONE);
         }
-        mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
-        mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
+        mDrawerTextUserName = findViewById(R.id.textViewUserName);
+        mDrawerTextTotalAccounts = findViewById(R.id.textViewTotalAccounts);
     }
 
     private boolean isDatabaseAvailable() {
@@ -1268,35 +1261,6 @@ public class MainActivity
         if (recentDb.localPath.equals(currentDb)) return;
 
         changeDatabase(recentDb);
-    }
-
-    /**
-     * Pick the database file to use with any registered provider in the user's system.
-     * @param startFolder start folder
-     */
-//    private void pickFile(File startFolder) {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-//        intent.setType("file/*");
-//
-//        if (MmexApplication.getApp().isUriAvailable(this, intent)) {
-//            try {
-//                startActivityForResult(intent, RequestCodes.SELECT_FILE); // REQUEST_PICKFILE
-//            } catch (Exception e) {
-//                Timber.e(e, "selecting a database file");
-//            }
-//        } else {
-//            Toast.makeText(this, R.string.error_intent_pick_file,
-//                    Toast.LENGTH_LONG).show();
-//        }
-//
-//        // Note that the selected file is handled in onActivityResult.
-//    }
-    private void pickFile(String startFolder) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //intent.setType("text/plain");
-        startActivityForResult(intent, RequestCodes.SELECT_FILE);
     }
 
 //    private void requestDatabasePassword() {
