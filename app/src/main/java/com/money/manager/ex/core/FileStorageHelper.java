@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
 
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 
 import timber.log.Timber;
@@ -106,19 +108,41 @@ public class FileStorageHelper {
             if (cursor == null || !cursor.moveToFirst()) {
                 return;
             }
+            // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
 
-            // todo: read metadata
-//            String displayName = cursor.getString(
-//                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            String displayName = cursor.getString(
+                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
 
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            String size = null;
+            if (!cursor.isNull(sizeIndex)) {
+                // Technically the column stores an int, but cursor.getString()
+                // will do the conversion automatically.
+                size = cursor.getString(sizeIndex);
+            } else {
+                size = "Unknown";
+            }
+
+            int modifiedIndex = cursor.getColumnIndex("last_modified");
+            String lastModified = null;
+            // get the last modified date
+            if (!cursor.isNull(modifiedIndex)) {
+                lastModified = cursor.getString(modifiedIndex);
+            }
+
+            Timber.i("check the values");
         } finally {
             cursor.close();
         }
+
+        // check the values
     }
 
-    public void openDocument(Uri uri) throws IOException {
+    public void readDocument(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor = _host.getContentResolver()
                 .openFileDescriptor(uri, "r");
-
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
     }
 }
