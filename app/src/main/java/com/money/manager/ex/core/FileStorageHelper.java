@@ -9,6 +9,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
@@ -97,6 +98,11 @@ public class FileStorageHelper {
         uri = activityResultData.getData();
         //Timber.i("blah", "Uri: " + uri.toString());
 
+        // Take persistable URI permission.
+        _host.getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
         return uri;
     }
 
@@ -124,11 +130,13 @@ public class FileStorageHelper {
             }
 
             int modifiedIndex = cursor.getColumnIndex("last_modified");
-            String lastModified = null;
+            //String lastModified = null;
+            int lastModifiedTicks = -1;
             // get the last modified date
             if (!cursor.isNull(modifiedIndex)) {
-                lastModified = cursor.getString(modifiedIndex);
+                lastModifiedTicks = cursor.getInt(modifiedIndex);
             }
+            MmxDate lastModifiedDate = new MmxDate(lastModifiedTicks);
 
             Timber.i("check the values");
         } finally {
