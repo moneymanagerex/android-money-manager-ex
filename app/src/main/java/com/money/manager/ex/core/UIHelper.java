@@ -52,7 +52,7 @@ import timber.log.Timber;
 public class UIHelper {
 
     /**
-     * Opens a file dialog using the storage API.
+     * Opens a file dialog using the Storage Access Framework.
      * @param activity host activity
      * @param requestCode the code reference for the intent
      */
@@ -66,6 +66,7 @@ public class UIHelper {
 
     /**
      * Shows a file picker. The results from the picker will be sent to the host activity.
+     * This is a custom picker that works with local files only.
      * @param activity host activity
      * @param initialLocation
      * @param requestCode

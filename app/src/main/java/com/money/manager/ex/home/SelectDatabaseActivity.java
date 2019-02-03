@@ -71,9 +71,14 @@ public class SelectDatabaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode != RESULT_OK) {
+            // todo: show some message?
+            return;
+        }
+
         switch (requestCode) {
             case RequestCodes.SELECT_FILE:
-                if (resultCode != RESULT_OK) return;
+                //if (resultCode != RESULT_OK) return;
                 String selectedPath = UIHelper.getSelectedFile(data);
                 if(TextUtils.isEmpty(selectedPath)) {
                     new UIHelper(this).showToast(R.string.invalid_database);
@@ -111,7 +116,7 @@ public class SelectDatabaseActivity
         // show the file picker
         try {
             //UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
-            UIHelper.openFileStorageDialog();
+            UIHelper.openFileStorageDialog(this, RequestCodes.SELECT_FILE);
         } catch (Exception e) {
             Timber.e(e, "opening file picker");
         }

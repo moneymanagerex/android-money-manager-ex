@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.hardware.fingerprint.FingerprintManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -1273,23 +1274,29 @@ public class MainActivity
      * Pick the database file to use with any registered provider in the user's system.
      * @param startFolder start folder
      */
+//    private void pickFile(File startFolder) {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
+//        intent.setType("file/*");
+//
+//        if (MmexApplication.getApp().isUriAvailable(this, intent)) {
+//            try {
+//                startActivityForResult(intent, RequestCodes.SELECT_FILE); // REQUEST_PICKFILE
+//            } catch (Exception e) {
+//                Timber.e(e, "selecting a database file");
+//            }
+//        } else {
+//            Toast.makeText(this, R.string.error_intent_pick_file,
+//                    Toast.LENGTH_LONG).show();
+//        }
+//
+//        // Note that the selected file is handled in onActivityResult.
+//    }
     private void pickFile(File startFolder) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-        intent.setType("file/*");
-
-        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
-            try {
-                startActivityForResult(intent, REQUEST_PICKFILE);
-            } catch (Exception e) {
-                Timber.e(e, "selecting a database file");
-            }
-        } else {
-            Toast.makeText(this, R.string.error_intent_pick_file,
-                    Toast.LENGTH_LONG).show();
-        }
-
-        // Note that the selected file is handled in onActivityResult.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //intent.setType("text/plain");
+        startActivityForResult(intent, RequestCodes.SELECT_FILE);
     }
 
 //    private void requestDatabasePassword() {
