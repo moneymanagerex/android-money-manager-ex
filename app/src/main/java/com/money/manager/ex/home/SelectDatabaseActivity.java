@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.home;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,10 +44,11 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import timber.log.Timber;
 
+/**
+ * Activity for selecting a database in the initial setup of the app.
+ */
 public class SelectDatabaseActivity
     extends MmxBaseFragmentActivity {
-
-//    public static final int REQUEST_PICKFILE = 1;
 
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
 

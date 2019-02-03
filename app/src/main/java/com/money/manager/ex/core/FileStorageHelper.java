@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -39,6 +40,7 @@ public class FileStorageHelper {
         Activity host = _host;
 
         try {
+            // ACTION_GET_CONTENT in older versions of Android.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             // intent.setType("text/plain");
@@ -129,16 +131,19 @@ public class FileStorageHelper {
                 size = "Unknown";
             }
 
-            int modifiedIndex = cursor.getColumnIndex("last_modified");
+            int modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
             //String lastModified = null;
-            int lastModifiedTicks = -1;
+            long lastModifiedTicks = -1;
             // get the last modified date
             if (!cursor.isNull(modifiedIndex)) {
-                lastModifiedTicks = cursor.getInt(modifiedIndex);
+                lastModifiedTicks = cursor.getLong(modifiedIndex);
             }
+            // timestamp
             MmxDate lastModifiedDate = new MmxDate(lastModifiedTicks);
 
             Timber.i("check the values");
+        } catch (Exception e) {
+            Timber.e(e);
         } finally {
             cursor.close();
         }
