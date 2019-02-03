@@ -1292,7 +1292,7 @@ public class MainActivity
 //
 //        // Note that the selected file is handled in onActivityResult.
 //    }
-    private void pickFile(File startFolder) {
+    private void pickFile(String startFolder) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         //intent.setType("text/plain");
