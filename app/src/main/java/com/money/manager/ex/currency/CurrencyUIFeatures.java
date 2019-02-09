@@ -32,7 +32,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.money.manager.ex.utils.DialogUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 

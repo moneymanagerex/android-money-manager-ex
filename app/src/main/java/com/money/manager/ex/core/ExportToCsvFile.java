@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
