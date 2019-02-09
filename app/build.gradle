@@ -16,8 +16,6 @@
  */
 
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
-//apply plugin: 'com.chaquo.python'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
