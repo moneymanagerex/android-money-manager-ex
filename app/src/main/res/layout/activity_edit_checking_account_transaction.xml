@@ -512,7 +512,7 @@
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_action_plusone_dark" />
+                    app:srcCompat="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
 
         </LinearLayout>

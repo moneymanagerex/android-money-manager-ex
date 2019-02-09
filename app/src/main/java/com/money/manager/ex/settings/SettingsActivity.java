@@ -18,7 +18,6 @@ package com.money.manager.ex.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -26,6 +25,7 @@ import com.money.manager.ex.core.Core;
 
 import javax.inject.Inject;
 
+import androidx.preference.PreferenceFragmentCompat;
 import dagger.Lazy;
 
 public class SettingsActivity

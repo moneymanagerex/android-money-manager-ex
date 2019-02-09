@@ -18,14 +18,14 @@ package com.money.manager.ex.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.SimpleCursorAdapter;
+
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.view.RobotoView;
 
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import timber.log.Timber;
 
 /**
@@ -33,14 +33,16 @@ import timber.log.Timber;
 public class MoneySimpleCursorAdapter
         extends SimpleCursorAdapter {
 
-    private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
+    //private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
     private String mHighlight;
     private Core mCore;
+    private Context mContext;
 
     public MoneySimpleCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
 
         mCore = new Core(context);
+        mContext = context;
     }
 
     @Override

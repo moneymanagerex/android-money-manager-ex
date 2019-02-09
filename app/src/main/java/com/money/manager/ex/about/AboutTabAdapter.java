@@ -17,11 +17,12 @@
 
 package com.money.manager.ex.about;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mikepenz.aboutlibraries.LibsBuilder;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 /**
  * Adapter for the tabs on the About page.

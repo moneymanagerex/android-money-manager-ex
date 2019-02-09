@@ -18,9 +18,6 @@ package com.money.manager.ex.reports;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,11 +40,14 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import dagger.Lazy;
 
 public abstract class BaseReportFragment
     extends BaseListFragment
-    implements LoaderCallbacks<Cursor> {
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected static final int ID_LOADER = 1;
     protected static final String KEY_ITEM_SELECTED = "PayeeReportFragment:ItemSelected";

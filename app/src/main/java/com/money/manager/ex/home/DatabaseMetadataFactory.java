@@ -17,7 +17,6 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -26,7 +25,7 @@ import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDate;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
 
 /**
  * Factory for the database metadata records.

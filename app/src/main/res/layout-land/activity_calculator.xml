@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.GridLayout
+        <androidx.appcompat.widget.GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:columnCount="5"
@@ -156,6 +156,6 @@
                 style="@style/Money.Button.Input.Dialog.Full.Operator"
                 android:text="+"/>
 
-        </android.support.v7.widget.GridLayout>
+        </androidx.appcompat.widget.GridLayout>
     </ScrollView>
 </LinearLayout>

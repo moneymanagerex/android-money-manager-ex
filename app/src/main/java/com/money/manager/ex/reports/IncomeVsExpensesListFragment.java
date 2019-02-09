@@ -16,18 +16,11 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -58,6 +51,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -213,7 +214,7 @@ public class IncomeVsExpensesListFragment
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
-            Activity activity = getActivity();
+            FragmentActivity activity = getActivity();
             if (activity instanceof IncomeVsExpensesActivity) {
                 itemChart.setVisible(!((IncomeVsExpensesActivity) activity).mIsDualPanel);
             }

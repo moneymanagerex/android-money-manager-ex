@@ -22,13 +22,6 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,37 +38,45 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
-import com.money.manager.ex.core.TransactionStatuses;
-import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
+import com.money.manager.ex.core.TransactionStatuses;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.database.WhereStatementGenerator;
-import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.R;
-import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -261,20 +262,20 @@ public class AccountTransactionListFragment
             if (!activity.isDualPanel()) {
                 //hide sync toolbar
                 MenuItem itemSync = menu.findItem(R.id.menu_sync);
-                if (itemSync != null) itemSync.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                if (itemSync != null) MenuItemCompat.setShowAsAction(itemSync, MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemSync.isVisible()
+                    MenuItemCompat.setShowAsAction(itemOpenDatabase, !itemSync.isVisible()
                         ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
                 MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
                 if (itemDashboard != null)
-                    itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                    MenuItemCompat.setShowAsAction(itemDashboard, MenuItem.SHOW_AS_ACTION_NEVER);
             }
         }
 
@@ -828,7 +829,7 @@ public class AccountTransactionListFragment
     private void showFilterDialog() {
         int numberOfRecords = mAllDataListFragment.getListAdapter().getCount();
         FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter, mAccount, numberOfRecords);
-        dialog.show(getActivity().getFragmentManager(), TAG_FILTER_DIALOG);
+        dialog.show(getActivity().getSupportFragmentManager(), TAG_FILTER_DIALOG);
     }
 
     private void showTransactionsFragment(ViewGroup header) {

@@ -16,12 +16,13 @@
  */
 package com.money.manager.ex.home;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * ViewHolder for the linear drawer items.

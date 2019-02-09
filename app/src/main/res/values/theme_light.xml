@@ -23,11 +23,11 @@
         <!--<item name="android:icon">@color/md_icons</item>-->
         <!--<item name="android:divider">@color/md_divider</item>-->
         <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>
-        <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
-        <item name="android:editTextStyle">@style/Money.EditText</item>
+        <item name="spinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="editTextStyle">@style/Money.EditText</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="md_dark_theme">false</item>
     </style>

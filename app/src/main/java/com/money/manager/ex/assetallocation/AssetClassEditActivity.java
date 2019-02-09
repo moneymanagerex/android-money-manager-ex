@@ -19,8 +19,6 @@ package com.money.manager.ex.assetallocation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,6 +30,8 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import timber.log.Timber;
 
 /**

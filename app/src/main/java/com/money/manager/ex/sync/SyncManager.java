@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -60,6 +59,7 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import dagger.Lazy;
 import rx.Single;
 import rx.functions.Action1;
@@ -262,7 +262,7 @@ public class SyncManager {
 
         ProgressDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
-        if ((getContext() instanceof Activity)) {
+        if ((getContext() instanceof AppCompatActivity)) {
             //progress dialog shown only when downloading an updated db file.
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setCancelable(false);
@@ -273,7 +273,7 @@ public class SyncManager {
 
         String localFile = getDatabases().getCurrent().localPath;
         Messenger messenger = null;
-        if (getContext() instanceof Activity) {
+        if (getContext() instanceof AppCompatActivity) {
             // Messenger handles received messages from the sync service. Can run only in a looper thread.
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
@@ -537,7 +537,7 @@ public class SyncManager {
      */
     public void useDownloadedDatabase() {
         // Do this only if called from an activity.
-        if (!(getContext() instanceof Activity)) return;
+        if (!(getContext() instanceof AppCompatActivity)) return;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String localFile = MmexApplication.getDatabasePath(getContext());

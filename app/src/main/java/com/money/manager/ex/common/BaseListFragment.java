@@ -20,9 +20,6 @@ import android.animation.LayoutTransition;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,12 +27,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 
 /**
  *
@@ -112,7 +114,7 @@ public abstract class BaseListFragment
         if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
-            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            MenuItemCompat.setShowAsAction(itemSearch, MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             SearchView searchView = new SearchView(getActivity());
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -128,7 +130,7 @@ public abstract class BaseListFragment
             });
 //            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
-            itemSearch.setActionView(searchView);
+            MenuItemCompat.setActionView(itemSearch, searchView);
 
             SearchViewFormatter formatter = new SearchViewFormatter();
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);

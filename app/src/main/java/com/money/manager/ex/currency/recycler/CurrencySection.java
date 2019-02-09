@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.currency.recycler;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
@@ -26,6 +25,7 @@ import com.money.manager.ex.domainmodel.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 /**

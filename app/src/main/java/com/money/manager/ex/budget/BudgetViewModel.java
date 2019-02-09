@@ -17,8 +17,8 @@
 
 package com.money.manager.ex.budget;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 import com.money.manager.ex.BR;
 import com.money.manager.ex.domainmodel.Budget;

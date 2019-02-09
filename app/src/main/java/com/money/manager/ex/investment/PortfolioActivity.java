@@ -17,14 +17,12 @@
 package com.money.manager.ex.investment;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.AnswersEvents;
+
+import androidx.fragment.app.FragmentManager;
 
 public class PortfolioActivity
     extends MmxBaseFragmentActivity {

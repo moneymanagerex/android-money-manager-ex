@@ -16,6 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <!--android:weightSum="100"-->
@@ -28,7 +29,7 @@
         android:layout_margin="@dimen/mmx_activity_side_margin"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_logo_money_manager_ex"/>
+        app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
     <!--android:scaleType="fitXY"-->
 
     <LinearLayout
@@ -89,7 +90,7 @@
                 android:layout_gravity="center"
                 android:padding="4dp"
                 android:background="@null"
-                android:src="@drawable/ic_action_add_dark"
+                app:srcCompat="@drawable/ic_action_add_dark"
                 android:contentDescription="@string/new_transaction" />
         </LinearLayout>
 

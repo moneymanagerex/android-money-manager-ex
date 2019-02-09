@@ -26,8 +26,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 
 import com.money.manager.ex.budget.BudgetQuery;
@@ -63,6 +61,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.collection.SparseArrayCompat;
 import dagger.Lazy;
 import timber.log.Timber;
 

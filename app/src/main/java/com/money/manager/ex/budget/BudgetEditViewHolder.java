@@ -17,12 +17,11 @@
 
 package com.money.manager.ex.budget;
 
-import android.app.Activity;
-import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  */
 
 class BudgetEditViewHolder {
-    BudgetEditViewHolder(Activity activity) {
+    BudgetEditViewHolder(AppCompatActivity activity) {
         ButterKnife.bind(this, activity);
     }
 

@@ -22,17 +22,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.hardware.fingerprint.FingerprintManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -59,20 +51,24 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
 import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.passcode.FingerprintHandler;
-import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -80,15 +76,6 @@ import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.investment.PortfolioFragment;
-import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.common.CategoryListFragment;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.core.RecurringTransactionBootReceiver;
-import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.account.AccountListFragment;
-import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
@@ -96,10 +83,14 @@ import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -114,6 +105,13 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import dagger.Lazy;
 import icepick.State;
 import rx.Single;
@@ -958,7 +956,7 @@ public class MainActivity
             if (menu.findItem(id) == null) {
                 boolean hasAnimation = false;
 
-                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
+                if (mSyncMenuItem != null && MenuItemCompat.getActionView(mSyncMenuItem) != null) {
                     hasAnimation = true;
                     // There is a running animation. Clear it on the old reference.
                     stopSyncIconRotation(mSyncMenuItem);
@@ -1304,17 +1302,17 @@ public class MainActivity
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
         imageView.startAnimation(animation);
-        item.setActionView(imageView);
+        MenuItemCompat.setActionView(item, imageView);
     }
 
     private void stopSyncIconRotation(MenuItem item) {
         if (item == null) return;
 
-        View actionView = item.getActionView();
+        View actionView = MenuItemCompat.getActionView(item);
         if (actionView == null) return;
 
         actionView.clearAnimation();
-        item.setActionView(null);
+        MenuItemCompat.setActionView(item, null);
     }
 
     /**

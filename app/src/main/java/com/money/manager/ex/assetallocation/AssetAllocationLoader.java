@@ -18,12 +18,13 @@ package com.money.manager.ex.assetallocation;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.content.AsyncTaskLoader;
 
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 /**
  * Custom loader for Asset Allocation. Used to plug into the infrastructure and get

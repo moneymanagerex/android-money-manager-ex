@@ -20,7 +20,6 @@ package com.money.manager.ex.currency;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Date;
 import java.util.concurrent.Callable;
 
+import androidx.annotation.NonNull;
 import info.javaperformance.money.Money;
 import rx.Observable;
 import rx.Subscriber;

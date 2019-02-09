@@ -17,12 +17,8 @@
 
 package com.money.manager.ex.core;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -35,10 +31,12 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
@@ -254,9 +252,9 @@ public class UIHelper {
 
     public void showToast(final int message, final int length) {
         Context context = getContext();
-        if (!(context instanceof Activity)) return;
+        if (!(context instanceof AppCompatActivity)) return;
 
-        final Activity parent = (Activity) context;
+        final AppCompatActivity parent = (AppCompatActivity) context;
 
         parent.runOnUiThread(new Runnable() {
             @Override
@@ -268,9 +266,9 @@ public class UIHelper {
 
     public void showToast(final String message, final int length) {
         Context context = getContext();
-        if (!(context instanceof Activity)) return;
+        if (!(context instanceof AppCompatActivity)) return;
 
-        final Activity parent = (Activity) context;
+        final AppCompatActivity parent = (AppCompatActivity) context;
 
         parent.runOnUiThread(new Runnable() {
             @Override

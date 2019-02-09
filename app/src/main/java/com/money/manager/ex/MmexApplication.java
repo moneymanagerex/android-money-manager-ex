@@ -20,13 +20,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.widget.TextView;
-
-//import com.crashlytics.android.Crashlytics;
-//import com.crashlytics.android.core.CrashlyticsCore;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -50,8 +45,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
-//import io.fabric.sdk.android.Fabric;
-
 import org.parceler.Parcel;
 import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
@@ -60,6 +53,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
+import androidx.multidex.MultiDexApplication;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 

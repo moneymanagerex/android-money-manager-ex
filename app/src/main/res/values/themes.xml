@@ -21,6 +21,6 @@
     <!-- It is assigned to the application in the manifest, application block. -->
     <style name="Theme.Splash" parent="android:Theme">
         <item name="android:windowBackground">@drawable/background_logo</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

@@ -24,7 +24,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.MmexApplication;
@@ -49,6 +48,7 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import dagger.Lazy;
 import timber.log.Timber;
 

@@ -1,6 +1,5 @@
 package com.money.manager.ex.core;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,21 +12,21 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
-import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
 
 /**
  * Functions to assist with selecting database file.
  */
 public class FileStorageHelper {
-    public FileStorageHelper(Activity host) {
+    public FileStorageHelper(AppCompatActivity host) {
         _host = host;
     }
 
-    private Activity _host;
+    private AppCompatActivity _host;
 
     /**
      * Opens a file dialog using the Storage Access Framework.
@@ -37,7 +36,7 @@ public class FileStorageHelper {
     public void showSelectFileInStorage() {
         // show the file picker
         int requestCode = RequestCodes.SELECT_DOCUMENT;
-        Activity host = _host;
+        AppCompatActivity host = _host;
 
         try {
             // ACTION_GET_CONTENT in older versions of Android.
@@ -62,7 +61,7 @@ public class FileStorageHelper {
      */
     public void showSelectLocalFileDialog() {
         int requestCode = RequestCodes.SELECT_FILE;
-        Activity host = _host;
+        AppCompatActivity host = _host;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
@@ -109,7 +108,7 @@ public class FileStorageHelper {
     }
 
     public void getFileMetadata(Uri uri) {
-        Activity host = _host;
+        AppCompatActivity host = _host;
         Cursor cursor = host.getContentResolver()
                 .query(uri, null, null, null, null, null);
         try {

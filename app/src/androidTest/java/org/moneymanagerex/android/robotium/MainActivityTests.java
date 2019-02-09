@@ -18,19 +18,13 @@ package org.moneymanagerex.android.robotium;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.widget.DrawerLayout;
+import androidx.core.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

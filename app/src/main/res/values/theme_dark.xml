@@ -34,7 +34,7 @@ https://developer.android.com/training/material/theme.html
 
         <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="md_dark_theme">true</item>
@@ -127,7 +127,7 @@ https://developer.android.com/training/material/theme.html
         <item name="calculator_button_operator_background">@color/color_dialog_number_operator</item>
 
         <!-- spinner -->
-        <item name="android:spinnerStyle">@style/Money.Spinner.Style.Dark</item>
+        <item name="spinnerStyle">@style/Money.Spinner.Style.Dark</item>
         <!--<item name="android:spinnerItemStyle">@style/Money.Spinner.Style.Dark</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style</item>-->
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>

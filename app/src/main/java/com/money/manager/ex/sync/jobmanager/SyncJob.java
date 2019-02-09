@@ -17,9 +17,9 @@
 
 package com.money.manager.ex.sync.jobmanager;
 
-import android.support.annotation.NonNull;
-
 import com.evernote.android.job.Job;
+
+import androidx.annotation.NonNull;
 
 /**
  * For use with JobManager.

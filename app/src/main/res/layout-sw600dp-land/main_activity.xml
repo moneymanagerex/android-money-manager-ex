@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<android.support.v4.widget.DrawerLayout
+<androidx.core.widget.DrawerLayout
     android:id="@+id/drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -55,4 +55,4 @@
     <!-- Navigation Drawer -->
     <include layout="@layout/merge_drawer"/>
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.core.widget.DrawerLayout>

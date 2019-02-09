@@ -18,16 +18,14 @@ package com.money.manager.ex.recurring.transactions;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Not used.

@@ -18,8 +18,6 @@ package com.money.manager.ex.budget;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +30,9 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.settings.AppSettings;
+
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 /**
  * Use the {@link BudgetDetailFragment#newInstance} factory method to

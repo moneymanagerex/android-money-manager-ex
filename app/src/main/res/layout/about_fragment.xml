@@ -34,7 +34,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:contentDescription="@string/logo"
-            android:src="@drawable/ic_logo_money_manager_ex"/>
+            app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewVersion"
@@ -111,21 +111,21 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
-                android:src="@drawable/ic_social_google_plus"/>
+                app:srcCompat="@drawable/ic_social_google_plus"/>
 
             <ImageView
                 android:id="@+id/imageViewGithub"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
-                android:src="@drawable/ic_social_github"/>
+                app:srcCompat="@drawable/ic_social_github"/>
 
             <ImageView
                 android:id="@+id/imageViewTwitter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
-                android:src="@drawable/ic_social_twitter"/>
+                app:srcCompat="@drawable/ic_social_twitter"/>
         </LinearLayout>
 
         <com.money.manager.ex.view.RobotoTextView

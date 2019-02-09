@@ -19,7 +19,7 @@ package com.money.manager.ex.core;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
@@ -108,29 +108,29 @@ public class SearchViewFormatter {
 
         mResources = searchView.getContext().getResources();
         if (mSearchBackGroundResource != 0) {
-            View view = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+            View view = searchView.findViewById(androidx.appcompat.appcompat.R.id.search_plate);
             view.setBackgroundResource(mSearchBackGroundResource);
 
-            view = searchView.findViewById(android.support.v7.appcompat.R.id.submit_area);
+            view = searchView.findViewById(androidx.appcompat.appcompat.R.id.submit_area);
             view.setBackgroundResource(mSearchBackGroundResource);
         }
 
         if (mSearchVoiceIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_voice_btn);
+            ImageView view = (ImageView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_voice_btn);
             view.setImageResource(mSearchVoiceIconResource);
         }
 
         if (mSearchCollapsedSearchIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+            ImageView view = (ImageView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_button);
             view.setImageResource(mSearchCollapsedSearchIconResource);
         }
 
         if (mSearchCloseIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+            ImageView view = (ImageView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_close_btn);
             view.setImageResource(mSearchCloseIconResource);
         }
 
-        TextView view = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        TextView view = (TextView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_src_text);
         if (mSearchTextColorResource != 0) {
             view.setTextColor(mResources.getColor(mSearchTextColorResource));
         }
@@ -141,7 +141,7 @@ public class SearchViewFormatter {
             view.setInputType(mInputType);
         }
         if (mSearchIconResource != 0) {
-            ImageView imageView = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+            ImageView imageView = (ImageView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_mag_icon);
 
             if (mSearchIconInside) {
                 Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
@@ -165,7 +165,7 @@ public class SearchViewFormatter {
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
             }
             if (mSearchIconOutside) {
-                imageView = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+                imageView = (ImageView) searchView.findViewById(androidx.appcompat.appcompat.R.id.search_button);
 
                 imageView.setImageResource(mSearchIconResource);
             }

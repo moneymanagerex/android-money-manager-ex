@@ -33,7 +33,7 @@ android {
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets {
@@ -80,7 +80,9 @@ android {
                 variant.outputs.all { output ->
                     // append the version to the file name.
                     def version = "-" + defaultConfig.versionName
-                    def fileName = output.outputFile.name
+                    def outputFile = variant.getPackageApplicationProvider().get().outputs.files[1]
+                    //def fileName = output.outputFile.name
+                    def fileName = outputFile.name
                             .replace("app-", "ammx-")
                             .replace(".apk", version + ".apk")
                     outputFileName = fileName
@@ -144,22 +146,15 @@ android {
 
 dependencies {
 //    compile(name:'cloudrail-si-debug', ext:'aar')
+    // api ...
+    implementation project(':MMEX_Icon_Font')
+    implementation project(':androidSVG')
+    implementation project(path: ':money')
+
     implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , project(':MMEX_Icon_Font')
-            , project(':androidSVG')
-            , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.22.4'
 //            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-            , supportDependencies.core
-            , supportDependencies.support
-            , supportDependencies.appCompat
-            , supportDependencies.recyclerView
-            , supportDependencies.cardView
-            , supportDependencies.design
-            , supportDependencies.preference
-            , supportDependencies.supportAnnotation
-            , supportDependencies.gridLayout
             , 'com.opencsv:opencsv:4.1'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
@@ -176,18 +171,13 @@ dependencies {
             // JavaMoney
             // , 'javax.money:money-api-bp:1.0.1'
             , 'org.javamoney:moneta-bp:1.1'
-            //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8.2'
-            , 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
-            , 'com.squareup.retrofit2:converter-gson:2.4.0'
-            , 'com.squareup.retrofit2:converter-scalars:2.4.0'
-            , 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
             // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
-            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
+            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
             , 'org.jsoup:jsoup:1.11.2'              // HTML parsing.
             , 'com.google.guava:guava:23.0-android' // collection libraries
-            , 'com.android.support:multidex:1.0.2'  // multidex support
+            , 'androidx.multidex:multidex:2.0.0'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -212,9 +202,20 @@ dependencies {
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.5'
     )
-//    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-//        transitive = true
-//    }
+    implementation supportDependencies.core
+    implementation supportDependencies.support
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.cardView
+    implementation supportDependencies.design
+    implementation supportDependencies.preference
+    implementation supportDependencies.supportAnnotation
+    implementation supportDependencies.gridLayout
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+
     implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
         transitive = true
     }
@@ -258,12 +259,12 @@ dependencies {
 
     // UI testing
     androidTestImplementation(
-            'com.android.support.test:runner:0.5',
+            'androidx.test:runner:1.1.0-alpha4',
             // Set this dependency to use JUnit 4 rules
-            'com.android.support.test:rules:0.5',
+            'androidx.test:rules:1.1.0-alpha4',
             // Set this dependency to build and run Espresso tests
-            'com.android.support.test.espresso:espresso-core:2.2.2',
-            'com.android.support.test.espresso:espresso-contrib:2.2.2',
+            'androidx.test.espresso:espresso-core:3.1.0-alpha4',
+            'androidx.test.espresso:espresso-contrib:3.1.0-alpha4',
             // add this for intent mocking support
             // 'com.android.support.test.espresso:espresso-intents:2.2.2'
             // add this for webview testing support

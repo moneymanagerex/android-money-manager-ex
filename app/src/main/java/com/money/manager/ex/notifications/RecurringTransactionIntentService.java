@@ -17,12 +17,9 @@
 
 package com.money.manager.ex.notifications;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.JobIntentService;
-
-import com.evernote.android.job.Job;
+import androidx.core.app.JobIntentService;
 
 /**
  * Background service that triggers notifications about recurring transactions.

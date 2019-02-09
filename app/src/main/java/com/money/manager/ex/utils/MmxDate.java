@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.utils;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -30,6 +29,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 /**

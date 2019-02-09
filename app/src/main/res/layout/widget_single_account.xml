@@ -16,6 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/black20transparent"
@@ -26,7 +27,7 @@
         android:layout_width="@dimen/md_icon_max_size"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_logo_money_manager_ex"
+        app:srcCompat="@drawable/ic_logo_money_manager_ex"
         android:contentDescription="@string/logo" />
     <!--<ImageButton-->
         <!--android:id="@+id/openAppButton"-->
@@ -97,7 +98,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
         android:padding="4dp"
-        android:src="@drawable/ic_action_add_dark"
+        app:srcCompat="@drawable/ic_action_add_dark"
         android:contentDescription="@string/new_transaction" />
     <!-- android:background="@android:color/transparent" -->
     <!-- ic_action_editor_mode_edit_dark -->
