@@ -17,8 +17,8 @@
 package com.money.manager.ex.reports;
 
 import android.os.Bundle;
-import androidx.core.app.FragmentManager;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
