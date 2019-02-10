@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
@@ -92,7 +93,7 @@ public class FileStorageHelper {
         }
 
         // store the metadata.
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this._host);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         dbUtils.useDatabase(metadata);
 
         return metadata;
@@ -106,23 +107,33 @@ public class FileStorageHelper {
         // handle remote changes
         Uri remoteUri = Uri.parse(metadata.remotePath);
         DocFileMetadata remote = getFileMetadata(remoteUri);
-        //File local = new File(metadata.localPath);
-        //long modifiedTick = local.lastModified();
-        //MmxDate localLastModified = new MmxDate(modifiedTick);
-        MmxDate remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate);
 
-        if (remote.lastModified.toDate().after(remoteSnapshot.toDate())) {
+        // Check if the remote file was modified since fetched.
+        MmxDate remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate);
+        Date remoteModified = remote.lastModified.toDate();
+        Date remoteFetched = remoteSnapshot.toDate();
+
+        if (remoteModified.after(remoteFetched)) {
             Timber.w("The remote file was modified in the meantime");
             return;
         }
-        // todo Check if we should upload at all.
-        //if (remote.lastModified.toDate().after(localLastModified.toDate())) {
 
-        // todo upload local file
-        //uploadDatabase(metadata);
+        // Check if the local file was modified (if we should upload at all).
+        File local = new File(metadata.localPath);
+        long modifiedTick = local.lastModified();
+        MmxDate localLastModified = new MmxDate(modifiedTick);
+        Date localModifiedDate = localLastModified.toDate();
 
-        // todo delete original remote file
-        //deleteRemoteFile(metadata);
+        if (localModifiedDate.after(remoteModified)) {
+            // upload local file
+            uploadDatabase(metadata);
+        }
+
+        // update the remote snapshot info.
+        remote = getFileMetadata(remoteUri);
+        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        dbUtils.useDatabase(metadata);
     }
 
     /*
@@ -238,6 +249,8 @@ public class FileStorageHelper {
 
             fileOutputStream.close();
             pfd.close();
+
+            Timber.i("Database stored successfully.");
         } catch (FileNotFoundException e) {
             Timber.e(e);
         } catch (IOException e) {
@@ -245,6 +258,11 @@ public class FileStorageHelper {
         }
     }
 
+    /**
+     * Shows how to delete the remote file. This was supposed to be used if a temp file is
+     * uploaded. However, it is easy to overwrite the original file.
+     * @param metadata The file info
+     */
     private void deleteRemoteFile(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
         Uri remote = Uri.parse(metadata.remotePath);
@@ -271,18 +289,12 @@ public class FileStorageHelper {
 
         // Prepare output
         FileOutputStream outputStream = new FileOutputStream(localPath);
-        //Path outputPath = new File(localPath).toPath();
-        //Path outputPath = FileSystems.getDefault().getPath(localPath);
-        //Path outputPath = Paths.get(localPath);
 
         // Copy contents
         InputStream is = null;
         try {
             //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
             is = resolver.openInputStream(uri);
-            //outputStream.write();
-            //Files.copy(is, localPath);
-            //IOUtils.copy(is, outputStream);
             long bytesCopied = ByteStreams.copy(is, outputStream);
             Timber.d("copied %d bytes", bytesCopied);
         } catch (Exception e) {
