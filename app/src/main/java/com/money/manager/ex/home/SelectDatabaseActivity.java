@@ -132,22 +132,6 @@ public class SelectDatabaseActivity
     }
 
     private void onDatabaseSelected() {
-        // check if the file is a valid database
-//        if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
-//            new UIHelper(this).showToast(R.string.invalid_database);
-//            return;
-//        }
-
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        //dbUtils.useDatabase()
-
-        // store db setting
-        //new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
-
-        // Add the current db to the recent db list.
-//        DatabaseMetadata currentDb = mDatabasesLazy.get().getCurrent();
-//        mDatabasesLazy.get().add(currentDb);
-
         // open the main activity
         Intent intent = IntentFactory.getMainActivityNew(this);
         startActivity(intent);

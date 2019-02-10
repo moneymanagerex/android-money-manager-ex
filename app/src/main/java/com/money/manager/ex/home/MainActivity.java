@@ -296,18 +296,26 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode != RESULT_OK) return;
+
         switch (requestCode) {
-            case RequestCodes.SELECT_FILE:
-                // Opening from intent.
-                if (resultCode != RESULT_OK) return;
+//            case RequestCodes.SELECT_FILE:
+//                // Opening from intent.
+//                if (resultCode != RESULT_OK) return;
+//
+//                String selectedPath = UIHelper.getSelectedFile(data);
+//                if(TextUtils.isEmpty(selectedPath)) {
+//                    new UIHelper(this).showToast(R.string.invalid_database);
+//                    return;
+//                }
+//
+//                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
+//                changeDatabase(db);
+//                break;
 
-                String selectedPath = UIHelper.getSelectedFile(data);
-                if(TextUtils.isEmpty(selectedPath)) {
-                    new UIHelper(this).showToast(R.string.invalid_database);
-                    return;
-                }
-
-                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
+            case RequestCodes.SELECT_DOCUMENT:
+                FileStorageHelper storageHelper = new FileStorageHelper(this);
+                DatabaseMetadata db = storageHelper.selectDatabase(data);
                 changeDatabase(db);
                 break;
 

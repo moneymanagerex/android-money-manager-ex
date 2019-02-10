@@ -20,6 +20,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -86,8 +87,8 @@ public class DatabaseMigrator14To20 {
     }
 
     public String getV20Directory() {
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File newPath = new File(dbUtils.getDefaultDatabaseDirectory());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File newPath = new File(dbManager.getDefaultDatabaseDirectory());
 
         String dbPath = newPath.toString();
         return dbPath;

@@ -114,8 +114,9 @@ public class Core {
         if (!database.exists()) return null;
 
         //create folder to copy database
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File folderOutput = new File(dbUtils.getDefaultDatabaseDirectory());
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File folderOutput = new File(dbManager.getDefaultDatabaseDirectory());
 
         //take a folder of database
         ArrayList<File> filesFromCopy = new ArrayList<>();

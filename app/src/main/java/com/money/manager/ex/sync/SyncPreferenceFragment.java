@@ -27,6 +27,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
@@ -380,7 +381,7 @@ public class SyncPreferenceFragment
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
-        String localPath = new MmxDatabaseUtils(getActivity())
+        String localPath = new DatabaseManager(getActivity())
                 .getDefaultDatabaseDirectory()
                 .concat(File.separator).concat(fileName);
 

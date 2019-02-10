@@ -1,12 +1,12 @@
 package com.money.manager.ex.core.docstorage;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContextWrapper;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
@@ -35,6 +35,10 @@ public class FileStorageHelper {
     }
 
     private AppCompatActivity _host;
+
+    public Context getContext() {
+        return _host;
+    }
 
     /**
      * Opens a file dialog using the Storage Access Framework.
@@ -71,8 +75,9 @@ public class FileStorageHelper {
         int requestCode = RequestCodes.SELECT_FILE;
         AppCompatActivity host = _host;
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        String dbDirectory = dbManager.getDefaultDatabaseDirectory();
         // Environment.getDefaultDatabaseDirectory().getPath()
 
         // This always works
@@ -105,6 +110,7 @@ public class FileStorageHelper {
         DocFileMetadata fileMetadata = getFileMetadata(docUri);
         DatabaseMetadata metadata = getMetadata(fileMetadata);
 
+        // If there is an existing file with the same name?
         // Delete previous local file.
         File prevFile = new File(metadata.localPath);
         boolean deleted = prevFile.delete();
@@ -152,8 +158,9 @@ public class FileStorageHelper {
         // Local file will always be the same.
         //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
         //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
-        String localPath = new DatabaseManager(_host).getDatabasePath();
-        metadata.localPath = localPath;
+        String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
+        //Paths.get(localPath, fileMetadata.Name);
+        metadata.localPath = localPath + File.separator + fileMetadata.Name;
 
         return metadata;
     }

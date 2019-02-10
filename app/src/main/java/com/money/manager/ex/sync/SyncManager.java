@@ -626,8 +626,9 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         // todo check this after refactoring the database utils.
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File folder = new File(dbUtils.getDefaultDatabaseDirectory());
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File folder = new File(dbManager.getDefaultDatabaseDirectory());
 
         // manage folder
         if (folder.exists() && folder.isDirectory() && folder.canWrite()) {

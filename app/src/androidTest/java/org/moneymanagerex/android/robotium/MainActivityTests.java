@@ -16,10 +16,10 @@
  */
 package org.moneymanagerex.android.robotium;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-import androidx.drawerlayout.widget.DrawerLayout;
-import android.test.ActivityInstrumentationTestCase2;
+//import android.support.test.InstrumentationRegistry;
+//import android.support.test.runner.AndroidJUnit4;
+//import androidx.drawerlayout.widget.DrawerLayout;
+//import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.robotium.solo.Solo;
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Robotium tests for the Main Activity.
  */
-@RunWith(AndroidJUnit4.class)
+//@RunWith(AndroidJUnit4.class)
 public class MainActivityTests {
 // extends ActivityInstrumentationTestCase2<MainActivity>
 
