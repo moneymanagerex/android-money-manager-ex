@@ -18,7 +18,7 @@ package org.moneymanagerex.android.robotium;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import androidx.core.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.budget.BudgetsActivity;

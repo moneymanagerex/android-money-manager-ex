@@ -240,7 +240,7 @@ public class FileStorageHelper {
             //outputStream.write();
             //Files.copy(is, localPath);
             //IOUtils.copy(is, outputStream);
-            ByteStreams.copy(is, outputStream);
+            long bytesCopied = ByteStreams.copy(is, outputStream);
         } catch (Exception e) {
            Timber.e(e);
         } finally {
