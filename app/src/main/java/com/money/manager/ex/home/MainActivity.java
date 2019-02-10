@@ -59,7 +59,7 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.FileStorageHelper;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.Passcode;
@@ -525,8 +525,7 @@ public class MainActivity
         }
 
         try {
-            new MmxDatabaseUtils(this)
-                    .useDatabase(database);
+            new MmxDatabaseUtils(this).useDatabase(database);
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
                 Timber.w(e.getMessage());

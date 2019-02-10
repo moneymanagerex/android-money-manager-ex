@@ -28,7 +28,8 @@ import android.text.TextUtils;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.FileStorageHelper;
+import com.money.manager.ex.core.docstorage.DocFileMetadata;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
@@ -94,10 +95,8 @@ public class SelectDatabaseActivity
 
             case RequestCodes.SELECT_DOCUMENT:
                 // file selected at a Storage Access Framework.
-                Timber.i("database selected in a document provider");
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
-                Uri docUri = storageHelper.getDatabaseFromProvider(data);
-                storageHelper.getFileMetadata(docUri);
+                storageHelper.openDatabase(data);
         }
     }
 
@@ -133,11 +132,13 @@ public class SelectDatabaseActivity
 
     private void onDatabaseSelected(String dbPath) {
         // check if the file is a valid database
-//        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
             new UIHelper(this).showToast(R.string.invalid_database);
             return;
         }
+
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+        //dbUtils.useDatabase()
 
         // store db setting
         new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);

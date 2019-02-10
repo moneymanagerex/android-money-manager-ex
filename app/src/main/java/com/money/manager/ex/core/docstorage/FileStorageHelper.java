@@ -1,4 +1,4 @@
-package com.money.manager.ex.core;
+package com.money.manager.ex.core.docstorage;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
+import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
@@ -88,9 +90,26 @@ public class FileStorageHelper {
     }
 
     /**
+     * Open the selected database file from Storage Access Framework.
+     * @param activityResultData the intent received in onActivityResult after the file
+     *                           is selected in the picker.
+     */
+    public void openDatabase(Intent activityResultData) {
+        Uri docUri = getDatabaseUriFromProvider(activityResultData);
+        DocFileMetadata fileMetadata = getFileMetadata(docUri);
+        DatabaseMetadata metadata = getMetadata(fileMetadata);
+
+        // todo: copy the contents into a local database file.
+
+        // store the metadata.
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this._host);
+        //dbUtils.useDatabase(metadata);
+    }
+
+    /**
      * Retrieves the database file from a document Uri.
      */
-    public Uri getDatabaseFromProvider(Intent activityResultData) {
+    private Uri getDatabaseUriFromProvider(Intent activityResultData) {
         Uri uri = null;
         if (activityResultData == null) {
             return null;
@@ -107,28 +126,44 @@ public class FileStorageHelper {
         return uri;
     }
 
-    public void getFileMetadata(Uri uri) {
+    private DatabaseMetadata getMetadata(DocFileMetadata fileMetadata) {
+        DatabaseMetadata metadata = new DatabaseMetadata();
+        metadata.remotePath = fileMetadata.Uri;
+        metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
+
+        return metadata;
+    }
+
+    private DocFileMetadata getFileMetadata(Uri uri) {
         AppCompatActivity host = _host;
+
+        DocFileMetadata result = new DocFileMetadata();
+        result.Uri = uri.toString();
+
         Cursor cursor = host.getContentResolver()
                 .query(uri, null, null, null, null, null);
+
         try {
             if (cursor == null || !cursor.moveToFirst()) {
-                return;
+                return null;
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
 
             String displayName = cursor.getString(
                     cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            result.Name = displayName;
 
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            String size = null;
-            if (!cursor.isNull(sizeIndex)) {
-                // Technically the column stores an int, but cursor.getString()
-                // will do the conversion automatically.
-                size = cursor.getString(sizeIndex);
-            } else {
-                size = "Unknown";
-            }
+//            String size = null;
+//            if (!cursor.isNull(sizeIndex)) {
+//                // Technically the column stores an int, but cursor.getString()
+//                // will do the conversion automatically.
+//                size = cursor.getString(sizeIndex);
+//            } else {
+//                size = "Unknown";
+//            }
+            result.Size = cursor.getInt(sizeIndex);
+
 
             int modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
             //String lastModified = null;
@@ -139,9 +174,10 @@ public class FileStorageHelper {
             }
             // timestamp
             MmxDate lastModifiedDate = new MmxDate(lastModifiedTicks);
-            String dateString = lastModifiedDate.toIsoDateTimeString();
+            //String dateString = lastModifiedDate.toIsoDateTimeString();
+            result.lastModified = lastModifiedDate;
 
-            Timber.i("check the values");
+            //Timber.i("check the values");
         } catch (Exception e) {
             Timber.e(e);
         } finally {
@@ -149,9 +185,10 @@ public class FileStorageHelper {
         }
 
         // check the values
+        return result;
     }
 
-    public void readDocument(Uri uri) throws IOException {
+    private void readDocument(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor = _host.getContentResolver()
                 .openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();

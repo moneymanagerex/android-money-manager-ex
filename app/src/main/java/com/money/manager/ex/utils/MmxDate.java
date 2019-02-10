@@ -366,7 +366,7 @@ public class MmxDate {
         return format.format(toDate());
     }
 
-    public String toIsoDateTimeString() {
+    public String toIsoDateShortTimeString() {
         SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
         return format.format(toDate());
     }

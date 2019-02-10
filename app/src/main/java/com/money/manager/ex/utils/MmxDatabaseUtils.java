@@ -241,7 +241,8 @@ public class MmxDatabaseUtils {
         }
 
         // Set path in preferences.
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(database.localPath);
+        new AppSettings(getContext()).getDatabaseSettings()
+                .setDatabasePath(database.localPath);
 
         // Store the Recent Database entry.
         boolean added = mDatabasesLazy.get().add(database);
