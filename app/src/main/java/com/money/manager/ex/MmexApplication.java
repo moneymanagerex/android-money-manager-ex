@@ -36,6 +36,7 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
+import com.money.manager.ex.log.ScreenTree;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
@@ -128,20 +129,17 @@ public class MmexApplication
 //        }
 
         // Loggers
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
-//        } else {
-//            Timber.plant(new CrashReportingTree());
-//        }
+        } else {
+            //Timber.plant(new CrashReportingTree());
+            Timber.plant(new ScreenTree());
+        }
 
         initializeDependencyInjection();
 
         // Job Manager initialization.
         initializeJobManager();
-
-//        if (! Python.isStarted()) {
-//            Python.start(new AndroidPlatform(this));
-//        }
     }
 
     /**
@@ -150,7 +148,7 @@ public class MmexApplication
      */
     public void initializeJobManager() {
         JobManager.create(this)
-                .addJobCreator(new SyncJobCreator());
+            .addJobCreator(new SyncJobCreator());
     }
 
     /**
