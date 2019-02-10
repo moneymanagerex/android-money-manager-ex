@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.io.File;
 
