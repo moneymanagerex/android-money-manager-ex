@@ -31,7 +31,7 @@ import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import org.apache.commons.lang3.tuple.Pair;
+//import org.apache.commons.lang3.tuple.Pair;
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -96,87 +96,87 @@ public class MorningstarPriceUpdater
         processInParallel(symbols);
     }
 
-    private void processSequentially(List<String> symbols) {
-        compositeSubscription.add(Observable.from(symbols)
-                .subscribeOn(Schedulers.io())
-                .map(new Func1<String, String>() {
-                    @Override
-                    public String call(String s) {
-                        // get a Morningstar symbol
-                        return symbolConverter.convert(s);
-                    }
-                })
-                .observeOn(Schedulers.io())     // Observe the network call on IO thread!
-                .flatMap(new Func1<String, Observable<Pair<String, String>>>() {
-                    @Override
-                    public Observable<Pair<String, String>> call(final String s) {
-                        // download the price
-                        return service.getPrice(s)
-                                .doOnError(new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        mCounter++;
-                                        setProgress(mCounter);
-
-                                        // report to the UI
-                                        Timber.e(throwable, "fetching %s", s);
-                                    }
-                                })
-                                .onErrorResumeNext(Observable.<String>empty())
-                                .map(new Func1<String, Pair<String, String>>() {
-                                    @Override
-                                    public Pair<String, String> call(String price) {
-                                        return Pair.of(s, price);
-                                    }
-                                });
-                    }
-                })
-                .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
-                    @Override
-                    public PriceDownloadedEvent call(Pair<String, String> s) {
-                        // parse the price
-                        return parse(s.getLeft(), s.getRight());
-                    }
-                })
-                .doOnNext(new Action1<PriceDownloadedEvent>() {
-                    @Override
-                    public void call(PriceDownloadedEvent priceDownloadedEvent) {
-                        // update to database
-                        savePrice(priceDownloadedEvent);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<PriceDownloadedEvent>() {
-                    @Override
-                    public void onCompleted() {
-                        closeProgressDialog();
-
-                        new UIHelper(getContext()).showToast(R.string.download_complete);
-
-                        compositeSubscription.unsubscribe();
-
-                        // send event to reload the data.
-                        EventBus.getDefault().post(new AllPricesDownloadedEvent());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        closeProgressDialog();
-
-                        Timber.e(e, "downloading prices");
-                    }
-
-                    @Override
-                    public void onNext(PriceDownloadedEvent event) {
-                        mCounter++;
-                        setProgress(mCounter);
-
-                        // todo: update price in the UI?
-                        // todo: remove the progress bar in that case.
-                    }
-                })
-        );
-    }
+//    private void processSequentially(List<String> symbols) {
+//        compositeSubscription.add(Observable.from(symbols)
+//                .subscribeOn(Schedulers.io())
+//                .map(new Func1<String, String>() {
+//                    @Override
+//                    public String call(String s) {
+//                        // get a Morningstar symbol
+//                        return symbolConverter.convert(s);
+//                    }
+//                })
+//                .observeOn(Schedulers.io())     // Observe the network call on IO thread!
+//                .flatMap(new Func1<String, Observable<Pair<String, String>>>() {
+//                    @Override
+//                    public Observable<Pair<String, String>> call(final String s) {
+//                        // download the price
+//                        return service.getPrice(s)
+//                                .doOnError(new Action1<Throwable>() {
+//                                    @Override
+//                                    public void call(Throwable throwable) {
+//                                        mCounter++;
+//                                        setProgress(mCounter);
+//
+//                                        // report to the UI
+//                                        Timber.e(throwable, "fetching %s", s);
+//                                    }
+//                                })
+//                                .onErrorResumeNext(Observable.<String>empty())
+//                                .map(new Func1<String, Pair<String, String>>() {
+//                                    @Override
+//                                    public Pair<String, String> call(String price) {
+//                                        return Pair.of(s, price);
+//                                    }
+//                                });
+//                    }
+//                })
+//                .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
+//                    @Override
+//                    public PriceDownloadedEvent call(Pair<String, String> s) {
+//                        // parse the price
+//                        return parse(s.getLeft(), s.getRight());
+//                    }
+//                })
+//                .doOnNext(new Action1<PriceDownloadedEvent>() {
+//                    @Override
+//                    public void call(PriceDownloadedEvent priceDownloadedEvent) {
+//                        // update to database
+//                        savePrice(priceDownloadedEvent);
+//                    }
+//                })
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<PriceDownloadedEvent>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        closeProgressDialog();
+//
+//                        new UIHelper(getContext()).showToast(R.string.download_complete);
+//
+//                        compositeSubscription.unsubscribe();
+//
+//                        // send event to reload the data.
+//                        EventBus.getDefault().post(new AllPricesDownloadedEvent());
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        closeProgressDialog();
+//
+//                        Timber.e(e, "downloading prices");
+//                    }
+//
+//                    @Override
+//                    public void onNext(PriceDownloadedEvent event) {
+//                        mCounter++;
+//                        setProgress(mCounter);
+//
+//                        // todo: update price in the UI?
+//                        // todo: remove the progress bar in that case.
+//                    }
+//                })
+//        );
+//    }
 
     private void processInParallel(List<String> symbols) {
         for(int i = 0; i < symbols.size(); i++) {

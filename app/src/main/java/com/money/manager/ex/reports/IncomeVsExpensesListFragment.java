@@ -32,6 +32,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.collect.Iterables;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
@@ -45,13 +48,14 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import org.apache.commons.lang3.ArrayUtils;
+//import org.apache.commons.lang3.ArrayUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -249,26 +253,33 @@ public class IncomeVsExpensesListFragment
                 years.add(mYearsSelected.keyAt(i));
             }
         }
-        //int[] arr = years.stream().mapToInt(i -> i).toArray();
-        outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
+
+        // ArrayUtils.toPrimitive(years.toArray(new Integer[0]))
+        int[] yearsArray = Ints.toArray(years);
+        outState.putIntArray(KEY_BUNDLE_YEAR, yearsArray);
     }
 
     // Other
 
     public void showDialogYears() {
         ArrayList<String> years = new ArrayList<String>();
-        Integer[] selected = new Integer[0];
+        //Integer[] selected = new Integer[0];
+        List<Integer> selected = new ArrayList<>();
 
         for (int i = 0; i < mYearsSelected.size(); i++) {
             years.add(String.valueOf(mYearsSelected.keyAt(i)));
+
             if (mYearsSelected.valueAt(i)) {
-                selected = ArrayUtils.add(selected, i);
+                //selected = ArrayUtils.add(selected, i);
+                selected.add(i);
             }
         }
 
+        Integer[] selectedArray = selected.toArray(new Integer[0]);
+
         new MaterialDialog.Builder(getActivity())
                 .items(years.toArray(new String[years.size()]))
-                .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
+                .itemsCallbackMultiChoice(selectedArray, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog materialDialog, Integer[] integers,
                                                CharSequence[] charSequences) {
@@ -472,10 +483,14 @@ public class IncomeVsExpensesListFragment
         }
         //compose bundle for arguments
         Bundle args = new Bundle();
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES,
-                ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES,
-                ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
+        //double[] expensesArray = ArrayUtils.toPrimitive(expenses.toArray(new Double[0]));
+        double[] expensesArray = Doubles.toArray(expenses);
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, expensesArray);
+
+        //double[] incomesArray = ArrayUtils.toPrimitive(incomes.toArray(new Double[0]));
+        double[] incomesArray = Doubles.toArray(incomes);
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, incomesArray);
+
         args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles.toArray(new String[titles.size()]));
         //get fragment manager
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
