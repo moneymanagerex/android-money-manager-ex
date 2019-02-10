@@ -758,7 +758,7 @@
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
     <string name="intro_create_db">You can create a new file and set up the initial preferences.</string>
     <string name="intro_open_db">Or you can select an existing file from your device.</string>
-    <string name="intro_sync">Alternatively, you can set up the synchronisation with a cloud service and download your database file from online storage for start.</string>
+    <string name="intro_sync2">To use cloud services, open the file from a preferred document provider.</string>
     <!-- Create Database screen -->
     <string name="select_language">Select language</string>
     <string name="run">Run Money Manager Ex</string>

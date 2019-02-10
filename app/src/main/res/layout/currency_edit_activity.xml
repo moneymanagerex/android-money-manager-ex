@@ -37,7 +37,7 @@
             android:paddingRight="@dimen/mmx_activity_side_padding">
 
             <!-- currency name -->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/currency_name" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Currency Symbol -->
             <com.money.manager.ex.view.RobotoTextView
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -80,9 +80,9 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/unit_name" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/cents_name" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- prefix / suffix -->
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -113,9 +113,9 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/prefix_symbol" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/suffix_symbol" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- decimal / group separator -->
@@ -135,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -146,9 +146,9 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/decimal_char" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/group_char" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- scale / conversion rate -->
@@ -168,7 +168,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -181,9 +181,9 @@
                         android:gravity="end"
                         android:hint="@string/scale"
                         android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -196,7 +196,7 @@
                         android:gravity="end"
                         android:hint="@string/conversion_to_base_rate"
                         android:inputType="numberDecimal" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

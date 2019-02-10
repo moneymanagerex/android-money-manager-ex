@@ -109,7 +109,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -188,10 +187,10 @@ public class MainActivity
         // Layout
         setContentView(R.layout.main_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) setSupportActionBar(toolbar);
 
-        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        LinearLayout fragmentDetail = findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
         // Initialize current device orientation.
@@ -594,10 +593,15 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-                SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
-                // re-set the sync timer.
-                sync.startSyncServiceHeartbeat();
+//                SyncManager sync = new SyncManager(this);
+//                sync.triggerSynchronization();
+//                // re-set the sync timer.
+//                sync.startSyncServiceHeartbeat();
+
+                // trigger upload
+                FileStorageHelper storage = new FileStorageHelper(this);
+                DatabaseMetadata current = mDatabases.get().getCurrent();
+                storage.pushDatabase(current);
                 break;
 
             case R.id.menu_open_database:
@@ -842,9 +846,10 @@ public class MainActivity
         childItems.add(childDatabases);
 
         // Synchronization
-        if (new SyncManager(this).isActive()) {
-            childItems.add(null);
-        }
+//        if (new SyncManager(this).isActive()) {
+//            childItems.add(null);
+//        }
+        childItems.add(null);
 
         // Entities
         ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
@@ -896,7 +901,7 @@ public class MainActivity
         childItems.add(null);
 
         // Adapter.
-        final ExpandableListView drawerList = (ExpandableListView) findViewById(R.id.drawerExpandableList);
+        final ExpandableListView drawerList = findViewById(R.id.drawerExpandableList);
         DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
         drawerList.setAdapter(adapter);
 
@@ -959,12 +964,13 @@ public class MainActivity
 
         int id = R.id.menuSyncProgress;
 
-        if (new SyncManager(this).isActive()) {
+        // We will use the sync button for uploading the database to the storage.
+        //if (new SyncManager(this).isActive()) {
             // add rotating icon
             if (menu.findItem(id) == null) {
                 boolean hasAnimation = false;
 
-                if (mSyncMenuItem != null && MenuItemCompat.getActionView(mSyncMenuItem) != null) {
+                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
                     hasAnimation = true;
                     // There is a running animation. Clear it on the old reference.
                     stopSyncIconRotation(mSyncMenuItem);
@@ -983,12 +989,12 @@ public class MainActivity
                     startSyncIconRotation(mSyncMenuItem);
                 }
             }
-        } else {
-            if (mSyncMenuItem != null) {
-                stopSyncIconRotation(mSyncMenuItem);
-                mSyncMenuItem = null;
-            }
-        }
+//        } else {
+//            if (mSyncMenuItem != null) {
+//                stopSyncIconRotation(mSyncMenuItem);
+//                mSyncMenuItem = null;
+//            }
+//        }
     }
 
     private void destroySyncToolbarItem(Menu menu) {
@@ -1028,12 +1034,12 @@ public class MainActivity
                         .color(iconColor)));
 
         // Cloud synchronize
-        if (new SyncManager(this).isActive()) {
+//        if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
                         .color(iconColor)));
-        }
+//        }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
@@ -1310,17 +1316,17 @@ public class MainActivity
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
         imageView.startAnimation(animation);
-        MenuItemCompat.setActionView(item, imageView);
+        item.setActionView(imageView);
     }
 
     private void stopSyncIconRotation(MenuItem item) {
         if (item == null) return;
 
-        View actionView = MenuItemCompat.getActionView(item);
+        View actionView = item.getActionView();
         if (actionView == null) return;
 
         actionView.clearAnimation();
-        MenuItemCompat.setActionView(item, null);
+        item.setActionView(null);
     }
 
     /**

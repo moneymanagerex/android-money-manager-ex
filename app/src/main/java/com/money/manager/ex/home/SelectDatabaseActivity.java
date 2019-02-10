@@ -125,11 +125,11 @@ public class SelectDatabaseActivity
         helper.showSelectFileInStorage();
     }
 
-    @OnClick(R.id.setupSyncButton)
-    void onSetupSyncClick() {
-        Intent intent = new Intent(this, SyncPreferencesActivity.class);
-        startActivity(intent);
-    }
+//    @OnClick(R.id.setupSyncButton)
+//    void onSetupSyncClick() {
+//        Intent intent = new Intent(this, SyncPreferencesActivity.class);
+//        startActivity(intent);
+//    }
 
     private void onDatabaseSelected() {
         // open the main activity

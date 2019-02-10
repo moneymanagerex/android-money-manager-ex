@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -19,6 +20,7 @@ import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,40 +69,6 @@ public class FileStorageHelper {
     }
 
     /**
-     * Shows a file picker. The results from the picker will be sent to the host activity.
-     * This is a custom picker that works with local files only.
-     * Uses SELECT_FILE request code.
-     */
-    public void showSelectLocalFileDialog() {
-        int requestCode = RequestCodes.SELECT_FILE;
-        AppCompatActivity host = _host;
-
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        String dbDirectory = dbManager.getDefaultDatabaseDirectory();
-        // Environment.getDefaultDatabaseDirectory().getPath()
-
-        // This always works
-        Intent i = new Intent(host, FilePickerActivity.class);
-        // This works if you defined the intent filter
-        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-
-        // Set these depending on your use case. These are the defaults.
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-
-        // Configure initial directory by specifying a String.
-        // You could specify a String like "/storage/emulated/0/", but that can
-        // dangerous. Always use Android's API calls to get paths to the SD-card or
-        // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, dbDirectory);
-        // Environment.getExternalStorageDirectory().getPath()
-
-        host.startActivityForResult(i, requestCode);
-    }
-
-    /**
      * Open the selected database file from Storage Access Framework.
      * @param activityResultData the intent received in onActivityResult after the file
      *                           is selected in the picker.
@@ -117,7 +85,7 @@ public class FileStorageHelper {
 
         // copy the contents into a local database file.
         try {
-            this.cacheDatabase(docUri, metadata.localPath);
+            this.downloadDatabase(docUri, metadata.localPath);
         } catch (Exception e) {
             Timber.e(e);
             return null;
@@ -129,6 +97,37 @@ public class FileStorageHelper {
 
         return metadata;
     }
+
+    /**
+     * Pushes the local file to the document provider.
+     * @param metadata Database file metadata.
+     */
+    public void pushDatabase(DatabaseMetadata metadata) {
+        // handle remote changes
+        Uri remoteUri = Uri.parse(metadata.remotePath);
+        DocFileMetadata remote = getFileMetadata(remoteUri);
+        //File local = new File(metadata.localPath);
+        //long modifiedTick = local.lastModified();
+        //MmxDate localLastModified = new MmxDate(modifiedTick);
+        MmxDate remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate);
+
+        if (remote.lastModified.toDate().after(remoteSnapshot.toDate())) {
+            Timber.w("The remote file was modified in the meantime");
+            return;
+        }
+        // todo Check if we should upload at all.
+        //if (remote.lastModified.toDate().after(localLastModified.toDate())) {
+
+        // todo upload local file
+        //uploadDatabase(metadata);
+
+        // todo delete original remote file
+        //deleteRemoteFile(metadata);
+    }
+
+    /*
+        Private area
+     */
 
     /**
      * Retrieves the database file from a document Uri.
@@ -220,12 +219,49 @@ public class FileStorageHelper {
     }
 
     /**
+     * Just pushes the given local file to the document provider, using a temporary name.
+     */
+    private void uploadDatabase(DatabaseMetadata metadata) {
+        ContentResolver resolver = getContext().getContentResolver();
+        Uri remote = Uri.parse(metadata.remotePath);
+
+        ParcelFileDescriptor pfd = null;
+        try {
+            pfd = resolver.openFileDescriptor(remote, "w");
+
+            FileOutputStream fileOutputStream =
+                new FileOutputStream(pfd.getFileDescriptor());
+
+            // local file
+            File localFile = new File(metadata.localPath);
+            Files.copy(localFile, fileOutputStream);
+
+            fileOutputStream.close();
+            pfd.close();
+        } catch (FileNotFoundException e) {
+            Timber.e(e);
+        } catch (IOException e) {
+            Timber.e(e);
+        }
+    }
+
+    private void deleteRemoteFile(DatabaseMetadata metadata) {
+        ContentResolver resolver = getContext().getContentResolver();
+        Uri remote = Uri.parse(metadata.remotePath);
+        try {
+            DocumentsContract.deleteDocument(resolver, remote);
+        } catch (FileNotFoundException e) {
+            Timber.e(e);
+        }
+    }
+
+    /**
      * Creates a local copy of the database from document storage.
      * @param uri Remote Uri
      * @throws IOException boom
      */
-    private void cacheDatabase(Uri uri, String localPath) throws IOException {
-        ContentResolver resolver = _host.getContentResolver();
+    private void downloadDatabase(Uri uri, String localPath) throws IOException {
+        ContentResolver resolver = getContext().getContentResolver();
 
         //ParcelFileDescriptor parcelFileDescriptor = resolver.openFileDescriptor(uri, "r");
         //FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
@@ -248,6 +284,7 @@ public class FileStorageHelper {
             //Files.copy(is, localPath);
             //IOUtils.copy(is, outputStream);
             long bytesCopied = ByteStreams.copy(is, outputStream);
+            Timber.d("copied %d bytes", bytesCopied);
         } catch (Exception e) {
            Timber.e(e);
         } finally {
@@ -257,6 +294,40 @@ public class FileStorageHelper {
             //parcelFileDescriptor.close();
             //providerClient.close();
         }
-
     }
+
+    /**
+     * Shows a file picker. The results from the picker will be sent to the host activity.
+     * This is a custom picker that works with local files only.
+     * Uses SELECT_FILE request code.
+     */
+    private void showSelectLocalFileDialog() {
+        int requestCode = RequestCodes.SELECT_FILE;
+        AppCompatActivity host = _host;
+
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        String dbDirectory = dbManager.getDefaultDatabaseDirectory();
+        // Environment.getDefaultDatabaseDirectory().getPath()
+
+        // This always works
+        Intent i = new Intent(host, FilePickerActivity.class);
+        // This works if you defined the intent filter
+        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+        // Set these depending on your use case. These are the defaults.
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+
+        // Configure initial directory by specifying a String.
+        // You could specify a String like "/storage/emulated/0/", but that can
+        // dangerous. Always use Android's API calls to get paths to the SD-card or
+        // internal memory.
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, dbDirectory);
+        // Environment.getExternalStorageDirectory().getPath()
+
+        host.startActivityForResult(i, requestCode);
+    }
+
 }

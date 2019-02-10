@@ -56,7 +56,7 @@
                 android:textCursorDrawable="@null" />
 
             <!-- Stock Name -->
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <!--<com.money.manager.ex.view.RobotoTextView-->
@@ -75,7 +75,7 @@
                 android:maxLength="1000"
                 android:scrollHorizontally="false"
                 android:textCursorDrawable="@null" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Allocation -->
             <com.money.manager.ex.view.RobotoTextView

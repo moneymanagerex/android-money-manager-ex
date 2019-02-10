@@ -459,7 +459,7 @@
                     android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                     android:layout_gravity="center_vertical"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.money.manager.ex.view.RobotoEditText
@@ -471,7 +471,7 @@
                         android:inputType="textMultiLine|textCapSentences"
                         android:scrollHorizontally="false"
                         android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout >
             </LinearLayout>
 
             <!-- Transaction Number -->
@@ -490,7 +490,7 @@
                     android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                     android:layout_gravity="center_vertical"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent">
@@ -504,7 +504,7 @@
                         android:maxLines="1"
                         android:inputType="text"
                         android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
