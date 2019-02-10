@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
@@ -76,7 +78,7 @@ public class FileStorageHelper {
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getFileMetadata(docUri);
+        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
         DatabaseMetadata metadata = getMetadata(fileMetadata);
 
         // If there is an existing file with the same name?
@@ -110,7 +112,7 @@ public class FileStorageHelper {
     public void pushDatabase(DatabaseMetadata metadata) {
         // handle remote changes
         Uri remoteUri = Uri.parse(metadata.remotePath);
-        DocFileMetadata remote = getFileMetadata(remoteUri);
+        DocFileMetadata remote = getRemoteMetadata(remoteUri);
 
         // Check if the remote file was modified since fetched.
         // This is the modification timestamp of the remote file when it was last downloaded.
@@ -138,25 +140,32 @@ public class FileStorageHelper {
         uploadDatabase(metadata);
 
         // Update the modification timestamps, both local and remote.
-        remote = getFileMetadata(remoteUri);
+        remote = getRemoteMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
         if(remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
-            // todo: solve this problem.
-            Timber.w("The remote file last modified on " +
-                    remote.lastModified.toIsoString());
+            // Solve this problem by polling until new value fetched. (doh!)
+            Timber.w("Fetching the remote file modification value");
+            pollNewRemoteTimestamp(metadata);
         }
 
         metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
         metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        dbUtils.useDatabase(metadata);
+        saveMetadata(metadata);
     }
 
     /*
         Private area
      */
+
+    /**
+     * Push the latest file info to the database manager.
+     */
+    private void saveMetadata(DatabaseMetadata metadata) {
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        dbUtils.useDatabase(metadata);
+    }
 
     /**
      * Retrieves the database file from a document Uri.
@@ -193,7 +202,7 @@ public class FileStorageHelper {
         return metadata;
     }
 
-    private DocFileMetadata getFileMetadata(Uri uri) {
+    private DocFileMetadata getRemoteMetadata(Uri uri) {
         AppCompatActivity host = _host;
 
         DocFileMetadata result = new DocFileMetadata();
@@ -369,5 +378,40 @@ public class FileStorageHelper {
         long localFileTimestamp = localFile.lastModified();
         MmxDate localSnapshot = new MmxDate(localFileTimestamp);
         return localSnapshot;
+    }
+
+    private void pollNewRemoteTimestamp(DatabaseMetadata metadata) {
+        // poll every n seconds.
+        long milliseconds = 2 * 1000;
+
+        // Param is optional, to run task on UI thread.
+        Handler handler = new Handler(Looper.getMainLooper());
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Fetch the remote metadata until it has reflected the upload.
+                Uri uri = Uri.parse(metadata.remotePath);
+                DocFileMetadata remote = getRemoteMetadata(uri);
+                Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
+
+                if (remote.lastModified.toDate().equals(storedLastChange)) {
+                    // repeat
+                    Timber.d("fetching the remote metadata...");
+                    handler.postDelayed(this, milliseconds); // Optional, to repeat the task.
+                } else {
+                    // got an update. store the latest metadata.
+                    metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
+                    saveMetadata(metadata);
+                    Timber.i("The remote info updated to " + metadata.remoteLastChangedDate);
+                    // do not poll further.
+                }
+
+            }
+        };
+        // Trigger the first run.
+        handler.postDelayed(runnable, milliseconds);
+
+        // Stop a repeating task like this.
+        //handler.removeCallbacks(runnable);
     }
 }

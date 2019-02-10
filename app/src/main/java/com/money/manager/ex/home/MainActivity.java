@@ -598,7 +598,8 @@ public class MainActivity
 //                // re-set the sync timer.
 //                sync.startSyncServiceHeartbeat();
 
-                // trigger upload
+                // todo: perform actual sync (download/upload).
+                // Currently just trigger upload.
                 FileStorageHelper storage = new FileStorageHelper(this);
                 DatabaseMetadata current = mDatabases.get().getCurrent();
                 storage.pushDatabase(current);
