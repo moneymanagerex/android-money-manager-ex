@@ -113,11 +113,12 @@ public class FileStorageHelper {
         DocFileMetadata remote = getFileMetadata(remoteUri);
 
         // Check if the remote file was modified since fetched.
-        MmxDate remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate);
+        // This is the modification timestamp of the remote file when it was last downloaded.
+        Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
+        // This is current dateModified at the remote file.
         Date remoteModified = remote.lastModified.toDate();
-        Date remoteFetched = remoteSnapshot.toDate();
 
-        if (remoteModified.after(remoteFetched)) {
+        if (remoteModified.after(remoteSnapshot)) {
             Timber.w("The remote file was modified in the meantime");
             return;
         }
@@ -125,20 +126,20 @@ public class FileStorageHelper {
         // Check if the local file was modified.
         MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
         Date localLastModified = localLastModifiedMmxDate.toDate();
+        // The timestamp when the local file was downloaded.
         Date localDownloaded = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
 
         if (!localLastModified.after(localDownloaded)) {
-            Timber.i("File not modified");
+            Timber.i("Local copy not modified.");
             return;
         }
 
         // upload local file
         uploadDatabase(metadata);
 
-        // update the remote snapshot info.
+        // Update the modification timestamps, both local and remote.
         remote = getFileMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
-
         if(remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // todo: solve this problem.
