@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
@@ -40,9 +41,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -406,13 +404,13 @@ public class MmxOpenHelper
         if (!recordExists) {
             long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
             if (newId <= 0) {
-                uiHelper.showToast("error inserting base currency on init");
+                Timber.e("error inserting base currency on init");
             }
         } else {
             // Update the (by default empty) record to the default currency.
             long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
             if (updatedRecords <= 0) {
-                uiHelper.showToast("error updating base currency on init");
+                Timber.e("error updating base currency on init");
             }
         }
 
@@ -432,17 +430,23 @@ public class MmxOpenHelper
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
 
-        String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
-        String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
+        //String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
+        String backupName = Files.getNameWithoutExtension(backupFileNameWithExtension);
+        //String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
+        String backupExtension = Files.getFileExtension(backupFileNameWithExtension);
 
         // append last db version
         backupName += "_v" + Integer.toString(oldVersion);
 
         backupFileNameWithExtension = backupName + "." + backupExtension;
 
-        String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
+        File outFile = new File(currentDbFile);
+        String folder = outFile.getParent();
+        //String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
+        String outPath = folder + backupFileNameWithExtension;
         File out = new File(outPath);
 
-        FileUtils.copyFile(in, out);
+        //FileUtils.copyFile(in, out);
+        Files.copy(in, out);
     }
 }

@@ -21,9 +21,6 @@ package com.money.manager.ex.sync;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +39,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -69,7 +70,7 @@ public class CloudFilePickerFragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cloud_file_picker, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // Separator
@@ -114,7 +115,7 @@ public class CloudFilePickerFragment
             Intent data = new Intent();
             data.putExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE, item.getPath());
 
-            getActivity().setResult(Activity.RESULT_OK, data);
+            getActivity().setResult(AppCompatActivity.RESULT_OK, data);
             getActivity().finish();
         }
     }

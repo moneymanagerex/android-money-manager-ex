@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.common;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -44,6 +43,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -441,7 +441,7 @@ public class CalculatorActivity
         // set result and return
         Intent result = new Intent();
         result.putExtra(RESULT_AMOUNT, mAmount.toString());
-        setResult(Activity.RESULT_OK, result);
+        setResult(AppCompatActivity.RESULT_OK, result);
         finish();
     }
 

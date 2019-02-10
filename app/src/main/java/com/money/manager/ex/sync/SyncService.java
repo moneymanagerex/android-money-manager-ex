@@ -18,18 +18,15 @@
 package com.money.manager.ex.sync;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.JobIntentService;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.JobIntentService;
+
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
@@ -43,7 +40,6 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
-import com.money.manager.ex.utils.NotificationUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

@@ -159,7 +159,7 @@ public class AccountSpinnerAdapter implements SpinnerAdapter {
      * </p>
      * <p>
      * This method will only be called when when the adapter is set on the
-     * the {@link AdapterView}.
+     * the AdapterView.
      * </p>
      *
      * @return The number of types of Views that will be created by this adapter

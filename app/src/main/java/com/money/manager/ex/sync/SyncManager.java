@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -29,11 +28,13 @@ import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.evernote.android.job.JobManager;
+import com.google.common.io.ByteStreams;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
@@ -44,8 +45,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +59,7 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import dagger.Lazy;
 import rx.Single;
 import rx.functions.Action1;
@@ -262,7 +262,7 @@ public class SyncManager {
 
         ProgressDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
-        if ((getContext() instanceof Activity)) {
+        if ((getContext() instanceof AppCompatActivity)) {
             //progress dialog shown only when downloading an updated db file.
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setCancelable(false);
@@ -273,7 +273,7 @@ public class SyncManager {
 
         String localFile = getDatabases().getCurrent().localPath;
         Messenger messenger = null;
-        if (getContext() instanceof Activity) {
+        if (getContext() instanceof AppCompatActivity) {
             // Messenger handles received messages from the sync service. Can run only in a looper thread.
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
@@ -394,7 +394,7 @@ public class SyncManager {
 //        if (!isActive())  return;
 //
 //        // Make sure that the current database is also the one linked in the cloud.
-//        String localPath = MmexApplication.getDatabasePath(getContext());
+//        String localPath = new DatabaseManager(getContext()).getDatabasePath();
 //        if (TextUtils.isEmpty(localPath)) {
 //            new UIHelper(getContext()).showToast(R.string.filenames_differ);
 //            return;
@@ -428,7 +428,7 @@ public class SyncManager {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
-        String localPath = MmexApplication.getDatabasePath(getContext());
+        String localPath = new DatabaseManager(getContext()).getDatabasePath();
         if (TextUtils.isEmpty(localPath)) {
             new UIHelper(getContext()).showToast(R.string.filenames_differ);
             return;
@@ -537,10 +537,10 @@ public class SyncManager {
      */
     public void useDownloadedDatabase() {
         // Do this only if called from an activity.
-        if (!(getContext() instanceof Activity)) return;
+        if (!(getContext() instanceof AppCompatActivity)) return;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String localFile = MmexApplication.getDatabasePath(getContext());
+        String localFile = new DatabaseManager(getContext()).getDatabasePath();
 
         DatabaseMetadata db = getDatabases().get(localFile);
         if (db == null) {
@@ -617,7 +617,8 @@ public class SyncManager {
         InputStream inputStream = mStorageClient.download(remoteFile.getPath());
         OutputStream outputStream = new FileOutputStream(localFile, false);
 
-        IOUtils.copy(inputStream, outputStream);
+        //IOUtils.copy(inputStream, outputStream);
+        ByteStreams.copy(inputStream, outputStream);
 
         inputStream.close();
         outputStream.close();
@@ -625,8 +626,9 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         // todo check this after refactoring the database utils.
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File folder = new File(dbUtils.getDefaultDatabaseDirectory());
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File folder = new File(dbManager.getDefaultDatabaseDirectory());
 
         // manage folder
         if (folder.exists() && folder.isDirectory() && folder.canWrite()) {

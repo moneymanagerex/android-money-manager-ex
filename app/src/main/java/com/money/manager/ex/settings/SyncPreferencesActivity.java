@@ -18,10 +18,8 @@ package com.money.manager.ex.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 
 import com.cloudrail.si.CloudRail;
-import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
 import java.util.Set;

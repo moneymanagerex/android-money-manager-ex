@@ -19,7 +19,6 @@ package com.money.manager.ex.sync;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Adapter for the items in the cloud storage. Used for db file picker.

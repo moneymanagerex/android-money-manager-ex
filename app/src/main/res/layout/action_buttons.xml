@@ -17,7 +17,7 @@
   -->
 
 <!-- default action buttons at the bottom of the screen -->
-<android.support.v7.widget.LinearLayoutCompat
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/defaultButtons"
     android:layout_width="match_parent"
@@ -27,4 +27,4 @@
 
     <include layout="@layout/actionbar_button_cancel_done"/>
 
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

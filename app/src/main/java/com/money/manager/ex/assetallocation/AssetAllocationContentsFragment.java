@@ -16,13 +16,11 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -48,10 +46,12 @@ import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.parceler.Parcels;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A list fragment that displays the Asset Class contents (stocks or child asset classes).
@@ -148,7 +148,7 @@ public class AssetAllocationContentsFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_CANCELED) return;
+        if (resultCode == AppCompatActivity.RESULT_CANCELED) return;
 
         switch (requestCode) {
             case REQUEST_STOCK_ID:

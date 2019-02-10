@@ -18,15 +18,13 @@ package com.money.manager.ex.account;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.AnswersEvents;
+
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Account list activity.

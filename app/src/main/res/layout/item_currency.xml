@@ -40,7 +40,7 @@
         android:layout_marginEnd="@dimen/mmx_margin"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:textAppearance="?attr/textAppearanceListItemSmall" />
 
     <!-- rate -->
     <com.money.manager.ex.view.RobotoTextView
@@ -51,6 +51,6 @@
         android:layout_gravity="center_vertical|end"
         android:gravity="end"
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:textAppearance="?attr/textAppearanceListItemSmall" />
 
 </LinearLayout>

@@ -16,18 +16,11 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -39,6 +32,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
@@ -52,12 +47,18 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -213,7 +214,7 @@ public class IncomeVsExpensesListFragment
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
-            Activity activity = getActivity();
+            FragmentActivity activity = getActivity();
             if (activity instanceof IncomeVsExpensesActivity) {
                 itemChart.setVisible(!((IncomeVsExpensesActivity) activity).mIsDualPanel);
             }
@@ -242,33 +243,42 @@ public class IncomeVsExpensesListFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Integer> years = new ArrayList<Integer>();
+        ArrayList<Integer> years = new ArrayList();
         for (int i = 0; i < mYearsSelected.size(); i++) {
             if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
                 years.add(mYearsSelected.keyAt(i));
             }
         }
-        outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
+
+        // ArrayUtils.toPrimitive(years.toArray(new Integer[0]))
+        int[] yearsArray = Ints.toArray(years);
+        outState.putIntArray(KEY_BUNDLE_YEAR, yearsArray);
     }
 
     // Other
 
     public void showDialogYears() {
         ArrayList<String> years = new ArrayList<String>();
-        Integer[] selected = new Integer[0];
+        //Integer[] selected = new Integer[0];
+        List<Integer> selected = new ArrayList<>();
 
         for (int i = 0; i < mYearsSelected.size(); i++) {
             years.add(String.valueOf(mYearsSelected.keyAt(i)));
+
             if (mYearsSelected.valueAt(i)) {
-                selected = ArrayUtils.add(selected, i);
+                //selected = ArrayUtils.add(selected, i);
+                selected.add(i);
             }
         }
 
+        Integer[] selectedArray = selected.toArray(new Integer[0]);
+
         new MaterialDialog.Builder(getActivity())
                 .items(years.toArray(new String[years.size()]))
-                .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
+                .itemsCallbackMultiChoice(selectedArray, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers,
+                                               CharSequence[] charSequences) {
                         // reset to false all years
                         for (int i = 0; i < mYearsSelected.size(); i++) {
                             mYearsSelected.put(mYearsSelected.keyAt(i), false);
@@ -463,13 +473,20 @@ public class IncomeVsExpensesListFragment
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month - 1, 1);
                 // titles
-                titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime()));
+                titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM")
+                        .format(calendar.getTime()));
             }
         }
         //compose bundle for arguments
         Bundle args = new Bundle();
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
+        //double[] expensesArray = ArrayUtils.toPrimitive(expenses.toArray(new Double[0]));
+        double[] expensesArray = Doubles.toArray(expenses);
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, expensesArray);
+
+        //double[] incomesArray = ArrayUtils.toPrimitive(incomes.toArray(new Double[0]));
+        double[] incomesArray = Doubles.toArray(incomes);
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, incomesArray);
+
         args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles.toArray(new String[titles.size()]));
         //get fragment manager
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -486,9 +503,11 @@ public class IncomeVsExpensesListFragment
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
-                fragmentTransaction.replace(R.id.fragmentChart, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentChart, fragment,
+                        IncomeVsExpensesChartFragment.class.getSimpleName());
             } else {
-                fragmentTransaction.replace(R.id.fragmentMain, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentMain, fragment,
+                        IncomeVsExpensesChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();

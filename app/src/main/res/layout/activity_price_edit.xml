@@ -73,7 +73,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/priceEditorScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -226,6 +226,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

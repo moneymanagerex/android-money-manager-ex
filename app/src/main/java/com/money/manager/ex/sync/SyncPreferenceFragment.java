@@ -17,13 +17,8 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.money.manager.ex.BuildConfig;
@@ -32,12 +27,13 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,6 +43,10 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import dagger.Lazy;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -133,7 +133,7 @@ public class SyncPreferenceFragment
      */
 
     private void handleFileSelection(int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) return;
+        if (resultCode != AppCompatActivity.RESULT_OK || data == null) return;
 
         // get value
         String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
@@ -381,7 +381,7 @@ public class SyncPreferenceFragment
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
-        String localPath = new MmxDatabaseUtils(getActivity())
+        String localPath = new DatabaseManager(getActivity())
                 .getDefaultDatabaseDirectory()
                 .concat(File.separator).concat(fileName);
 

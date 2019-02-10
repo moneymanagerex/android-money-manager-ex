@@ -18,11 +18,12 @@
 package com.money.manager.ex.assetallocation.overview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * View Holder for the full asset class.

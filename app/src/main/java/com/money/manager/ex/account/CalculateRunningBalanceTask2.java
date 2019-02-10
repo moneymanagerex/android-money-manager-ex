@@ -130,7 +130,7 @@ public class CalculateRunningBalanceTask2
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
                 String date = new MmxDate(this.startingDate).minusDays(1)
-                        .toIsoString();
+                        .toIsoDateString();
                 Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 

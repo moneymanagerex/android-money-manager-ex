@@ -17,11 +17,11 @@
 
 package com.money.manager.ex.settings;
 
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-
 import com.money.manager.ex.R;
+
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 /**
  * View Holder for investment preferences

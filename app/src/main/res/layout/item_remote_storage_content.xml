@@ -22,7 +22,7 @@
     android:layout_height="@dimen/mmx_list_item_height"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="?attr/selectableItemBackground"
     android:paddingStart="@dimen/mmx_list_item_padding_side"
     android:paddingLeft="@dimen/mmx_list_item_padding_side"
     android:paddingEnd="@dimen/mmx_list_item_padding_side"

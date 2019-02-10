@@ -19,8 +19,7 @@ package com.money.manager.ex.core.file;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedWriter;
 import java.io.File;

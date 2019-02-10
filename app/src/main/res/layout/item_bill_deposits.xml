@@ -16,6 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -101,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:src="@drawable/light_bulb"
+                        app:srcCompat="@drawable/light_bulb"
                         android:visibility="gone" />
 
                     <com.money.manager.ex.view.RobotoTextView
@@ -122,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/transfer"
-                        android:src="@drawable/arrows_reload_icon" />
+                        app:srcCompat="@drawable/arrows_reload_icon" />
 
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewToAccountName"
@@ -139,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="?attr/ic_action_warning" />
+                app:srcCompat="?attr/ic_action_warning" />
         </LinearLayout>
 
         <com.money.manager.ex.view.RobotoTextView

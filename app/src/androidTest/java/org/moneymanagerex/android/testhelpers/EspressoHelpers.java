@@ -20,7 +20,7 @@ package org.moneymanagerex.android.testhelpers;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.ViewInteraction;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 

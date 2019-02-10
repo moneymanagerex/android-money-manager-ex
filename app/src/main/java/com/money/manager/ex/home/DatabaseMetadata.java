@@ -31,6 +31,10 @@ public class DatabaseMetadata {
 
     public String localPath;
     public boolean isLocalFileChanged;
+    /**
+     * The timestamp (ISO date/time) when the file was downloaded.
+     */
+    public String localSnapshotTimestamp;
     // todo sync provider
     // SyncAdapterType
     public String remotePath;

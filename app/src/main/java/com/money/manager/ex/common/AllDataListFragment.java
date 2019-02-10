@@ -23,13 +23,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -76,6 +72,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -85,7 +85,7 @@ import timber.log.Timber;
  */
 public class AllDataListFragment
     extends BaseListFragment
-    implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+    implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";

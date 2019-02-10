@@ -19,8 +19,6 @@ package com.money.manager.ex.common;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +42,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import icepick.Icepick;
 import icepick.State;
 import info.javaperformance.money.Money;

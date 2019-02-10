@@ -20,7 +20,6 @@ package com.money.manager.ex.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,8 @@ import com.money.manager.ex.domainmodel.Category;
 
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.fragment.app.FragmentActivity;
 
 public class CategoryExpandableListAdapter
 	extends BaseExpandableListAdapter {

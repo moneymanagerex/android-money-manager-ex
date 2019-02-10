@@ -16,22 +16,19 @@
  */
 package com.money.manager.ex.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.view.RobotoTextView;
-import com.shamanland.fonticon.FontIconDrawable;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs when selecting the
@@ -42,7 +39,7 @@ public class DrawerMenuGroupAdapter
 
     public ArrayList<DrawerMenuItem> mGroupItems;
     public ArrayList<Object> mChildItems = new ArrayList<>();
-    public Activity activity;
+    public AppCompatActivity activity;
     private final Context mContext;
 
     public DrawerMenuGroupAdapter(Context context, ArrayList<DrawerMenuItem> grList, ArrayList<Object> childItems) {

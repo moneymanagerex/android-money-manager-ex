@@ -16,11 +16,9 @@
  */
 package com.money.manager.ex.search;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,23 +36,23 @@ import android.widget.TextView;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
+import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.PayeeActivity;
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
@@ -68,6 +66,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.Lazy;
@@ -229,7 +230,7 @@ public class SearchParametersFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
+        if ((resultCode == AppCompatActivity.RESULT_CANCELED) || data == null) return;
 
         SearchParameters searchParameters;
         String stringExtra;
@@ -289,7 +290,7 @@ public class SearchParametersFragment
         // 'Reset' toolbar item
         inflater.inflate(R.menu.menu_clear, menu);
         MenuItem item = menu.findItem(R.id.clearMenuItem);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
         super.onCreateOptionsMenu(menu,inflater);
@@ -458,11 +459,13 @@ public class SearchParametersFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", new MmxDate(searchParameters.dateFrom).toIsoString());
+            where.addStatement(QueryAllData.Date, " >= ",
+                    new MmxDate(searchParameters.dateFrom).toIsoDateString());
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", new MmxDate(searchParameters.dateTo).toIsoString());
+            where.addStatement(QueryAllData.Date, " <= ",
+                    new MmxDate(searchParameters.dateTo).toIsoDateString());
         }
         // payee
         if (searchParameters.payeeId != null) {

@@ -54,4 +54,5 @@ dependencies {
             "com.mikepenz:iconics-core:3.0.3@aar",
             "com.mikepenz:iconics-views:3.0.3@aar"
     )
+    api supportDependencies.appCompat
 }

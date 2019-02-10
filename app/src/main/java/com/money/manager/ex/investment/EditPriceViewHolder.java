@@ -17,16 +17,14 @@
 
 package com.money.manager.ex.investment;
 
-import android.app.Activity;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
-import com.money.manager.ex.view.DateDisplay;
 import com.money.manager.ex.view.RobotoTextView;
-import com.shamanland.fonticon.FontIconView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,7 +39,8 @@ public class EditPriceViewHolder {
 //    @BindView(R.id.dateControl) public DateDisplay dateDisplay;
 
 //    @BindView(R.id.previousDayButton) @Nullable public FontIconView previousDayButton;
-    @BindView(R.id.previousDayButton) @Nullable public IconicsImageView previousDayButton;
+    @BindView(R.id.previousDayButton) @Nullable
+    public IconicsImageView previousDayButton;
 
 //    @BindView(R.id.nextDayButton) @Nullable public FontIconView nextDayButton;
     @BindView(R.id.nextDayButton) @Nullable public IconicsImageView nextDayButton;
@@ -50,7 +49,7 @@ public class EditPriceViewHolder {
         ButterKnife.bind(this, view);
     }
 
-    public void bind(Activity activity) {
+    public void bind(AppCompatActivity activity) {
         ButterKnife.bind(this, activity);
     }
 }

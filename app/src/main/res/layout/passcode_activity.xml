@@ -298,7 +298,7 @@
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_delete"
+                app:srcCompat="@drawable/sym_keyboard_delete"
                 android:tag="DEL"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>

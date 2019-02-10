@@ -16,9 +16,7 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,13 +36,16 @@ import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.Fragment;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 import static org.robolectric.Shadows.shadowOf;
 
 
@@ -73,7 +74,7 @@ public class MainActivityTests {
 
     @Test
     public void testInstantiation() {
-        Activity mainActivity = Robolectric.setupActivity(MainActivity.class);
+        AppCompatActivity mainActivity = Robolectric.setupActivity(MainActivity.class);
 
         assertThat(mainActivity, notNullValue());
     }

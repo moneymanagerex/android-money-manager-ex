@@ -17,15 +17,10 @@
 
 package com.money.manager.ex.assetallocation.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -39,6 +34,12 @@ import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Activity for selecting an Asset Class (as a parent, etc.)
@@ -78,7 +79,7 @@ public class AssetClassListActivity
         Intent data = new Intent();
         data.putExtra(EXTRA_ASSET_CLASS_ID, event.id);
 
-        setResult(Activity.RESULT_OK, data);
+        setResult(AppCompatActivity.RESULT_OK, data);
         finish();
     }
 
