@@ -243,12 +243,13 @@ public class IncomeVsExpensesListFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Integer> years = new ArrayList<Integer>();
+        ArrayList<Integer> years = new ArrayList();
         for (int i = 0; i < mYearsSelected.size(); i++) {
             if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
                 years.add(mYearsSelected.keyAt(i));
             }
         }
+        //int[] arr = years.stream().mapToInt(i -> i).toArray();
         outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
     }
 
@@ -269,7 +270,8 @@ public class IncomeVsExpensesListFragment
                 .items(years.toArray(new String[years.size()]))
                 .itemsCallbackMultiChoice(selected, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers,
+                                               CharSequence[] charSequences) {
                         // reset to false all years
                         for (int i = 0; i < mYearsSelected.size(); i++) {
                             mYearsSelected.put(mYearsSelected.keyAt(i), false);
@@ -464,13 +466,16 @@ public class IncomeVsExpensesListFragment
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month - 1, 1);
                 // titles
-                titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime()));
+                titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM")
+                        .format(calendar.getTime()));
             }
         }
         //compose bundle for arguments
         Bundle args = new Bundle();
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES, ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
-        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES, ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_EXPENSES_VALUES,
+                ArrayUtils.toPrimitive(expenses.toArray(new Double[0])));
+        args.putDoubleArray(IncomeVsExpensesChartFragment.KEY_INCOME_VALUES,
+                ArrayUtils.toPrimitive(incomes.toArray(new Double[0])));
         args.putStringArray(IncomeVsExpensesChartFragment.KEY_XTITLES, titles.toArray(new String[titles.size()]));
         //get fragment manager
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -487,9 +492,11 @@ public class IncomeVsExpensesListFragment
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
-                fragmentTransaction.replace(R.id.fragmentChart, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentChart, fragment,
+                        IncomeVsExpensesChartFragment.class.getSimpleName());
             } else {
-                fragmentTransaction.replace(R.id.fragmentMain, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentMain, fragment,
+                        IncomeVsExpensesChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();
