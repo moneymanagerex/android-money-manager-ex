@@ -124,10 +124,12 @@ public class FileStorageHelper {
         MmxDate localLastModified = new MmxDate(modifiedTick);
         Date localModifiedDate = localLastModified.toDate();
 
-        if (localModifiedDate.after(remoteModified)) {
-            // upload local file
-            uploadDatabase(metadata);
+        if (!localModifiedDate.after(remoteModified)) {
+            Timber.i("File not modified");
         }
+
+        // upload local file
+        uploadDatabase(metadata);
 
         // update the remote snapshot info.
         remote = getFileMetadata(remoteUri);
