@@ -82,21 +82,22 @@ public class SelectDatabaseActivity
         }
 
         switch (requestCode) {
-            case RequestCodes.SELECT_FILE:
-                //if (resultCode != RESULT_OK) return;
-                String selectedPath = UIHelper.getSelectedFile(data);
-                if(TextUtils.isEmpty(selectedPath)) {
-                    new UIHelper(this).showToast(R.string.invalid_database);
-                    return;
-                }
-
-                onDatabaseSelected(selectedPath);
-                break;
+//            case RequestCodes.SELECT_FILE:
+//                //if (resultCode != RESULT_OK) return;
+//                String selectedPath = UIHelper.getSelectedFile(data);
+//                if(TextUtils.isEmpty(selectedPath)) {
+//                    new UIHelper(this).showToast(R.string.invalid_database);
+//                    return;
+//                }
+//
+//                onDatabaseSelected(selectedPath);
+//                break;
 
             case RequestCodes.SELECT_DOCUMENT:
                 // file selected at a Storage Access Framework.
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
-                storageHelper.openDatabase(data);
+                storageHelper.selectDatabase(data);
+                onDatabaseSelected();
         }
     }
 
@@ -130,21 +131,22 @@ public class SelectDatabaseActivity
         startActivity(intent);
     }
 
-    private void onDatabaseSelected(String dbPath) {
+    private void onDatabaseSelected() {
         // check if the file is a valid database
-        if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
-            new UIHelper(this).showToast(R.string.invalid_database);
-            return;
-        }
+//        if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
+//            new UIHelper(this).showToast(R.string.invalid_database);
+//            return;
+//        }
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         //dbUtils.useDatabase()
 
         // store db setting
-        new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
+        //new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
+
         // Add the current db to the recent db list.
-        DatabaseMetadata currentDb = mDatabasesLazy.get().getCurrent();
-        mDatabasesLazy.get().add(currentDb);
+//        DatabaseMetadata currentDb = mDatabasesLazy.get().getCurrent();
+//        mDatabasesLazy.get().add(currentDb);
 
         // open the main activity
         Intent intent = IntentFactory.getMainActivityNew(this);

@@ -52,6 +52,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -606,14 +607,14 @@ public class HomeFragment
         }
 
         // Show current database
-        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        TextView currentDatabaseTextView = view.findViewById(R.id.currentDatabaseTextView);
         if (currentDatabaseTextView != null) {
-            String path = MmexApplication.getDatabasePath(getActivity());
+            String path = new DatabaseManager(getContext()).getDatabasePath();
             currentDatabaseTextView.setText(path);
         }
 
         // add account button
-        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
+        Button btnAddAccount = view.findViewById(R.id.buttonAddAccount);
         if (btnAddAccount != null) {
             btnAddAccount.setOnClickListener(new OnClickListener() {
 

@@ -43,6 +43,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
@@ -109,7 +110,7 @@ public class Core {
      * @return new File database backup
      */
     public File backupDatabase() {
-        File database = new File(MmexApplication.getDatabasePath(getContext()));
+        File database = new File(new DatabaseManager(getContext()).getDatabasePath());
         if (!database.exists()) return null;
 
         //create folder to copy database

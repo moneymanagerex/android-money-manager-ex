@@ -59,6 +59,7 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
@@ -1254,7 +1255,7 @@ public class MainActivity
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
         // do nothing if selecting the currently open database
-        String currentDb = MmexApplication.getDatabasePath(this);
+        String currentDb = new DatabaseManager(this).getDatabasePath();
         if (recentDb.localPath.equals(currentDb)) return;
 
         changeDatabase(recentDb);
@@ -1319,7 +1320,7 @@ public class MainActivity
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
-        String currentPath = MmexApplication.getDatabasePath(context);
+        String currentPath = new DatabaseManager(context).getDatabasePath();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
 

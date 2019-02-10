@@ -33,6 +33,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
@@ -394,7 +395,7 @@ public class SyncManager {
 //        if (!isActive())  return;
 //
 //        // Make sure that the current database is also the one linked in the cloud.
-//        String localPath = MmexApplication.getDatabasePath(getContext());
+//        String localPath = new DatabaseManager(getContext()).getDatabasePath();
 //        if (TextUtils.isEmpty(localPath)) {
 //            new UIHelper(getContext()).showToast(R.string.filenames_differ);
 //            return;
@@ -428,7 +429,7 @@ public class SyncManager {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
-        String localPath = MmexApplication.getDatabasePath(getContext());
+        String localPath = new DatabaseManager(getContext()).getDatabasePath();
         if (TextUtils.isEmpty(localPath)) {
             new UIHelper(getContext()).showToast(R.string.filenames_differ);
             return;
@@ -540,7 +541,7 @@ public class SyncManager {
         if (!(getContext() instanceof AppCompatActivity)) return;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String localFile = MmexApplication.getDatabasePath(getContext());
+        String localFile = new DatabaseManager(getContext()).getDatabasePath();
 
         DatabaseMetadata db = getDatabases().get(localFile);
         if (db == null) {

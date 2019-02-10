@@ -28,6 +28,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.ioc.DaggerMmxComponent;
 import com.money.manager.ex.core.ioc.MmxComponent;
 import com.money.manager.ex.core.ioc.MmxModule;
@@ -74,45 +75,6 @@ public class MmexApplication
 
     public static MmexApplication getApp() {
         return appInstance;
-    }
-
-    /**
-     * Reads the current database path from the preferences and checks for the existence of the
-     * database file.
-     * Creates a default database file if the one from preferences is not found. Sets this file as
-     * the default database.
-     * @param context Executing context.
-     * @return Full path to the current database file.
-     */
-    public static String getDatabasePath(Context context) {
-        // todo: move this to the recent db provider
-
-        DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
-        String databasePath = dbSettings.getDatabasePath();
-
-        if (!TextUtils.isEmpty(databasePath)) {
-            // Use the db path stored in the preferences.
-            File databaseFile = new File(databasePath);
-            if (databaseFile.getAbsoluteFile().exists())  {
-                return databaseFile.getPath();
-            }
-        }
-
-        // otherwise try other paths or create the default database.
-
-        String defaultPath = new MmxDatabaseUtils(context).getDefaultDatabasePath();
-
-        // Save db path to preferences.
-        dbSettings.setDatabasePath(defaultPath);
-
-        // Show notification
-        if (databasePath.equals(defaultPath)) {
-            new UIHelper(context).showToast("Default database file will be created at " + defaultPath);
-        } else {
-            new UIHelper(context).showToast("Database " + databasePath + " not found. Using default:" + defaultPath);
-        }
-
-        return defaultPath;
     }
 
     public static float getTextSize() {
@@ -237,8 +199,7 @@ public class MmexApplication
 
     private MmxOpenHelper createDbInstance(String path) {
         if (TextUtils.isEmpty(path)) {
-//            path = new MmxDatabaseUtils(this).getDefaultDatabasePath();
-            path = getDatabasePath(this);
+            path = new DatabaseManager(this).getDatabasePath();
         }
         return new MmxOpenHelper(this, path);
     }

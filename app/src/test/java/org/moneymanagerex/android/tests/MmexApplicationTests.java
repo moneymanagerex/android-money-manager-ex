@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.junit.After;
@@ -67,7 +68,7 @@ public class MmexApplicationTests {
     public void defaultDatabaseNameContainsFileName() throws Exception {
         String expected = "data.mmb";
 
-        String actual = MmexApplication.getDatabasePath(context);
+        String actual = new DatabaseManager(context).getDatabasePath();
 
         assertThat(actual, endsWith(expected));
     }

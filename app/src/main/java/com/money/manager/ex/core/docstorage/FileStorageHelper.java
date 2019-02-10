@@ -1,6 +1,7 @@
 package com.money.manager.ex.core.docstorage;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,11 +10,13 @@ import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
@@ -94,7 +97,7 @@ public class FileStorageHelper {
      * @param activityResultData the intent received in onActivityResult after the file
      *                           is selected in the picker.
      */
-    public void openDatabase(Intent activityResultData) {
+    public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
         DocFileMetadata fileMetadata = getFileMetadata(docUri);
         DatabaseMetadata metadata = getMetadata(fileMetadata);
@@ -102,8 +105,10 @@ public class FileStorageHelper {
         // todo: copy the contents into a local database file.
 
         // store the metadata.
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this._host);
-        //dbUtils.useDatabase(metadata);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this._host);
+        dbUtils.useDatabase(metadata);
+
+        return metadata;
     }
 
     /**
@@ -130,6 +135,14 @@ public class FileStorageHelper {
         DatabaseMetadata metadata = new DatabaseMetadata();
         metadata.remotePath = fileMetadata.Uri;
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
+
+        // Local file will always be the same.
+        //metadata.localPath =
+        //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
+        //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
+        //metadata.localPath = dbPath.getAbsolutePath();
+        String localPath = new DatabaseManager(_host).getDatabasePath();
+        metadata.localPath = localPath;
 
         return metadata;
     }

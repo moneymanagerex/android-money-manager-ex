@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.MmexApplication;
@@ -253,7 +254,7 @@ public class DatabaseSettingsFragment
 
     private void refreshDbPath() {
         final Preference preference = findPreference(getActivity().getString(R.string.pref_database_path));
-        preference.setSummary(MmexApplication.getDatabasePath(getActivity().getApplicationContext()));
+        preference.setSummary(new DatabaseManager(getActivity().getApplicationContext()).getDatabasePath());
     }
 
     private void initDbSchemaCheckOption() {
@@ -342,8 +343,8 @@ public class DatabaseSettingsFragment
                     return false;
                 }
             });
-            pMoveDatabase.setEnabled(MmexApplication.getDatabasePath(getActivity().getApplicationContext())
-                    .startsWith("/data/"));
+            pMoveDatabase.setEnabled(new DatabaseManager(getActivity().getApplicationContext())
+                    .getDatabasePath().startsWith("/data/"));
         }
     }
 

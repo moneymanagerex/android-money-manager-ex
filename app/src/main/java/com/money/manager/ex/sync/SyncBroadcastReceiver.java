@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import timber.log.Timber;
@@ -49,7 +50,8 @@ public class SyncBroadcastReceiver
 		Intent myIntent = new Intent(context, SyncService.class);
 		myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-		myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
+		myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE,
+				new DatabaseManager(context).getDatabasePath());
 		myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
 		SyncService.enqueueWork(context, myIntent);
