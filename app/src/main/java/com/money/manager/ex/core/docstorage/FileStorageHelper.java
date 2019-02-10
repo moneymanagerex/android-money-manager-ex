@@ -133,6 +133,14 @@ public class FileStorageHelper {
 
         // update the remote snapshot info.
         remote = getFileMetadata(remoteUri);
+        Date remoteLastChangedDate = remote.lastModified.toDate();
+
+        if(remoteLastChangedDate.before(localModifiedDate)) {
+            // The metadata has not been updated yet!
+            // todo: solve this problem.
+            Timber.w("The remote file last modified on " +
+                    remote.lastModified.toIsoString());
+        }
         metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         dbUtils.useDatabase(metadata);
