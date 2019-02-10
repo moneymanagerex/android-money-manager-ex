@@ -32,7 +32,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
@@ -48,11 +47,8 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-//import org.apache.commons.lang3.ArrayUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 

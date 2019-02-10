@@ -20,9 +20,8 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles sync-related preferences.
@@ -62,9 +61,11 @@ public class SyncPreferences
     public int getSyncInterval() {
         int defaultSchedule = 30;   // time in minutes
         String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));
-        if (!StringUtils.isNumeric(setSchedule)) return defaultSchedule;
 
-        return Integer.parseInt(setSchedule);
+        Integer scheduleInt = Ints.tryParse(setSchedule);
+        if (scheduleInt == null) return defaultSchedule;
+
+        return scheduleInt;
     }
 
     public boolean getUploadImmediately() {

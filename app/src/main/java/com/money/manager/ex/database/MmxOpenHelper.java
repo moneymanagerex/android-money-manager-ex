@@ -42,8 +42,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Currency;
@@ -442,7 +440,10 @@ public class MmxOpenHelper
 
         backupFileNameWithExtension = backupName + "." + backupExtension;
 
-        String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
+        File outFile = new File(currentDbFile);
+        String folder = outFile.getParent();
+        //String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
+        String outPath = folder + backupFileNameWithExtension;
         File out = new File(outPath);
 
         //FileUtils.copyFile(in, out);

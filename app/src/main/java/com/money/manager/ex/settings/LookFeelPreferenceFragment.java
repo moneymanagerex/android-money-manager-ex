@@ -19,14 +19,13 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.view.RobotoView;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -142,10 +141,11 @@ public class LookFeelPreferenceFragment
             lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
+                    Integer newInt = Ints.tryParse(newValue.toString());
+                    if (newInt != null) {
                         Timber.d("Preference set: font = %s", newValue.toString());
 
-                        RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
+                        RobotoView.setUserFont(newInt);
                         return true;
                     }
                     return false;

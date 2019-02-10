@@ -109,7 +109,7 @@ public class FileStorageHelper {
         File prevFile = new File(metadata.localPath);
         boolean deleted = prevFile.delete();
 
-        // todo: copy the contents into a local database file.
+        // copy the contents into a local database file.
         try {
             this.cacheDatabase(docUri, metadata.localPath);
         } catch (Exception e) {

@@ -159,11 +159,10 @@ dependencies {
     implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
             , 'com.cloudrail:cloudrail-si-android:2.22.4'
-//            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , 'com.opencsv:opencsv:4.1'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
-            , 'commons-io:commons-io:2.5'
+            //, 'commons-io:commons-io:2.5'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
             // , 'com.afollestad.material-dialogs:core:0.9.0.2'
             // , 'com.afollestad.material-dialogs:commons:0.9.0.2'
@@ -241,7 +240,6 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.1',
-            'commons-io:commons-io:2.5',
             'org.robolectric:robolectric:3.8',
             'org.robolectric:shadows-support-v4:3.3.2',
             'org.robolectric:shadows-multidex:3.8',

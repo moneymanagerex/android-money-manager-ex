@@ -39,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.io.Files;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -79,7 +80,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -397,7 +397,8 @@ public class HomeFragment
 
             // Show db name in toolbar.
             String dbPath = new AppSettings(activity).getDatabaseSettings().getDatabasePath();
-            String dbFileName = FilenameUtils.getBaseName(dbPath);
+            //String dbFileName = FilenameUtils.getBaseName(dbPath);
+            String dbFileName = Files.getNameWithoutExtension(dbPath);
             activity.getSupportActionBar().setSubtitle(dbFileName);
         }
 

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.evernote.android.job.JobManager;
+import com.google.common.io.ByteStreams;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -44,8 +45,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -618,7 +617,8 @@ public class SyncManager {
         InputStream inputStream = mStorageClient.download(remoteFile.getPath());
         OutputStream outputStream = new FileOutputStream(localFile, false);
 
-        IOUtils.copy(inputStream, outputStream);
+        //IOUtils.copy(inputStream, outputStream);
+        ByteStreams.copy(inputStream, outputStream);
 
         inputStream.close();
         outputStream.close();

@@ -24,6 +24,7 @@ import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -37,8 +38,6 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
 
@@ -190,8 +189,11 @@ public class PerDatabaseFragment
             // get current month
             try {
                 String currentMonth = infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH);
-                if ((!TextUtils.isEmpty(currentMonth)) && NumberUtils.isNumber(currentMonth)) {
-                    int month = Integer.parseInt(currentMonth) - 1;
+
+                Integer month = Ints.tryParse(currentMonth);
+                if (month != null) {
+                    //int month = Integer.parseInt(currentMonth) - 1;
+                    month = month - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
                         lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
                         lstFinancialMonth.setValue(Integer.toString(month));
@@ -209,12 +211,10 @@ public class PerDatabaseFragment
                         if (value > -1 && value < lstFinancialMonth.getEntries().length) {
                             if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
                                 lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
-//                                return true;
                             }
                         }
                     } catch (Exception e) {
                         Timber.e(e, "changing the month of the financial year");
-//                        return false;
                     }
                     return false;
                 }

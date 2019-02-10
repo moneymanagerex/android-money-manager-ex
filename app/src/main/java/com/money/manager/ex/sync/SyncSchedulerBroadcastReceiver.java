@@ -35,8 +35,6 @@ import com.money.manager.ex.sync.SyncBroadcastReceiver;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDate;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
