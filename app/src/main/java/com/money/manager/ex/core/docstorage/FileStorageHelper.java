@@ -92,6 +92,10 @@ public class FileStorageHelper {
             return null;
         }
 
+        // Store the local snapshot timestamp, the time when the file was downloaded.
+        MmxDate localSnapshot = getLocalFileModifiedDate(metadata);
+        metadata.localSnapshotTimestamp = localSnapshot.toIsoString();
+
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         dbUtils.useDatabase(metadata);
@@ -118,14 +122,14 @@ public class FileStorageHelper {
             return;
         }
 
-        // Check if the local file was modified (if we should upload at all).
-        File local = new File(metadata.localPath);
-        long modifiedTick = local.lastModified();
-        MmxDate localLastModified = new MmxDate(modifiedTick);
-        Date localModifiedDate = localLastModified.toDate();
+        // Check if the local file was modified.
+        MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
+        Date localLastModified = localLastModifiedMmxDate.toDate();
+        Date localDownloaded = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
 
-        if (!localModifiedDate.after(remoteModified)) {
+        if (!localLastModified.after(localDownloaded)) {
             Timber.i("File not modified");
+            return;
         }
 
         // upload local file
@@ -135,13 +139,16 @@ public class FileStorageHelper {
         remote = getFileMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
 
-        if(remoteLastChangedDate.before(localModifiedDate)) {
+        if(remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // todo: solve this problem.
             Timber.w("The remote file last modified on " +
                     remote.lastModified.toIsoString());
         }
+
         metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
+        metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
+
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         dbUtils.useDatabase(metadata);
     }
@@ -352,4 +359,14 @@ public class FileStorageHelper {
         host.startActivityForResult(i, requestCode);
     }
 
+    /**
+     * Reads the date/time when the local database file was last changed.
+     * @return The date/time of the last change
+     */
+    private MmxDate getLocalFileModifiedDate(DatabaseMetadata metadata) {
+        File localFile = new File(metadata.localPath);
+        long localFileTimestamp = localFile.lastModified();
+        MmxDate localSnapshot = new MmxDate(localFileTimestamp);
+        return localSnapshot;
+    }
 }
