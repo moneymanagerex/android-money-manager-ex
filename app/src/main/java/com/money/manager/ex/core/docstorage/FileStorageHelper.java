@@ -1,14 +1,18 @@
 package com.money.manager.ex.core.docstorage;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.os.RemoteException;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
+import com.google.common.io.ByteStreams;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -16,9 +20,18 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
@@ -102,7 +115,17 @@ public class FileStorageHelper {
         DocFileMetadata fileMetadata = getFileMetadata(docUri);
         DatabaseMetadata metadata = getMetadata(fileMetadata);
 
+        // Delete previous local file.
+        File prevFile = new File(metadata.localPath);
+        boolean deleted = prevFile.delete();
+
         // todo: copy the contents into a local database file.
+        try {
+            this.cacheDatabase(docUri, metadata.localPath);
+        } catch (Exception e) {
+            Timber.e(e);
+            return null;
+        }
 
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this._host);
@@ -137,10 +160,8 @@ public class FileStorageHelper {
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        //metadata.localPath =
         //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
         //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
-        //metadata.localPath = dbPath.getAbsolutePath();
         String localPath = new DatabaseManager(_host).getDatabasePath();
         metadata.localPath = localPath;
 
@@ -201,11 +222,44 @@ public class FileStorageHelper {
         return result;
     }
 
-    private void readDocument(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = _host.getContentResolver()
-                .openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
+    /**
+     * Creates a local copy of the database from document storage.
+     * @param uri Remote Uri
+     * @throws IOException boom
+     */
+    private void cacheDatabase(Uri uri, String localPath) throws IOException {
+        ContentResolver resolver = _host.getContentResolver();
+
+        //ParcelFileDescriptor parcelFileDescriptor = resolver.openFileDescriptor(uri, "r");
+        //FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+
+        //ContentProviderClient providerClient = resolver.acquireContentProviderClient(uri);
+        //ParcelFileDescriptor descriptor = providerClient.openFile(uri, "r");
+
+        // Prepare output
+        FileOutputStream outputStream = new FileOutputStream(localPath);
+        //Path outputPath = new File(localPath).toPath();
+        //Path outputPath = FileSystems.getDefault().getPath(localPath);
+        //Path outputPath = Paths.get(localPath);
+
+        // Copy contents
+        InputStream is = null;
+        try {
+            //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            is = resolver.openInputStream(uri);
+            //outputStream.write();
+            //Files.copy(is, localPath);
+            //IOUtils.copy(is, outputStream);
+            ByteStreams.copy(is, outputStream);
+        } catch (Exception e) {
+           Timber.e(e);
+        } finally {
+            // Cleanup
+            is.close();
+            outputStream.close();
+            //parcelFileDescriptor.close();
+            //providerClient.close();
+        }
+
     }
 }
