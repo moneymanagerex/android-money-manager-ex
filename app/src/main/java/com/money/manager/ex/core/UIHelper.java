@@ -209,39 +209,6 @@ public class UIHelper {
             return Constants.NOT_SET;
     }
 
-//    public int dpToPx(int dp) {
-//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-//        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-//        return px;
-//    }
-//
-//    public int pxToDp(int px) {
-//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-//        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-//        return dp;
-//    }
-
-//    /**
-//     * Pick a database file using built-in file picker.
-//     * @param locationPath ?
-//     */
-//    public void pickFileDialog(String locationPath, int requestCode) {
-//        // root path should be the internal storage?
-//        String root = Environment.getExternalStorageDirectory().getPath();
-//
-//        new MaterialFilePicker()
-//                .withActivity((Activity) getContext())
-//                .withRequestCode(requestCode)
-//                .withRootPath(root)
-//                .withPath(locationPath)
-//                .withFilter(Pattern.compile(".*\\.mmb$"))
-//                //.withFilterDirectories()
-//                .withHiddenFiles(true)
-//                .start();
-//
-//        // continues in onActivityResult in the parent activity
-//    }
-
     public void showToast(int messageId) {
         showToast(messageId, Toast.LENGTH_SHORT);
     }

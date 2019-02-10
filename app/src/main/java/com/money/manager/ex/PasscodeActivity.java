@@ -213,7 +213,7 @@ public class PasscodeActivity extends AppCompatActivity {
 	@Subscribe
 	public void onEvent(ErrorRaisedEvent event) {
 		// display the error to the user
-		new UIHelper(this).showToast(event.message);
+		Timber.e(event.message);
 	}
 
 	@OnClick(R.id.buttonPasscodeKeyBack)

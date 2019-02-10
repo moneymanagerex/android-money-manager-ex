@@ -404,13 +404,13 @@ public class MmxOpenHelper
         if (!recordExists) {
             long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
             if (newId <= 0) {
-                uiHelper.showToast("error inserting base currency on init");
+                Timber.e("error inserting base currency on init");
             }
         } else {
             // Update the (by default empty) record to the default currency.
             long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
             if (updatedRecords <= 0) {
-                uiHelper.showToast("error updating base currency on init");
+                Timber.e("error updating base currency on init");
             }
         }
 

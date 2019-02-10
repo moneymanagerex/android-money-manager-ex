@@ -128,11 +128,11 @@ public class MmexApplication
 //        }
 
         // Loggers
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
-        } else {
-            Timber.plant(new CrashReportingTree());
-        }
+//        } else {
+//            Timber.plant(new CrashReportingTree());
+//        }
 
         initializeDependencyInjection();
 
