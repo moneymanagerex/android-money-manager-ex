@@ -33,7 +33,7 @@ public class DebugTree
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
         //int minLevel = Log.WARN;
-        int minLevel = Log.VERBOSE; // Show all messages
+        int minLevel = Log.INFO; // Show all messages
 
         if (priority >= minLevel) {
             String uiMessage = message.split("\\n")[0];

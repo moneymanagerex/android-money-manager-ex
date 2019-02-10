@@ -377,8 +377,9 @@ public class MmxContentProvider
         Timber.d(log);
     }
 
-    private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
-        Timber.d("Querying URI: %s", uri);
+    private Cursor query_internal(Uri uri, String[] projection, String selection,
+                                  String[] selectionArgs, String sortOrder){
+        Timber.v("Querying URI: %s", uri);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
@@ -424,7 +425,7 @@ public class MmxContentProvider
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         if (!cursor.isClosed()) {
-            Timber.d("Rows returned: %d", cursor.getCount());
+            Timber.v("Rows returned: %d", cursor.getCount());
         }
 
         return cursor;
