@@ -139,6 +139,7 @@ public class FileStorageHelper {
             }
             // timestamp
             MmxDate lastModifiedDate = new MmxDate(lastModifiedTicks);
+            String dateString = lastModifiedDate.toIsoDateTimeString();
 
             Timber.i("check the values");
         } catch (Exception e) {

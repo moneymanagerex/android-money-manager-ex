@@ -459,11 +459,13 @@ public class SearchParametersFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", new MmxDate(searchParameters.dateFrom).toIsoString());
+            where.addStatement(QueryAllData.Date, " >= ",
+                    new MmxDate(searchParameters.dateFrom).toIsoDateString());
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", new MmxDate(searchParameters.dateTo).toIsoString());
+            where.addStatement(QueryAllData.Date, " <= ",
+                    new MmxDate(searchParameters.dateTo).toIsoDateString());
         }
         // payee
         if (searchParameters.payeeId != null) {

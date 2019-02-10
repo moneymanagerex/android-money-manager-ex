@@ -252,7 +252,7 @@ public class WatchlistItemsFragment
                 intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
                 getAccount();
                 intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
-                String dateString = new MmxDate().toIsoString();
+                String dateString = new MmxDate().toIsoDateString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
                 startActivityForResult(intent, RequestCodes.PRICE);
 
@@ -261,7 +261,7 @@ public class WatchlistItemsFragment
 //                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
 //                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
 //                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-//                String dateString = new MmxDate().toIsoString();
+//                String dateString = new MmxDate().toIsoDateString();
 //                args.putString(EditPriceDialog.ARG_DATE, dateString);
 //                dialog.setArguments(args);
 //                dialog.show(getChildFragmentManager(), "input-amount");

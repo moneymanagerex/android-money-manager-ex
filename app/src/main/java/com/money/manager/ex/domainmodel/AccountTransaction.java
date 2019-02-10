@@ -174,7 +174,7 @@ public class AccountTransaction
     }
 
     public void setDate(Date value) {
-        String dateString = new MmxDate(value).toIsoString();
+        String dateString = new MmxDate(value).toIsoDateString();
         setString(ITransactionEntity.TRANSDATE, dateString);
     }
 

@@ -673,8 +673,10 @@ public class AccountTransactionListFragment
                 where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
             ));
 
-        where.addStatement(QueryAllData.Date, ">=", new MmxDate(mFilter.dateRange.dateFrom).toIsoString());
-        where.addStatement(QueryAllData.Date, "<=", new MmxDate(mFilter.dateRange.dateTo).toIsoString());
+        where.addStatement(QueryAllData.Date, ">=", new MmxDate(mFilter.dateRange.dateFrom)
+                .toIsoDateString());
+        where.addStatement(QueryAllData.Date, "<=", new MmxDate(mFilter.dateRange.dateTo)
+                .toIsoDateString());
 
         // Status
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());

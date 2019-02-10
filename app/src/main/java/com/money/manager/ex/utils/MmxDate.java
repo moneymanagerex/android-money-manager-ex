@@ -356,10 +356,18 @@ public class MmxDate {
         return getFormatterFor(format).format(toDate());
     }
 
-    public String toIsoString() {
-//        if (date == null) return null;
-
+    public String toIsoDateString() {
         SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
+    }
+
+    public String toIsoString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_8601_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
+    }
+
+    public String toIsoDateTimeString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
         return format.format(toDate());
     }
 

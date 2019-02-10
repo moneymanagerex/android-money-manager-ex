@@ -211,8 +211,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoString() +
-                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoString() + "'";
+            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
+                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
         }
 
         //check item
@@ -235,10 +235,10 @@ public abstract class BaseReportFragment
         outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
         if (mDateFrom != null) {
-            outState.putString(KEY_FROM_DATE, new MmxDate(mDateFrom).toIsoString());
+            outState.putString(KEY_FROM_DATE, new MmxDate(mDateFrom).toIsoDateString());
         }
         if (mDateTo != null) {
-            outState.putString(KEY_TO_DATE, new MmxDate(mDateTo).toIsoString());
+            outState.putString(KEY_TO_DATE, new MmxDate(mDateTo).toIsoDateString());
         }
     }
 
@@ -286,8 +286,9 @@ public abstract class BaseReportFragment
                     mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
                     String whereClause =
-                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoString() + "' AND " +
-                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoString() + "'";
+                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                "' AND " +
+                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
                     Bundle args = new Bundle();
                     args.putString(KEY_WHERE_CLAUSE, whereClause);
