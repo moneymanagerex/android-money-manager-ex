@@ -19,7 +19,6 @@ package com.money.manager.ex.settings;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cloudrail.si.CloudRail;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
 import java.util.Set;
@@ -51,7 +50,7 @@ public class SyncPreferencesActivity
             // Here we pass the response to the SDK which will automatically
             // complete the authentication process
             Timber.d("setting OAuth authentication response from Google");
-            CloudRail.setAuthenticationResponse(intent);
+//            CloudRail.setAuthenticationResponse(intent);
         }
 
         super.onNewIntent(intent);
