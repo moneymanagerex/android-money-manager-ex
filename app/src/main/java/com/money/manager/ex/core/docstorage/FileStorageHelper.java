@@ -201,7 +201,6 @@ public class FileStorageHelper {
         if(remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
-            Timber.w("Fetching the remote file modification value");
             pollNewRemoteTimestamp(metadata);
         }
 
@@ -451,13 +450,14 @@ public class FileStorageHelper {
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
                     // repeat
-                    Timber.d("fetching the remote metadata...");
+                    Timber.d("fetching the actual remote metadata...");
                     handler.postDelayed(this, milliseconds); // Optional, to repeat the task.
                 } else {
                     // got an update. store the latest metadata.
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
                     saveMetadata(metadata);
-                    Timber.i("The remote info updated to " + metadata.remoteLastChangedDate);
+                    Timber.i("The remote file updated at " +
+                            remote.lastModified.toIsoDateShortTimeString());
                     // do not poll further.
                 }
 
