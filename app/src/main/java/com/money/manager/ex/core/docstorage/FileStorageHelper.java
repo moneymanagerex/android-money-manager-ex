@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
+import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 
@@ -50,7 +51,7 @@ public class FileStorageHelper {
      * Uses RequestCodes.SELECT_DOCUMENT as a request code.
      * The result needs to be handled in onActivityResult.
      */
-    public void showSelectFileInStorage() {
+    public void showStorageFilePicker() {
         // show the file picker
         int requestCode = RequestCodes.SELECT_DOCUMENT;
         AppCompatActivity host = _host;
@@ -79,19 +80,83 @@ public class FileStorageHelper {
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
         DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
-        DatabaseMetadata metadata = getMetadata(fileMetadata);
+        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
 
-        // If there is an existing file with the same name?
-        // Delete previous local file.
+        pullDatabase(metadata);
+
+        return metadata;
+    }
+
+    /**
+     * Synchronize local and remote database files.
+     * @param metadata Database file metadata.
+     */
+    public void synchronize(DatabaseMetadata metadata) {
+        // check if we have remote changes
+        boolean remoteChanged = isRemoteFileChanged(metadata);
+
+        // check if we have local changes
+        boolean localChanged = isLocalFileChanged(metadata);
+
+        // decide on the action
+        if (remoteChanged && localChanged) {
+            throw new RuntimeException("Conflict! Both files have been modified.");
+        }
+        if (remoteChanged) {
+            // download
+            pullDatabase(metadata);
+        }
+        if (localChanged) {
+            // upload
+            pushDatabase(metadata);
+        }
+        if (!remoteChanged && !localChanged) {
+            Timber.i("Not synchronizing. Files have not been modified.");
+        }
+    }
+
+    /*
+        Private area
+     */
+
+    private boolean isLocalFileChanged(DatabaseMetadata metadata) {
+        MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
+        Date localLastModified = localLastModifiedMmxDate.toDate();
+        // The timestamp when the local file was downloaded.
+        Date localDownloaded = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
+
+        boolean result = localLastModified.after(localDownloaded);
+        return result;
+    }
+
+    private boolean isRemoteFileChanged(DatabaseMetadata metadata) {
+        DocFileMetadata remote = getRemoteMetadata(metadata);
+
+        // Check if the remote file was modified since fetched.
+        // This is the modification timestamp of the remote file when it was last downloaded.
+        Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
+        // This is current dateModified at the remote file.
+        Date remoteModified = remote.lastModified.toDate();
+
+        return remoteModified.after(remoteSnapshot);
+    }
+
+    /**
+     * Copies the remote database locally and updates the metadata.
+     * @param metadata Database file metadata.
+     */
+    private void pullDatabase(DatabaseMetadata metadata) {
+        // Delete previous local file, if found.
         File prevFile = new File(metadata.localPath);
         boolean deleted = prevFile.delete();
 
         // copy the contents into a local database file.
+        Uri uri = Uri.parse(metadata.remotePath);
         try {
-            this.downloadDatabase(docUri, metadata.localPath);
+            this.downloadDatabase(uri, metadata.localPath);
         } catch (Exception e) {
             Timber.e(e);
-            return null;
+            return;
         }
 
         // Store the local snapshot timestamp, the time when the file was downloaded.
@@ -101,47 +166,38 @@ public class FileStorageHelper {
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         dbUtils.useDatabase(metadata);
-
-        return metadata;
     }
 
     /**
-     * Pushes the local file to the document provider.
+     * Pushes the local file to the document provider and updates the metadata.
      * @param metadata Database file metadata.
      */
-    public void pushDatabase(DatabaseMetadata metadata) {
-        // handle remote changes
-        Uri remoteUri = Uri.parse(metadata.remotePath);
-        DocFileMetadata remote = getRemoteMetadata(remoteUri);
-
-        // Check if the remote file was modified since fetched.
-        // This is the modification timestamp of the remote file when it was last downloaded.
-        Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
-        // This is current dateModified at the remote file.
-        Date remoteModified = remote.lastModified.toDate();
-
-        if (remoteModified.after(remoteSnapshot)) {
-            Timber.w("The remote file was modified in the meantime");
-            return;
-        }
-
-        // Check if the local file was modified.
-        MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
-        Date localLastModified = localLastModifiedMmxDate.toDate();
-        // The timestamp when the local file was downloaded.
-        Date localDownloaded = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
-
-        if (!localLastModified.after(localDownloaded)) {
-            Timber.i("Local copy not modified.");
-            return;
-        }
+    private void pushDatabase(DatabaseMetadata metadata) {
+//        // handle remote changes
+//        boolean isRemoteChanged = isRemoteFileChanged(metadata);
+//        if (isRemoteChanged) {
+//            Timber.w("The remote file was modified in the meantime");
+//            return;
+//        }
+//
+//        // Check for local modifications.
+//        boolean isLocalFileChanged = isLocalFileChanged(metadata);
+//        if (!isLocalFileChanged) {
+//            Timber.i("Local copy not modified.");
+//            return;
+//        }
 
         // upload local file
         uploadDatabase(metadata);
 
         // Update the modification timestamps, both local and remote.
-        remote = getRemoteMetadata(remoteUri);
+        MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
+        Date localLastModified = localLastModifiedMmxDate.toDate();
+
+        Uri remoteUri = Uri.parse(metadata.remotePath);
+        DocFileMetadata remote = getRemoteMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
+
         if(remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
@@ -154,10 +210,6 @@ public class FileStorageHelper {
 
         saveMetadata(metadata);
     }
-
-    /*
-        Private area
-     */
 
     /**
      * Push the latest file info to the database manager.
@@ -187,7 +239,7 @@ public class FileStorageHelper {
         return uri;
     }
 
-    private DatabaseMetadata getMetadata(DocFileMetadata fileMetadata) {
+    private DatabaseMetadata getMetadataForRemote(DocFileMetadata fileMetadata) {
         DatabaseMetadata metadata = new DatabaseMetadata();
         metadata.remotePath = fileMetadata.Uri;
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
@@ -200,6 +252,11 @@ public class FileStorageHelper {
         metadata.localPath = localPath + File.separator + fileMetadata.Name;
 
         return metadata;
+    }
+
+    private DocFileMetadata getRemoteMetadata(DatabaseMetadata metadata) {
+        Uri remoteUri = Uri.parse(metadata.remotePath);
+        return getRemoteMetadata(remoteUri);
     }
 
     private DocFileMetadata getRemoteMetadata(Uri uri) {
@@ -217,9 +274,8 @@ public class FileStorageHelper {
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
 
-            String displayName = cursor.getString(
+            result.Name = cursor.getString(
                     cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-            result.Name = displayName;
 
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
 //            String size = null;
@@ -241,9 +297,8 @@ public class FileStorageHelper {
                 lastModifiedTicks = cursor.getLong(modifiedIndex);
             }
             // timestamp
-            MmxDate lastModifiedDate = new MmxDate(lastModifiedTicks);
             //String dateString = lastModifiedDate.toIsoDateTimeString();
-            result.lastModified = lastModifiedDate;
+            result.lastModified = new MmxDate(lastModifiedTicks);
 
             //Timber.i("check the values");
         } catch (Exception e) {

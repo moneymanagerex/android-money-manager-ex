@@ -122,7 +122,7 @@ public class SelectDatabaseActivity
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
         FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showSelectFileInStorage();
+        helper.showStorageFilePicker();
     }
 
 //    @OnClick(R.id.setupSyncButton)

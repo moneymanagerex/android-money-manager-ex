@@ -215,7 +215,7 @@ public class MainActivity
         showCurrentDatabasePath(this);
 
         // Read something from the database at this stage so that the db file gets created.
-        InfoService infoService = new InfoService(getApplicationContext());
+        InfoService infoService = new InfoService(this);
         String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
         // fragments
@@ -460,7 +460,7 @@ public class MainActivity
     @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
         FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showSelectFileInStorage();
+        helper.showStorageFilePicker();
     }
 
     @Subscribe
@@ -598,16 +598,15 @@ public class MainActivity
 //                // re-set the sync timer.
 //                sync.startSyncServiceHeartbeat();
 
-                // todo: perform actual sync (download/upload).
-                // Currently just trigger upload.
+                // Synchronize with the storage provider.
                 FileStorageHelper storage = new FileStorageHelper(this);
                 DatabaseMetadata current = mDatabases.get().getCurrent();
-                storage.pushDatabase(current);
+                storage.synchronize(current);
                 break;
 
             case R.id.menu_open_database:
                 FileStorageHelper helper = new FileStorageHelper(this);
-                helper.showSelectFileInStorage();
+                helper.showStorageFilePicker();
                 break;
 
             case R.id.menu_account:
@@ -1472,14 +1471,18 @@ public class MainActivity
         startActivity(intent);
     }
 
+    /**
+     * New migration - all entries must have the Remote Url as we are now using
+     * storage access framework.
+     */
     private void migrateRecentDatabases() {
         RecentDatabasesProvider databases = getDatabases();
-        // if there are entries with empty name, migrate:
+        // if there are entries with empty remote location, migrate:
         // - clean up the list
         // - create the default entry
         // - save the default entry.
         for (DatabaseMetadata entry : databases.map.values()) {
-            if (TextUtils.isEmpty(entry.localPath)) {
+            if (TextUtils.isEmpty(entry.remotePath)) {
                 databases.clear();
                 // create & save the default entry.
                 DatabaseMetadata currentEntry = databases.getCurrent();
