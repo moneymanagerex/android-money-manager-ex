@@ -34,7 +34,6 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -204,30 +203,30 @@ public class SyncPreferenceFragment
             public boolean onPreferenceChange(Preference preference, Object o) {
                 final SyncManager sync = getSyncManager();
                 // set the new provider
-                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
+//                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
 
                 // log in to the provider immediately and update to persistence.
-                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-                    sync.login()
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleSubscriber<Void>() {
-                                @Override
-                                public void onSuccess(Void value) {
-                                    // nothing.
-                                }
-
-                                @Override
-                                public void onError(Throwable error) {
-                                    String errorMessage = error.getMessage();
-                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
-                                        Timber.w("authentication cancelled");
-                                    } else {
-                                        Timber.e(error, "logging in to cloud provider");
-                                    }
-                                }
-                            })
-                );
+//                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
+//                    sync.login()
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new SingleSubscriber<Void>() {
+//                                @Override
+//                                public void onSuccess(Void value) {
+//                                    // nothing.
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable error) {
+//                                    String errorMessage = error.getMessage();
+//                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
+//                                        Timber.w("authentication cancelled");
+//                                    } else {
+//                                        Timber.e(error, "logging in to cloud provider");
+//                                    }
+//                                }
+//                            })
+//                );
 
                 return true;
             }
@@ -239,8 +238,8 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // show the file browser/picker.
-                Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
-                startActivityForResult(intent, REQUEST_REMOTE_FILE);
+//                Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
+//                startActivityForResult(intent, REQUEST_REMOTE_FILE);
 
                 return false;
             }
@@ -306,24 +305,24 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 final SyncManager sync = getSyncManager();
-                sync.logout()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<Void>() {
-                        @Override
-                        public void onSuccess(Void value) {
-                            sync.resetPreferences();
-                            sync.stopSyncServiceAlarm();
-
-                            new Core(getActivity()).alert(R.string.preferences_reset);
-
-                            getActivity().recreate();
-                        }
-
-                        @Override
-                        public void onError(Throwable error) {
-                            Timber.e(error, "logging out the cloud provider");                        }
-                    });
+//                sync.logout()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new SingleSubscriber<Void>() {
+//                        @Override
+//                        public void onSuccess(Void value) {
+//                            sync.resetPreferences();
+//                            sync.stopSyncServiceAlarm();
+//
+//                            new Core(getActivity()).alert(R.string.preferences_reset);
+//
+//                            getActivity().recreate();
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable error) {
+//                            Timber.e(error, "logging out the cloud provider");                        }
+//                    });
                 return false;
             }
         });
