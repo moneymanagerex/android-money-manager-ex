@@ -27,23 +27,19 @@ import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.ioc.DaggerMmxComponent;
 import com.money.manager.ex.core.ioc.MmxComponent;
 import com.money.manager.ex.core.ioc.MmxModule;
 import com.money.manager.ex.database.MmxOpenHelper;
-import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.log.ScreenTree;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.jobmanager.SyncJobCreator;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
@@ -51,7 +47,6 @@ import org.parceler.Parcel;
 import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
 
-import java.io.File;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
