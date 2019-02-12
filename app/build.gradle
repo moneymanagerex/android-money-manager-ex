@@ -30,6 +30,8 @@ android {
         applicationId "com.money.manager.ex"
         versionCode 991
         versionName getVersionAsDate() + "." + versionCode
+        // $applicationId
+        setProperty("archivesBaseName", "ammx-$versionName")
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
@@ -72,31 +74,26 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            // enable crashlytics/fabric
-//            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
-//            ext.enableCrashlytics = true
+            versionNameSuffix "-beta"
         }
         release {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    // append the version to the file name.
-                    def version = "-" + defaultConfig.versionName
-                    def outputFile = variant.getPackageApplicationProvider().get().outputs.files[1]
-                    //def fileName = output.outputFile.name
-                    def fileName = outputFile.name
-                            .replace("app-", "ammx-")
-                            .replace(".apk", version + ".apk")
-                    outputFileName = fileName
-                }
-            }
-
-            // enable crashlytics/fabric
-//            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
-//            ext.enableCrashlytics = true
+//            applicationVariants.all { variant ->
+//                variant.outputs.all { output ->
+//                    // append the version to the file name.
+//                    def version = "-" + defaultConfig.versionName
+//                    def outputFile = variant.getPackageApplicationProvider().get().outputs.files[1]
+//                    //def fileName = output.outputFile.name
+//                    def fileName = outputFile.name
+//                            .replace("app-", "ammx-")
+//                            .replace(".apk", version + ".apk")
+//                    outputFileName = fileName
+//                }
+//            }
+            versionNameSuffix "-release"
         }
     }
 
