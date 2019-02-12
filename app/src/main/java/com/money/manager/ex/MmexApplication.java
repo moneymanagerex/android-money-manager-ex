@@ -35,6 +35,7 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.log.ScreenTree;
+import com.money.manager.ex.log.SysLogTree;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
@@ -115,20 +116,13 @@ public class MmexApplication
 
         registerCustomFonts();
 
-        // Exception reporting. Disabled for debug builds.
-//        if (BuildConfig.USE_CRASHLYTICS) {
-//            Crashlytics crashlyticsKit = new Crashlytics.Builder()
-//                    .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-//                    .build();
-//            Fabric.with(this, crashlyticsKit); // new Crashlytics()
-//        }
-
         // Loggers
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         } else {
             //Timber.plant(new CrashReportingTree());
             Timber.plant(new ScreenTree());
+            Timber.plant(new SysLogTree());
         }
 
         initializeDependencyInjection();
