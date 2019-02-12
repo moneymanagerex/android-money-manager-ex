@@ -19,23 +19,16 @@ package com.money.manager.ex.assetallocation.overview;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity;
 import com.money.manager.ex.assetallocation.ItemType;
+import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
@@ -48,7 +41,13 @@ import com.money.manager.ex.view.RobotoTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import info.javaperformance.money.Money;
+
 
 public class AssetAllocationOverviewActivity
     extends MmxBaseFragmentActivity {
@@ -94,8 +93,7 @@ public class AssetAllocationOverviewActivity
         MenuHelper helper = new MenuHelper(this, menu);
 
         // Edit Asset Allocation.
-        helper.add(MenuHelper.edit, R.string.edit, GoogleMaterial.Icon.gmd_edit)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setShowAsAction(helper.add(MenuHelper.edit, R.string.edit, GoogleMaterial.Icon.gmd_edit), MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         return true;
     }
@@ -178,7 +176,7 @@ public class AssetAllocationOverviewActivity
 
         Money threshold = new AppSettings(this).getInvestmentSettings().getAssetAllocationDifferenceThreshold();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold, getFormatter());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

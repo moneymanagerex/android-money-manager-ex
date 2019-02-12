@@ -18,10 +18,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -31,6 +27,11 @@ import com.money.manager.ex.log.ErrorRaisedEvent;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
 
 /**
  * Base activity for the settings activities.

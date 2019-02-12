@@ -74,7 +74,7 @@ public class StockHistoryRepositorySql
     }
 
     public ContentValues getContentValues(String symbol, Money price, Date date) {
-        String isoDate = new MmxDate(date).toIsoString();
+        String isoDate = new MmxDate(date).toIsoDateString();
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);
@@ -88,7 +88,7 @@ public class StockHistoryRepositorySql
     public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = new MmxDate(date).toIsoString();
+        String isoDate = new MmxDate(date).toIsoDateString();
 
         String sql = new Select()
             .from(TABLE_NAME)

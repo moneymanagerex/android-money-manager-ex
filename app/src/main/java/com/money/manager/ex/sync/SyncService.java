@@ -18,21 +18,17 @@
 package com.money.manager.ex.sync;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.JobIntentService;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.JobIntentService;
+
 import android.text.TextUtils;
 
-import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCodes;
@@ -43,7 +39,6 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
-import com.money.manager.ex.utils.NotificationUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -125,12 +120,12 @@ public class SyncService
             return;
         }
 
-        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-        if (remoteFile == null) {
-            sendMessage(SyncServiceMessage.ERROR);
-            sendStopEvent();
-            return;
-        }
+//        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
+//        if (remoteFile == null) {
+//            sendMessage(SyncServiceMessage.ERROR);
+//            sendStopEvent();
+//            return;
+//        }
         File localFile = new File(localFilename);
 
         // todo: modify this part after db initial upload has been implemented.
@@ -149,26 +144,26 @@ public class SyncService
 //        }
 
         // check if name is same
-        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
-            Timber.w("Local filename different from the remote!");
-            sendMessage(SyncServiceMessage.ERROR);
-            sendStopEvent();
-            return;
-        }
+//        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
+//            Timber.w("Local filename different from the remote!");
+//            sendMessage(SyncServiceMessage.ERROR);
+//            sendStopEvent();
+//            return;
+//        }
 
         // Execute action.
-        switch (action) {
-            case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                triggerDownload(localFile, remoteFile);
-                break;
-            case SyncConstants.INTENT_ACTION_UPLOAD:
-                triggerUpload(localFile, remoteFile);
-                break;
-            case SyncConstants.INTENT_ACTION_SYNC:
-            default:
-                triggerSync(localFile, remoteFile);
-                break;
-        }
+//        switch (action) {
+//            case SyncConstants.INTENT_ACTION_DOWNLOAD:
+//                triggerDownload(localFile, remoteFile);
+//                break;
+//            case SyncConstants.INTENT_ACTION_UPLOAD:
+//                triggerUpload(localFile, remoteFile);
+//                break;
+//            case SyncConstants.INTENT_ACTION_SYNC:
+//            default:
+//                triggerSync(localFile, remoteFile);
+//                break;
+//        }
     }
 
     @Override
@@ -188,92 +183,92 @@ public class SyncService
         Private
     */
 
-    private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
-        final SyncManager sync = new SyncManager(getApplicationContext());
+//    private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
+//        final SyncManager sync = new SyncManager(getApplicationContext());
+//
+//        Notification notification = new SyncNotificationFactory(getApplicationContext())
+//                .getNotificationForDownload();
+//
+//        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        final File tempFile = new File(localFile.toString() + "-download");
+//
+//        Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
+//
+//        if (notification != null && notificationManager != null) {
+//            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
+//        }
+//        sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
+//
+//        compositeSubscription.add(
+//                sync.downloadSingle(remoteFile, tempFile)
+//                        // do not run on another thread as then the service will be destroyed.
+////                    .subscribeOn(Schedulers.io())
+//                        .subscribe(new SingleSubscriber<Void>() {
+//                            @Override
+//                            public void onSuccess(Void value) {
+//                                //onDownloadHandler.onPostExecute(true);
+//                                afterDownload(notificationManager, tempFile, localFile,
+//                                        remoteFile, sync);
+//                                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+//                                sendStopEvent();
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable error) {
+//                                Timber.e(error, "async download");
+//                                sendMessage(SyncServiceMessage.ERROR);
+//                                sendStopEvent();
+//                            }
+//                        })
+//        );
+//    }
 
-        Notification notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationForDownload();
+//    private void afterDownload(NotificationManager notificationManager, File tempFile, File localFile,
+//                               CloudMetaData remoteFile, SyncManager sync) {
+//        if (notificationManager == null) return;
+//
+//        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
+//
+//        // copy file
+//        try {
+//            MmxFileUtils.copy(tempFile, localFile);
+//            tempFile.delete();
+//        } catch (IOException e) {
+//            Timber.e(e, "copying downloaded database file");
+//            return;
+//        }
+//
+//        sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
+//
+//        // Create the notification for opening of the downloaded file.
+//        // The Intent is passed to the notification and called if clicked on.
+//        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+//                RequestCodes.SELECT_FILE, intent, 0);
+//
+//        Notification completeNotification = new SyncNotificationFactory(getApplicationContext())
+//                .getNotificationDownloadComplete(pendingIntent);
+//
+//        // notify
+//        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, completeNotification);
+//    }
 
-        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        final File tempFile = new File(localFile.toString() + "-download");
-
-        Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
-
-        if (notification != null && notificationManager != null) {
-            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
-        }
-        sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
-
-        compositeSubscription.add(
-                sync.downloadSingle(remoteFile, tempFile)
-                        // do not run on another thread as then the service will be destroyed.
-//                    .subscribeOn(Schedulers.io())
-                        .subscribe(new SingleSubscriber<Void>() {
-                            @Override
-                            public void onSuccess(Void value) {
-                                //onDownloadHandler.onPostExecute(true);
-                                afterDownload(notificationManager, tempFile, localFile,
-                                        remoteFile, sync);
-                                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
-                                sendStopEvent();
-                            }
-
-                            @Override
-                            public void onError(Throwable error) {
-                                Timber.e(error, "async download");
-                                sendMessage(SyncServiceMessage.ERROR);
-                                sendStopEvent();
-                            }
-                        })
-        );
-    }
-
-    private void afterDownload(NotificationManager notificationManager, File tempFile, File localFile,
-                               CloudMetaData remoteFile, SyncManager sync) {
-        if (notificationManager == null) return;
-
-        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-
-        // copy file
-        try {
-            MmxFileUtils.copy(tempFile, localFile);
-            tempFile.delete();
-        } catch (IOException e) {
-            Timber.e(e, "copying downloaded database file");
-            return;
-        }
-
-        sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
-
-        // Create the notification for opening of the downloaded file.
-        // The Intent is passed to the notification and called if clicked on.
-        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                RequestCodes.SELECT_FILE, intent, 0);
-
-        Notification completeNotification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationDownloadComplete(pendingIntent);
-
-        // notify
-        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, completeNotification);
-    }
-
-    private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
-        Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
-
-        showNotificationUploading();
-        sendMessage(SyncServiceMessage.STARTING_UPLOAD);
-
-        // upload
-        SyncManager sync = new SyncManager(getApplicationContext());
-        boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
-
-        // notification, upload complete
-        showNotificationUploadComplete(result, localFile);
-        sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
-        sendStopEvent();
-    }
+//    private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
+//        Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
+//
+//        showNotificationUploading();
+//        sendMessage(SyncServiceMessage.STARTING_UPLOAD);
+//
+//        // upload
+//        SyncManager sync = new SyncManager(getApplicationContext());
+//        boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
+//
+//        // notification, upload complete
+//        showNotificationUploadComplete(result, localFile);
+//        sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+//        sendStopEvent();
+//    }
 
     private void showNotificationUploadComplete(boolean result, File localFile) {
         if (mNotificationManager == null) return;
@@ -295,59 +290,59 @@ public class SyncService
 
     }
 
-    private void triggerSync(File localFile, CloudMetaData remoteFile) {
-        SyncManager sync = new SyncManager(getApplicationContext());
-
-        // are there local changes?
-        boolean isLocalModified = false;
-        DatabaseMetadata currentDb = this.recentDatabasesProvider
-                .get(localFile.getAbsolutePath());
-        // todo remove the null-check below after the default record is established.
-        if (currentDb != null) {
-            isLocalModified = currentDb.isLocalFileChanged;
-        }
-        Timber.d("local file has changes: %b", isLocalModified);
-
-        // are there remote changes?
-        boolean isRemoteModified = false;
-        try {
-            isRemoteModified = sync.isRemoteFileModified(remoteFile);
-        } catch (RuntimeException e) {
-            Timber.e(e, "No remote change data found in metadata! Please re-synchronize manually.");
-            // notify the user!
-            sendMessage(SyncServiceMessage.ERROR);
-            return;
-        }
-        Timber.d("Remote file has changes: %b", isRemoteModified);
-
-        // possible outcomes:
-
-        if (!isLocalModified && !isRemoteModified) {
-            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
-            sendStopEvent();
-            return;
-        }
-        if (isLocalModified && isRemoteModified) {
-            // if both changed, there is a conflict!
-            Timber.w(getString(R.string.both_files_modified));
-            sendMessage(SyncServiceMessage.CONFLICT);
-            sendStopEvent();
-            showNotificationForConflict();
-            return;
-        }
-        if (isRemoteModified) {
-            Timber.d("Remote file %s changed. Triggering download.", remoteFile.getPath());
-            // download file
-            triggerDownload(localFile, remoteFile);
-            return;
-        }
-        if (isLocalModified) {
-            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
-            // upload file
-            triggerUpload(localFile, remoteFile);
-            return;
-        }
-    }
+//    private void triggerSync(File localFile, CloudMetaData remoteFile) {
+//        SyncManager sync = new SyncManager(getApplicationContext());
+//
+//        // are there local changes?
+//        boolean isLocalModified = false;
+//        DatabaseMetadata currentDb = this.recentDatabasesProvider
+//                .get(localFile.getAbsolutePath());
+//        // todo remove the null-check below after the default record is established.
+//        if (currentDb != null) {
+//            isLocalModified = currentDb.isLocalFileChanged;
+//        }
+//        Timber.d("local file has changes: %b", isLocalModified);
+//
+//        // are there remote changes?
+//        boolean isRemoteModified = false;
+//        try {
+//            isRemoteModified = sync.isRemoteFileModified(remoteFile);
+//        } catch (RuntimeException e) {
+//            Timber.e(e, "No remote change data found in metadata! Please re-synchronize manually.");
+//            // notify the user!
+//            sendMessage(SyncServiceMessage.ERROR);
+//            return;
+//        }
+//        Timber.d("Remote file has changes: %b", isRemoteModified);
+//
+//        // possible outcomes:
+//
+//        if (!isLocalModified && !isRemoteModified) {
+//            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+//            sendStopEvent();
+//            return;
+//        }
+//        if (isLocalModified && isRemoteModified) {
+//            // if both changed, there is a conflict!
+//            Timber.w(getString(R.string.both_files_modified));
+//            sendMessage(SyncServiceMessage.CONFLICT);
+//            sendStopEvent();
+//            showNotificationForConflict();
+//            return;
+//        }
+//        if (isRemoteModified) {
+//            Timber.d("Remote file %s changed. Triggering download.", remoteFile.getPath());
+//            // download file
+//            triggerDownload(localFile, remoteFile);
+//            return;
+//        }
+//        if (isLocalModified) {
+//            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
+//            // upload file
+//            triggerUpload(localFile, remoteFile);
+//            return;
+//        }
+//    }
 
     private boolean sendMessage(SyncServiceMessage message) {
         if (mOutMessenger == null) return true;

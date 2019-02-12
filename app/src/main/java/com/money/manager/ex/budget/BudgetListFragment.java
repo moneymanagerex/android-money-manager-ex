@@ -16,14 +16,9 @@
  */
 package com.money.manager.ex.budget;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +38,12 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 
 import org.greenrobot.eventbus.EventBus;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 /**
  * Use the {@link BudgetListFragment#newInstance} factory method to
@@ -108,7 +109,7 @@ public class BudgetListFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_CANCELED) return;
+        if (resultCode == AppCompatActivity.RESULT_CANCELED) return;
 
         switch (requestCode) {
             case REQUEST_EDIT_BUDGET:

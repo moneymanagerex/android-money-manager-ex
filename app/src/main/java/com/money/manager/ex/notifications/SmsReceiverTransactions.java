@@ -38,7 +38,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
@@ -60,7 +60,6 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.NotificationUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
@@ -68,7 +67,7 @@ import javax.inject.Inject;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
-import static android.support.v4.content.ContextCompat.startActivity;
+import static androidx.core.content.ContextCompat.startActivity;
 import static java.lang.Integer.*;
 
 public class SmsReceiverTransactions extends BroadcastReceiver {

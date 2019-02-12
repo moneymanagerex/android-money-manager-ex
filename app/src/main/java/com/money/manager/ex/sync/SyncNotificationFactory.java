@@ -20,16 +20,11 @@ package com.money.manager.ex.sync;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
-import com.money.manager.ex.Constants;
+import androidx.core.app.NotificationCompat;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
 /**

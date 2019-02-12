@@ -20,7 +20,6 @@ package com.money.manager.ex.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -46,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {

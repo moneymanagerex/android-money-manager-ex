@@ -26,10 +26,10 @@ import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 /**
- * Logging tree for Production builds. Reports errors.
+ * Logging tree for Production builds. Reports errors to Crashlytics.
  * https://github.com/JakeWharton/timber/blob/master/timber-sample/src/main/java/com/example/timber/ExampleApp.java
  */
-
+@Deprecated
 public class CrashReportingTree extends Timber.Tree {
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {

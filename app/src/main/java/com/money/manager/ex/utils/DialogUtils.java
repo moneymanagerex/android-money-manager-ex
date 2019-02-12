@@ -18,6 +18,8 @@
 package com.money.manager.ex.utils;
 
 import android.app.ProgressDialog;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import timber.log.Timber;
 
@@ -34,4 +36,11 @@ public class DialogUtils {
         }
     }
 
+    public static void closeProgressBar(ProgressBar progressBar) {
+        try {
+            progressBar.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Timber.e("error closing progress bar");
+        }
+    }
 }

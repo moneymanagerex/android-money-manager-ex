@@ -18,12 +18,13 @@ package com.money.manager.ex.common;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+
+import androidx.fragment.app.FragmentManager;
 
 /**
  * List of categories.

@@ -28,7 +28,7 @@
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="8dp"
-        android:src="?attr/ic_action_warning" />
+        app:srcCompat="?attr/ic_action_warning" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewOverdue"

@@ -19,7 +19,6 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +34,9 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.QueryAllData;
 
 import org.parceler.Parcels;
+
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 public class SearchActivity
     extends MmxBaseFragmentActivity {
@@ -94,7 +96,7 @@ public class SearchActivity
         // Add Search icon.
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.searchMenuItem);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_search));
         // show this menu item last
 

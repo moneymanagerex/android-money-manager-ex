@@ -18,10 +18,11 @@
 package com.money.manager.ex.currency.recycler;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+
+import androidx.fragment.app.FragmentManager;
 
 public class CurrencyRecyclerListActivity
     extends MmxBaseFragmentActivity {

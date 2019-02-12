@@ -20,7 +20,7 @@ package com.money.manager.ex.common;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 import com.money.manager.ex.datalayer.Select;
 

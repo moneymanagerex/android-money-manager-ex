@@ -25,9 +25,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-//import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import java.io.PrintWriter;
@@ -36,9 +34,8 @@ import java.io.StringWriter;
 /**
  * Deprecated. Replace with calls to Timber, which uses the new production logger.
  * Default exception handler.
- * Used for reporting uncaught exceptions before using Crashlytics.
+ * This class was used for reporting uncaught exceptions before using Crashlytics.
  */
-@Deprecated
 public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {

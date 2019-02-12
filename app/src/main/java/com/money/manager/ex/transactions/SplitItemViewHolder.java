@@ -17,15 +17,13 @@
 
 package com.money.manager.ex.transactions;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

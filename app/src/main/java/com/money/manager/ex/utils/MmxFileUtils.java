@@ -18,16 +18,11 @@
 package com.money.manager.ex.utils;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
-
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,6 +32,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 /**
@@ -139,7 +137,7 @@ public class MmxFileUtils {
      * @return boolean indicating whether the request permission binaryDialog is displayed and should be
      * handled asynchronously.
      */
-    public boolean requestExternalStoragePermissions(Activity activity) {
+    public boolean requestExternalStoragePermissions(AppCompatActivity activity) {
         boolean requestingRead = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -155,7 +153,7 @@ public class MmxFileUtils {
         return requestingRead && requestingWrite;
     }
 
-    private boolean requestPermission(String permission, Activity activity, int requestId) {
+    private boolean requestPermission(String permission, AppCompatActivity activity, int requestId) {
         boolean requesting = false;
         int permissionResult = ContextCompat.checkSelfPermission(context, permission);
 

@@ -17,12 +17,13 @@
 
 package com.money.manager.ex.currency.recycler;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * View holder for the currency list implemented with recycler view.

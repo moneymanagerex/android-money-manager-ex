@@ -16,18 +16,15 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 
 import com.money.manager.ex.MmxContentProvider;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Currency;
 
 import org.robolectric.Robolectric;
@@ -37,16 +34,19 @@ import org.robolectric.shadows.ShadowLog;
 
 import java.lang.reflect.Field;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.Fragment;
+
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running
  * the unit tests.
  */
 public class UnitTestHelper {
-    public static <T extends Activity> ActivityController<T> getController(Class<T> activityClass) {
+    public static <T extends AppCompatActivity> ActivityController<T> getController(Class<T> activityClass) {
         return Robolectric.buildActivity(activityClass);
     }
 
-    public static <T extends Activity> T getActivity(ActivityController<T> controller) {
+    public static <T extends AppCompatActivity> T getActivity(ActivityController<T> controller) {
         return controller.create().visible().start().get();
     }
 

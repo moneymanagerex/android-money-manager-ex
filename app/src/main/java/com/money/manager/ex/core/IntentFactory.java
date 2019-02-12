@@ -20,9 +20,7 @@ package com.money.manager.ex.core;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
-import android.support.annotation.NonNull;
 
-import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.search.SearchActivity;
@@ -31,8 +29,6 @@ import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncService;
 
 import org.parceler.Parcels;
-
-import info.javaperformance.money.Money;
 
 /**
  * Generates Intents for common app functionality.

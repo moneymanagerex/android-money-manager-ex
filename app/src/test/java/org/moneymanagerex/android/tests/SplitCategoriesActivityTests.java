@@ -19,7 +19,7 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import androidx.core.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,7 +29,6 @@ import com.money.manager.ex.transactions.SplitCategoriesActivity;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.view.RobotoTextView;
 
 import org.junit.After;
 import org.junit.Before;

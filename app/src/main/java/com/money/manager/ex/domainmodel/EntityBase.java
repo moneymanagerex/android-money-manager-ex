@@ -99,7 +99,7 @@ public class EntityBase
 //    }
 
     protected void setDate(String fieldName, Date value) {
-        String dateString = new MmxDate(value).toIsoString();
+        String dateString = new MmxDate(value).toIsoDateString();
         contentValues.put(fieldName, dateString);
     }
 

@@ -17,16 +17,10 @@
 package com.money.manager.ex.home;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,13 +39,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.io.Files;
 import com.melnykov.fab.FloatingActionButton;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.DatabaseMigrator14To20;
+import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -59,32 +66,20 @@ import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
+import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.database.DatabaseMigrator14To20;
-import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
-import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.IntentDataParameters;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -96,6 +91,12 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import dagger.Lazy;
 import icepick.Icepick;
 import icepick.State;
@@ -387,7 +388,7 @@ public class HomeFragment
         refreshSettings();
 
         // Toolbar
-        Activity parent = getActivity();
+        FragmentActivity parent = getActivity();
         if (parent instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
 
@@ -396,7 +397,8 @@ public class HomeFragment
 
             // Show db name in toolbar.
             String dbPath = new AppSettings(activity).getDatabaseSettings().getDatabasePath();
-            String dbFileName = FilenameUtils.getBaseName(dbPath);
+            //String dbFileName = FilenameUtils.getBaseName(dbPath);
+            String dbFileName = Files.getNameWithoutExtension(dbPath);
             activity.getSupportActionBar().setSubtitle(dbFileName);
         }
 
@@ -606,14 +608,14 @@ public class HomeFragment
         }
 
         // Show current database
-        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        TextView currentDatabaseTextView = view.findViewById(R.id.currentDatabaseTextView);
         if (currentDatabaseTextView != null) {
-            String path = MmexApplication.getDatabasePath(getActivity());
+            String path = new DatabaseManager(getContext()).getDatabasePath();
             currentDatabaseTextView.setText(path);
         }
 
         // add account button
-        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
+        Button btnAddAccount = view.findViewById(R.id.buttonAddAccount);
         if (btnAddAccount != null) {
             btnAddAccount.setOnClickListener(new OnClickListener() {
 

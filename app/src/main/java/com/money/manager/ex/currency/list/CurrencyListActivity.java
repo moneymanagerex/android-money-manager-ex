@@ -18,17 +18,15 @@ package com.money.manager.ex.currency.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.utils.ActivityUtils;
+
+import androidx.fragment.app.FragmentManager;
 
 /**
  * List of currencies.

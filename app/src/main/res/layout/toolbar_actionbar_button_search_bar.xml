@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<android.support.v7.widget.Toolbar
+<androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,4 +26,4 @@
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <include layout="@layout/actionbar_button_cancel_search"/>
-</android.support.v7.widget.Toolbar>
+</androidx.appcompat.widget.Toolbar>

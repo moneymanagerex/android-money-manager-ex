@@ -42,7 +42,6 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /*
                           Group      Asset Class

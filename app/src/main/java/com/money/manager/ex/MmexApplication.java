@@ -20,46 +20,37 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.widget.TextView;
-
-//import com.crashlytics.android.Crashlytics;
-//import com.crashlytics.android.core.CrashlyticsCore;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.ioc.DaggerMmxComponent;
 import com.money.manager.ex.core.ioc.MmxComponent;
 import com.money.manager.ex.core.ioc.MmxModule;
 import com.money.manager.ex.database.MmxOpenHelper;
-import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
+import com.money.manager.ex.log.ScreenTree;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.jobmanager.SyncJobCreator;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
-
-//import io.fabric.sdk.android.Fabric;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
 
-import java.io.File;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
+import androidx.multidex.MultiDexApplication;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -80,45 +71,6 @@ public class MmexApplication
 
     public static MmexApplication getApp() {
         return appInstance;
-    }
-
-    /**
-     * Reads the current database path from the preferences and checks for the existence of the
-     * database file.
-     * Creates a default database file if the one from preferences is not found. Sets this file as
-     * the default database.
-     * @param context Executing context.
-     * @return Full path to the current database file.
-     */
-    public static String getDatabasePath(Context context) {
-        // todo: move this to the recent db provider
-
-        DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
-        String databasePath = dbSettings.getDatabasePath();
-
-        if (!TextUtils.isEmpty(databasePath)) {
-            // Use the db path stored in the preferences.
-            File databaseFile = new File(databasePath);
-            if (databaseFile.getAbsoluteFile().exists())  {
-                return databaseFile.getPath();
-            }
-        }
-
-        // otherwise try other paths or create the default database.
-
-        String defaultPath = new MmxDatabaseUtils(context).getDefaultDatabasePath();
-
-        // Save db path to preferences.
-        dbSettings.setDatabasePath(defaultPath);
-
-        // Show notification
-        if (databasePath.equals(defaultPath)) {
-            new UIHelper(context).showToast("Default database file will be created at " + defaultPath);
-        } else {
-            new UIHelper(context).showToast("Database " + databasePath + " not found. Using default:" + defaultPath);
-        }
-
-        return defaultPath;
     }
 
     public static float getTextSize() {
@@ -175,17 +127,14 @@ public class MmexApplication
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         } else {
-            Timber.plant(new CrashReportingTree());
+            //Timber.plant(new CrashReportingTree());
+            Timber.plant(new ScreenTree());
         }
 
         initializeDependencyInjection();
 
         // Job Manager initialization.
         initializeJobManager();
-
-//        if (! Python.isStarted()) {
-//            Python.start(new AndroidPlatform(this));
-//        }
     }
 
     /**
@@ -194,7 +143,7 @@ public class MmexApplication
      */
     public void initializeJobManager() {
         JobManager.create(this)
-                .addJobCreator(new SyncJobCreator());
+            .addJobCreator(new SyncJobCreator());
     }
 
     /**
@@ -243,8 +192,7 @@ public class MmexApplication
 
     private MmxOpenHelper createDbInstance(String path) {
         if (TextUtils.isEmpty(path)) {
-//            path = new MmxDatabaseUtils(this).getDefaultDatabasePath();
-            path = getDatabasePath(this);
+            path = new DatabaseManager(this).getDatabasePath();
         }
         return new MmxOpenHelper(this, path);
     }

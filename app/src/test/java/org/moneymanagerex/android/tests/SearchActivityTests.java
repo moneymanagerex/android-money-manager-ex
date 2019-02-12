@@ -16,9 +16,7 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,10 +42,13 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.Fragment;
 import info.javaperformance.money.MoneyFactory;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 
 /**
@@ -116,7 +117,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
                 categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
@@ -176,7 +177,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
             categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 

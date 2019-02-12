@@ -17,10 +17,11 @@
 
 package com.money.manager.ex.home;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * INCOMPLETE

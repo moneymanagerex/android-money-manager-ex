@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
@@ -25,6 +24,8 @@ import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.view.RobotoTextView;
 
 import org.greenrobot.eventbus.EventBus;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * View holder for the cloud items (folder, file).

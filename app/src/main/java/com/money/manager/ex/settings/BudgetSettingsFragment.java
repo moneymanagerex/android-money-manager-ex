@@ -17,9 +17,10 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
+
+import androidx.preference.PreferenceFragmentCompat;
 
 /**
  * Budget preferences.

@@ -17,22 +17,19 @@
 
 package com.money.manager.ex.tutorial;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.transition.Explode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.relex.circleindicator.CircleIndicator;
@@ -59,9 +56,9 @@ public class TutorialActivity
 
         ButterKnife.bind(this);
 
-        CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
+        CircleIndicator circleIndicator = findViewById(R.id.indicator_default);
 
-        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
+        ViewPager viewpager = findViewById(R.id.viewpager_default);
         TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
@@ -83,7 +80,7 @@ public class TutorialActivity
             case REQUEST_GENERAL_PREFERENCES:
                 // back from general preferences.
 
-                setResult(Activity.RESULT_OK);
+                setResult(AppCompatActivity.RESULT_OK);
 
                 // Mark tutorial as seen.
                 new AppSettings(this).getBehaviourSettings().setShowTutorial(false);

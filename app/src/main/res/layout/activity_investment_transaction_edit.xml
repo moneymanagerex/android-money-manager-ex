@@ -118,7 +118,7 @@
                 </LinearLayout>
 
                 <!-- Stock Name -->
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -133,10 +133,10 @@
                         android:maxLength="1000"
                         android:scrollHorizontally="false"
                         android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Symbol -->
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -151,7 +151,7 @@
                         android:maxLength="1000"
                         android:scrollHorizontally="false"
                         android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Number of Shares -->
                 <com.money.manager.ex.view.RobotoTextView
@@ -186,7 +186,7 @@
                     android:textStyle="bold" />
 
                 <!-- Notes -->
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -200,7 +200,7 @@
                         android:inputType="textMultiLine"
                         android:scrollHorizontally="false"
                         android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Commission -->
                 <com.money.manager.ex.view.RobotoTextView
