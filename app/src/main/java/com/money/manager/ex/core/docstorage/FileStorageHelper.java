@@ -92,6 +92,13 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     public void synchronize(DatabaseMetadata metadata) {
+        // validation
+        // Make sure we have a valid storage-access-framework url.
+        if (!metadata.remotePath.startsWith("content://")) {
+            Timber.w("Invalid remote Uri. Please re-open the database.");
+            return;
+        }
+
         // check if we have remote changes
         boolean remoteChanged = isRemoteFileChanged(metadata);
 

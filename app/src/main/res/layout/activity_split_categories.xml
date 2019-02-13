@@ -26,7 +26,7 @@
     android:animateLayoutChanges="true"
     tools:context=".transactions.SplitCategoriesActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="@dimen/mmx_toolbar_elevation"
@@ -35,7 +35,7 @@
 
         <include layout="@layout/toolbar" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/splitScrollView"

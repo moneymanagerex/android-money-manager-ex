@@ -6,6 +6,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;
 
+/**
+ * Displays all messages above certain level to the screen.
+ */
 public class ScreenTree
         extends Timber.DebugTree {
     @Override
