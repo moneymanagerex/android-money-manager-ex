@@ -138,9 +138,6 @@
 #SQLCipher
 #-keep class net.sqlcipher.** { *; }
 
-#CloudRail, https://github.com/CloudRail/cloudrail-si-android-sdk/issues/34
--keep class com.cloudrail.** { *; }
-
 # Ignore warnings
 -dontwarn org.apache.**
 -dontwarn com.opencsv.bean.**

@@ -54,7 +54,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'http://maven.cloudrail.com' }              // cloudrail
         maven { url "https://clojars.org/repo/" }               // icepick
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
         mavenCentral()
