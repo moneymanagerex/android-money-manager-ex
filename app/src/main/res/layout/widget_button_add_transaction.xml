@@ -24,7 +24,7 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
 
-    app:srcCompat="@drawable/drawable_widget_add_transaction_flat"
+    android:src="@drawable/drawable_widget_add_transaction_flat"
     android:background="#00000000"
     android:scaleType="centerInside"
     android:cropToPadding="false" />

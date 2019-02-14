@@ -30,7 +30,7 @@
         android:layout_gravity="center_vertical"
         android:layout_margin="2dp"
         android:background="@android:color/transparent"
-        app:srcCompat="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_launcher"
         android:contentDescription="@string/logo" />
 
     <LinearLayout
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_menu_refresh"
+        android:src="@drawable/ic_menu_refresh"
         android:contentDescription="@string/refresh" />
 
 </LinearLayout>
