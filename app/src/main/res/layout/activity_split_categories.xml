@@ -55,7 +55,7 @@
                 android:textStyle="italic"
                 android:text="@string/swipe_to_dismiss" />
 
-                <androidx.appcompat.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/splitsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
