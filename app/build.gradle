@@ -147,7 +147,6 @@ android {
 }
 
 dependencies {
-//    compile(name:'cloudrail-si-debug', ext:'aar')
     // api ...
     implementation project(':MMEX_Icon_Font')
     implementation project(':androidSVG')
