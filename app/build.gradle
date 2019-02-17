@@ -55,32 +55,32 @@ android {
         release.setRoot('build-types/release')
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        beta {
-            applicationIdSuffix ".beta"
-            versionNameSuffix "-beta"
-
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            versionNameSuffix "-beta"
-        }
-        release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            versionNameSuffix "-release"
-        }
-    }
+//    buildTypes {
+//        debug {
+//            applicationIdSuffix ".debug"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//        beta {
+//            applicationIdSuffix ".beta"
+//            versionNameSuffix "-beta"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-beta"
+//        }
+//        release {
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-release"
+//        }
+//    }
 
     dataBinding {
         enabled = true
