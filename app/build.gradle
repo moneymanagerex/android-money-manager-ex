@@ -29,7 +29,8 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         versionCode 994
-        versionName getVersionAsDate() + "." + versionCode
+        //versionName getVersionAsDate() + "." + versionCode
+        versionName "2019.02.14.2"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -54,48 +55,32 @@ android {
         release.setRoot('build-types/release')
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            // Disable fabric build id for debug builds
-//            buildConfigField "boolean", "USE_CRASHLYTICS", "false"
-//            ext.enableCrashlytics = false
-        }
-        beta {
-            applicationIdSuffix ".beta"
-            versionNameSuffix "-beta"
-
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            versionNameSuffix "-beta"
-        }
-        release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-//            applicationVariants.all { variant ->
-//                variant.outputs.all { output ->
-//                    // append the version to the file name.
-//                    def version = "-" + defaultConfig.versionName
-//                    def outputFile = variant.getPackageApplicationProvider().get().outputs.files[1]
-//                    //def fileName = output.outputFile.name
-//                    def fileName = outputFile.name
-//                            .replace("app-", "ammx-")
-//                            .replace(".apk", version + ".apk")
-//                    outputFileName = fileName
-//                }
-//            }
-            versionNameSuffix "-release"
-        }
-    }
+//    buildTypes {
+//        debug {
+//            applicationIdSuffix ".debug"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//        beta {
+//            applicationIdSuffix ".beta"
+//            versionNameSuffix "-beta"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-beta"
+//        }
+//        release {
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-release"
+//        }
+//    }
 
     dataBinding {
         enabled = true
