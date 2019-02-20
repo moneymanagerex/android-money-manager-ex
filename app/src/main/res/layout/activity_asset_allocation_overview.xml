@@ -34,7 +34,7 @@
         android:fitsSystemWindows="true">
         <!--250dp-->
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -90,7 +90,7 @@
                 <!--android:elevation="4dp"-->
                 <!--android:minHeight="?attr/actionBarSize"-->
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!--<com.melnykov.fab.ObservableScrollView-->
