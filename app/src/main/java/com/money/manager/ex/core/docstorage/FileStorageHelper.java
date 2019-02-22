@@ -107,7 +107,10 @@ public class FileStorageHelper {
 
         // decide on the action
         if (remoteChanged && localChanged) {
-            throw new RuntimeException("Conflict! Both files have been modified.");
+            String message = "Conflict! Both files have been modified.";
+            //throw new RuntimeException();
+            Timber.e(message);
+            return;
         }
         if (remoteChanged) {
             // download

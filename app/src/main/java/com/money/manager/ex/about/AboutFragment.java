@@ -69,14 +69,14 @@ public class AboutFragment extends Fragment {
         }
 
         // Version application
-        TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
+        TextView txtVersion = view.findViewById(R.id.textViewVersion);
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
-//        build = core.getAppVersionBuild();
-        txtVersion.setText(getString(R.string.version) + " " + version);
+        int build = core.getAppVersionCode();
+        txtVersion.setText(getString(R.string.version) + " " + version + " (" + Integer.toString(build) + ")");
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
-        TextView textViewCopyright = (TextView) view.findViewById(R.id.textViewCopyright);
+        TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         String copyrightString = getString(R.string.application_copyright, currentYear);
         textViewCopyright.setText(copyrightString);
