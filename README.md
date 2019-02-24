@@ -45,7 +45,7 @@ Travis CI build is active for the project. It runs a build on every check-in and
 
 # License
 
-    Copyright 2012-2018 The Android Money Manager Ex Project Team
+    Copyright 2012-2019 The Android Money Manager Ex Project Team
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
