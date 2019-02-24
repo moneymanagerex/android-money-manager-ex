@@ -50,7 +50,5 @@ You can also try the latest version from https://play.google.com/store/apps/deta
 ☆ <b>CONTACT</b>
 email: android@moneymanagerex.org
 Web: http://android.moneymanagerex.org/
-G+: http://google.com/+AndroidMoneyManagerEx
-G+ Community: http://goo.gl/R693Ih
 Forum: http://forum.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=PlayStore&utm_source=Website
 Twitter: https://twitter.com/MMEX4Android
