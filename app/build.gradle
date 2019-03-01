@@ -28,9 +28,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 995
+        versionCode 997
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2019.02.20.1"
+        versionName "2019.02.28.997-beta"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -220,10 +220,10 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.1',
-            'org.robolectric:robolectric:3.8',
-            'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.8',
-            'org.robolectric:shadows-httpclient:3.8',
+            'org.robolectric:robolectric:4.2',
+            'org.robolectric:shadows-support-v4:3.4-rc2',
+            'org.robolectric:shadows-multidex:4.2',
+            'org.robolectric:shadows-httpclient:4.2',
             //'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',

@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.UriPermission;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
@@ -60,6 +62,11 @@ public class FileStorageHelper {
             // ACTION_GET_CONTENT in older versions of Android.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
             // intent.setType("text/plain");
             //intent.setType("application/x-sqlite3");
             intent.setType("*/*");
@@ -128,6 +135,28 @@ public class FileStorageHelper {
     /*
         Private area
      */
+
+    /**
+     * Check if the persisted permissions are still valid.
+     */
+    private void checkPermissions(Uri uri) {
+        boolean valid = false;
+        List<UriPermission> list = _host.getContentResolver().getPersistedUriPermissions();
+        for (int i = 0; i < list.size(); i++){
+
+            if(list.get(i).getUri() == uri && list.get(i).isWritePermission()){
+                //return true;
+                valid = true;
+                continue;
+            }
+        }
+        //return false;
+
+        if (!valid) {
+            // request the permissions again.
+            takePersistablePermissions(uri);
+        }
+    }
 
     private boolean isLocalFileChanged(DatabaseMetadata metadata) {
         MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
@@ -240,10 +269,7 @@ public class FileStorageHelper {
         uri = activityResultData.getData();
         //Timber.i("blah", "Uri: " + uri.toString());
 
-        // Take persistable URI permission.
-        _host.getContentResolver().takePersistableUriPermission(uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        takePersistablePermissions(uri);
 
         return uri;
     }
@@ -270,6 +296,8 @@ public class FileStorageHelper {
 
     private DocFileMetadata getRemoteMetadata(Uri uri) {
         AppCompatActivity host = _host;
+
+        checkPermissions(uri);
 
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
@@ -478,5 +506,12 @@ public class FileStorageHelper {
 
         // Stop a repeating task like this.
         //handler.removeCallbacks(runnable);
+    }
+
+    private void takePersistablePermissions(Uri uri) {
+        // Take persistable URI permission.
+        _host.getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
     }
 }
