@@ -471,8 +471,8 @@
     <string name="locale_tr" translatable="false">Türkçe</string>
     <string name="locale_uk" translatable="false">українська</string>
     <string name="locale_vi" translatable="false">Tiếng Việt</string>
-    <string name="locale_zh_rCN" translatable="false">简体中文</string>
-    <string name="locale_zh_rTW" translatable="false">正體中文</string>
+    <string name="locale_zh_CN" translatable="false">简体中文</string>
+    <string name="locale_zh_TW" translatable="false">正體中文</string>
 
     <string name="transaction_cancel_confirm">Are you sure you want to discard the changes?</string>
     <string name="keep_editing">Keep editing</string>
