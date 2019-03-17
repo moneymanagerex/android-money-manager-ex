@@ -41,7 +41,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;

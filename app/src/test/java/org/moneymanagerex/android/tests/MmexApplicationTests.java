@@ -80,8 +80,7 @@ public class MmexApplicationTests {
     public void dbDirectoryHasAppName() {
         final String expected = "MoneyManagerEx";
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this.context);
-        String actual = dbUtils.getDefaultDatabaseDirectory();
+        String actual = new DatabaseManager(context).getDefaultDatabaseDirectory();
 
         assertThat(actual, containsString(expected));
     }
