@@ -55,7 +55,6 @@ import static org.junit.Assert.assertThat;
  * Test Search activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SearchActivityTests {
 
     private ActivityController<SearchActivity> controller;

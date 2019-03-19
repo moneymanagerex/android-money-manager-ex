@@ -53,7 +53,6 @@ import static org.robolectric.Shadows.shadowOf;
  * Test the MainActivity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MainActivityTests {
 
     private ActivityController<MainActivity> controller;

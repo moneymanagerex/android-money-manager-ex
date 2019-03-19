@@ -40,7 +40,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Test the methods in MoneyManagerApplication.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MmexApplicationTests {
 
     private Context context;

@@ -56,7 +56,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Unit tests for Split Categories activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SplitCategoriesActivityTests {
 
     private ActivityController<SplitCategoriesActivity> controller;
