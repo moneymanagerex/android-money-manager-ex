@@ -35,7 +35,7 @@ import org.robolectric.shadows.ShadowLog;
 import java.lang.reflect.Field;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running

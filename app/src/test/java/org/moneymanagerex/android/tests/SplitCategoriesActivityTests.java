@@ -19,7 +19,7 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -56,7 +56,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Unit tests for Split Categories activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SplitCategoriesActivityTests {
 
     private ActivityController<SplitCategoriesActivity> controller;

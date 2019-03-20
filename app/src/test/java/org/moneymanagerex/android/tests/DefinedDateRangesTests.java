@@ -41,7 +41,6 @@ import static junit.framework.Assert.assertTrue;
  * Test Defined Date Ranges.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class DefinedDateRangesTests {
 
     private Context context;

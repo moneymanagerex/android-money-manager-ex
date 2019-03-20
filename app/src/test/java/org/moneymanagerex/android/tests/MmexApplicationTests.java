@@ -40,7 +40,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Test the methods in MoneyManagerApplication.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MmexApplicationTests {
 
     private Context context;
@@ -80,8 +79,7 @@ public class MmexApplicationTests {
     public void dbDirectoryHasAppName() {
         final String expected = "MoneyManagerEx";
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this.context);
-        String actual = dbUtils.getDefaultDatabaseDirectory();
+        String actual = new DatabaseManager(context).getDefaultDatabaseDirectory();
 
         assertThat(actual, containsString(expected));
     }

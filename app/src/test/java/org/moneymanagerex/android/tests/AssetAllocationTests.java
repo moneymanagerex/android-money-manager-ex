@@ -47,7 +47,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Unit tests for asset allocation service.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AssetAllocationTests {
 
     private AssetAllocationService testObject;

@@ -32,7 +32,6 @@ import org.robolectric.annotation.Config;
  * Test creation of records in the database.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class DataGenerationTests {
     @Before
     public void setUp() {

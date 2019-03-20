@@ -30,7 +30,6 @@ import org.robolectric.annotation.Config;
  * A model for test class.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class BaseTests {
 
     // private ActivityController<T> controller;

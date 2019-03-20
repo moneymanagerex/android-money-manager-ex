@@ -40,7 +40,6 @@ import static junit.framework.Assert.assertTrue;
  * Test Account model.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountTests {
 
     private Account account;

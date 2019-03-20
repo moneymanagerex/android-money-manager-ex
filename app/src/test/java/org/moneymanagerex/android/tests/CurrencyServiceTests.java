@@ -37,7 +37,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Test Currency Service
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class CurrencyServiceTests {
 
     private CurrencyService testObject;
