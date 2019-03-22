@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2019 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -148,12 +148,6 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();
         clickListenerFeedback.setUrl("http://www.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
         txtReport.setOnClickListener(clickListenerFeedback);
-
-        // image view google plus
-        OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
-        clickListenerGooglePlus.setUrl("http://goo.gl/R693Ih");
-        ImageView imageViewGooglePlus = (ImageView) view.findViewById(R.id.imageViewGooglePlus);
-        imageViewGooglePlus.setOnClickListener(clickListenerGooglePlus);
 
         // image view github
         OnClickListenerUrl clickListenerGithub = new OnClickListenerUrl();
