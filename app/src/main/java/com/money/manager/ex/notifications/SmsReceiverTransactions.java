@@ -537,6 +537,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         break;
                     }
                 }
+
+                // Come out from the loop if reqMatch is already set
+                if (reqMatch == true)
+                {
+                    break;
+                }
             }
         }
         catch(Exception e)
@@ -637,8 +643,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
                         "((\\s)?Account\\s?No(.*?)\\s?(\\d+)(\\s)?)", "((\\s)?A/.\\s?No(.*?)\\s?(\\d+)(\\s)?)",
                         "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'", "((\\s)using\\scard\\s(.*?)\\s.emaining)",
-                        "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
-                        "((\\s)virtual(\\s)address((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
+                        "([\\(]((.*?)[@](.*?))[\\)])", "(from\\s((.*?)@(.*?))[.]?[\\s])",
+                        "(to\\s((.*?)@(.*?))[.]?[\\s])", "(linked((.*?)@(.*?))[.])",
+                        "((\\s)[V//v]irtual(\\s)([A//a]ddress)?(I[D//d])?((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
                         "([\\[](\\d+)[\\]])", "(using(.*?)(\\.))", "(.ay.m\\s.allet)"
                 };
 
@@ -647,8 +654,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         5, 5, 5,
                         4, 4,
                         4, 3,
-                        2, 2, 2,
-                        4, 2,
+                        2, 2,
+                        2, 2,
+                        6, 2,
                         2, 2, 1
                 };
 
@@ -671,7 +679,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         {
                             // Append X with acc no, bcz start with X for non UPI trans
                             if (m.group(getGroup[i]).trim().matches("\\d+") == true &&
-                                m.group(getGroup[i]).trim().matches("[a-zA-Z@]+") == false )
+                                    m.group(getGroup[i]).trim().matches("[a-zA-Z@]+") == false )
                             {
                                 reqMatch = "X" + m.group(getGroup[i]).trim();
                             }
@@ -697,15 +705,15 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         String reqMatch = "";
         smsMsg = smsMsg.replace(",", "");
-        String searchFor = "((\\s)?##SEARCH4CURRENCY##(.)?(\\s)?((\\d+)(\\.\\d+)?))";
-        int[] getGroup = {5};
+        String searchFor = "((\\s)?##SEARCH4CURRENCY##(\\s)?((\\d+)(\\.\\d+)?))";
+        int[] getGroup = {4};
         int indx = 0;
 
         //Handle multiple symbol for currency
         String[] searchCurrency;
 
         if (fromAccCurrencySymbl.contentEquals("INR")) {
-            searchCurrency = new String[]{"INR", "Rs"};
+            searchCurrency = new String[]{"INR", "Rs.", "Rs"};
         } else {
             searchCurrency = new String[]{fromAccCurrencySymbl};
         }
@@ -748,10 +756,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
-                "((\\s)paid\\s(.*?)\\s)",
-                "((\\s)at\\s(.*?)\\s+using)" };
+                "((\\s)for\\s(.*?)\\s+for)", "((\\s)at\\s(.*?)\\s+using)", "((\\s)paid\\s(.*?)\\s)",
+                "(Info:\\sMOB//?(\\w+))"};
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3, 3, 2};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
@@ -772,6 +780,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         }
                     }
                 }
+
+                // Come out from the loop if reqMatch is already set
+                if (!reqMatch[0].isEmpty())
+                {
+                    break;
+                }
             }
         }
         catch(Exception e)
@@ -785,14 +799,20 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
-        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\sno(:)?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
-                "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
-                "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
-                "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)"};
-        int[] getGroup = {2, 3, 2,
-                          5, 5, 5,
-                          4, 2, 4,
-                          4, 3, 2};
+        String[] searchFor =
+                {
+                        "([C//c]heque\\s[N//n]o[.*?](\\d+))", "([R//r]ef(\\s)?[N//n]o(:?.?=?)(\\s)?(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
+                        "(([R//r]eference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([I//i]nfo\\s?(:?)+(.*?)[\\/](\\d+)+[:]?[-]?)",
+                        "(([R//r]eference [N//n]umber)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)", "(\\/+(\\d+)+\\/)",
+                        "(I[D//d](.?:?-?)(\\s)?((.*?)\\w+))", "(I[D//d](.?:?))(\\s)?(\\d+)", "(I[D//d](\\s)is(\\s)?(:?-?)(\\d+))"
+                };
+        int[] getGroup =
+                {
+                        2, 5, 2,
+                        4, 2, 4,
+                        4, 3, 2,
+                        4, 4, 4
+                };
 
         try
         {
@@ -809,6 +829,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         break;
                     }
                 }
+
+                // Come out from the loop if reqMatch is already set
+                if (!reqMatch.isEmpty())
+                {
+                    break;
+                }
+
             }
         }
         catch(Exception e)
@@ -828,9 +855,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             if(!payeeName.trim().isEmpty()) {
 
                 String sql = "SELECT PAYEEID, PAYEENAME, CATEGID, SUBCATEGID " +
-                                "FROM PAYEE_V1 " +
-                                "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
-                                "ORDER BY PAYEENAME LIMIT 1";
+                        "FROM PAYEE_V1 " +
+                        "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
+                        "ORDER BY PAYEENAME LIMIT 1";
 
                 Cursor payeeCursor = db.rawQuery(sql, null);
 
@@ -1128,8 +1155,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             // notify
             notificationManager.notify(ID_NOTIFICATION, notification);
 
-            } catch (Exception e) {
-                Timber.e(e, "showing notification for sms transaction");
-            }
+        } catch (Exception e) {
+            Timber.e(e, "showing notification for sms transaction");
+        }
     }
 }
