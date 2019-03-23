@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2019 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,7 +45,6 @@ import static org.hamcrest.CoreMatchers.*;
  * Account Service tests.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountServiceTests {
 
     private AccountService testObject;

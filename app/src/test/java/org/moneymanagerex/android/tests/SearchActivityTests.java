@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2019 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 import info.javaperformance.money.MoneyFactory;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -55,7 +55,6 @@ import static org.junit.Assert.assertThat;
  * Test Search activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SearchActivityTests {
 
     private ActivityController<SearchActivity> controller;
