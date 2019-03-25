@@ -20,7 +20,7 @@ import android.Manifest;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.fingerprint.FingerprintManager;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
@@ -75,8 +75,8 @@ public class PasscodeActivity extends AppCompatActivity {
 	private Cipher cipher;
 	private KeyStore keyStore;
 	private KeyGenerator keyGenerator;
-	private FingerprintManager.CryptoObject cryptoObject;
-	private FingerprintManager fingerprintManager;
+	private FingerprintManagerCompat.CryptoObject cryptoObject;
+	private FingerprintManagerCompat fingerprintManager;
 	private KeyguardManager keyguardManager;
 
 	@Override
@@ -161,7 +161,8 @@ public class PasscodeActivity extends AppCompatActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 
 			keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+			//fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+			fingerprintManager = FingerprintManagerCompat.from(getApplicationContext());
 
 			if (!fingerprintManager.isHardwareDetected()) {
 				((ImageView) findViewById(R.id.fpImageView))
@@ -189,7 +190,7 @@ public class PasscodeActivity extends AppCompatActivity {
 						e.printStackTrace();
 					}
 					if (initCipher()) {
-						cryptoObject = new FingerprintManager.CryptoObject(cipher);
+						cryptoObject = new FingerprintManagerCompat.CryptoObject(cipher);
 						FingerprintHandler helper = new FingerprintHandler(this);
 						helper.startAuth(fingerprintManager, cryptoObject);
 					}
