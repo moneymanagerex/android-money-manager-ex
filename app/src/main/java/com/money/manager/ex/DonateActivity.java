@@ -20,11 +20,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.WebViewActivity;
 import com.money.manager.ex.core.HttpMethods;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
@@ -40,6 +42,12 @@ public class DonateActivity
 
         setContentView(R.layout.donate_activity);
         ButterKnife.bind(this);
+
+        //Copyright
+        TextView textViewCopyright = findViewById(R.id.textViewCopyright);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String copyrightString = getString(R.string.application_copyright, currentYear);
+        textViewCopyright.setText(copyrightString);
 
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
