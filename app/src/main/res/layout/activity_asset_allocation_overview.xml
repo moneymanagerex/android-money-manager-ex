@@ -54,7 +54,7 @@
                 <!--app:layout_collapseMode="parallax" />-->
 
             <!-- collapsible part above the toolbar -->
-            <android.support.v7.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -77,9 +77,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/total" />
-            </android.support.v7.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
