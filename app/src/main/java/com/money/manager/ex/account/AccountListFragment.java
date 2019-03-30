@@ -271,7 +271,7 @@ public class AccountListFragment
 
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete_account)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
             .content(R.string.confirmDelete)
             .positiveText(android.R.string.ok)
             .onPositive(new MaterialDialog.SingleButtonCallback() {

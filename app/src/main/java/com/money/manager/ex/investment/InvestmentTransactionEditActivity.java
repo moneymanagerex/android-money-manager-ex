@@ -372,7 +372,7 @@ public class InvestmentTransactionEditActivity
 
         // Icon
         UIHelper ui = new UIHelper(this);
-        viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
+        viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar_alt), null, null, null);
 
         // prev/next day
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {

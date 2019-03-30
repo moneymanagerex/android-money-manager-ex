@@ -461,7 +461,7 @@ public class WatchlistFragment
 
         new MaterialDialog.Builder(getContext())
             .title(R.string.download)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
             .content(R.string.confirm_price_download)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -621,7 +621,7 @@ public class WatchlistFragment
 
         new MaterialDialog.Builder(getContext())
             .title(R.string.purge_history)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
             .content(R.string.purge_history_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

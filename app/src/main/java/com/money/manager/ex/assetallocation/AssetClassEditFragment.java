@@ -203,7 +203,7 @@ public class AssetClassEditFragment
         });
 
         UIHelper ui = new UIHelper(getContext());
-        textView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_sort_amount_asc), null, null, null);
+        textView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_sort_amount_down), null, null, null);
     }
 
     private void displayAllocation() {
