@@ -272,8 +272,8 @@ configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
 }
 
-static def getVersionAsDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyy.MM.dd')
-    return formattedDate
-}
+//static def getVersionAsDate() {
+//    def date = new Date()
+//    def formattedDate = date.format('yyyy.MM.dd')
+//    return formattedDate
+//}
