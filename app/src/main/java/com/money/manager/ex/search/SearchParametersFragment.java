@@ -402,7 +402,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity())
+        Calculator.forFragment(this)
                 .amount(amount)
                 .show(RequestCodes.AMOUNT_FROM);
     }
@@ -414,7 +414,9 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity()).amount(amount).show(RequestCodes.AMOUNT_TO);
+        Calculator.forFragment(this)
+                .amount(amount)
+                .show(RequestCodes.AMOUNT_TO);
     }
 
     // Private
