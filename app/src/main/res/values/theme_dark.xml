@@ -131,5 +131,14 @@ https://developer.android.com/training/material/theme.html
         <!--<item name="android:spinnerItemStyle">@style/Money.Spinner.Style.Dark</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style</item>-->
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
+
+        <!-- AboutLibraries specific values -->
+        <item name="about_libraries_window_background">@color/about_libraries_window_background_dark</item>
+        <item name="about_libraries_card">@color/about_libraries_card_dark</item>
+        <item name="about_libraries_title_openSource">@color/about_libraries_title_openSource_dark</item>
+        <item name="about_libraries_text_openSource">@color/about_libraries_text_openSource_dark</item>
+        <item name="about_libraries_special_button_openSource">@color/about_libraries_special_button_openSource_dark</item>
+        <item name="about_libraries_dividerDark_openSource">@color/about_libraries_dividerDark_openSource_dark</item>
+        <item name="about_libraries_dividerLight_openSource">@color/about_libraries_dividerLight_openSource_dark</item>
     </style>
 </resources>
