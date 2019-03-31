@@ -121,6 +121,8 @@
         <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
         <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
         <item name="ic_paste">@drawable/ic_action_paste_light</item>
+        <!-- about social icon -->
+        <item name="ic_social_github">@drawable/ic_social_github_light</item>
 
         <!-- Shape -->
         <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
