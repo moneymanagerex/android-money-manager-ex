@@ -310,7 +310,7 @@ public class RecurringTransactionListFragment
         // create alert binaryDialog
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete_repeating_transaction)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
             .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -339,7 +339,7 @@ public class RecurringTransactionListFragment
 
         new MaterialDialog.Builder(getContext())
             .title(R.string.skip_next_occurrence)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
             .content(R.string.skip_next_occurrence_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

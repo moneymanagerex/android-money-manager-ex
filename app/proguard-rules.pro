@@ -172,7 +172,7 @@
 }
 
 # Changelog
--keep class it.gmariotti.changelibs.library.internal.ChangeLogAdapter { *; }
+#-keep class it.gmariotti.changelibs.library.internal.ChangeLogAdapter { *; }
 
 # Joda Time. This is supposedly included in the lib itself(?).
 -dontwarn org.joda.convert.**
