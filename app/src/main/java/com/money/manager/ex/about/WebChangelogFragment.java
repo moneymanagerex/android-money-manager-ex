@@ -71,6 +71,7 @@ public class WebChangelogFragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_web_changelog, container, false);
 
+        view.findViewById(R.id.webView).setBackgroundColor(0);
         loadChangelog(view);
 
         return view;
