@@ -56,7 +56,7 @@ public class AboutTabAdapter
             case 2:
                 return AboutCreditsFragment.newInstance(position);
             case 3:
-                return new LibsBuilder().supportFragment();
+                return new LibsBuilder().withLicenseShown(true).supportFragment();
             default:
                 return null;
         }

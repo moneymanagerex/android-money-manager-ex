@@ -111,7 +111,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_github"/>
+                app:srcCompat="?attr/ic_social_github"/>
 
             <ImageView
                 android:id="@+id/imageViewTwitter"

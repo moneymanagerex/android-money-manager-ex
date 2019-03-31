@@ -18,21 +18,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8">
     <title>Credits</title>
     <style type="text/css">
-        #credits {margin: 0;padding: 0;}
-        #credits li {list-style-type: none;font-weight:bold;color:#333;margin-left: 0;padding-left:
-        0;}
+        #credits {margin: 0;padding: 0;color:#333;}
+        #credits li {list-style-type: none;font-weight:bold;margin-left: 0;padding-left:0;}
         #credits li ul {margin-bottom:10px;}
-        #credits li ul li{font-weight:normal;color:#333;list-style-type: circle;}
-        .warning {color:#FF0000;}
-        #a {color:#000;}
+        #credits li ul li{font-weight:normal;list-style-type: circle;}
+        /*.warning {color:#FF0000;}
+        #a {color:#000;}*/
     </style>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8">
+    <!-- theme colors injection: vars 1: PrimaryTextColor; 2: SecondaryTextColor; 3: link color -->
+    <!-- the nature of css is that a subsequent valid attribute/rule takes precedence; if injection fails for some reason
+         (or when opened standalone in a browser), the defaults in the previous section will take effect -->
+    <style type="text/css">
+        /*body {color: %1$s;}
+        #credits {color: %2$s;}*/
+        body {color: %2$s;}
+        h3 {color: %1$s;}
+        #credits {color: inherit;}
+        a {color: %3$s;}
+    </style>
 </head>
 <body>
 <small>
-    <br id="participants">
+    <div id="participants">
 
     <h3>Development Head</h3>
 
@@ -46,6 +56,7 @@
 
     Translations are available at <a href="https://crowdin.com/project/android-money-manager-ex">Crowdin</a>
     platform.
+    </div>
 
     <div id="libraries">
         <h3>Third party libraries used within Money Manager Ex for Android</h3>

@@ -200,9 +200,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     api 'com.google.guava:guava:27.0.1-android' // collection libraries
 
-    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
-        transitive = true
-    }
+    implementation('com.mikepenz:aboutlibraries:6.2.3')
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
