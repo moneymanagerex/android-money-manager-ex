@@ -66,13 +66,4 @@ public class AboutActivity
         super.onRestoreInstanceState(savedInstanceState);
         mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
     }
-
-    @Override
-    protected void setTheme() {
-        try {
-            this.setTheme(R.style.Theme_Money_Manager_Light);
-        } catch (Exception e) {
-            Timber.e(e, "setting theme");
-        }
-    }
 }

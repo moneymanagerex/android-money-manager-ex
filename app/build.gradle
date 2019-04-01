@@ -28,9 +28,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 997
+        versionCode 998
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2019.02.28.997-beta"
+        versionName "2019.03.30.998-beta"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -141,7 +141,7 @@ dependencies {
             fileTree(dir: 'libs', include: ['*.jar'])
             , 'com.opencsv:opencsv:4.1'
             , 'net.objecthunter:exp4j:0.4.8'
-            , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
+            //, 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
             // , 'com.afollestad.material-dialogs:core:0.9.0.2'
             // , 'com.afollestad.material-dialogs:commons:0.9.0.2'
@@ -166,7 +166,7 @@ dependencies {
             , 'io.reactivex:rxjava:1.3.3'
             // , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2' // use SqlDelight
-            , 'com.jakewharton.timber:timber:4.6.1'
+            , 'com.jakewharton.timber:timber:4.7.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
             // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
             // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
@@ -175,10 +175,10 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:3.0.3@aar'
-            , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
-            , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
+            , 'com.mikepenz:iconics-core:3.2.2' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:3.2.2'
+            , 'com.mikepenz:google-material-typeface:3.0.1.3.original@aar' // MD icons
+            , 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
@@ -200,9 +200,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     api 'com.google.guava:guava:27.0.1-android' // collection libraries
 
-    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
-        transitive = true
-    }
+    implementation('com.mikepenz:aboutlibraries:6.2.3')
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
@@ -272,8 +270,8 @@ configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
 }
 
-static def getVersionAsDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyy.MM.dd')
-    return formattedDate
-}
+//static def getVersionAsDate() {
+//    def date = new Date()
+//    def formattedDate = date.format('yyyy.MM.dd')
+//    return formattedDate
+//}

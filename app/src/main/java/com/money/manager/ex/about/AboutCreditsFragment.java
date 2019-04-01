@@ -24,10 +24,12 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import androidx.fragment.app.Fragment;
+import timber.log.Timber;
 
 public class AboutCreditsFragment extends Fragment {
     private static Fragment mInstance;
@@ -49,6 +51,7 @@ public class AboutCreditsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         WebView webView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
+        webView.setBackgroundColor(0);
 
 //        webView.loadData(MmxFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
 
@@ -56,7 +59,19 @@ public class AboutCreditsFragment extends Fragment {
         WebSettings settings = webView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
 
-        webView.loadData(MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty),
-                "text/html; charset=utf-8", null);
+        String htmlString = MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty);
+        // Inject theme colors into html css
+        // https://stackoverflow.com/questions/5026995/android-get-color-as-string-value/46831158#46831158
+        UIHelper ui = new UIHelper(getActivity());
+        String color1 = String.format("#%06X", 0xFFFFFF & ui.getPrimaryTextColor());
+        String color2 = String.format("#%06X", 0xFFFFFF & ui.getSecondaryTextColor());
+        // just use parent (SecondaryTextColor) for links in dark theme, otherwise default (blue)
+        String color3 = ui.isUsingDarkTheme() ? "inherit" : "";
+        try {
+            htmlString = String.format(htmlString, color1, color2, color3);
+        } catch (Exception e) {
+            Timber.e(e, "setting css theme colors in credits html");
+        }
+        webView.loadData(htmlString, "text/html; charset=utf-8", null);
     }
 }

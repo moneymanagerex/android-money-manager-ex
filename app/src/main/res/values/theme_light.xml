@@ -121,6 +121,8 @@
         <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
         <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
         <item name="ic_paste">@drawable/ic_action_paste_light</item>
+        <!-- about social icon -->
+        <item name="ic_social_github">@drawable/ic_social_github_light</item>
 
         <!-- Shape -->
         <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
@@ -140,6 +142,15 @@
         <!--<item name="android:spinnerItemStyle">@style/Money.Spinner.Style</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style.Dark</item>-->
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
+
+        <!-- AboutLibraries specific values -->
+        <item name="about_libraries_window_background">@color/about_libraries_window_background</item>
+        <item name="about_libraries_card">@color/about_libraries_card</item>
+        <item name="about_libraries_title_openSource">@color/about_libraries_title_openSource</item>
+        <item name="about_libraries_text_openSource">@color/about_libraries_text_openSource</item>
+        <item name="about_libraries_special_button_openSource">@color/about_libraries_special_button_openSource</item>
+        <item name="about_libraries_dividerDark_openSource">@color/about_libraries_dividerDark_openSource</item>
+        <item name="about_libraries_dividerLight_openSource">@color/about_libraries_dividerLight_openSource</item>
     </style>
 
 </resources>

@@ -385,7 +385,7 @@ public class RecurringTransactionEditActivity
 
         // Icon
         UIHelper ui = new UIHelper(this);
-        mViewHolder.paymentDateTextView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
+        mViewHolder.paymentDateTextView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar_alt), null, null, null);
 
         mViewHolder.paymentPreviousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override

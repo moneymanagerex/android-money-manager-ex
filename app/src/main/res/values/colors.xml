@@ -101,4 +101,22 @@
 
     <!-- deprecated colors used from old versions of the support library -->
     <!--<color name="mmx_hint_foreground_material_dark">0x7f100089</color>-->
+
+    <!-- AboutLibraries DEFAULT colors -->
+    <color name="about_libraries_window_background">#ECECEC</color>
+    <color name="about_libraries_card">#FAFAFA</color>
+    <color name="about_libraries_title_openSource">#212121</color>
+    <color name="about_libraries_text_openSource">#727272</color>
+    <color name="about_libraries_special_button_openSource">#212121</color>
+    <color name="about_libraries_dividerDark_openSource">#AAA</color>
+    <color name="about_libraries_dividerLight_openSource">#DADADA</color>
+
+    <!-- AboutLibraries SAMPLE DARK colors -->
+    <color name="about_libraries_window_background_dark">#303030</color>
+    <color name="about_libraries_card_dark">#666666</color>
+    <color name="about_libraries_title_openSource_dark">#ffffffff</color>
+    <color name="about_libraries_text_openSource_dark">#DEDEDE</color>
+    <color name="about_libraries_special_button_openSource_dark">#ffffffff</color>
+    <color name="about_libraries_dividerDark_openSource_dark">#303030</color>
+    <color name="about_libraries_dividerLight_openSource_dark">#303030</color>
 </resources>

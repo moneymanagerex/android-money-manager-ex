@@ -501,7 +501,7 @@ public class WatchlistItemsFragment
 
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.delete_transaction)
-                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
