@@ -23,10 +23,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import androidx.core.app.NotificationCompat;
-import android.text.Html;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
@@ -144,7 +144,7 @@ public class RecurringTransactionNotifications {
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
 
-            result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
+            result.inboxLine = UIHelper.fromHtml("<small>" + line + "</small>").toString();
         }
 
         return result;

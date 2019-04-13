@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -1346,7 +1345,7 @@ public class MainActivity
 //                    .commit();
             try {
                 Toast.makeText(context,
-                        Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
+                        UIHelper.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
                         Toast.LENGTH_LONG)
                     .show();
             } catch (Exception e) {

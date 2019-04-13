@@ -19,7 +19,6 @@ package com.money.manager.ex.reports;
 import android.content.Context;
 import android.database.Cursor;
 import androidx.core.content.ContextCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +67,7 @@ public class CategoriesReportAdapter
         } else {
             column1 = "<i>" + context.getString(R.string.empty_category);
         }
-        txtColumn1.setText(Html.fromHtml(column1));
+        txtColumn1.setText(UIHelper.fromHtml(column1));
 
         CurrencyService currencyService = new CurrencyService(mContext);
 

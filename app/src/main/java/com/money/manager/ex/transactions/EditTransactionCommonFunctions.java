@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -158,7 +157,7 @@ public class EditTransactionCommonFunctions {
             if (!TextUtils.isEmpty(categoryName)) {
                 this.viewHolder.categoryTextView.setText(categoryName);
                 if (!TextUtils.isEmpty(subCategoryName)) {
-                    this.viewHolder.categoryTextView.setText(Html.fromHtml(
+                    this.viewHolder.categoryTextView.setText(UIHelper.fromHtml(
                             this.viewHolder.categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
                 }
             }

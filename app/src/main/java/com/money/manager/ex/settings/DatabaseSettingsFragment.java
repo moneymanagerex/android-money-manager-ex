@@ -18,7 +18,6 @@ package com.money.manager.ex.settings;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -325,7 +324,7 @@ public class DatabaseSettingsFragment
                     Core core = new Core(getActivity().getApplicationContext());
                     File newDatabases = core.backupDatabase();
                     if (newDatabases != null) {
-                        Toast.makeText(getActivity(), Html.fromHtml(getString(R.string.database_has_been_moved,
+                        Toast.makeText(getActivity(), UIHelper.fromHtml(getString(R.string.database_has_been_moved,
                                 "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
                         //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
                         // update the database file
