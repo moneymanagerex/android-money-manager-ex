@@ -130,7 +130,7 @@ public abstract class BaseListFragment
             });
 //            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
-            MenuItemCompat.setActionView(itemSearch, searchView);
+            itemSearch.setActionView(searchView);
 
             SearchViewFormatter formatter = new SearchViewFormatter();
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);

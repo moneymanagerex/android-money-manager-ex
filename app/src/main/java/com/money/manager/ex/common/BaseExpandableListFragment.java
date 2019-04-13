@@ -140,7 +140,7 @@ public abstract class BaseExpandableListFragment
                     }
                 });
                 searchView.setIconified(isMenuItemSearchIconified());
-                MenuItemCompat.setActionView(itemSearch, searchView);
+                itemSearch.setActionView(searchView);
 
                 SearchViewFormatter formatter = new SearchViewFormatter();
 
@@ -183,7 +183,7 @@ public abstract class BaseExpandableListFragment
             edtSearch.requestFocus();
             // rendo visibile la keyboard
             imm.showSoftInput(edtSearch, 0);
-            MenuItemCompat.setActionView(item, searchView);
+            item.setActionView(searchView);
             // aggiorno lo stato
             mDisplayShowCustomEnabled = true;
         } else {
@@ -192,7 +192,7 @@ public abstract class BaseExpandableListFragment
                 // nascondo la keyboard
                 imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
                 // tolgo la searchview
-                MenuItemCompat.setActionView(item, null);
+                item.setActionView(null);
                 // aggiorno lo stato
                 mDisplayShowCustomEnabled = false;
             } else {
