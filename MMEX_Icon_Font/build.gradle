@@ -51,8 +51,8 @@ dependencies {
 //    compile project(':library-core')
     implementation(
     //compile(
-            "com.mikepenz:iconics-core:3.2.2",
-            "com.mikepenz:iconics-views:3.2.2"
+            "com.mikepenz:iconics-core:3.2.4",
+            "com.mikepenz:iconics-views:3.2.4"
     )
     api supportDependencies.appCompat
 }
