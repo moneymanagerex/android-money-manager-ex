@@ -122,7 +122,7 @@ public abstract class BaseExpandableListFragment
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 
-            MenuItemCompat.setShowAsAction(itemSearch, MenuItem.SHOW_AS_ACTION_ALWAYS);
+            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //            AppCompatActivity activity = (AppCompatActivity) getActivity();
 

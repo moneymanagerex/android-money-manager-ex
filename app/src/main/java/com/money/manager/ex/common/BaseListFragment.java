@@ -114,7 +114,7 @@ public abstract class BaseListFragment
         if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
-            MenuItemCompat.setShowAsAction(itemSearch, MenuItem.SHOW_AS_ACTION_ALWAYS);
+            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             SearchView searchView = new SearchView(getActivity());
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
