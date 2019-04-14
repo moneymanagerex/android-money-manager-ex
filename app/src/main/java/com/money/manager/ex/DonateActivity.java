@@ -28,6 +28,7 @@ import com.money.manager.ex.core.HttpMethods;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,7 +47,7 @@ public class DonateActivity
         //Copyright
         TextView textViewCopyright = findViewById(R.id.textViewCopyright);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        String copyrightString = getString(R.string.application_copyright, currentYear);
+        String copyrightString = String.format(Locale.US, getString(R.string.application_copyright), currentYear);
         textViewCopyright.setText(copyrightString);
 
         // set enable return
