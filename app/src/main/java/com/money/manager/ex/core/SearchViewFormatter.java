@@ -150,7 +150,8 @@ public class SearchViewFormatter {
             ImageView imageView = (ImageView) searchView.findViewById(R.id.search_mag_icon);
 
             if (mSearchIconInside) {
-                Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
+                //Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
+                Drawable searchIconDrawable = ContextCompat.getDrawable(searchView.getContext(), mSearchIconResource);
                 int size = (int) (view.getTextSize() * 1.25f);
                 searchIconDrawable.setBounds(0, 0, size, size);
 
