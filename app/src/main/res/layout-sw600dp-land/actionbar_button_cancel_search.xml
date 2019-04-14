@@ -24,7 +24,7 @@
               android:dividerPadding="12dip"
               android:orientation="horizontal"
               android:showDividers="middle"
-              android:layout_gravity="right">
+              android:layout_gravity="end">
 
     <!-- id must match corresponding menu item id -->
 

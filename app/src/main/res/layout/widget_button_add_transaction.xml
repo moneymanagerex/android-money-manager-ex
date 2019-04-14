@@ -22,7 +22,7 @@
     android:layout_height="60dp"
     android:layout_gravity="center"
     android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
 
     android:src="@drawable/drawable_widget_add_transaction_flat"
     android:background="#00000000"

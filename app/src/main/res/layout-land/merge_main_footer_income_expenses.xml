@@ -32,8 +32,8 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/income"
@@ -44,8 +44,8 @@
                 android:id="@+id/textViewIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:singleLine="true"
 
                 android:textColor="@color/md_green" />
@@ -60,8 +60,8 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/expenses"
@@ -72,8 +72,8 @@
                 android:id="@+id/textViewExpenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:singleLine="true"
 
                 android:textColor="@color/md_red" />
@@ -88,8 +88,8 @@
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/difference" />
@@ -98,8 +98,8 @@
                 android:id="@+id/textViewDifference"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:singleLine="true" />
         </LinearLayout>
     </LinearLayout>

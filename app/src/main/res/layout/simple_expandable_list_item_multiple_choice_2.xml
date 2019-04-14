@@ -28,7 +28,7 @@
         android:id="@android:id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:layout_marginTop="6dip"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:textAlignment="viewStart"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@android:id/text1"
         android:layout_below="@android:id/text1"
-        android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAlignment="viewStart"
         android:layout_gravity="start"
         android:textAppearance="?android:attr/textAppearanceSmall" />

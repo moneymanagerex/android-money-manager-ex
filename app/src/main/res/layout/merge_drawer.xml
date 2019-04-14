@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_marginTop="2dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="sans-serif"
             android:textColor="@color/material_green_50"/>
 
@@ -61,7 +61,7 @@
             android:singleLine="true"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="sans-serif"
             android:textColor="@color/material_green_50"/>
     </LinearLayout>
