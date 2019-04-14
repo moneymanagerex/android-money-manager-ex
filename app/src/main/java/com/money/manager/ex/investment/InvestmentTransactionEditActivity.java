@@ -298,9 +298,9 @@ public class InvestmentTransactionEditActivity
 
         // Icons
         UIHelper ui = new UIHelper(this);
-        mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
-        mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
-        mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
+        mViewHolder.symbolEdit.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
+        mViewHolder.notesEdit.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
+        mViewHolder.numSharesView.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
     }
 
     /**
@@ -372,7 +372,7 @@ public class InvestmentTransactionEditActivity
 
         // Icon
         UIHelper ui = new UIHelper(this);
-        viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar_alt), null, null, null);
+        viewHolder.dateView.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar_alt), null, null, null);
 
         // prev/next day
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
