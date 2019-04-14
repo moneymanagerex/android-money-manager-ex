@@ -44,6 +44,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -185,7 +186,7 @@ public class CalculatorActivity
                 // Just display the last valid value.
                 displayFormattedAmount();
                 // Use the warning colour.
-                txtTop.setTextColor(getResources().getColor(R.color.material_amber_800));
+                txtTop.setTextColor(ContextCompat.getColor(this, R.color.material_amber_800));
 
                 return false;
             } catch (Exception e) {

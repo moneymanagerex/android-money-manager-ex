@@ -35,6 +35,7 @@ import com.money.manager.ex.domainmodel.Category;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 public class CategoryExpandableListAdapter
@@ -104,7 +105,7 @@ public class CategoryExpandableListAdapter
         holder.text1.setText(entity.getSubcategoryName());
 
         holder.text2.setText(entity.getCategName());
-        holder.text2.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
+        holder.text2.setTextColor(ContextCompat.getColor(getContext(), android.R.color.darker_gray));
 
         // Selector. Always hidden on subcategories.
 

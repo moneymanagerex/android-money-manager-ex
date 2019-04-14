@@ -97,15 +97,16 @@ public class PieChartFragment
 
         ArrayList<Integer> colors = new ArrayList<>();
 
+        UIHelper uiHelper = new UIHelper(getActivity());
         for (int c : COLORS)
-            colors.add(getResources().getColor(c));
+            colors.add(uiHelper.getColor(c));
 
         dataSet.setColors(colors);
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
 
         if (mTextColor != -1)
-            data.setValueTextColor(getResources().getColor(mTextColor));
+            data.setValueTextColor(uiHelper.getColor(mTextColor));
 
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);

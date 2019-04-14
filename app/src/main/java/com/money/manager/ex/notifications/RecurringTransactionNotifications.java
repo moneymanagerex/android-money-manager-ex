@@ -32,6 +32,7 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
+import androidx.core.content.ContextCompat;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -113,7 +114,7 @@ public class RecurringTransactionNotifications {
                     .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                     .setNumber(model.number)
                     .setStyle(inboxStyle)
-                    .setColor(mContext.getResources().getColor(R.color.md_primary))
+                    .setColor(ContextCompat.getColor(mContext, R.color.md_primary))
 //                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
 //                    .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
                     .build();
