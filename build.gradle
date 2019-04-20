@@ -72,8 +72,8 @@ allprojects {
             force supportDependencies.supportAnnotation
             force supportDependencies.appCompat
             force supportDependencies.design
-            force 'com.google.code.gson:gson:2.8.2'
-            force 'com.google.guava:guava:27.0.1-android'
+            force 'com.google.code.gson:gson:2.8.5'
+            force 'com.google.guava:guava:27.1-android'
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'com.android.support:multidex:2.0.0'
         }
