@@ -37,7 +37,7 @@ public class PayeesReportActivity
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         //check if is dual panel
