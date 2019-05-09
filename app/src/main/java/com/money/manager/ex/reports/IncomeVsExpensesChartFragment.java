@@ -81,8 +81,9 @@ public class IncomeVsExpensesChartFragment
         BarDataSet dataSetIncomes = new BarDataSet(yIncomes, getString(R.string.income));
         BarDataSet dataSetExpenses = new BarDataSet(yExpenses, getString(R.string.expenses));
 
-        dataSetExpenses.setColor(getResources().getColor(R.color.material_red_500));
-        dataSetIncomes.setColor(getResources().getColor(R.color.material_green_500));
+        UIHelper uiHelper = new UIHelper(getActivity());
+        dataSetExpenses.setColor(uiHelper.getColor(R.color.material_red_500));
+        dataSetIncomes.setColor(uiHelper.getColor(R.color.material_green_500));
 
         List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSetIncomes);
@@ -90,27 +91,27 @@ public class IncomeVsExpensesChartFragment
 
         BarData data = new BarData(xVals, dataSets);
         if (mTextColor != -1)
-            data.setValueTextColor(getResources().getColor(mTextColor));
+            data.setValueTextColor(uiHelper.getColor(mTextColor));
         mChart.setData(data);
         mChart.animateXY(1500, 1500);
         mChart.invalidate();
 
         Legend l = mChart.getLegend();
         if (l != null && mTextColor != -1)
-            l.setTextColor(getResources().getColor(mTextColor));
+            l.setTextColor(uiHelper.getColor(mTextColor));
 
         // x labels
         XAxis xAxis = mChart.getXAxis();
         if (xAxis != null && mTextColor != -1)
-            xAxis.setTextColor(getResources().getColor(mTextColor));
+            xAxis.setTextColor(uiHelper.getColor(mTextColor));
         // right label
         YAxis yAxis = mChart.getAxisRight();
         if (yAxis != null && mTextColor != -1)
-            yAxis.setTextColor(getResources().getColor(mTextColor));
+            yAxis.setTextColor(uiHelper.getColor(mTextColor));
         // left label
         yAxis = mChart.getAxisLeft();
         if (yAxis != null && mTextColor != -1)
-            yAxis.setTextColor(getResources().getColor(mTextColor));
+            yAxis.setTextColor(uiHelper.getColor(mTextColor));
     }
 
     @Override

@@ -20,6 +20,8 @@ package com.money.manager.ex.core;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
@@ -134,10 +136,12 @@ public class SearchViewFormatter {
 
         TextView view = (TextView) searchView.findViewById(R.id.search_src_text);
         if (mSearchTextColorResource != 0) {
-            view.setTextColor(mResources.getColor(mSearchTextColorResource));
+            //view.setTextColor(mResources.getColor(mSearchTextColorResource));
+            view.setTextColor(ContextCompat.getColor(searchView.getContext(), mSearchTextColorResource));
         }
         if (mSearchHintColorResource != 0) {
-            view.setHintTextColor(mResources.getColor(mSearchHintColorResource));
+            //view.setHintTextColor(mResources.getColor(mSearchHintColorResource));
+            view.setHintTextColor(ContextCompat.getColor(searchView.getContext(), mSearchHintColorResource));
         }
         if (mInputType > Integer.MIN_VALUE) {
             view.setInputType(mInputType);
@@ -146,7 +150,8 @@ public class SearchViewFormatter {
             ImageView imageView = (ImageView) searchView.findViewById(R.id.search_mag_icon);
 
             if (mSearchIconInside) {
-                Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
+                //Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
+                Drawable searchIconDrawable = ContextCompat.getDrawable(searchView.getContext(), mSearchIconResource);
                 int size = (int) (view.getTextSize() * 1.25f);
                 searchIconDrawable.setBounds(0, 0, size, size);
 

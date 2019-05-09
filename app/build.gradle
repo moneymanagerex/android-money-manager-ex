@@ -186,6 +186,7 @@ dependencies {
     )
     implementation supportDependencies.core
     implementation supportDependencies.support
+    implementation supportDependencies.support_compat  // for androidx.core.text.HtmlCompat
     implementation supportDependencies.appCompat
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView

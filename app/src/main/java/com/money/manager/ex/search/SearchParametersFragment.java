@@ -290,7 +290,7 @@ public class SearchParametersFragment
         // 'Reset' toolbar item
         inflater.inflate(R.menu.menu_clear, menu);
         MenuItem item = menu.findItem(R.id.clearMenuItem);
-        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
         super.onCreateOptionsMenu(menu,inflater);

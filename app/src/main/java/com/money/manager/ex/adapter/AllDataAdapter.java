@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import androidx.core.content.ContextCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -33,6 +32,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -215,7 +215,7 @@ public class AllDataAdapter
             // write category/subcategory format html
             if (!TextUtils.isEmpty(categorySub)) {
                 // Display category/sub-category.
-                categorySub = Html.fromHtml(categorySub).toString();
+                categorySub = UIHelper.fromHtml(categorySub).toString();
             } else {
                 // It is either a Transfer or a split category.
                 // then it is a split? todo: improve this check to make it explicit.
@@ -228,7 +228,7 @@ public class AllDataAdapter
 
         // notes
         if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
-            holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>"));
+            holder.txtNotes.setText(UIHelper.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>"));
             holder.txtNotes.setVisibility(View.VISIBLE);
         } else {
             holder.txtNotes.setVisibility(View.GONE);

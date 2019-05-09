@@ -19,7 +19,6 @@ package com.money.manager.ex.budget;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,11 +146,11 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (estimated * 100)) {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -169,11 +168,11 @@ public class BudgetAdapter
             int amountAvailableInt = (int) (amountAvailable * 100);
             if (amountAvailableInt < 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailableInt > 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }

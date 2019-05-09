@@ -23,7 +23,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -445,7 +444,7 @@ public class DashboardFragment
             if (gravity[i] != null)
                 txtField.setGravity(gravity[i]);
             // set text
-            txtField.setText(Html.fromHtml(fields[i]));
+            txtField.setText(UIHelper.fromHtml(fields[i]));
             // set singleline
             txtField.setSingleLine(true);
             // add field
