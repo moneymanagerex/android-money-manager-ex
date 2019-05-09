@@ -218,7 +218,7 @@ public class SearchParametersFragment
 
         // Icons
         UIHelper ui = new UIHelper(getContext());
-        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null,null);
+        viewHolder.edtNotes.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null,null);
 
         // Store search criteria values into the controls.
         displaySearchCriteria(view);

@@ -30,8 +30,8 @@
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top">
+        android:layout_marginStart="@dimen/mmx_margin_bottom_top"
+        android:layout_marginEnd="@dimen/mmx_margin_bottom_top">
     </LinearLayout>
 
     <LinearLayout
@@ -42,8 +42,8 @@
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+        android:layout_marginStart="@dimen/mmx_margin_bottom_top"
+        android:layout_marginEnd="@dimen/mmx_margin_bottom_top" >
     </LinearLayout>
 
     <LinearLayout
@@ -54,8 +54,8 @@
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+        android:layout_marginStart="@dimen/mmx_margin_bottom_top"
+        android:layout_marginEnd="@dimen/mmx_margin_bottom_top" >
     </LinearLayout>
 
     <LinearLayout
@@ -65,8 +65,8 @@
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
         android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+        android:layout_marginStart="@dimen/mmx_margin_bottom_top"
+        android:layout_marginEnd="@dimen/mmx_margin_bottom_top" >
     </LinearLayout>
 
 </LinearLayout>

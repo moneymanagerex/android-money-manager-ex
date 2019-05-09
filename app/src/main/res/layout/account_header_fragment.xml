@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             app:srcCompat="@drawable/ic_action_editor_mode_edit_dark"/>
 
         <ImageView
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:background="@android:drawable/star_off"/>
 
     </LinearLayout>

@@ -44,6 +44,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.Locale;
 
 import androidx.fragment.app.Fragment;
 import timber.log.Timber;
@@ -73,12 +74,13 @@ public class AboutFragment extends Fragment {
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
         int build = core.getAppVersionCode();
-        txtVersion.setText(getString(R.string.version) + " " + version + " (" + Integer.toString(build) + ")");
+        //txtVersion.setText(getString(R.string.version) + " " + version + " (" + Integer.toString(build) + ")");
+        txtVersion.setText(String.format("%s %s", getString(R.string.version), String.format(Locale.US, "%s (%d)", version, build)));
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
         TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        String copyrightString = getString(R.string.application_copyright, currentYear);
+        String copyrightString = String.format(Locale.US, getString(R.string.application_copyright), currentYear);
         textViewCopyright.setText(copyrightString);
 
         // Send Feedback

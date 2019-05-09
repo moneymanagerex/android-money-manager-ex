@@ -31,7 +31,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1" 
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:singleLine="true" 
 		android:textSize="24sp" />
 

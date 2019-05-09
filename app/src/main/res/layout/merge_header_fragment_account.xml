@@ -29,10 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:paddingLeft="6dp"
+            android:paddingStart="6dp"
             android:maxLines="1"
             android:text="@string/account_balance"/>
 
@@ -54,10 +54,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:paddingLeft="6dp"
+            android:paddingStart="6dp"
             android:maxLines="1"
             android:text="@string/account_reconciled_balance"/>
 
@@ -72,14 +72,14 @@
     </TableRow>
 
     <TableRow
-        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
         android:visibility="gone">
 
         <com.money.manager.ex.view.RobotoTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_weight="1"
             android:text="@string/difference"
             android:textSize="@dimen/mmx_text_view_size_micro"/>

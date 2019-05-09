@@ -19,8 +19,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mmx_list_item_height_dense"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
+    android:paddingStart="@dimen/mmx_list_item_padding_side"
+    android:paddingEnd="@dimen/mmx_list_item_padding_side"
     android:layout_margin="@dimen/mmx_margin"
     android:baselineAligned="false"
     android:orientation="horizontal" >
@@ -39,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/mmx_margin"
-        android:layout_marginRight="@dimen/mmx_margin"
+        android:layout_marginStart="@dimen/mmx_margin"
+        android:layout_marginEnd="@dimen/mmx_margin"
         android:layout_weight="1"
         android:orientation="vertical" >
 
