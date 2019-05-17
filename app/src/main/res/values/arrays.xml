@@ -270,11 +270,15 @@
         <item>@string/locale_ro</item>
         <item>@string/locale_ru</item>
         <item>@string/locale_sk</item>
+        <item>@string/locale_sl</item>
+        <item>@string/locale_fil</item>
         <item>@string/locale_tr</item>
         <item>@string/locale_uk</item>
+        <item>@string/locale_ur_IN</item>
+        <item>@string/locale_ur_PK</item>
         <item>@string/locale_vi</item>
-        <item>@string/locale_zh_rCN</item>
-        <item>@string/locale_zh_rTW</item>
+        <item>@string/locale_zh_CN</item>
+        <item>@string/locale_zh_TW</item>
     </string-array>
     <string-array name="application_locale_values">
         <item></item>
@@ -299,11 +303,15 @@
         <item>ro</item>
         <item>ru</item>
         <item>sk</item>
+        <item>sl</item>
+        <item>fil</item>
         <item>tr</item>
         <item>uk</item>
+        <item>ur-IN</item>
+        <item>ur-PK</item>
         <item>vi</item>
-        <item>zh-rCN</item>
-        <item>zh-rTW</item>
+        <item>zh-CN</item>
+        <item>zh-TW</item>
     </string-array>
     <!-- Date format -->
     <string-array name="date_format">
