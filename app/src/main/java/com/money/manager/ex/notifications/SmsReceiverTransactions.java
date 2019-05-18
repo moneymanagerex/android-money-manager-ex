@@ -147,7 +147,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         // - Sales Draft added for LBP currency. Request from HussienH
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
                                 "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)",
-                                "(Sales\\sDraft)"}; //
+                                "(Sales\\sDraft)", "(transferred to)"}; //
 
                         String transType = "";
 
@@ -757,9 +757,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
                 "((\\s)for\\s(.*?)\\s+for)", "((\\s)at\\s(.*?)\\s+using)", "((\\s)paid\\s(.*?)\\s)",
-                "(Info:\\sMOB//?(\\w+))"};
+                "(Info:\\sMOB//?(\\w+))", "((\\s)at\\s(.*?)\\s)"};
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3, 3, 2};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3, 3, 2, 3};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
@@ -802,14 +802,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String[] searchFor =
                 {
                         "([C//c]heque\\s[N//n]o[.*?](\\d+))", "([R//r]ef(\\s)?[N//n]o(:?.?=?)(\\s)?(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
-                        "(([R//r]eference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([I//i]nfo\\s?(:?)+(.*?)[\\/](\\d+)+[:]?[-]?)",
+                        "(([R//r]eference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([I//i]nfo(\\s)?(:?)(.*?)(\\d+)+[:]?[-]?)",
                         "(([R//r]eference [N//n]umber)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)", "(\\/+(\\d+)+\\/)",
                         "(I[D//d](.?:?-?)(\\s)?((.*?)\\w+))", "(I[D//d](.?:?))(\\s)?(\\d+)", "(I[D//d](\\s)is(\\s)?(:?-?)(\\d+))"
                 };
         int[] getGroup =
                 {
                         2, 5, 2,
-                        4, 2, 4,
+                        4, 2, 5,
                         4, 3, 2,
                         4, 4, 4
                 };
