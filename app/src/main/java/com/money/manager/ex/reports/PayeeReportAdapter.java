@@ -18,7 +18,6 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,9 +66,9 @@ public class PayeeReportAdapter
         Core core = new Core(context);
         UIHelper uiHelper = new UIHelper(context);
         if (total < 0) {
-            txtColumn2.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+            txtColumn2.setTextColor(uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
         } else {
-            txtColumn2.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+            txtColumn2.setTextColor(uiHelper.getColor(uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
         }
 
         view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));

@@ -19,6 +19,7 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Spanned;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
@@ -243,5 +245,24 @@ public class UIHelper {
                 Toast.makeText(getContext(), message, length).show();
             }
         });
+    }
+
+    /**
+     * Convenient method to call HtmlCompat.fromHtml().
+     * Returns HTML string as styled text..
+     * @param text HTML string
+     * @return Spanned
+     */
+    public static Spanned fromHtml(String text) {
+        /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(text);
+        }*/
+        return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY);
+    }
+
+    public static Spanned fromHtml(String text, int flags) {
+        return HtmlCompat.fromHtml(text, flags);
     }
 }

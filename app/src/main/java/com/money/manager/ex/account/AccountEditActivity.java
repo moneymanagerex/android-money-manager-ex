@@ -381,7 +381,7 @@ public class AccountEditActivity
 
         // Notes
         UIHelper ui = new UIHelper(this);
-        mViewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
+        mViewHolder.edtNotes.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
 
         // Display data.
 

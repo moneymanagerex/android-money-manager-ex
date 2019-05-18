@@ -37,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -121,7 +122,7 @@ public class SplitCategoriesAdapter
     }
 
     private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
-        int green;
+        /*int green;
         int red;
         // 15
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -130,7 +131,9 @@ public class SplitCategoriesAdapter
         } else {
             green = getContext().getResources().getColor(R.color.material_green_700);
             red = getContext().getResources().getColor(R.color.material_red_700);
-        }
+        }*/
+        int green = ContextCompat.getColor(getContext(), R.color.material_green_700);
+        int red = ContextCompat.getColor(getContext(), R.color.material_red_700);
 
         if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
             // withdrawal

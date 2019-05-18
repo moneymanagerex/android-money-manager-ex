@@ -25,7 +25,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
     }
 }
 
@@ -38,7 +38,7 @@ ext {
     supportDependencies = [
             core             : "androidx.legacy:legacy-support-core-utils:${supportLibrary}",
             support          : "androidx.legacy:legacy-support-v4:${supportLibrary}",
-            support_compat   : "com.android.support:support-compat:${supportLibrary}",
+            support_compat   : "androidx.core:core:${supportLibrary}",  // for androidx.core.text.HtmlCompat
             appCompat        : "androidx.appcompat:appcompat:${supportLibrary}",
             cardView         : "androidx.cardview:cardview:${supportLibrary}",
             design           : "com.google.android.material:material:${supportLibrary}",
@@ -72,8 +72,8 @@ allprojects {
             force supportDependencies.supportAnnotation
             force supportDependencies.appCompat
             force supportDependencies.design
-            force 'com.google.code.gson:gson:2.8.2'
-            force 'com.google.guava:guava:27.0.1-android'
+            force 'com.google.code.gson:gson:2.8.5'
+            force 'com.google.guava:guava:27.1-android'
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'com.android.support:multidex:2.0.0'
         }

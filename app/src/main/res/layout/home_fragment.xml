@@ -57,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
                         android:text="@string/accounts"
                         android:visibility="gone"/>
 
@@ -120,8 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/mmx_margin"
                 app:cardBackgroundColor="?attr/cardViewBackgroundColor"
-                android:layout_marginLeft="@dimen/mmx_margin"
-                android:layout_marginRight="@dimen/mmx_margin"
+                android:layout_marginStart="@dimen/mmx_margin"
+                android:layout_marginEnd="@dimen/mmx_margin"
                 android:padding="@dimen/mmx_padding"
                 android:onClick="onClickCardViewIncomesVsExpenses">
 
@@ -135,8 +135,8 @@
                         style="?attr/headerTextViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
                         android:text="@string/income_vs_expenses_current_month"
                         android:maxLines="1" />
 
@@ -150,8 +150,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
             android:src="@drawable/ic_action_add_dark"
             app:fab_colorNormal="@color/md_accent"

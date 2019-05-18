@@ -82,8 +82,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/mmx_margin"
-            android:layout_marginRight="@dimen/mmx_margin"
+            android:layout_marginStart="@dimen/mmx_margin"
+            android:layout_marginEnd="@dimen/mmx_margin"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -123,9 +123,9 @@
                 android:id="@+id/textViewStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
+                android:layout_gravity="center_vertical|end"
                 android:ellipsize="end"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|end"
                 android:singleLine="true"
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
@@ -135,8 +135,8 @@
                 android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="right"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="end"
                 android:textStyle="bold" />
 
             <!-- balance -->
@@ -144,8 +144,8 @@
                 android:id="@+id/textViewBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="center_vertical|right"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
                 android:visibility="gone"

@@ -163,7 +163,7 @@ public class FilterDialogFragment
         });
 
         UIHelper ui = new UIHelper(getActivity());
-        editButton.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_pencil_alt), null, null, null);
+        editButton.setCompoundDrawablesRelativeWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_pencil_alt), null, null, null);
 
         // Favourite account
 
@@ -195,6 +195,6 @@ public class FilterDialogFragment
         IconicsDrawable icon = mAccount.getFavorite()
                 ? ui.getIcon(FontAwesome.Icon.faw_star1)
                 : ui.getIcon(FontAwesome.Icon.faw_star);
-        favouriteButton.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        favouriteButton.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
     }
 }

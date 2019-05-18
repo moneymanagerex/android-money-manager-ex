@@ -64,6 +64,7 @@ import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
+import androidx.core.content.ContextCompat;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -1143,13 +1144,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             // Change the notification color based on the status
             switch(txnStatus){
                 case "Auto Failed":
-                    notification.color = mContext.getResources().getColor(R.color.md_red);
+                    notification.color = ContextCompat.getColor(mContext, R.color.md_red);
                     break;  //optional
                 case "Already Exists":
-                    notification.color = mContext.getResources().getColor(R.color.md_indigo);
+                    notification.color = ContextCompat.getColor(mContext, R.color.md_indigo);
                     break;  //optional
                 default:
-                    notification.color = mContext.getResources().getColor(R.color.md_primary);
+                    notification.color = ContextCompat.getColor(mContext, R.color.md_primary);
             }
 
             // notify

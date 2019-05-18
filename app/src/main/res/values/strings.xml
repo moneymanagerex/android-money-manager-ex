@@ -447,7 +447,7 @@
     <string name="montly_last_bussines_day">Monthly (last business day)</string>
     <!-- languages -->
     <string name="locale_application">Application Language</string>
-    <string name="locale_ar">Arabic</string>
+    <string name="locale_ar" translatable="false">العربية</string>
     <string name="locale_bs" translatable="false">Bosanski</string>
     <string name="locale_cs" translatable="false">Čeština</string>
     <string name="locale_da" translatable="false">Dansk</string>
@@ -458,7 +458,7 @@
     <string name="locale_fr" translatable="false">Français</string>
     <string name="locale_he" translatable="false">עברית</string>
     <string name="locale_hu" translatable="false">Magyar</string>
-    <string name="locale_id" translatable="false">bahasa Indonesia</string>
+    <string name="locale_id" translatable="false">Bahasa Indonesia</string>
     <string name="locale_it" translatable="false">Italiano</string>
     <string name="locale_ja" translatable="false">日本語</string>
     <string name="locale_nl" translatable="false">Nederlands</string>
@@ -467,12 +467,16 @@
     <string name="locale_pt_BR" translatable="false">Português Brasileiro</string>
     <string name="locale_ro" translatable="false">Română</string>
     <string name="locale_ru" translatable="false">Русский</string>
-    <string name="locale_sk" translatable="false">slovenský</string>
+    <string name="locale_sk" translatable="false">Slovenčina</string>
+    <string name="locale_sl" translatable="false">Slovenščina</string>
+    <string name="locale_fil" translatable="false">Filipino</string>
     <string name="locale_tr" translatable="false">Türkçe</string>
-    <string name="locale_uk" translatable="false">українська</string>
+    <string name="locale_uk" translatable="false">Українська</string>
+    <string name="locale_ur_IN" translatable="false">اردو (بھارت)</string>
+    <string name="locale_ur_PK" translatable="false">اردو (پاکِستان)</string>
     <string name="locale_vi" translatable="false">Tiếng Việt</string>
-    <string name="locale_zh_rCN" translatable="false">简体中文</string>
-    <string name="locale_zh_rTW" translatable="false">正體中文</string>
+    <string name="locale_zh_CN" translatable="false">简体中文</string>
+    <string name="locale_zh_TW" translatable="false">正體中文</string>
 
     <string name="transaction_cancel_confirm">Are you sure you want to discard the changes?</string>
     <string name="keep_editing">Keep editing</string>

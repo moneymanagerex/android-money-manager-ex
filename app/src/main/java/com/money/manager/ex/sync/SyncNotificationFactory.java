@@ -22,6 +22,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
@@ -56,7 +57,7 @@ public class SyncNotificationFactory {
                 .setContentText(getContext().getString(R.string.sync_downloading))
                 //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setColor(getContext().getResources().getColor(R.color.md_primary));
+                .setColor(ContextCompat.getColor(getContext(), R.color.md_primary));
 
         return notification.build();
     }
@@ -84,7 +85,7 @@ public class SyncNotificationFactory {
             .setSmallIcon(R.drawable.ic_stat_notification)
             .setTicker(getContext().getString(R.string.dropbox_file_ready_for_use))
             .setStyle(inboxStyle)
-            .setColor(getContext().getResources().getColor(R.color.md_primary))
+            .setColor(ContextCompat.getColor(getContext(), R.color.md_primary))
             .build();
     }
 
@@ -102,7 +103,7 @@ public class SyncNotificationFactory {
                 .setContentText(getContext().getString(R.string.sync_uploading))
                 //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setColor(getContext().getResources().getColor(R.color.md_primary));
+                .setColor(ContextCompat.getColor(getContext(), R.color.md_primary));
 
         return notification.build();
     }
@@ -129,7 +130,7 @@ public class SyncNotificationFactory {
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setStyle(inboxStyle)
                 .setTicker(getContext().getString(R.string.upload_file_complete))
-                .setColor(getContext().getResources().getColor(R.color.md_primary))
+                .setColor(ContextCompat.getColor(getContext(), R.color.md_primary))
                 .build();
 
         return notification;

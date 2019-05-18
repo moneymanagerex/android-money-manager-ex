@@ -50,7 +50,8 @@
                 android:layout_below="@id/linearLayoutInfo"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layoutDirection="ltr">
 
                 <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode1"
@@ -147,7 +148,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layoutDirection="ltr">
 
             <Button
                 android:id="@+id/buttonPasscode1"

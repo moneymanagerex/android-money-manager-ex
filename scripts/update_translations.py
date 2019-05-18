@@ -114,7 +114,7 @@ def update_translations():
         ("fil", "PH"), # Philipines
         ("de", "DE"),
         ("el", "GR"), # Greece
-        ("he", "IL", "iw"), # Hebrew, Israel
+        ("he", "IL", "iw", "iw"), # Hebrew, Israel
         ("hu", "HU"),
         ("id", "ID", "in", "in"), # Indonesia
         ("it", "IT"),
