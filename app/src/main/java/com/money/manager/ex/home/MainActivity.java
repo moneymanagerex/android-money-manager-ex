@@ -16,12 +16,18 @@
  */
 package com.money.manager.ex.home;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -68,6 +74,7 @@ import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -80,6 +87,7 @@ import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
+import com.money.manager.ex.reports.GeneralReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
@@ -101,12 +109,15 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -125,6 +136,8 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
+
+    public static String CHANNEL_ID = "dbSync_NotificationChannel";
 
     /**
      * @return the mRestart
@@ -238,6 +251,10 @@ public class MainActivity
         initializeDrawer();
 
         initializeSync();
+
+        // [velmuruganc] Synchronize with the storage provider on application startup
+        startStorageSync();
+
     }
 
     @Override
@@ -593,15 +610,13 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-//                SyncManager sync = new SyncManager(this);
-//                sync.triggerSynchronization();
+                SyncManager sync = new SyncManager(this);
+                sync.triggerSynchronization();
 //                // re-set the sync timer.
 //                sync.startSyncServiceHeartbeat();
 
                 // Synchronize with the storage provider.
-                FileStorageHelper storage = new FileStorageHelper(this);
-                DatabaseMetadata current = mDatabases.get().getCurrent();
-                storage.synchronize(current);
+                startStorageSync();
                 break;
 
             case R.id.menu_open_database:
@@ -620,7 +635,6 @@ public class MainActivity
             case R.id.menu_currency:
                 // Show Currency list.
                 intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;
@@ -649,6 +663,14 @@ public class MainActivity
                 break;
             case R.id.menu_reports:
                 showReportsSelector(item.getText());
+                break;
+            case R.id.menu_general_report_group:
+                showGeneralReportsSelector(item.getText());
+                break;
+            case R.id.menu_general_report:
+                intent = new Intent(this, GeneralReportActivity.class);
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, item.getText());
+                startActivity(intent);
                 break;
             case R.id.menu_report_payees:
                 startActivity(new Intent(this, PayeesReportActivity.class));
@@ -846,13 +868,11 @@ public class MainActivity
         childItems.add(childDatabases);
 
         // Synchronization
-//        if (new SyncManager(this).isActive()) {
-//            childItems.add(null);
-//        }
         childItems.add(null);
 
         // Entities
         ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
+
         // manage: account
         childTools.add(new DrawerMenuItem().withId(R.id.menu_account)
                 .withText(getString(R.string.accounts))
@@ -890,6 +910,9 @@ public class MainActivity
 
         // reports
         childItems.add(null);
+
+        // general reports
+        childItems.add(getGeneralReportGroupDrawerMenuItems());
 
         // Settings
         childItems.add(null);
@@ -1076,6 +1099,12 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
                         .color(iconColor))
                 .withDivider(true));
+        // General reports
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                .withText(getString(R.string.menu_general_report_group))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor))
+                .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
@@ -1132,6 +1161,53 @@ public class MainActivity
         return childDatabases;
     }
 
+    private ArrayList<DrawerMenuItem> getGeneralReportGroupDrawerMenuItems() {
+
+        UIHelper uiHelper = new UIHelper(this);
+        int iconColor = uiHelper.getSecondaryTextColor();
+
+        ArrayList<DrawerMenuItem> childReportGroup = new ArrayList<>();
+
+        try
+        {
+            Cursor groupCursor = queryDatabase("SELECT DISTINCT GROUPNAME FROM REPORT_V1");
+
+            if(groupCursor.moveToFirst())
+            {
+                while(!groupCursor.isAfterLast()){
+
+                    childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                            .withText(groupCursor.getString(groupCursor.getColumnIndex("GROUPNAME")))
+                            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                    .color(iconColor)));
+
+                    groupCursor.moveToNext();
+                }
+            }
+
+            groupCursor.close();
+
+        }
+        catch(Exception e)
+        {
+            //System.err.println("EXCEPTION:"+e);
+        }
+
+        return childReportGroup;
+    }
+    private Cursor queryDatabase(String sql){
+
+        final AppSettings app_settings = new AppSettings(this);
+
+        // Db setup
+        MmxOpenHelper MmxHelper = new MmxOpenHelper(this, app_settings.getDatabaseSettings().getDatabasePath());
+        SQLiteDatabase db = MmxHelper.getReadableDatabase();
+
+        Cursor queryCursor = db.rawQuery(sql, null);
+
+        return queryCursor;
+    }
+
     private UIHelper getUiHelper() {
         if (mUiHelper == null) {
             mUiHelper = new UIHelper(this);
@@ -1178,8 +1254,15 @@ public class MainActivity
         boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
         this.dbUpdateCheckDone = skipRemoteCheck;
     }
+    private void startStorageSync() {
 
+        //[velmuruganc] Synchronize with the storage provider
+        FileStorageHelper storage = new FileStorageHelper(this);
+        DatabaseMetadata current = mDatabases.get().getCurrent();
+        storage.synchronize(current);
+    }
     private void initializeSync() {
+
         SyncManager sync = new SyncManager(this);
         if (!sync.isActive()) return;
 
@@ -1462,6 +1545,89 @@ public class MainActivity
                 })
                 .build()
                 .show();
+    }
+
+    private void showGeneralReportsSelector(String text) {
+
+        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        UIHelper uiHelper = new UIHelper(this);
+        int iconColor = uiHelper.getSecondaryTextColor();
+
+        Cursor menuCursor = queryDatabase("SELECT REPORTNAME FROM REPORT_V1 WHERE GROUPNAME = '"+ text +"'");
+
+        if(menuCursor.moveToFirst())
+        {
+            while(!menuCursor.isAfterLast()){
+                //custom report for given group
+                adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
+                        .withText(menuCursor.getString(menuCursor.getColumnIndex("REPORTNAME")))
+                        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                .color(iconColor)));
+
+                menuCursor.moveToNext();
+            }
+        }
+
+        menuCursor.close();
+
+        new MaterialDialog.Builder(this)
+                .title(text)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
+                        dialog.dismiss();
+                    }
+                })
+                .build()
+                .show();
+    }
+
+    public void showNotification(Intent intent, String notificationTitle, String notificationText) {
+
+        try {
+
+            Context mContext = getApplicationContext();
+
+            String GROUP_KEY_AMMEX = "com.android.example.MoneyManagerEx";
+            int ID_NOTIFICATION =  (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationManager notificationManager = (NotificationManager) mContext
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Create the NotificationChannel
+                NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEX", NotificationManager.IMPORTANCE_DEFAULT);
+                nChannel.setDescription("AMMEX Notification Channel");
+
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                notificationManager.createNotificationChannel(nChannel);
+            }
+
+            Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(notificationTitle)
+                    .setSubText(mContext.getString(R.string.notification_click_to_edit_transaction))
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(notificationText))
+                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                    .setGroup(GROUP_KEY_AMMEX)
+                    .build();
+
+            // Change the notification color based on the status
+            notification.color = ContextCompat.getColor(mContext, R.color.md_primary);
+
+            // notify
+            notificationManager.notify(ID_NOTIFICATION, notification);
+
+        } catch (Exception e) {
+            Timber.e(e, "showing notification for transaction");
+        }
     }
 
     private void showSelectDatabaseActivity() {

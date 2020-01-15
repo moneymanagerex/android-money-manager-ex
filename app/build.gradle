@@ -30,7 +30,7 @@ android {
         applicationId "com.money.manager.ex"
         versionCode 1000
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2019.04.10.1000-beta"
+        versionName "2019.12.30.1001"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -129,6 +129,10 @@ android {
             includeAndroidResources = true
         }
     }
+    buildTypes {
+        beta {
+        }
+    }
 }
 
 dependencies {
@@ -204,6 +208,7 @@ dependencies {
     implementation('com.mikepenz:aboutlibraries:6.2.3')
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.12'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'org.parceler:parceler:1.1.12'
     // Dagger 2
     implementation 'com.google.dagger:dagger:2.21'
@@ -276,3 +281,4 @@ configurations {
 //    def formattedDate = date.format('yyyy.MM.dd')
 //    return formattedDate
 //}
+
