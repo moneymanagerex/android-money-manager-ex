@@ -1,64 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2012-2019 The Android Money Manager Ex Project Team
-  ~
-  ~ This program is free software; you can redistribute it and/or
-  ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 3
-  ~ of the License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.money.manager.ex">
-
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- sync authenticator -->
-    <!--<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- sync authenticator -->
+    <!-- <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" /> -->
     <!-- sync adapter -->
-    <!--<uses-permission android:name="android.permission.READ_SYNC_STATS" />-->
-    <!--<uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />-->
-    <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />-->
-
+    <!-- <uses-permission android:name="android.permission.READ_SYNC_STATS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" /> -->
     <!-- SMS Interface -->
-    <!--<uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
-
-    <!-- Fingerprint Interface -->
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-
-    <!-- for compatibility of Job Scheduler with Android versions prior to 8. -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" /> <!-- Fingerprint Interface -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" /> <!-- for compatibility of Job Scheduler with Android versions prior to 8. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <application
         android:name=".MmexApplication"
         android:allowBackup="true"
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
+        android:supportsRtl="true"
         android:theme="@style/Theme.Splash"
-        tools:replace="android:label"
-        android:supportsRtl="true">
+        tools:replace="android:label">
+        <activity android:name=".reports.GeneralReportActivity"></activity>
+
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
@@ -121,16 +96,13 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_single_account" />
         </receiver>
-
-        <receiver android:name=".notifications.SmsReceiverTransactions"
+        <receiver
+            android:name=".notifications.SmsReceiverTransactions"
             android:label="SMS Receiver">
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
-        </receiver>
-
-        <!-- activities -->
-
+        </receiver> <!-- activities -->
         <activity
             android:name=".home.MainActivity"
             android:label="@string/application_name">
@@ -179,7 +151,6 @@
         <activity
             android:name=".transactions.CheckingTransactionEditActivity"
             android:label="@string/new_edit_transaction">
-
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
@@ -358,8 +329,7 @@
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
-        <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
-        <activity android:name=".sync.CloudFilePickerActivity" />
+        <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" /> <!-- <activity android:name=".sync.CloudFilePickerActivity" /> -->
         <activity android:name=".assetallocation.overview.AssetAllocationOverviewActivity">
 
             <!-- android:parentActivityName=".home.MainActivity" -->
@@ -376,15 +346,11 @@
             android:theme="@style/FilePickerTheme" />
         <activity
             android:name=".common.CalculatorActivity"
-            android:label="@string/app_name" />
-
-        <!-- providers -->
-
+            android:label="@string/app_name" /> <!-- providers -->
         <provider
             android:name=".MmxContentProvider"
             android:authorities="${applicationId}.provider"
-            android:exported="false" />
-        <!-- used for qif export -->
+            android:exported="false" /> <!-- used for qif export -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -393,16 +359,12 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
-        <!-- stub provider for the sync framework -->
+        </provider> <!-- stub provider for the sync framework -->
         <provider
             android:name=".sync.adapter.StubSyncProvider"
             android:authorities="${applicationId}.datasyncprovider"
             android:exported="false"
-            android:syncable="true" />
-
-        <!-- services -->
-
+            android:syncable="true" /> <!-- services -->
         <service
             android:name=".notifications.RecurringTransactionIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
@@ -418,8 +380,7 @@
                 <action android:name="${applicationId}.sync.action.DOWNLOAD" />
                 <action android:name="${applicationId}.sync.action.UPLOAD" />
             </intent-filter>
-        </service>
-        <!-- authenticator service for the sync framework -->
+        </service> <!-- authenticator service for the sync framework -->
         <service
             android:name=".sync.adapter.AuthenticatorService"
             android:exported="false">
@@ -442,9 +403,7 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
-        </service>
-        <!-- Samsung MultiWindow Function -->
-
+        </service> <!-- Samsung MultiWindow Function -->
         <uses-library
             android:name="com.sec.android.app.multiwindow"
             android:required="false" />
@@ -465,7 +424,7 @@
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:resource="@dimen/app_minimumsize_h" />
 
-        <activity android:name=".investment.PriceEditActivity"></activity>
+        <activity android:name=".investment.PriceEditActivity" />
     </application>
 
 </manifest>
