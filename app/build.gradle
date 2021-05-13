@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.money.manager.ex.mmss.fork"
+        applicationId "com.money.manager.ex"
         versionCode 997
         //versionName getVersionAsDate() + "." + versionCode
         versionName "2021.05.13"
