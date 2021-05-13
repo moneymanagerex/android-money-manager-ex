@@ -24,7 +24,7 @@ android {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 30
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
         versionCode 1000
@@ -54,5 +54,5 @@ dependencies {
             "com.mikepenz:iconics-core:3.0.3@aar",
             "com.mikepenz:iconics-views:3.0.3@aar"
     )
-    api supportDependencies.appCompat
+    api "androidx.appcompat:appcompat:1.2.0"
 }
