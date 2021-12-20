@@ -1549,6 +1549,7 @@ public class MainActivity
 
     private void showGeneralReportsSelector(String text) {
 
+        //added by velmuruganc
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         UIHelper uiHelper = new UIHelper(this);
         int iconColor = uiHelper.getSecondaryTextColor();

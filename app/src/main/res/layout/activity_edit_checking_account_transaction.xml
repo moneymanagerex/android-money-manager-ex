@@ -216,6 +216,7 @@
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/swapAccountButton"
                     app:iiv_icon="mmx-temple"
                     app:iiv_color="?android:textColorSecondary"
                     app:iiv_size="@dimen/mmx_icon_size"
@@ -232,6 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -239,6 +241,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
             <!-- Amount header -->
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewHeaderAmount"
@@ -278,6 +281,7 @@
                     android:gravity="end"
                     android:textStyle="bold" />
             </LinearLayout>
+
             </LinearLayout>
 
             <!-- Account To row -->
