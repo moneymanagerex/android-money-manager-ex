@@ -29,14 +29,14 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         versionCode 1000
-        //versionName getVersionAsDate() + "." + versionCode
-        versionName "2019.12.30.1001"
+        versionName getVersionAsDate() + "." + versionCode
+        //versionName "2021.12.02.1000"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 19 // Android 4.4
+        minSdkVersion 21 // Android 4.4
         targetSdkVersion 28
 
         multiDexEnabled true
@@ -276,9 +276,9 @@ configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
 }
 
-//static def getVersionAsDate() {
-//    def date = new Date()
-//    def formattedDate = date.format('yyyy.MM.dd')
-//    return formattedDate
-//}
+static def getVersionAsDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy.MM.dd')
+    return formattedDate
+}
 
