@@ -20,6 +20,7 @@
  *
  * Modification:
  * 2017/12/12 - velmuruganc :
+ * 2022-01-24 - velmuruganc : added key word "spent" in debit type. Added Card in searching a/c no logic
  */
 
 package com.money.manager.ex.notifications;
@@ -148,7 +149,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         // - Sales Draft added for LBP currency. Request from HussienH
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
                                 "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)",
-                                "(Sales\\sDraft)", "(transferred to)"}; //
+                                "(Sales\\sDraft)", "(transferred to)", "(spent\\s)"}; //
 
                         String transType = "";
 
@@ -643,7 +644,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 {
                         "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
                         "((\\s)?Account\\s?No(.*?)\\s?(\\d+)(\\s)?)", "((\\s)?A/.\\s?No(.*?)\\s?(\\d+)(\\s)?)",
-                        "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'", "((\\s)using\\scard\\s(.*?)\\s.emaining)",
+                        "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'", "((\\s)using\\scard\\s(.*?)\\s.emaining)", "((\\s)card\\s(\\d+))",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from\\s((.*?)@(.*?))[.]?[\\s])",
                         "(to\\s((.*?)@(.*?))[.]?[\\s])", "(linked((.*?)@(.*?))[.])",
                         "((\\s)[V//v]irtual(\\s)([A//a]ddress)?(I[D//d])?((.*?)@(.*?))(\\s))", "(your\\s(.*?)\\s+using)",
@@ -653,7 +654,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         int[] getGroup =
                 {
                         5, 5, 5,
-                        4, 4,
+                        4, 4, 3,
                         4, 3,
                         2, 2,
                         2, 2,
