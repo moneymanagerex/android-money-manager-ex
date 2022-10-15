@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -130,7 +130,7 @@ public class CalculateRunningBalanceTask2
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
                 String date = new MmxDate(this.startingDate).minusDays(1)
-                        .toIsoString();
+                        .toIsoDateString();
                 Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 

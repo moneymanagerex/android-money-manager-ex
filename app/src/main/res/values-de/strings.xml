@@ -49,7 +49,7 @@
   <string name="preferences_general">Allgemein</string>
   <string name="preferences_perdatabase">Per-Datenbank</string>
   <string name="preferences_dispaly">Design</string>
-  <string name="preferences_behaviour">Voreinstellungen_Verhalten</string>
+  <string name="preferences_behaviour">Verhalten</string>
   <string name="base_currency">Basiswährung</string>
   <string name="base_currency_changed">Standard-Währung geändert</string>
   <string name="base_currency_change_notification">Die Haupt-Währung wurde geändert. Bitte aktualisieren Sie die Wechselkurse, um korrekte Werte in der neuen Haupt-Währung zu erhalten.</string>
@@ -60,9 +60,9 @@
   <string name="build">Build</string>
   <string name="path">Datenbank-Pfad</string>
   <string name="database_version">Datenbankversion</string>
-  <string name="title_show_tutorial">Zeige Tutorium</string>
-  <string name="summary_show_tutorial">Zeige Tutorium beim nächsten Programmaufruf?</string>
-  <string name="preferences_behaviour_focus_filter_title">Voreinstellung_Verhalten_Fokus_Filter_Titel</string>
+  <string name="title_show_tutorial">Zeige Tutorial</string>
+  <string name="summary_show_tutorial">Zeige Tutorial beim nächsten Programmaufruf?</string>
+  <string name="preferences_behaviour_focus_filter_title">Sucheingabefeld automatisch fokussieren</string>
   <string name="preferences_behaviour_focus_filter_summary">Fokus auf Filter in Selektoren. Ansonsten durchsuchen.</string>
   <string name="auto_sync_via_wifi">Auto-Sync nur über WiFi</string>
   <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
@@ -71,7 +71,7 @@
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Kontenliste</string>
-  <string name="account_empty_list">Keine Konti gefunden. Um ein Konto zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+  <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen drücken Sie den grünen Plus-Knopf.</string>
   <string name="account_balance">Kontostand</string>
   <string name="account_reconciled_balance">abgestimmter Saldo</string>
   <string name="delete_account">Konto löschen</string>
@@ -101,13 +101,13 @@
   <string name="delete_payee">Zahlungsempfänger löschen</string>
   <string name="payee">Zahlungsempfänger</string>
   <string name="select_payee">Zahlungsempfänger wählen</string>
-  <string name="payee_empty_list">Kein Zahler/Empfänger gefunden. Um einen Zahler/Empfänger zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+  <string name="payee_empty_list">Kein Zahler/Empfänger gefunden. Um einen Zahler/Empfänger zu erstellen drücken Sie den grünen Plus-Knopf.</string>
   <string name="from">Von</string>
   <string name="db_payee_update_failed">Aktualisieren des Empfängers fehlgeschlagen</string>
   <!-- category / subcategory -->
   <string name="category">Kategorie</string>
   <string name="subcategory">Unterkategorie</string>
-  <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+  <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen drücken Sie den grünen Plus-Knopf.</string>
   <string name="select_category">Kategorie wählen</string>
   <string name="add_category">Kategorie hinzufügen</string>
   <string name="add_subcategory">Unterkategorie hinzufügen</string>
@@ -122,7 +122,7 @@
   <string name="prefix_symbol">Präfix Symbol</string>
   <string name="suffix_symbol">Suffix Symbol</string>
   <string name="decimal_char">Dezimaltrennzeichen</string>
-  <string name="group_char">Tausendertrenzeichen</string>
+  <string name="group_char">Tausendertrennzeichen</string>
   <string name="scale">Skalierung</string>
   <string name="conversion_to_base_rate">Umwandlung</string>
   <string name="currency_name_empty">Name der Währung ist erforderlich</string>
@@ -153,14 +153,14 @@
   <string name="error_transfer_to_same_account">Die beiden Konten für den Transfer müssen verschieden sein</string>
   <string name="about">Über</string>
   <string name="add">Hinzufügen</string>
-  <string name="confirmDelete">Möchten Sie die Aufnahme wirklich löschen?</string>
+  <string name="confirmDelete">Möchten Sie den Eintrag wirklich löschen?</string>
   <string name="date">Datum</string>
   <string name="delete">Löschen</string>
   <string name="download">Download</string>
   <string name="edit">Bearbeiten</string>
   <string name="home">Startseite</string>
   <string name="logo">Logo</string>
-  <string name="new_edit_transaction">Neue/Bearbeiten der Transaktion</string>
+  <string name="new_edit_transaction">Transaktion hinzufügen/bearbeiten</string>
   <string name="refresh">Aktualisieren</string>
   <string name="search">Suche</string>
   <string name="settings">Einstellungen</string>
@@ -179,7 +179,7 @@
   <string name="notes">Notizen</string>
   <string name="closed">Geschlossen</string>
   <string name="theme_application">Theme</string>
-  <string name="theme_holo">Theme_holo</string>
+  <string name="theme_holo">Dunkles Theme</string>
   <string name="theme_light">Helles Theme</string>
   <!-- 20120906 -->
   <string name="close_application">Anwendung schließen</string>
@@ -188,13 +188,13 @@
   <string name="attention">Achtung</string>
   <string name="payee_can_not_deleted">Der ausgewählte Zahlungsempfänger/Zahler kann nicht gelöscht werden, weil darauf verwiesen wird</string>
   <string name="account_can_not_deleted">Das ausgewählte Konto kann nicht gelöscht werden, weil darauf verwiesen wird</string>
-  <string name="currency_can_not_deleted">Die ausgewälhte Währung kann nicht gelöscht werden, weil darauf verwiesen wird</string>
+  <string name="currency_can_not_deleted">Die ausgewählte Währung kann nicht gelöscht werden, weil darauf verwiesen wird</string>
   <string name="category_can_not_deleted">Die ausgewählte Kategorie kann nicht gelöscht werden, weil darauf verwiesen wird</string>
   <!-- transaction list periods -->
   <string name="all_transaction">Alle Transaktionen</string>
   <string name="today">Heute</string>
   <string name="last7days">Letzte Woche</string>
-  <string name="last15days">Letzten 2 Wochen</string>
+  <string name="last15days">Letzte 2 Wochen</string>
   <string name="current_month">Aktueller Monat</string>
   <string name="current_year">Laufendes Jahr</string>
   <string name="future_transactions">Zukünftige Transaktionen</string>
@@ -221,29 +221,29 @@
   <string name="in_x_months">In (x) Monaten</string>
   <string name="every_x_days">Alle (x) Tage</string>
   <string name="every_x_months">Alle (x) Monate</string>
-  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
+  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
   <string name="inactive">Inaktiv</string>
   <string name="activates">aktiviert</string>
   <string name="days_overdue">Tage überfällig!</string>
   <string name="days_remaining">Tage verbleibend</string>
-  <string name="new_edit_repeating_transaction">Neu/editieren wiederholte Transaktionen</string>
-  <string name="due_date">Abgabetermin</string>
+  <string name="new_edit_repeating_transaction">Wiederholte Transaktion hinzufügen/bearbeiten</string>
+  <string name="due_date">Fälligkeitsdatum</string>
   <string name="next_occurrence">Nächstes Vorkommen</string>
   <string name="payment_date">Tag der Zahlung</string>
   <string name="repeats">Wiederholungen</string>
-  <string name="occurs">Ereignisse</string>
+  <string name="occurs">Vorkommen</string>
   <string name="payments_left">Ausstehende Zahlungen</string>
   <string name="payments_left_required">Menge der ausstehenden Zahlungen ist erforderlich</string>
   <string name="due_date_required">Fälligkeitsdatum ist erforderlich</string>
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
-  <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
-  <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>
-  <string name="skip_next_occurrence_confirmation">Möchten Sie das nächste Ereignis überspringen?</string>
+  <string name="enter_next_occurrence">Gib das nächste Vorkommen ein</string>
+  <string name="skip_next_occurrence">Überspringe das nächste Vorkommen</string>
+  <string name="skip_next_occurrence_confirmation">Möchten Sie das nächste Vorkommen überspringen?</string>
   <string name="notification_repeating_transaction_expired">Abgelaufene wiederholte Transaktionen vorhanden</string>
   <string name="notification_click_to_check_repeating_transaction">Berühren um die ausstehende Transation zu sehen</string>
   <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
   <string name="skip">Überspringen</string>
-  <string name="enter">Eintragen</string>
+  <string name="enter">Eingeben</string>
   <string name="enter_amount">Betrag eingeben</string>
   <!-- 20121121 -->
   <string name="send_feedback">Rückmeldung senden</string>
@@ -266,7 +266,7 @@
   <string name="income">Einkommen</string>
   <string name="expenses">Ausgaben</string>
   <string name="difference">Differenz</string>
-  <string name="no_data">Keine Datensätze gefunden. Passen Sie den sichtbaren Zeitraum an oder tippen Sie auf die grüne plus -Schaltfläche um einen Zeitraum zu erstellen. </string>
+  <string name="no_data">Keine Datensätze gefunden. Passen Sie den sichtbaren Zeitraum an oder tippen Sie auf die grüne Plus-Schaltfläche um einen Zeitraum zu erstellen. </string>
   <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
   <string name="month">Monat</string>
   <string name="year">Jahr</string>
@@ -276,7 +276,7 @@
   <!--<string name="option">Option</string>-->
   <string name="all_time">Gesamte Zeit</string>
   <string name="last_month">Vorheriger Monat</string>
-  <string name="last30days">Die letzten 30 Tage</string>
+  <string name="last30days">Letzte 30 Tage</string>
   <string name="last_year">Letztes Jahr</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
@@ -292,7 +292,7 @@
   <string name="copy_database_on_external_storage_failed">Die Datenbank auf den externen Speicher zu kopieren ist fehlgeschlagen</string>
   <string name="path_database_using">Sie verwenden die Datenbank gespeichert in: %1$s</string>
   <!-- Split Categories -->
-  <string name="split_transaction">Geteilte Transaktio</string>
+  <string name="split_transaction">Geteilte Transaktion</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Aufteilen</string>
   <string name="error_split_transaction_empty">Mindestestens eine geteilte Transaktion ist erforderlich</string>
@@ -304,12 +304,12 @@
   <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEX für Android ist kostenlos. Wenn Ihnen die Anwendung gefällt, können Sie das Entwicklerteam mit einer Spende untersützen.</string>
   <string name="donate_in_app_title">Google Play In-App Käufe</string>
-  <string name="donate_in_app_description">Spenden Sie via Google Play In-App Billing.</string>
+  <string name="donate_in_app_description">Spenden Sie via Google Play In-App Käufe.</string>
   <string name="donate_in_app_spinner_text">Wählen Sie einen Spendenbetrag</string>
   <string name="donate_in_app_button">Spenden</string>
   <string name="donate_thank_you">Vielen Dank für Ihre Spende!</string>
   <string name="donate">Spenden</string>
-  <string name="no_thanks">Nein danke</string>
+  <string name="no_thanks">Nein, danke</string>
   <string name="donate_exlamation">Spenden!</string>
   <string name="donate_direct">Sie können spenden, indem Sie auf den Spenden-Link auf unserer Website klicken. Klicken Sie hier, um den Spenden-Link im Browser zu öffnen.</string>
   <string name="donate_bitcoin">Wir akzeptieren nun auch BitCoin Spenden.</string>
@@ -333,8 +333,8 @@
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">From version 1.2.0 of Money Manager Ex for Android has changed the management of synchronization with Dropbox. For users who are already using the sync with Dropbox, you must redoing the configuration.\nThe configuration of sync with Dropbox and the selection of the database, is located in the settings.\nFrom version 1.2.0 of Money Manager Ex for Android can automatically synchronize the database with Dropbox</string>
   <!-- 20130426 -->
-  <string name="title_transaction_shown_balance">Zeigt den Saldo für jede Transaktion</string>
-  <string name="summary_transaction_shown_balance">Zeigt das Saldo für jedeTransaktion. Die Darstellung des Saldos kann die Anwendung verlangsamem</string>
+  <string name="title_transaction_shown_balance">Zeige den Saldo für jede Transaktion</string>
+  <string name="summary_transaction_shown_balance">Zeige das Saldo für jede Transaktion. Die Darstellung des Saldos kann die Anwendung verlangsamen</string>
   <string name="menu_open_database">Datenbank öffnen</string>
   <string name="database">Datenbank</string>
   <string name="tips">Tipps</string>
@@ -352,7 +352,7 @@
   <string name="menu_report_where_money_comes_from">Wo das Geld herkommt</string>
   <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Erinnerungszeitpunkt</string>
-  <string name="summary_check_repeating_transaction">Welche Zeit wollen Sie wählen für eine überfällige wiederholte Transaktion? (default 08:00)</string>
+  <string name="summary_check_repeating_transaction">Zu welcher Zeit soll nach überfälligen wiederholte Transaktionen gesucht werden? (Standard: 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Credits</string>
   <string name="libraries">Bibliotheken</string>
@@ -366,10 +366,10 @@
   <string name="dashboard">Dashboard</string>
   <!-- 20130808 -->
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
-  <string name="last3months">Letzten 3 Monate</string>
-  <string name="last6months">Letzten 6 Monate</string>
+  <string name="last3months">Letzte 3 Monate</string>
+  <string name="last6months">Letzte 6 Monate</string>
   <!-- 20130816 -->
-  <string name="empty_category">Kategorie leer</string>
+  <string name="empty_category">Leere Kategorie</string>
   <string name="empty_payee">Zahlungsempfänger/Zahler leer</string>
   <!-- 20130831 -->
   <string name="help">Hilfe</string>
@@ -385,15 +385,15 @@
   <string name="from_account">Vom Konto</string>
   <string name="default_status">Standard Status</string>
   <string name="default_payee">Standard-Zahlungsempfänger/Zahler</string>
-  <string name="edit_transaction">Transaktion editieren</string>
+  <string name="edit_transaction">Transaktion bearbeiten</string>
   <string name="delete_one_selected_transaction">Sind Sie sicher die ausgwählte Transaktion löschen zu wollen?</string>
-  <string name="delete_others_selected_transaction">Sind Sie sicher %d die ausgwählten Transaktionen zu löschen zu wollen?</string>
+  <string name="delete_others_selected_transaction">Sind Sie sicher die %d ausgwählten Transaktionen löschen zu wollen?</string>
   <string name="categories">Kategorien</string>
   <string name="payees">Zahlungsempfänger/Zahler</string>
   <string name="recurring_transactions">Wiederkehrende Transaktionen</string>
   <string name="theme_holo_light">Holo hell</string>
   <string name="new_account">Neues Konto</string>
-  <string name="create_new_account">Einen neuen Account erstellen</string>
+  <string name="create_new_account">Einen neues Konto erstellen</string>
   <string name="amount_greater_or_equal">Betrag größer oder gleich</string>
   <string name="amount_from">Betrag von</string>
   <string name="amount_less_or_equal">Betrag kleiner oder gleich</string>
@@ -401,7 +401,7 @@
   <string name="reset">Zurücksetzen</string>
   <string name="result_search">Ergebnis deiner Suche</string>
   <string name="new_repeating_transaction">Neue wiederholte Transaktion</string>
-  <string name="edit_repeating_transaction">Editiere Wiederholte Transaktion</string>
+  <string name="edit_repeating_transaction">Wiederholte Transaktion bearbeiten</string>
   <string name="path_database_not_exists">Datenbankpfad existiert nicht</string>
   <string name="database_can_not_open_write">Die Datenbank kann nicht zum Schreiben geöffnet werden</string>
   <string name="time_frame">Zeitrahmen</string>
@@ -718,4 +718,8 @@
   <string name="save">Speichern</string>
   <string name="title_budget_show_simple_view">Zeige die einfache Budget-Ansicht</string>
   <string name="summary_budget_show_simple_view">Falls Budgets ausgewählt, einfache Ansicht benutzen</string>
+  <string name="shares">Aktien</string>
+  <string name="loan">Darlehen</string>
+  <string name="loan_account">Darlehenskonten</string>
+  <string name="shares_accounts">Aktienkonto</string>
 </resources>

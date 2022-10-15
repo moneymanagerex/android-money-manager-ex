@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.utils;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -30,6 +29,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 /**
@@ -356,10 +356,18 @@ public class MmxDate {
         return getFormatterFor(format).format(toDate());
     }
 
-    public String toIsoString() {
-//        if (date == null) return null;
-
+    public String toIsoDateString() {
         SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
+    }
+
+    public String toIsoString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_8601_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
+    }
+
+    public String toIsoDateShortTimeString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
         return format.format(toDate());
     }
 

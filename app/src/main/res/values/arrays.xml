@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -79,6 +79,8 @@
         <item>@string/investment</item>
         <item>@string/term</item>
         <item>@string/credit_card</item>
+        <item>@string/loan</item>
+        <item>@string/shares</item>
     </string-array>
 
     <!-- Accountstatus items and values -->
@@ -365,6 +367,7 @@
     <!-- sync providers -->
     <string-array name="cloud_provider_names">
         <!--<item>None</item>-->
+        <item>PCloud</item>
         <item>Dropbox</item>
         <item>OneDrive</item>
         <item>Google Drive</item>
@@ -372,6 +375,7 @@
     </string-array>
     <string-array name="cloud_provider_values">
         <!--<item>0</item>-->
+        <item>PCLOUD</item>
         <item>DROPBOX</item>
         <item>ONEDRIVE</item>
         <item>GOOGLEDRIVE</item>

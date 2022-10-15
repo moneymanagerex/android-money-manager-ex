@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.currency.recycler;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
@@ -26,6 +25,8 @@ import com.money.manager.ex.domainmodel.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 /**
@@ -35,7 +36,10 @@ public class CurrencySection
     extends StatelessSection {
 
     public CurrencySection(String title, List<Currency> data) {
-        super(R.layout.item_currency_list_recycler_header, R.layout.item_currency);
+        super(SectionParameters.builder()
+                .itemResourceId(R.layout.item_currency)
+                .headerResourceId(R.layout.item_currency_list_recycler_header)
+                .build());
 
         this.title = title;
 

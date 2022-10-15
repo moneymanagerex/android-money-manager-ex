@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ public class Constants {
 
     // Date/Time
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String ISO_DATE_SHORT_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     //public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String LONG_DATE_PATTERN = "EEEE, dd MMMM yyyy";

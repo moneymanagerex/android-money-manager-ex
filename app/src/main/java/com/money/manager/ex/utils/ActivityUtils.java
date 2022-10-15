@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,10 +17,12 @@
 
 package com.money.manager.ex.utils;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.view.Surface;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 public class ActivityUtils {
 
@@ -29,7 +31,7 @@ public class ActivityUtils {
      * @param activity Activity from which to get the current orientation information.
      * @return Code indicating the current device orientation.
      */
-    public static int forceCurrentOrientation(Activity activity) {
+    public static int forceCurrentOrientation(FragmentActivity activity) {
         int prevOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         if (activity != null) {
             prevOrientation = activity.getRequestedOrientation(); // update current position
@@ -55,7 +57,7 @@ public class ActivityUtils {
      * @param activity Activity to which to apply the orientation.
      * @param orientation Code for orientation.
      */
-    public static void restoreOrientation(Activity activity, int orientation) {
+    public static void restoreOrientation(AppCompatActivity activity, int orientation) {
         if (activity != null) {
             activity.setRequestedOrientation(orientation);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);

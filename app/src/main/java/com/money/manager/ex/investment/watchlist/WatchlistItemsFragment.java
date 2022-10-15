@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,17 +16,10 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -41,7 +34,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AllDataListFragment;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.IntentFactory;
@@ -52,9 +48,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -64,13 +57,19 @@ import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.StocksCursorAdapter;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -79,7 +78,7 @@ import timber.log.Timber;
  */
 public class WatchlistItemsFragment
     extends BaseListFragment
-    implements LoaderCallbacks<Cursor> {
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int ID_LOADER = 1;
     public static final String KEY_ACCOUNT_ID = "WatchlistItemsFragment:AccountId";
@@ -182,7 +181,7 @@ public class WatchlistItemsFragment
 
         switch (requestCode) {
             case RequestCodes.PRICE:
-                if (resultCode != Activity.RESULT_OK) return;
+                if (resultCode != AppCompatActivity.RESULT_OK) return;
 
                 reloadData();
                 break;
@@ -253,7 +252,7 @@ public class WatchlistItemsFragment
                 intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
                 getAccount();
                 intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
-                String dateString = new MmxDate().toIsoString();
+                String dateString = new MmxDate().toIsoDateString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
                 startActivityForResult(intent, RequestCodes.PRICE);
 
@@ -262,7 +261,7 @@ public class WatchlistItemsFragment
 //                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
 //                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
 //                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-//                String dateString = new MmxDate().toIsoString();
+//                String dateString = new MmxDate().toIsoDateString();
 //                args.putString(EditPriceDialog.ARG_DATE, dateString);
 //                dialog.setArguments(args);
 //                dialog.show(getChildFragmentManager(), "input-amount");

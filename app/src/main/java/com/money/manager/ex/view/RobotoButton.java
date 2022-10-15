@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,8 @@
 package com.money.manager.ex.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -52,7 +51,7 @@ public class RobotoButton
      * @param context The Context the widget is running in, through which it can
      *                access the current theme, resources, etc.
      * @param attrs   The attributes of the XML tag that is inflating the widget.
-     * @see #RobotoTextView(Context, AttributeSet, int)
+     * @see RobotoTextView(Context, AttributeSet, int)
      */
     public RobotoButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -71,7 +70,7 @@ public class RobotoButton
      *                 will be applied (beyond what is included in the theme). This may
      *                 either be an attribute resource, whose value will be retrieved
      *                 from the current theme, or an explicit style resource.
-     * @see #RobotoTextView(Context, AttributeSet)
+     * @see RobotoTextView(Context, AttributeSet)
      */
     public RobotoButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

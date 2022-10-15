@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,8 +27,9 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
@@ -108,12 +110,13 @@ public class Core {
      * @return new File database backup
      */
     public File backupDatabase() {
-        File database = new File(MmexApplication.getDatabasePath(getContext()));
+        File database = new File(new DatabaseManager(getContext()).getDatabasePath());
         if (!database.exists()) return null;
 
         //create folder to copy database
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File folderOutput = new File(dbUtils.getDefaultDatabaseDirectory());
+        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File folderOutput = new File(dbManager.getDefaultDatabaseDirectory());
 
         //take a folder of database
         ArrayList<File> filesFromCopy = new ArrayList<>();

@@ -20,23 +20,27 @@ import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowEnvironment;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Test the methods in MoneyManagerApplication.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MmexApplicationTests {
 
     private Context context;
@@ -60,14 +64,13 @@ public class MmexApplicationTests {
     /**
      * Ensure that the default file name can not be empty.
      */
-    //@Test
+    @Test
     public void defaultDatabaseNameContainsFileName() throws Exception {
         String expected = "data.mmb";
 
-        String actual = MmexApplication.getDatabasePath(context);
+        String actual = new DatabaseManager(context).getDatabasePath();
 
-//        assertEquals(expected, actual);
-        assertTrue(actual.contains("/" + expected));
+        assertThat(actual, endsWith(expected));
     }
 
     /**
@@ -80,7 +83,7 @@ public class MmexApplicationTests {
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this.context);
         String actual = dbUtils.getDefaultDatabaseDirectory();
 
-        assertTrue(actual.contains(expected));
+        assertThat(actual, containsString(expected));
     }
 
 }

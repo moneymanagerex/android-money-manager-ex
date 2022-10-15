@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -38,10 +39,10 @@ import static org.junit.Assert.assertNotNull;
  * Tests for the Money implementation
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class MoneyTests {
 
-    //@Before
+    @Before
     public void setup() {
 //        Context context = UnitTestHelper.getContext();
 
@@ -53,7 +54,7 @@ public class MoneyTests {
         // UnitTestHelper.setupContentProvider();
     }
 
-    //@After
+    @After
     public void tearDown() {
         // Reset database instance between tests.
         // UnitTestHelper.teardownDatabase();
@@ -62,7 +63,7 @@ public class MoneyTests {
 //        this.controller.destroy();
     }
 
-    //@Test
+    @Test
     public void instantiation() {
         Money testObject = MoneyFactory.fromString("156");
 

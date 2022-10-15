@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,6 +25,8 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.R;
+
+import androidx.core.view.MenuItemCompat;
 
 /**
  * Helper methods to work with menus.
@@ -85,7 +86,7 @@ public class MenuHelper {
 
     public void addSaveToolbarIcon() {
         MenuItem item = menu.add(Menu.NONE, save, Menu.NONE, R.string.save);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
             //.color(uiHelper.getPrimaryTextColor());

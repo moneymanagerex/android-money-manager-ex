@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -83,6 +83,9 @@
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
+    <string name="pref_sms_auto_trans">pref_sms_automatic_transactions</string>
+    <string name="pref_sms_trans_status_notification">pref_sms_trans_status_notification</string>
+
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>
@@ -111,6 +114,7 @@
     <string name="pref_gdrive_persistent">pref_gdrive_persistent</string>
     <string name="pref_onedrive_persistent">pref_onedrive_persistent</string>
     <string name="pref_box_persistent">pref_box_persistent</string>
+    <string name="pref_pcloud_persistent">pref_pcloud_persistent</string>
     <string name="pref_reset_preferences">pref_reset_preferences</string>
     <string name="pref_sync_download">pref_sync_download</string>
     <string name="pref_sync_upload">pref_sync_upload</string>

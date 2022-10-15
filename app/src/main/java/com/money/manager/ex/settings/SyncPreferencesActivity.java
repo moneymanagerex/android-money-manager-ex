@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,11 +18,10 @@ package com.money.manager.ex.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 
-import com.cloudrail.si.CloudRail;
-import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
+
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -45,12 +44,15 @@ public class SyncPreferencesActivity
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        if(intent.getCategories().contains(BROWSABLE)) {
+        Set<String> categories = intent.getCategories();
+
+        if(categories != null && categories.contains(BROWSABLE)) {
             // Here we pass the response to the SDK which will automatically
             // complete the authentication process
             Timber.d("setting OAuth authentication response from Google");
-            CloudRail.setAuthenticationResponse(intent);
+//            CloudRail.setAuthenticationResponse(intent);
         }
+
         super.onNewIntent(intent);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,13 +24,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -178,40 +179,6 @@ public class MmxDatabaseUtils {
         return result;
     }
 
-    /**
-     * Gets the directory where the database is (to be) stored. New databases
-     * are created here by default.
-     * The directory is created if it does not exist.
-     * Ref: https://gist.github.com/granoeste/5574148
-     * @return the default database directory
-     */
-    public String getDefaultDatabaseDirectory() {
-        File defaultFolder;
-
-        // try with the external storage first.
-        defaultFolder = getDbExternalStorageDirectory();
-        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
-
-        defaultFolder = getExternalFilesDirectory();
-        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
-
-        // Then use files dir.
-        defaultFolder = getPackageDirectory();
-        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
-
-        return null;
-    }
-
-    /**
-     * Generates the default database path, including the filename. This is used for database
-     * creation and display of the default value during creation.
-     * @return The default database path.
-     */
-    public String getDefaultDatabasePath() {
-        return getDefaultDatabaseDirectory()
-                .concat(File.separator).concat(DEFAULT_DB_FILENAME);
-    }
-
     public String makePlaceholders(int len) {
         if (len < 1) {
             // It would lead to an invalid query anyway ..
@@ -241,7 +208,8 @@ public class MmxDatabaseUtils {
         }
 
         // Set path in preferences.
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(database.localPath);
+        new AppSettings(getContext()).getDatabaseSettings()
+                .setDatabasePath(database.localPath);
 
         // Store the Recent Database entry.
         boolean added = mDatabasesLazy.get().add(database);
@@ -298,7 +266,7 @@ public class MmxDatabaseUtils {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
-        String location = getDefaultDatabaseDirectory();
+        String location = new DatabaseManager(mContext).getDefaultDatabaseDirectory();
 
         String newFilePath = location.concat(File.separator).concat(filename);
 
@@ -364,88 +332,6 @@ public class MmxDatabaseUtils {
         }
 
         return tableNames;
-    }
-
-    /**
-     * /sdcard/MoneyManagerEx
-     * @return the location for the database in the publicly accessible storage
-     */
-    private File getDbExternalStorageDirectory() {
-        // sdcard
-        File externalStorageDirectory = Environment.getExternalStorageDirectory();
-
-        if (externalStorageDirectory == null) return null;
-        if (!externalStorageDirectory.exists() || !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
-            return null;
-        }
-
-        // now create the app's directory in the root.
-
-        String defaultPath = externalStorageDirectory.getAbsolutePath()
-                .concat(File.separator).concat("MoneyManagerEx");
-        File defaultFolder = new File(defaultPath);
-        if (defaultFolder.exists() && defaultFolder.canRead() && defaultFolder.canWrite()) return defaultFolder;
-
-        if (!defaultFolder.exists()) {
-            // create the directory.
-            if (!defaultFolder.mkdirs()) {
-                Timber.w("could not create the storage directory %s", defaultPath);
-                return null;
-            }
-        }
-
-        return defaultFolder;
-    }
-
-    /**
-     * External files directory
-     * /storage/sdcard0/Android/data/package/files
-     * @return directory to store the database in external files dir.
-     */
-    private File getExternalFilesDirectory() {
-        File externalFilesDir = getContext().getExternalFilesDir(null);
-        if (externalFilesDir == null) return null;
-        
-        String dbString = externalFilesDir.getAbsolutePath().concat(File.separator)
-                .concat("databases");
-        File dbPath = new File(dbString);
-
-        if (dbPath.exists() && dbPath.canRead() && dbPath.canWrite()) return dbPath;
-
-        if (!dbPath.mkdir()) {
-            Timber.w("could not create databases directory in external files");
-            return null;
-        }
-
-        return dbPath;
-    }
-
-    /**
-     *
-     * @return app's files directory
-     */
-    private File getPackageDirectory() {
-        // getFilesDir() = /data/data/package/files
-        File packageLocation = getContext().getFilesDir().getParentFile();
-        // or: getContext().getApplicationInfo().dataDir
-        // getContext().getFilesDir()
-        //                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
-
-        String dbDirectoryPath = packageLocation.getAbsolutePath()
-                .concat(File.separator)
-                .concat("databases");
-
-        File dbDirectory = new File(dbDirectoryPath);
-        if (dbDirectory.exists() && dbDirectory.canRead() && dbDirectory.canWrite()) return dbDirectory;
-
-        if (!dbDirectory.exists()) {
-            if (!dbDirectory.mkdir()) {
-                Timber.w("could not create databases directory");
-                return null;
-            }
-        }
-
-        return dbDirectory ;
     }
 
     /**

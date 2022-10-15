@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,5 +33,9 @@ public class Subcategory
 
     public String getName() {
         return getString(SUBCATEGNAME);
+    }
+
+    public int getId() {
+        return getInt(SUBCATEGID);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,11 +21,12 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.CursorAdapter;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.recycler.CurrencyListItemViewHolder;
 import com.money.manager.ex.domainmodel.Currency;
+
+import androidx.cursoradapter.widget.CursorAdapter;
 
 /**
  * Adapter for the list of currencies
@@ -33,10 +34,12 @@ import com.money.manager.ex.domainmodel.Currency;
 public class CurrencyListAdapter
     extends CursorAdapter {
 
+    //private Context mContext;
+
     public CurrencyListAdapter(Context context, Cursor cursor) {
         super(context, cursor, -1);
 
-        mContext = context;
+        //mContext = context;
     }
 
     @Override

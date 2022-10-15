@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,6 +28,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoButton;
 import com.money.manager.ex.view.RobotoTextView;
@@ -63,9 +64,10 @@ public class CreateDatabaseActivity
 
     private void createDatabase() {
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+        DatabaseManager dbManager = new DatabaseManager(this);
 
         // Show the default db directory in case of errors.
-        String defaultDbPath = dbUtils.getDefaultDatabasePath();
+        String defaultDbPath = dbManager.getDefaultDatabasePath();
         dbPathTextView.setText(defaultDbPath);
 
         // Create database file.

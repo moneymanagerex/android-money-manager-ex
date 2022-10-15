@@ -718,4 +718,8 @@
   <string name="save">Salva</string>
   <string name="title_budget_show_simple_view">Mostra vista semplificata budget</string>
   <string name="summary_budget_show_simple_view">Se selezionato usa la vista semplificata per i budget</string>
+  <string name="shares">Azioni</string>
+  <string name="loan">Prestito</string>
+  <string name="loan_account">Conti di prestito</string>
+  <string name="shares_accounts">Conti di Azioni</string>
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ import android.widget.RemoteViews;
 
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
 public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
 	@Override
@@ -36,6 +37,7 @@ public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
 			// register on click in icon launch application
 			Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
 			intent.setAction(Intent.ACTION_INSERT);
+			intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvoder.java");
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 			remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
 		    

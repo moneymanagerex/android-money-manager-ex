@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,13 @@ package com.money.manager.ex.assetallocation;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 
-import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
+import androidx.cursoradapter.widget.CursorAdapter;
 
 /**
  * Adapter for the Asset Allocation list.

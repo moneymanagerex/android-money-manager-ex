@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -29,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+
+import timber.log.Timber;
 
 import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
@@ -84,8 +87,8 @@ public class DatabaseMigrator14To20 {
     }
 
     public String getV20Directory() {
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        File newPath = new File(dbUtils.getDefaultDatabaseDirectory());
+        DatabaseManager dbManager = new DatabaseManager(getContext());
+        File newPath = new File(dbManager.getDefaultDatabaseDirectory());
 
         String dbPath = newPath.toString();
         return dbPath;
@@ -109,7 +112,7 @@ public class DatabaseMigrator14To20 {
         try {
             copy(legacyFile, newFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e);
             return result;
         }
 

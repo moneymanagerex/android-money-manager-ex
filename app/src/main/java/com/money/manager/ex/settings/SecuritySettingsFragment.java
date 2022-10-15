@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,20 @@
 
 package com.money.manager.ex.settings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.UIHelper;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 /**
  */
@@ -93,7 +94,7 @@ public class SecuritySettingsFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != Activity.RESULT_OK) return;
+        if (resultCode != AppCompatActivity.RESULT_OK) return;
         if (data == null) return;
 
         Passcode pass = new Passcode(getActivity());

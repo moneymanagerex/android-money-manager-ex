@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,8 +26,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 
 import com.money.manager.ex.budget.BudgetQuery;
@@ -63,6 +61,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.collection.SparseArrayCompat;
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -377,8 +377,9 @@ public class MmxContentProvider
         Timber.d(log);
     }
 
-    private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
-        Timber.d("Querying URI: %s", uri);
+    private Cursor query_internal(Uri uri, String[] projection, String selection,
+                                  String[] selectionArgs, String sortOrder){
+        Timber.v("Querying URI: %s", uri);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
@@ -424,7 +425,7 @@ public class MmxContentProvider
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         if (!cursor.isClosed()) {
-            Timber.d("Rows returned: %d", cursor.getCount());
+            Timber.v("Rows returned: %d", cursor.getCount());
         }
 
         return cursor;

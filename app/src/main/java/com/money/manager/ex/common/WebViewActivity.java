@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +33,8 @@ import com.money.manager.ex.core.HttpMethods;
 import com.money.manager.ex.core.MyWebChromeClient;
 
 import java.util.HashMap;
+
+import timber.log.Timber;
 
 /**
  * Used for PayPal online donations handling.
@@ -166,6 +168,7 @@ public class WebViewActivity
             try {
                 postData = postDataString.getBytes("BASE64");
             } catch (Exception e) {
+                Timber.w(e);
                 postData = postDataString.getBytes();
             }
 

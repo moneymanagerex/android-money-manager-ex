@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.PayeeRepository;
@@ -65,7 +66,10 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import icepick.State;
+import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Activity for editing Checking Account Transaction
@@ -271,11 +275,14 @@ public class CheckingTransactionEditActivity
      * from Tasker or any external caller.
      * @param intent The intent received.
      */
-    private void externalIntegration(Intent intent) {
+    private boolean externalIntegration(Intent intent) {
         Uri data = intent.getData();
-        if (data == null) return;
+        if (data == null) return false;
 
         IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
+
+        // current date
+        mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
         // transaction type
         mCommon.transactionEntity.setTransactionType(parameters.transactionType);
@@ -283,7 +290,26 @@ public class CheckingTransactionEditActivity
         if (parameters.accountId > 0) {
             this.mCommon.transactionEntity.setAccountId(parameters.accountId);
         }
+        if (parameters.accountToId > 0) {
+            this.mCommon.transactionEntity.setAccountToId(parameters.accountToId);
+        }
+
         mCommon.transactionEntity.setAmount(parameters.amount);
+
+        // transfer amount
+        if (parameters.transactionType == TransactionTypes.Transfer){
+            if (parameters.amountTo != null){
+                mCommon.transactionEntity.setAmountTo(parameters.amountTo);
+            } else {
+                //convert the to amount from the both currency details
+                CurrencyService currencyService = new CurrencyService(this);
+                AccountRepository accountRepository = new AccountRepository(this);
+                mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                        mCommon.transactionEntity.getAmount(),
+                        accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+            }
+        }
+
         // payee
         if (parameters.payeeId > 0) {
             this.mCommon.transactionEntity.setPayeeId(parameters.payeeId);
@@ -304,12 +330,36 @@ public class CheckingTransactionEditActivity
             mCommon.categoryName = parameters.categoryName;
         } else {
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null) {
+            if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
                 CategoryService newCategory = new CategoryService(this);
                 mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
                 mCommon.categoryName = parameters.categoryName;
+            } else {
+                // try to resolve the category from the payee
+                mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
             }
         }
+
+        // subcategory
+        if (parameters.subcategoryId > 0) {
+            mCommon.transactionEntity.setSubcategoryId(parameters.subcategoryId);
+            mCommon.subCategoryName = parameters.subcategoryName;
+        } else {
+            // No id sent. Create a subcategory if it was sent but does not exist (id not found by the parser).
+            if (parameters.subcategoryName != null && !parameters.subcategoryName.isEmpty()) {
+                CategoryService categorySvc = new CategoryService(this);
+                mCommon.transactionEntity.setSubcategoryId(categorySvc.createNewSubcategory(parameters.subcategoryName, mCommon.transactionEntity.getCategoryId()));
+                mCommon.subCategoryName = parameters.subcategoryName;
+            }
+        }
+
+        // notes
+        mCommon.transactionEntity.setNotes(parameters.notes);
+
+        // stop further handling if Silent Mode is requested
+        if (parameters.isSilentMode && saveData()) return false;
+
+        return true;
     }
 
     private void initializeInputControls() {
@@ -510,7 +560,88 @@ public class CheckingTransactionEditActivity
                 task.execute();
             }
 
-            externalIntegration(intent);
+            if (intent.getData() != null) {
+                if (!externalIntegration(intent)) return false;
+            }
+            else //start activity from SMS Receiver Transaction
+            {
+                try
+                {
+                    Bundle extras = intent.getExtras();
+
+                    if(extras != null &&
+                            extras.getString(EditTransactionActivityConstants.KEY_TRANS_SOURCE)
+                                    .contentEquals("SmsReceiverTransactions.java"))
+                    {
+                        AccountRepository accountRepository = new AccountRepository(this);
+
+                        if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
+                        {
+                            mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+
+                            //convert the to amount from the both currency details
+                            CurrencyService currencyService = new CurrencyService(this);
+                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                                    mCommon.transactionEntity.getAmount(),
+                                    accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+
+                        }
+
+                        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
+                        mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
+
+                        mCommon.transactionEntity.setTransactionNumber(extras.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER));
+                        mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
+                        mCommon.transactionEntity.setDate(new MmxDate().toDate());
+
+                        if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
+                        {
+                            mCommon.payeeName="";
+
+                            if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                    .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
+                                Core core = new Core(this);
+                                Payee payee = core.getLastPayeeUsed();
+
+                                if (payee != null) {
+                                    mCommon.transactionEntity.setPayeeId(payee.getId());
+                                    mCommon.payeeName = payee.getName();
+                                    mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+                                }
+                            }
+                        }
+                        else
+                        {
+                            mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                            mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+                            mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
+                        }
+
+                        //keeping the Category or Sub from the intent if payee name is empty or not defaulted
+                        if(mCommon.payeeName.isEmpty())
+                        {
+                            String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
+                            String subCatID = extras.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
+
+                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
+
+                            if (!subCatID.isEmpty()) { mCommon.transactionEntity.setSubcategoryId(parseInt(subCatID)); }
+
+                            mCommon.loadCategoryName();
+                        }
+
+                        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+                        extras = null;
+                    }
+                }
+                catch(Exception e)
+                {
+                    Timber.e(e);
+                    Toast.makeText(this, "MMEX: Bank Transaction Process EXCEPTION --> "
+                            +  e, Toast.LENGTH_LONG).show();
+                }
+            }
 
             // Select the default account if none set.
             Integer account = mCommon.transactionEntity.getAccountId();

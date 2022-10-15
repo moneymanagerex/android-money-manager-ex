@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,12 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -57,18 +51,25 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
 import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -76,15 +77,6 @@ import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.investment.PortfolioFragment;
-import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.common.CategoryListFragment;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.core.RecurringTransactionBootReceiver;
-import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.account.AccountListFragment;
-import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
@@ -92,10 +84,14 @@ import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -110,6 +106,12 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import dagger.Lazy;
 import icepick.State;
 import rx.Single;
@@ -185,10 +187,10 @@ public class MainActivity
         // Layout
         setContentView(R.layout.main_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) setSupportActionBar(toolbar);
 
-        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        LinearLayout fragmentDetail = findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
         // Initialize current device orientation.
@@ -207,12 +209,13 @@ public class MainActivity
         handleDeviceRotation();
 
         // Close any existing notifications.
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                .cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
         showCurrentDatabasePath(this);
 
         // Read something from the database at this stage so that the db file gets created.
-        InfoService infoService = new InfoService(getApplicationContext());
+        InfoService infoService = new InfoService(this);
         String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
         // fragments
@@ -292,18 +295,26 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode != RESULT_OK) return;
+
         switch (requestCode) {
-            case RequestCodes.SELECT_FILE:
-                // Opening from intent.
-                if (resultCode != RESULT_OK) return;
+//            case RequestCodes.SELECT_FILE:
+//                // Opening from intent.
+//                if (resultCode != RESULT_OK) return;
+//
+//                String selectedPath = UIHelper.getSelectedFile(data);
+//                if(TextUtils.isEmpty(selectedPath)) {
+//                    new UIHelper(this).showToast(R.string.invalid_database);
+//                    return;
+//                }
+//
+//                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
+//                changeDatabase(db);
+//                break;
 
-                String selectedPath = UIHelper.getSelectedFile(data);
-                if(TextUtils.isEmpty(selectedPath)) {
-                    new UIHelper(this).showToast(R.string.invalid_database);
-                    return;
-                }
-
-                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
+            case RequestCodes.SELECT_DOCUMENT:
+                FileStorageHelper storageHelper = new FileStorageHelper(this);
+                DatabaseMetadata db = storageHelper.selectDatabase(data);
                 changeDatabase(db);
                 break;
 
@@ -311,14 +322,20 @@ public class MainActivity
                 isAuthenticated = false;
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
-                    Passcode passcode = new Passcode(getApplicationContext());
                     String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                    String passDb = passcode.getPasscode();
-                    if (passIntent != null && passDb != null) {
-                        isAuthenticated = passIntent.equals(passDb);
-                        if (!isAuthenticated) {
-                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                    if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
+                        Passcode passcode = new Passcode(getApplicationContext());
+                        String passDb = passcode.getPasscode();
+
+                        if (passIntent != null && passDb != null) {
+                            isAuthenticated = passIntent.equals(passDb);
+                            if (!isAuthenticated) {
+                                Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                            }
                         }
+                    }
+                    else {
+                        isAuthenticated = true;
                     }
                 }
                 // close if not authenticated
@@ -442,7 +459,8 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
-        openDatabasePicker();
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showStorageFilePicker();
     }
 
     @Subscribe
@@ -515,8 +533,7 @@ public class MainActivity
         }
 
         try {
-            new MmxDatabaseUtils(this)
-                    .useDatabase(database);
+            new MmxDatabaseUtils(this).useDatabase(database);
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
                 Timber.w(e.getMessage());
@@ -576,20 +593,30 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-                SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
-                // re-set the sync timer.
-                sync.startSyncServiceHeartbeat();
+//                SyncManager sync = new SyncManager(this);
+//                sync.triggerSynchronization();
+//                // re-set the sync timer.
+//                sync.startSyncServiceHeartbeat();
+
+                // Synchronize with the storage provider.
+                FileStorageHelper storage = new FileStorageHelper(this);
+                DatabaseMetadata current = mDatabases.get().getCurrent();
+                storage.synchronize(current);
                 break;
+
             case R.id.menu_open_database:
-                openDatabasePicker();
+                FileStorageHelper helper = new FileStorageHelper(this);
+                helper.showStorageFilePicker();
                 break;
+
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
                 break;
+
             case R.id.menu_category:
                 showFragment(CategoryListFragment.class);
                 break;
+
             case R.id.menu_currency:
                 // Show Currency list.
                 intent = new Intent(MainActivity.this, CurrencyListActivity.class);
@@ -798,20 +825,6 @@ public class MainActivity
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
     }
 
-    public void openDatabasePicker() {
-        //pickFile(Environment.getDefaultDatabaseDirectory());
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
-
-        // Environment.getDefaultDatabaseDirectory().getPath()
-        try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
-        } catch (Exception e) {
-            Timber.e(e, "displaying the open-database picker");
-        }
-        // continues in onActivityResult
-    }
-
     /*
         Private
      */
@@ -833,9 +846,10 @@ public class MainActivity
         childItems.add(childDatabases);
 
         // Synchronization
-        if (new SyncManager(this).isActive()) {
-            childItems.add(null);
-        }
+//        if (new SyncManager(this).isActive()) {
+//            childItems.add(null);
+//        }
+        childItems.add(null);
 
         // Entities
         ArrayList<DrawerMenuItem> childTools = new ArrayList<>();
@@ -887,7 +901,7 @@ public class MainActivity
         childItems.add(null);
 
         // Adapter.
-        final ExpandableListView drawerList = (ExpandableListView) findViewById(R.id.drawerExpandableList);
+        final ExpandableListView drawerList = findViewById(R.id.drawerExpandableList);
         DrawerMenuGroupAdapter adapter = new DrawerMenuGroupAdapter(this, groupItems, childItems);
         drawerList.setAdapter(adapter);
 
@@ -950,7 +964,8 @@ public class MainActivity
 
         int id = R.id.menuSyncProgress;
 
-        if (new SyncManager(this).isActive()) {
+        // We will use the sync button for uploading the database to the storage.
+        //if (new SyncManager(this).isActive()) {
             // add rotating icon
             if (menu.findItem(id) == null) {
                 boolean hasAnimation = false;
@@ -974,12 +989,12 @@ public class MainActivity
                     startSyncIconRotation(mSyncMenuItem);
                 }
             }
-        } else {
-            if (mSyncMenuItem != null) {
-                stopSyncIconRotation(mSyncMenuItem);
-                mSyncMenuItem = null;
-            }
-        }
+//        } else {
+//            if (mSyncMenuItem != null) {
+//                stopSyncIconRotation(mSyncMenuItem);
+//                mSyncMenuItem = null;
+//            }
+//        }
     }
 
     private void destroySyncToolbarItem(Menu menu) {
@@ -1019,12 +1034,12 @@ public class MainActivity
                         .color(iconColor)));
 
         // Cloud synchronize
-        if (new SyncManager(this).isActive()) {
+//        if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
                         .color(iconColor)));
-        }
+//        }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
@@ -1187,7 +1202,7 @@ public class MainActivity
 
     private void initializeDrawer() {
         // navigation drawer
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawer = findViewById(R.id.drawerLayout);
 
         // set a custom shadow that overlays the main content when the drawer opens
         if (mDrawer == null) return;
@@ -1223,15 +1238,15 @@ public class MainActivity
     }
 
     private void initializeDrawerVariables() {
-        mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
+        mDrawerLayout = findViewById(R.id.linearLayoutDrawer);
 
         // repeating transaction
-        LinearLayout mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
+        LinearLayout mDrawerLinearRepeating = findViewById(R.id.linearLayoutRepeatingTransaction);
         if (mDrawerLinearRepeating != null) {
             mDrawerLinearRepeating.setVisibility(View.GONE);
         }
-        mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
-        mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
+        mDrawerTextUserName = findViewById(R.id.textViewUserName);
+        mDrawerTextTotalAccounts = findViewById(R.id.textViewTotalAccounts);
     }
 
     private boolean isDatabaseAvailable() {
@@ -1254,34 +1269,11 @@ public class MainActivity
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
         // do nothing if selecting the currently open database
-        String currentDb = MmexApplication.getDatabasePath(this);
+        String currentDb = new DatabaseManager(this).getDatabasePath();
         if (recentDb.localPath.equals(currentDb)) return;
 
         changeDatabase(recentDb);
     }
-
-//    /**
-//     * Pick the database file to use with any registered provider in the user's system.
-//     * @param startFolder start folder
-//     */
-//    private void pickFile(File startFolder) {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-//        intent.setType("file/*");
-//
-//        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
-//            try {
-//                startActivityForResult(intent, REQUEST_PICKFILE);
-//            } catch (Exception e) {
-//                Timber.e(e, "selecting a database file");
-//            }
-//        } else {
-//            Toast.makeText(this, R.string.error_intent_pick_file,
-//                    Toast.LENGTH_LONG).show();
-//        }
-//
-//        // Note that the selected file is handled in onActivityResult.
-//    }
 
 //    private void requestDatabasePassword() {
 //        // request password for the current database.
@@ -1342,7 +1334,7 @@ public class MainActivity
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
-        String currentPath = MmexApplication.getDatabasePath(context);
+        String currentPath = new DatabaseManager(context).getDatabasePath();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
 
@@ -1479,14 +1471,18 @@ public class MainActivity
         startActivity(intent);
     }
 
+    /**
+     * New migration - all entries must have the Remote Url as we are now using
+     * storage access framework.
+     */
     private void migrateRecentDatabases() {
         RecentDatabasesProvider databases = getDatabases();
-        // if there are entries with empty name, migrate:
+        // if there are entries with empty remote location, migrate:
         // - clean up the list
         // - create the default entry
         // - save the default entry.
         for (DatabaseMetadata entry : databases.map.values()) {
-            if (TextUtils.isEmpty(entry.localPath)) {
+            if (TextUtils.isEmpty(entry.remotePath)) {
                 databases.clear();
                 // create & save the default entry.
                 DatabaseMetadata currentEntry = databases.getCurrent();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,7 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.CursorAdapter;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +31,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
+import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -39,21 +39,24 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class PayeeReportAdapter
     extends CursorAdapter {
+    private static final String TAG = "PayeeReportAdapter";
     private LayoutInflater mInflater;
+    private Context mContext;
 
     @SuppressWarnings("deprecation")
     public PayeeReportAdapter(Context context, Cursor c) {
         super(context, c);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
+        TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)))) {
-            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.PAYEE)));
+        if (cursor.getColumnIndex(ViewMobileData.Payee) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
+            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
         } else {
             txtColumn1.setText(context.getString(R.string.empty_payee));
         }

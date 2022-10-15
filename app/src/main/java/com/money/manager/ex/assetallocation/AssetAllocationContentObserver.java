@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,10 +20,10 @@ package com.money.manager.ex.assetallocation;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v4.content.Loader;
-import android.util.Log;
 
 import com.money.manager.ex.domainmodel.AssetClass;
+
+import androidx.loader.content.Loader;
 
 /**
  * Content observer that glues data change notifications and Asset Allocation Loader.

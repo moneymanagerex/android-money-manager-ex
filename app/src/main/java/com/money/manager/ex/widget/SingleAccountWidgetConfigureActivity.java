@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.widget;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -29,17 +28,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.servicelayer.AccountService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * The configuration screen for the {@link SingleAccountWidget SingleAccountWidget} AppWidget.
  */
 public class SingleAccountWidgetConfigureActivity
-        extends Activity {
+        extends AppCompatActivity {
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;

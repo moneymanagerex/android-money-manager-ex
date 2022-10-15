@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,9 @@
  */
 package com.money.manager.ex.search;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,21 +36,23 @@ import android.widget.TextView;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.common.Calculator;
-import com.money.manager.ex.common.CalculatorActivity;
-import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.Calculator;
+import com.money.manager.ex.common.CalculatorActivity;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
@@ -66,12 +66,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -86,7 +88,7 @@ public class SearchParametersFragment
 
     private SearchParametersViewHolder viewHolder;
 
-    private Spinner spinAccount, spinStatus;
+    private Spinner spinAccount, spinStatus, spinCurrency;
     private EditText txtNotes;
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
@@ -94,6 +96,10 @@ public class SearchParametersFragment
     private ArrayList<String> mAccountNameList = new ArrayList<>();
     private ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private List<Account> mAccountList;
+    // currencies
+    private ArrayList<String> mCurrencySymbolList = new ArrayList<>();
+    private ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
+    private List<Currency> mCurrencies;
     // status item and values
     private ArrayList<String> mStatusItems = new ArrayList<>();
     private ArrayList<String> mStatusValues = new ArrayList<>();
@@ -124,7 +130,7 @@ public class SearchParametersFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
 
-        View view = inflater.inflate(R.layout.fragment_search_parameters, container, false);
+        View view = inflater.inflate(R.layout.search_parameters_fragment, container, false);
 
         // bind events
         ButterKnife.bind(this, view);
@@ -151,16 +157,36 @@ public class SearchParametersFragment
                 }
             }
         }
-        // create adapter for spinAccount
-        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mAccountNameList);
+        // Account selector
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mAccountNameList);
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
+
+        // Currency selector.
+        if (mCurrencies == null) {
+            CurrencyService currencyService = new CurrencyService(getContext());
+            mCurrencies = currencyService.getUsedCurrencies();
+            mCurrencies.add(0, null);
+            mCurrencySymbolList = new ArrayList<>();
+            for (Currency currency : mCurrencies) {
+                if (currency != null) {
+                    mCurrencySymbolList.add(currency.getCode());
+                    mCurrencyIdList.add(currency.getCurrencyId());
+                } else {
+                    mCurrencySymbolList.add("");
+                    mCurrencyIdList.add(Constants.NOT_SET);
+                }
+            }
+        }
+        ArrayAdapter<String> currencyAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mCurrencySymbolList);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinCurrency.setAdapter(currencyAdapter);
 
         //Payee
         viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PayeeActivity.class);
+                Intent intent = new Intent(getContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, RequestCodes.PAYEE);
             }
@@ -170,7 +196,7 @@ public class SearchParametersFragment
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
+                Intent intent = new Intent(getContext(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, RequestCodes.CATEGORY);
             }
@@ -186,14 +212,9 @@ public class SearchParametersFragment
             mStatusValues.addAll(Arrays.asList(getResources().getStringArray(R.array.status_values)));
         }
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
-
-        // Date from
-//        viewHolder.txtDateFrom.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateFrom));
-        // Date to
-//        viewHolder.txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateTo));
 
         // Icons
         UIHelper ui = new UIHelper(getContext());
@@ -209,7 +230,7 @@ public class SearchParametersFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
+        if ((resultCode == AppCompatActivity.RESULT_CANCELED) || data == null) return;
 
         SearchParameters searchParameters;
         String stringExtra;
@@ -269,7 +290,7 @@ public class SearchParametersFragment
         // 'Reset' toolbar item
         inflater.inflate(R.menu.menu_clear, menu);
         MenuItem item = menu.findItem(R.id.clearMenuItem);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
         super.onCreateOptionsMenu(menu,inflater);
@@ -381,8 +402,6 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-//        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-//        startActivityForResult(intent, RequestCodes.AMOUNT_FROM);
         Calculator.forActivity(getActivity())
                 .amount(amount)
                 .show(RequestCodes.AMOUNT_FROM);
@@ -395,8 +414,6 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-//        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-//        startActivityForResult(intent, RequestCodes.AMOUNT_TO);
         Calculator.forActivity(getActivity()).amount(amount).show(RequestCodes.AMOUNT_TO);
     }
 
@@ -419,6 +436,12 @@ public class SearchParametersFragment
                     )
             );
         }
+
+        // currency
+        if (searchParameters.currencyId != null && searchParameters.currencyId != Constants.NOT_SET) {
+            where.addStatement(QueryAllData.CURRENCYID, "=", searchParameters.currencyId);
+        }
+
         // transaction type
         if (searchParameters.deposit || searchParameters.transfer || searchParameters.withdrawal) {
             where.addStatement(QueryAllData.TransactionType + " IN (" +
@@ -436,11 +459,13 @@ public class SearchParametersFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", new MmxDate(searchParameters.dateFrom).toIsoString());
+            where.addStatement(QueryAllData.Date, " >= ",
+                    new MmxDate(searchParameters.dateFrom).toIsoDateString());
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", new MmxDate(searchParameters.dateTo).toIsoString());
+            where.addStatement(QueryAllData.Date, " <= ",
+                    new MmxDate(searchParameters.dateTo).toIsoDateString());
         }
         // payee
         if (searchParameters.payeeId != null) {
@@ -539,6 +564,17 @@ public class SearchParametersFragment
             }
         }
 
+        // Currency
+        if (this.spinCurrency != null) {
+            int position = spinCurrency.getSelectedItemPosition();
+            if (position != AdapterView.INVALID_POSITION) {
+                int currencyId = mCurrencyIdList.get(position);
+                if (currencyId != Constants.NOT_SET) {
+                    searchParameters.currencyId = currencyId;
+                }
+            }
+        }
+
         // Transaction Type
         searchParameters.deposit = viewHolder.cbxDeposit.isChecked();
         searchParameters.transfer = cbxTransfer.isChecked();
@@ -624,6 +660,7 @@ public class SearchParametersFragment
 
         // Account
         this.spinAccount.setSelection(0);
+        this.spinCurrency.setSelection(0);
 
         // Transaction Type
         viewHolder.cbxDeposit.setChecked(searchParameters.deposit);
@@ -657,21 +694,8 @@ public class SearchParametersFragment
             viewHolder.txtAmountTo.setTag(null);
         }
 
-        // Date from
-//        if (searchParameters.dateFrom == null) {
-//            viewHolder.txtDateFrom.setTag(null);
-//        }
-//        else {
-//            viewHolder.txtDateFrom.setTag(new MmxDate(searchParameters.dateFrom).toIsoString());
-//        }
+        // Dates
         viewHolder.txtDateFrom.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateFrom));
-        // Date to
-//        if (searchParameters.dateTo == null) {
-//            viewHolder.txtDateTo.setTag(null);
-//        }
-//        else {
-//            viewHolder.txtDateTo.setTag(new MmxDate(searchParameters.dateTo).toIsoString());
-//        }
         viewHolder.txtDateTo.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateTo));
 
         // Payee
@@ -688,17 +712,18 @@ public class SearchParametersFragment
     private void initializeUiControlVariables(View view) {
         if (view == null) return;
 
-        spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
+        spinAccount = view.findViewById(R.id.spinnerAccount);
+        spinCurrency = view.findViewById(R.id.spinnerCurrency);
 
         // Transaction Type checkboxes.
-        cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
-        cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
+        cbxTransfer = view.findViewById(R.id.checkBoxTransfer);
+        cbxWithdrawal = view.findViewById(R.id.checkBoxWithdrawal);
 
-        txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
+        txtSelectCategory = view.findViewById(R.id.textViewSelectCategory);
 
-        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+        spinStatus = view.findViewById(R.id.spinnerStatus);
 
         // notes
-        txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
+        txtNotes = view.findViewById(R.id.editTextNotes);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,17 +18,13 @@
 package com.money.manager.ex.settings;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.primitives.Ints;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -43,14 +39,16 @@ import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import timber.log.Timber;
 
 /**
- * A simple {@link Fragment} subclass.
+ *
  */
 public class PerDatabaseFragment
     extends PreferenceFragmentCompat {
@@ -81,7 +79,7 @@ public class PerDatabaseFragment
         switch (requestCode) {
             case REQUEST_PICK_CURRENCY:
                 // Returning from the currency picker screen.
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
                     int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
                     // set preference
                     CurrencyService utils = new CurrencyService(getActivity());
@@ -191,8 +189,11 @@ public class PerDatabaseFragment
             // get current month
             try {
                 String currentMonth = infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH);
-                if ((!TextUtils.isEmpty(currentMonth)) && NumberUtils.isNumber(currentMonth)) {
-                    int month = Integer.parseInt(currentMonth) - 1;
+
+                Integer month = Ints.tryParse(currentMonth);
+                if (month != null) {
+                    //int month = Integer.parseInt(currentMonth) - 1;
+                    month = month - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
                         lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
                         lstFinancialMonth.setValue(Integer.toString(month));
@@ -210,12 +211,10 @@ public class PerDatabaseFragment
                         if (value > -1 && value < lstFinancialMonth.getEntries().length) {
                             if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
                                 lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
-//                                return true;
                             }
                         }
                     } catch (Exception e) {
                         Timber.e(e, "changing the month of the financial year");
-//                        return false;
                     }
                     return false;
                 }

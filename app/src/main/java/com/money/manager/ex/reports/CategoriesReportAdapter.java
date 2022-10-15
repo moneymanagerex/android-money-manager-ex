@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,7 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.CursorAdapter;
+import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,6 +31,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
+import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -41,12 +41,14 @@ public class CategoriesReportAdapter
     extends CursorAdapter {
 
     private LayoutInflater mInflater;
+    private Context mContext;
 
 //    @SuppressWarnings("deprecation")
     public CategoriesReportAdapter(Context context, Cursor c) {
         super(context, c, false);
 
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
 
     @Override

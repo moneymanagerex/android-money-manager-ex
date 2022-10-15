@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -109,7 +109,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = new MmxDate(date).toIsoString();
+        String isoDate = new MmxDate(date).toIsoDateString();
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(getUri(),
@@ -148,7 +148,7 @@ public class StockHistoryRepository
     }
 
     public ContentValues getContentValues(String symbol, Money price, Date date) {
-        String isoDate = new MmxDate(date).toIsoString();
+        String isoDate = new MmxDate(date).toIsoDateString();
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);

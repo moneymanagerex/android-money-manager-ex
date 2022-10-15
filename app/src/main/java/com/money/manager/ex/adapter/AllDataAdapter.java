@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,7 @@ package com.money.manager.ex.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.CursorAdapter;
+import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
@@ -46,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 

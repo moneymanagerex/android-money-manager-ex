@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +26,10 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.StockFields;
-import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.HashMap;
+
+import androidx.cursoradapter.widget.CursorAdapter;
 
 /**
  * Cursor adapter for stock list (portfolio).
@@ -43,7 +43,7 @@ public class PortfolioCursorAdapter
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mHeadersAccountIndex = new HashMap<>();
         mCheckedPosition = new SparseBooleanArray();
-        mContext = context;
+        //mContext = context;
     }
 
     private LayoutInflater mInflater;

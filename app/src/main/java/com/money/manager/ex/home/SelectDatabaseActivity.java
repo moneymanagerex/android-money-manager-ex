@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,18 @@
 package com.money.manager.ex.home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.docstorage.DocFileMetadata;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
@@ -42,10 +46,11 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import timber.log.Timber;
 
+/**
+ * Activity for selecting a database in the initial setup of the app.
+ */
 public class SelectDatabaseActivity
     extends MmxBaseFragmentActivity {
-
-//    public static final int REQUEST_PICKFILE = 1;
 
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
@@ -71,17 +76,28 @@ public class SelectDatabaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case RequestCodes.SELECT_FILE:
-                if (resultCode != RESULT_OK) return;
-                String selectedPath = UIHelper.getSelectedFile(data);
-                if(TextUtils.isEmpty(selectedPath)) {
-                    new UIHelper(this).showToast(R.string.invalid_database);
-                    return;
-                }
+        if (resultCode != RESULT_OK) {
+            Timber.w("The activity result is not OK");
+            return;
+        }
 
-                onDatabaseSelected(selectedPath);
-                break;
+        switch (requestCode) {
+//            case RequestCodes.SELECT_FILE:
+//                //if (resultCode != RESULT_OK) return;
+//                String selectedPath = UIHelper.getSelectedFile(data);
+//                if(TextUtils.isEmpty(selectedPath)) {
+//                    new UIHelper(this).showToast(R.string.invalid_database);
+//                    return;
+//                }
+//
+//                onDatabaseSelected(selectedPath);
+//                break;
+
+            case RequestCodes.SELECT_DOCUMENT:
+                // file selected at a Storage Access Framework.
+                FileStorageHelper storageHelper = new FileStorageHelper(this);
+                storageHelper.selectDatabase(data);
+                onDatabaseSelected();
         }
     }
 
@@ -105,37 +121,17 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
-
-        // show the file picker
-        try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
-        } catch (Exception e) {
-            Timber.e(e, "opening file picker");
-        }
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showStorageFilePicker();
     }
 
-    @OnClick(R.id.setupSyncButton)
-    void onSetupSyncClick() {
-        Intent intent = new Intent(this, SyncPreferencesActivity.class);
-        startActivity(intent);
-    }
+//    @OnClick(R.id.setupSyncButton)
+//    void onSetupSyncClick() {
+//        Intent intent = new Intent(this, SyncPreferencesActivity.class);
+//        startActivity(intent);
+//    }
 
-    private void onDatabaseSelected(String dbPath) {
-        // check if the file is a valid database
-//        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
-            new UIHelper(this).showToast(R.string.invalid_database);
-            return;
-        }
-
-        // store db setting
-        new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
-        // Add the current db to the recent db list.
-        DatabaseMetadata currentDb = mDatabasesLazy.get().getCurrent();
-        mDatabasesLazy.get().add(currentDb);
-
+    private void onDatabaseSelected() {
         // open the main activity
         Intent intent = IntentFactory.getMainActivityNew(this);
         startActivity(intent);

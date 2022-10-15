@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import timber.log.Timber;
@@ -46,16 +47,13 @@ public class SyncBroadcastReceiver
 
 		// Trigger synchronization
 
-		Intent service = new Intent(context, SyncService.class);
-		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
+		Intent myIntent = new Intent(context, SyncService.class);
+		myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
-		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
+		myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE,
+				new DatabaseManager(context).getDatabasePath());
+		myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            context.startService(service);
-        } else {
-            context.startForegroundService(service);
-        }
+		SyncService.enqueueWork(context, myIntent);
 	}
 }

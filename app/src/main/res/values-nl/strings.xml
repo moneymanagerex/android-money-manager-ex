@@ -82,7 +82,7 @@
   <string name="account_status">Rekeningstatus</string>
   <string name="favourite_account">Voorkeursrekening</string>
   <string name="select_currency">Selecteer valuta</string>
-  <string name="checking">Betaalrekening</string>
+  <string name="checking">Zichtrekening</string>
   <string name="investment">InvesteringsRekening</string>
   <string name="investment_accounts">Investeringsrekeningen</string>
   <string name="term">Termijnrekening</string>
@@ -244,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d verlopen periodieke transactie</string>
   <string name="skip">Overslaan</string>
   <string name="enter">Voer in</string>
+  <string name="enter_amount">Vul bedrag in</string>
   <!-- 20121121 -->
   <string name="send_feedback">Feedback Versturen</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -389,6 +390,7 @@
   <string name="delete_others_selected_transaction">Weet je zeker dat je de %d geselecteerde transacties wilt verwijderen?</string>
   <string name="categories">Categorieën</string>
   <string name="payees">Ontvangers/betalers</string>
+  <string name="recurring_transactions">Periodieke transacties</string>
   <string name="theme_holo_light">Licht</string>
   <string name="new_account">Nieuwe rekening</string>
   <string name="create_new_account">Maak nieuwe rekening aan</string>
@@ -434,7 +436,7 @@
   <string name="sort_by_usage">Sorteer op gebruik</string>
   <string name="choose_sorting">Sorteren kiezen</string>
   <string name="credit_card">Creditcard</string>
-  <string name="cash_accounts">Betaalrekeningen</string>
+  <string name="cash_accounts">Cash rekeningen</string>
   <string name="bank_accounts">Bankrekeningen</string>
   <string name="term_accounts">Termijnrekeningen</string>
   <string name="credit_card_accounts">Creditcardrekeningen</string>
@@ -442,6 +444,7 @@
   <string name="montly_last_bussines_day">Maandelijkse (laatste werkdag)</string>
   <!-- languages -->
   <string name="locale_application">Taal voor deze app</string>
+  <string name="locale_ar">Arabisch</string>
   <string name="transaction_cancel_confirm">Weet u zeker dat de wijzigen niet opgeslagen moeten worden?</string>
   <string name="keep_editing">Doorgaan</string>
   <string name="discard">Annuleer</string>
@@ -693,12 +696,14 @@
   <string name="filenames_differ">De externe en lokale bestandsnamen verschillen. Synchronisatie wordt afgebroken.</string>
   <string name="both_files_modified">Zowel de lokale als de externe databasebestanden werden gewijzigd!</string>
   <string name="sync_conflict">Synchronisatieconflict</string>
+  <string name="no_remote_file">Selecteer het externe bestand om te gebruiken voor synchronisatie.</string>
   <!-- Warnings -->
   <string name="no_accounts_available_for_selection">Er zijn geen accounts beschikbaar voor selectie. Pas uw voorkeuren voor het filteren van rekeningen aan of markeer sommige rekeningen als favoriet.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Fout bij het interpreteren van de ingevoerde waarde</string>
   <string name="remote_file_not_found">Extern bestand niet gevonden</string>
   <string name="error_checking_remote">Fout bij het controleren op externe wijzigingen.</string>
+  <string name="no_remote_change_date">Wijzigingsdatum niet gevonden in metadata.</string>
   <!-- Select database screen -->
   <string name="intro_text">Om te starten met Money Manager ex heeft u een database bestand nodig om uw data in te stockeren. Selecteer een van de onderstaande beschikbare opties.</string>
   <string name="intro_create_db">U kunt een nieuw bestand maken en de eerste voorkeuren instellen.</string>
@@ -711,4 +716,10 @@
   <!-- Settings -->
   <string name="per_database_settings">Per-Database</string>
   <string name="save">Opslaan</string>
+  <string name="title_budget_show_simple_view">Eenvoudige budgetweergave tonen</string>
+  <string name="summary_budget_show_simple_view">Indien aangevinkt gebruiken budgetten de eenvoudige weergave</string>
+  <string name="shares">Aandelen</string>
+  <string name="loan">Lening</string>
+  <string name="loan_account">Leningen</string>
+  <string name="shares_accounts">Aandelen</string>
 </resources>

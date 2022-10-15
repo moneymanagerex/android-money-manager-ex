@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,17 +19,17 @@ package com.money.manager.ex.log;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 
 import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;
 
 /**
- * Logging tree for Production builds. Reports errors.
+ * Logging tree for Production builds. Reports errors to Crashlytics.
  * https://github.com/JakeWharton/timber/blob/master/timber-sample/src/main/java/com/example/timber/ExampleApp.java
  */
-
+@Deprecated
 public class CrashReportingTree extends Timber.Tree {
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
@@ -37,11 +37,11 @@ public class CrashReportingTree extends Timber.Tree {
             return;
         }
 
-        Crashlytics.log(priority, tag, message);
+//        Crashlytics.log(priority, tag, message);
 
         if (t != null) {
             if (priority == Log.ERROR) {
-                Crashlytics.logException(t);
+//                Crashlytics.logException(t);
             }
 //            else if (priority == Log.WARN) {
 //                Crashlytics.log.logWarning(t);

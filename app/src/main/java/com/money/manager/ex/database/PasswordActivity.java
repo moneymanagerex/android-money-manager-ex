@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@ package com.money.manager.ex.database;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +26,10 @@ import android.widget.EditText;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class PasswordActivity
-    extends Activity {
+    extends AppCompatActivity {
 
     public static final String EXTRA_PASSWORD = "password";
 
@@ -65,7 +66,7 @@ public class PasswordActivity
         result.putExtra(EXTRA_PASSWORD, password);
         result.putExtra(MainActivity.EXTRA_DATABASE_PATH, this.dbPath);
 
-        setResult(Activity.RESULT_OK, result);
+        setResult(AppCompatActivity.RESULT_OK, result);
         finish();
     }
 }

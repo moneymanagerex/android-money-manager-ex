@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,89 +16,35 @@
  */
 
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-// region Fix shortcuts.xml by manually replacing @string/application_id
-// See https://stackoverflow.com/a/44840413/6008532
-// Bug report https://issuetracker.google.com/issues/37124066
-
-//final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
-//
-//android.applicationVariants.all { variant ->
-//
-//    // Add the application id to the strings resources
-//    // We do this so that in the future if google fixes the
-//    // processing of the shortcuts.xml we can leave this
-//    // and remove the `mergeResources.doLast` block below
-//    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
-//
-//    // Manually replace @string/application_id with `variant.applicationId`
-//    variant.mergeResources.doLast {
-//        println("variant = ${variant.applicationId}")
-//
-//        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
-//        final String content = valuesFile.getText('UTF-8')
-//        final String updatedContent = content
-//                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
-//
-//        valuesFile.write(updatedContent, 'UTF-8')
-//    }
-//}
-
-//endregion
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 967
-        versionName getVersionAsDate() + "." + versionCode
+        versionCode 997
+        //versionName getVersionAsDate() + "." + versionCode
+        versionName "2021.05.13"
+        // $applicationId
+        setProperty("archivesBaseName", "ammx-$versionName")
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 15 // 4.0.3
-        targetSdkVersion 27
+        minSdkVersion 19 // Android 4.4
+        targetSdkVersion 30
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        // sourceCompatibility JavaVersion.VERSION_1_7
-        // targetCompatibility JavaVersion.VERSION_1_7
-        // sourceCompatibility JavaVersion.VERSION_1_8
-        // targetCompatibility JavaVersion.VERSION_1_8
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     sourceSets {
-        // main {
-        //     manifest.srcFile 'src/main/AndroidManifest.xml'
-        //     //java.srcDirs = ['src']
-        //     java.srcDirs = ['src/main/java']
-        //     resources.srcDirs = ['src/main/java']
-        //     aidl.srcDirs = ['src/main/java']
-        //     renderscript.srcDirs = ['src/main/java']
-        //     //res.srcDirs = ['res']
-        //     res.srcDirs = ['src/main/res']
-        //     assets.srcDirs = ['assets']
-        //     //jniLibs.srcDirs = ['libs']
-        // }
-        // // Unit tests
-        // robolectric {
-        //     java.srcDir file('src/test/java/')
-        //     resources.srcDir file('src/test/resources')
-        // }
-        // // UI Tests
-        // androidTest {
-        //     java.srcDirs = ['src/androidTest/java']
-        // }
-
-        // Move the tests to tests/java, tests/res, etc...
-        //instrumentTest.setRoot('tests')
-
         // Move the build types to build-types/<type>
         // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
         // This moves them out of them default location under src/<type>/... which would
@@ -109,47 +55,32 @@ android {
         release.setRoot('build-types/release')
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            // Disable fabric build id for debug builds
-            buildConfigField "boolean", "USE_CRASHLYTICS", "false"
-            ext.enableCrashlytics = false
-        }
-        beta {
-            applicationIdSuffix ".beta"
-            versionNameSuffix "-beta"
-
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    // append the version to the file name.
-                    def version = "-" + defaultConfig.versionName
-                    def fileName = output.outputFile.name
-                            .replace("app-", "ammx-")
-                            .replace(".apk", version + ".apk")
-                    outputFileName = fileName
-                }
-            }
-
-            // enable crashlytics/fabric
-            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
-            ext.enableCrashlytics = true
-        }
-    }
+//    buildTypes {
+//        debug {
+//            applicationIdSuffix ".debug"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//        beta {
+//            applicationIdSuffix ".beta"
+//            versionNameSuffix "-beta"
+//
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-beta"
+//        }
+//        release {
+//            minifyEnabled false
+//            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            versionNameSuffix "-release"
+//        }
+//    }
 
     dataBinding {
         enabled = true
@@ -190,34 +121,27 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-        unitTests.all {
-            systemProperty 'robolectric.offline', 'true'
+//        unitTests.all {
+//            systemProperty 'robolectric.offline', 'true'
+//        }
+        // http://robolectric.org/getting-started/
+        unitTests {
+            includeAndroidResources = true
         }
     }
 }
 
 dependencies {
-//    compile(name:'cloudrail-si-debug', ext:'aar')
-    compile(
+    // api ...
+    implementation project(':MMEX_Icon_Font')
+    implementation project(':androidSVG')
+    implementation project(path: ':money')
+
+    implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , project(':MMEX Icon Font')
-            , project(':androidSVG_12')      // androidSVG
-            , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.21.0'
-            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-            , supportDependencies.core
-            , supportDependencies.support
-            , supportDependencies.appCompat
-            , supportDependencies.recyclerView
-            , supportDependencies.cardView
-            , supportDependencies.design
-            , supportDependencies.preference
-            , supportDependencies.supportAnnotation
-            , supportDependencies.gridLayout
-            , 'com.opencsv:opencsv:4.0'
+            , 'com.opencsv:opencsv:4.1'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
-            , 'commons-io:commons-io:2.5'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
             // , 'com.afollestad.material-dialogs:core:0.9.0.2'
             // , 'com.afollestad.material-dialogs:commons:0.9.0.2'
@@ -230,25 +154,19 @@ dependencies {
             // JavaMoney
             // , 'javax.money:money-api-bp:1.0.1'
             , 'org.javamoney:moneta-bp:1.1'
-            //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8.2'
-            , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
-            , 'com.squareup.retrofit2:converter-gson:2.3.0'
-            , 'com.squareup.retrofit2:converter-scalars:2.3.0'
-            , 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
             // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
-            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
-            , 'org.jsoup:jsoup:1.11.1'              // HTML parsing.
-            , 'com.google.guava:guava:23.0-android' // collection libraries
-            , 'com.android.support:multidex:1.0.2'  // multidex support
+            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
+            , 'org.jsoup:jsoup:1.11.2'              // HTML parsing.
+            , 'androidx.multidex:multidex:2.0.0'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
             , 'io.reactivex:rxjava:1.3.3'
             // , 'io.reactivex.rxjava2:rxjava:2.0.1'
-            , 'com.squareup.sqlbrite:sqlbrite:1.1.2'
-            , 'com.jakewharton.timber:timber:4.6.0'
+            , 'com.squareup.sqlbrite:sqlbrite:1.1.2' // use SqlDelight
+            , 'com.jakewharton.timber:timber:4.6.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
             // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
             // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
@@ -257,43 +175,56 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:2.9.5@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:2.9.5@aar'
-            , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
+            , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:3.0.3@aar'
+            , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
-            , 'com.evernote:android-job:1.2.0'
+            , 'com.evernote:android-job:1.2.5'
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true
-    }
-    compile('com.mikepenz:aboutlibraries:5.9.7@aar') {
+    implementation supportDependencies.core
+    implementation supportDependencies.support
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.cardView
+    implementation supportDependencies.design
+    implementation supportDependencies.preference
+    implementation supportDependencies.supportAnnotation
+    implementation supportDependencies.gridLayout
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    api 'com.google.guava:guava:27.0.1-android' // collection libraries
+
+    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
         transitive = true
     }
     // Parceler
-    compile 'org.parceler:parceler-api:1.1.9'
-    annotationProcessor 'org.parceler:parceler:1.1.9'
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
     // Dagger 2
-    compile 'com.google.dagger:dagger:2.12'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.12'
+    implementation 'com.google.dagger:dagger:2.28.3'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     // IcePick
-    compile 'frankiesardo:icepick:3.2.0'
+    implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
-    testCompile(
-            'commons-io:commons-io:2.5',
+    testImplementation(
+            // Robolectric
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.5.1',
+            'org.assertj:assertj-core:3.9.1',
+            'org.robolectric:robolectric:3.8',
             'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.5.1',
-            'org.robolectric:shadows-httpclient:3.5.1',
+            'org.robolectric:shadows-multidex:3.8',
+            'org.robolectric:shadows-httpclient:3.8',
             //'com.squareup.assertj:assertj-android:1.1.1',
-            //'org.assertj:assertj-core:3.8.0',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
@@ -304,19 +235,19 @@ dependencies {
             // "org.mockito:mockito-core:1.+"
             , 'io.selendroid:selendroid-client:0.17.0'
     )
-    testCompile('io.selendroid:selendroid-standalone:0.17.0') {
+    testImplementation('io.selendroid:selendroid-standalone:0.17.0') {
         exclude group: 'io.selendroid', module: 'selendroid-server'
         exclude group: 'io.selendroid', module: 'android-driver-app'
     }
 
     // UI testing
-    androidTestCompile(
-            'com.android.support.test:runner:0.5',
+    androidTestImplementation(
+            'androidx.test:runner:1.1.0-alpha4',
             // Set this dependency to use JUnit 4 rules
-            'com.android.support.test:rules:0.5',
+            'androidx.test:rules:1.1.0-alpha4',
             // Set this dependency to build and run Espresso tests
-            'com.android.support.test.espresso:espresso-core:2.2.2',
-            'com.android.support.test.espresso:espresso-contrib:2.2.2',
+            'androidx.test.espresso:espresso-core:3.1.0-alpha4',
+            'androidx.test.espresso:espresso-contrib:3.1.0-alpha4',
             // add this for intent mocking support
             // 'com.android.support.test.espresso:espresso-intents:2.2.2'
             // add this for webview testing support
@@ -325,7 +256,7 @@ dependencies {
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
             'com.squareup.assertj:assertj-android:1.2.0',
-            'org.assertj:assertj-core:3.8.0',
+            'org.assertj:assertj-core:3.9.1',
             // Robotium, UI testing
             'com.jayway.android.robotium:robotium-solo:5.6.3'
             // JBehave
@@ -343,23 +274,4 @@ static def getVersionAsDate() {
     def date = new Date()
     def formattedDate = date.format('yyyy.MM.dd')
     return formattedDate
-}
-
-/*
-    Dynamically generate fabric.properties from environment variables.
- */
-afterEvaluate {
-    initFabricPropertiesIfNeeded()
-}
-
-def initFabricPropertiesIfNeeded() {
-    // fabric.properties file needs to be in /app folder.
-    def propertiesFile = file('fabric.properties')
-    if (!propertiesFile.exists()) {
-        def commentMessage = "This is autogenerated fabric property from system environment to prevent key to be committed to source control."
-        ant.propertyfile(file: "fabric.properties", comment: commentMessage) {
-            entry(key: "apiSecret", value: crashlyticsApisecret)
-            entry(key: "apiKey", value: crashlyticsApikey)
-        }
-    }
 }

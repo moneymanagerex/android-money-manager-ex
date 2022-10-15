@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,13 +23,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -76,6 +72,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -85,7 +85,7 @@ import timber.log.Timber;
  */
 public class AllDataListFragment
     extends BaseListFragment
-    implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+    implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
@@ -815,6 +815,10 @@ public class AllDataListFragment
     private void startEditAccountTransactionActivity(Integer transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
+
+        //Set the source
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "AllDataListFragment.java");
+
         // check transId not null
         if (transId != null) {
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
@@ -949,6 +953,7 @@ public class AllDataListFragment
             intents[i] = new Intent(getActivity(), CheckingTransactionEditActivity.class);
             intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, ids[i]);
             intents[i].setAction(Intent.ACTION_PASTE);
+            intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "AllDataListFragment.java");
         }
         getActivity().startActivities(intents);
     }

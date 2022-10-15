@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +34,10 @@ public class RequestCodes {
     public static final int PASSCODE = 7;
     public static final int PAYEE = 8;
     public static final int PRICE = 9;
+    /**
+     * Used when selecting a database from a storage access framework.
+     */
+    public static final int SELECT_DOCUMENT = 15;
     public static final int SELECT_FILE = 6;
     public static final int SORT_ORDER = 13;
     public static final int SPLIT_TX = 14;

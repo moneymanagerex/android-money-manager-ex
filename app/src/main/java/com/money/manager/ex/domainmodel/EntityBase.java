@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ public class EntityBase
 //    }
 
     protected void setDate(String fieldName, Date value) {
-        String dateString = new MmxDate(value).toIsoString();
+        String dateString = new MmxDate(value).toIsoDateString();
         contentValues.put(fieldName, dateString);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,9 +25,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import java.io.PrintWriter;
@@ -36,9 +34,8 @@ import java.io.StringWriter;
 /**
  * Deprecated. Replace with calls to Timber, which uses the new production logger.
  * Default exception handler.
- * Used for reporting uncaught exceptions before using Crashlytics.
+ * This class was used for reporting uncaught exceptions before using Crashlytics.
  */
-@Deprecated
 public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {
@@ -85,7 +82,7 @@ public class ExceptionHandler
         showMessage(errorMessage);
 
         //Crashlytics.getInstance().crash();
-        Crashlytics.logException(t);
+//        Crashlytics.logException(t);
     }
 
     private String getLogcat() {
@@ -240,7 +237,7 @@ public class ExceptionHandler
             return Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             String message = "could not retrieve build number";
-            Crashlytics.log(message);
+//            Crashlytics.log(message);
             return message;
         }
     }

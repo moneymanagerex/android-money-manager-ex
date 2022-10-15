@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,13 +17,8 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.money.manager.ex.BuildConfig;
@@ -32,13 +27,13 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,6 +42,10 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import dagger.Lazy;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -133,7 +132,7 @@ public class SyncPreferenceFragment
      */
 
     private void handleFileSelection(int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) return;
+        if (resultCode != AppCompatActivity.RESULT_OK || data == null) return;
 
         // get value
         String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
@@ -204,30 +203,30 @@ public class SyncPreferenceFragment
             public boolean onPreferenceChange(Preference preference, Object o) {
                 final SyncManager sync = getSyncManager();
                 // set the new provider
-                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
+//                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
 
                 // log in to the provider immediately and update to persistence.
-                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-                    sync.login()
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleSubscriber<Void>() {
-                                @Override
-                                public void onSuccess(Void value) {
-                                    // nothing.
-                                }
-
-                                @Override
-                                public void onError(Throwable error) {
-                                    String errorMessage = error.getMessage();
-                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
-                                        Timber.w("authentication cancelled");
-                                    } else {
-                                        Timber.e(error, "logging in to cloud provider");
-                                    }
-                                }
-                            })
-                );
+//                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
+//                    sync.login()
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new SingleSubscriber<Void>() {
+//                                @Override
+//                                public void onSuccess(Void value) {
+//                                    // nothing.
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable error) {
+//                                    String errorMessage = error.getMessage();
+//                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
+//                                        Timber.w("authentication cancelled");
+//                                    } else {
+//                                        Timber.e(error, "logging in to cloud provider");
+//                                    }
+//                                }
+//                            })
+//                );
 
                 return true;
             }
@@ -239,8 +238,8 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // show the file browser/picker.
-                Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
-                startActivityForResult(intent, REQUEST_REMOTE_FILE);
+//                Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
+//                startActivityForResult(intent, REQUEST_REMOTE_FILE);
 
                 return false;
             }
@@ -306,24 +305,24 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 final SyncManager sync = getSyncManager();
-                sync.logout()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<Void>() {
-                        @Override
-                        public void onSuccess(Void value) {
-                            sync.resetPreferences();
-                            sync.stopSyncServiceAlarm();
-
-                            new Core(getActivity()).alert(R.string.preferences_reset);
-
-                            getActivity().recreate();
-                        }
-
-                        @Override
-                        public void onError(Throwable error) {
-                            Timber.e(error, "logging out the cloud provider");                        }
-                    });
+//                sync.logout()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new SingleSubscriber<Void>() {
+//                        @Override
+//                        public void onSuccess(Void value) {
+//                            sync.resetPreferences();
+//                            sync.stopSyncServiceAlarm();
+//
+//                            new Core(getActivity()).alert(R.string.preferences_reset);
+//
+//                            getActivity().recreate();
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable error) {
+//                            Timber.e(error, "logging out the cloud provider");                        }
+//                    });
                 return false;
             }
         });
@@ -381,7 +380,7 @@ public class SyncPreferenceFragment
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
-        String localPath = new MmxDatabaseUtils(getActivity())
+        String localPath = new DatabaseManager(getActivity())
                 .getDefaultDatabaseDirectory()
                 .concat(File.separator).concat(fileName);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,18 +16,18 @@
  */
 package com.money.manager.ex.currency;
 
-import android.app.Activity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.money.manager.ex.R;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * View Holder pattern for the currencies list.
  */
 public class CurrencyEditViewHolder {
-    public static CurrencyEditViewHolder initialize(Activity activity) {
+    public static CurrencyEditViewHolder initialize(AppCompatActivity activity) {
         CurrencyEditViewHolder holder = new CurrencyEditViewHolder();
 
         holder.edtCurrencyName = (EditText) activity.findViewById(R.id.editTextCurrencyName);

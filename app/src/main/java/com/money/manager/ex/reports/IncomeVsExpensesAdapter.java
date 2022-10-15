@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -43,11 +43,13 @@ public class IncomeVsExpensesAdapter
     extends CursorAdapter {
 
     private LayoutInflater mInflater;
+    private Context mContext;
 
     @SuppressWarnings("deprecation")
     public IncomeVsExpensesAdapter(Context context, Cursor c) {
         super(context, c);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
 
     @Override

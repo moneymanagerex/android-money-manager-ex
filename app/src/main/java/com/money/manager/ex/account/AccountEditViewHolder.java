@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.account;
 
-import android.app.Activity;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,6 +26,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
  * ViewHolder pattern for the account edit screen.
  */
 public class AccountEditViewHolder {
-    public AccountEditViewHolder(Activity parent) {
+    public AccountEditViewHolder(AppCompatActivity parent) {
         ButterKnife.bind(this, parent);
     }
 

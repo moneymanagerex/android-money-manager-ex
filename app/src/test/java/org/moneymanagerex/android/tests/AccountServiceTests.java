@@ -16,6 +16,7 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
@@ -31,24 +32,30 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 
 /**
  * Account Service tests.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountServiceTests {
 
     private AccountService testObject;
 
-    //@Before
+    @Before
     public void setup() {
         // initialize support for activities (UI)
 //        this.controller = UnitTestHelper.getController(MainActivity.class);
 //        this.activity = UnitTestHelper.getActivity(this.controller);
+        //Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         // initialize database
         // UnitTestHelper.setupContentProvider();
@@ -57,21 +64,18 @@ public class AccountServiceTests {
         testObject = new AccountService(context);
     }
 
-    //@After
+    @After
     public void tearDown() {
-        // Reset database instance between tests.
-        UnitTestHelper.teardownDatabase();
-
         // Destroy the activity controller.
 //        this.controller.destroy();
 
         testObject = null;
     }
 
-//    @Test
-//    public void instantiation() {
-//        assertThat(testObject).isNotNull();
-//    }
+    @Test
+    public void instantiation() {
+        assertThat(testObject, notNullValue());
+    }
 
     //@Test
     public void getAccountCurrency() {
@@ -91,6 +95,6 @@ public class AccountServiceTests {
         String actual = testObject.getAccountCurrencyCode(accountId);
 
         // Then
-//        assertThat(actual).isEqualTo(expectedCode);
+        assertThat(actual, equalTo(expectedCode));
     }
 }

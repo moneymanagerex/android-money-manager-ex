@@ -16,9 +16,7 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
+import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
@@ -43,19 +42,26 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.Fragment;
 import info.javaperformance.money.MoneyFactory;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Test Search activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class SearchActivityTests {
 
     private ActivityController<SearchActivity> controller;
     private SearchActivity activity;
 
-    //@Before
+    @Before
     public void setUp() {
         this.controller = UnitTestHelper.getController(SearchActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
@@ -64,16 +70,15 @@ public class SearchActivityTests {
         UnitTestHelper.setupLog();
     }
 
-    //@After
+    @After
     public void tearDown() {
         this.controller.destroy();
-        UnitTestHelper.teardownDatabase();
     }
 
-//    @Test
-//    public void activityOpens() {
-//        assertThat(this.activity).isNotNull();
-//    }
+    @Test
+    public void activityOpens() {
+        assertThat(this.activity, notNullValue());
+    }
 
     /**
      * Add two transaction for Dining Out. Search for this sub/category and confirm that the
@@ -112,7 +117,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
                 categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
@@ -164,7 +169,7 @@ public class SearchActivityTests {
         Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(this.activity,
 //            CategoryListActivity.class));
-//        assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
+        assertThat(shadowActivity.getNextStartedActivity(), equalTo(expectedIntent));
 
         // Now simulate that we received the category.
 
@@ -172,7 +177,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
             categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
@@ -197,7 +202,7 @@ public class SearchActivityTests {
         View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
 //        assertThat(totalNumberView).isInstanceOf(TextView.class);
         TextView totalNumberTextView = (TextView) totalNumberView;
-//        assertThat(totalNumberTextView.getText()).isEqualTo("KM 0.00");
+        assertThat(totalNumberTextView.getText().toString(), equalTo("KM 0.00"));
     }
 
 }

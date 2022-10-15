@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,19 +18,12 @@
 package com.money.manager.ex.transactions;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.common.CommonSplitCategoryLogic;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -42,9 +35,9 @@ import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 

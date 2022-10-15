@@ -116,7 +116,7 @@
   <!-- currency -->
   <string name="currency_name">Nome da moeda</string>
   <string name="currency_symbol">Símbolo de moeda</string>
-  <string name="delete_currency">Apagar moeda</string>
+  <string name="delete_currency">Excluir Moeda</string>
   <string name="unit_name">Nome da unidade</string>
   <string name="cents_name">Nome dos centésimos</string>
   <string name="prefix_symbol">Símbolo no prefixo</string>
@@ -718,4 +718,6 @@
   <string name="save">Salvar</string>
   <string name="title_budget_show_simple_view">Mostrar orçamento simples vista</string>
   <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
+  <string name="loan">Empréstimo</string>
+  <string name="loan_account">Contas de empréstimo</string>
 </resources>

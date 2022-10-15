@@ -244,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d esedékes ismétlődő tranzakció</string>
   <string name="skip">Átugor</string>
   <string name="enter">Belépés</string>
+  <string name="enter_amount">Mennyiség Megadása</string>
   <!-- 20121121 -->
   <string name="send_feedback">Visszajelzés küldése</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -388,6 +389,7 @@
   <string name="delete_others_selected_transaction">Biztosan törölni szeretné a kiválasztott %d tranzakciót?</string>
   <string name="categories">Kategóriák</string>
   <string name="payees">Partnerek</string>
+  <string name="recurring_transactions">Ismétlődő Tranzakciók</string>
   <string name="theme_holo_light">Holo világos</string>
   <string name="new_account">Új számla</string>
   <string name="create_new_account">Új számla felvitele</string>
@@ -441,6 +443,7 @@
   <string name="montly_last_bussines_day">Havi (utolsó munkanap)</string>
   <!-- languages -->
   <string name="locale_application">Alkalmazás nyelve</string>
+  <string name="locale_ar">Arab</string>
   <string name="transaction_cancel_confirm">Biztosan eldobja a változásokat?</string>
   <string name="keep_editing">Szerkesztés folytatása</string>
   <string name="discard">Elvet</string>
@@ -590,7 +593,10 @@
   <string name="asset_allocation_diff_threshold">Eszközallokáció különbség küszöbértéke</string>
   <string name="asset_allocation_diff_threshold_summary">A küszöbérték, ami aktiválja a különböző értékek szinezését.</string>
   <string name="error_saving_record">Hiba a rekord mentésekor</string>
+  <string name="error_loading_currency">Hiba a pénznem betöltésekor</string>
   <string name="symbol_required">A Szimbólum kötelező</string>
+  <string name="recurrence_type_not_set">Nincs beállítva ismétlődéstípus</string>
+  <string name="invalid_recurrence_type">Érvénytelen ismétlődéstípus</string>
   <string name="account_not_found">A fiók nem található</string>
   <string name="favourite">Kedvenc</string>
   <!-- budgets -->
@@ -600,6 +606,8 @@
   <string name="budget_month">Költségvetés hónap</string>
   <string name="copy">Másolás</string>
   <string name="print">Nyomtatás</string>
+  <string name="save_as_html">Mentés HTML-ként</string>
+  <string name="no_network">Nincs elérhető hálózat.</string>
   <!-- Currencies -->
   <string name="currencies">Pénznemek</string>
   <string name="currencies_used">Pénznemek, használt</string>
@@ -614,16 +622,39 @@
   <string name="question_update_currency_exchange_rates">Szeretné frissíteni az árfolyamokat?</string>
   <string name="error_update_currency_exchange_rate">Hiba történt az árfolyamok frissítése közben</string>
   <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
+  <string name="active_currencies">Aktív Pénznemek</string>
+  <string name="inactive_currencies">Inaktív Pénznemek</string>
+  <string name="all_currencies">Minden Pénznem</string>
   <!-- Investment -->
+  <string name="portfolio">Portfólió</string>
+  <string name="exchange_rate_provider">Árfolyam szolgáltató</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Van egy frissített adatbázis a Dropbox-ban</string>
   <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
   <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
+  <string name="download_from_drobpox">Letöltés Dropbox-ból</string>
+  <string name="upload_to_drobpox">Feltöltés Dropbox-ba</string>
+  <string name="dropbox_link">Összekapcsolás Dropbox-al</string>
+  <string name="dropbox_unlink">Leválasztás a Dropbox-ról</string>
+  <string name="dropbox_downloadProgress">Fájl letöltése a Dropbox-ról. Kérem várjon&#8230;</string>
+  <string name="dropbox_uploadProgress">Fájl feltöltése a Dropbox-ba. Kérem várjon&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox fájl</string>
+  <string name="db_not_dropbox">A jelenlegi adatbázís nincs szinkronizálva. Kérem, állítsa be a Dropbox szinkronizálást.</string>
   <!-- Synchronization -->
   <string name="synchronization">Szinkronizálás</string>
+  <string name="sync_enabled">Szinkronizálás engedélyezve</string>
+  <string name="sync_provider">Szolgáltató</string>
+  <string name="remote_file">Távoli fájl</string>
+  <string name="please_wait">Kérem várjon</string>
+  <string name="reset_preferences">Beállítások visszaállítása</string>
+  <string name="sync_downloading">Adatbázis letöltés alatt. Kérem várjon&#8230;</string>
+  <string name="sync_uploading">Adatbázis feltöltése. Kérem várjon&#8230;</string>
+  <string name="syncProgress">Fájl szinkronizálása. Kérem várjon&#8230;</string>
   <string name="database_is_synchronized">Az adatbázis naprakész</string>
+  <string name="upload_file_complete">Az adatbázis feltöltése sikeres</string>
   <string name="every_5_minutes">5 percenként</string>
+  <string name="every_10_minutes">10 percenként</string>
   <string name="every_15_minutes">15 percenként</string>
   <string name="every_30_minutes">30 percenként</string>
   <string name="every_hour">Óránként</string>
@@ -632,12 +663,19 @@
   <string name="every_6_hours">6 óránként</string>
   <string name="every_12_hours">12 óránként</string>
   <string name="never">Soha</string>
+  <string name="title_sync_upload_immediate">Az adatbázis azonnali feltöltése módosításkor</string>
   <string name="summary_sync_upload_immediate">Ez a beállítás lehetővé teszi az automatikus feltöltést, amint változik az adatbázis</string>
+  <string name="file_exists">Létező fájl</string>
+  <string name="synchronization_disabled">A szinkronizálás ki van kapcsolva.</string>
+  <string name="sync_conflict">Szinkronizálási hiba</string>
   <!-- Warnings -->
   <!-- Errors -->
+  <string name="remote_file_not_found">Távoli fájl nem található</string>
   <!-- Select database screen -->
   <!-- Create Database screen -->
+  <string name="select_language">Nyelv kiválasztása</string>
   <string name="run">Money Manager Ex indítása</string>
+  <string name="create_db_info_1">Adatbázis alapértelmezett helye:</string>
   <!-- Settings -->
   <string name="per_database_settings">Adatbázis beállításai</string>
   <string name="save">Mentés</string>

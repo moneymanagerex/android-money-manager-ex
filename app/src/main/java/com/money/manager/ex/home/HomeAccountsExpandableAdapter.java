@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -173,6 +173,14 @@ public class HomeAccountsExpandableAdapter
                 holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase)
+                        .sizeDp(iconSize).color(iconColor);
+                holder.imgAccountType.setImageDrawable(icon);
+            } else if (AccountTypes.LOAN.toString().equalsIgnoreCase(accountType)) {
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)
+                        .sizeDp(iconSize).color(iconColor);
+                holder.imgAccountType.setImageDrawable(icon);
+            } else if (AccountTypes.SHARES.toString().equalsIgnoreCase(accountType)) {
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
                         .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             }

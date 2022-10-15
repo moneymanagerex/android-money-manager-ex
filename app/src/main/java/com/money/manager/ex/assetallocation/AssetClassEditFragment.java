@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -38,6 +36,8 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -46,9 +46,6 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AssetClassEditFragment
     extends Fragment {
-
-//    public static final int CONTEXT_MENU_DELETE = 1;
-    public static final int REQUEST_ASSET_CLASS_PARENT = 1;
 
     public AssetClassEditFragment() {
     }
@@ -86,7 +83,7 @@ public class AssetClassEditFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != Activity.RESULT_OK || data == null) return;
+        if (resultCode != AppCompatActivity.RESULT_OK || data == null) return;
 
         Money amount;
 
@@ -175,7 +172,7 @@ public class AssetClassEditFragment
                 // send the allocation id to exclude from the selection list.
                 Intent intent = new Intent(getContext(), AssetClassListActivity.class);
                 intent.putExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, assetClass.getId());
-                startActivityForResult(intent, REQUEST_ASSET_CLASS_PARENT);
+                startActivityForResult(intent, RequestCodes.ASSET_CLASS);
             }
         };
 

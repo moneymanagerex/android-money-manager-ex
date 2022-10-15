@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,7 @@ package com.money.manager.ex.core.file;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -94,8 +93,6 @@ public class TextFileExport {
     public File createExportFile(String fileName) throws IOException {
         File path = getExportDirectory();
 
-//        tempFile = File.createTempFile(localPath, ".qif", path);
-
         File file = new File(path, fileName);
         boolean fileCreated = file.createNewFile();
         if (!fileCreated) {
@@ -113,7 +110,7 @@ public class TextFileExport {
             writer.write(content);
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return false;
         }
 

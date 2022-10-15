@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -114,6 +114,7 @@ $57.300000
 
         // Translation table:
         HashMap<String, String> accountDictionary = new HashMap<>();
+        accountDictionary.put(AccountTypes.CASH.toString(), "Cash");
         accountDictionary.put(AccountTypes.CHECKING.toString(), "Bank");
         accountDictionary.put(AccountTypes.TERM.toString(), "Bank");
         accountDictionary.put(AccountTypes.CREDIT_CARD.toString(), "CCard");

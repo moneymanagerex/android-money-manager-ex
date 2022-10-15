@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -68,4 +68,9 @@ public class PreferenceConstants {
     // Recent files preferences
     public static final String RECENT_DB_PREFERENCES = "com.money.manager.ex.recent_db";
     public static final String SYNC_PREFERENCES = "com.money.manager.ex.sync_preferences";
+
+    //SMS Prefs
+    public static final Integer PREF_SMS_AUTOMATIC_TRANSACTIONS = R.string.pref_sms_auto_trans;
+    public static final Integer PREF_SMS_TRANS_STATUS_NOTIFICATION = R.string.pref_sms_trans_status_notification;
+
 }

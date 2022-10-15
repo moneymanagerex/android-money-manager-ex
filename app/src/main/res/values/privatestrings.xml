@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
     tools:ignore="MissingTranslation">
 
     <string name="view_user_size">user_size</string>
-    <string name="application_copyright" translatable="false">© 2012–2015 Android Money Manager Ex Project</string>
+    <string name="application_copyright" translatable="false" formatted="true">© 2012–%1$d Android Money Manager Ex Project</string>
     <!-- text from android manifest -->
     <string name="dashclock_extension_summary">Displays the summary of Money Manager Ex for Android</string>
     <string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>

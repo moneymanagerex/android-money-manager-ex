@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,6 @@ package com.money.manager.ex.reports;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,11 +40,14 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import dagger.Lazy;
 
 public abstract class BaseReportFragment
     extends BaseListFragment
-    implements LoaderCallbacks<Cursor> {
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected static final int ID_LOADER = 1;
     protected static final String KEY_ITEM_SELECTED = "PayeeReportFragment:ItemSelected";
@@ -211,8 +211,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoString() +
-                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoString() + "'";
+            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
+                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
         }
 
         //check item
@@ -235,10 +235,10 @@ public abstract class BaseReportFragment
         outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
         if (mDateFrom != null) {
-            outState.putString(KEY_FROM_DATE, new MmxDate(mDateFrom).toIsoString());
+            outState.putString(KEY_FROM_DATE, new MmxDate(mDateFrom).toIsoDateString());
         }
         if (mDateTo != null) {
-            outState.putString(KEY_TO_DATE, new MmxDate(mDateTo).toIsoString());
+            outState.putString(KEY_TO_DATE, new MmxDate(mDateTo).toIsoDateString());
         }
     }
 
@@ -286,8 +286,9 @@ public abstract class BaseReportFragment
                     mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
                     String whereClause =
-                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoString() + "' AND " +
-                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoString() + "'";
+                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                "' AND " +
+                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
                     Bundle args = new Bundle();
                     args.putString(KEY_WHERE_CLAUSE, whereClause);

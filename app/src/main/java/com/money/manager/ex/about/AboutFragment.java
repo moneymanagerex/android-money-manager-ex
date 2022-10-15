@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@ package com.money.manager.ex.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -44,7 +43,9 @@ import com.money.manager.ex.core.Core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {
@@ -68,15 +69,20 @@ public class AboutFragment extends Fragment {
         }
 
         // Version application
-        TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
+        TextView txtVersion = view.findViewById(R.id.textViewVersion);
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
-//        build = core.getAppVersionBuild();
-        txtVersion.setText(getString(R.string.version) + " " + version);
+        int build = core.getAppVersionCode();
+        txtVersion.setText(getString(R.string.version) + " " + version + " (" + Integer.toString(build) + ")");
         // + " (" + getString(R.string.build) + " " + build + ")"
+        //Copyright
+        TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String copyrightString = getString(R.string.application_copyright, currentYear);
+        textViewCopyright.setText(copyrightString);
 
         // Send Feedback
-        TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
+        TextView txtFeedback = view.findViewById(R.id.textViewLinkFeedback);
         text = "<u>" + txtFeedback.getText() + "</u>";
         txtFeedback.setText(Html.fromHtml(text));
         txtFeedback.setOnClickListener(new OnClickListener() {
@@ -89,13 +95,14 @@ public class AboutFragment extends Fragment {
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
                 } catch (Exception e) {
+                    Timber.e(e);
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         // rate application
-        TextView txtRate = (TextView) view.findViewById(R.id.textViewLinkRate);
+        TextView txtRate = view.findViewById(R.id.textViewLinkRate);
         text = "<u>" + txtRate.getText() + "</u>";
         txtRate.setText(Html.fromHtml(text));
         txtRate.setMovementMethod(LinkMovementMethod.getInstance());
@@ -104,7 +111,7 @@ public class AboutFragment extends Fragment {
         txtRate.setOnClickListener(clickListenerRate);
 
         // application issue tracker
-        TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
+        TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
         text = "<u>" + txtIssues.getText() + "</u>";
         txtIssues.setText(Html.fromHtml(text));
         txtIssues.setMovementMethod(LinkMovementMethod.getInstance());
@@ -212,6 +219,7 @@ public class AboutFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
                 startActivity(intent);
             } catch (Exception e) {
+                Timber.e(e);
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }

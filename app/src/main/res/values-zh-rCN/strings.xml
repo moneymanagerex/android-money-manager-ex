@@ -227,7 +227,7 @@
   <string name="days_overdue">天 - 到期</string>
   <string name="days_remaining">天后执行</string>
   <string name="new_edit_repeating_transaction">新建/编辑周期性交易</string>
-  <string name="due_date">截止日期</string>
+  <string name="due_date">到期日期</string>
   <string name="next_occurrence">下个到期日</string>
   <string name="payment_date">付款日期</string>
   <string name="repeats">交易周期</string>
@@ -718,4 +718,8 @@
   <string name="save">保存​​</string>
   <string name="title_budget_show_simple_view">显示简单的预算视图</string>
   <string name="summary_budget_show_simple_view">勾选后将显示简化后的预算界面</string>
+  <string name="shares">共享</string>
+  <string name="loan">贷款</string>
+  <string name="loan_account">贷款账户</string>
+  <string name="shares_accounts">共享账户</string>
 </resources>

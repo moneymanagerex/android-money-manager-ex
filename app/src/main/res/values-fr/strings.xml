@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Une application simple et facile à utiliser pour gérer ses finances personnelles, comptes bancaires, budget familial…</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Général</string>
+  <string name="preferences_perdatabase">Par-Base de données</string>
   <string name="preferences_dispaly">Affichage</string>
   <string name="preferences_behaviour">Comportement</string>
   <string name="base_currency">Devise de référence</string>
@@ -62,6 +64,10 @@
   <string name="summary_show_tutorial">Afficher le tutoriel au prochain lancement ?</string>
   <string name="preferences_behaviour_focus_filter_title">Afficher automatiquement le clavier</string>
   <string name="preferences_behaviour_focus_filter_summary">Affiche automatiquement le clavier sur les écrans de sélection.</string>
+  <string name="auto_sync_via_wifi">Synchronisation automatique en WiFi uniquement</string>
+  <string name="auto_sync_via_wifi_summary">Synchronisation automatique uniquement lorsqu\'une connexion Wi-Fi est disponible.</string>
+  <string name="sync_on_app_start">Synchroniser sur le menu de démarrage de l’application.</string>
+  <string name="sync_on_start">Synchronisation au démarrage</string>
   <!-- account -->
   <string name="account">Compte</string>
   <string name="account_list">Liste des comptes</string>
@@ -238,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d opération périodique en retard</string>
   <string name="skip">Passer</string>
   <string name="enter">Saisir</string>
+  <string name="enter_amount">Saisir le montant</string>
   <!-- 20121121 -->
   <string name="send_feedback">Envoyer un commentaire</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -348,6 +355,7 @@
   <string name="summary_check_repeating_transaction">À quelle heure voulez-vous vérifier s\'il y a des opérations périodiques en retard ? (par défaut 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Crédits</string>
+  <string name="libraries">Bibliothèques</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Principaux retraits : 30 derniers jours</string>
@@ -382,6 +390,7 @@
   <string name="delete_others_selected_transaction">Êtes-vous sûr de vouloir effacer les %d opérations sélectionnées ?</string>
   <string name="categories">Catégories</string>
   <string name="payees">Bénéficiaires</string>
+  <string name="recurring_transactions">Transaction récurrentes</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Nouveau compte</string>
   <string name="create_new_account">Créer nouveau compte</string>
@@ -435,6 +444,7 @@
   <string name="montly_last_bussines_day">Mensuel (dernier jour ouvrable)</string>
   <!-- languages -->
   <string name="locale_application">Langue</string>
+  <string name="locale_ar">Arabe</string>
   <string name="transaction_cancel_confirm">Êtes-vous sûr de vouloir annuler vos modifications ?</string>
   <string name="keep_editing">Continuer</string>
   <string name="discard">Abandonner</string>
@@ -450,6 +460,7 @@
   <string name="tutorial_overview_1">Vue d\'ensemble rapide, budgets, rapports personnalisables.</string>
   <string name="global">Mondial</string>
   <string name="tutorial_global_1">De nombreuses devises et langues disponibles. Application open source. Rejoignez notre équipe de traduction.</string>
+  <string name="tutorial_sync_1">Disponible sur de nombreuses plates-formes, synchronisation via de nombreux services de cloud. Importez et exportez vos données vers d\'autres applications.</string>
   <string name="transactions">Opérations</string>
   <string name="tutorial_transactions_1">Dépôts, retraits et transferts. Opérations récurrentes avec rappels.</string>
   <string name="split_category">-Catégorie fractionnée-</string>
@@ -517,6 +528,7 @@
   <string name="select_account">Sélectionnez le compte</string>
   <string name="invalid_transaction_number">Numéro d\'opération invalide</string>
   <string name="budgets">Budgets</string>
+  <string name="budget">Budget</string>
   <string name="budget_list">Liste de budget</string>
   <string name="actual">Actuel</string>
   <string name="base_currency_not_set">La devise de référence n\'a pas été définie</string>
@@ -532,6 +544,7 @@
   <string name="about_logcat_header">Vous pouvez nous envoyer le journal des applications en cliquant sur le bouton ci-dessous.</string>
   <string name="transaction_type_filter">Filtrer par Type de Transaction</string>
   <string name="status_filter">Filtrer par statut</string>
+  <string name="filter_options_info">Filtrer les options et les informations</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Entrez le mot de passe de la base de données</string>
   <string name="income_expense_period">Période de revenus/dépenses</string>
@@ -561,6 +574,9 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Allocation d\'actifs</string>
   <string name="asset_classes_empty">Aucune classes d\'actifs n\'ont été définis. Pour créer une, appuyez sur le bouton vert.</string>
+  <string name="title_activity_asset_class_edit">Modifier une catégorie d\'actifs</string>
+  <string name="asset_class_name">Nom de la catégorie d\'actifs</string>
+  <string name="asset_class">Catégorie d\'actifs</string>
   <string name="allocation">Allocation</string>
   <string name="current_allocation">Allocation actuelle</string>
   <string name="move_up">Déplacement vers le haut</string>
@@ -569,7 +585,9 @@
   <string name="no_records_found_create">Aucun enregistrement n\'a été trouvé. Pour en créer un, appuyer sur le bouton vert.</string>
   <string name="current_value">Valeur actuelle</string>
   <string name="current">En cours</string>
+  <string name="parent">Modèle parent</string>
   <string name="name">Nom</string>
+  <string name="stock">Stock</string>
   <string name="all_accounts">Tous les comptes</string>
   <string name="records">enregistrements</string>
   <!-- db password entry -->
@@ -586,6 +604,7 @@
   <string name="invalid_recurrence_type">Type de récurrence non valide</string>
   <string name="account_not_found">Compte introuvable</string>
   <string name="favourite">Favori</string>
+  <string name="split_reset_notice">Veuillez noter que cette transaction comporte de nombreuses sous-catégories. Vous devez les supprimer manuellement.</string>
   <!-- budgets -->
   <string name="add_budget">Ajouter un budget</string>
   <string name="budget_name">Nom du budget</string>
@@ -614,25 +633,93 @@
   <string name="active_currencies">Devises actives</string>
   <string name="inactive_currencies">Devises inactives</string>
   <string name="all_currencies">Toutes les devises</string>
+  <string name="show_only_used">Affichage en lecture seule</string>
   <!-- Investment -->
+  <string name="portfolio">Portefeuille</string>
+  <string name="change_provider">Changer de fournisseur</string>
+  <string name="quote_provider">Fournisseur de devis</string>
+  <string name="exchange_rate_provider">Fournisseur de taux de change</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Il y a une mise à jour de la base de données sur Dropbox</string>
   <string name="dropbox_file_ready_for_use">Votre base de données a été téléchargée</string>
   <string name="dropbox_open_database_downloaded">Pour utiliser les données téléchargées, appuyez sur Ouvrir la base de données</string>
+  <string name="click_to_select_file_dropbox">Appuyez pour sélectionner le fichier Dropbox à utiliser</string>
+  <string name="download_from_drobpox">Télécharger depuis Dropbox</string>
+  <string name="summary_download_from_drobpox">Appuyez pour télécharger manuellement le fichier depuis Dropbox</string>
+  <string name="upload_to_drobpox">Charger sur Dropbox</string>
+  <string name="summary_upload_to_drobpox">Appuyez pour charger manuellement le fichier sur Dropbox</string>
+  <string name="dropbox_how_it_works">Comment fonctionne Dropbox avec Money Manager Ex\?</string>
+  <string name="dropbox_link">Associer à Dropbox</string>
+  <string name="dropbox_unlink">Dissocier de Dropbox</string>
+  <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Veuillez patienter&#8230;</string>
+  <string name="dropbox_uploadProgress">Envoi du fichier vers Dropbox. Veuillez patienter&#8230;</string>
+  <string name="dropbox_linkedFile">Fichier Dropbox</string>
+  <string name="dropbox_file_summary_all">Fichier à n’importe quel emplacement dans la Dropbox</string>
+  <string name="db_not_dropbox">Votre base de données actuelle n\'est pas synchronisée. Veuillez s\'il vous plaît configurer la synchronisation sur Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Synchronisation</string>
+  <string name="sync_enabled">Synchronisation activée</string>
+  <string name="sync_provider">Fournisseur</string>
+  <string name="remote_file">Fichier distant</string>
+  <string name="please_wait">Merci de patienter</string>
+  <string name="invalid_database">Cette extension n’est pas reconnue comme une base de données valide.</string>
+  <string name="reset_preferences">Réinitialiser les préférences</string>
+  <string name="preferences_reset">Les préférences de synchronisation ont été réinitialisées.</string>
+  <string name="cloud_download">Télécharger le fichier de la base de données à partir du stockage cloud.</string>
+  <string name="cloud_upload">Charger le fichier de la base de données sur le stockage cloud.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sync</string>
+  <string name="sync_downloading">Téléchargement de la base de données. Veuillez patienter&#8230;</string>
+  <string name="sync_uploading">Envoi de la base de données. Veuillez patienter&#8230;</string>
+  <string name="syncProgress">Synchronisation du fichier en cours. Veuillez patientez&#8230;</string>
+  <string name="database_is_synchronized">La base de données est à jour</string>
+  <string name="upload_file_complete">Votre base de données a été envoyée avec succès</string>
   <string name="every_5_minutes">Toutes les 5 minutes</string>
+  <string name="every_10_minutes">Toutes les 10 minutes</string>
   <string name="every_15_minutes">Toutes les 15 minutes</string>
   <string name="every_30_minutes">Toutes les 30 minutes</string>
   <string name="every_hour">Toutes les heures</string>
   <string name="every_2_hours">Toutes les 2 heures</string>
+  <string name="every_3_hours">Toutes les 3 heures</string>
   <string name="every_6_hours">Toutes les 6 heures</string>
   <string name="every_12_hours">Toutes les 12 heures</string>
   <string name="never">Jamais</string>
+  <string name="checking_remote_for_changes">Vérification de l\'emplacement de stockage distant pour les modifications de la base de données.</string>
+  <string name="title_sync_upload_immediate">Charger la base de données immédiatement après le changement</string>
+  <string name="summary_sync_upload_immediate">Cette option permet d\'envoyer automatiquement la base de données dès qu\'elle est modifiée</string>
+  <string name="dropbox_empty_folder">Le dossier contenu dans Dropbox/Apps/Money Manager Ex Android est vide. Si vous utilisez déjà MoneyManagerEx, copiez votre base de données dans ce dossier de votre ordinateur et actualisez-la.</string>
+  <string name="select_remote_file">Sélectionnez un fichier distant dans le stockage cloud</string>
+  <string name="confirm_download">Voulez-vous télécharger ce fichier distant maintenant?</string>
+  <string name="file_exists">Le fichier existe déjà</string>
+  <string name="file_exists_long">Un fichier avec le même nom existe déjà dans votre emplacement de stockage local. Souhaitez-vous le remplacer par celui-ci?</string>
+  <string name="synchronization_disabled">La synchronisation est désactivée.</string>
+  <string name="filenames_differ">Les noms du fichier distant et du fichier local sont différents. La synchronisation ne marche pas.</string>
+  <string name="both_files_modified">Le fichier distant et le fichier local de la base de données ont été modifiés !</string>
+  <string name="sync_conflict">Conflit de synchronisation</string>
+  <string name="no_remote_file">Veuillez sélectionner le fichier distant à utiliser pour la synchronisation.</string>
   <!-- Warnings -->
+  <string name="no_accounts_available_for_selection">Aucun compte à sélectionner. Veuillez ajuster vos préférences pour le filtrage du compte ou de marquer certains comptes comme favoris.</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Erreur d’analyse de la valeur saisie</string>
+  <string name="remote_file_not_found">Fichier distant introuvable</string>
+  <string name="error_checking_remote">Erreurs de vérification des changements distants.</string>
+  <string name="no_remote_change_date">La date de changement à distance est introuvable dans les métadonnées.</string>
   <!-- Select database screen -->
+  <string name="intro_text">Pour commencer à utiliser Money Manager Ex, vous devez avoir un fichier de base de données pour stocker vos données. Veuillez sélectionner une des options disponibles ci-dessous.</string>
+  <string name="intro_create_db">Vous pouvez créer un nouveau fichier et configurer les préférences de base.</string>
+  <string name="intro_open_db">Ou vous pouvez sélectionner un fichier existant dans votre appareil.</string>
+  <string name="intro_sync">Vous pouvez également configurer la synchronisation avec un service de Cloud et télécharger votre fichier à partir d\'une base de données de stockage en ligne pour démarrer.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Sélectionner une langue</string>
+  <string name="run">Exécuter Money Manager Ex</string>
+  <string name="create_db_info_1">L’emplacement de base de données par défaut est :</string>
   <!-- Settings -->
+  <string name="per_database_settings">Par-Base de données</string>
+  <string name="save">Sauvegarder</string>
+  <string name="title_budget_show_simple_view">Afficher le budget simple</string>
+  <string name="summary_budget_show_simple_view">Si les budgets sont vérifiés, utilisez l\'affichage simplifié</string>
+  <string name="shares">Partages</string>
+  <string name="loan">Prêt</string>
+  <string name="loan_account">Comptes de prêt</string>
+  <string name="shares_accounts">Comptes Titres</string>
 </resources>

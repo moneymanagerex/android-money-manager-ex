@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Μια απλή και εύκολη στη χρήση της εφαρμογή για τη διαχείριση των προσωπικών οικονομικών, τραπεζικών λογαριασμών, οικογενειακών προϋπολογισμών, και ούτω καθεξής.</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Γενικά</string>
+  <string name="preferences_perdatabase">Ανά Βάση Δεδομένων</string>
   <string name="preferences_dispaly">Εμφάνιση</string>
   <string name="preferences_behaviour">Συμπεριφορά</string>
   <string name="base_currency">Βασική νομισματική μονάδα</string>
@@ -62,6 +64,10 @@
   <string name="summary_show_tutorial">Να εμφανίσω τον οδηγώ κατά την επόμενη εκτέλεση;</string>
   <string name="preferences_behaviour_focus_filter_title">Επικέντρωση στη μπάρα αναζήτησης</string>
   <string name="preferences_behaviour_focus_filter_summary">Επικέντρωση στην μπάρα αναζήτησης στις οθόνες επιλογής. Αλλιώς στις επιλογές.</string>
+  <string name="auto_sync_via_wifi">Αυτόματος συγχρονισμός μόνο σε WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Αυτόματος συγχρονισμός μόνο σε σύνδεση WiFi.</string>
+  <string name="sync_on_app_start">Συγχρονισμός κατά την έναρξη της εφαρμογής.</string>
+  <string name="sync_on_start">Συγχρονισμός κατά την έναρξη</string>
   <!-- account -->
   <string name="account">Λογαριασμός</string>
   <string name="account_list">Λίστα λογαριασμών</string>
@@ -238,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d εκπρόθεσμη επαναλαμβανόμενη συναλλαγή</string>
   <string name="skip">Παράλειψη</string>
   <string name="enter">Εισαγωγή</string>
+  <string name="enter_amount">Εισάγετε Ποσό</string>
   <!-- 20121121 -->
   <string name="send_feedback">Αποστολή σχολίων</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -348,6 +355,7 @@
   <string name="summary_check_repeating_transaction">Τι ώρα θα μπορούσατε να ελέγξετε εάν υπάρχουν επαναλαμβανόμενες καθυστερημένες συναλλαγές; (προεπιλογή 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Πιστώσεις</string>
+  <string name="libraries">Βιβλιοθήκες</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Κορυφαίες αναλήψεις: Τελευταίες 30 ημέρες</string>
@@ -383,6 +391,7 @@
   <string name="delete_others_selected_transaction">Είστε βέβαιοι ότι θέλετε να διαγράψετε την επιλεγμένη συναλλαγή;</string>
   <string name="categories">Κατηγορίες</string>
   <string name="payees">Δικαιούχοι</string>
+  <string name="recurring_transactions">Επαναλαμβανόμενες Συναλλαγές</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Νέος λογαριασμός</string>
   <string name="create_new_account">Δημιουργία νέου λογαριασμού</string>
@@ -436,6 +445,7 @@
   <string name="montly_last_bussines_day">Μηνιαία (τελευταία εργάσιμη ημέρα)</string>
   <!-- languages -->
   <string name="locale_application">Γλώσσα Εφαρμογής</string>
+  <string name="locale_ar">Αραβικά</string>
   <string name="transaction_cancel_confirm">Θέλετε σίγουρα να απορρίψετε τις αλλαγές;</string>
   <string name="keep_editing">Διατήρηση επεξεργασίας</string>
   <string name="discard">Απόρριψη</string>
@@ -451,6 +461,7 @@
   <string name="tutorial_overview_1">Γρήγορη επισκόπηση πίνακα ελέγχου, προϋπολογισμών, εκθέσεων με τις προσαρμογές.</string>
   <string name="global">Παγκόσμιο</string>
   <string name="tutorial_global_1">Πολλαπλά νομίσματα και γλώσσες. Ανοικτού κώδικα. Ελάτε στην ομάδα μετάφρασης.</string>
+  <string name="tutorial_sync_1">Υποστήριξη για πολλαπλές πλατφόρμες, συγχρονισμός μέσω πολλαπλών υπηρεσιών cloud. Εισαγωγή και εξαγωγή των δεδομένων σας σε άλλες εφαρμογές.</string>
   <string name="transactions">Συναλλαγές</string>
   <string name="tutorial_transactions_1">Καταθέσεις, αναλήψεις, μεταφορές. Επαναλαμβανόμενες συναλλαγές με υπενθυμίσεις.</string>
   <string name="split_category">-Διαχωρισμός Κατηγορίας-</string>
@@ -518,6 +529,7 @@
   <string name="select_account">Επιλέξτε λογαριασμό</string>
   <string name="invalid_transaction_number">Μη έγκυρος αριθμός συναλλαγής</string>
   <string name="budgets">Προϋπολογισμοί</string>
+  <string name="budget">Προϋπολογισμός</string>
   <string name="budget_list">Λίστα προϋπολογισμού</string>
   <string name="actual">Πραγματικό</string>
   <string name="base_currency_not_set">Η βασική νομισματική μονάδα δεν έχει οριστεί</string>
@@ -622,6 +634,7 @@
   <string name="active_currencies">Ενεργά νομίσματα</string>
   <string name="inactive_currencies">Ανενεργά νομίσματα</string>
   <string name="all_currencies">Όλα τα νομίσματα</string>
+  <string name="show_only_used">Εμφάνιση μόνο χρησιμοποιούμενων</string>
   <!-- Investment -->
   <string name="portfolio">Χαρτοφυλάκιο</string>
   <string name="change_provider">Αλλαγή παρόχου</string>
@@ -632,6 +645,19 @@
   <string name="dropbox_database_can_be_updted">Υπάρχει μια ενημερωμένη έκδοση της βάσης δεδομένων στο Dropbox</string>
   <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
   <string name="dropbox_open_database_downloaded">Για να χρησιμοποιήσετε τη βάση δεδομένων που κατεβαίνει, ακουμπήστε την Ανοιχτή Βάση δεδομένων</string>
+  <string name="click_to_select_file_dropbox">Αγγίξτε για να επιλέξετε το αρχείο που θα χρησιμοποιηθεί από το Dropbox</string>
+  <string name="download_from_drobpox">Κατεβάστε από το Dropbox</string>
+  <string name="summary_download_from_drobpox">Αγγίξτε για να κατεβάσετε χειροκίνητα το συνδεδεμένο αρχείο από τον φάκελο του Dropbox</string>
+  <string name="upload_to_drobpox">Ανεβάστε στο Dropbox</string>
+  <string name="summary_upload_to_drobpox">Αγγίξτε για να ανεβάσετε χειροκίνητα το συνδεδεμένο αρχείο στον φάκελο Dropbox</string>
+  <string name="dropbox_how_it_works">Πώς λειτουργεί το Dropbox για το Money Manager Ex;</string>
+  <string name="dropbox_link">Σύνδεση με Dropbox</string>
+  <string name="dropbox_unlink">Αποσύνδεση από το Dropbox</string>
+  <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε&#8230;</string>
+  <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε&#8230;</string>
+  <string name="dropbox_linkedFile">Αρχείο από το Dropbox</string>
+  <string name="dropbox_file_summary_all">Αρχείο οπουδήποτε στο Dropbox</string>
+  <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Συγχρονισμός</string>
   <string name="sync_enabled">Ενεργοποιημένος συγχρονισμός</string>
@@ -655,6 +681,7 @@
   <string name="every_30_minutes">Κάθε 30 λεπτά</string>
   <string name="every_hour">Κάθε ώρα</string>
   <string name="every_2_hours">Κάθε 2 ώρες</string>
+  <string name="every_3_hours">Κάθε 3 ώρες</string>
   <string name="every_6_hours">Κάθε 6 ώρες</string>
   <string name="every_12_hours">Κάθε 12 ώρες</string>
   <string name="never">Ποτέ</string>
@@ -662,11 +689,37 @@
   <string name="title_sync_upload_immediate">Αμεσο ανέβασμα της ΒΔ μετά από αλλαγή</string>
   <string name="summary_sync_upload_immediate">Αυτή η επιλογή επιτρέπει να ανεβάζετε αυτόματα τη βάση δεδομένων μόλις κάνετε κάποια αλλαγή</string>
   <string name="dropbox_empty_folder">Ο φάκελος Dropbox/Apps/Money Manager Ex Android είναι άδειος. Εάν χρησιμοποιείτε ήδη το MoneyManagerEx αντιγράψτε τη βάση δεδομένων σας σε αυτόν το φάκελο στον υπολογιστή σας, και αφότου ολοκληρώσετε κάντε ανανέωση.</string>
+  <string name="select_remote_file">Επιλέξτε ένα απομακρυσμένο αρχείο από το cloud αποθήκευσης</string>
+  <string name="confirm_download">Θέλετε να κατεβάσετε το απομακρυσμένο αρχείο τώρα;</string>
+  <string name="file_exists">Το αρχείο υπάρχει ήδη</string>
+  <string name="file_exists_long">Υπάρχει ήδη ένα αρχείο με το ίδιο όνομα στην τοπική αποθήκευση. Θέλετε να αντικαταστήσετε αυτό το αρχείο;</string>
+  <string name="synchronization_disabled">Ο συγχρονισμός είναι απενεργοποιημένος.</string>
+  <string name="filenames_differ">Τα ονόματα απομακρυσμένων και τοπικών αρχείων διαφέρουν. Ματαίωση συγχρονισμού.</string>
+  <string name="both_files_modified">Τα αρχεία τοπικής και απομακρυσμένης βάση δεδομένων έχουν τροποποιηθεί!</string>
+  <string name="sync_conflict">Διένεξη συγχρονισμού</string>
+  <string name="no_remote_file">Παρακαλώ επιλέξτε το απομακρυσμένο αρχείο για να χρησιμοποιήσετε για συγχρονισμό.</string>
   <!-- Warnings -->
+  <string name="no_accounts_available_for_selection">Δεν υπάρχουν διαθέσιμοι λογαριασμοί για επιλογή. Παρακαλώ προσαρμόστε τις προτιμήσεις σας για φιλτράρισμα λογαριασμών ή επισημάνετε κάποιους λογαριασμούς ως αγαπημένους.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Σφάλμα κατά την ανάλυση της τιμής που εισάχθηκε</string>
   <string name="remote_file_not_found">Δεν βρέθηκε Απομακρυσμένο αρχείο</string>
+  <string name="error_checking_remote">Σφάλμα κατά τον έλεγχο για απομακρυσμένες αλλαγές.</string>
   <!-- Select database screen -->
+  <string name="intro_text">Για να ξεκινήσετε να χρησιμοποιείτε το Money Manager Ex, θα πρέπει να έχετε μία βάση δεδομένων για να αποθηκεύετε τα δεδομένα σας. Παρακαλώ επιλέξτε μια από της παρακάτω διαθέσιμες επιλογές.</string>
+  <string name="intro_create_db">Μπορείτε να δημιουργήσετε ένα νέο αρχείο και να ορίσετε τις αρχικές προτιμήσεις.</string>
+  <string name="intro_open_db">Ή μπορείτε να επιλέξετε ένα υπάρχον αρχείο από τη συσκευή σας.</string>
+  <string name="intro_sync">Εναλλακτικά, μπορείτε να ρυθμίσετε τον συγχρονισμό με μια υπηρεσία cloud και να κατεβάσετε το αρχείο βάσης δεδομένων από τον διαδικτυακό χώρο αποθήκευσης για ξεκίνημα.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Επιλέξτε γλώσσα</string>
+  <string name="run">Εκτέλεση Money Manager Ex</string>
+  <string name="create_db_info_1">Η προεπιλεγμένη θέση βάσης δεδομένων είναι:</string>
   <!-- Settings -->
+  <string name="per_database_settings">Ανά Βάση Δεδομένων</string>
+  <string name="save">Αποθήκευση</string>
+  <string name="title_budget_show_simple_view">Εμφάνιση προβολής απλό προϋπολογισμού</string>
+  <string name="summary_budget_show_simple_view">Εάν σημειωθεί οι προϋπολογισμοί χρησιμοποιούν την απλοποιημένη προβολή</string>
+  <string name="shares">Μετοχές</string>
+  <string name="loan">Δάνειο</string>
+  <string name="loan_account">Δανειακοί Λογαριασμοί</string>
+  <string name="shares_accounts">Μετοχικοί Λογαριασμοί</string>
 </resources>

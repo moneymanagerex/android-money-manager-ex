@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,13 +17,12 @@
 
 package com.money.manager.ex.common;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -37,7 +36,7 @@ public final class Calculator {
         Static / Factory methods.
      */
 
-    public static Calculator forActivity(Activity activity) {
+    public static Calculator forActivity(FragmentActivity activity) {
         Calculator calculator = new Calculator(activity);
 
         return calculator;
@@ -67,12 +66,12 @@ public final class Calculator {
         Instance
      */
 
-    private Calculator(Activity activity) {
+    private Calculator(FragmentActivity activity) {
         this.activity = activity;
         this.intent = new Intent(this.activity, CalculatorActivity.class);
     }
 
-    private Activity activity;
+    private FragmentActivity activity;
     private Fragment fragment;
     private Intent intent;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
@@ -26,13 +25,13 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.fragment.PayeeListFragment;
 
+import androidx.fragment.app.FragmentManager;
+
 public class PayeeActivity
     extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
-    @SuppressWarnings("unused")
-//    private static final String LOGCAT = PayeeActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
 
     PayeeListFragment listFragment = new PayeeListFragment();

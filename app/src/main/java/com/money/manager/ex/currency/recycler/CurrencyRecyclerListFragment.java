@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +21,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,9 +52,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import timber.log.Timber;
@@ -277,7 +277,7 @@ public class CurrencyRecyclerListFragment
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
 
             // remove from data.
-            LinkedHashMap<String, Section> sectionMap = getAdapter().getSectionsMap();
+            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
             for(Section section : sectionMap.values()){
                 CurrencySection currencySection = (CurrencySection) section;
                 currencySection.currencies.remove(event.itemPosition);

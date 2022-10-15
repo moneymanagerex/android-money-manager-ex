@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -65,6 +65,22 @@ public class BehaviourSettings
         return get(R.string.pref_income_expense_footer_period,
                 getContext().getString(R.string.last_month)
         );
+    }
+
+    public boolean getBankSmsTrans() {
+        return get(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS, false);
+    }
+
+    public void setBankSmsTrans(boolean status) {
+        set(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS, status);
+    }
+
+    public boolean getSmsTransStatusNotification() {
+        return get(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, false);
+    }
+
+    public void setSmsTransStatusNotification(boolean status) {
+        set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
     }
 
     public Boolean getShowTutorial() {

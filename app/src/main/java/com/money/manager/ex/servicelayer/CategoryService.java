@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,9 +44,14 @@ public class CategoryService
     }
 
     private CategoryRepository mRepository;
+    private SubcategoryRepository mSubcategoryRepository;
 
     public int loadIdByName(String name) {
         return getRepository().loadIdByName(name);
+    }
+
+    public int loadSubcategoryIdByName(String name, int categoryId) {
+        return getSubcategoryRepository().loadIdByName(name, categoryId);
     }
 
     public int createNew(String name) {
@@ -58,6 +63,24 @@ public class CategoryService
         values.put(Category.CATEGNAME, name);
 
         CategoryRepository repo = new CategoryRepository(getContext());
+
+        Uri result = getContext().getContentResolver()
+                .insert(repo.getUri(), values);
+        long id = ContentUris.parseId(result);
+
+        return ((int) id);
+    }
+
+    public int createNewSubcategory(String name, int categoryId) {
+        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
+
+        name = name.trim();
+
+        ContentValues values = new ContentValues();
+        values.put(Subcategory.SUBCATEGNAME, name);
+        values.put(Subcategory.CATEGID, categoryId);
+
+        SubcategoryRepository repo = getSubcategoryRepository();
 
         Uri result = getContext().getContentResolver()
                 .insert(repo.getUri(), values);
@@ -140,5 +163,12 @@ public class CategoryService
             mRepository = new CategoryRepository(getContext());
         }
         return mRepository;
+    }
+
+    private SubcategoryRepository getSubcategoryRepository() {
+        if (mSubcategoryRepository == null) {
+            mSubcategoryRepository = new SubcategoryRepository(getContext());
+        }
+        return mSubcategoryRepository;
     }
 }

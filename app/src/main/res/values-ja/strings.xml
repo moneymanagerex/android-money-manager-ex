@@ -718,4 +718,8 @@
   <string name="save">保存</string>
   <string name="title_budget_show_simple_view">シンプル予算ビューを表示</string>
   <string name="summary_budget_show_simple_view">チェックした場合、予算は簡略化されたビューを使用します</string>
+  <string name="shares">株式</string>
+  <string name="loan">ローン</string>
+  <string name="loan_account">ローン口座</string>
+  <string name="shares_accounts">証券口座</string>
 </resources>

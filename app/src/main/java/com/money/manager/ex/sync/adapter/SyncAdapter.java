@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,18 +20,9 @@ package com.money.manager.ex.sync.adapter;
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
-//import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
-import android.text.TextUtils;
-
-import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.sync.SyncManager;
-
-import java.io.File;
 
 import timber.log.Timber;
 

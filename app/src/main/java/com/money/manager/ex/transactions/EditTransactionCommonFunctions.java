@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,10 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -37,34 +33,33 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.Calculator;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -80,6 +75,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -166,7 +165,7 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public void findControls(Activity view) {
+    public void findControls(AppCompatActivity view) {
         this.viewHolder = new EditTransactionViewHolder(view);
     }
 
@@ -804,7 +803,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+        if ((resultCode != AppCompatActivity.RESULT_OK) || (data == null)) return;
 
         setDirty(true);
 
@@ -1280,7 +1279,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void cancelActivity() {
-        getActivity().setResult(Activity.RESULT_CANCELED);
+        getActivity().setResult(AppCompatActivity.RESULT_CANCELED);
         getActivity().finish();
     }
 

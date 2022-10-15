@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +17,8 @@
 
 package com.money.manager.ex.core;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -35,10 +31,12 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
@@ -50,27 +48,6 @@ import timber.log.Timber;
  * Various methods that assist with the UI Android requirements.
  */
 public class UIHelper {
-
-    public static void pickFileDialog(Activity activity, String location, int requestCode) {
-// This always works
-        Intent i = new Intent(activity, FilePickerActivity.class);
-        // This works if you defined the intent filter
-        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-
-        // Set these depending on your use case. These are the defaults.
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-
-        // Configure initial directory by specifying a String.
-        // You could specify a String like "/storage/emulated/0/", but that can
-        // dangerous. Always use Android's API calls to get paths to the SD-card or
-        // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, location);
-        // Environment.getExternalStorageDirectory().getPath()
-
-        activity.startActivityForResult(i, requestCode);
-    }
 
     /**
      * Extracts the path to the selected database file.
@@ -232,39 +209,6 @@ public class UIHelper {
             return Constants.NOT_SET;
     }
 
-//    public int dpToPx(int dp) {
-//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-//        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-//        return px;
-//    }
-//
-//    public int pxToDp(int px) {
-//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-//        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-//        return dp;
-//    }
-
-//    /**
-//     * Pick a database file using built-in file picker.
-//     * @param locationPath ?
-//     */
-//    public void pickFileDialog(String locationPath, int requestCode) {
-//        // root path should be the internal storage?
-//        String root = Environment.getExternalStorageDirectory().getPath();
-//
-//        new MaterialFilePicker()
-//                .withActivity((Activity) getContext())
-//                .withRequestCode(requestCode)
-//                .withRootPath(root)
-//                .withPath(locationPath)
-//                .withFilter(Pattern.compile(".*\\.mmb$"))
-//                //.withFilterDirectories()
-//                .withHiddenFiles(true)
-//                .start();
-//
-//        // continues in onActivityResult in the parent activity
-//    }
-
     public void showToast(int messageId) {
         showToast(messageId, Toast.LENGTH_SHORT);
     }
@@ -275,9 +219,9 @@ public class UIHelper {
 
     public void showToast(final int message, final int length) {
         Context context = getContext();
-        if (!(context instanceof Activity)) return;
+        if (!(context instanceof AppCompatActivity)) return;
 
-        final Activity parent = (Activity) context;
+        final AppCompatActivity parent = (AppCompatActivity) context;
 
         parent.runOnUiThread(new Runnable() {
             @Override
@@ -289,9 +233,9 @@ public class UIHelper {
 
     public void showToast(final String message, final int length) {
         Context context = getContext();
-        if (!(context instanceof Activity)) return;
+        if (!(context instanceof AppCompatActivity)) return;
 
-        final Activity parent = (Activity) context;
+        final AppCompatActivity parent = (AppCompatActivity) context;
 
         parent.runOnUiThread(new Runnable() {
             @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.transactions;
 
-import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,6 +30,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.shamanland.fonticon.FontIconView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
  */
 public class EditTransactionViewHolder {
 
-    public EditTransactionViewHolder(Activity view) {
+    public EditTransactionViewHolder(AppCompatActivity view) {
         ButterKnife.bind(this, view);
 
         // add custom icons

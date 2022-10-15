@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,10 +21,9 @@ import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -58,7 +57,6 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -66,6 +64,9 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import dagger.Lazy;
 
 /**
@@ -385,7 +386,7 @@ public class RecurringTransactionListFragment
         // behaviour
         caldroidFragment.setCaldroidListener(getCalendarListener());
 
-        android.support.v4.app.FragmentTransaction t = getActivity().getSupportFragmentManager()
+        FragmentTransaction t = getActivity().getSupportFragmentManager()
                 .beginTransaction();
         t.replace(R.id.fragmentMain, caldroidFragment);
         t.addToBackStack(null);
@@ -438,6 +439,7 @@ public class RecurringTransactionListFragment
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, recurringTransactionId);
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
         // start for insert new transaction
         startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
     }

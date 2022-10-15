@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,10 @@ public class DebugTree
 
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
-        if (priority >= Log.WARN) {
+        //int minLevel = Log.WARN;
+        int minLevel = Log.INFO; // Show all messages
+
+        if (priority >= minLevel) {
             String uiMessage = message.split("\\n")[0];
             if (t != null) {
                 String exceptionMessage = t.getMessage();

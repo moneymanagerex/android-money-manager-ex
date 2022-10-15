@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +17,11 @@
 
 package com.money.manager.ex.budget;
 
-import android.app.Activity;
-import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  */
 
 class BudgetEditViewHolder {
-    BudgetEditViewHolder(Activity activity) {
+    BudgetEditViewHolder(AppCompatActivity activity) {
         ButterKnife.bind(this, activity);
     }
 
