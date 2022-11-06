@@ -67,6 +67,7 @@ import com.squareup.sqlbrite.BriteDatabase;
 
 import org.parceler.Parcels;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -708,6 +709,19 @@ public class EditTransactionCommonFunctions {
         viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //added by velmuruganc
+                try {
+
+                    String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
+                    // Use Money type to support very large numbers.
+                    Money transactionNumber = MoneyFactory.fromString(timeStamp);
+                    viewHolder.edtTransNumber.setText(transactionNumber.toString());
+                } catch (Exception e) {
+                    Timber.e(e, "getting transaction number from current time stamp");
+                }
+
+                /* commented by velmuruganc
                 AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
                 String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
@@ -735,6 +749,7 @@ public class EditTransactionCommonFunctions {
                     }
                 }
                 cursor.close();
+                 */
             }
         });
     }
