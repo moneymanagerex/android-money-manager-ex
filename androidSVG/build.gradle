@@ -21,8 +21,8 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 27
+        minSdkVersion 14
+        targetSdkVersion 28
     }
 
     buildTypes {
