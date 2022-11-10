@@ -22,11 +22,15 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
+import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+
+import java.util.Date;
 
 /**
  * Account entity
@@ -48,6 +52,7 @@ public class Account
     public static final String INITIALBAL = "INITIALBAL";
     public static final String FAVORITEACCT = "FAVORITEACCT";
     public static final String CURRENCYID = "CURRENCYID";
+    public static final String INITIALDATE = "INITIALDATE";
 
     public static Account from(Cursor c) {
         Account account = new Account();
@@ -67,6 +72,7 @@ public class Account
         // defaults
         account.setId(Constants.NOT_SET);
         account.setInitialBalance(MoneyFactory.fromDouble(0));
+        account.setInitialDate(new MmxDate().toDate());
 
         return account;
     }
@@ -194,5 +200,17 @@ public class Account
 
     public void setWebSite(String value) {
         setString(Account.WEBSITE, value);
+    }
+
+    public Date getInitialDate() {
+        String dateString = getString(Account.INITIALDATE);
+        return dateString != null
+                ? new MmxDate(dateString).toDate()
+                : null;
+    }
+
+    public void setInitialDate(Date date) {
+        String dateString = new MmxDate(date).toIsoDateString();
+        setString(Account.INITIALDATE, dateString);
     }
 }

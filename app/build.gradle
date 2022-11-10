@@ -37,7 +37,7 @@ android {
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 19 // Android 4.4
-        targetSdkVersion 30
+        targetSdkVersion 31
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

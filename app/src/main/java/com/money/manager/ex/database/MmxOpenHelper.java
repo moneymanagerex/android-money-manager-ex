@@ -57,7 +57,7 @@ public class MmxOpenHelper
     /**
      * Database schema version.
      */
-    private static final int databaseVersion = 7;
+    private static final int databaseVersion = 15;
 
     // Dynamic
 
