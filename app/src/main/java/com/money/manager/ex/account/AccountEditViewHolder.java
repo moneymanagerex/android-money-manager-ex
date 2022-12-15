@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
@@ -56,5 +57,8 @@ public class AccountEditViewHolder {
     @BindView(R.id.spinnerSymbolInitialBalance) Spinner spinSymbolInitialBalance;
     @BindView(R.id.textViewSelectCurrency) TextView txtSelectCurrency;
     @BindView(R.id.editTextInitialBalance) TextView txtInitialBalance;
+    @BindView(R.id.textViewDate) TextView txtInitialDate;
+    @BindView(R.id.previousDayButton) IconicsImageView previousDayButton;
+    @BindView(R.id.nextDayButton) IconicsImageView nextDayButton;
 
 }
