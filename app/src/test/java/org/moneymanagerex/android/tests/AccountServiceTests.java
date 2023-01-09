@@ -19,7 +19,7 @@ package org.moneymanagerex.android.tests;
 import android.app.Activity;
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
+//import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -44,8 +44,9 @@ import static org.hamcrest.CoreMatchers.*;
 /**
  * Account Service tests.
  */
+
+//@Config(constants = BuildConfig.class, application = TestApplication.class)
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountServiceTests {
 
     private AccountService testObject;
