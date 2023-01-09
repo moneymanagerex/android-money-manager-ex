@@ -90,12 +90,12 @@ public class WebViewActivity
     }
 
     private ProgressBar getProgressBar() {
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         return progressBar;
     }
 
     private WebView getWebView() {
-        final WebView webView = (WebView) findViewById(R.id.webView);
+        final WebView webView = findViewById(R.id.webView);
         if (webView == null) return null;
 
         webView.getSettings().setJavaScriptEnabled(true);
@@ -118,7 +118,7 @@ public class WebViewActivity
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                ViewGroup progressDisplay = (ViewGroup) findViewById(R.id.progressDisplay);
+                ViewGroup progressDisplay = findViewById(R.id.progressDisplay);
                 progressDisplay.setVisibility(View.GONE);
 
 //        findViewById(R.id.progressBar1).setVisibility(View.GONE);

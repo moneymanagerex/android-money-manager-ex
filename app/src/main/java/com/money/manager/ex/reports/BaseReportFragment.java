@@ -114,44 +114,37 @@ public abstract class BaseReportFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Loader<Cursor> result = null;
 
-        switch (id) {
-            case ID_LOADER:
-                if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
-                    setWhereClause(args.getString(KEY_WHERE_CLAUSE));
-                }
-                String where = prepareQuery(getWhereClause());
-                Select query = new Select()
-                        .where(where);
+        if (id == ID_LOADER) {
+            if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
+                setWhereClause(args.getString(KEY_WHERE_CLAUSE));
+            }
+            String where = prepareQuery(getWhereClause());
+            Select query = new Select()
+                    .where(where);
 
-                result = new MmxCursorLoader(getActivity(),  // context
-                        new SQLDataSet().getUri(),          // uri
-                        query);
-                break;
+            result = new MmxCursorLoader(getActivity(),  // context
+                    new SQLDataSet().getUri(),          // uri
+                    query);
         }
         return result;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER:
-//                ((CursorAdapter) getListAdapter()).swapCursor(null);
-                ((CursorAdapter) getListAdapter()).changeCursor(null);
+        if (loader.getId() == ID_LOADER) {//                ((CursorAdapter) getListAdapter()).swapCursor(null);
+            ((CursorAdapter) getListAdapter()).changeCursor(null);
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER:
-//                ((CursorAdapter) getListAdapter()).swapCursor(data);
-                ((CursorAdapter) getListAdapter()).changeCursor(data);
-                if (isResumed()) {
-                    setListShown(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
-                break;
+        if (loader.getId() == ID_LOADER) {//                ((CursorAdapter) getListAdapter()).swapCursor(data);
+            ((CursorAdapter) getListAdapter()).changeCursor(data);
+            if (isResumed()) {
+                setListShown(true);
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 
@@ -279,8 +272,8 @@ public abstract class BaseReportFragment
                 @Override
                 public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                     View view = materialDialog.getCustomView();
-                    DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
-                    DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
+                    DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
+                    DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
 
                     mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
                     mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
@@ -304,8 +297,8 @@ public abstract class BaseReportFragment
         if (mDateTo == null) mDateTo = new MmxDate().today().toDate();
 
         View view = dialog.getCustomView();
-        DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
-        DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
+        DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
+        DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
 
         dateTimeUtilsLazy.get().setDatePicker(mDateFrom, fromDatePicker);
         dateTimeUtilsLazy.get().setDatePicker(mDateTo, toDatePicker);

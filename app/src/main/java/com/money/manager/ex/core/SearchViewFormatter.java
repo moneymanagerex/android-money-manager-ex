@@ -118,21 +118,21 @@ public class SearchViewFormatter {
         }
 
         if (mSearchVoiceIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(R.id.search_voice_btn);
+            ImageView view = searchView.findViewById(R.id.search_voice_btn);
             view.setImageResource(mSearchVoiceIconResource);
         }
 
         if (mSearchCollapsedSearchIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(R.id.search_button);
+            ImageView view = searchView.findViewById(R.id.search_button);
             view.setImageResource(mSearchCollapsedSearchIconResource);
         }
 
         if (mSearchCloseIconResource != 0) {
-            ImageView view = (ImageView) searchView.findViewById(R.id.search_close_btn);
+            ImageView view = searchView.findViewById(R.id.search_close_btn);
             view.setImageResource(mSearchCloseIconResource);
         }
 
-        TextView view = (TextView) searchView.findViewById(R.id.search_src_text);
+        TextView view = searchView.findViewById(R.id.search_src_text);
         if (mSearchTextColorResource != 0) {
             view.setTextColor(mResources.getColor(mSearchTextColorResource));
         }
@@ -143,7 +143,7 @@ public class SearchViewFormatter {
             view.setInputType(mInputType);
         }
         if (mSearchIconResource != 0) {
-            ImageView imageView = (ImageView) searchView.findViewById(R.id.search_mag_icon);
+            ImageView imageView = searchView.findViewById(R.id.search_mag_icon);
 
             if (mSearchIconInside) {
                 Drawable searchIconDrawable = mResources.getDrawable(mSearchIconResource);
@@ -167,7 +167,7 @@ public class SearchViewFormatter {
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
             }
             if (mSearchIconOutside) {
-                imageView = (ImageView) searchView.findViewById(R.id.search_button);
+                imageView = searchView.findViewById(R.id.search_button);
 
                 imageView.setImageResource(mSearchIconResource);
             }

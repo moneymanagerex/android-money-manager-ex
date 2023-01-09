@@ -35,10 +35,10 @@ public class TextDrawable2
 
     private static final int DEFAULT_COLOR = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 15;
-    private Paint mPaint;
-    private CharSequence mText;
-    private int mIntrinsicWidth;
-    private int mIntrinsicHeight;
+    private final Paint mPaint;
+    private final CharSequence mText;
+    private final int mIntrinsicWidth;
+    private final int mIntrinsicHeight;
 
     public TextDrawable2(Resources res, CharSequence text, Float textSize) {
         mText = text;

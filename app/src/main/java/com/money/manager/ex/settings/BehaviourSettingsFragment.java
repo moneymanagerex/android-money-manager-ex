@@ -136,7 +136,7 @@ public class BehaviourSettingsFragment
                     int result = ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.RECEIVE_SMS);
 
-                    if (settings.getBankSmsTrans()==true)
+                    if (settings.getBankSmsTrans())
                     {
                         if (result == PackageManager.PERMISSION_GRANTED)
                         {

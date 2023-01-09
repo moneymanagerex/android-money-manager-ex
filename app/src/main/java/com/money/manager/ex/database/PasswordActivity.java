@@ -47,7 +47,7 @@ public class PasswordActivity
     }
 
     private void initializeOkButton() {
-        Button okButton = (Button) this.findViewById(R.id.btnSubmit);
+        Button okButton = this.findViewById(R.id.btnSubmit);
         if (okButton != null) {
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,7 +59,7 @@ public class PasswordActivity
     }
 
     private void returnPassword() {
-        EditText txt = (EditText) this.findViewById(R.id.txtPassword);
+        EditText txt = this.findViewById(R.id.txtPassword);
         String password = txt.getText().toString();
 
         Intent result = new Intent();

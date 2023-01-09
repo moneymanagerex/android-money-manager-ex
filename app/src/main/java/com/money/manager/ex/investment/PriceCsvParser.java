@@ -37,7 +37,7 @@ import timber.log.Timber;
  */
 public class PriceCsvParser {
 
-    private Context mContext;
+    private final Context mContext;
 
     public PriceCsvParser(Context context) {
         mContext = context;

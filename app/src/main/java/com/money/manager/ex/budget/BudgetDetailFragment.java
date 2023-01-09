@@ -91,7 +91,7 @@ public class BudgetDetailFragment
 //        return inflater.inflate(R.layout.fragment_budget_detail, container, false);
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        ListView list = (ListView) view.findViewById(android.R.id.list);
+        ListView list = view.findViewById(android.R.id.list);
 
         // Add the column header.
         // switch to simple layout if the showSimpleView is set
@@ -151,43 +151,37 @@ public class BudgetDetailFragment
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 Loader<Cursor> result = null;
 
-                switch (id) {
-                    case LOADER_BUDGET:
-                        QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
-                        Select query = new Select(categories.getAllColumns())
+                if (id == LOADER_BUDGET) {
+                    QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
+                    Select query = new Select(categories.getAllColumns())
                             .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
 
-                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
-                        break;
+                    result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
                 }
                 return result;
             }
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                switch (loader.getId()) {
-                    case LOADER_BUDGET:
-                        BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
+                if (loader.getId() == LOADER_BUDGET) {
+                    BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
 //                        adapter.swapCursor(data);
-                        adapter.changeCursor(data);
+                    adapter.changeCursor(data);
 
-                        if (isResumed()) {
-                            setListShown(true);
-                        } else {
-                            setListShownNoAnimation(true);
-                        }
-                        break;
+                    if (isResumed()) {
+                        setListShown(true);
+                    } else {
+                        setListShownNoAnimation(true);
+                    }
                 }
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                switch (loader.getId()) {
-                    case LOADER_BUDGET:
-                        BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
+                if (loader.getId() == LOADER_BUDGET) {
+                    BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
 //                        adapter.swapCursor(null);
-                        adapter.changeCursor(null);
-                        break;
+                    adapter.changeCursor(null);
                 }
             }
         };

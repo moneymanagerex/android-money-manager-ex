@@ -236,20 +236,16 @@ public class CurrencyEditActivity
 
         // update data
         boolean success;
-        switch (mIntentAction) {
-            case Intent.ACTION_INSERT:
-                success = repo.insert(currency);
-                break;
+        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
+            success = repo.insert(currency);
 
             // todo: use ACTION_EDIT explicitly.
-            default:
-                // Add Id value only when updating.
-                if (mCurrencyId != Constants.NOT_SET) {
-                    currency.setCurrencyid(mCurrencyId);
-                }
+        } else {// Add Id value only when updating.
+            if (mCurrencyId != Constants.NOT_SET) {
+                currency.setCurrencyid(mCurrencyId);
+            }
 
-                success = repo.update(currency);
-                break;
+            success = repo.update(currency);
         }
 
         return success;

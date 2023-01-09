@@ -252,20 +252,19 @@ public class PayeeListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_PAYEE:
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
-                    selectionArgs = new String[]{mCurFilter + '%'};
-                }
-                PayeeRepository repo = new PayeeRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
-                        .where(whereClause, selectionArgs)
-                        .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+        if (id == ID_LOADER_PAYEE) {
+            String whereClause = null;
+            String[] selectionArgs = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
+                selectionArgs = new String[]{mCurFilter + '%'};
+            }
+            PayeeRepository repo = new PayeeRepository(getActivity());
+            Select query = new Select(repo.getAllColumns())
+                    .where(whereClause, selectionArgs)
+                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
 
-                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+            return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;
@@ -273,11 +272,10 @@ public class PayeeListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_PAYEE:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+        if (loader.getId() == ID_LOADER_PAYEE) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
 //                adapter.swapCursor(null);
-                adapter.changeCursor(null);
+            adapter.changeCursor(null);
         }
     }
 
@@ -285,24 +283,23 @@ public class PayeeListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data == null) return;
 
-        switch (loader.getId()) {
-            case ID_LOADER_PAYEE:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                String highlightFilter = mCurFilter != null
-                        ? mCurFilter.replace("%", "")
-                        : "";
-                adapter.setHighlightFilter(highlightFilter);
+        if (loader.getId() == ID_LOADER_PAYEE) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+            String highlightFilter = mCurFilter != null
+                    ? mCurFilter.replace("%", "")
+                    : "";
+            adapter.setHighlightFilter(highlightFilter);
 //                adapter.swapCursor(data);
-                adapter.changeCursor(data);
+            adapter.changeCursor(data);
 
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+            if (isResumed()) {
+                setListShown(true);
+                if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 
@@ -373,7 +370,7 @@ public class PayeeListFragment
 
     private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_payee, null);
-        final EditText edtPayeeName = (EditText) viewDialog.findViewById(R.id.editTextPayeeName);
+        final EditText edtPayeeName = viewDialog.findViewById(R.id.editTextPayeeName);
 
         edtPayeeName.setText(payeeName);
         if (!TextUtils.isEmpty(payeeName)) {

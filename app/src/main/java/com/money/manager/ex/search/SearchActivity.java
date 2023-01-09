@@ -59,7 +59,7 @@ public class SearchActivity
         SearchParametersFragment searchParametersFragment = getSearchFragment();
         if (!searchParametersFragment.isAdded()) {
             // set dual panel
-            LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+            LinearLayout fragmentDetail = findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
         }
         // reconfigure the toolbar event

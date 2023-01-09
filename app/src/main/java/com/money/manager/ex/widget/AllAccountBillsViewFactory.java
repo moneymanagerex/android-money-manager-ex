@@ -36,8 +36,8 @@ import timber.log.Timber;
 public class AllAccountBillsViewFactory
     implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context mContext;
-    private CurrencyService mCurrencyService;
+    private final Context mContext;
+    private final CurrencyService mCurrencyService;
     private Cursor mCursor;
 
     public AllAccountBillsViewFactory(Context context, Intent intent) {
@@ -102,7 +102,6 @@ public class AllAccountBillsViewFactory
 
     @Override
     public void onCreate() {
-        return;
     }
 
     @Override
@@ -126,7 +125,6 @@ public class AllAccountBillsViewFactory
         if (mCursor != null) {
             mCursor.close();
         }
-        return;
     }
 
     public Context getContext() {

@@ -20,7 +20,6 @@ import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +39,7 @@ public class FileStorageHelper {
         _host = host;
     }
 
-    private AppCompatActivity _host;
+    private final AppCompatActivity _host;
 
     public Context getContext() {
         return _host;
@@ -413,24 +412,18 @@ public class FileStorageHelper {
         String dbDirectory = dbManager.getDefaultDatabaseDirectory();
         // Environment.getDefaultDatabaseDirectory().getPath()
 
-        // This always works
-        Intent i = new Intent(host, FilePickerActivity.class);
         // This works if you defined the intent filter
-        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-
+         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+         intent.setType("*/*");
         // Set these depending on your use case. These are the defaults.
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
 
         // Configure initial directory by specifying a String.
         // You could specify a String like "/storage/emulated/0/", but that can
         // dangerous. Always use Android's API calls to get paths to the SD-card or
         // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, dbDirectory);
         // Environment.getExternalStorageDirectory().getPath()
 
-        host.startActivityForResult(i, requestCode);
+        host.startActivityForResult(intent, requestCode);
     }
 
     /**

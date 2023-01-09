@@ -105,13 +105,13 @@ public class PasscodeActivity extends AppCompatActivity {
 						getFocus.setText(click.getTag().toString());
 						//quick-fix convert 'switch' to 'if-else'
 						if (getFocus.getId() == R.id.editTextPasscode1) {
-							((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
+							findViewById(R.id.editTextPasscode2).requestFocus();
 						} else if (getFocus.getId() == R.id.editTextPasscode2) {
-							((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
+							findViewById(R.id.editTextPasscode3).requestFocus();
 						} else if (getFocus.getId() == R.id.editTextPasscode3) {
-							((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
+							findViewById(R.id.editTextPasscode4).requestFocus();
 						} else if (getFocus.getId() == R.id.editTextPasscode4) {
-							((EditText) findViewById(R.id.editTextPasscode5)).requestFocus();
+							findViewById(R.id.editTextPasscode5).requestFocus();
 						} else if (getFocus.getId() == R.id.editTextPasscode5) {
 							Intent result = new Intent();
 							// set result
@@ -130,17 +130,17 @@ public class PasscodeActivity extends AppCompatActivity {
 		};
 
 		// arrays of button id
-		int ids[] = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
+		int[] ids = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
 			R.id.buttonPasscode3,
 			R.id.buttonPasscode4, R.id.buttonPasscode5,
 			R.id.buttonPasscode6, R.id.buttonPasscode7, R.id.buttonPasscode8, R.id.buttonPasscode9 };
 		for (int i : ids) {
-			Button button = (Button) findViewById(i);
+			Button button = findViewById(i);
 			button.setOnClickListener(clickListener);
 		}
 
 		// textview message
-		TextView textView = (TextView) findViewById(R.id.textViewMessage);
+		TextView textView = findViewById(R.id.textViewMessage);
 		textView.setText(null);
 
 		// intent and action
@@ -153,7 +153,7 @@ public class PasscodeActivity extends AppCompatActivity {
 		}
 
         UIHelper ui = new UIHelper(this);
-		ImageButton buttonKeyBack = (ImageButton) findViewById(R.id.buttonPasscodeKeyBack);
+		ImageButton buttonKeyBack = findViewById(R.id.buttonPasscodeKeyBack);
 		buttonKeyBack.setImageDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_backspace)
             .color(ui.getPrimaryTextColor()));
 
@@ -164,9 +164,9 @@ public class PasscodeActivity extends AppCompatActivity {
 			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
 			if (!fingerprintManager.isHardwareDetected()) {
-				((ImageView) findViewById(R.id.fpImageView))
+				findViewById(R.id.fpImageView)
 						.setVisibility(View.GONE);
-				((com.money.manager.ex.view.RobotoTextView) findViewById(R.id.fingerprintInfo))
+				findViewById(R.id.fingerprintInfo)
 						.setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
 		}
 			else {
@@ -227,22 +227,22 @@ public class PasscodeActivity extends AppCompatActivity {
 			//quick-fix convert 'switch' to 'if-else'
 			if (getFocus.getId() == R.id.editTextPasscode1) {
 			} else if (getFocus.getId() == R.id.editTextPasscode2) {
-				((EditText) findViewById(R.id.editTextPasscode1)).requestFocus();
+				findViewById(R.id.editTextPasscode1).requestFocus();
 				if (nullRequestFocus) {
 					((EditText) findViewById(R.id.editTextPasscode1)).setText(null);
 				}
 			} else if (getFocus.getId() == R.id.editTextPasscode3) {
-				((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
+				findViewById(R.id.editTextPasscode2).requestFocus();
 				if (nullRequestFocus) {
 					((EditText) findViewById(R.id.editTextPasscode2)).setText(null);
 				}
 			} else if (getFocus.getId() == R.id.editTextPasscode4) {
-				((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
+				findViewById(R.id.editTextPasscode3).requestFocus();
 				if (nullRequestFocus) {
 					((EditText) findViewById(R.id.editTextPasscode3)).setText(null);
 				}
 			} else if (getFocus.getId() == R.id.editTextPasscode5) {
-				((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
+				findViewById(R.id.editTextPasscode4).requestFocus();
 				if (nullRequestFocus) {
 					((EditText) findViewById(R.id.editTextPasscode4)).setText(null);
 				}

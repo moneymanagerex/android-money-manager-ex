@@ -35,9 +35,9 @@ public class CurrencyListItemViewHolder
         super(view);
 
         // Setup view holder.
-        row = (LinearLayout) view.findViewById(R.id.row);
-        name = (TextView) view.findViewById(R.id.name);
-        rate = (TextView) view.findViewById(R.id.rate);
+        row = view.findViewById(R.id.row);
+        name = view.findViewById(R.id.name);
+        rate = view.findViewById(R.id.rate);
     }
 
     public LinearLayout row;

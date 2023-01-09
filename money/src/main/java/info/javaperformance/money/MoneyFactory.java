@@ -300,9 +300,7 @@ public class MoneyFactory {
             return down;
         //ulp up
         final MoneyLong up = fromDouble0( Math.nextAfter( value, Double.MAX_VALUE ), precision );
-        if ( up != null )
-            return up;
-        return null;
+        return up;
     }
 
     private static MoneyLong fromDouble0( final double value, final int precision )

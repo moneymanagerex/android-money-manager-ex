@@ -99,7 +99,7 @@ public class SearchActivityTests {
         // act
 
         // Click Select Category
-        TextView selectCategory = (TextView) activity.findViewById(R.id.textViewSelectCategory);
+        TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
 //        assertThat(selectCategory).isNotNull();
         selectCategory.performClick();
 
@@ -123,7 +123,7 @@ public class SearchActivityTests {
 
         // Run search
 
-        LinearLayout searchButton = (LinearLayout) activity.findViewById(R.id.action_search);
+        LinearLayout searchButton = activity.findViewById(R.id.action_search);
 //        assertThat(searchButton).isNotNull();
         searchButton.performClick();
 
@@ -161,7 +161,7 @@ public class SearchActivityTests {
         // act
 
         // Click Select Category
-        TextView selectCategory = (TextView) activity.findViewById(R.id.textViewSelectCategory);
+        TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
         selectCategory.performClick();
 
         // confirm that clicking the Select Category text view opens category selector
@@ -183,7 +183,7 @@ public class SearchActivityTests {
 
         // Run search
 
-        LinearLayout searchButton = (LinearLayout) activity.findViewById(R.id.action_search);
+        LinearLayout searchButton = activity.findViewById(R.id.action_search);
         searchButton.performClick();
 
         //**************************************

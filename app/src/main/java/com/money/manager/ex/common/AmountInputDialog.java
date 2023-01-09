@@ -106,13 +106,13 @@ public class AmountInputDialog
      */
     public boolean roundToCurrencyDecimals;
 
-    private int[] idButtonKeyNum = {
+    private final int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
             R.id.buttonKeyNum8, R.id.buttonKeyNum9,
             R.id.buttonKeyNumDecimal,
     };
-    private int[] idOperatorKeys = {
+    private final int[] idOperatorKeys = {
             R.id.buttonKeyAdd, R.id.buttonKeyDiv,
             R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
             R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
@@ -176,7 +176,7 @@ public class AmountInputDialog
             }
         };
         for (int id : idButtonKeyNum) {
-            Button button = (Button) view.findViewById(id);
+            Button button = view.findViewById(id);
             button.setOnClickListener(numberClickListener);
         }
 
@@ -191,12 +191,12 @@ public class AmountInputDialog
             }
         };
         for (int id : idOperatorKeys) {
-            Button button = (Button) view.findViewById(id);
+            Button button = view.findViewById(id);
             button.setOnClickListener(operatorClickListener);
         }
 
         // Clear button. 'C'
-        Button clearButton = (Button) view.findViewById(R.id.buttonKeyClear);
+        Button clearButton = view.findViewById(R.id.buttonKeyClear);
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +207,7 @@ public class AmountInputDialog
         });
 
         // Equals button '='
-        Button buttonKeyEquals = (Button) view.findViewById(R.id.buttonKeyEqual);
+        Button buttonKeyEquals = view.findViewById(R.id.buttonKeyEqual);
         buttonKeyEquals.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,7 +218,7 @@ public class AmountInputDialog
         });
 
         // Delete button '<='
-        FontIconView deleteButton = (FontIconView) view.findViewById(R.id.deleteButton);
+        FontIconView deleteButton = view.findViewById(R.id.deleteButton);
         if (deleteButton != null) {
             deleteButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -235,10 +235,10 @@ public class AmountInputDialog
         }
 
         // Amounts
-        txtTop = (TextView) view.findViewById(R.id.textViewTop);
+        txtTop = view.findViewById(R.id.textViewTop);
         mDefaultColor = txtTop.getCurrentTextColor();
 
-        txtMain = (TextView) view.findViewById(R.id.textViewMain);
+        txtMain = view.findViewById(R.id.textViewMain);
         if (!TextUtils.isEmpty(mExpression)) {
             txtMain.setText(mExpression);
         } else {
@@ -423,7 +423,7 @@ public class AmountInputDialog
      * @param view current view
      */
     private void setDecimalSeparator(View view) {
-        Button separatorButton = (Button) view.findViewById(R.id.buttonKeyNumDecimal);
+        Button separatorButton = view.findViewById(R.id.buttonKeyNumDecimal);
 
         String separator = this.formatUtilities.getDecimalSeparatorForAppLocale();
 

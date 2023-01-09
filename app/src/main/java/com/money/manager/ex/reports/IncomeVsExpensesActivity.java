@@ -28,14 +28,14 @@ public class IncomeVsExpensesActivity extends MmxBaseFragmentActivity {
     public static final int SUBTOTAL_MONTH = 99;
 
     public boolean mIsDualPanel = false;
-    private IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
+    private final IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_chart_fragments_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar

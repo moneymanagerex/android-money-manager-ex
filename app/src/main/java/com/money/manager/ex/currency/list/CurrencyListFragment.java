@@ -412,52 +412,51 @@ public class CurrencyListFragment
         LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                switch (id) {
-                    case ID_LOADER_CURRENCY:
-                        String whereClause = "";
-                        ArrayList<String> arguments = new ArrayList<>();
+                if (id == ID_LOADER_CURRENCY) {
+                    String whereClause = "";
+                    ArrayList<String> arguments = new ArrayList<>();
 
-                        // filter only used accounts?
-                        if (mShowOnlyUsedCurrencies) {
-                            // get the list of used currencies.
-                            CurrencyService currencyService = getService();
-                            List<Currency> usedCurrencies = currencyService.getUsedCurrencies();
-                            if (usedCurrencies != null && usedCurrencies.size() > 0) {
-                                ArrayList<String> symbols = new ArrayList<>();
-                                for (Currency currency : usedCurrencies) {
-                                    if (currency == null) {
-                                        new UIHelper(getActivity()).showToast(R.string.currency_not_found);
-                                    } else {
-                                        symbols.add(currency.getCode());
-                                    }
+                    // filter only used accounts?
+                    if (mShowOnlyUsedCurrencies) {
+                        // get the list of used currencies.
+                        CurrencyService currencyService = getService();
+                        List<Currency> usedCurrencies = currencyService.getUsedCurrencies();
+                        if (usedCurrencies != null && usedCurrencies.size() > 0) {
+                            ArrayList<String> symbols = new ArrayList<>();
+                            for (Currency currency : usedCurrencies) {
+                                if (currency == null) {
+                                    new UIHelper(getActivity()).showToast(R.string.currency_not_found);
+                                } else {
+                                    symbols.add(currency.getCode());
                                 }
-
-                                MmxDatabaseUtils databaseUtils = new MmxDatabaseUtils(getActivity());
-                                whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
-                                        databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
-                                arguments.addAll(symbols);
                             }
+
+                            MmxDatabaseUtils databaseUtils = new MmxDatabaseUtils(getActivity());
+                            whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
+                                    databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
+                            arguments.addAll(symbols);
+                        }
+                    }
+
+                    if (!TextUtils.isEmpty(mCurFilter)) {
+                        if (!TextUtils.isEmpty(whereClause)) {
+                            whereClause += " AND ";
                         }
 
-                        if (!TextUtils.isEmpty(mCurFilter)) {
-                            if (!TextUtils.isEmpty(whereClause)) {
-                                whereClause += " AND ";
-                            }
-
-                            whereClause += Currency.CURRENCYNAME + " LIKE ?";
-                            arguments.add(mCurFilter + "%");
+                        whereClause += Currency.CURRENCYNAME + " LIKE ?";
+                        arguments.add(mCurFilter + "%");
 //                    selectionArgs = new String[]{ mCurFilter + "%"};
-                        }
+                    }
 
-                        String selectionArgs[] = new String[arguments.size()];
-                        selectionArgs = arguments.toArray(selectionArgs);
+                    String[] selectionArgs = new String[arguments.size()];
+                    selectionArgs = arguments.toArray(selectionArgs);
 
-                        CurrencyRepository repo = new CurrencyRepository(getActivity());
-                        Select query = new Select(repo.getAllColumns())
-                                .where(whereClause, selectionArgs)
-                                .orderBy("upper(" + Currency.CURRENCYNAME + ")");
+                    CurrencyRepository repo = new CurrencyRepository(getActivity());
+                    Select query = new Select(repo.getAllColumns())
+                            .where(whereClause, selectionArgs)
+                            .orderBy("upper(" + Currency.CURRENCYNAME + ")");
 
-                        return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+                    return new MmxCursorLoader(getActivity(), repo.getUri(), query);
                 }
 
                 return null;
@@ -465,31 +464,27 @@ public class CurrencyListFragment
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                switch (loader.getId()) {
-                    case ID_LOADER_CURRENCY:
-                        CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+                if (loader.getId() == ID_LOADER_CURRENCY) {
+                    CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
 //                adapter.swapCursor(null);
-                        adapter.changeCursor(null);
-                        break;
+                    adapter.changeCursor(null);
                 }
             }
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                switch (loader.getId()) {
-                    case ID_LOADER_CURRENCY:
-                        CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+                if (loader.getId() == ID_LOADER_CURRENCY) {
+                    CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
 //                adapter.swapCursor(data);
-                        adapter.changeCursor(data);
+                    adapter.changeCursor(data);
 
-                        if (isResumed()) {
-                            setListShown(true);
-                            if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
-                                getFloatingActionButton().show(true);
-                        } else {
-                            setListShownNoAnimation(true);
-                        }
-                        break;
+                    if (isResumed()) {
+                        setListShown(true);
+                        if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
+                            getFloatingActionButton().show(true);
+                    } else {
+                        setListShownNoAnimation(true);
+                    }
                 }
             }
         };

@@ -111,27 +111,26 @@ public class SecurityListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case LOADER_SYMBOLS:
-                String whereClause;
-                String selectionArgs[] = null;
+        if (id == LOADER_SYMBOLS) {
+            String whereClause;
+            String[] selectionArgs = null;
 
-                // ignore all the symbols already linked
-                whereClause = StockFields.SYMBOL + " NOT IN (SELECT " + AssetClassStock.STOCKSYMBOL +
+            // ignore all the symbols already linked
+            whereClause = StockFields.SYMBOL + " NOT IN (SELECT " + AssetClassStock.STOCKSYMBOL +
                     " FROM " + new AssetClassStockRepository(getActivity()).getSource() + ")";
 
 
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause += " AND " + StockFields.SYMBOL + " LIKE ?";
-                    selectionArgs = new String[]{ mCurFilter + "%" };
-                }
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause += " AND " + StockFields.SYMBOL + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%"};
+            }
 
-                StockRepository repo = new StockRepository(getActivity());
-                Select query = new Select(new String[] { "STOCKID AS _id", StockFields.STOCKID, StockFields.SYMBOL })
+            StockRepository repo = new StockRepository(getActivity());
+            Select query = new Select("STOCKID AS _id", StockFields.STOCKID, StockFields.SYMBOL)
                     .where(whereClause, selectionArgs)
                     .orderBy("upper(" + StockFields.SYMBOL + ")");
 
-                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+            return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;
@@ -139,31 +138,29 @@ public class SecurityListFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case LOADER_SYMBOLS:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+        if (loader.getId() == LOADER_SYMBOLS) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+            adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
 //                adapter.swapCursor(data);
-                adapter.changeCursor(data);
+            adapter.changeCursor(data);
 
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+            if (isResumed()) {
+                setListShown(true);
+                if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_SYMBOLS:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+        if (loader.getId() == LOADER_SYMBOLS) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
 //                adapter.swapCursor(null);
-                adapter.changeCursor(null);
+            adapter.changeCursor(null);
         }
     }
 
@@ -193,21 +190,16 @@ public class SecurityListFragment
     @Override
     protected void setResult() {
         Intent result;
-        switch (this.action) {
-            case Intent.ACTION_PICK:
-                result = new Intent();
-                result.putExtra(INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
-                if (TextUtils.isEmpty(selectedStockSymbol)) {
-                    getActivity().setResult(Activity.RESULT_CANCELED, result);
-                } else {
-                    getActivity().setResult(Activity.RESULT_OK, result);
-                }
-                break;
-
-            default:
-                // otherwise return cancel
-                getActivity().setResult(Activity.RESULT_CANCELED);
-                break;
+        if (this.action.equals(Intent.ACTION_PICK)) {
+            result = new Intent();
+            result.putExtra(INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
+            if (TextUtils.isEmpty(selectedStockSymbol)) {
+                getActivity().setResult(Activity.RESULT_CANCELED, result);
+            } else {
+                getActivity().setResult(Activity.RESULT_OK, result);
+            }
+        } else {// otherwise return cancel
+            getActivity().setResult(Activity.RESULT_CANCELED);
         }
     }
 

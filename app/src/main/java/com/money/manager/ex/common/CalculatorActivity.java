@@ -85,13 +85,13 @@ public class CalculatorActivity
     @BindView(R.id.textViewMain) TextView txtMain;
     @BindView(R.id.textViewTop) TextView txtTop;
 
-    private int[] idButtonKeyNum = {
+    private final int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
             R.id.buttonKeyNum8, R.id.buttonKeyNum9,
             R.id.buttonKeyNumDecimal,
     };
-    private int[] idOperatorKeys = {
+    private final int[] idOperatorKeys = {
             R.id.buttonKeyAdd, R.id.buttonKeyDiv,
             R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
             R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
@@ -145,10 +145,9 @@ public class CalculatorActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id) {
-            case MenuHelper.save:
-                returnResult();
-                return true;
+        if (id == MenuHelper.save) {
+            returnResult();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -327,7 +326,7 @@ public class CalculatorActivity
             }
         };
         for (int id : idButtonKeyNum) {
-            Button button = (Button) findViewById(id);
+            Button button = findViewById(id);
             button.setOnClickListener(numberClickListener);
         }
 
@@ -342,12 +341,12 @@ public class CalculatorActivity
             }
         };
         for (int id : idOperatorKeys) {
-            Button button = (Button) findViewById(id);
+            Button button = findViewById(id);
             button.setOnClickListener(operatorClickListener);
         }
 
         // Clear button. 'C'
-        Button clearButton = (Button) findViewById(R.id.buttonKeyClear);
+        Button clearButton = findViewById(R.id.buttonKeyClear);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -380,7 +379,7 @@ public class CalculatorActivity
      * Set the decimal separator to the base currency's separator.
      */
     private void setDecimalSeparator() {
-        Button decimalSeparatorButton = (Button) findViewById(R.id.buttonKeyNumDecimal);
+        Button decimalSeparatorButton = findViewById(R.id.buttonKeyNumDecimal);
 
         String separator = this.formatUtilitiesLazy.get().getDecimalSeparatorForAppLocale();
 

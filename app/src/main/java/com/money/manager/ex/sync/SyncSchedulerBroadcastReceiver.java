@@ -100,7 +100,7 @@ public class SyncSchedulerBroadcastReceiver
         // Schedule the alarm for synchronization. Run immediately and then in the given interval.
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 now.getMillis(),
-                minutes * secondsInMinute * 1000,
+                (long) minutes * secondsInMinute * 1000,
                 pendingIntent);
     }
 }

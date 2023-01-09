@@ -30,10 +30,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class AboutTabAdapter
     extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 4;
-    private String tabTitles[];
+    private static final int NUM_ITEMS = 4;
+    private final String[] tabTitles;
 
-    public AboutTabAdapter(FragmentManager fragmentManager, String titles[]) {
+    public AboutTabAdapter(FragmentManager fragmentManager, String[] titles) {
         super(fragmentManager);
         tabTitles = titles;
     }

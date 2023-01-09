@@ -55,7 +55,7 @@ public class CurrencyUIFeatures {
         this.context = context;
     }
 
-    private Context context;
+    private final Context context;
     private CurrencyService currencyService;
 
     public Context getContext() {

@@ -35,7 +35,7 @@ public class DrawerMenuItemRecyclerAdapter
         this.items = new ArrayList<>();
     }
 
-    private ArrayList<DrawerMenuItem> items;
+    private final ArrayList<DrawerMenuItem> items;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -76,7 +76,7 @@ public class IncomeVsExpensesListFragment
     private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
 
     private View mFooterListView;
-    private SparseBooleanArray mYearsSelected = new SparseBooleanArray();
+    private final SparseBooleanArray mYearsSelected = new SparseBooleanArray();
     private String mSort = SORT_ASCENDING;
 
     @Override
@@ -187,7 +187,7 @@ public class IncomeVsExpensesListFragment
                         public void run() {
                             showChart();
                         }
-                    }, 1 * 1000);
+                    }, 1000);
                 }
                 break;
 
@@ -195,7 +195,7 @@ public class IncomeVsExpensesListFragment
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
                         int year = data.getInt(data.getColumnIndex("Year"));
-                        if (mYearsSelected.get(year, false) == false) {
+                        if (!mYearsSelected.get(year, false)) {
                             mYearsSelected.put(year, false);
                         }
                         data.moveToNext();
@@ -305,10 +305,10 @@ public class IncomeVsExpensesListFragment
      */
     private View addListViewFooter() {
         TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
-        TextView txtYear = (TextView) row.findViewById(R.id.textViewYear);
+        TextView txtYear = row.findViewById(R.id.textViewYear);
         txtYear.setText(getString(R.string.total));
         txtYear.setTypeface(null, Typeface.BOLD);
-        TextView txtMonth = (TextView) row.findViewById(R.id.textViewMonth);
+        TextView txtMonth = row.findViewById(R.id.textViewMonth);
         txtMonth.setText(null);
         return row;
     }
@@ -323,7 +323,7 @@ public class IncomeVsExpensesListFragment
             R.id.textViewExpenses, R.id.textViewDifference
         };
         for (int id : ids) {
-            TextView textView = (TextView) row.findViewById(id);
+            TextView textView = row.findViewById(id);
             textView.setTypeface(null, Typeface.BOLD);
             textView.setSingleLine(true);
         }
@@ -387,7 +387,7 @@ public class IncomeVsExpensesListFragment
         String years = "";
         for (int i = 0; i < mYearsSelected.size(); i++) {
             if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
-                years += (!TextUtils.isEmpty(years) ? ", " : "") + Integer.toString(mYearsSelected.keyAt(i));
+                years += (!TextUtils.isEmpty(years) ? ", " : "") + mYearsSelected.keyAt(i);
             }
         }
         bundle.putString(KEY_BUNDLE_YEAR, years);
@@ -405,9 +405,9 @@ public class IncomeVsExpensesListFragment
         if (footer == null) {
             return;
         }
-        TextView txtIncome = (TextView) footer.findViewById(R.id.textViewIncome);
-        TextView txtExpenses = (TextView) footer.findViewById(R.id.textViewExpenses);
-        TextView txtDifference = (TextView) footer.findViewById(R.id.textViewDifference);
+        TextView txtIncome = footer.findViewById(R.id.textViewIncome);
+        TextView txtExpenses = footer.findViewById(R.id.textViewExpenses);
+        TextView txtDifference = footer.findViewById(R.id.textViewDifference);
 
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
@@ -473,7 +473,7 @@ public class IncomeVsExpensesListFragment
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month - 1, 1);
                 // titles
-                titles.add(Integer.toString(year) + "-" + new SimpleDateFormat("MMM")
+                titles.add(year + "-" + new SimpleDateFormat("MMM")
                         .format(calendar.getTime()));
             }
         }

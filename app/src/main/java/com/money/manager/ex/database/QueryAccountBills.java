@@ -53,7 +53,7 @@ public class QueryAccountBills
     private double totalBaseConvRate;
     private double reconciledBaseConvRate;
 
-    private Context context;
+    private final Context context;
 
     // constructor
     public QueryAccountBills(Context context) {

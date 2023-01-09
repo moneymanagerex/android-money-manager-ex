@@ -67,7 +67,7 @@ public class ViewMobileData
         initialize(mContext, null);
 	}
 
-    private Context mContext;
+    private final Context mContext;
 
 	@Override
 	public String[] getAllColumns() {

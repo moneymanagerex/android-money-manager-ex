@@ -76,21 +76,18 @@ public class PerDatabaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQUEST_PICK_CURRENCY:
-                // Returning from the currency picker screen.
-                if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
-                    int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
-                    // set preference
-                    CurrencyService utils = new CurrencyService(getActivity());
-                    utils.setBaseCurrencyId(currencyId);
-                    // refresh the displayed value.
-                    showCurrentDefaultCurrency();
+        if (requestCode == REQUEST_PICK_CURRENCY) {// Returning from the currency picker screen.
+            if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
+                int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
+                // set preference
+                CurrencyService utils = new CurrencyService(getActivity());
+                utils.setBaseCurrencyId(currencyId);
+                // refresh the displayed value.
+                showCurrentDefaultCurrency();
 
-                    // notify the user to update exchange rates!
-                    showCurrencyChangeNotification();
-                }
-                break;
+                // notify the user to update exchange rates!
+                showCurrencyChangeNotification();
+            }
         }
     }
 

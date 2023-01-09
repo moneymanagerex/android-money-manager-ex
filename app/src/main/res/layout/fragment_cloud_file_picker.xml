@@ -21,6 +21,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    tools:context="com.money.manager.ex.sync.CloudFilePickerFragment">
+>
+<!--    tools:context="com.money.manager.ex.sync.CloudFilePickerFragment"
+TODO: Due to CloudFilePickerFragment class got removed in previous commits, may think of other means to pick cloud storage
+-->
+
 
 </androidx.recyclerview.widget.RecyclerView>

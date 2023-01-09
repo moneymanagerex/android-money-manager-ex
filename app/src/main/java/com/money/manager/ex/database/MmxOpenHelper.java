@@ -71,7 +71,7 @@ public class MmxOpenHelper
 
     }
 
-    private Context mContext;
+    private final Context mContext;
     private String mPassword = "";
 
     public Context getContext() {
@@ -219,7 +219,7 @@ public class MmxOpenHelper
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
-        String sqlStatement[] = sqlRaw.split(";");
+        String[] sqlStatement = sqlRaw.split(";");
 
         // process all statements
         for (String aSqlStatment : sqlStatement) {
@@ -265,7 +265,7 @@ public class MmxOpenHelper
         // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             int resourceId = mContext.getResources()
-                    .getIdentifier("database_version_" + Integer.toString(i),
+                    .getIdentifier("database_version_" + i,
                             "raw", mContext.getPackageName());
             if (resourceId > 0) {
                 executeRawSql(db, resourceId);
@@ -305,7 +305,7 @@ public class MmxOpenHelper
                 if (categoryId != keyCategory) {
                     keyCategory = categoryId;
                     int idStringCategory = mContext.getResources()
-                            .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
+                            .getIdentifier("category_" + categoryId, "string", mContext.getPackageName());
 
                     if (idStringCategory > 0) {
                         ContentValues contentValues = new ContentValues();
@@ -322,7 +322,7 @@ public class MmxOpenHelper
                 }
 
                 int idStringSubcategory = mContext.getResources()
-                        .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
+                        .getIdentifier("subcategory_" + subCategoryId, "string", mContext.getPackageName());
                 if (idStringSubcategory > 0) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
@@ -422,7 +422,7 @@ public class MmxOpenHelper
     }
 
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 
@@ -436,7 +436,7 @@ public class MmxOpenHelper
         String backupExtension = Files.getFileExtension(backupFileNameWithExtension);
 
         // append last db version
-        backupName += "_v" + Integer.toString(oldVersion);
+        backupName += "_v" + oldVersion;
 
         backupFileNameWithExtension = backupName + "." + backupExtension;
 

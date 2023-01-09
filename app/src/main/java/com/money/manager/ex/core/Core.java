@@ -74,7 +74,7 @@ public class Core {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    private Context mContext;
+    private final Context mContext;
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<AppSettings> appSettingsLazy;
 

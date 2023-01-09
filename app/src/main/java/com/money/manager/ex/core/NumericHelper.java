@@ -71,7 +71,7 @@ public class NumericHelper {
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     public int tryParse(String value) {
         int result;

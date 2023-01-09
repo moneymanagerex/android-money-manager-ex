@@ -83,7 +83,7 @@ public class SyncManager {
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
-    private Context mContext;
+    private final Context mContext;
     //CloudStorageClient mStorageClient;
     private SyncPreferences mPreferences;
     // Used to temporarily disable auto-upload while performing batch updates.
@@ -307,13 +307,9 @@ public class SyncManager {
         }
 
         // Remote file must be set.
-        if (TextUtils.isEmpty(getRemotePath())) {
-            return false;
-        }
+        return !TextUtils.isEmpty(getRemotePath());
 
         // check if a provider is selected? Default is Dropbox, so no need.
-
-        return true;
     }
 
     boolean isSyncEnabled() {

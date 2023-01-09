@@ -115,15 +115,15 @@ public class EditTransactionCommonFunctions {
     // Controls
     public EditTransactionViewHolder viewHolder;
 
-    private MmxBaseFragmentActivity activity;
+    private final MmxBaseFragmentActivity activity;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
-    private BriteDatabase mDatabase;
+    private final BriteDatabase mDatabase;
 
     private List<Account> AccountList;
-    private ArrayList<String> mAccountNameList = new ArrayList<>();
-    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<String> mAccountNameList = new ArrayList<>();
+    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
@@ -191,7 +191,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getDepositButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.depositButtonIcon);
+        return getActivity().findViewById(R.id.depositButtonIcon);
     }
 
     public Integer getDestinationCurrencyId() {
@@ -232,11 +232,11 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getTransferButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.transferButtonIcon);
+        return getActivity().findViewById(R.id.transferButtonIcon);
     }
 
     public FontIconView getWithdrawalButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.withdrawalButtonIcon);
+        return getActivity().findViewById(R.id.withdrawalButtonIcon);
     }
 
     public boolean hasPayee() {
@@ -368,7 +368,7 @@ public class EditTransactionCommonFunctions {
 
         // To Account
 
-        if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountToId()) >= 0) {
+        if (transactionEntity.hasAccountTo() && mAccountIdList.contains(transactionEntity.getAccountToId())) {
             viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountToId()), true);
         }
         viewHolder.spinAccountTo.setOnItemSelectedListener(listener);
@@ -472,7 +472,7 @@ public class EditTransactionCommonFunctions {
         showDate(date);
 
         viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear, dayOfMonth);
@@ -624,7 +624,7 @@ public class EditTransactionCommonFunctions {
 
         // select current value
         if (!(TextUtils.isEmpty(transactionEntity.getStatus()))) {
-            if (Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()) >= 0) {
+            if (Arrays.asList(mStatusValues).contains(transactionEntity.getStatus())) {
                 viewHolder.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()), true);
             }
         } else {
@@ -1334,7 +1334,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private MmxBaseFragmentActivity getActivity() {
-        return (MmxBaseFragmentActivity) activity;
+        return activity;
     }
 
     private MmxBaseFragmentActivity getContext() {

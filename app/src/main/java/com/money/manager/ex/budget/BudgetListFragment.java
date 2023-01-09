@@ -111,11 +111,8 @@ public class BudgetListFragment
 
         if (resultCode == AppCompatActivity.RESULT_CANCELED) return;
 
-        switch (requestCode) {
-            case REQUEST_EDIT_BUDGET:
-                // refresh budget list
-                getLoaderManager().restartLoader(LOADER_BUDGETS, null, this);
-                break;
+        if (requestCode == REQUEST_EDIT_BUDGET) {// refresh budget list
+            getLoaderManager().restartLoader(LOADER_BUDGETS, null, this);
         }
     }
 
@@ -132,41 +129,33 @@ public class BudgetListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Loader<Cursor> result = null;
 
-        switch (id) {
-            case LOADER_BUDGETS:
-                BudgetRepository repo = new BudgetRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
+        if (id == LOADER_BUDGETS) {
+            BudgetRepository repo = new BudgetRepository(getActivity());
+            Select query = new Select(repo.getAllColumns())
                     .orderBy(Budget.BUDGETYEARNAME);
 
-                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
-                break;
+            result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
         return result;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case LOADER_BUDGETS:
-//                mAdapter.swapCursor(data);
-                mAdapter.changeCursor(data);
+        if (loader.getId() == LOADER_BUDGETS) {//                mAdapter.swapCursor(data);
+            mAdapter.changeCursor(data);
 
-                if (isResumed()) {
-                    setListShown(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
-                break;
+            if (isResumed()) {
+                setListShown(true);
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_BUDGETS:
-//                mAdapter.swapCursor(null);
-                mAdapter.changeCursor(null);
-                break;
+        if (loader.getId() == LOADER_BUDGETS) {//                mAdapter.swapCursor(null);
+            mAdapter.changeCursor(null);
         }
     }
 

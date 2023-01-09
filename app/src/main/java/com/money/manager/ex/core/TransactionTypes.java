@@ -28,7 +28,7 @@ public enum TransactionTypes {
         this.code = i;
     }
 
-    private int code;
+    private final int code;
 
     public int getCode() {
         return this.code;

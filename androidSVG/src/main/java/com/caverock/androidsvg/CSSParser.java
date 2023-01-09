@@ -287,7 +287,7 @@ class CSSParser
    }
 
 
-   static enum  Source
+   enum  Source
    {
       Document,
       RenderOptions
@@ -310,7 +310,7 @@ class CSSParser
       @Override
       public String toString()
       {
-         return String.valueOf(selector) + " {...} (src="+this.source+")";
+         return selector + " {...} (src="+this.source+")";
       }
    }
 
@@ -999,11 +999,11 @@ class CSSParser
       private int  hexChar(int ch)
       {
          if (ch >= '0' && ch <= '9')
-            return ((int)ch - (int)'0');
+            return (ch - (int)'0');
          if (ch >= 'A' && ch <= 'F')
-            return ((int)ch - (int)'A') + 10;
+            return (ch - (int)'A') + 10;
          if (ch >= 'a' && ch <= 'f')
-            return ((int)ch - (int)'a') + 10;
+            return (ch - (int)'a') + 10;
          return -1;
       }
 
@@ -1495,19 +1495,19 @@ class CSSParser
    //==============================================================================
 
 
-   private static interface  PseudoClass
+   private interface  PseudoClass
    {
-      public boolean  matches(RuleMatchContext ruleMatchContext, SvgElementBase obj);
+      boolean  matches(RuleMatchContext ruleMatchContext, SvgElementBase obj);
    }
 
 
    private static class  PseudoClassAnPlusB  implements PseudoClass
    {
-      private int      a;
-      private int      b;
-      private boolean  isFromStart;
-      private boolean  isOfType;
-      private String   nodeName;  // The node name for when isOfType is true
+      private final int      a;
+      private final int      b;
+      private final boolean  isFromStart;
+      private final boolean  isOfType;
+      private final String   nodeName;  // The node name for when isOfType is true
 
 
       PseudoClassAnPlusB(int a, int b, boolean isFromStart, boolean isOfType, String nodeName)
@@ -1572,8 +1572,8 @@ class CSSParser
 
    private static class  PseudoClassOnlyChild  implements PseudoClass
    {
-      private boolean  isOfType;
-      private String   nodeName;  // The node name for when isOfType is true
+      private final boolean  isOfType;
+      private final String   nodeName;  // The node name for when isOfType is true
 
 
       public PseudoClassOnlyChild(boolean isOfType, String nodeName)
@@ -1610,7 +1610,7 @@ class CSSParser
       public String toString()
       {
          return isOfType ? String.format("only-of-type <%s>", nodeName)
-                         : String.format("only-child");
+                         : "only-child";
       }
 
    }
@@ -1660,7 +1660,7 @@ class CSSParser
 
    private static class  PseudoClassNot  implements PseudoClass
    {
-      private List<Selector>  selectorGroup;
+      private final List<Selector>  selectorGroup;
 
       PseudoClassNot(List<Selector> selectorGroup)
       {
@@ -1721,7 +1721,7 @@ class CSSParser
 
    private static class  PseudoClassNotSupported  implements PseudoClass
    {
-      private String  clazz;
+      private final String  clazz;
 
       PseudoClassNotSupported(String clazz)
       {

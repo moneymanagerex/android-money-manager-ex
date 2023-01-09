@@ -35,7 +35,7 @@ public class WhereStatementGenerator {
         this.statements = new ArrayList<>();
     }
 
-    private ArrayList<String> statements;
+    private final ArrayList<String> statements;
 
     public void addStatement(String statement) {
         this.statements.add(statement);
@@ -66,23 +66,21 @@ public class WhereStatementGenerator {
     }
 
     public String getStatement(String field, String operator, Integer argument) {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append(field);
-        sb.append(operator);
-        sb.append(argument);
+        String sb = field +
+                operator +
+                argument;
 
-        return sb.toString();
+        return sb;
     }
 
     public String getStatement(String field, String operator, Money argument) {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append(field);
-        sb.append(operator);
-        sb.append(argument);
+        String sb = field +
+                operator +
+                argument;
 
-        return sb.toString();
+        return sb;
     }
 
     public String getStatement(String field, String operator, Object argument) {

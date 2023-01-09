@@ -51,7 +51,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         this.context = context.getApplicationContext();
     }
 
-    private Context context;
+    private final Context context;
 
     public int count(String selection, String[] args) {
         Cursor c = openCursor(null, selection, args);

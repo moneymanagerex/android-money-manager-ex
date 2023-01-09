@@ -55,7 +55,7 @@ public class SplitRecurringCategoriesRepository
      */
     public ArrayList<ISplitTransaction> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitRecurringCategory.TRANSID + "=" + Integer.toString(transId),
+            SplitRecurringCategory.TRANSID + "=" + transId,
             null,
             SplitRecurringCategory.SPLITTRANSID);
         if (curSplit == null) return null;

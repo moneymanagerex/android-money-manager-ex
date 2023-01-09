@@ -83,19 +83,19 @@ public class AllDataAdapter
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     // hash map for group
-    private HashMap<Integer, Integer> mHeadersAccountIndex;
-    private SparseBooleanArray mCheckedPosition;
+    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final SparseBooleanArray mCheckedPosition;
     // account and currency
     private int mAccountId = Constants.NOT_SET;
     private int mCurrencyId = Constants.NOT_SET;
     // show account name and show balance
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
-    private Context mContext;
+    private final Context mContext;
     private HashMap<Integer, Money> balances;
-    private ArrayList<TextView> requestingBalanceUpdate;
+    private final ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -104,17 +104,17 @@ public class AllDataAdapter
         // view holder pattern
         AllDataViewHolder holder = new AllDataViewHolder();
         // take a pointer of object UI
-        holder.linDate = (LinearLayout) view.findViewById(R.id.linearLayoutDate);
-        holder.txtDay = (TextView) view.findViewById(R.id.textViewDay);
-        holder.txtMonth = (TextView) view.findViewById(R.id.textViewMonth);
-        holder.txtYear = (TextView) view.findViewById(R.id.textViewYear);
-        holder.txtStatus = (TextView) view.findViewById(R.id.textViewStatus);
-        holder.txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
-        holder.txtPayee = (TextView) view.findViewById(R.id.textViewPayee);
-        holder.txtAccountName = (TextView) view.findViewById(R.id.textViewAccountName);
-        holder.txtCategorySub = (TextView) view.findViewById(R.id.textViewCategorySub);
-        holder.txtNotes = (TextView) view.findViewById(R.id.textViewNotes);
-        holder.txtBalance = (TextView) view.findViewById(R.id.textViewBalance);
+        holder.linDate = view.findViewById(R.id.linearLayoutDate);
+        holder.txtDay = view.findViewById(R.id.textViewDay);
+        holder.txtMonth = view.findViewById(R.id.textViewMonth);
+        holder.txtYear = view.findViewById(R.id.textViewYear);
+        holder.txtStatus = view.findViewById(R.id.textViewStatus);
+        holder.txtAmount = view.findViewById(R.id.textViewAmount);
+        holder.txtPayee = view.findViewById(R.id.textViewPayee);
+        holder.txtAccountName = view.findViewById(R.id.textViewAccountName);
+        holder.txtCategorySub = view.findViewById(R.id.textViewCategorySub);
+        holder.txtNotes = view.findViewById(R.id.textViewNotes);
+        holder.txtBalance = view.findViewById(R.id.textViewBalance);
         // set holder to view
         view.setTag(holder);
 
@@ -374,7 +374,7 @@ public class AllDataAdapter
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
-                holder.txtBalance.setText(Integer.toString(Math.abs(daysLeft)) + " " +
+                holder.txtBalance.setText(Math.abs(daysLeft) + " " +
                         context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
             }
             holder.txtBalance.setVisibility(View.VISIBLE);
@@ -404,11 +404,7 @@ public class AllDataAdapter
                 // Account transactions
 
                 // See which value to use.
-                if (getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID))) {
-                    result = true;
-                } else {
-                    result = false;
-                }
+                result = getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
             }
         } else {
             result = false;

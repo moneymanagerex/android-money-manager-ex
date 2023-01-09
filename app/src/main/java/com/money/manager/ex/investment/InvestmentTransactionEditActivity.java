@@ -172,9 +172,8 @@ public class InvestmentTransactionEditActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id) {
-            case MenuHelper.save:
-                return onActionDoneClick();
+        if (id == MenuHelper.save) {
+            return onActionDoneClick();
         }
 
         return super.onOptionsItemSelected(item);
@@ -344,7 +343,7 @@ public class InvestmentTransactionEditActivity
         // Purchase Date
 
         viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
