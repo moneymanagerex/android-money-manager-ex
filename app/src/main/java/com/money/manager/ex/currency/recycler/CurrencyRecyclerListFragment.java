@@ -240,7 +240,7 @@ public class CurrencyRecyclerListFragment
     public void onEvent(AllPricesDownloadedEvent event) {
         loadData(getAdapter());
         // update ui.
-        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
+//        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount()); TODO: to be removed. legacy library
     }
 
     @Subscribe
@@ -265,7 +265,6 @@ public class CurrencyRecyclerListFragment
     @Subscribe
     public void onEvent(ListItemClickedEvent event) {
         // item selected. Show context menu.
-        // todo: complete
         getActivity().openContextMenu(event.view);
     }
 
@@ -275,16 +274,16 @@ public class CurrencyRecyclerListFragment
         boolean success = repo.delete(event.currencyId);
         if (success) {
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-
-            // remove from data.
-            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
-            for(Section section : sectionMap.values()){
-                CurrencySection currencySection = (CurrencySection) section;
-                currencySection.currencies.remove(event.itemPosition);
-            }
-
-            // update ui.
-            getAdapter().notifyItemRemoved(event.itemPosition);
+// TODO: recode the following so it doesn't use the external library adapter.
+//            // remove from data.
+//            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
+//            for(Section section : sectionMap.values()){
+//                CurrencySection currencySection = (CurrencySection) section;
+//                currencySection.currencies.remove(event.itemPosition);
+//            }
+//
+//            // update ui.
+//            getAdapter().notifyItemRemoved(event.itemPosition);
         }
     }
 
@@ -322,21 +321,23 @@ public class CurrencyRecyclerListFragment
 
     // Private
 
-    private SectionedRecyclerViewAdapter getAdapter() {
-        return (SectionedRecyclerViewAdapter) getRecyclerView().getAdapter();
-    }
+    //TODO: Recreate this function to make a native adapter
+//    private SectionedRecyclerViewAdapter getAdapter() {
+//        return (SectionedRecyclerViewAdapter) getRecyclerView().getAdapter();
+//    }
 
     private Currency getCurrencyAtPosition(int position) {
-        int sectionPosition = getAdapter().getSectionPosition(position);
-        CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
-        //Currency currency = section.currencies.get(sectionPosition);
-        Currency currency = section.getItemAtPosition(sectionPosition);
-
-        return currency;
+        // TODO: Recode and refactor this to use native RecyclerView Adapter
+//        int sectionPosition = getAdapter().getSectionPosition(position);
+//        CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
+//        //Currency currency = section.currencies.get(sectionPosition);
+//        Currency currency = section.getItemAtPosition(sectionPosition);
+//
+//        return currency;
     }
 
     private ContextMenuRecyclerView getRecyclerView() {
-        return (ContextMenuRecyclerView) getActivity().findViewById(R.id.list);
+        return getActivity().findViewById(R.id.list);
     }
 
     private CurrencyService getService() {
@@ -356,6 +357,7 @@ public class CurrencyRecyclerListFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         // Adapter
+        // TODO: Recode and refactor this to use native RecyclerView Adapter
         final SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
         loadData(adapter);
@@ -377,6 +379,7 @@ public class CurrencyRecyclerListFragment
         }));
     }
 
+    // TODO: Recode and refactor this to use native RecyclerView Adapter
     private void loadData(SectionedRecyclerViewAdapter adapter) {
         CurrencyService service = new CurrencyService(getActivity());
 
