@@ -47,7 +47,7 @@ import android.widget.ImageView;
  * </dl>
  */
 @SuppressWarnings("JavaDoc")
-public class SVGImageView extends ImageView
+public class SVGImageView extends androidx.appcompat.widget.AppCompatImageView
 {
    private SVG            svg = null;
    private RenderOptions  renderOptions = new RenderOptions();
