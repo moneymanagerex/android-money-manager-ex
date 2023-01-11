@@ -58,8 +58,6 @@ import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import timber.log.Timber;
 
 /**
@@ -243,6 +241,7 @@ public class CurrencyRecyclerListFragment
 //        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount()); TODO: to be removed. legacy library
     }
 
+
     @Subscribe
     public void onEvent(ExchangeRateUpdateConfirmedEvent event) {
         // proceed with rate update
@@ -274,7 +273,6 @@ public class CurrencyRecyclerListFragment
         boolean success = repo.delete(event.currencyId);
         if (success) {
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-// TODO: recode the following so it doesn't use the external library adapter.
 //            // remove from data.
 //            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
 //            for(Section section : sectionMap.values()){
