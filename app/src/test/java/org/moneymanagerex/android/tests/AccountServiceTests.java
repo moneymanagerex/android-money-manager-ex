@@ -45,7 +45,7 @@ import static org.hamcrest.CoreMatchers.*;
  * Account Service tests.
  */
 
-//@Config(constants = BuildConfig.class, application = TestApplication.class)
+//
 @RunWith(RobolectricTestRunner.class)
 public class AccountServiceTests {
 

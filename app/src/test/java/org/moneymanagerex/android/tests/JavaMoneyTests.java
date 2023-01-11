@@ -61,7 +61,7 @@ import static org.junit.Assert.*;
  * http://www.baeldung.com/java-money-and-currency
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class JavaMoneyTests {
 
     @Before

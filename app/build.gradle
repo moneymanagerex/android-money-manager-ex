@@ -179,7 +179,9 @@ dependencies {
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.5'
-            , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library archived and no longer being maintained. Broke Unit Tests. Find an alternative.
+            , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
+            , 'androidx.fragment:fragment:1.5.5'
+
     )
     implementation supportDependencies.core
     implementation supportDependencies.support
@@ -231,6 +233,7 @@ dependencies {
             // mock/stub
             // "org.mockito:mockito-core:1.+"
             , 'io.selendroid:selendroid-client:0.17.0'
+
     )
     testImplementation('io.selendroid:selendroid-standalone:0.17.0') {
         exclude group: 'io.selendroid', module: 'selendroid-server'
