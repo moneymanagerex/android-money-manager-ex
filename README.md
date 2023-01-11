@@ -41,7 +41,7 @@ To build the project, the following settings are recommended:
 
 ## Continuous Integration
 
-Travis CI build is active for the project. It runs a build on every check-in and a pull request. Sometimes it fails when the new build tools are introduced in the project but not on Travis.
+// TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
 
 # License
 
