@@ -180,7 +180,7 @@ dependencies {
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.5'
-            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0' // TODO: Library archived and no longer being maintained. Broke Unit Tests. Find an alternative.
+            , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library archived and no longer being maintained. Broke Unit Tests. Find an alternative.
     )
     implementation supportDependencies.core
     implementation supportDependencies.support

@@ -32,7 +32,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.relex.circleindicator.CircleIndicator;
+//import me.relex.circleindicator.CircleIndicator; // TODO: Missing library not implemented?
 
 /**
  * Horizontal Swipe View
@@ -56,12 +56,12 @@ public class TutorialActivity
 
         ButterKnife.bind(this);
 
-        CircleIndicator circleIndicator = findViewById(R.id.indicator_default);
+//        CircleIndicator circleIndicator = findViewById(R.id.indicator_default); // TODO: Missing library not implemented
 
         ViewPager viewpager = findViewById(R.id.viewpager_default);
         TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(pagerAdapter);
-        circleIndicator.setViewPager(viewpager);
+//        circleIndicator.setViewPager(viewpager); // TODO: Missing library not implemented
 
 //        TextView skipText = (TextView) findViewById(R.id.skipTextView);
 //        skipText.setOnClickListener(new View.OnClickListener() {
