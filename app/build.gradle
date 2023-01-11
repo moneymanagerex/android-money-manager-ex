@@ -170,11 +170,6 @@ dependencies {
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2' // use SqlDelight
             , 'com.jakewharton.timber:timber:4.6.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
-            // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
@@ -185,6 +180,7 @@ dependencies {
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.5'
+            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0' // TODO: Library archived and no longer being maintained. Broke Unit Tests. Find an alternative.
     )
     implementation supportDependencies.core
     implementation supportDependencies.support

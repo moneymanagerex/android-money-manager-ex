@@ -58,6 +58,8 @@ import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import timber.log.Timber;
 
 /**
@@ -70,7 +72,7 @@ import timber.log.Timber;
  * - update list after currency exchange rate update.
  */
 public class CurrencyRecyclerListFragment
-    extends Fragment {
+        extends Fragment {
 
     public static CurrencyRecyclerListFragment createInstance() {
         CurrencyRecyclerListFragment fragment = new CurrencyRecyclerListFragment();
@@ -238,9 +240,8 @@ public class CurrencyRecyclerListFragment
     public void onEvent(AllPricesDownloadedEvent event) {
         loadData(getAdapter());
         // update ui.
-//        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount()); TODO: to be removed. legacy library
+        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
     }
-
 
     @Subscribe
     public void onEvent(ExchangeRateUpdateConfirmedEvent event) {
@@ -264,6 +265,7 @@ public class CurrencyRecyclerListFragment
     @Subscribe
     public void onEvent(ListItemClickedEvent event) {
         // item selected. Show context menu.
+        // todo: complete
         getActivity().openContextMenu(event.view);
     }
 
@@ -273,15 +275,16 @@ public class CurrencyRecyclerListFragment
         boolean success = repo.delete(event.currencyId);
         if (success) {
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-//            // remove from data.
-//            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
-//            for(Section section : sectionMap.values()){
-//                CurrencySection currencySection = (CurrencySection) section;
-//                currencySection.currencies.remove(event.itemPosition);
-//            }
-//
-//            // update ui.
-//            getAdapter().notifyItemRemoved(event.itemPosition);
+
+            // remove from data.
+            Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
+            for(Section section : sectionMap.values()){
+                CurrencySection currencySection = (CurrencySection) section;
+                currencySection.currencies.remove(event.itemPosition);
+            }
+
+            // update ui.
+            getAdapter().notifyItemRemoved(event.itemPosition);
         }
     }
 
@@ -319,23 +322,21 @@ public class CurrencyRecyclerListFragment
 
     // Private
 
-    //TODO: Recreate this function to make a native adapter
-//    private SectionedRecyclerViewAdapter getAdapter() {
-//        return (SectionedRecyclerViewAdapter) getRecyclerView().getAdapter();
-//    }
+    private SectionedRecyclerViewAdapter getAdapter() {
+        return (SectionedRecyclerViewAdapter) getRecyclerView().getAdapter();
+    }
 
     private Currency getCurrencyAtPosition(int position) {
-        // TODO: Recode and refactor this to use native RecyclerView Adapter
-//        int sectionPosition = getAdapter().getSectionPosition(position);
-//        CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
-//        //Currency currency = section.currencies.get(sectionPosition);
-//        Currency currency = section.getItemAtPosition(sectionPosition);
-//
-//        return currency;
+        int sectionPosition = getAdapter().getSectionPosition(position);
+        CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
+        //Currency currency = section.currencies.get(sectionPosition);
+        Currency currency = section.getItemAtPosition(sectionPosition);
+
+        return currency;
     }
 
     private ContextMenuRecyclerView getRecyclerView() {
-        return getActivity().findViewById(R.id.list);
+        return (ContextMenuRecyclerView) getActivity().findViewById(R.id.list);
     }
 
     private CurrencyService getService() {
@@ -355,7 +356,6 @@ public class CurrencyRecyclerListFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         // Adapter
-        // TODO: Recode and refactor this to use native RecyclerView Adapter
         final SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
         loadData(adapter);
@@ -377,7 +377,6 @@ public class CurrencyRecyclerListFragment
         }));
     }
 
-    // TODO: Recode and refactor this to use native RecyclerView Adapter
     private void loadData(SectionedRecyclerViewAdapter adapter) {
         CurrencyService service = new CurrencyService(getActivity());
 
