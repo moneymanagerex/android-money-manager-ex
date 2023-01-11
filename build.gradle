@@ -24,12 +24,12 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:7.3.0'
     }
 }
 
 ext {
-    compileSdkVersion = 30
+    compileSdkVersion = 31
     buildToolsVersion = '30.0.2'
     supportLibrary = '1.0.0'
 
