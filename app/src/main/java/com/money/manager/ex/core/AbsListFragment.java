@@ -274,8 +274,8 @@ public class AbsListFragment
         if (root instanceof ListView) {
             mList = (ListView) root;
         } else {
-            mEmptyViewScroll = (ScrollView) root.findViewById(R.id.emptyViewScroll);
-            mStandardEmptyView = (TextView) root.findViewById(android.R.id.empty);
+            mEmptyViewScroll = root.findViewById(R.id.emptyViewScroll);
+            mStandardEmptyView = root.findViewById(android.R.id.empty);
             if (mStandardEmptyView == null) {
                 mEmptyView = root.findViewById(android.R.id.empty);
             } else {

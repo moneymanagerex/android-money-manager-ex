@@ -47,7 +47,7 @@ public class PriceCsvExport
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Gets the data from adapter and packs it into the CSV format.
@@ -128,21 +128,22 @@ public class PriceCsvExport
     }
 
     private String generateFileName(String filePrefix) {
-        StringBuilder fileName = new StringBuilder(filePrefix);
-        fileName.append('_');
 
-        // get the date string.
         Date today = new Date();
         String format = "yyyy-MM-dd_HHmmss";
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        fileName.append(sdf.format(today));
+        String fileName = filePrefix + '_' +
 
-        // append file extension.
-        fileName.append(".csv");
+                // get the date string.
+                //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        return fileName.toString();
+                sdf.format(today) +
+
+                // append file extension.
+                ".csv";
+
+        return fileName;
     }
 
 }

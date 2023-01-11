@@ -50,7 +50,7 @@ public class RecentDatabasesProvider {
 
     public LinkedHashMap<String, DatabaseMetadata> map;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Persists a recent database entry.

@@ -45,7 +45,7 @@ public class CategoryRepository
     public Category load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Category category = (Category) first(Category.class,
+        Category category = first(Category.class,
                 getAllColumns(),
                 Category.CATEGID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),

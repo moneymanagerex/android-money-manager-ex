@@ -181,7 +181,6 @@ public class AccountRepository
             where.getWhere(),
             null,
             "lower (" + Account.ACCOUNTNAME + ")");
-        if (c == null) return null;
 
         return c;
     }

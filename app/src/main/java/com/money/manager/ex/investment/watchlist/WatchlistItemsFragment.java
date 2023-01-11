@@ -179,12 +179,10 @@ public class WatchlistItemsFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case RequestCodes.PRICE:
-                if (resultCode != AppCompatActivity.RESULT_OK) return;
+        if (requestCode == RequestCodes.PRICE) {
+            if (resultCode != AppCompatActivity.RESULT_OK) return;
 
-                reloadData();
-                break;
+            reloadData();
         }
     }
 
@@ -307,33 +305,30 @@ public class WatchlistItemsFragment
         //animation
         setListShown(false);
 
-        switch (id) {
-            case ID_LOADER:
-                // compose selection and sort
-                String selection = "";
-                if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_WHERE)) {
-                    ArrayList<String> whereClause = args.getStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE);
-                    if (whereClause != null) {
-                        for (int i = 0; i < whereClause.size(); i++) {
-                            selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
-                        }
+        if (id == ID_LOADER) {// compose selection and sort
+            String selection = "";
+            if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_WHERE)) {
+                ArrayList<String> whereClause = args.getStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE);
+                if (whereClause != null) {
+                    for (int i = 0; i < whereClause.size(); i++) {
+                        selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
                     }
                 }
+            }
 
-                // set sort
-                String sort = "";
-                if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
-                }
+            // set sort
+            String sort = "";
+            if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_SORT)) {
+                sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
+            }
 
-                Select query = new Select(mStockRepository.getAllColumns())
-                        .where(selection)
-                        .orderBy(sort);
+            Select query = new Select(mStockRepository.getAllColumns())
+                    .where(selection)
+                    .orderBy(sort);
 
-                result = new MmxCursorLoader(getActivity(), mStockRepository.getUri(), query);
-                break;
-            default:
-                result = null;
+            result = new MmxCursorLoader(getActivity(), mStockRepository.getUri(), query);
+        } else {
+            result = null;
         }
         return result;
     }
@@ -347,23 +342,21 @@ public class WatchlistItemsFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER:
-                // send the data to the view adapter.
-                StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-                adapter.changeCursor(data);
+        if (loader.getId() == ID_LOADER) {// send the data to the view adapter.
+            StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
+            adapter.changeCursor(data);
 
-                if (isResumed()) {
-                    setListShown(true);
+            if (isResumed()) {
+                setListShown(true);
 
-                    if (getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+                if (getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
-                // update the header
-                displayHeaderData();
+            } else {
+                setListShownNoAnimation(true);
+            }
+            // update the header
+            displayHeaderData();
         }
     }
 
@@ -450,8 +443,8 @@ public class WatchlistItemsFragment
     }
 
     private void displayHeaderData() {
-        TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
-        TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
+        TextView label = getView().findViewById(R.id.cashBalanceLabel);
+        TextView textView = getView().findViewById(R.id.cashBalanceTextView);
         if (label == null || textView == null) return;
 
         // Clear if no account id, i.e. all accounts displayed.
@@ -479,7 +472,7 @@ public class WatchlistItemsFragment
         ArrayList<String> selection = new ArrayList<>();
 
         if (this.accountId != Constants.NOT_SET) {
-            selection.add(StockFields.HELDAT + "=" + Integer.toString(this.accountId));
+            selection.add(StockFields.HELDAT + "=" + this.accountId);
         }
 
         Bundle args = new Bundle();

@@ -48,7 +48,7 @@ public class AboutCreditsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        WebView webView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
+        WebView webView = getActivity().findViewById(R.id.about_thirdsparty_credits);
 
 //        webView.loadData(MmxFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
 

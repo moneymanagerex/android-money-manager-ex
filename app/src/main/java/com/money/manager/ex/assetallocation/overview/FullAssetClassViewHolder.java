@@ -35,15 +35,15 @@ public class FullAssetClassViewHolder
         super(itemView);
 
         listItem = itemView.findViewById(R.id.list_item);
-        assetClassTextView = (RobotoTextView) itemView.findViewById(R.id.assetClassTextView);
-        setAllocationTextView = (RobotoTextView) itemView.findViewById(R.id.setAllocationTextView);
-        currentAllocationTextView = (RobotoTextView) itemView.findViewById(R.id.currentAllocationTextView);
-        allocationDiffTextView = (RobotoTextView) itemView.findViewById(R.id.allocationDiffTextView);
+        assetClassTextView = itemView.findViewById(R.id.assetClassTextView);
+        setAllocationTextView = itemView.findViewById(R.id.setAllocationTextView);
+        currentAllocationTextView = itemView.findViewById(R.id.currentAllocationTextView);
+        allocationDiffTextView = itemView.findViewById(R.id.allocationDiffTextView);
 
         valuetPanel = itemView.findViewById(R.id.valuePanel);
-        setValueTextView = (RobotoTextView) itemView.findViewById(R.id.setValueTextView);
-        currentValueTextView = (RobotoTextView) itemView.findViewById(R.id.currentValueTextView);
-        valueDiffTextView = (RobotoTextView) itemView.findViewById(R.id.valueDiffTextView);
+        setValueTextView = itemView.findViewById(R.id.setValueTextView);
+        currentValueTextView = itemView.findViewById(R.id.currentValueTextView);
+        valueDiffTextView = itemView.findViewById(R.id.valueDiffTextView);
 
         initializeBehaviours();
     }

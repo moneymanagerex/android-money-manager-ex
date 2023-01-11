@@ -40,8 +40,8 @@ import info.javaperformance.money.MoneyFactory;
 public class CategoriesReportAdapter
     extends CursorAdapter {
 
-    private LayoutInflater mInflater;
-    private Context mContext;
+    private final LayoutInflater mInflater;
+    private final Context mContext;
 
 //    @SuppressWarnings("deprecation")
     public CategoriesReportAdapter(Context context, Cursor c) {
@@ -53,8 +53,8 @@ public class CategoriesReportAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
+        TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
 
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
         String column1;

@@ -32,8 +32,8 @@ public class ReportHtmlFormatter {
         this.color = color;
     }
 
-    private AssetClass allocation;
-    private String color;
+    private final AssetClass allocation;
+    private final String color;
 
     public String getName() {
         return allocation.getName();

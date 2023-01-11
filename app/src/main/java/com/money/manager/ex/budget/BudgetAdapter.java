@@ -84,7 +84,7 @@ public class BudgetAdapter
 
     @Inject Lazy<BriteDatabase> databaseLazy;
 
-    private int mLayout;
+    private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
     private HashMap<String, BudgetEntry> mBudgetEntries;
@@ -101,7 +101,7 @@ public class BudgetAdapter
 
         boolean hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
 
-        TextView categoryTextView = (TextView) view.findViewById(R.id.categoryTextView);
+        TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
             int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
@@ -114,7 +114,7 @@ public class BudgetAdapter
 
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
 
-        TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
+        TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
             frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
         }
@@ -123,7 +123,7 @@ public class BudgetAdapter
 
         // Amount
 
-        TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
+        TextView amountTextView = view.findViewById(R.id.amountTextView);
         double amount = getBudgetAmountFor(categoryId, subCategoryId);
         if (amountTextView != null) {
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
@@ -137,7 +137,7 @@ public class BudgetAdapter
         ;
 
         // Actual
-        TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
+        TextView actualTextView = view.findViewById(R.id.actualTextView);
         double actual = getActualAmount(hasSubcategory, cursor);
         if (actualTextView != null) {
             String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
@@ -158,7 +158,7 @@ public class BudgetAdapter
 
         // Amount Available
 
-        TextView amountAvailableTextView = (TextView) view.findViewById(R.id.amountAvailableTextView);
+        TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
             double amountAvailable = -(estimated - actual);
             String amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
@@ -250,12 +250,12 @@ public class BudgetAdapter
     }
 
     private double getAmountForCategory(int categoryId) {
-        double total = loadTotalFor(ViewMobileData.CATEGID + "=" + Integer.toString(categoryId));
+        double total = loadTotalFor(ViewMobileData.CATEGID + "=" + categoryId);
         return total;
     }
 
     private double getAmountForSubCategory(int subCategoryId) {
-        double total = loadTotalFor(ViewMobileData.SubcategID + "=" + Integer.toString(subCategoryId));
+        double total = loadTotalFor(ViewMobileData.SubcategID + "=" + subCategoryId);
         return total;
     }
 
@@ -263,10 +263,10 @@ public class BudgetAdapter
         double total = 0;
 
         int year = getYearFromBudgetName(mBudgetName);
-        where += " AND " + ViewMobileData.Year + "=" + Integer.toString(year);
+        where += " AND " + ViewMobileData.Year + "=" + year;
         int month = getMonthFromBudgetName(mBudgetName);
         if (month != Constants.NOT_SET) {
-            where += " AND " + ViewMobileData.Month + "=" + Integer.toString(month);
+            where += " AND " + ViewMobileData.Month + "=" + month;
         }
 
         try {

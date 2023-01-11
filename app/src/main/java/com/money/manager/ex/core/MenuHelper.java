@@ -46,7 +46,7 @@ public class MenuHelper {
     public UIHelper uiHelper;
     public Menu menu;
 
-    private Context mContext;
+    private final Context mContext;
 
     public void addEditToContextMenu() {
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getContext().getString(R.string.edit));

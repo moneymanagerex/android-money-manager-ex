@@ -147,9 +147,9 @@ public class MainActivityTests {
         this.activity = UnitTestHelper.getActivity(this.controller);
 
         // When
-        TextView incomeTextView = (TextView) this.activity.findViewById(R.id.textViewIncome);
+        TextView incomeTextView = this.activity.findViewById(R.id.textViewIncome);
         String income = incomeTextView.getText().toString();
-        TextView expenseTextView = (TextView) this.activity.findViewById(R.id.textViewExpenses);
+        TextView expenseTextView = this.activity.findViewById(R.id.textViewExpenses);
 
         // Then
         // Check the income/expense for the month

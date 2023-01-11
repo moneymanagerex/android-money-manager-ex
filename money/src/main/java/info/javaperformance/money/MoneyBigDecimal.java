@@ -18,6 +18,7 @@ package info.javaperformance.money;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Safe but slow Money implementation. Uses BigDecimal as a storage.
@@ -155,7 +156,7 @@ class MoneyBigDecimal extends AbstractMoney {
     private static Money truncate( final BigDecimal val, final int maximalPrecision ) {
         MoneyFactory.checkPrecision( maximalPrecision );
 
-        final BigDecimal res = val.setScale( maximalPrecision, BigDecimal.ROUND_HALF_UP );
+        final BigDecimal res = val.setScale( maximalPrecision, RoundingMode.HALF_UP);
         return MoneyFactory.fromBigDecimal( res );
     }
 

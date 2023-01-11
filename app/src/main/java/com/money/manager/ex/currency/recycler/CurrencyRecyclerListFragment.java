@@ -72,7 +72,7 @@ import timber.log.Timber;
  * - update list after currency exchange rate update.
  */
 public class CurrencyRecyclerListFragment
-    extends Fragment {
+        extends Fragment {
 
     public static CurrencyRecyclerListFragment createInstance() {
         CurrencyRecyclerListFragment fragment = new CurrencyRecyclerListFragment();

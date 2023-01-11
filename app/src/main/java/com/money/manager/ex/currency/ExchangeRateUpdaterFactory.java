@@ -27,6 +27,8 @@ import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
 import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
 
+import java.util.Objects;
+
 /**
  * Factory for exchange rate updater.
  * Set here when changing the updater.
@@ -40,22 +42,19 @@ public class ExchangeRateUpdaterFactory {
         InvestmentSettings settings = new InvestmentSettings(context);
         ExchangeRateProviders provider = settings.getExchangeRateProvider();
 
-        switch (provider) {
-//            case Morningstar:
-//                updater = new MorningstarPriceUpdater(context);
-//                break;
-            case Fixer:
-                updater = new FixerService(context);
-                break;
-//            case YahooYql:
+        //            case Morningstar:
+        //                updater = new MorningstarPriceUpdater(context);
+        //                break;
+        if (Objects.requireNonNull(provider) == ExchangeRateProviders.Fixer) {
+            updater = new FixerService(context);
+            //            case YahooYql:
 //                updater = new YqlSecurityPriceUpdaterRetrofit(context);
 //                break;
 //            case YahooCsv:
 //                updater = new YahooCsvQuoteDownloaderRetrofit(context);
 //                break;
-            default:
-                updater = new FixerService(context);
-                break;
+        } else {
+            updater = new FixerService(context);
         }
 
         return updater;

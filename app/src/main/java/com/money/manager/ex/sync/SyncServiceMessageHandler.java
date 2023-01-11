@@ -55,9 +55,9 @@ public class SyncServiceMessageHandler
     }
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
-    private Context context;
-    private ProgressDialog progressDialog;
-    private String remoteFile;
+    private final Context context;
+    private final ProgressDialog progressDialog;
+    private final String remoteFile;
 
     @Override
     public void handleMessage(Message msg) {

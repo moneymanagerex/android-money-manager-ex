@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -159,13 +160,9 @@ public class AssetAllocationEditorActivity
         AssetClass toShow = service.findChild(event.assetClassId, this.assetAllocation);
 
         ItemType selectedType = toShow.getType();
-        switch (selectedType) {
-            case Cash:
-                // ignore
-                break;
-            default:
-                showAssetClass(toShow);
-                break;
+        if (Objects.requireNonNull(selectedType) == ItemType.Cash) {// ignore
+        } else {
+            showAssetClass(toShow);
         }
     }
 

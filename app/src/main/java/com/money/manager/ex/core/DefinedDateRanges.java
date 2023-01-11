@@ -33,7 +33,7 @@ public class DefinedDateRanges {
         this.initialize();
     }
 
-    private Context context;
+    private final Context context;
     HashMap<DefinedDateRangeName, DefinedDateRange> dateRanges;
 
     public DefinedDateRange get(DefinedDateRangeName name) {

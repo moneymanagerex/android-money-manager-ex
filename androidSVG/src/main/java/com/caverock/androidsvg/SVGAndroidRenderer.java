@@ -90,8 +90,8 @@ class SVGAndroidRenderer
 {
    private static final String  TAG = "SVGAndroidRenderer";
 
-   private Canvas   canvas;
-   private float    dpi;    // dots per inch. Needed for accurate conversion of length values that have real world units, such as "cm".
+   private final Canvas   canvas;
+   private final float    dpi;    // dots per inch. Needed for accurate conversion of length values that have real world units, such as "cm".
 
    // Renderer state
    private SVG                  document;
@@ -1694,7 +1694,7 @@ class SVGAndroidRenderer
 
    private class  PathTextDrawer extends PlainTextDrawer
    {
-      private Path   path;
+      private final Path   path;
 
       PathTextDrawer(Path path, float x, float y)
       {
@@ -2859,7 +2859,7 @@ class SVGAndroidRenderer
     */
    private class  MarkerPositionCalculator implements PathInterface
    {
-      private List<MarkerVector>  markers = new ArrayList<>();
+      private final List<MarkerVector>  markers = new ArrayList<>();
       private float               startX, startY;
       private MarkerVector        lastPos = null;
       private boolean             startArc = false, normalCubic = true;

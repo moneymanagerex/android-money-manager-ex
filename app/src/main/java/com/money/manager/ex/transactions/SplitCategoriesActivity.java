@@ -75,7 +75,7 @@ public class SplitCategoriesActivity
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
     private SplitCategoriesAdapter mAdapter;
     @BindView(R.id.splitsRecyclerView) RecyclerView mRecyclerView;
-    private int amountRequestOffset = 1000; // used to offset the request number for Amounts.
+    private final int amountRequestOffset = 1000; // used to offset the request number for Amounts.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +115,8 @@ public class SplitCategoriesActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case MenuHelper.save:
-                return onActionDoneClick();
-
+        if (item.getItemId() == MenuHelper.save) {
+            return onActionDoneClick();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -129,18 +127,16 @@ public class SplitCategoriesActivity
 
         if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
-        switch (requestCode) {
-            case REQUEST_PICK_CATEGORY:
-                int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
+        if (requestCode == REQUEST_PICK_CATEGORY) {
+            int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+            int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+            int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
 
-                ISplitTransaction split = mAdapter.splitTransactions.get(location);
-                split.setCategoryId(categoryId);
-                split.setSubcategoryId(subcategoryId);
+            ISplitTransaction split = mAdapter.splitTransactions.get(location);
+            split.setCategoryId(categoryId);
+            split.setSubcategoryId(subcategoryId);
 
-                mAdapter.notifyItemChanged(location);
-                break;
+            mAdapter.notifyItemChanged(location);
         }
 
         if (requestCode >= amountRequestOffset) {

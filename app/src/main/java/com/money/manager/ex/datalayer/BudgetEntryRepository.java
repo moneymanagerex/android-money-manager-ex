@@ -70,7 +70,7 @@ public class BudgetEntryRepository
      * @return
      */
     public static String getKeyForCategories(int categoryId, int subCategoryId) {
-        return Integer.toString(categoryId) + "_" + Integer.toString(subCategoryId);
+        return categoryId + "_" + subCategoryId;
     }
 
     public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {

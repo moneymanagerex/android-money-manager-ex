@@ -47,10 +47,10 @@ public class FullAssetAllocationAdapter
     }
 
     private Context context;
-    private List<AssetClassViewModel> model;
+    private final List<AssetClassViewModel> model;
     private Money differenceThreshold = MoneyFactory.fromDouble(100);
 //    private int expandedPosition = Constants.NOT_SET;
-    private FormatUtilities mFormatter;
+    private final FormatUtilities mFormatter;
 
     @Override
     public FullAssetClassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -90,17 +90,17 @@ public class TipsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dialog_tips, null);
         // set tips
-        TextView textTips = (TextView) view.findViewById(R.id.textViewTips);
+        TextView textTips = view.findViewById(R.id.textViewTips);
         textTips.setText(getTips());
         textTips.setVisibility(!isViewAsWeb() ? View.VISIBLE : View.GONE);
         // webView
-        WebView webView = (WebView) view.findViewById(R.id.webViewTips);
+        WebView webView = view.findViewById(R.id.webViewTips);
         webView.setVisibility(isViewAsWeb() ? View.VISIBLE : View.GONE);
         if (getRawWeb() != 0) {
             webView.loadData(MmxFileUtils.getRawAsString(getActivity(), getRawWeb()), "text/html", "UTF-8");
         }
         // check box
-        CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);
+        CheckBox checkDont = view.findViewById(R.id.checkBoxDontShow);
         checkDont.setVisibility(isVisibleDontShowAgain() ? View.VISIBLE : View.GONE);
         checkDont.setChecked(isCheckDontShowAgain());
         checkDont.setOnCheckedChangeListener(new OnCheckedChangeListener() {

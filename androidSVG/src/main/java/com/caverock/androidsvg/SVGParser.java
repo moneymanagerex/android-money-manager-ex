@@ -52,13 +52,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -624,7 +618,7 @@ class SVGParser
     */
    private class  XPPAttributesWrapper  implements Attributes
    {
-      private XmlPullParser  parser;
+      private final XmlPullParser  parser;
 
       public XPPAttributesWrapper(XmlPullParser parser)
       {
@@ -1834,14 +1828,9 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
       for (int i=0; i<attributes.getLength(); i++)
       {
          String val = attributes.getValue(i).trim();
-         switch (SVGAttr.fromString(attributes.getLocalName(i)))
-         {
-            case href:
-               if ("".equals(attributes.getURI(i)) || XLINK_NAMESPACE.equals(attributes.getURI(i)))
-                  obj.href = val;
-               break;
-            default:
-               break;
+         if (Objects.requireNonNull(SVGAttr.fromString(attributes.getLocalName(i))) == SVGAttr.href) {
+            if ("".equals(attributes.getURI(i)) || XLINK_NAMESPACE.equals(attributes.getURI(i)))
+               obj.href = val;
          }
       }
    }
@@ -2160,13 +2149,8 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
       for (int i=0; i<attributes.getLength(); i++)
       {
          String val = attributes.getValue(i).trim();
-         switch (SVGAttr.fromString(attributes.getLocalName(i)))
-         {
-            case offset:
-               obj.offset = parseGradientOffset(val);
-               break;
-            default:
-               break;
+         if (Objects.requireNonNull(SVGAttr.fromString(attributes.getLocalName(i))) == SVGAttr.offset) {
+            obj.offset = parseGradientOffset(val);
          }
       }
    }
@@ -2245,19 +2229,14 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
       for (int i=0; i<attributes.getLength(); i++)
       {
          String val = attributes.getValue(i).trim();
-         switch (SVGAttr.fromString(attributes.getLocalName(i)))
-         {
-            case clipPathUnits:
-               if ("objectBoundingBox".equals(val)) {
-                  obj.clipPathUnitsAreUser = false;
-               } else if ("userSpaceOnUse".equals(val)) {
-                  obj.clipPathUnitsAreUser = true;
-               } else {
-                  throw new SVGParseException("Invalid value for attribute clipPathUnits");
-               }
-               break;
-            default:
-               break;
+         if (Objects.requireNonNull(SVGAttr.fromString(attributes.getLocalName(i))) == SVGAttr.clipPathUnits) {
+            if ("objectBoundingBox".equals(val)) {
+               obj.clipPathUnitsAreUser = false;
+            } else if ("userSpaceOnUse".equals(val)) {
+               obj.clipPathUnitsAreUser = true;
+            } else {
+               throw new SVGParseException("Invalid value for attribute clipPathUnits");
+            }
          }
       }
    }
@@ -2490,7 +2469,7 @@ Log.d(TAG,"PROC INSTR: "+parser.getText());
       int      position = 0;
       int      inputLength = 0;
 
-      private   NumberParser  numberParser = new NumberParser();
+      private final NumberParser  numberParser = new NumberParser();
 
 
       TextScanner(String input)

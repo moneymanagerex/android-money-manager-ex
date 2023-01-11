@@ -38,7 +38,7 @@ public class PayeeService
         this.payeeRepository = new PayeeRepository(context);
     }
 
-    private PayeeRepository payeeRepository;
+    private final PayeeRepository payeeRepository;
 
     public Payee loadByName(String name) {
         Payee payee = null;

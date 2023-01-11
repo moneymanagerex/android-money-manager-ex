@@ -80,17 +80,15 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // home click can be handled in the manifest by setting up the parent activity.
-            case android.R.id.home:
-                // This is used to handle the <- Home arrow button in the toolbar.
+        // home click can be handled in the manifest by setting up the parent activity.
+        if (item.getItemId() == android.R.id.home) {// This is used to handle the <- Home arrow button in the toolbar.
 //                NavUtils.navigateUpFromSameTask(this);
 //                return true;
-                if (mDisplayHomeAsUpEnabled) {
-                    setResult(Activity.RESULT_CANCELED);
-                    finish();
-                    return true;
-                }
+            if (mDisplayHomeAsUpEnabled) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+                return true;
+            }
 
 //            case R.id.menu_cancel:
 //                if (isDialogMode()) {

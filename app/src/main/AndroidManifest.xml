@@ -63,8 +63,8 @@
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
 
         <receiver
-            android:name=".widget.ButtonAddTransactionWidgetProvider"
-            android:label="@string/widget_add_transaction">
+                android:name=".widget.ButtonAddTransactionWidgetProvider"
+                android:label="@string/widget_add_transaction" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -74,8 +74,8 @@
                 android:resource="@xml/widget_button_add_transaction" />
         </receiver>
         <receiver
-            android:name=".widget.SummaryWidgetProvider"
-            android:label="@string/widget_summary">
+                android:name=".widget.SummaryWidgetProvider"
+                android:label="@string/widget_summary" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -85,8 +85,8 @@
                 android:resource="@xml/widget_summary" />
         </receiver>
         <receiver
-            android:name=".widget.AccountBillsWidgetProvider"
-            android:label="@string/widget_all_accounts">
+                android:name=".widget.AccountBillsWidgetProvider"
+                android:label="@string/widget_all_accounts" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -95,7 +95,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_account_bills" />
         </receiver>
-        <receiver android:name=".sync.SyncSchedulerBroadcastReceiver">
+        <receiver android:name=".sync.SyncSchedulerBroadcastReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />
@@ -103,15 +103,15 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".sync.SyncBroadcastReceiver" />
-        <receiver android:name=".core.RecurringTransactionBootReceiver">
+        <receiver android:name=".core.RecurringTransactionBootReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".notifications.RecurringTransactionReceiver" />
         <receiver
-            android:name=".widget.SingleAccountWidget"
-            android:label="@string/single_account">
+                android:name=".widget.SingleAccountWidget"
+                android:label="@string/single_account" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -122,7 +122,7 @@
         </receiver>
 
         <receiver android:name=".notifications.SmsReceiverTransactions"
-            android:label="SMS Receiver">
+                  android:label="SMS Receiver" android:exported="true">
             <intent-filter >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -131,8 +131,8 @@
         <!-- activities -->
 
         <activity
-            android:name=".home.MainActivity"
-            android:label="@string/application_name">
+                android:name=".home.MainActivity"
+                android:label="@string/application_name" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -176,8 +176,8 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".transactions.CheckingTransactionEditActivity"
-            android:label="@string/new_edit_transaction">
+                android:name=".transactions.CheckingTransactionEditActivity"
+                android:label="@string/new_edit_transaction" android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -186,26 +186,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PayeeActivity"
-            android:label="@string/payee">
+                android:name=".PayeeActivity"
+                android:label="@string/payee" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </activity>
-        <activity android:name=".account.AccountListActivity">
+        <activity android:name=".account.AccountListActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </activity>
-        <activity android:name=".common.CategoryListActivity">
+        <activity android:name=".common.CategoryListActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </activity>
-        <activity android:name=".currency.list.CurrencyListActivity">
+        <activity android:name=".currency.list.CurrencyListActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.EDIT" />
@@ -215,16 +215,16 @@
             android:name=".about.AboutActivity"
             android:label="@string/about" />
         <activity
-            android:name=".currency.CurrencyEditActivity"
-            android:label="@string/new_edit_currency">
+                android:name=".currency.CurrencyEditActivity"
+                android:label="@string/new_edit_currency" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".account.AccountEditActivity"
-            android:label="@string/account_list">
+                android:name=".account.AccountEditActivity"
+                android:label="@string/account_list" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
@@ -232,8 +232,8 @@
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
         <activity
-            android:name=".recurring.transactions.RecurringTransactionEditActivity"
-            android:label="@string/new_edit_repeating_transaction">
+                android:name=".recurring.transactions.RecurringTransactionEditActivity"
+                android:label="@string/new_edit_repeating_transaction" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
@@ -264,9 +264,9 @@
             android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
         <activity
-            android:name=".settings.SyncPreferencesActivity"
-            android:label="@string/synchronization"
-            android:launchMode="singleTask">
+                android:name=".settings.SyncPreferencesActivity"
+                android:label="@string/synchronization"
+                android:launchMode="singleTask" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -276,7 +276,7 @@
                 <data android:scheme="com.money.manager.ex" />
             </intent-filter>
         </activity>
-        <activity android:name=".PasscodeActivity">
+        <activity android:name=".PasscodeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
@@ -300,8 +300,8 @@
             android:name=".DonateActivity"
             android:label="@string/donate" />
         <activity
-            android:name=".HelpActivity"
-            android:label="@string/help">
+                android:name=".HelpActivity"
+                android:label="@string/help" android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_RAW_FILE" />
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_URL" />
@@ -325,7 +325,7 @@
         <activity
             android:name=".budget.BudgetsActivity"
             android:label="@string/budgets" />
-        <activity android:name=".widget.SingleAccountWidgetConfigureActivity">
+        <activity android:name=".widget.SingleAccountWidgetConfigureActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -358,7 +358,6 @@
         <activity android:name=".budget.BudgetEditActivity" />
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
-        <activity android:name=".sync.CloudFilePickerActivity" />
         <activity android:name=".assetallocation.overview.AssetAllocationOverviewActivity">
 
             <!-- android:parentActivityName=".home.MainActivity" -->
@@ -369,10 +368,6 @@
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity android:name=".home.CreateDatabaseActivity" />
-        <activity
-            android:name="com.nononsenseapps.filepicker.FilePickerActivity"
-            android:label="@string/app_name"
-            android:theme="@style/FilePickerTheme" />
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
@@ -409,10 +404,11 @@
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".widget.SummaryDashExtension"
-            android:icon="@drawable/ic_stat_notification"
-            android:label="@string/widget_summary"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+                android:name=".widget.SummaryDashExtension"
+                android:icon="@drawable/ic_stat_notification"
+                android:label="@string/widget_summary"
+                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+                tools:ignore="MissingClass" android:exported="true"> <!-- TODO: Add SummaryDashExtension Widget class -->
             <intent-filter>
                 <action android:name="com.google.android.apps.dashclock.Extension" />
             </intent-filter>
@@ -428,10 +424,11 @@
                 android:value="@string/dashclock_extension_summary" />
         </service>
         <service
-            android:name=".widget.AccountBillsDashExtension"
-            android:icon="@drawable/ic_stat_notification"
-            android:label="@string/widget_all_accounts"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+                android:name=".widget.AccountBillsDashExtension"
+                android:icon="@drawable/ic_stat_notification"
+                android:label="@string/widget_all_accounts"
+                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+                android:exported="true" tools:ignore="IntentFilterExportedReceiver"> <!-- TODO: Add AccountBillsDashExtension Widget class -->
             <intent-filter>
                 <action android:name="com.google.android.apps.dashclock.Extension" />
             </intent-filter>

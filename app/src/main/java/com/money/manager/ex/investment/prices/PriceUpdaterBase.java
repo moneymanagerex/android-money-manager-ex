@@ -33,7 +33,7 @@ public class PriceUpdaterBase {
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
     private ProgressDialog mDialog = null;
 
     public Context getContext() {

@@ -38,7 +38,7 @@ public class GestureWebView
     }
 
     //private Context context;
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

@@ -78,7 +78,7 @@ public class AccountEditActivity
 
     private Account mAccount;
 
-    private MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils();
+    private final MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils();
 
     // Action type
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
@@ -185,9 +185,8 @@ public class AccountEditActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id) {
-            case MenuHelper.save:
-                return onActionDoneClick();
+        if (id == MenuHelper.save) {
+            return onActionDoneClick();
         }
 
         return super.onOptionsItemSelected(item);
@@ -317,7 +316,7 @@ public class AccountEditActivity
         adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mViewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
         if (!(TextUtils.isEmpty(mAccount.getTypeName()))) {
-            if (Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName()) >= 0) {
+            if (Arrays.asList(mAccountTypeValues).contains(mAccount.getTypeName())) {
                 int position = Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName());
                 mViewHolder.accountTypeSpinner.setSelection(position, true);
             }
@@ -334,7 +333,7 @@ public class AccountEditActivity
         mViewHolder.spinAccountStatus.setAdapter(adapterAccountStatus);
         adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (!(TextUtils.isEmpty(mAccount.getStatus()))) {
-            if (Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()) >= 0) {
+            if (Arrays.asList(mAccountStatusValues).contains(mAccount.getStatus())) {
                 mViewHolder.spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()), true);
             }
         } else {
@@ -399,7 +398,7 @@ public class AccountEditActivity
 
         //Date picker
         mViewHolder.txtInitialDate.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     Date dateTime = dateTimeUtils.from(year, monthOfYear, dayOfMonth);
@@ -663,11 +662,8 @@ public class AccountEditActivity
             core.alert(R.string.error_status_empty);
             return false;
         }
-        if (mAccount.getInitialDate() == null){
-            return false;
-        }
+        return mAccount.getInitialDate() != null;
 
         // TODO: Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
-        return true;
     }
 }

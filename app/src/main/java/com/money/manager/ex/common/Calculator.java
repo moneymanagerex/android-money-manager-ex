@@ -71,9 +71,9 @@ public final class Calculator {
         this.intent = new Intent(this.activity, CalculatorActivity.class);
     }
 
-    private FragmentActivity activity;
+    private final FragmentActivity activity;
     private Fragment fragment;
-    private Intent intent;
+    private final Intent intent;
 
     public void show(int requestCode) {
         if (fragment == null) {

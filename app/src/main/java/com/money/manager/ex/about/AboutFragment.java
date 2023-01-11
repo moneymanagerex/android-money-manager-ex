@@ -73,7 +73,7 @@ public class AboutFragment extends Fragment {
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
         int build = core.getAppVersionCode();
-        txtVersion.setText(getString(R.string.version) + " " + version + " (" + Integer.toString(build) + ")");
+        txtVersion.setText(getString(R.string.version) + " " + version + " (" + build + ")");
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
         TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
@@ -152,28 +152,28 @@ public class AboutFragment extends Fragment {
         // image view google plus
         OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
         clickListenerGooglePlus.setUrl("http://goo.gl/R693Ih");
-        ImageView imageViewGooglePlus = (ImageView) view.findViewById(R.id.imageViewGooglePlus);
+        ImageView imageViewGooglePlus = view.findViewById(R.id.imageViewGooglePlus);
         imageViewGooglePlus.setOnClickListener(clickListenerGooglePlus);
 
         // image view github
         OnClickListenerUrl clickListenerGithub = new OnClickListenerUrl();
         clickListenerGithub.setUrl("https://github.com/moneymanagerex/android-money-manager-ex");
-        ImageView imageViewGithub = (ImageView) view.findViewById(R.id.imageViewGithub);
+        ImageView imageViewGithub = view.findViewById(R.id.imageViewGithub);
         imageViewGithub.setOnClickListener(clickListenerGithub);
         // image view twitter
         OnClickListenerUrl clickListenerTwitter = new OnClickListenerUrl();
         clickListenerTwitter.setUrl("https://twitter.com/MMEX4Android");
-        ImageView imageViewTwitter = (ImageView) view.findViewById(R.id.imageViewTwitter);
+        ImageView imageViewTwitter = view.findViewById(R.id.imageViewTwitter);
         imageViewTwitter.setOnClickListener(clickListenerTwitter);
         // GPLv2 license
-        TextView txtLicense = (TextView) view.findViewById(R.id.textViewLicense);
+        TextView txtLicense = view.findViewById(R.id.textViewLicense);
         text = "<u>" + txtLicense.getText() + "</u>";
         txtLicense.setText(Html.fromHtml(text));
         OnClickListenerUrl clickListenerLicense = new OnClickListenerUrl();
         clickListenerLicense.setUrl("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html");
         txtLicense.setOnClickListener(clickListenerLicense);
         // logcat
-        TextView txtLogcat = (TextView) view.findViewById(R.id.textViewLogcat);
+        TextView txtLogcat = view.findViewById(R.id.textViewLogcat);
         text = "<u>" + txtLogcat.getText() + "</u>";
         txtLogcat.setText(Html.fromHtml(text));
         txtLogcat.setOnClickListener(new OnClickListener() {
@@ -188,7 +188,7 @@ public class AboutFragment extends Fragment {
         });
 
         // Donate, button
-        Button buttonDonate = (Button) view.findViewById(R.id.buttonDonateInApp);
+        Button buttonDonate = view.findViewById(R.id.buttonDonateInApp);
         buttonDonate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +197,7 @@ public class AboutFragment extends Fragment {
         });
 
         // Send logcat button
-        Button sendLogcatButton = (Button) view.findViewById(R.id.sendLogcatButton);
+        Button sendLogcatButton = view.findViewById(R.id.sendLogcatButton);
         sendLogcatButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

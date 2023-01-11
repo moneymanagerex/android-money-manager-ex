@@ -34,22 +34,18 @@ public class BehaviourSettingsActivity
 
     //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
         final BehaviourSettings settings = new BehaviourSettings(this);
 
-        switch (requestCode)
-        {
-            case 1:
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-                {
-                    Toast.makeText(this,
-                            R.string.deny_receive_sms_error, Toast.LENGTH_LONG).show();
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this,
+                        R.string.deny_receive_sms_error, Toast.LENGTH_LONG).show();
 
-                    settings.setBankSmsTrans(false);
+                settings.setBankSmsTrans(false);
 
-                }
-                break;
+            }
         }
 
     }

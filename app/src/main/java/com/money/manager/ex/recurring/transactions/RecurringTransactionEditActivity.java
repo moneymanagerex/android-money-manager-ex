@@ -318,7 +318,7 @@ public class RecurringTransactionEditActivity
 
         // Frequency
 
-        Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
+        Spinner spinFrequencies = findViewById(R.id.spinnerFrequencies);
 
         RecurringTransaction tx = (RecurringTransaction) mCommon.transactionEntity;
         Integer recurrence = tx.getRecurrenceInt();
@@ -356,7 +356,7 @@ public class RecurringTransactionEditActivity
 //        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     Date dateTime = dateUtils.from(year, monthOfYear, dayOfMonth);
@@ -424,20 +424,20 @@ public class RecurringTransactionEditActivity
         mCommon.initDateSelector();
 
         // Payment Date, next occurrence
-        mViewHolder.paymentDateTextView = (TextView) findViewById(R.id.paymentDateTextView);
+        mViewHolder.paymentDateTextView = findViewById(R.id.paymentDateTextView);
 
         // Previous/Next day adjustment buttons for the Payment Day
-        mViewHolder.paymentPreviousDayButton = (FontIconView) findViewById(R.id.paymentPreviousDayButton);
-        mViewHolder.paymentNextDayButton = (FontIconView) findViewById(R.id.paymentNextDayButton);
+        mViewHolder.paymentPreviousDayButton = findViewById(R.id.paymentPreviousDayButton);
+        mViewHolder.paymentNextDayButton = findViewById(R.id.paymentNextDayButton);
 
         // Recurrence label
-        mViewHolder.recurrenceLabel = (TextView) findViewById(R.id.recurrenceLabel);
+        mViewHolder.recurrenceLabel = findViewById(R.id.recurrenceLabel);
 
         // Payments Left label
-        mViewHolder.paymentsLeftTextView = (TextView) findViewById(R.id.textViewTimesRepeated);
+        mViewHolder.paymentsLeftTextView = findViewById(R.id.textViewTimesRepeated);
 
         // Payments Left text input
-        mViewHolder.paymentsLeftEditText = (EditText) findViewById(R.id.editTextTimesRepeated);
+        mViewHolder.paymentsLeftEditText = findViewById(R.id.editTextTimesRepeated);
     }
 
     /**
@@ -549,9 +549,7 @@ public class RecurringTransactionEditActivity
             // Delete any split categories if split is unchecked.
             mCommon.removeAllSplitCategories();
         }
-        if (!saveSplitCategories()) return false;
-
-        return true;
+        return saveSplitCategories();
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {

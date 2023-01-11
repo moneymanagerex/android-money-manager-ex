@@ -47,7 +47,7 @@ public class MmxFileUtils {
 
     private static final int BUFFER_DIMENSION = 128;
     // https://developer.android.com/reference/android/util/SparseArray.html
-    private static SparseArray<String> rawHashMap = new SparseArray<>();
+    private static final SparseArray<String> rawHashMap = new SparseArray<>();
 
     /**
      * Method that allows you to make a copy of file
@@ -104,7 +104,7 @@ public class MmxFileUtils {
                     outputStream.write(buffer, 0, numRead);
                 }
                 // convert to string
-                result = new String(outputStream.toByteArray());
+                result = outputStream.toString();
             } catch (IOException e) {
                 Timber.e(e, "loadRaw");
             } finally {
@@ -126,7 +126,7 @@ public class MmxFileUtils {
         this.context = context;
     }
 
-    private Context context;
+    private final Context context;
 
     public Context getContext() {
         return this.context;

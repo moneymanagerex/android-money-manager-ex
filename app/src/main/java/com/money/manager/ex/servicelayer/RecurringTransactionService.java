@@ -391,7 +391,7 @@ public class RecurringTransactionService
         return getContext().getContentResolver().query(
             repo.getUri(),
             null,
-            SplitRecurringCategory.TRANSID + "=" + Integer.toString(this.recurringTransactionId),
+            SplitRecurringCategory.TRANSID + "=" + this.recurringTransactionId,
             null,
             SplitRecurringCategory.SPLITTRANSID);
     }

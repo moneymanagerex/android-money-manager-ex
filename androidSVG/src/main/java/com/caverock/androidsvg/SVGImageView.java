@@ -50,7 +50,7 @@ import android.widget.ImageView;
 public class SVGImageView extends androidx.appcompat.widget.AppCompatImageView
 {
    private SVG            svg = null;
-   private RenderOptions  renderOptions = new RenderOptions();
+   private final RenderOptions  renderOptions = new RenderOptions();
 
    private static Method  setLayerTypeMethod = null;
 
@@ -264,8 +264,8 @@ public class SVGImageView extends androidx.appcompat.widget.AppCompatImageView
 
    private class LoadResourceTask extends AsyncTask<Integer, Integer, SVG>
    {
-      private Context  context;
-      private int      resourceId;
+      private final Context  context;
+      private final int      resourceId;
 
       LoadResourceTask(Context context, int resourceId)
       {

@@ -43,7 +43,7 @@ public enum ContextMenuIds {
         this.id = id;
     }
 
-    private int id;
+    private final int id;
 
     public int getId() {
         return this.id;

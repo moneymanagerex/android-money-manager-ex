@@ -56,7 +56,7 @@ public class PieChartFragment
     public static final String KEY_SAVED_INSTANCE = "PieChartFragment:SavedInstance";
     public static final String KEY_DISPLAY_AS_UP_ENABLED = "PieChartFragment:DisplayHomeAsUpEnabled";
     // color
-    private static final int COLORS[] = {R.color.material_red_500, R.color.material_deep_purple_500, R.color.material_light_blue_500,
+    private static final int[] COLORS = {R.color.material_red_500, R.color.material_deep_purple_500, R.color.material_light_blue_500,
             R.color.material_green_500, R.color.material_yellow_500, R.color.material_deep_orange_500, R.color.material_blue_grey_500,
             R.color.material_pink_500, R.color.material_indigo_500, R.color.material_cyan_500, R.color.material_light_green_500,
             R.color.material_amber_500, R.color.material_brown_500, R.color.material_purple_500, R.color.material_blue_500,
@@ -146,7 +146,7 @@ public class PieChartFragment
         //return buildChart();
         mLayout = (LinearLayout) inflater.inflate(R.layout.chart_pie_fragment, container, false);
 
-        mChart = (PieChart) mLayout.findViewById(R.id.chartPie);
+        mChart = mLayout.findViewById(R.id.chartPie);
         mChart.setUsePercentValues(true);
 
         // change the color of the center-hole

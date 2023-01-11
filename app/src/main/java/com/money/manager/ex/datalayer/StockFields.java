@@ -22,15 +22,15 @@ package com.money.manager.ex.datalayer;
  */
 
 public interface StockFields {
-    public static final String STOCKID = "STOCKID";
-    public static final String HELDAT = "HELDAT";
-    public static final String PURCHASEDATE = "PURCHASEDATE";
-    public static final String STOCKNAME = "STOCKNAME";
-    public static final String SYMBOL = "SYMBOL";
-    public static final String NUMSHARES = "NUMSHARES";
-    public static final String PURCHASEPRICE = "PURCHASEPRICE";
-    public static final String NOTES = "NOTES";
-    public static final String CURRENTPRICE = "CURRENTPRICE";
-    public static final String VALUE = "VALUE";
-    public static final String COMMISSION = "COMMISSION";
+    String STOCKID = "STOCKID";
+    String HELDAT = "HELDAT";
+    String PURCHASEDATE = "PURCHASEDATE";
+    String STOCKNAME = "STOCKNAME";
+    String SYMBOL = "SYMBOL";
+    String NUMSHARES = "NUMSHARES";
+    String PURCHASEPRICE = "PURCHASEPRICE";
+    String NOTES = "NOTES";
+    String CURRENTPRICE = "CURRENTPRICE";
+    String VALUE = "VALUE";
+    String COMMISSION = "COMMISSION";
 }

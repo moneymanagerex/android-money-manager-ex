@@ -96,10 +96,8 @@ public class SyncPreferenceFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQUEST_REMOTE_FILE:
-                handleFileSelection(resultCode, data);
-                break;
+        if (requestCode == REQUEST_REMOTE_FILE) {
+            handleFileSelection(resultCode, data);
         }
     }
 

@@ -66,8 +66,8 @@ public class PayeeReportFragment
 
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        TextView txtColumn1 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) mHeaderListView.findViewById(R.id.textViewColumn2);
+        TextView txtColumn1 = mHeaderListView.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = mHeaderListView.findViewById(R.id.textViewColumn2);
         //set header
         txtColumn1.setText(R.string.payee);
         txtColumn1.setTypeface(null, Typeface.BOLD);
@@ -78,8 +78,8 @@ public class PayeeReportFragment
 
         //create footer view
         mFooterListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        txtColumn1 = (TextView) mFooterListView.findViewById(R.id.textViewColumn1);
-        txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
+        txtColumn1 = mFooterListView.findViewById(R.id.textViewColumn1);
+        txtColumn2 = mFooterListView.findViewById(R.id.textViewColumn2);
         //set footer
         txtColumn1.setText(R.string.total);
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -128,37 +128,36 @@ public class PayeeReportFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         super.onLoadFinished(loader, data);
-        switch (loader.getId()) {
-            case ID_LOADER:
-                if (data == null) return;
+        if (loader.getId() == ID_LOADER) {
+            if (data == null) return;
 
-                //parse cursor for calculate total
-                double totalAmount = 0;
-                while (data.moveToNext()) {
-                    totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
-                }
+            //parse cursor for calculate total
+            double totalAmount = 0;
+            while (data.moveToNext()) {
+                totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
+            }
 
-                CurrencyService currencyService = new CurrencyService(getContext());
+            CurrencyService currencyService = new CurrencyService(getContext());
 
-                TextView txtColumn2 = (TextView) mFooterListView.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(totalAmount)));
+            TextView txtColumn2 = mFooterListView.findViewById(R.id.textViewColumn2);
+            txtColumn2.setText(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(totalAmount)));
 
-                // solve bug chart
-                if (data.getCount() > 0) {
-                    getListView().removeFooterView(mFooterListView);
-                    getListView().addFooterView(mFooterListView);
-                }
-                // handler to show chart
-                if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
+            // solve bug chart
+            if (data.getCount() > 0) {
+                getListView().removeFooterView(mFooterListView);
+                getListView().addFooterView(mFooterListView);
+            }
+            // handler to show chart
+            if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            showChart();
-                        }
-                    }, 1 * 1000);
-                }
+                    @Override
+                    public void run() {
+                        showChart();
+                    }
+                }, 1000);
+            }
         }
     }
 

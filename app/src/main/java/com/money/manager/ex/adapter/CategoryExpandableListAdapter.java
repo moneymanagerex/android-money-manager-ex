@@ -52,16 +52,16 @@ public class CategoryExpandableListAdapter
         mShowSelector = showSelector;
     }
 
-	private Context mContext;
-	private int mLayout;
+	private final Context mContext;
+	private final int mLayout;
 	
-	private List<Category> mCategories;
-	private HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
+	private final List<Category> mCategories;
+	private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 	
 	private int mIdGroupChecked = ListView.INVALID_POSITION;
 	private int mIdChildChecked = ListView.INVALID_POSITION;
 
-    private boolean mShowSelector;
+    private final boolean mShowSelector;
 
     private final int[] expandedStateSet = {android.R.attr.state_expanded};
     private final int[] emptyStateSet = {};

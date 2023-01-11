@@ -117,7 +117,7 @@ public class AssetClassEditFragment
      */
 
     private void initializeNameEdit(View view) {
-        final EditText edit = (EditText) view.findViewById(R.id.nameEdit);
+        final EditText edit = view.findViewById(R.id.nameEdit);
         if (edit == null) return;
 
         edit.setText(assetClass.getName());
@@ -162,7 +162,7 @@ public class AssetClassEditFragment
     }
 
     private void initializeParentEdit(View view) {
-        TextView edit = (TextView) view.findViewById(R.id.parentAssetClass);
+        TextView edit = view.findViewById(R.id.parentAssetClass);
         if (edit == null) return;
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -234,7 +234,7 @@ public class AssetClassEditFragment
         View view = getView();
         if (view == null) return;
 
-        TextView textView = (TextView) view.findViewById(R.id.sortOrderEdit);
+        TextView textView = view.findViewById(R.id.sortOrderEdit);
         if (textView != null) {
             Integer sortOrder = assetClass.getSortOrder();
 
