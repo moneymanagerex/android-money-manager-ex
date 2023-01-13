@@ -39,7 +39,7 @@ import static org.junit.Assert.assertNotNull;
  * Tests for the Money implementation
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class MoneyTests {
 
     @Before

@@ -40,9 +40,9 @@ import timber.log.Timber;
 public class ExportToCsvFile
         extends AsyncTask<Void, Void, Boolean> {
 
-	private Context mContext;
-	private AllDataAdapter mAdapter;
-	private ProgressDialog dialog;
+	private final Context mContext;
+	private final AllDataAdapter mAdapter;
+	private final ProgressDialog dialog;
 
 	private String mFileName = null;
 	private String mPrefix = "";

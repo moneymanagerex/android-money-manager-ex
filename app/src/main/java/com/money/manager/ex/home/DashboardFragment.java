@@ -99,10 +99,10 @@ public class DashboardFragment
             return null;
         linearScreens = new LinearLayout[ID_LOADER_SCREEN4 + 1];
         // get sub linearlayout
-        linearScreens[ID_LOADER_SCREEN1] = (LinearLayout) layout.findViewById(R.id.linearLayoutScreen1);
-        linearScreens[ID_LOADER_SCREEN2] = (LinearLayout) layout.findViewById(R.id.linearLayoutScreen2);
-        linearScreens[ID_LOADER_SCREEN3] = (LinearLayout) layout.findViewById(R.id.linearLayoutScreen3);
-        linearScreens[ID_LOADER_SCREEN4] = (LinearLayout) layout.findViewById(R.id.linearLayoutScreen4);
+        linearScreens[ID_LOADER_SCREEN1] = layout.findViewById(R.id.linearLayoutScreen1);
+        linearScreens[ID_LOADER_SCREEN2] = layout.findViewById(R.id.linearLayoutScreen2);
+        linearScreens[ID_LOADER_SCREEN3] = layout.findViewById(R.id.linearLayoutScreen3);
+        linearScreens[ID_LOADER_SCREEN4] = layout.findViewById(R.id.linearLayoutScreen4);
         // calculate padding
         scale = getResources().getDisplayMetrics().density;
         padding_in_px = (int) (padding_in_dp * scale + 0.5f);
@@ -162,9 +162,9 @@ public class DashboardFragment
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query = new Select(report.getAllColumns())
-                    .where(IncomeVsExpenseReportEntity.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                    .where(IncomeVsExpenseReportEntity.Month + "=" + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
                             " AND " +
-                            IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+                            IncomeVsExpenseReportEntity.YEAR + "=" + Calendar.getInstance().get(Calendar.YEAR));
 
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
@@ -292,7 +292,7 @@ public class DashboardFragment
         MmxDate dateTime = new MmxDate(year, month - 1, 1);
         // titles
 //        titles[1] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
-        titles[1] = Integer.toString(year) + "-" + dateTime.toString("MMM");
+        titles[1] = year + "-" + dateTime.toString("MMM");
 
         // compose bundle for arguments
         Bundle args = new Bundle();
@@ -326,10 +326,10 @@ public class DashboardFragment
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         // Textview Title
-        TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
+        TextView title = layout.findViewById(R.id.textViewTitle);
         title.setText(R.string.top_withdrawals_last_30_days);
         // Table
-        TableLayout tableLayout = (TableLayout) layout.findViewById(R.id.tableLayoutSummary);
+        TableLayout tableLayout = layout.findViewById(R.id.tableLayoutSummary);
         // Create Title
         tableLayout.addView(createTableRow(new String[]{"<small><b>" + getString(R.string.category) + "</b></small>",
                 "<small><b>" + getString(R.string.quantity) + "</b></small>", "<small><b>" + getString(R.string.summary) + "</b></small>"}, new Float[]{1f,
@@ -345,7 +345,7 @@ public class DashboardFragment
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
-                            "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small><i>" + num + "</i></small>",
                             "<small>" + currencyService.getCurrencyFormatted(
                                     currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)) + "</small>"},
                     new Float[]{1f, null, null},
@@ -361,10 +361,10 @@ public class DashboardFragment
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         // Textview Title
-        TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
+        TextView title = layout.findViewById(R.id.textViewTitle);
         title.setText(R.string.top_payees_last_30_days);
         // Table
-        TableLayout tableLayout = (TableLayout) layout.findViewById(R.id.tableLayoutSummary);
+        TableLayout tableLayout = layout.findViewById(R.id.tableLayoutSummary);
         // Create Title
         tableLayout.addView(createTableRow(new String[]{"<small><b>" + getString(R.string.payee) + "</b></small>",
                 "<small><b>" + getString(R.string.quantity) + "</b></small>", "<small><b>" + getString(R.string.summary) + "</b></small>"}, new Float[]{1f,
@@ -377,7 +377,7 @@ public class DashboardFragment
             int num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
-                            "<small><i>" + Integer.toString(num) + "</i></small>",
+                            "<small><i>" + num + "</i></small>",
                             "<small>" + currencyService.getCurrencyFormatted(
                                     currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)) + "</small>"},
                     new Float[]{1f, null, null},
@@ -396,10 +396,10 @@ public class DashboardFragment
         Core core = new Core(getActivity().getApplicationContext());
 
         // Textview Title
-        TextView title = (TextView) layout.findViewById(R.id.textViewTitle);
+        TextView title = layout.findViewById(R.id.textViewTitle);
         title.setText(R.string.upcoming_transactions);
         // Table
-        TableLayout tableLayout = (TableLayout) layout.findViewById(R.id.tableLayoutSummary);
+        TableLayout tableLayout = layout.findViewById(R.id.tableLayoutSummary);
         // add rows
         while (cursor.moveToNext()) {
             // load values
@@ -408,7 +408,7 @@ public class DashboardFragment
             int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
             String daysLeftText = "";
-            daysLeftText = Integer.toString(Math.abs(daysLeft)) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
+            daysLeftText = Math.abs(daysLeft) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small>" + currencyService.getCurrencyFormatted(currencyId, MoneyFactory.fromDouble(total)) + "</small>",
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},

@@ -224,31 +224,29 @@ public class AllDataListFragment
         //animation
         setListShown(false);
 
-        switch (id) {
-            case ID_LOADER_ALL_DATA_DETAIL:
-                // compose selection and sort
-                String selection = "";
-                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
-                    selection = args.getString(KEY_ARGUMENTS_WHERE);
-                }
+        if (id == ID_LOADER_ALL_DATA_DETAIL) {// compose selection and sort
+            String selection = "";
+            if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE)) {
+                selection = args.getString(KEY_ARGUMENTS_WHERE);
+            }
 //                String[] whereParams = new String[0];
 //                if (args != null && args.containsKey(KEY_ARGUMENTS_WHERE_PARAMS)) {
 //                    ArrayList<String> whereParamsList = args.getStringArrayList(KEY_ARGUMENTS_WHERE_PARAMS);
 //                    whereParams = whereParamsList.toArray(whereParams);
 //                }
 
-                // set sort
-                String sort = "";
-                if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                    sort = args.getString(KEY_ARGUMENTS_SORT);
-                }
-                // create loader
-                QueryAllData allData = new QueryAllData(getActivity());
-                Select query = new Select(allData.getAllColumns())
-                        .where(selection)
-                        .orderBy(sort);
+            // set sort
+            String sort = "";
+            if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
+                sort = args.getString(KEY_ARGUMENTS_SORT);
+            }
+            // create loader
+            QueryAllData allData = new QueryAllData(getActivity());
+            Select query = new Select(allData.getAllColumns())
+                    .where(selection)
+                    .orderBy(sort);
 
-                return new MmxCursorLoader(getActivity(), allData.getUri(), query);
+            return new MmxCursorLoader(getActivity(), allData.getUri(), query);
         }
         return null;
     }
@@ -267,31 +265,29 @@ public class AllDataListFragment
         LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onLoadFinished(loader, data);
 
-        switch (loader.getId()) {
-            case ID_LOADER_ALL_DATA_DETAIL:
-                // Transactions list loaded.
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+        if (loader.getId() == ID_LOADER_ALL_DATA_DETAIL) {// Transactions list loaded.
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
 //                adapter.swapCursor(data);
-                adapter.changeCursor(data);
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
-                        getFloatingActionButton().show(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
+            adapter.changeCursor(data);
+            if (isResumed()) {
+                setListShown(true);
+                if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
+                    getFloatingActionButton().show(true);
+            } else {
+                setListShownNoAnimation(true);
+            }
 
-                // reset the transaction groups (account name collection)
-                adapter.resetAccountHeaderIndexes();
+            // reset the transaction groups (account name collection)
+            adapter.resetAccountHeaderIndexes();
 
-                // Show totals
-                if (this.mShowFooter) {
-                    try {
-                        this.updateFooter(data);
-                    } catch (Exception e) {
-                        Timber.e(e, "displaying footer");
-                    }
+            // Show totals
+            if (this.mShowFooter) {
+                try {
+                    this.updateFooter(data);
+                } catch (Exception e) {
+                    Timber.e(e, "displaying footer");
                 }
+            }
         }
     }
 
@@ -603,8 +599,8 @@ public class AllDataListFragment
         this.footer = (LinearLayout) View.inflate(getActivity(),
                 R.layout.item_generic_report_2_columns, null);
 
-        TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
+        TextView txtColumn1 = footer.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = footer.findViewById(R.id.textViewColumn2);
 
         txtColumn1.setText(R.string.total);
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -621,7 +617,7 @@ public class AllDataListFragment
         String display;
 
         // number of records
-         display = Integer.toString(data.getCount()) + " " + getString(R.string.records) + ", ";
+         display = data.getCount() + " " + getString(R.string.records) + ", ";
 
         // sum
 
@@ -631,7 +627,7 @@ public class AllDataListFragment
             total = getTotalFromCursor(data);
         }
 
-        TextView txtColumn2 = (TextView) this.footer.findViewById(R.id.textViewColumn2);
+        TextView txtColumn2 = this.footer.findViewById(R.id.textViewColumn2);
 
         CurrencyService currencyService = new CurrencyService(getContext());
         display += currencyService.getBaseCurrencyFormatted(total);
@@ -749,7 +745,7 @@ public class AllDataListFragment
                     // First delete any splits. See if there are any split records.
                     SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
                     Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                            SplitCategory.TRANSID + "=" + Integer.toString(transactionId),
+                            SplitCategory.TRANSID + "=" + transactionId,
                             null, SplitCategory.SPLITTRANSID);
                     int splitCount = curSplit.getCount();
                     curSplit.close();

@@ -372,21 +372,16 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // toggle drawer with the menu hardware button.
-                if (mDrawer != null) {
-                    if (mDrawer.isDrawerOpen(mDrawerLayout)) {
-                        mDrawer.closeDrawer(mDrawerLayout);
-                    } else {
-                        mDrawer.openDrawer(mDrawerLayout);
-                    }
+        // nothing
+        if (item.getItemId() == android.R.id.home) {// toggle drawer with the menu hardware button.
+            if (mDrawer != null) {
+                if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+                    mDrawer.closeDrawer(mDrawerLayout);
+                } else {
+                    mDrawer.openDrawer(mDrawerLayout);
                 }
-                return true;
-
-            default:
-                // nothing
-                break;
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -772,7 +767,7 @@ public class MainActivity
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
-        String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + accountId;
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
@@ -781,7 +776,7 @@ public class MainActivity
     }
 
     public void showPortfolioFragment(int accountId) {
-        String tag = PortfolioFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = PortfolioFragment.class.getSimpleName() + "_" + accountId;
         PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
             fragment = PortfolioFragment.newInstance(accountId);
@@ -790,7 +785,7 @@ public class MainActivity
     }
 
     public void showWatchlistFragment(int accountId) {
-        String tag = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = WatchlistFragment.class.getSimpleName() + "_" + accountId;
         WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
             fragment = WatchlistFragment.newInstance(accountId);

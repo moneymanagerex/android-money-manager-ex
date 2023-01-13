@@ -35,7 +35,7 @@ public class SyncNotificationFactory {
         this.context = context;
     }
 
-    private Context context;
+    private final Context context;
 
     public Context getContext() {
         return this.context;

@@ -43,7 +43,7 @@ public class Passcode {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    private Context mContext;
+    private final Context mContext;
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
 
     public Context getContext() {

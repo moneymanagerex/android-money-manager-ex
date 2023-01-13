@@ -62,8 +62,8 @@ public class ExceptionHandler
     }
 
     private final String LINE_SEPARATOR = "\n";
-    private Context mContext;
-    private Object mHost;
+    private final Context mContext;
+    private final Object mHost;
 
     public Context getContext() {
         return mContext;
@@ -152,7 +152,7 @@ public class ExceptionHandler
         errorReport.append(LINE_SEPARATOR);
 
         errorReport.append("************ CAUSE OF ERROR ************\n");
-        errorReport.append(stackTrace.toString());
+        errorReport.append(stackTrace);
 
         errorReport.append("\n************ DEVICE INFORMATION ***********\n");
         errorReport.append("Brand: ");

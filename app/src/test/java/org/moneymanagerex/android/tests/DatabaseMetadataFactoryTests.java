@@ -39,7 +39,6 @@ import static org.hamcrest.CoreMatchers.*;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class DatabaseMetadataFactoryTests {
 
     private DatabaseMetadataFactory _testObject;

@@ -235,9 +235,7 @@ public class MmexApplication
             InfoService service = new InfoService(this.getApplicationContext());
             boolean updateSuccessful = service.setInfoValue(InfoKeys.USERNAME, userName);
 
-            if (!updateSuccessful) {
-                return false;
-            }
+            return updateSuccessful;
         }
 
         return true;

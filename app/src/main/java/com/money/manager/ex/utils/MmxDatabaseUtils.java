@@ -84,9 +84,7 @@ public class MmxDatabaseUtils {
         // also add .emb in the future.
 
         if (!dbFile.canRead()) return false;
-        if (!dbFile.canWrite()) return false;
-
-        return true;
+        return dbFile.canWrite();
     }
 
     // Dynamic
@@ -102,7 +100,7 @@ public class MmxDatabaseUtils {
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
-    private Context mContext;
+    private final Context mContext;
 
     public Context getContext() {
         return mContext;
@@ -313,8 +311,7 @@ public class MmxDatabaseUtils {
         ArrayList<String> tableNames = new ArrayList<>();
 
         while (line != null) {
-            boolean found = false;
-            if (line.contains(textToMatch)) found = true;
+            boolean found = line.contains(textToMatch);
             if (!found && line.contains(textToMatch.toUpperCase())) found = true;
 
             if (found) {

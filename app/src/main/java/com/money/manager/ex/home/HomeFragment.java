@@ -137,9 +137,9 @@ public class HomeFragment
     /**
      * List of account types in lowercase (i.e. checking, investment, ...)
      */
-    private List<String> mAccountTypes = new ArrayList<>();
-    private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
-    private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
+    private final List<String> mAccountTypes = new ArrayList<>();
+    private final HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
+    private final HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
 
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
@@ -175,16 +175,16 @@ public class HomeFragment
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
-        txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
+        linearHome = view.findViewById(R.id.linearLayoutHome);
+        txtTotalAccounts = view.findViewById(R.id.textViewTotalAccounts);
 
         createWelcomeView(view);
 
         setUpAccountsList(view);
 
-        prgAccountBills = (ProgressBar) view.findViewById(R.id.progressAccountBills);
+        prgAccountBills = view.findViewById(R.id.progressAccountBills);
 
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton = view.findViewById(R.id.fab);
         mFloatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,10 +258,10 @@ public class HomeFragment
 
                 String whereStatement =
                     IncomeVsExpenseReportEntity.Month + "="
-                    + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                    + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
                         " AND " +
                         IncomeVsExpenseReportEntity.YEAR + "=" +
-                            Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+                            Calendar.getInstance().get(Calendar.YEAR);
 
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query = new Select(report.getAllColumns())
@@ -277,14 +277,12 @@ public class HomeFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_ACCOUNT_BILLS:
-                txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
-                setListViewAccountBillsVisible(false);
-                mAccountsByType.clear();
-                mTotalsByType.clear();
-                mAccountTypes.clear();
-                break;
+        if (loader.getId() == LOADER_ACCOUNT_BILLS) {
+            txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
+            setListViewAccountBillsVisible(false);
+            mAccountsByType.clear();
+            mTotalsByType.clear();
+            mAccountTypes.clear();
         }
     }
 
@@ -310,9 +308,9 @@ public class HomeFragment
                         income = data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
                     }
                 }
-                TextView txtIncome = (TextView) getActivity().findViewById(R.id.textViewIncome);
-                TextView txtExpenses = (TextView) getActivity().findViewById(R.id.textViewExpenses);
-                TextView txtDifference = (TextView) getActivity().findViewById(R.id.textViewDifference);
+                TextView txtIncome = getActivity().findViewById(R.id.textViewIncome);
+                TextView txtExpenses = getActivity().findViewById(R.id.textViewExpenses);
+                TextView txtDifference = getActivity().findViewById(R.id.textViewDifference);
                 // set value
                 if (txtIncome != null)
                     txtIncome.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
@@ -324,8 +322,8 @@ public class HomeFragment
                     txtDifference.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
                             MoneyFactory.fromDouble(income - Math.abs(expenses))));
                 // manage progressbar
-                final ProgressBar barIncome = (ProgressBar) getActivity().findViewById(R.id.progressBarIncome);
-                final ProgressBar barExpenses = (ProgressBar) getActivity().findViewById(R.id.progressBarExpenses);
+                final ProgressBar barIncome = getActivity().findViewById(R.id.progressBarIncome);
+                final ProgressBar barExpenses = getActivity().findViewById(R.id.progressBarExpenses);
 
                 if (barIncome != null && barExpenses != null) {
                     barIncome.setMax((int) (Math.abs(income) + Math.abs(expenses)));
@@ -365,11 +363,9 @@ public class HomeFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = false;
 
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
-                result = true;
-                break;
+        if (item.getItemId() == R.id.menu_search) {
+            startActivity(new Intent(getActivity(), SearchActivity.class));
+            result = true;
         }
 
         if (result) {
@@ -563,16 +559,16 @@ public class HomeFragment
         if (linearFooter == null) {
             linearFooter = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_account_bills, null);
             // text view into layout
-            txtFooterSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotal);
-            txtFooterSummaryReconciled = (TextView) linearFooter.findViewById(R.id.textViewItemAccountTotalReconciled);
+            txtFooterSummary = linearFooter.findViewById(R.id.textViewItemAccountTotal);
+            txtFooterSummaryReconciled = linearFooter.findViewById(R.id.textViewItemAccountTotalReconciled);
             if(mHideReconciled) {
                 txtFooterSummaryReconciled.setVisibility(View.GONE);
             }
             // set text
-            TextView txtTextSummary = (TextView) linearFooter.findViewById(R.id.textViewItemAccountName);
+            TextView txtTextSummary = linearFooter.findViewById(R.id.textViewItemAccountName);
             txtTextSummary.setText(R.string.summary);
             // invisible image
-            ImageView imgSummary = (ImageView) linearFooter.findViewById(R.id.imageViewAccountType);
+            ImageView imgSummary = linearFooter.findViewById(R.id.imageViewAccountType);
             imgSummary.setVisibility(View.INVISIBLE);
             // set color textview
             txtTextSummary.setTextColor(Color.GRAY);
@@ -594,10 +590,10 @@ public class HomeFragment
     }
 
     private void createWelcomeView(View view) {
-        linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
+        linearWelcome = view.findViewById(R.id.linearLayoutWelcome);
 
         // basic preferences
-        Button buttonSettings = (Button) view.findViewById(R.id.buttonSettings);
+        Button buttonSettings = view.findViewById(R.id.buttonSettings);
         if (buttonSettings != null) {
             buttonSettings.setOnClickListener(new OnClickListener() {
                 @Override
@@ -777,12 +773,12 @@ public class HomeFragment
         if (!legacyDataExists) return;
 
         // otherwise show the options
-        LinearLayout panel = (LinearLayout) view.findViewById(R.id.panelMigration);
+        LinearLayout panel = view.findViewById(R.id.panelMigration);
         panel.setVisibility(View.VISIBLE);
 
         // e events, etc.
 
-        Button migrateDatabaseButton = (Button) view.findViewById(R.id.buttonMigrateDatabase);
+        Button migrateDatabaseButton = view.findViewById(R.id.buttonMigrateDatabase);
         if (migrateDatabaseButton != null) {
             if (!migrator.legacyDataExists()) {
 
@@ -803,7 +799,7 @@ public class HomeFragment
                 migrateDatabaseButton.setOnClickListener(migrateClickListener);
             } else {
                 // hide migration notification.
-                RobotoTextView textMigrate = (RobotoTextView) view.findViewById(R.id.textMigrateDatabase);
+                RobotoTextView textMigrate = view.findViewById(R.id.textMigrateDatabase);
                 textMigrate.setVisibility(View.GONE);
 
                 migrateDatabaseButton.setVisibility(View.GONE);
@@ -882,7 +878,7 @@ public class HomeFragment
 
             String accountType = accountTransaction.getAccountType().toLowerCase();
             QueryAccountBills totalForType;
-            if (mAccountTypes.indexOf(accountType) == -1) {
+            if (!mAccountTypes.contains(accountType)) {
                 // add to the list of account types
                 mAccountTypes.add(accountType);
 
@@ -928,7 +924,7 @@ public class HomeFragment
     }
 
     private ExpandableListView getExpandableListView(View view) {
-        mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
+        mExpandableListView = view.findViewById(R.id.listViewAccountBills);
         return mExpandableListView;
     }
 

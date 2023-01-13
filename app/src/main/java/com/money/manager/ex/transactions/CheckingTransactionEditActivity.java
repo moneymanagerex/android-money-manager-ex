@@ -357,9 +357,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setNotes(parameters.notes);
 
         // stop further handling if Silent Mode is requested
-        if (parameters.isSilentMode && saveData()) return false;
-
-        return true;
+        return !parameters.isSilentMode || !saveData();
     }
 
     private void initializeInputControls() {

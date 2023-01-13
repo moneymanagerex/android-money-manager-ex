@@ -18,7 +18,7 @@ import com.money.manager.ex.PasscodeActivity;
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
     private CancellationSignal cancellationSignal;
-    private Context context;
+    private final Context context;
 
     public FingerprintHandler(Context mContext) {
         context = mContext;

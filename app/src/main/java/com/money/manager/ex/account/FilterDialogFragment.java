@@ -140,7 +140,7 @@ public class FilterDialogFragment
 //        defaultAccountCheckbox.setChecked(mAccount.getId().equals(defaultAccountId));
 
         // Number of records
-        TextView numberOfTransactions = (TextView) view.findViewById(R.id.numberOfTransactionsTextView);
+        TextView numberOfTransactions = view.findViewById(R.id.numberOfTransactionsTextView);
         numberOfTransactions.setText(getActivity().getString(R.string.number_transaction_found, mRecords));
 
         // time frame

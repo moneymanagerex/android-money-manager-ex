@@ -101,10 +101,10 @@ public class SVG
    private float   renderDPI = 96f;   // default is 96
 
    // CSS rules
-   private Ruleset  cssRules = new Ruleset();
+   private final Ruleset  cssRules = new Ruleset();
 
    // Map from id attribute to element
-   private Map<String, SvgElementBase> idToElementMap = new HashMap<>();
+   private final Map<String, SvgElementBase> idToElementMap = new HashMap<>();
 
 
    enum Unit
@@ -1361,7 +1361,7 @@ public class SVG
    // Special version of Colour that indicates use of 'currentColor' keyword
    static class CurrentColor extends SvgPaint
    {
-      private static CurrentColor  instance = new CurrentColor();
+      private static final CurrentColor  instance = new CurrentColor();
       
       private CurrentColor()
       {

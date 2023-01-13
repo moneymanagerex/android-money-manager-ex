@@ -126,7 +126,7 @@ public class AssetClassListActivity
     }
 
     private void initRecyclerView(AssetClassListAdapter adapter) {
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.list);
+        RecyclerView recycler = findViewById(R.id.list);
         if (recycler == null) return;
 
         recycler.setAdapter(adapter);

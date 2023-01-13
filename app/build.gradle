@@ -19,7 +19,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -137,6 +136,7 @@ dependencies {
     implementation project(':androidSVG')
     implementation project(path: ':money')
 
+//    compile 'com.nononsenseapps:filepicker:4.1.0' // file picker -- TODO: This file picker library is archived. Investigate an alternative.
     implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
             , 'com.opencsv:opencsv:4.1'
@@ -148,7 +148,7 @@ dependencies {
             , 'com.melnykov:floatingactionbutton:1.3.0'
             , 'com.github.pedrovgs:lynx:1.6'
             , 'de.hdodenhof:circleimageview:2.2.0'
-            , 'me.relex:circleindicator:1.2.2'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
+            , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.code-troopers.betterpickers:library:3.1.0'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
@@ -157,10 +157,11 @@ dependencies {
             , 'com.google.code.gson:gson:2.8.2'
             // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
-            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
+            , "androidx.recyclerview:recyclerview:1.2.1"
+            // For control over item selection of both touch and mouse driven selection
+            , "androidx.recyclerview:recyclerview-selection:1.1.0"
             , 'org.jsoup:jsoup:1.11.2'              // HTML parsing.
             , 'androidx.multidex:multidex:2.0.0'  // multidex support
-            , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
             , 'io.reactivex:rxjava:1.3.3'
@@ -168,11 +169,6 @@ dependencies {
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2' // use SqlDelight
             , 'com.jakewharton.timber:timber:4.6.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
-            // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
-            // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
@@ -183,6 +179,9 @@ dependencies {
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.5'
+            , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
+            , 'androidx.fragment:fragment:1.5.5'
+
     )
     implementation supportDependencies.core
     implementation supportDependencies.support
@@ -220,10 +219,10 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.1',
-            'org.robolectric:robolectric:3.8',
-            'org.robolectric:shadows-support-v4:3.3.2',
-            'org.robolectric:shadows-multidex:3.8',
-            'org.robolectric:shadows-httpclient:3.8',
+            'org.robolectric:robolectric:4.9',
+//            'org.robolectric:shadows-support-v4:3.3.2',
+//            'org.robolectric:shadows-multidex:3.8',
+//            'org.robolectric:shadows-httpclient:3.8',
             //'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
@@ -234,6 +233,7 @@ dependencies {
             // mock/stub
             // "org.mockito:mockito-core:1.+"
             , 'io.selendroid:selendroid-client:0.17.0'
+
     )
     testImplementation('io.selendroid:selendroid-standalone:0.17.0') {
         exclude group: 'io.selendroid', module: 'selendroid-server'

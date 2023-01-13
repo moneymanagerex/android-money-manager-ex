@@ -31,10 +31,10 @@ import com.money.manager.ex.view.RobotoTextView;
 public class CategoryListItemViewHolderChild {
     public CategoryListItemViewHolderChild(View view) {
 //        textContainer = (ViewGroup) view.findViewById(R.id.textContainer);
-        text1 = (RobotoTextView) view.findViewById(android.R.id.text1);
-        text2 = (TextView) view.findViewById(android.R.id.text2);
-        selector = (LinearLayout) view.findViewById(R.id.selector);
-        indent = (ViewGroup) view.findViewById(R.id.indent);
+        text1 = view.findViewById(android.R.id.text1);
+        text2 = view.findViewById(android.R.id.text2);
+        selector = view.findViewById(R.id.selector);
+        indent = view.findViewById(R.id.indent);
     }
 
 //    public ViewGroup textContainer;

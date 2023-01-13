@@ -159,21 +159,20 @@ public class AccountListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case LOADER_ACCOUNT:
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
-                    selectionArgs = new String[]{mCurFilter + "%"};
-                }
+        if (id == LOADER_ACCOUNT) {
+            String whereClause = null;
+            String[] selectionArgs = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause = Account.ACCOUNTNAME + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%"};
+            }
 
-                AccountRepository repo = new AccountRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
-                        .where(whereClause, selectionArgs)
-                        .orderBy("upper(" + Account.ACCOUNTNAME + ")");
+            AccountRepository repo = new AccountRepository(getActivity());
+            Select query = new Select(repo.getAllColumns())
+                    .where(whereClause, selectionArgs)
+                    .orderBy("upper(" + Account.ACCOUNTNAME + ")");
 
-                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+            return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;
@@ -181,31 +180,29 @@ public class AccountListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_ACCOUNT:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+        if (loader.getId() == LOADER_ACCOUNT) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
 //                adapter.swapCursor(null);
-                adapter.changeCursor(null);
+            adapter.changeCursor(null);
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case LOADER_ACCOUNT:
-                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+        if (loader.getId() == LOADER_ACCOUNT) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+            adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
 //                adapter.swapCursor(data);
-                adapter.changeCursor(data);
+            adapter.changeCursor(data);
 
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+            if (isResumed()) {
+                setListShown(true);
+                if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 

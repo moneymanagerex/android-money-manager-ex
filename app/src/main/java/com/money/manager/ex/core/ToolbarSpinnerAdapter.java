@@ -38,13 +38,13 @@ public class ToolbarSpinnerAdapter
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent){
         View view = super.getDropDownView(position, convertView, parent);
 
-        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+        TextView textView = view.findViewById(android.R.id.text1);
 
 //        int textColor = getContext().getResources().getColor(R.color.material_grey_900);
         int textColor = ContextCompat.getColor(getContext(), R.color.material_grey_900);

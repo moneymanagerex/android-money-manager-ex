@@ -94,7 +94,7 @@ public class WebChangelogFragment
         // Show all the versions
         String url = "https://github.com/moneymanagerex/android-money-manager-ex/milestones?direction=desc&sort=due_date&state=closed";
         
-        WebView webView = (WebView) view.findViewById(R.id.webView);
+        WebView webView = view.findViewById(R.id.webView);
         if (webView != null) {
             webView.loadUrl(url);
         }

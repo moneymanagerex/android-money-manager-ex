@@ -47,7 +47,7 @@ import info.javaperformance.money.MoneyFactory;
 public class HomeAccountsExpandableAdapter
     extends BaseExpandableListAdapter {
 
-    private Context mContext;
+    private final Context mContext;
 
     public HomeAccountsExpandableAdapter(Context context, List<String> accountTypes,
                                          HashMap<String, List<QueryAccountBills>> accountsByType,
@@ -64,8 +64,8 @@ public class HomeAccountsExpandableAdapter
     private List<String> mAccountTypes = new ArrayList<>();
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
-    private boolean mHideReconciled;
-    private CurrencyService mCurrencyService;
+    private final boolean mHideReconciled;
+    private final CurrencyService mCurrencyService;
 
     @Override
     public int getGroupCount() {
@@ -116,20 +116,20 @@ public class HomeAccountsExpandableAdapter
 
             holder = new ViewHolderAccountBills();
 
-            holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
+            holder.txtAccountName = convertView.findViewById(R.id.textViewItemAccountName);
             holder.txtAccountName.setTypeface(null, Typeface.BOLD);
 
-            holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
+            holder.txtAccountTotal = convertView.findViewById(R.id.textViewItemAccountTotal);
             holder.txtAccountTotal.setTypeface(null, Typeface.BOLD);
 
-            holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
+            holder.txtAccountReconciled = convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
             if(mHideReconciled) {
                 holder.txtAccountReconciled.setVisibility(View.GONE);
             } else {
                 holder.txtAccountReconciled.setTypeface(null, Typeface.BOLD);
             }
 
-            holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
+            holder.imgAccountType = convertView.findViewById(R.id.imageViewAccountType);
 
             convertView.setTag(holder);
         }
@@ -201,10 +201,10 @@ public class HomeAccountsExpandableAdapter
             convertView = inflater.inflate(R.layout.item_account_bills, null);
 
             holder = new ViewHolderAccountBills();
-            holder.txtAccountName = (TextView) convertView.findViewById(R.id.textViewItemAccountName);
-            holder.txtAccountTotal = (TextView) convertView.findViewById(R.id.textViewItemAccountTotal);
-            holder.txtAccountReconciled = (TextView) convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
-            holder.imgAccountType = (ImageView) convertView.findViewById(R.id.imageViewAccountType);
+            holder.txtAccountName = convertView.findViewById(R.id.textViewItemAccountName);
+            holder.txtAccountTotal = convertView.findViewById(R.id.textViewItemAccountTotal);
+            holder.txtAccountReconciled = convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
+            holder.imgAccountType = convertView.findViewById(R.id.imageViewAccountType);
 
             holder.txtAccountTotal.setTypeface(null, Typeface.NORMAL);
             holder.imgAccountType.setVisibility(View.INVISIBLE);

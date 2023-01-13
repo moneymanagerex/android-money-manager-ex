@@ -45,7 +45,7 @@ public class RecurringTransactionNotifications {
         mContext = context.getApplicationContext();
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     public void notifyRepeatingTransaction() {
         try {

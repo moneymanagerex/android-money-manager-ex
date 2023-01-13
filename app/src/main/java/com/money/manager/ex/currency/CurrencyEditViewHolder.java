@@ -30,16 +30,16 @@ public class CurrencyEditViewHolder {
     public static CurrencyEditViewHolder initialize(AppCompatActivity activity) {
         CurrencyEditViewHolder holder = new CurrencyEditViewHolder();
 
-        holder.edtCurrencyName = (EditText) activity.findViewById(R.id.editTextCurrencyName);
-        holder.spinCurrencySymbol = (Spinner) activity.findViewById(R.id.spinCurrencySymbol);
-        holder.edtUnitName = (EditText) activity.findViewById(R.id.editTextUnitName);
-        holder.edtCentsName = (EditText) activity.findViewById(R.id.editTextCentsName);
-        holder.edtPrefix = (EditText) activity.findViewById(R.id.editTextPrefixSymbol);
-        holder.edtSuffix = (EditText) activity.findViewById(R.id.editTextSuffixSymbol);
-        holder.edtDecimal = (EditText) activity.findViewById(R.id.editTextDecimalChar);
-        holder.edtGroup = (EditText) activity.findViewById(R.id.editTextGroupChar);
-        holder.edtScale = (EditText) activity.findViewById(R.id.editTextScale);
-        holder.edtConversion = (EditText) activity.findViewById(R.id.editTextConversion);
+        holder.edtCurrencyName = activity.findViewById(R.id.editTextCurrencyName);
+        holder.spinCurrencySymbol = activity.findViewById(R.id.spinCurrencySymbol);
+        holder.edtUnitName = activity.findViewById(R.id.editTextUnitName);
+        holder.edtCentsName = activity.findViewById(R.id.editTextCentsName);
+        holder.edtPrefix = activity.findViewById(R.id.editTextPrefixSymbol);
+        holder.edtSuffix = activity.findViewById(R.id.editTextSuffixSymbol);
+        holder.edtDecimal = activity.findViewById(R.id.editTextDecimalChar);
+        holder.edtGroup = activity.findViewById(R.id.editTextGroupChar);
+        holder.edtScale = activity.findViewById(R.id.editTextScale);
+        holder.edtConversion = activity.findViewById(R.id.editTextConversion);
 
         return holder;
     }

@@ -41,7 +41,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -53,7 +53,7 @@ import static org.robolectric.Shadows.shadowOf;
  * Test the MainActivity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class MainActivityTests {
 
     private ActivityController<MainActivity> controller;
@@ -147,9 +147,9 @@ public class MainActivityTests {
         this.activity = UnitTestHelper.getActivity(this.controller);
 
         // When
-        TextView incomeTextView = (TextView) this.activity.findViewById(R.id.textViewIncome);
+        TextView incomeTextView = this.activity.findViewById(R.id.textViewIncome);
         String income = incomeTextView.getText().toString();
-        TextView expenseTextView = (TextView) this.activity.findViewById(R.id.textViewExpenses);
+        TextView expenseTextView = this.activity.findViewById(R.id.textViewExpenses);
 
         // Then
         // Check the income/expense for the month

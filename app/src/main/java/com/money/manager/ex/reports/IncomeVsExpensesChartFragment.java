@@ -141,7 +141,7 @@ public class IncomeVsExpensesChartFragment
         //return buildChart();
         mLayout = (LinearLayout) inflater.inflate(R.layout.chart_bar_fragment, container, false);
 
-        mChart = (BarChart) mLayout.findViewById(R.id.chartBar);
+        mChart = mLayout.findViewById(R.id.chartBar);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDescription("");
 

@@ -58,6 +58,7 @@ import com.money.manager.ex.sync.SyncManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -77,7 +78,7 @@ public class MmxContentProvider
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
-    private static SparseArrayCompat<Object> mapContent = new SparseArrayCompat<>();
+    private static final SparseArrayCompat<Object> mapContent = new SparseArrayCompat<>();
     private static String mAuthority;
 
     public MmxContentProvider() {
@@ -158,26 +159,24 @@ public class MmxContentProvider
         long id = Constants.NOT_SET;
         String parse;
 
-        if (Dataset.class.isInstance(ret)) {
+        if (ret instanceof Dataset) {
             Dataset dataset = ((Dataset) ret);
-            switch (dataset.getType()) {
-                case TABLE:
-                    logTableInsert(dataset, values);
+            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+                logTableInsert(dataset, values);
 
-                    //database.beginTransaction();
-                    try {
-                        initializeDependencies();
+                //database.beginTransaction();
+                try {
+                    initializeDependencies();
 
-                        id = openHelper.get().getWritableDatabase()
-                                .insertOrThrow(dataset.getSource(), null, values);
-                        //database.setTransactionSuccessful();
-                    } catch (Exception e) {
-                        Timber.e(e, "inserting: %s", "insert");
-                    }
-                    parse = dataset.getBasepath() + "/" + id;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Type of dataset not supported for update");
+                    id = openHelper.get().getWritableDatabase()
+                            .insertOrThrow(dataset.getSource(), null, values);
+                    //database.setTransactionSuccessful();
+                } catch (Exception e) {
+                    Timber.e(e, "inserting: %s", "insert");
+                }
+                parse = dataset.getBasepath() + "/" + id;
+            } else {
+                throw new IllegalArgumentException("Type of dataset not supported for update");
             }
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
@@ -203,20 +202,18 @@ public class MmxContentProvider
 
         int rowsUpdate = 0;
 
-        if (Dataset.class.isInstance(ret)) {
+        if (ret instanceof Dataset) {
             Dataset dataset = ((Dataset) ret);
-            switch (dataset.getType()) {
-                case TABLE:
-                    logUpdate(dataset, values, whereClause, whereArgs);
+            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+                logUpdate(dataset, values, whereClause, whereArgs);
 
-                    try {
-                        rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
-                    } catch (Exception ex) {
-                        Timber.e(ex, "updating: %s", "update");
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Type of dataset not supported for update");
+                try {
+                    rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
+                } catch (Exception ex) {
+                    Timber.e(ex, "updating: %s", "update");
+                }
+            } else {
+                throw new IllegalArgumentException("Type of dataset not supported for update");
             }
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
@@ -245,26 +242,24 @@ public class MmxContentProvider
         // take a database reference
         int rowsDelete = 0;
 
-        if (Dataset.class.isInstance(ret)) {
+        if (ret instanceof Dataset) {
             Dataset dataset = ((Dataset) ret);
-            switch (dataset.getType()) {
-                case TABLE:
-                    logDelete(dataset, selection, selectionArgs);
-                    try {
-                        initializeDependencies();
+            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+                logDelete(dataset, selection, selectionArgs);
+                try {
+                    initializeDependencies();
 
-                        rowsDelete = openHelper.get().getWritableDatabase()
-                                .delete(dataset.getSource(), selection, selectionArgs);
+                    rowsDelete = openHelper.get().getWritableDatabase()
+                            .delete(dataset.getSource(), selection, selectionArgs);
 
-                        // committed
-                        //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        //database.setTransactionSuccessful();
-                    } catch (Exception e) {
-                        Timber.e(e, "insert");
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Type of dataset not supported for delete");
+                    // committed
+                    //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+                    //database.setTransactionSuccessful();
+                } catch (Exception e) {
+                    Timber.e(e, "insert");
+                }
+            } else {
+                throw new IllegalArgumentException("Type of dataset not supported for delete");
             }
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
@@ -372,7 +367,7 @@ public class MmxContentProvider
     private void logTableInsert(Dataset dataset, ContentValues values) {
         String log = "INSERT INTO " + dataset.getSource();
         if (values != null) {
-            log += " VALUES ( " + values.toString() + ")";
+            log += " VALUES ( " + values + ")";
         }
         Timber.d(log);
     }
@@ -395,7 +390,7 @@ public class MmxContentProvider
         Cursor cursor;
 
         // check type of instance data set
-        if (Dataset.class.isInstance(sourceObject)) {
+        if (sourceObject instanceof Dataset) {
             Dataset dataset = ((Dataset) sourceObject);
 
 //            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
@@ -440,7 +435,7 @@ public class MmxContentProvider
             log = selection;
         } else {
             if (projection != null) {
-                log = "SELECT " + Arrays.asList(projection).toString();
+                log = "SELECT " + Arrays.asList(projection);
             } else {
                 log = "SELECT *";
             }
@@ -452,7 +447,7 @@ public class MmxContentProvider
                 log += " ORDER BY " + sortOrder;
             }
             if (selectionArgs != null) {
-                log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
+                log += "; ARGS=" + Arrays.asList(selectionArgs);
             }
         }
         // log
@@ -463,13 +458,13 @@ public class MmxContentProvider
         String log = "UPDATE " + dataset.getSource();
         // compose log verbose
         if (values != null) {
-            log += " SET " + values.toString();
+            log += " SET " + values;
         }
         if (!TextUtils.isEmpty(whereClause)) {
             log += " WHERE " + whereClause;
         }
         if (whereArgs != null) {
-            log += "; ARGS=" + Arrays.asList(whereArgs).toString();
+            log += "; ARGS=" + Arrays.asList(whereArgs);
         }
 
         // open transaction
@@ -486,7 +481,7 @@ public class MmxContentProvider
             log += " WHERE " + selection;
         }
         if (selectionArgs != null) {
-            log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
+            log += "; ARGS=" + Arrays.asList(selectionArgs);
         }
         // open transaction
         //database.beginTransaction();

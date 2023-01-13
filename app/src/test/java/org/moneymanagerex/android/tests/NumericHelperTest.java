@@ -37,7 +37,7 @@ import static org.junit.Assert.assertTrue;
  * Numeric helper tests.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class NumericHelperTest {
 
     private NumericHelper _numericHelper;

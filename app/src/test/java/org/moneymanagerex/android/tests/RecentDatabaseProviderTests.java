@@ -40,7 +40,7 @@ import java.util.LinkedHashMap;
  * Tests for Recent Database Provider.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class RecentDatabaseProviderTests {
 
     private RecentDatabasesProvider _testObject;

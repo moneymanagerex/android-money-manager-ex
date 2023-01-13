@@ -59,7 +59,7 @@ public class Encryptor {
         if (Build.VERSION.SDK_INT >= 19) {
             passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         } else {
-            passwordBytes = password.getBytes(Charset.forName("UTF-8"));
+            passwordBytes = password.getBytes(StandardCharsets.UTF_8);
         }
 
         return new SecretKeySpec(

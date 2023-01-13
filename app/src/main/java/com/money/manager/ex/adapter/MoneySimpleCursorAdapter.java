@@ -35,8 +35,8 @@ public class MoneySimpleCursorAdapter
 
     //private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
     private String mHighlight;
-    private Core mCore;
-    private Context mContext;
+    private final Core mCore;
+    private final Context mContext;
 
     public MoneySimpleCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);

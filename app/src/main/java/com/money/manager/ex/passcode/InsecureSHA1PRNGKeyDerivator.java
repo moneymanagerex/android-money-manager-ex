@@ -86,7 +86,7 @@ class InsecureSHA1PRNGKeyDerivator {
     // - 80    - unused
     // - 81    - # of seed bytes in current seed frame
     // - 82-86 - 5 words, current seed hash
-    private transient int[] seed;
+    private final transient int[] seed;
     // total length of seed bytes, including all processed
     private transient long seedLength;
     // Structure of "copies" array
@@ -94,9 +94,9 @@ class InsecureSHA1PRNGKeyDerivator {
     // -  5-20 - extra 16 words frame;
     //           is used if final padding exceeds 512-bit length
     // - 21-36 - 16 word frame to store a copy of remaining bytes
-    private transient int[] copies;
+    private final transient int[] copies;
     // ready "next" bytes; needed because words are returned
-    private transient byte[] nextBytes;
+    private final transient byte[] nextBytes;
     // index of used bytes in "nextBytes" array
     private transient int nextBIndex;
     // variable required according to "SECURE HASH STANDARD"
@@ -491,6 +491,5 @@ class InsecureSHA1PRNGKeyDerivator {
             }
             intArray[wordIndex] = w;
         }
-        return ;
     }
 }

@@ -288,9 +288,9 @@ public class ExpandableListFragment
         if (root instanceof ExpandableListView) {
             mList = (ExpandableListView) root;
         } else {
-            mEmptyViewScroll = (ScrollView) root.findViewById(R.id.emptyViewScroll);
+            mEmptyViewScroll = root.findViewById(R.id.emptyViewScroll);
 //            mStandardEmptyView = (TextView) root.findViewById(R.id.empty);
-            mStandardEmptyView = (TextView) root.findViewById(android.R.id.empty);
+            mStandardEmptyView = root.findViewById(android.R.id.empty);
             if (mStandardEmptyView == null) {
                 mEmptyView = root.findViewById(android.R.id.empty);
             } else {
@@ -354,7 +354,7 @@ public class ExpandableListFragment
 
     public void onContentChanged() {
         View emptyView = getView().findViewById(android.R.id.empty);
-        mList = (ExpandableListView) getView().findViewById(android.R.id.list);
+        mList = getView().findViewById(android.R.id.list);
         if (mList == null) {
             throw new RuntimeException(
                     "Your content must have a ExpandableListView whose id attribute is " + "'android.R.id.list'");

@@ -22,6 +22,8 @@ import com.money.manager.ex.MmexApplication;
 /**
  * Application class for unit tests.
  * Overrides initialization of Job Manager to enable running unit tests with Robolectric.
+ *
+ * TODO: Implement a Test Application for Robolectric to use
  */
 
 public class TestApplication

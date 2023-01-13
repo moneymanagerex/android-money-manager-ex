@@ -32,12 +32,12 @@ public enum AccountStatuses {
 
     public final String title;
 
-    private AccountStatuses(String s) {
+    AccountStatuses(String s) {
         title = s;
     }
 
     public boolean equalsName(String otherName) {
-        return (otherName == null) ? false : title.equalsIgnoreCase(otherName);
+        return otherName != null && title.equalsIgnoreCase(otherName);
     }
 
     public String toString(){

@@ -81,23 +81,20 @@ public class SelectDatabaseActivity
             return;
         }
 
-        switch (requestCode) {
-//            case RequestCodes.SELECT_FILE:
-//                //if (resultCode != RESULT_OK) return;
-//                String selectedPath = UIHelper.getSelectedFile(data);
-//                if(TextUtils.isEmpty(selectedPath)) {
-//                    new UIHelper(this).showToast(R.string.invalid_database);
-//                    return;
-//                }
-//
-//                onDatabaseSelected(selectedPath);
-//                break;
-
-            case RequestCodes.SELECT_DOCUMENT:
-                // file selected at a Storage Access Framework.
-                FileStorageHelper storageHelper = new FileStorageHelper(this);
-                storageHelper.selectDatabase(data);
-                onDatabaseSelected();
+        //            case RequestCodes.SELECT_FILE:
+        //                //if (resultCode != RESULT_OK) return;
+        //                String selectedPath = UIHelper.getSelectedFile(data);
+        //                if(TextUtils.isEmpty(selectedPath)) {
+        //                    new UIHelper(this).showToast(R.string.invalid_database);
+        //                    return;
+        //                }
+        //
+        //                onDatabaseSelected(selectedPath);
+        //                break;
+        if (requestCode == RequestCodes.SELECT_DOCUMENT) {// file selected at a Storage Access Framework.
+            FileStorageHelper storageHelper = new FileStorageHelper(this);
+            storageHelper.selectDatabase(data);
+            onDatabaseSelected();
         }
     }
 

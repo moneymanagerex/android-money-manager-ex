@@ -92,12 +92,10 @@ public class PriceEditActivity
 
         String stringExtra;
 
-        switch (requestCode) {
-            case RequestCodes.AMOUNT:
-                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
-                model.price = MoneyFactory.fromString(stringExtra);
-                model.display(this, viewHolder);
-                break;
+        if (requestCode == RequestCodes.AMOUNT) {
+            stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
+            model.price = MoneyFactory.fromString(stringExtra);
+            model.display(this, viewHolder);
         }
     }
 

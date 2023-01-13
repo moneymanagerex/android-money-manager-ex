@@ -40,8 +40,8 @@ import info.javaperformance.money.MoneyFactory;
 public class PayeeReportAdapter
     extends CursorAdapter {
     private static final String TAG = "PayeeReportAdapter";
-    private LayoutInflater mInflater;
-    private Context mContext;
+    private final LayoutInflater mInflater;
+    private final Context mContext;
 
     @SuppressWarnings("deprecation")
     public PayeeReportAdapter(Context context, Cursor c) {

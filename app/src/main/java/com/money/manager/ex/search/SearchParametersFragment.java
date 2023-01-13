@@ -93,16 +93,16 @@ public class SearchParametersFragment
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
     // arrays list account name and account id
-    private ArrayList<String> mAccountNameList = new ArrayList<>();
-    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<String> mAccountNameList = new ArrayList<>();
+    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private List<Account> mAccountList;
     // currencies
     private ArrayList<String> mCurrencySymbolList = new ArrayList<>();
-    private ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
+    private final ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
     private List<Currency> mCurrencies;
     // status item and values
-    private ArrayList<String> mStatusItems = new ArrayList<>();
-    private ArrayList<String> mStatusValues = new ArrayList<>();
+    private final ArrayList<String> mStatusItems = new ArrayList<>();
+    private final ArrayList<String> mStatusValues = new ArrayList<>();
 
     public static SearchParametersFragment createInstance() {
         SearchParametersFragment fragment = new SearchParametersFragment();
@@ -298,15 +298,12 @@ public class SearchParametersFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clearMenuItem:
-                setSearchParameters(new SearchParameters());
-                displaySearchCriteria();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.clearMenuItem) {
+            setSearchParameters(new SearchParameters());
+            displaySearchCriteria();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /*
@@ -476,7 +473,7 @@ public class SearchParametersFragment
             CategorySub categorySub = searchParameters.category;
             // Category. Also check the splits.
             where.addStatement("(" +
-                    "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
+                    "(" + QueryAllData.CategID + "=" + categorySub.categId + ") " +
                     " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
                     " FROM " + SplitCategory.TABLE_NAME +
                     " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
@@ -487,7 +484,7 @@ public class SearchParametersFragment
             if (categorySub.subCategId != Constants.NOT_SET) {
                 // Subcategory. Also check the splits.
                 where.addStatement("(" +
-                        "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
+                        "(" + QueryAllData.SubcategID + "=" + categorySub.subCategId + ") " +
                         " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
                         " FROM " + SplitCategory.TABLE_NAME +
                         " WHERE " + SplitCategory.TRANSID + " = " + QueryAllData.ID + ")" +

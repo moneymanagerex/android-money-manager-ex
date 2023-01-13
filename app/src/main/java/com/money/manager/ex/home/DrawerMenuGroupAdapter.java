@@ -160,7 +160,7 @@ public class DrawerMenuGroupAdapter
         }
 
         // Show/hide chevron
-        FontIconView chevronView = (FontIconView) convertView.findViewById(R.id.caretView);
+        FontIconView chevronView = convertView.findViewById(R.id.caretView);
         if (getChildrenCount(groupPosition) > 0) {
             if (isExpanded) {
                 // the group is not expanded and has children.

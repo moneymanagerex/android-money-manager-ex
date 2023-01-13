@@ -150,16 +150,14 @@ public abstract class BaseListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getActivity() != null && getActivity() instanceof MainActivity)
-                    return super.onOptionsItemSelected(item);
-                // set result and exit
-                this.setResultAndFinish();
-                return true; // consumed here
-            default:
+        if (item.getItemId() == android.R.id.home) {
+            if (getActivity() != null && getActivity() instanceof MainActivity)
                 return super.onOptionsItemSelected(item);
+            // set result and exit
+            this.setResultAndFinish();
+            return true; // consumed here
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -216,7 +214,6 @@ public abstract class BaseListFragment
     }
 
     public void onFloatingActionButtonClicked() {
-        return;
     }
 
     // End floating button methods.
@@ -239,7 +236,7 @@ public abstract class BaseListFragment
     protected void setResult() { }
 
     public void setupFloatingActionButton(View view) {
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton = view.findViewById(R.id.fab);
         if (mFloatingActionButton != null) {
             mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override

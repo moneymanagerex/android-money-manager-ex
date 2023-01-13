@@ -136,7 +136,7 @@ public class AssetAllocationReportActivity
     }
 
     private void displayOverview(String html) {
-        webView = (WebView) this.findViewById(R.id.overviewWebView);
+        webView = this.findViewById(R.id.overviewWebView);
 
         // gesture handler
         handleGestures(webView);
@@ -390,7 +390,6 @@ public class AssetAllocationReportActivity
     private void createWebPrintJob(WebView webView) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             new UIHelper(this).showToast(R.string.min_19);
-            return;
         } else {
             // Get a PrintManager instance
             PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);

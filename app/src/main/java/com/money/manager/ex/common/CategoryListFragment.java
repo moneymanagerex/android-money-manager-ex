@@ -255,65 +255,60 @@ public class CategoryListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_CATEGORYSUB:
-                // update id selected
-                if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                    mIdGroupChecked = adapter.getIdGroupChecked();
-                    mIdChildChecked = adapter.getIdChildChecked();
-                }
-                // clear arraylist and hashmap
-                mCategories.clear();
-                mSubCategories.clear();
+        if (id == ID_LOADER_CATEGORYSUB) {// update id selected
+            if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
+                CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                mIdGroupChecked = adapter.getIdGroupChecked();
+                mIdChildChecked = adapter.getIdChildChecked();
+            }
+            // clear arraylist and hashmap
+            mCategories.clear();
+            mSubCategories.clear();
 
-                // load data
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
-                            + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
-                    selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
-                }
-                Select query = new Select(mQuery.getAllColumns())
+            // load data
+            String whereClause = null;
+            String[] selectionArgs = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
+                        + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
+            }
+            Select query = new Select(mQuery.getAllColumns())
                     .where(whereClause, selectionArgs)
                     .orderBy(QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
 
-                return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
+            return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
         }
         return null;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                // clear the data storage collections.
-                mCategories.clear();
-                mSubCategories.clear();
+        if (loader.getId() == ID_LOADER_CATEGORYSUB) {// clear the data storage collections.
+            mCategories.clear();
+            mSubCategories.clear();
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                setListAdapter(getAdapter(data));
+        if (loader.getId() == ID_LOADER_CATEGORYSUB) {
+            setListAdapter(getAdapter(data));
 
-                if (isResumed()) {
-                    setListShown(true);
+            if (isResumed()) {
+                setListShown(true);
 
-                    boolean noData = data == null || data.getCount() <= 0;
-                    if (noData && getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+                boolean noData = data == null || data.getCount() <= 0;
+                if (noData && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
+            } else {
+                setListShownNoAnimation(true);
+            }
 
-                for (int i = 0; i < mPositionToExpand.size(); i++) {
-                    getExpandableListView().expandGroup(mPositionToExpand.get(i));
-                }
+            for (int i = 0; i < mPositionToExpand.size(); i++) {
+                getExpandableListView().expandGroup(mPositionToExpand.get(i));
+            }
         }
     }
 
@@ -600,8 +595,8 @@ public class CategoryListFragment
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
 
-        final EditText edtSubCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
-        final Spinner spnCategory = (Spinner) viewDialog.findViewById(R.id.spinnerCategory);
+        final EditText edtSubCategName = viewDialog.findViewById(R.id.editTextCategName);
+        final Spinner spnCategory = viewDialog.findViewById(R.id.spinnerCategory);
         // set category description
         edtSubCategName.setText(subCategName);
         if (!TextUtils.isEmpty(subCategName)) {
@@ -616,7 +611,7 @@ public class CategoryListFragment
         ArrayList<Integer> categoryIds = new ArrayList<>();
         for (Category category : categories) {
             categoryIds.add(category.getId());
-            categoryNames.add(category.getName().toString());
+            categoryNames.add(category.getName());
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

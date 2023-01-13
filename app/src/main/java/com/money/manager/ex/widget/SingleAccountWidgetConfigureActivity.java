@@ -61,7 +61,7 @@ public class SingleAccountWidgetConfigureActivity
 
         setContentView(R.layout.single_account_widget_configure);
 
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
+        mAppWidgetText = findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.
@@ -132,7 +132,7 @@ public class SingleAccountWidgetConfigureActivity
         // load accounts
         AccountService service = new AccountService(context);
         List<Account> accounts = service.getAccountList();
-        Spinner accountsSpinner = (Spinner) findViewById(R.id.accountsSpinner);
+        Spinner accountsSpinner = findViewById(R.id.accountsSpinner);
         ArrayList<String> accountNames = new ArrayList<>();
 
         for (Account account : accounts) {

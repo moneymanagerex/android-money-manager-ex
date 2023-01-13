@@ -29,9 +29,9 @@ import com.money.manager.ex.view.RobotoTextView;
  */
 public class CategoryListItemViewHolderGroup {
     public CategoryListItemViewHolderGroup(View view) {
-        collapseImageView = (ImageView) view.findViewById(R.id.expandable_list_indicator);
-        text1 = (RobotoTextView) view.findViewById(android.R.id.text1);
-        selector = (LinearLayout) view.findViewById(R.id.selector);
+        collapseImageView = view.findViewById(R.id.expandable_list_indicator);
+        text1 = view.findViewById(android.R.id.text1);
+        selector = view.findViewById(R.id.selector);
 
     }
 

@@ -36,7 +36,7 @@ public class QifGenerator implements IQifGenerator {
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     public String createFromAdapter(AllDataAdapter adapter)
             throws ParseException {

@@ -27,7 +27,7 @@ public class DatabaseSettings {
         mAppSettings = mainSettings;
     }
 
-    private AppSettings mAppSettings;
+    private final AppSettings mAppSettings;
 
     public String getDatabasePath() {
         String path = mAppSettings.get(R.string.pref_database_path, "");

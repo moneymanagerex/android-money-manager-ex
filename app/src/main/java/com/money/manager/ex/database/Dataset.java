@@ -42,7 +42,7 @@ public abstract class Dataset
 	}
 
 	private String source = "";
-	private DatasetType type;
+	private final DatasetType type;
 	private String basepath = "";
 
 	/**

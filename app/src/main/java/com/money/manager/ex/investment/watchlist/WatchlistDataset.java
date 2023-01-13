@@ -39,7 +39,7 @@ public class WatchlistDataset
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     @Override
     public String[] getAllColumns() {
