@@ -48,7 +48,6 @@ public class RecurringTransactionRepository
                 ITransactionEntity.TRANSACTIONNUMBER,
                 ITransactionEntity.NOTES,
                 ITransactionEntity.CATEGID,
-                ITransactionEntity.SUBCATEGID,
                 ITransactionEntity.TRANSDATE,
                 ITransactionEntity.FOLLOWUPID,
                 ITransactionEntity.TOTRANSAMOUNT,

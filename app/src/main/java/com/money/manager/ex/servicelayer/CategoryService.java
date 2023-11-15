@@ -26,9 +26,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Subcategory;
 
 import java.util.List;
 
@@ -44,14 +42,13 @@ public class CategoryService
     }
 
     private CategoryRepository mRepository;
-    private SubcategoryRepository mSubcategoryRepository;
 
     public int loadIdByName(String name) {
         return getRepository().loadIdByName(name);
     }
 
-    public int loadSubcategoryIdByName(String name, int categoryId) {
-        return getSubcategoryRepository().loadIdByName(name, categoryId);
+    public int loadIdByName(String name, int parentId) {
+        return getRepository().loadIdByName(name, parentId);
     }
 
     public int createNew(String name) {
@@ -61,6 +58,7 @@ public class CategoryService
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
+        values.put(Category.PARENTID, -1);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
@@ -77,10 +75,10 @@ public class CategoryService
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(Subcategory.SUBCATEGNAME, name);
-        values.put(Subcategory.CATEGID, categoryId);
+        values.put(Category.CATEGNAME, name);
+        values.put(Category.PARENTID, categoryId);
 
-        SubcategoryRepository repo = getSubcategoryRepository();
+        CategoryRepository repo = new CategoryRepository(getContext());
 
         Uri result = getContext().getContentResolver()
                 .insert(repo.getUri(), values);
@@ -101,8 +99,8 @@ public class CategoryService
                 : "n/a";
         }
         if (subCategoryId != Constants.NOT_SET) {
-            SubcategoryRepository subcategoryRepository = new SubcategoryRepository(getContext());
-            Subcategory subcategory = subcategoryRepository.load(subCategoryId);
+            CategoryRepository categoryRepository = new CategoryRepository(getContext());
+            Category subcategory = categoryRepository.load(subCategoryId);
             subCategoryName = subcategory != null 
                 ? subcategory.getName()
                 : "n/a";
@@ -119,7 +117,7 @@ public class CategoryService
      * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-        Select query = new Select().orderBy(Category.CATEGNAME);
+        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
 
         return getRepository().query(Category.class, query);
     }
@@ -154,7 +152,7 @@ public class CategoryService
 
     public boolean isSubcategoryUsed(int subcategoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(Subcategory.SUBCATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
+        int links = repo.count(Category.CATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
         return links > 0;
     }
 
@@ -163,12 +161,5 @@ public class CategoryService
             mRepository = new CategoryRepository(getContext());
         }
         return mRepository;
-    }
-
-    private SubcategoryRepository getSubcategoryRepository() {
-        if (mSubcategoryRepository == null) {
-            mSubcategoryRepository = new SubcategoryRepository(getContext());
-        }
-        return mSubcategoryRepository;
     }
 }

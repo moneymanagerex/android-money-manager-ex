@@ -90,9 +90,9 @@ public class SearchActivityTests {
         UnitTestHelper.setDefaultCurrency("BAM");
         DataHelpers.insertData();
         // add expected transaction
-        DataHelpers.createTransaction(1, -1, TransactionTypes.Withdrawal, 2, 9, MoneyFactory.fromString("-14.68"));
+        DataHelpers.createTransaction(1, -1, TransactionTypes.Withdrawal, 2, MoneyFactory.fromString("-14.68"));
         // add one more for testing the total calculation
-        DataHelpers.createTransaction(1, -1, TransactionTypes.Withdrawal, 2, 9, MoneyFactory.fromString("-25.37"));
+        DataHelpers.createTransaction(1, -1, TransactionTypes.Withdrawal, 2, MoneyFactory.fromString("-25.37"));
 
         //*******************************************
         // act

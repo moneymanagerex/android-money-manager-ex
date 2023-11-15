@@ -45,9 +45,7 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -335,11 +333,8 @@ public class CategoryListFragment
                             for (int child = 0; child < mSubCategories.get(mCategories.get(groupIndex)).size(); child++) {
                                 if (mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategId() == subCategId) {
                                     result = new Intent();
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, subCategId);
                                     result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
-                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getCategName().toString());
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME,
                                             mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubcategoryName().toString());
                                     break;
                                 }
@@ -456,16 +451,13 @@ public class CategoryListFragment
      * Show alter binaryDialog confirm delete category or sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
-        boolean canDelete;
+        boolean canDelete = false;
         CategoryService service = new CategoryService(getActivity());
         ContentValues values = new ContentValues();
 
         if (categoryIds.subCategId <= 0) {
             values.put(Category.CATEGID, categoryIds.categId);
             canDelete = !service.isCategoryUsed(categoryIds.categId);
-        } else {
-            values.put(Subcategory.SUBCATEGID, categoryIds.subCategId);
-            canDelete = !service.isSubcategoryUsed(categoryIds.categId);
         }
         if (!(canDelete)) {
             new MaterialDialog.Builder(getContext())
@@ -492,18 +484,11 @@ public class CategoryListFragment
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        int rowsDelete;
+                        int rowsDelete = 0;
                         if (categoryIds.subCategId <= 0) {
                             CategoryRepository repo = new CategoryRepository(getActivity());
                             rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
                                     Category.CATEGID + "=" + categoryIds.categId,
-                                    null);
-                        } else {
-                            SubcategoryRepository repo = new SubcategoryRepository(getActivity());
-
-                            rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
-                                    Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
-                                            Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
                                     null);
                         }
                         if (rowsDelete == 0) {
@@ -643,10 +628,10 @@ public class CategoryListFragment
                         // get category id
                         int categId = categories.get(spnCategory.getSelectedItemPosition()).getId();
                         ContentValues values = new ContentValues();
-                        values.put(Subcategory.CATEGID, categId);
-                        values.put(Subcategory.SUBCATEGNAME, name);
+                        values.put(Category.PARENTID, categId);
+                        values.put(Category.CATEGNAME, name);
 
-                        SubcategoryRepository repo = new SubcategoryRepository(getActivity());
+                        CategoryRepository repo = new CategoryRepository(getActivity());
 
                         // check type transaction is request
                         switch (type) {
@@ -659,10 +644,8 @@ public class CategoryListFragment
                                 if (getActivity().getContentResolver().update(
                                         repo.getUri(),
                                         values,
-                                        Subcategory.CATEGID + "="
-                                                + categoryId + " AND "
-                                                + Subcategory.SUBCATEGID
-                                                + "=" + subCategoryId, null) == 0) {
+                                        Category.CATEGID + "="
+                                                + categoryId, null) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

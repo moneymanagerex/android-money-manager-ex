@@ -78,20 +78,19 @@ public class DataHelpers {
         }
 
         // add transactions
-
         for (int i = 0; i < 3; i++) {
             Money amount = MoneyFactory.fromString("-" + i);
             // this is semantically wrong as there is no category & subcategory!
-            createTransaction(accountId, 1, TransactionTypes.Withdrawal, -1, -1, amount);
+            createTransaction(accountId, 1, TransactionTypes.Withdrawal, -1, amount);
         }
     }
 
     public static void createTransaction(int accountId, int payeeId, TransactionTypes type,
-                                         int categoryId, int subCategoryId, Money amount) {
+                                         int categoryId, Money amount) {
         AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
 
         AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
-                categoryId, subCategoryId, amount);
+                categoryId, amount);
         int txId = txRepo.add(tx);
 //        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
 
@@ -114,7 +113,7 @@ public class DataHelpers {
         Money amount = MoneyFactory.fromDouble(100);
         AccountTransactionRepository txRepo = new AccountTransactionRepository(context);
         AccountTransaction tx = AccountTransaction.create(account.getId(), payee.getId(),
-            TransactionTypes.Withdrawal, 1, -1, amount);
+            TransactionTypes.Withdrawal, 1, amount);
         txRepo.insert(tx);
         // split categories
         SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);

@@ -169,10 +169,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
                                 }
 
-                                if (!transCategory[1].isEmpty()) {
-                                    mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
-                                }
-
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
 
                             } else {
@@ -181,10 +177,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 if (!incomeCategory[0].isEmpty()) {
                                     mCommon.transactionEntity.setCategoryId(parseInt(incomeCategory[0]));
-                                }
-
-                                if (!incomeCategory[1].isEmpty()) {
-                                    mCommon.transactionEntity.setSubcategoryId(parseInt(incomeCategory[1]));
                                 }
 
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
@@ -302,7 +294,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
                                         mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
-                                        mCommon.transactionEntity.setSubcategoryId(parseInt(transPayee[3]));
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
@@ -343,7 +334,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
                                             if (!transCategory[0].isEmpty()) {
                                                 mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
-                                                mCommon.transactionEntity.setSubcategoryId(parseInt(transCategory[1]));
                                             }
 
                                             mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
@@ -381,7 +371,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_ID, String.valueOf(mCommon.transactionEntity.getPayeeId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommon.payeeName);
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
-                                t_intent.putExtra(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, String.valueOf(mCommon.transactionEntity.getSubcategoryId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());

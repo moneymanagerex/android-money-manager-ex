@@ -39,8 +39,7 @@ public class PayeeRepository
         return new String[] { "PAYEEID AS _id",
             Payee.PAYEEID,
             Payee.PAYEENAME,
-            Payee.CATEGID,
-            Payee.SUBCATEGID
+            Payee.CATEGID
         };
     }
 

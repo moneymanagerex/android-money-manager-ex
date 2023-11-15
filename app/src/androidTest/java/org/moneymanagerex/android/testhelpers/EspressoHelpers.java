@@ -17,22 +17,22 @@
 
 package org.moneymanagerex.android.testhelpers;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.CoreMatchers.allOf;
+
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.ViewInteraction;
-import androidx.appcompat.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.widget.RecyclerView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-
-import static org.hamcrest.CoreMatchers.allOf;
 
 /**
  * Borrowed from:

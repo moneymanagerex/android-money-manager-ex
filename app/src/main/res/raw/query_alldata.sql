@@ -3,8 +3,8 @@ SELECT 	TX.TransID AS ID,
 	TX.TransCode AS TransactionType,
 	date( TX.TransDate ) AS Date,
 	d.userdate AS UserDate,
-	CAT.CategName as Category,
-	SUBCAT.SUBCategName as Subcategory,
+	ifnull(PARENTCAT.CATEGNAME, CAT.CategName) as Category,
+	CAT.CategName as Subcategory,
 --	CASE
 --	    WHEN TX.TransAmount = 0
 --	    THEN ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *  TX.ToTransAmount
@@ -26,8 +26,8 @@ SELECT 	TX.TransID AS ID,
 	TX.ToTransAmount as ToAmount,
 	ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) as ToCurrencyId,
 	( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
-	ifnull( CAT.CategId, -1 ) AS CategID,
-	ifnull( SUBCAT.SubCategID, -1 ) AS SubcategID,
+	ifnull( CAT.PARENTID, -1 ) AS CategID,
+	ifnull( CAT.CategID, -1 ) AS SubcategID,
 	ifnull( PAYEE.PayeeName, '') AS Payee,
 	ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
 	TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -37,7 +37,7 @@ SELECT 	TX.TransID AS ID,
 	d.finyear AS finyear
 FROM CHECKINGACCOUNT_V1 TX 
 	LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
-	LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = TX.SUBCATEGID AND SUBCAT.CATEGID = TX.CATEGID
+	LEFT JOIN CATEGORY_V1 PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
 	LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID 
 	LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
 	LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID

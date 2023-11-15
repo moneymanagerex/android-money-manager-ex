@@ -52,13 +52,13 @@ BDID integer primary key
 , TRANSACTIONNUMBER TEXT
 , NOTES TEXT
 , CATEGID integer
-, SUBCATEGID integer
 , TRANSDATE TEXT
 , FOLLOWUPID integer
 , TOTRANSAMOUNT numeric
 , REPEATS integer
 , NEXTOCCURRENCEDATE TEXT
 , NUMOCCURRENCES integer
+, COLOR integer DEFAULT -1
 );
 CREATE INDEX IDX_BILLSDEPOSITS_ACCOUNT ON BILLSDEPOSITS_V1 (ACCOUNTID, TOACCOUNTID);
 
@@ -67,7 +67,6 @@ CREATE TABLE BUDGETSPLITTRANSACTIONS_V1(
 SPLITTRANSID integer primary key
 , TRANSID integer NOT NULL
 , CATEGID integer
-, SUBCATEGID integer
 , SPLITTRANSAMOUNT numeric
 , NOTES TEXT
 );
@@ -78,7 +77,6 @@ CREATE TABLE BUDGETTABLE_V1(
 BUDGETENTRYID integer primary key
 , BUDGETYEARID integer
 , CATEGID integer
-, SUBCATEGID integer
 , PERIOD TEXT NOT NULL /* None, Weekly, Bi-Weekly, Monthly, Monthly, Bi-Monthly, Quarterly, Half-Yearly, Yearly, Daily*/
 , AMOUNT numeric NOT NULL
 , NOTES TEXT
@@ -94,29 +92,76 @@ BUDGETYEARID integer primary key
 CREATE INDEX IDX_BUDGETYEAR_BUDGETYEARNAME ON BUDGETYEAR_V1(BUDGETYEARNAME);
 
 -- Describe CATEGORY_V1
-CREATE TABLE CATEGORY_V1(
-CATEGID integer primary key
-, CATEGNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
-, ACTIVE integer
+CREATE TABLE CATEGORY_V1
+( CATEGID INTEGER PRIMARY KEY,
+  CATEGNAME TEXT NOT NULL COLLATE NOCASE,
+  ACTIVE INTEGER,
+  PARENTID INTEGER,
+  UNIQUE(CATEGNAME, PARENTID)
 );
 CREATE INDEX IDX_CATEGORY_CATEGNAME ON CATEGORY_V1(CATEGNAME);
+CREATE INDEX IDX_CATEGORY_CATEGNAME_PARENTID ON CATEGORY_V1(CATEGNAME, PARENTID);
 
-INSERT INTO CATEGORY_V1 VALUES(1,'Bills',1);
-INSERT INTO CATEGORY_V1 VALUES(2,'Food',1);
-INSERT INTO CATEGORY_V1 VALUES(3,'Leisure',1);
-INSERT INTO CATEGORY_V1 VALUES(4,'Automobile',1);
-INSERT INTO CATEGORY_V1 VALUES(5,'Education',1);
-INSERT INTO CATEGORY_V1 VALUES(6,'Homeneeds',1);
-INSERT INTO CATEGORY_V1 VALUES(7,'Healthcare',1);
-INSERT INTO CATEGORY_V1 VALUES(8,'Insurance',1);
-INSERT INTO CATEGORY_V1 VALUES(9,'Vacation',1);
-INSERT INTO CATEGORY_V1 VALUES(10,'Taxes',1);
-INSERT INTO CATEGORY_V1 VALUES(11,'Miscellaneous',1);
-INSERT INTO CATEGORY_V1 VALUES(12,'Gifts',1);
-INSERT INTO CATEGORY_V1 VALUES(13,'Income',1);
-INSERT INTO CATEGORY_V1 VALUES(14,'Other Income',1);
-INSERT INTO CATEGORY_V1 VALUES(15,'Other Expenses',1);
-INSERT INTO CATEGORY_V1 VALUES(16,'Transfer',1);
+-- Note: All strings requiring translation are prefix by: ''
+-- The _tr_ prefix is removed when generating .h files by sqlite2cpp.py
+-- strings containing unicode should not be translated.
+INSERT INTO CATEGORY_V1 VALUES(1,'Bills',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(2,'Telephone',1,1);
+INSERT INTO CATEGORY_V1 VALUES(3,'Electricity',1,1);
+INSERT INTO CATEGORY_V1 VALUES(4,'Gas',1,1);
+INSERT INTO CATEGORY_V1 VALUES(5,'Internet',1,1);
+INSERT INTO CATEGORY_V1 VALUES(6,'Rent',1,1);
+INSERT INTO CATEGORY_V1 VALUES(7,'Cable TV',1,1);
+INSERT INTO CATEGORY_V1 VALUES(8,'Water',1,1);
+INSERT INTO CATEGORY_V1 VALUES(9,'Food',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(10,'Groceries',1,9);
+INSERT INTO CATEGORY_V1 VALUES(11,'Dining out',1,9);
+INSERT INTO CATEGORY_V1 VALUES(12,'Leisure',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(13,'Movies',1,12);
+INSERT INTO CATEGORY_V1 VALUES(14,'Video Rental',1,12);
+INSERT INTO CATEGORY_V1 VALUES(15,'Magazines',1,12);
+INSERT INTO CATEGORY_V1 VALUES(16,'Automobile',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(17,'Maintenance',1,16);
+INSERT INTO CATEGORY_V1 VALUES(18,'Gas',1,16);
+INSERT INTO CATEGORY_V1 VALUES(19,'Parking',1,16);
+INSERT INTO CATEGORY_V1 VALUES(20,'Registration',1,16);
+INSERT INTO CATEGORY_V1 VALUES(21,'Education',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(22,'Books',1,21);
+INSERT INTO CATEGORY_V1 VALUES(23,'Tuition',1,21);
+INSERT INTO CATEGORY_V1 VALUES(24,'Others',1,21);
+INSERT INTO CATEGORY_V1 VALUES(25,'Homeneeds',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(26,'Clothing',1,25);
+INSERT INTO CATEGORY_V1 VALUES(27,'Furnishing',1,25);
+INSERT INTO CATEGORY_V1 VALUES(28,'Others',1,25);
+INSERT INTO CATEGORY_V1 VALUES(29,'Healthcare',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(30,'Health',1,29);
+INSERT INTO CATEGORY_V1 VALUES(31,'Dental',1,29);
+INSERT INTO CATEGORY_V1 VALUES(32,'Eyecare',1,29);
+INSERT INTO CATEGORY_V1 VALUES(33,'Physician',1,29);
+INSERT INTO CATEGORY_V1 VALUES(34,'Prescriptions',1,29);
+INSERT INTO CATEGORY_V1 VALUES(35,'Insurance',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(36,'Auto',1,35);
+INSERT INTO CATEGORY_V1 VALUES(37,'Life',1,35);
+INSERT INTO CATEGORY_V1 VALUES(38,'Home',1,35);
+INSERT INTO CATEGORY_V1 VALUES(39,'Health',1,35);
+INSERT INTO CATEGORY_V1 VALUES(40,'Vacation',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(41,'Travel',1,40);
+INSERT INTO CATEGORY_V1 VALUES(42,'Lodging',1,40);
+INSERT INTO CATEGORY_V1 VALUES(43,'Sightseeing',1,40);
+INSERT INTO CATEGORY_V1 VALUES(44,'Taxes',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(45,'Income Tax',1,44);
+INSERT INTO CATEGORY_V1 VALUES(46,'House Tax',1,44);
+INSERT INTO CATEGORY_V1 VALUES(47,'Water Tax',1,44);
+INSERT INTO CATEGORY_V1 VALUES(48,'Others',1,44);
+INSERT INTO CATEGORY_V1 VALUES(49,'Miscellaneous',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(50,'Gifts',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(51,'Income',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(52,'Salary',1,51);
+INSERT INTO CATEGORY_V1 VALUES(53,'Reimbursement/Refunds',1,51);
+INSERT INTO CATEGORY_V1 VALUES(54,'Investment Income',1,51);
+INSERT INTO CATEGORY_V1 VALUES(55,'Other Income',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(56,'Other Expenses',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(57,'Transfer',1,-1);
 
 -- Describe CHECKINGACCOUNT_V1
 CREATE TABLE CHECKINGACCOUNT_V1(
@@ -130,10 +175,12 @@ TRANSID integer primary key
 , TRANSACTIONNUMBER TEXT
 , NOTES TEXT
 , CATEGID integer
-, SUBCATEGID integer
 , TRANSDATE TEXT
+, LASTUPDATEDTIME TEXT
+, DELETEDTIME TEXT
 , FOLLOWUPID integer
 , TOTRANSAMOUNT numeric
+, COLOR integer DEFAULT -1
 );
 CREATE INDEX IDX_CHECKINGACCOUNT_ACCOUNT ON CHECKINGACCOUNT_V1 (ACCOUNTID, TOACCOUNTID);
 CREATE INDEX IDX_CHECKINGACCOUNT_TRANSDATE ON CHECKINGACCOUNT_V1 (TRANSDATE);
@@ -166,10 +213,13 @@ CURRENCYID integer primary key
 );
 CREATE INDEX IDX_CURRENCYFORMATS_SYMBOL ON CURRENCYFORMATS_V1(CURRENCY_SYMBOL);
 
-INSERT INTO CURRENCYFORMATS_V1 VALUES(1,'United States dollar','$','','.',' ','','',100,1,'USD','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(2,'European euro','€','','.',' ','','',100,1,'EUR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(3,'UK Pound','£','','.',' ','Pound','Pence',100,1,'GBP','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(4,'Russian Ruble','','р',',',' ','руб.','коп.',100,1,'RUB','Fiat');
+-- Note: All strings requiring translation are prefix by: ''
+-- The _tr_ prefix is removed when generating .h files by sqlite2cpp.py
+-- strings containing unicode should not be translated.
+INSERT INTO CURRENCYFORMATS_V1 VALUES(1,'US dollar','$','','.',',','Dollar','Cent',100,1,'USD','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(2,'Euro','€','','.',' ','','',100,1,'EUR','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(3,'British pound','£','','.',' ','Pound','Pence',100,1,'GBP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(4,'Russian ruble','','р',',',' ','руб.','коп.',100,1,'RUB','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(5,'Ukrainian hryvnia','₴','',',',' ','','',100,1,'UAH','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(6,'Afghan afghani','؋','','.',' ','','pul',100,1,'AFN','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(7,'Albanian lek','','L','.',' ','','',1,1,'ALL','Fiat');
@@ -185,29 +235,29 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(16,'Bahamian dollar','B$','','.',' ','',''
 INSERT INTO CURRENCYFORMATS_V1 VALUES(17,'Bahraini dinar','','','.',' ','','',100,1,'BHD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(18,'Bangladeshi taka','','','.',' ','','',100,1,'BDT','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(19,'Barbadian dollar','Bds$','','.',' ','','',100,1,'BBD','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(20,'Belarusian ruble','Br','',',',' ','','',1,1,'BYR','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(20,'Belarusian ruble (2000-2016)','Br','',',',' ','','',1,1,'BYR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(21,'Belize dollar','BZ$','','.',' ','','',100,1,'BZD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(22,'West African CFA franc','CFA','','.',' ','','',100,1,'XOF','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(23,'Bermudian dollar','BD$','','.',' ','','',100,1,'BMD','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(23,'Bermudan dollar','BD$','','.',' ','','',100,1,'BMD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(24,'Bhutanese ngultrum','Nu.','','.',' ','','',100,1,'BTN','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(25,'Bolivian boliviano','Bs.','','.',' ','','',100,1,'BOB','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(26,'Bosnia and Herzegovina konvertibilna marka','KM','',',','.','','',100,1,'BAM','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(27,'Botswana pula','P','','.',' ','','',100,1,'BWP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(26,'Bosnia-Herzegovina convertible mark','KM','',',','.','','',100,1,'BAM','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(27,'Botswanan pula','P','','.',' ','','',100,1,'BWP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(28,'Brazilian real','R$','','.',' ','','',100,1,'BRL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(29,'Brunei dollar','B$','','.',' ','','',100,1,'BND','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(30,'Bulgarian lev','','','.',' ','','',100,1,'BGN','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(31,'Burundi franc','FBu','','.',' ','','',1,1,'BIF','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(31,'Burundian franc','FBu','','.',' ','','',1,1,'BIF','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(32,'Cambodian riel','','','.',' ','','',100,1,'KHR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(33,'Central African CFA franc','CFA','','.',' ','','',1,1,'XAF','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(34,'Canadian dollar','$','','.',' ','','',100,1,'CAD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(35,'Cape Verdean escudo','Esc','','.',' ','','',100,1,'CVE','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(36,'Cayman Islands dollar','KY$','','.',' ','','',100,1,'KYD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(37,'Chilean peso','$','','.',' ','','',1,1,'CLP','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(38,'Chinese renminbi','¥','','.',' ','','',100,1,'CNY','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(38,'Chinese yuan','¥','','.',' ','','',100,1,'CNY','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(39,'Colombian peso','Col$','','.',' ','','',100,1,'COP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(40,'Comorian franc','','','.',' ','','',1,1,'KMF','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(41,'Congolese franc','F','','.',' ','','',100,1,'CDF','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(42,'Costa Rican colon','₡','','.',' ','','',1,1,'CRC','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(42,'Costa Rican colón','₡','','.',' ','','',1,1,'CRC','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(43,'Croatian kuna','kn','','.',' ','','',100,1,'HRK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(44,'Czech koruna','Kč','','.',' ','','',100,1,'CZK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(45,'Danish krone','Kr','','.',' ','','',100,1,'DKK','Fiat');
@@ -225,7 +275,7 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(56,'Ghanaian cedi','','','.',' ','','',100
 INSERT INTO CURRENCYFORMATS_V1 VALUES(57,'Gibraltar pound','£','','.',' ','','',100,1,'GIP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(58,'Guatemalan quetzal','Q','','.',' ','','',100,1,'GTQ','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(59,'Guinean franc','FG','','.',' ','','',1,1,'GNF','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(60,'Guyanese dollar','GY$','','.',' ','','',100,1,'GYD','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(60,'Guyanaese dollar','GY$','','.',' ','','',100,1,'GYD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(61,'Haitian gourde','G','','.',' ','','',100,1,'HTG','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(62,'Honduran lempira','L','','.',' ','','',100,1,'HNL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(63,'Hong Kong dollar','HK$','','.',' ','','',100,1,'HKD','Fiat');
@@ -233,7 +283,7 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(64,'Hungarian forint','Ft','','.',' ','','
 INSERT INTO CURRENCYFORMATS_V1 VALUES(65,'Icelandic króna','kr','','.',' ','','',1,1,'ISK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(66,'Indian rupee','₹','','.',' ','','',100,1,'INR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(67,'Indonesian rupiah','Rp','','.',' ','','',1,1,'IDR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(68,'Special Drawing Rights','SDR','','.',' ','','',100,1,'XDR','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(68,'Special drawing rights','SDR','','.',' ','','',100,1,'XDR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(69,'Iranian rial','','','.',' ','','',1,1,'IRR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(70,'Iraqi dinar','','','.',' ','','',1,1,'IQD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(71,'Israeli new shekel','₪','','.',' ','','',100,1,'ILS','Fiat');
@@ -245,10 +295,10 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(76,'Kenyan shilling','KSh','','.',' ','','
 INSERT INTO CURRENCYFORMATS_V1 VALUES(77,'North Korean won','W','','.',' ','','',100,1,'KPW','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(78,'South Korean won','W','','.',' ','','',1,1,'KRW','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(79,'Kuwaiti dinar','','','.',' ','','',100,1,'KWD','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(80,'Kyrgyzstani som','','','.',' ','','',100,1,'KGS','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(81,'Lao kip','KN','','.',' ','','',100,1,'LAK','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(80,'Kyrgystani som','','','.',' ','','',100,1,'KGS','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(81,'Laotian kip','KN','','.',' ','','',100,1,'LAK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(82,'Latvian lats','Ls','','.',' ','','',100,1,'LVL','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(83,'Lebanese lira','','','.',' ','','',1,1,'LBP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(83,'Lebanese pound','','','.',' ','','',1,1,'LBP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(84,'Lesotho loti','M','','.',' ','','',100,1,'LSL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(85,'Liberian dollar','L$','','.',' ','','',100,1,'LRD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(86,'Libyan dinar','LD','','.',' ','','',100,1,'LYD','Fiat');
@@ -259,16 +309,16 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(90,'Malagasy ariary','FMG','','.',' ','','
 INSERT INTO CURRENCYFORMATS_V1 VALUES(91,'Malawian kwacha','MK','','.',' ','','',1,1,'MWK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(92,'Malaysian ringgit','RM','','.',' ','','',100,1,'MYR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(93,'Maldivian rufiyaa','Rf','','.',' ','','',100,1,'MVR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(94,'Mauritanian ouguiya','UM','','.',' ','','',100,1,'MRO','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(94,'Mauritanian ouguiya (1973-2017)','UM','','.',' ','','',100,1,'MRO','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(95,'Mauritian rupee','Rs','','.',' ','','',1,1,'MUR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(96,'Mexican peso','$','','.',' ','','',100,1,'MXN','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(97,'Moldovan leu','','','.',' ','','',100,1,'MDL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(98,'Mongolian tugrik','₮','','.',' ','','',100,1,'MNT','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(99,'Moroccan dirham','','','.',' ','','',100,1,'MAD','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(100,'Myanma kyat','K','','.',' ','','',1,1,'MMK','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(100,'Myanmar kyat','K','','.',' ','','',1,1,'MMK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(101,'Namibian dollar','N$','','.',' ','','',100,1,'NAD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(102,'Nepalese rupee','NRs','','.',' ','','',100,1,'NPR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(103,'Netherlands Antillean gulden','NAƒ','','.',' ','','',100,1,'ANG','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(103,'Netherlands Antillean guilder','NAƒ','','.',' ','','',100,1,'ANG','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(104,'New Zealand dollar','NZ$','','.',' ','','',100,1,'NZD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(105,'Nicaraguan córdoba','C$','','.',' ','','',100,1,'NIO','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(106,'Nigerian naira','₦','','.',' ','','',100,1,'NGN','Fiat');
@@ -278,23 +328,23 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(109,'Pakistani rupee','Rs.','','.',' ','',
 INSERT INTO CURRENCYFORMATS_V1 VALUES(110,'Panamanian balboa','B./','','.',' ','','',100,1,'PAB','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(111,'Papua New Guinean kina','K','','.',' ','','',100,1,'PGK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(112,'Paraguayan guarani','','','.',' ','','',1,1,'PYG','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(113,'Peruvian nuevo sol','S/.','','.',' ','','',100,1,'PEN','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(113,'Peruvian sol','S/.','','.',' ','','',100,1,'PEN','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(114,'Philippine peso','₱','','.',' ','','',100,1,'PHP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(115,'Polish zloty','','zł',',','.','złoty','grosz',100,1,'PLN','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(116,'Qatari riyal','QR','','.',' ','','',100,1,'QAR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(117,'Romanian leu','L','','.',' ','','',100,1,'RON','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(118,'Rwandan franc','RF','','.',' ','','',1,1,'RWF','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(119,'São Tomé and Príncipe dobra','Db','','.',' ','','',100,1,'STD','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(119,'São Tomé & Príncipe dobra (1977-2017)','Db','','.',' ','','',100,1,'STD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(120,'Saudi riyal','SR','','.',' ','','',100,1,'SAR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(121,'Serbian dinar','din.','','.',' ','','',1,1,'RSD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(122,'Seychellois rupee','SR','','.',' ','','',100,1,'SCR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(123,'Sierra Leonean leone','Le','','.',' ','','',100,1,'SLL','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(123,'Sierra Leonean leone (1964-2022)','Le','','.',' ','','',100,1,'SLL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(124,'Singapore dollar','S$','','.',' ','','',100,1,'SGD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(125,'Solomon Islands dollar','SI$','','.',' ','','',100,1,'SBD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(126,'Somali shilling','Sh.','','.',' ','','',1,1,'SOS','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(127,'South African rand','R','','.',' ','','',100,1,'ZAR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(128,'Sri Lankan rupee','Rs','','.',' ','','',100,1,'LKR','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(129,'Saint Helena pound','£','','.',' ','','',100,1,'SHP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(129,'St. Helena pound','£','','.',' ','','',100,1,'SHP','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(130,'Sudanese pound','','','.',' ','','',100,1,'SDG','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(131,'Surinamese dollar','$','','.',' ','','',100,1,'SRD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(132,'Swazi lilangeni','E','','.',' ','','',100,1,'SZL','Fiat');
@@ -305,10 +355,10 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(136,'New Taiwan dollar','NT$','','.',' ','
 INSERT INTO CURRENCYFORMATS_V1 VALUES(137,'Tajikistani somoni','','','.',' ','','',100,1,'TJS','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(138,'Tanzanian shilling','','','.',' ','','',1,1,'TZS','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(139,'Thai baht','฿','','.',' ','','',100,1,'THB','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(140,'Trinidad and Tobago dollar','TT$','','.',' ','','',100,1,'TTD','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(140,'Trinidad & Tobago dollar','TT$','','.',' ','','',100,1,'TTD','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(141,'Tunisian dinar','DT','','.',' ','','',100,1,'TND','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(142,'Turkish lira','₺','','.',' ','','',100,1,'TRY','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(143,'Turkmen manat','m','','.',' ','','',100,1,'TMT','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(143,'Turkmenistani manat','m','','.',' ','','',100,1,'TMT','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(144,'Ugandan shilling','USh','','.',' ','','',1,1,'UGX','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(145,'UAE dirham','','','.',' ','','',100,1,'AED','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(146,'Uruguayan peso','$U','','.',' ','','',100,1,'UYU','Fiat');
@@ -317,8 +367,23 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(148,'Vanuatu vatu','VT','','.',' ','','',1
 INSERT INTO CURRENCYFORMATS_V1 VALUES(149,'Vietnamese dong','₫','','.',' ','','',1,1,'VND','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(150,'Samoan tala','WS$','','.',' ','','',100,1,'WST','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(151,'Yemeni rial','','','.',' ','','',1,1,'YER','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(152,'Venezuelan Bolívar','Bs.','','.',',','bolívar','céntimos',100,1,'VEF','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(152,'Venezuelan bolívar (2008-2018)','Bs.','','.',',','bolívar','céntimos',100,1,'VEF','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(153,'Bitcoin','Ƀ','','.',',','','',100000000,1,'BTC','Crypto');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(154,'Belarusian ruble','BYN','','.',',','','',100,1,'BYN','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(155,'Cuban convertible peso','$','','.',',','','',100,1,'CUC','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(156,'Cuban peso','$','','.',',','','',100,1,'CUP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(157,'Mauritanian ouguiya','MRU','','.',',','','',100,1,'MRU','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(158,'Mozambican metical','MZN','','.',',','','',100,1,'MZN','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(159,'Sierra Leonean leone','SLE','','.',',','','',100,1,'SLE','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(160,'South Sudanese pound','£','','.',',','','',100,1,'SSP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(161,'São Tomé & Príncipe dobra','Db','','.',',','','',100,1,'STN','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(162,'Salvadoran colón','SVC','','.',',','','',100,1,'SVC','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(163,'Tongan paʻanga','T$','','.',',','','',100,1,'TOP','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(164,'Uruguayan nominal wage index unit','UYW','','.',',','','',10000,1,'UYW','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(165,'Bolívar soberano','VED','','.',',','','',100,1,'VED','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(166,'Venezuelan bolívar','VES','','.',',','','',100,1,'VES','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(167,'Zambian kwacha','ZK','','.',',','','',100,1,'ZMW','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(168,'Zimbabwean dollar (2009)','ZWL','','.',',','','',100,1,'ZWL','Fiat');
 
 -- Describe INFOTABLE_V1
 CREATE TABLE INFOTABLE_V1(
@@ -335,11 +400,11 @@ CREATE TABLE PAYEE_V1(
 PAYEEID integer primary key
 , PAYEENAME TEXT COLLATE NOCASE NOT NULL UNIQUE
 , CATEGID integer
-, SUBCATEGID integer
 , NUMBER TEXT
 , WEBSITE TEXT
 , NOTES TEXT
 , ACTIVE integer
+, PATTERN TEXT DEFAULT ''
 );
 CREATE INDEX IDX_PAYEE_INFONAME ON PAYEE_V1(PAYEENAME);
 
@@ -348,7 +413,6 @@ CREATE TABLE SPLITTRANSACTIONS_V1(
 SPLITTRANSID integer primary key
 , TRANSID integer NOT NULL
 , CATEGID integer
-, SUBCATEGID integer
 , SPLITTRANSAMOUNT numeric
 , NOTES TEXT
 );
@@ -380,58 +444,6 @@ HISTID integer primary key
 , UNIQUE(SYMBOL, DATE)
 );
 CREATE INDEX IDX_STOCKHISTORY_SYMBOL ON STOCKHISTORY_V1(SYMBOL);
-
--- Describe SUBCATEGORY_V1
-CREATE TABLE SUBCATEGORY_V1(
-SUBCATEGID integer primary key
-, SUBCATEGNAME TEXT COLLATE NOCASE NOT NULL
-, CATEGID integer NOT NULL
-, ACTIVE integer
-, UNIQUE(CATEGID, SUBCATEGNAME)
-);
-CREATE INDEX IDX_SUBCATEGORY_CATEGID ON SUBCATEGORY_V1(CATEGID);
-
-INSERT INTO SUBCATEGORY_V1 VALUES(1,'Telephone',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(2,'Electricity',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(3,'Gas',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(4,'Internet',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(5,'Rent',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(6,'Cable TV',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(7,'Water',1,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(8,'Groceries',2,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(9,'Dining out',2,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(10,'Movies',3,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(11,'Video Rental',3,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(12,'Magazines',3,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(13,'Maintenance',4,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(14,'Gas',4,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(15,'Parking',4,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(16,'Registration',4,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(17,'Books',5,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(18,'Tuition',5,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(19,'Others',5,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(20,'Clothing',6,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(21,'Furnishing',6,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(22,'Others',6,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(23,'Health',7,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(24,'Dental',7,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(25,'Eyecare',7,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(26,'Physician',7,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(27,'Prescriptions',7,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(28,'Auto',8,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(29,'Life',8,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(30,'Home',8,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(31,'Health',8,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(32,'Travel',9,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(33,'Lodging',9,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(34,'Sightseeing',9,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(35,'Income Tax',10,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(36,'House Tax',10,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(37,'Water Tax',10,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(38,'Others',10,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(39,'Salary',13,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(40,'Reimbursement/Refunds',13,1);
-INSERT INTO SUBCATEGORY_V1 VALUES(41,'Investment Income',13,1);
 
 -- Describe SETTING_V1
 create table SETTING_V1(
@@ -471,22 +483,6 @@ USAGEID INTEGER NOT NULL PRIMARY KEY
 , JSONCONTENT TEXT NOT NULL
 );
 CREATE INDEX IDX_USAGE_DATE ON USAGE_V1 (USAGEDATE);
-
--- Asset Classes
-CREATE TABLE ASSETCLASS_V1 (
-ID INTEGER primary key
-, PARENTID INTEGER
-, NAME TEXT COLLATE NOCASE NOT NULL
-, ALLOCATION REAL
-, SORTORDER INTEGER
-);
-
--- Asset Class / Stock link table
-CREATE TABLE ASSETCLASS_STOCK_V1 (
-ID INTEGER primary key
-, ASSETCLASSID INTEGER NOT NULL
-, STOCKSYMBOL TEXT UNIQUE
-);
 
 -- Describe CUSTOMFIELD_V1
 CREATE TABLE CUSTOMFIELD_V1 (
@@ -528,3 +524,22 @@ SHAREINFOID integer NOT NULL primary key
 , SHARELOT TEXT
 );
 CREATE INDEX IDX_SHAREINFO ON SHAREINFO_V1 (CHECKINGACCOUNTID);
+
+-- Describe TAG_V1
+CREATE TABLE TAG_V1(
+TAGID INTEGER PRIMARY KEY
+, TAGNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
+, ACTIVE INTEGER
+);
+CREATE INDEX IDX_TAGNAME ON TAG_V1 (TAGNAME);
+
+-- Describe TAGLINK_V1
+CREATE TABLE TAGLINK_V1(
+TAGLINKID INTEGER PRIMARY KEY
+, REFTYPE TEXT NOT NULL
+, REFID INTEGER NOT NULL
+, TAGID INTEGER NOT NULL
+, FOREIGN KEY (TAGID) REFERENCES TAG_V1 (TAGID)
+, UNIQUE(REFTYPE, REFID, TAGID)
+);
+CREATE INDEX IDX_TAGLINK ON TAGLINK_V1 (REFTYPE, REFID, TAGID);

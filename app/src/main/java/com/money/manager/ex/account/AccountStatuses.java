@@ -37,7 +37,7 @@ public enum AccountStatuses {
     }
 
     public boolean equalsName(String otherName) {
-        return otherName != null && title.equalsIgnoreCase(otherName);
+        return title.equalsIgnoreCase(otherName);
     }
 
     public String toString(){

@@ -52,7 +52,6 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.sync.SyncManager;
 
@@ -119,15 +118,14 @@ public class MmxContentProvider
             new SplitRecurringCategoriesRepository(context),
             new StockRepository(context),
             new StockHistoryRepository(context),
-            new SubcategoryRepository(context),
-                new QueryAccountBills(context),
-                new QueryCategorySubCategory(context),
-                new QueryAllData(context),
-                new QueryBillDeposits(context),
-                new QueryReportIncomeVsExpenses(context),
-                new BudgetQuery(context),
-                new ViewMobileData(context),
-                new SQLDataSet()
+            new QueryAccountBills(context),
+            new QueryCategorySubCategory(context),
+            new QueryAllData(context),
+            new QueryBillDeposits(context),
+            new QueryReportIncomeVsExpenses(context),
+            new BudgetQuery(context),
+            new ViewMobileData(context),
+            new SQLDataSet()
         );
 
         // Cycle all data sets for the composition of UriMatcher

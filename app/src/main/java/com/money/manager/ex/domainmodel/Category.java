@@ -29,6 +29,8 @@ public class Category
 
     public static final String CATEGID = "CATEGID";
     public static final String CATEGNAME = "CATEGNAME";
+    public static final String ACTIVE = "ACTIVE";
+    public static final String PARENTID = "PARENTID";
 
     public Category() {
         super();
@@ -44,6 +46,14 @@ public class Category
 
     public void setId(Integer value) {
         setInt(CATEGID, value);
+    }
+
+    public int getParentId() {
+        return getInt(PARENTID);
+    }
+
+    public void setParentId(Integer value) {
+        setInt(PARENTID, value);
     }
 
     public String getName() {

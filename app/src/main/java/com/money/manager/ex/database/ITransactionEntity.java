@@ -34,7 +34,6 @@ public interface ITransactionEntity {
     String NOTES = "NOTES";
     String PAYEEID = "PAYEEID";
     String STATUS = "STATUS";
-    String SUBCATEGID = "SUBCATEGID";
     String TOACCOUNTID = "TOACCOUNTID";
     String TOTRANSAMOUNT = "TOTRANSAMOUNT";
     String TRANSAMOUNT = "TRANSAMOUNT";
@@ -57,9 +56,6 @@ public interface ITransactionEntity {
     Integer getCategoryId();
     void setCategoryId(Integer value);
     boolean hasCategory();
-
-    Integer getSubcategoryId();
-    void setSubcategoryId(Integer value);
 
     /**
      * @return the splitTransAmount

@@ -54,11 +54,9 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
@@ -758,22 +756,21 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadCategoryName() {
-        if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
+        if(!this.transactionEntity.hasCategory()) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
+            // TODO parent category : category
+            if (category.getParentId() > 0)
+            {
+                Category parentCategory = categoryRepository.load(category.getParentId());
+                if (parentCategory != null)
+                    this.categoryName = parentCategory.getName() + " : " + category.getName();
+            }
         } else {
             this.categoryName = null;
-        }
-
-        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
-        Subcategory subcategory = subRepo.load(this.transactionEntity.getSubcategoryId());
-        if (subcategory != null) {
-            this.subCategoryName = subcategory.getName();
-        } else {
-            this.subCategoryName = null;
         }
 
         return true;
@@ -839,8 +836,6 @@ public class EditTransactionCommonFunctions {
             case RequestCodes.CATEGORY:
                 this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                this.transactionEntity.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
-                subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
                 displayCategoryName();
                 break;
@@ -1045,7 +1040,6 @@ public class EditTransactionCommonFunctions {
         // otherwise
 
         this.transactionEntity.setCategoryId(payee.getCategoryId());
-        this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
 
         loadCategoryName();
 
@@ -1213,7 +1207,6 @@ public class EditTransactionCommonFunctions {
         displayAmountFrom();
 
         transactionEntity.setCategoryId(splitTransaction.getCategoryId());
-        transactionEntity.setSubcategoryId(splitTransaction.getSubcategoryId());
         loadCategoryName();
 //        displayCategoryName();
 
@@ -1296,7 +1289,6 @@ public class EditTransactionCommonFunctions {
 
         if (this.transactionEntity.hasCategory()) {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
-            entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
         }
 
         return entity;
@@ -1440,7 +1432,6 @@ public class EditTransactionCommonFunctions {
     private void resetCategory() {
         // Reset the Sub/Category on the transaction.
         transactionEntity.setCategoryId(Constants.NOT_SET);
-        transactionEntity.setSubcategoryId(Constants.NOT_SET);
     }
 
     private void showDate(Date dateTime) {

@@ -108,7 +108,7 @@ public class IntentDataParameters {
         parameters.subcategoryName = data.getQueryParameter(PARAM_SUBCATEGORY);
         if (parameters.subcategoryName != null) {
             CategoryService category = new CategoryService(context);
-            int subcategoryId = category.loadSubcategoryIdByName(parameters.subcategoryName, parameters.categoryId);
+            int subcategoryId = category.loadIdByName(parameters.subcategoryName, parameters.categoryId);
             parameters.subcategoryId = subcategoryId;
         }
 

@@ -1,12 +1,12 @@
 /*
     Query mobiledata. This is the base for most other queries.
 */
-SELECT 	TX.TransID AS ID,
+SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    coalesce( CAT.CategName, SCAT.CategName ) AS Category,
-    coalesce( SUBCAT.SUBCategName, SSCAT.SUBCategName, '' ) AS Subcategory,
+    coalesce( PARENTCAT.CategName, SPARENTCAT.CategName, '' ) AS Category,
+    coalesce( CAT.CategName, SCAT.CategName ) AS Subcategory,
     cf.currency_symbol AS currency,
     TX.Status AS Status,
     TX.NOTES AS Notes,
@@ -22,7 +22,7 @@ SELECT 	TX.TransID AS ID,
     ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
     ifnull( CAT.CategId, st.CategId ) AS CATEGID,
-    ifnull( ifnull( SUBCAT.SubCategID, st.subCategId ) , -1 ) AS SubcategID,
+    ifnull( ifnull(CAT.CategID, st.CategId ) , -1 ) AS SubcategID,
     ifnull( PAYEE.PayeeName, '' ) AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PAYEEID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -34,16 +34,16 @@ SELECT 	TX.TransID AS ID,
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
-    LEFT JOIN SUBCATEGORY_V1 SUBCAT ON SUBCAT.SUBCATEGID = TX.SUBCATEGID AND SUBCAT.CATEGID = TX.CATEGID
+    LEFT JOIN CATEGORY_V1 PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
     LEFT JOIN splittransactions_v1 st ON TX.transid = st.transid
     LEFT JOIN CATEGORY_V1 SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
-    LEFT JOIN SUBCATEGORY_V1 SSCAT ON SSCAT.SUBCATEGID = st.SUBCATEGID AND SSCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
+    LEFT JOIN CATEGORY_V1 SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.PARENTID
     LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
     LEFT JOIN  (
-        SELECT	transid AS id,
+        SELECT    transid AS id,
             date( transdate ) AS transdate,
             round( strftime( '%d', transdate )  ) AS day,
             round( strftime( '%m', transdate )  ) AS month,
