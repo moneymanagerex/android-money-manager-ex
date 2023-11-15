@@ -1055,10 +1055,10 @@ public class MainActivity
                         .color(iconColor)));
 
         // Asset Allocation
-        menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-                .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-                        .color(iconColor)));
+        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
+        //        .withText(getString(R.string.asset_allocation))
+        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+        //                .color(iconColor)));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
@@ -1441,10 +1441,10 @@ public class MainActivity
                         .color(iconColor)));
 
         // Asset Allocation Overview
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
-                .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-                        .color(iconColor)));
+        // adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
+        //        .withText(getString(R.string.asset_allocation))
+        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+        //                .color(iconColor)));
 
         new MaterialDialog.Builder(this)
                 .title(text)
