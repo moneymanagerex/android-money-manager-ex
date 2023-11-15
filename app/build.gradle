@@ -17,6 +17,10 @@
 
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.android.application'
+
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -264,6 +268,7 @@ dependencies {
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
 }
 
 configurations {

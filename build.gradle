@@ -22,9 +22,11 @@ buildscript {
         maven { url "https://clojars.org/repo/" }               // icepick
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        google()  // Google's Maven repository
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.google.gms:google-services:4.3.3'
     }
 }
 
@@ -56,6 +58,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        google()  // Google's Maven repository
     }
 
     /**
