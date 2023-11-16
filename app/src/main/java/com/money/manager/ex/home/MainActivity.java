@@ -218,8 +218,13 @@ public class MainActivity
 
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
-        String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
+        String uid = infoService.getInfoValue(InfoKeys.UID);
+        if (uid == null || uid.isEmpty()) {
+            // TODO create a new one
+        } else {
+            mFirebaseAnalytics.setUserId(uid);
+        }
         // fragments
         initHomeFragment();
 

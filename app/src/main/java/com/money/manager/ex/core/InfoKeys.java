@@ -35,5 +35,5 @@ public class InfoKeys {
     public static final String QUOTE_PROVIDER = "QUOTE_PROVIDER";
     public static final String EXCHANGE_RATE_PROVIDER = "EXCHANGE_RATE_PROVIDER";
     public static final String PASSCODE = "PASSCODEMOBILE";
-    public static final String PASSCODE = "UID";
+    public static final String UID = "UID";
 }
