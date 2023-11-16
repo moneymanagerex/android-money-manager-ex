@@ -33,7 +33,7 @@ android {
         applicationId "com.money.manager.ex"
         versionCode 998
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2023.11.15v19"
+        versionName "2023.11.16v19"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
