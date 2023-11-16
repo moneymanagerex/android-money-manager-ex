@@ -18,7 +18,8 @@ package com.money.manager.ex.transactions;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.preference.PreferenceManager;
@@ -503,42 +504,33 @@ public class CheckingTransactionEditActivity
 
             if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
-                AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        try {
-                            Core core = new Core(getApplicationContext());
-                            Payee payee = core.getLastPayeeUsed();
-                            if (payee != null && mCommon.transactionEntity.getPayeeId() == Constants.NOT_SET) {
-                                // get id payee and category
-                                mCommon.transactionEntity.setPayeeId(payee.getId());
-                                mCommon.payeeName = payee.getName();
-                                mCommon.transactionEntity.setCategoryId(payee.getCategoryId());
-                                // load category and subcategory name
-                                mCommon.loadCategoryName();
-                                return Boolean.TRUE;
-                            }
-                        } catch (Exception e) {
-                            Timber.e(e, "loading default payee");
-                        }
-                        return Boolean.FALSE;
-                    }
+                ExecutorService executor = Executors.newSingleThreadExecutor();
 
-                    @Override
-                    protected void onPostExecute(Boolean result) {
-                        super.onPostExecute(result);
-                        if (result) {
-                            try {
+                executor.execute(() -> {
+                    try {
+                        Core core = new Core(getApplicationContext());
+                        Payee payee = core.getLastPayeeUsed();
+                        if (payee != null && mCommon.transactionEntity.getPayeeId() == Constants.NOT_SET) {
+                            // get id payee and category
+                            mCommon.transactionEntity.setPayeeId(payee.getId());
+                            mCommon.payeeName = payee.getName();
+                            mCommon.transactionEntity.setCategoryId(payee.getCategoryId());
+                            // load category and subcategory name
+                            mCommon.loadCategoryName();
+
+                            runOnUiThread(() -> {
                                 // refresh field
                                 mCommon.showPayeeName();
                                 mCommon.displayCategoryName();
-                            } catch (Exception e) {
-                                Timber.e(e, "showing payee and category names");
-                            }
+                            });
                         }
+                    } catch (Exception e) {
+                        Timber.e(e, "loading default payee");
                     }
-                };
-                task.execute();
+                });
+
+                // Remember to shutdown the executor when it's no longer needed
+                executor.shutdown();
             }
 
             if (intent.getData() != null) {
