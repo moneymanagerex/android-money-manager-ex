@@ -115,7 +115,7 @@ android {
     signingConfigs {
         debug {
             // storeFile file("debug.keystore")
-            v2SigningEnabled false
+            v2SigningEnabled true
         }
         release {
             keyAlias 'ammex'
@@ -223,7 +223,7 @@ dependencies {
             // Robolectric
             'junit:junit:4.12',
             'org.assertj:assertj-core:3.9.1',
-            'org.robolectric:robolectric:4.9',
+            'org.robolectric:robolectric:4.11.1',
 //            'org.robolectric:shadows-support-v4:3.3.2',
 //            'org.robolectric:shadows-multidex:3.8',
 //            'org.robolectric:shadows-httpclient:3.8',
