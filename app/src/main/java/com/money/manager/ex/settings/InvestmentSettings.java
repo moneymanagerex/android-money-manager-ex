@@ -19,8 +19,9 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;

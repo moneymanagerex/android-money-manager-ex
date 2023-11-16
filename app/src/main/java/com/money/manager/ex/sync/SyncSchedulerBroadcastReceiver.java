@@ -22,21 +22,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.SyncBroadcastReceiver;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDate;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import timber.log.Timber;
 

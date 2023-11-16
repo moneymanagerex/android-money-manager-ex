@@ -24,7 +24,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -40,6 +40,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -126,7 +128,7 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     /**
      * @return the mRestart
      */
@@ -177,7 +179,7 @@ public class MainActivity
             finish();
             return;
         }
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 

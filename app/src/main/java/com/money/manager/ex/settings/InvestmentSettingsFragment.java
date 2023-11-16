@@ -17,7 +17,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
@@ -30,6 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
 import info.javaperformance.money.Money;
 

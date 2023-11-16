@@ -20,8 +20,7 @@ package com.money.manager.ex.notifications;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.settings.PreferenceConstants;
 

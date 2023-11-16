@@ -19,7 +19,7 @@ package com.money.manager.ex;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.TextView;
 import com.evernote.android.job.JobManager;

@@ -19,7 +19,7 @@ package com.money.manager.ex.common;
 import android.animation.LayoutTransition;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
