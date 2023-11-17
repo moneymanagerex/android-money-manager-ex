@@ -246,12 +246,12 @@ dependencies {
 
     // UI testing
     androidTestImplementation(
-            'androidx.test:runner:1.1.0-alpha4',
+            'androidx.test:runner:1.5.2',
             // Set this dependency to use JUnit 4 rules
-            'androidx.test:rules:1.1.0-alpha4',
+            'androidx.test:rules:1.5.0',
             // Set this dependency to build and run Espresso tests
-            'androidx.test.espresso:espresso-core:3.1.0-alpha4',
-            'androidx.test.espresso:espresso-contrib:3.1.0-alpha4',
+            'androidx.test.espresso:espresso-core:3.5.1',
+            'androidx.test.espresso:espresso-contrib:3.5.1',
             // add this for intent mocking support
             // 'com.android.support.test.espresso:espresso-intents:2.2.2'
             // add this for webview testing support
