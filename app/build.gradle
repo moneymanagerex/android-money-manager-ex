@@ -189,12 +189,12 @@ dependencies {
     )
     implementation supportDependencies.core
     implementation supportDependencies.support
-    implementation supportDependencies.appCompat
+    implementation "androidx.appcompat:appcompat:1.6.1"
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView
     implementation supportDependencies.design
     implementation supportDependencies.preference
-    implementation supportDependencies.supportAnnotation
+    implementation "androidx.annotation:annotation:1.6.0"
     implementation supportDependencies.gridLayout
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
