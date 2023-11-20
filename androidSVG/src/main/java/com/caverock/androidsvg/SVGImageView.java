@@ -31,11 +31,10 @@ import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 /**
  * SVGImageView is a View widget that allows users to include SVG images in their layouts.
- * 
+ * <p>
  * It is implemented as a thin layer over {@code android.widget.ImageView}.
  *
  * <h2>XML attributes</h2>

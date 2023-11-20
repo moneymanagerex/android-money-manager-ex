@@ -24,6 +24,11 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_remote_path"
+        android:title="@string/remote_path" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_version"
         android:title="@string/database_version" />
 

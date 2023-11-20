@@ -187,7 +187,7 @@ public class Core {
         Payee payee = null;
 
         String sql =
-        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID, P.SUBCATEGID " +
+        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
         "FROM CHECKINGACCOUNT_V1 C " +
         "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
         "WHERE C.TransCode <> 'Transfer' " +
@@ -202,7 +202,6 @@ public class Core {
 //            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
 //            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
 //            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
-//            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(Payee.SUBCATEGID)));
             payee.loadFromCursor(cursor);
 
             cursor.close();

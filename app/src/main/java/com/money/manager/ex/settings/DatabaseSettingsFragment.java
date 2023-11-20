@@ -253,8 +253,13 @@ public class DatabaseSettingsFragment
     }
 
     private void refreshDbPath() {
+
+        DatabaseMetadata db = mDatabases.get().getCurrent();
         final Preference preference = findPreference(getActivity().getString(R.string.pref_database_path));
-        preference.setSummary(new DatabaseManager(getActivity().getApplicationContext()).getDatabasePath());
+        preference.setSummary(db.localPath);
+
+        final Preference remotePreference = findPreference(getActivity().getString(R.string.pref_remote_path));
+        remotePreference.setSummary(db.remotePath);
     }
 
     private void initDbSchemaCheckOption() {
