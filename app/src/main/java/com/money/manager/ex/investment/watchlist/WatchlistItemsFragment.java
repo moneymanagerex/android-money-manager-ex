@@ -273,24 +273,6 @@ public class WatchlistItemsFragment
         return result;
     }
 
-    /**
-     * This is just to test:
-     * http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
-     */
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        try {
-            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-        } catch (Exception e) {
-            // NoSuchFieldException | IllegalAccessException
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
