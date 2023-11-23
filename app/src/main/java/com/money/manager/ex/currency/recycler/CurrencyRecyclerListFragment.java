@@ -336,7 +336,7 @@ public class CurrencyRecyclerListFragment
     }
 
     private ContextMenuRecyclerView getRecyclerView() {
-        return (ContextMenuRecyclerView) getActivity().findViewById(R.id.list);
+        return getActivity().findViewById(R.id.list);
     }
 
     private CurrencyService getService() {
