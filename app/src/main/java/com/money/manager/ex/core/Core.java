@@ -190,7 +190,7 @@ public class Core {
         "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
         "FROM CHECKINGACCOUNT_V1 C " +
         "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
-        "WHERE C.TransCode <> 'Transfer' " +
+        "WHERE C.TransCode <> 'Transfer' AND (c.DELETEDTIME IS NULL OR c.DELETEDTIME = '') " +
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
