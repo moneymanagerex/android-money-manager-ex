@@ -54,3 +54,4 @@ FROM CHECKINGACCOUNT_V1 TX
             LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
             LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
     ) d ON d.id = TX.TRANSID
+WHERE TX.DELETEDTIME is null
