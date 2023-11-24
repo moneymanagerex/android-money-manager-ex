@@ -12,41 +12,41 @@ SELECT
     (INITIALBAL + ifnull(T1.reconciled, 0)) AS RECONCILED,
     (INITIALBAL + ifnull(T1.TOTAL, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS TOTALBASECONVRATE,
     (INITIALBAL + ifnull(T1.reconciled, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS RECONCILEDBASECONVRATE
-FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( 
+FROM ACCOUNTLIST_V1 LEFT JOIN ( 
     select accountid, SUM(total) as total, SUM(reconciled) as reconciled
     from (
         -- Withdrawals
         select accountid, transcode, sum(case when status in ('R', 'F', 'D', '') then -transamount else 0 end) as total,
             sum(case when status = 'R' then -transamount else 0 end) as reconciled
         from checkingaccount_v1
-        where transcode in ('Withdrawal')
+        where transcode in ('Withdrawal') and (deletedtime is null or deletedtime = '')
         group by accountid, transcode
 
-        union
+        union all
 
         select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then transamount else 0 end) as total,
             sum(case when status = 'R' then transamount else 0 end) as reconciled
         from checkingaccount_v1
-        where transcode in ('Deposit')
+        where transcode in ('Deposit') and (deletedtime is null or deletedtime = '')
         group by accountid, transcode
 
-        union
+        union all
 
         select accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then -transamount else 0 end) as total,
             sum(case when status = 'R' then -transamount else 0 end) as reconciled
         from checkingaccount_v1
-        where transcode in ('Transfer')
+        where transcode in ('Transfer') and (deletedtime is null or deletedtime = '')
         group by accountid, transcode
 
-        union
+        union all
 
         select toaccountid AS accountid, transcode, sum(case when status in ('R', 'F', 'D', '')  then totransamount else 0 end) as total,
             sum(case when status = 'R' then totransamount else 0 end) as reconciled
         from checkingaccount_v1
-        where transcode in ('Transfer') and toaccountid <> -1
+        where transcode in ('Transfer') and toaccountid <> -1 and (deletedtime is null or deletedtime = '')
         group by toaccountid, transcode
 
-        union
+        union all
 
         -- Investments
         select HeldAt as accountid,
@@ -58,6 +58,7 @@ FROM ACCOUNTLIST_V1 LEFT OUTER JOIN (
 
     )  t
     group by accountid
-) T1 ON ACCOUNTLIST_V1.ACCOUNTID=T1.ACCOUNTID 
-LEFT OUTER JOIN CURRENCYFORMATS_V1 ON ACCOUNTLIST_V1.CURRENCYID=CURRENCYFORMATS_V1.CURRENCYID 
+) T1 ON ACCOUNTLIST_V1.ACCOUNTID = T1.ACCOUNTID 
+LEFT JOIN CURRENCYFORMATS_V1 ON ACCOUNTLIST_V1.CURRENCYID = CURRENCYFORMATS_V1.CURRENCYID 
+WHERE ACCOUNTLIST_V1.STATUS in ('Open')
 --WHERE ACCOUNTLIST_V1.ACCOUNTTYPE IN ('Cash', 'Checking', 'Term', 'Credit Card', 'Investment')
