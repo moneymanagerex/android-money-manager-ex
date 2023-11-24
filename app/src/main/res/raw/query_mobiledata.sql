@@ -5,8 +5,8 @@ SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    coalesce( PARENTCAT.CategName, SPARENTCAT.CategName, '' ) AS Category,
-    coalesce( CAT.CategName, SCAT.CategName ) AS Subcategory,
+    coalesce( SPARENTCAT.CategName, PARENTCAT.CategName, SCAT.CategName, CAT.CategName, '' ) AS Category,
+    coalesce( SCAT.CategName, CAT.CategName ) AS Subcategory,
     cf.currency_symbol AS currency,
     TX.Status AS Status,
     TX.NOTES AS Notes,
@@ -21,8 +21,8 @@ SELECT     TX.TransID AS ID,
     TX.ToTransAmount AS ToAmount,
     ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
-    ifnull( CAT.CategId, st.CategId ) AS CATEGID,
-    ifnull( ifnull(CAT.CategID, st.CategId ) , -1 ) AS SubcategID,
+    coalesce( SPARENTCAT.CATEGID, PARENTCAT.CATEGID, st.CategId, TX.CategId ) AS CATEGID,
+    ifnull( ifnull(st.CategID, TX.CategId ) , -1 ) AS SubcategID,
     ifnull( PAYEE.PayeeName, '' ) AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PAYEEID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -54,4 +54,4 @@ FROM CHECKINGACCOUNT_V1 TX
             LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
             LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
     ) d ON d.id = TX.TRANSID
-WHERE TX.DELETEDTIME is null
+WHERE (TX.DELETEDTIME is null or TX.DELETEDTIME = '')
