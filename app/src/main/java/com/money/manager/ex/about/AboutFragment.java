@@ -102,6 +102,7 @@ public class AboutFragment extends Fragment {
         });
 
         // rate application
+        /*
         TextView txtRate = view.findViewById(R.id.textViewLinkRate);
         text = "<u>" + txtRate.getText() + "</u>";
         txtRate.setText(Html.fromHtml(text));
@@ -109,6 +110,7 @@ public class AboutFragment extends Fragment {
         OnClickListenerUrl clickListenerRate = new OnClickListenerUrl();
         clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
         txtRate.setOnClickListener(clickListenerRate);
+        */
 
         // application issue tracker
         TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
