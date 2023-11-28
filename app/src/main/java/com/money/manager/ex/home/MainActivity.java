@@ -1084,11 +1084,11 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings)
                         .color(iconColor)));
         // Donate
-        menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
-                .withText(getString(R.string.donate))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
-                        .color(iconColor))
-                .withDivider(Boolean.TRUE));
+        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
+        //        .withText(getString(R.string.donate))
+        //        .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
+        //                .color(iconColor))
+        //        .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))

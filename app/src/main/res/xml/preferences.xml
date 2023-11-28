@@ -50,10 +50,6 @@
         android:title="@string/database" />
     <Preference
         android:icon="@null"
-        android:key="@string/pref_donate"
-        android:title="@string/donate" />
-    <Preference
-        android:icon="@null"
         android:key="@string/pref_version_name"
         android:title="@string/preferences_info_application" />
 </PreferenceScreen>
