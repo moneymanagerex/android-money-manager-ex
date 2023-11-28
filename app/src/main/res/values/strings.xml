@@ -569,7 +569,7 @@
     <string name="update_available">Update available</string>
     <string name="update_available_online">There is an updated database file available online. Would you like to update?</string>
     <string name="currency_not_found">Currency not found</string>
-    <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
+    <string name="homepage">Our homepage is https://moneymanagerex.org/</string>
     <string name="current_database">Current database</string>
     <string name="about_logcat_header">You can send us the application log by clicking the button below.</string>
     <string name="transaction_type_filter">Filter by Transaction Type</string>
