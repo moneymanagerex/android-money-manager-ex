@@ -239,10 +239,8 @@ public class FileStorageHelper {
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
-        //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
+        // TODO add cloud storage provider in the path?
         String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        //Paths.get(localPath, fileMetadata.Name);
         metadata.localPath = localPath + File.separator + fileMetadata.Name;
 
         return metadata;
@@ -356,13 +354,6 @@ public class FileStorageHelper {
      */
     private void downloadDatabase(Uri uri, String localPath) throws IOException {
         ContentResolver resolver = getContext().getContentResolver();
-
-        //ParcelFileDescriptor parcelFileDescriptor = resolver.openFileDescriptor(uri, "r");
-        //FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-
-        //ContentProviderClient providerClient = resolver.acquireContentProviderClient(uri);
-        //ParcelFileDescriptor descriptor = providerClient.openFile(uri, "r");
-
         // Prepare output
         FileOutputStream outputStream = new FileOutputStream(localPath);
 
