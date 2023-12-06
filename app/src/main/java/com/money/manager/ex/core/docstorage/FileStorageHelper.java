@@ -9,9 +9,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
 
 /**
