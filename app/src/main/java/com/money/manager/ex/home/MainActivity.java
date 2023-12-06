@@ -216,6 +216,8 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
+        onceSynchronize();
+
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
 
@@ -1354,6 +1356,12 @@ public class MainActivity
                 Timber.e(e, "showing the current database path");
             }
         }
+    }
+
+    private void onceSynchronize() {
+        FileStorageHelper storage = new FileStorageHelper(this);
+        DatabaseMetadata current = mDatabases.get().getCurrent();
+        storage.synchronize(current);
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {

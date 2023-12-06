@@ -195,10 +195,10 @@ dependencies {
     implementation supportDependencies.preference
     implementation "androidx.annotation:annotation:1.6.0"
     implementation supportDependencies.gridLayout
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'            // Retrofit
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'            // Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
     implementation 'com.google.android.material:material:1.8.0'
     api 'com.google.guava:guava:27.0.1-android' // collection libraries
 
@@ -212,8 +212,8 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.28.3'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     // ButterKnife
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     // IcePick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
