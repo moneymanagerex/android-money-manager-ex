@@ -182,20 +182,6 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     private void pushDatabase(DatabaseMetadata metadata) {
-//        // handle remote changes
-//        boolean isRemoteChanged = isRemoteFileChanged(metadata);
-//        if (isRemoteChanged) {
-//            Timber.w("The remote file was modified in the meantime");
-//            return;
-//        }
-//
-//        // Check for local modifications.
-//        boolean isLocalFileChanged = isLocalFileChanged(metadata);
-//        if (!isLocalFileChanged) {
-//            Timber.i("Local copy not modified.");
-//            return;
-//        }
-
         // upload local file
         uploadDatabase(metadata);
 
