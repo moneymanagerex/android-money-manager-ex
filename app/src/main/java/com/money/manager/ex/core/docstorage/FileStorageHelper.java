@@ -207,7 +207,7 @@ public class FileStorageHelper {
         DocFileMetadata remote = getRemoteMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
 
-        if(remoteLastChangedDate.before(localLastModified)) {
+        if (remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
             pollNewRemoteTimestamp(metadata);
