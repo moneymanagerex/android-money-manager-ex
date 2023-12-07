@@ -437,10 +437,9 @@ public class FileStorageHelper {
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
                     saveMetadata(metadata);
                     Timber.i("The remote file updated at " +
-                            remote.lastModified.toIsoDateShortTimeString());
+                            remote.lastModified.toIsoString());
                     // do not poll further.
                 }
-
             }
         };
         // Trigger the first run.
