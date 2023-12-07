@@ -16,11 +16,8 @@
  */
 package com.money.manager.ex.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,15 +25,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
-import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 

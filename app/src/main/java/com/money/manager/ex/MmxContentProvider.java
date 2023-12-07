@@ -82,7 +82,6 @@ public class MmxContentProvider
 
     public MmxContentProvider() {
         super();
-
     }
 
     @Inject Lazy<MmxOpenHelper> openHelper;
@@ -214,7 +213,7 @@ public class MmxContentProvider
                 throw new IllegalArgumentException("Type of dataset not supported for update");
             }
         } else {
-            throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+            throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
         if (rowsUpdate > 0) {
@@ -234,8 +233,6 @@ public class MmxContentProvider
         // safety control of having the where if not clean the table
         if (TextUtils.isEmpty(selection)) {
             throw new IllegalArgumentException("Delete not permitted because not define where clause");
-//            Log.e(LOGCAT, "Delete not permitted because not define where clause");
-//            return 0;
         }
         // take a database reference
         int rowsDelete = 0;
@@ -250,9 +247,11 @@ public class MmxContentProvider
                     rowsDelete = openHelper.get().getWritableDatabase()
                             .delete(dataset.getSource(), selection, selectionArgs);
 
-                    // committed
-                    //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                    //database.setTransactionSuccessful();
+                    /*
+                     committed
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
+                    database.setTransactionSuccessful();
+                    */
                 } catch (Exception e) {
                     Timber.e(e, "insert");
                 }
@@ -260,7 +259,7 @@ public class MmxContentProvider
                 throw new IllegalArgumentException("Type of dataset not supported for delete");
             }
         } else {
-            throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+            throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
         if (rowsDelete > 0) notifyChange(uri);
@@ -415,7 +414,7 @@ public class MmxContentProvider
         }
 
         // notify listeners waiting for the data is ready
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        cursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
 
         if (!cursor.isClosed()) {
             Timber.v("Rows returned: %d", cursor.getCount());
@@ -466,8 +465,6 @@ public class MmxContentProvider
         }
 
         // open transaction
-        //database.beginTransaction();
-//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
 
         Timber.d(log);
     }
@@ -482,8 +479,6 @@ public class MmxContentProvider
             log += "; ARGS=" + Arrays.asList(selectionArgs);
         }
         // open transaction
-        //database.beginTransaction();
-//                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
         Timber.d(log);
     }
 

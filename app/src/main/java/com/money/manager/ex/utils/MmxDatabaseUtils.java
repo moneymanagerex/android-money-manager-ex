@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.utils;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,10 +25,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
-import android.os.Environment;
 
-import com.money.manager.ex.MmxContentProvider;
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
@@ -49,11 +52,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import dagger.Lazy;
 import timber.log.Timber;
-
-import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
  * Various database-related utility functions

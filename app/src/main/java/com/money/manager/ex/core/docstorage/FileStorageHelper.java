@@ -9,9 +9,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
 
 /**
@@ -182,20 +182,6 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     private void pushDatabase(DatabaseMetadata metadata) {
-//        // handle remote changes
-//        boolean isRemoteChanged = isRemoteFileChanged(metadata);
-//        if (isRemoteChanged) {
-//            Timber.w("The remote file was modified in the meantime");
-//            return;
-//        }
-//
-//        // Check for local modifications.
-//        boolean isLocalFileChanged = isLocalFileChanged(metadata);
-//        if (!isLocalFileChanged) {
-//            Timber.i("Local copy not modified.");
-//            return;
-//        }
-
         // upload local file
         uploadDatabase(metadata);
 
@@ -253,10 +239,8 @@ public class FileStorageHelper {
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
-        //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
+        // TODO add cloud storage provider in the path?
         String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        //Paths.get(localPath, fileMetadata.Name);
         metadata.localPath = localPath + File.separator + fileMetadata.Name;
 
         return metadata;
@@ -273,46 +257,31 @@ public class FileStorageHelper {
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
 
-        Cursor cursor = host.getContentResolver()
-                .query(uri, null, null, null, null, null);
-
-        try {
+        try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 return null;
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
-
-            result.Name = cursor.getString(
-                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-
+            // Use constant values for column names to avoid errors
+            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-//            String size = null;
-//            if (!cursor.isNull(sizeIndex)) {
-//                // Technically the column stores an int, but cursor.getString()
-//                // will do the conversion automatically.
-//                size = cursor.getString(sizeIndex);
-//            } else {
-//                size = "Unknown";
-//            }
-            result.Size = cursor.getInt(sizeIndex);
+            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
 
+            result.Name = cursor.getString(displayNameIndex);
 
-            int modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
-            //String lastModified = null;
-            long lastModifiedTicks = -1;
-            // get the last modified date
-            if (!cursor.isNull(modifiedIndex)) {
-                lastModifiedTicks = cursor.getLong(modifiedIndex);
+            if (!cursor.isNull(sizeIndex)) {
+                result.Size = cursor.getInt(sizeIndex);
+            } else {
+                result.Size = -1; // or set to a default value
             }
-            // timestamp
-            //String dateString = lastModifiedDate.toIsoDateTimeString();
-            result.lastModified = new MmxDate(lastModifiedTicks);
 
-            //Timber.i("check the values");
+            if (!cursor.isNull(lastModifiedIndex)) {
+                result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
+            } else {
+                result.lastModified = null; // or set to a default value
+            }
         } catch (Exception e) {
             Timber.e(e);
-        } finally {
-            cursor.close();
         }
 
         // check the values
@@ -371,30 +340,16 @@ public class FileStorageHelper {
     private void downloadDatabase(Uri uri, String localPath) throws IOException {
         ContentResolver resolver = getContext().getContentResolver();
 
-        //ParcelFileDescriptor parcelFileDescriptor = resolver.openFileDescriptor(uri, "r");
-        //FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        // Use try-with-resources to automatically close resources
+        try (FileOutputStream outputStream = new FileOutputStream(localPath);
+             InputStream is = resolver.openInputStream(uri)) {
 
-        //ContentProviderClient providerClient = resolver.acquireContentProviderClient(uri);
-        //ParcelFileDescriptor descriptor = providerClient.openFile(uri, "r");
-
-        // Prepare output
-        FileOutputStream outputStream = new FileOutputStream(localPath);
-
-        // Copy contents
-        InputStream is = null;
-        try {
-            //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            is = resolver.openInputStream(uri);
+            // Copy contents
             long bytesCopied = ByteStreams.copy(is, outputStream);
-            Timber.d("copied %d bytes", bytesCopied);
+            Timber.i("copied %d bytes", bytesCopied);
+
         } catch (Exception e) {
-           Timber.e(e);
-        } finally {
-            // Cleanup
-            is.close();
-            outputStream.close();
-            //parcelFileDescriptor.close();
-            //providerClient.close();
+            Timber.e(e);
         }
     }
 
@@ -460,10 +415,9 @@ public class FileStorageHelper {
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
                     saveMetadata(metadata);
                     Timber.i("The remote file updated at " +
-                            remote.lastModified.toIsoDateShortTimeString());
+                            remote.lastModified.toIsoString());
                     // do not poll further.
                 }
-
             }
         };
         // Trigger the first run.
