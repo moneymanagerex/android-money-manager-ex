@@ -200,7 +200,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
     implementation 'com.google.android.material:material:1.8.0'
-    api 'com.google.guava:guava:27.0.1-android' // collection libraries
+    api 'com.google.guava:guava:32.1.3-jre' // collection libraries
 
     implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
         transitive = true
