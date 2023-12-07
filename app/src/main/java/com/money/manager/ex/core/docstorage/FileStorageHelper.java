@@ -339,24 +339,17 @@ public class FileStorageHelper {
      */
     private void downloadDatabase(Uri uri, String localPath) throws IOException {
         ContentResolver resolver = getContext().getContentResolver();
-        // Prepare output
-        FileOutputStream outputStream = new FileOutputStream(localPath);
 
-        // Copy contents
-        InputStream is = null;
-        try {
-            //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            is = resolver.openInputStream(uri);
+        // Use try-with-resources to automatically close resources
+        try (FileOutputStream outputStream = new FileOutputStream(localPath);
+             InputStream is = resolver.openInputStream(uri)) {
+
+            // Copy contents
             long bytesCopied = ByteStreams.copy(is, outputStream);
-            Timber.d("copied %d bytes", bytesCopied);
+            Timber.i("copied %d bytes", bytesCopied);
+
         } catch (Exception e) {
-           Timber.e(e);
-        } finally {
-            // Cleanup
-            is.close();
-            outputStream.close();
-            //parcelFileDescriptor.close();
-            //providerClient.close();
+            Timber.e(e);
         }
     }
 
