@@ -257,46 +257,31 @@ public class FileStorageHelper {
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
 
-        Cursor cursor = host.getContentResolver()
-                .query(uri, null, null, null, null, null);
-
-        try {
+        try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 return null;
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
-
-            result.Name = cursor.getString(
-                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-
+            // Use constant values for column names to avoid errors
+            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-//            String size = null;
-//            if (!cursor.isNull(sizeIndex)) {
-//                // Technically the column stores an int, but cursor.getString()
-//                // will do the conversion automatically.
-//                size = cursor.getString(sizeIndex);
-//            } else {
-//                size = "Unknown";
-//            }
-            result.Size = cursor.getInt(sizeIndex);
+            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
 
+            result.Name = cursor.getString(displayNameIndex);
 
-            int modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
-            //String lastModified = null;
-            long lastModifiedTicks = -1;
-            // get the last modified date
-            if (!cursor.isNull(modifiedIndex)) {
-                lastModifiedTicks = cursor.getLong(modifiedIndex);
+            if (!cursor.isNull(sizeIndex)) {
+                result.Size = cursor.getInt(sizeIndex);
+            } else {
+                result.Size = -1; // or set to a default value
             }
-            // timestamp
-            //String dateString = lastModifiedDate.toIsoDateTimeString();
-            result.lastModified = new MmxDate(lastModifiedTicks);
 
-            //Timber.i("check the values");
+            if (!cursor.isNull(lastModifiedIndex)) {
+                result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
+            } else {
+                result.lastModified = null; // or set to a default value
+            }
         } catch (Exception e) {
             Timber.e(e);
-        } finally {
-            cursor.close();
         }
 
         // check the values
