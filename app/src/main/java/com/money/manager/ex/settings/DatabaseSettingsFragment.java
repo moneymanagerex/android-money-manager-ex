@@ -239,6 +239,7 @@ public class DatabaseSettingsFragment
         String dbPath = dbUtils.createDatabase(filename);
         if (TextUtils.isEmpty(dbPath)) return false;
 
+        // TODO create a companion file in External Public Directory via SAF
         DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath);
         boolean isSet = dbUtils.useDatabase(db);
         if (!isSet) return false;
