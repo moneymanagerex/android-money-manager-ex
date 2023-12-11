@@ -26,7 +26,8 @@ If applicable, add screenshots to help explain your problem.
 **Device Information:**
  - Device: [e.g. LG G7 ThinQ]
  - OS: [e.g. Android 8.1]
- - App Version: [e.g. 22]
+ - Cloud Storage: [e.g. Dropbox 354.2.2]
+ - App Version: [e.g. 2023.12.06]
 
 **Additional context**
 Add any other context about the problem here.
