@@ -24,17 +24,21 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.home.DatabaseMetadata;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.MmxOpenHelper;
+import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
@@ -44,9 +48,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 import dagger.Lazy;
 import timber.log.Timber;
 
