@@ -166,7 +166,7 @@ public class QifRecord {
 
         // category
         CategoryService service = new CategoryService(getContext());
-        String category = service.getCategorySubcategoryName(split.getCategoryId(), split.getSubcategoryId());
+        String category = service.getCategorySubcategoryName(split.getCategoryId());
         builder.append("S");
         builder.append(category);
         builder.append(lineSeparator);

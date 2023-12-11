@@ -155,10 +155,6 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     private void pullDatabase(DatabaseMetadata metadata) {
-        // Delete previous local file, if found.
-        File prevFile = new File(metadata.localPath);
-        boolean deleted = prevFile.delete();
-
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
@@ -337,20 +333,27 @@ public class FileStorageHelper {
      * @param uri Remote Uri
      * @throws IOException boom
      */
-    private void downloadDatabase(Uri uri, String localPath) throws IOException {
+    private void downloadDatabase(Uri uri, String localPath) throws Exception {
         ContentResolver resolver = getContext().getContentResolver();
 
         // Use try-with-resources to automatically close resources
-        try (FileOutputStream outputStream = new FileOutputStream(localPath);
+        File tempDatabaseFile = File.createTempFile("database", ".db", getContext().getFilesDir());
+        try (FileOutputStream outputStream = new FileOutputStream(tempDatabaseFile);
              InputStream is = resolver.openInputStream(uri)) {
 
             // Copy contents
             long bytesCopied = ByteStreams.copy(is, outputStream);
             Timber.i("copied %d bytes", bytesCopied);
-
         } catch (Exception e) {
             Timber.e(e);
+            return;
         }
+
+        // Replace local database with downloaded version
+        File localDatabaseFile = new File(localPath);
+        Timber.i("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
+        // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
+        Files.move(tempDatabaseFile, localDatabaseFile);
     }
 
     /**

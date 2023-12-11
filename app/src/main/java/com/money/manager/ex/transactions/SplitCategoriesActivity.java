@@ -134,7 +134,6 @@ public class SplitCategoriesActivity
 
             ISplitTransaction split = mAdapter.splitTransactions.get(location);
             split.setCategoryId(categoryId);
-            split.setSubcategoryId(subcategoryId);
 
             mAdapter.notifyItemChanged(location);
         }

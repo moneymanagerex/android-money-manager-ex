@@ -87,30 +87,27 @@ public class CategoryService
         return ((int) id);
     }
 
-    public String getCategorySubcategoryName(int categoryId, int subCategoryId) {
+    public String getCategorySubcategoryName(int categoryId) {
         String categoryName = "";
-        String subCategoryName = "";
 
         if (categoryId != Constants.NOT_SET) {
             CategoryRepository categoryRepository = new CategoryRepository(getContext());
             Category category = categoryRepository.load(categoryId);
-            categoryName = category != null
-                ? category.getName()
-                : "n/a";
-        }
-        if (subCategoryId != Constants.NOT_SET) {
-            CategoryRepository categoryRepository = new CategoryRepository(getContext());
-            Category subcategory = categoryRepository.load(subCategoryId);
-            subCategoryName = subcategory != null 
-                ? subcategory.getName()
-                : "n/a";
+            if (category != null) {
+                categoryName = category.getName();
+                // TODO parent category : category
+                if (category.getParentId() > 0)
+                {
+                    Category parentCategory = categoryRepository.load(category.getParentId());
+                    if (parentCategory != null)
+                        categoryName = parentCategory.getName() + " : " + category.getName();
+                }
+            } else {
+                categoryName = null;
+            }
         }
 
-        String result = "";
-        if (!TextUtils.isEmpty(categoryName)) result += categoryName;
-        if (!TextUtils.isEmpty(subCategoryName)) result += ":" + subCategoryName;
-
-        return result;
+        return categoryName;
     }
 
     /**
