@@ -52,7 +52,6 @@ public class SplitRecurringCategory
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
-        entity.setSubcategoryId(subcategoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
 
@@ -105,11 +104,6 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public Integer getSubcategoryId() {
-        return getInt(SUBCATEGID);
-    }
-
-    @Override
     public void setCategoryId(int categId) {
         setInt(CATEGID, categId);
     }
@@ -117,11 +111,6 @@ public class SplitRecurringCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
-    }
-
-    @Override
-    public void setSubcategoryId(Integer subCategoryId) {
-        setInt(SUBCATEGID, subCategoryId);
     }
 
     @Override

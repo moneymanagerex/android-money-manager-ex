@@ -116,7 +116,7 @@ public class SplitCategoriesAdapter
     private void bindCategory(Context context, SplitItemViewHolder holder, ISplitTransaction split) {
         CategoryService service = new CategoryService(context);
 
-        String buttonText = service.getCategorySubcategoryName(split.getCategoryId(), split.getSubcategoryId());
+        String buttonText = service.getCategorySubcategoryName(split.getCategoryId());
         holder.txtSelectCategory.setText(buttonText);
     }
 
