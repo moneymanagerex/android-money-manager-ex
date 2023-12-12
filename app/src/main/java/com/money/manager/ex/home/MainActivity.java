@@ -845,6 +845,9 @@ public class MainActivity
         ArrayList<DrawerMenuItem> childDatabases = getRecentDatabasesDrawerMenuItems();
         childItems.add(childDatabases);
 
+        // Create Database
+        childItems.add(null);
+
         // Synchronization
 //        if (new SyncManager(this).isActive()) {
 //            childItems.add(null);
