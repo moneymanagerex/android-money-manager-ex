@@ -722,4 +722,6 @@
   <string name="loan">Pożyczki</string>
   <string name="loan_account">Konta pożyczek</string>
   <string name="shares_accounts">Udostępnianie kont</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

@@ -722,4 +722,6 @@
   <string name="loan">贷款</string>
   <string name="loan_account">贷款账户</string>
   <string name="shares_accounts">共享账户</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

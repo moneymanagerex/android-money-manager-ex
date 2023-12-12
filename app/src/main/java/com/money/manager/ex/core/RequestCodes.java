@@ -38,6 +38,7 @@ public class RequestCodes {
      * Used when selecting a database from a storage access framework.
      */
     public static final int SELECT_DOCUMENT = 15;
+    public static final int CREATE_DOCUMENT = 16;
     public static final int SELECT_FILE = 6;
     public static final int SORT_ORDER = 13;
     public static final int SPLIT_TX = 14;

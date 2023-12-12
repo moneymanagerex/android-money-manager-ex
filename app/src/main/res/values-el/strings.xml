@@ -722,4 +722,6 @@
   <string name="loan">Δάνειο</string>
   <string name="loan_account">Δανειακοί Λογαριασμοί</string>
   <string name="shares_accounts">Μετοχικοί Λογαριασμοί</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

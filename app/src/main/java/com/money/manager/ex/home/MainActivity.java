@@ -24,7 +24,6 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -41,9 +40,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -61,8 +67,6 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.Passcode;
@@ -70,6 +74,8 @@ import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -108,12 +114,6 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import dagger.Lazy;
 import icepick.State;
 import rx.Single;
@@ -307,24 +307,16 @@ public class MainActivity
         if (resultCode != RESULT_OK) return;
 
         switch (requestCode) {
-//            case RequestCodes.SELECT_FILE:
-//                // Opening from intent.
-//                if (resultCode != RESULT_OK) return;
-//
-//                String selectedPath = UIHelper.getSelectedFile(data);
-//                if(TextUtils.isEmpty(selectedPath)) {
-//                    new UIHelper(this).showToast(R.string.invalid_database);
-//                    return;
-//                }
-//
-//                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
-//                changeDatabase(db);
-//                break;
-
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
                 changeDatabase(db);
+                break;
+
+            case RequestCodes.CREATE_DOCUMENT:
+                FileStorageHelper storageHelper2 = new FileStorageHelper(this);
+                DatabaseMetadata db2 = storageHelper2.createDatabase(data);
+                changeDatabase(db2);
                 break;
 
             case RequestCodes.PASSCODE:
@@ -611,6 +603,10 @@ public class MainActivity
             case R.id.menu_open_database:
                 FileStorageHelper helper = new FileStorageHelper(this);
                 helper.showStorageFilePicker();
+                break;
+
+            case R.id.menu_create_database:
+                (new FileStorageHelper(this)).showCreateFilePicker();
                 break;
 
             case R.id.menu_account:
@@ -1035,6 +1031,12 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_folder_open)
+                        .color(iconColor)));
+
+        // Create database
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_create_database)
+                .withText(getString(R.string.create_database))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_create_new_folder)
                         .color(iconColor)));
 
         // Cloud synchronize

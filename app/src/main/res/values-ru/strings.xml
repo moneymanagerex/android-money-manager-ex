@@ -722,4 +722,6 @@
   <string name="loan">Заем</string>
   <string name="loan_account">Счета займов</string>
   <string name="shares_accounts">Счета акций</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

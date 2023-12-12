@@ -59,8 +59,6 @@ public class FileStorageHelper {
             // ACTION_GET_CONTENT in older versions of Android.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            // intent.setType("text/plain");
-            //intent.setType("application/x-sqlite3");
             intent.setType("*/*");
             host.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
@@ -69,6 +67,22 @@ public class FileStorageHelper {
             showSelectLocalFileDialog();
         }
 
+    }
+
+    public void showCreateFilePicker() {
+        // show the file picker
+        int requestCode = RequestCodes.CREATE_DOCUMENT;
+        AppCompatActivity host = _host;
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_TITLE, "your_data.mmb");
+            host.startActivityForResult(intent, requestCode);
+        } catch (ActivityNotFoundException e) {
+            Timber.e(e, "No storage providers found.");
+        }
     }
 
     /**
@@ -86,6 +100,15 @@ public class FileStorageHelper {
         return metadata;
     }
 
+    public DatabaseMetadata createDatabase(Intent activityResultData) {
+        Uri docUri = getDatabaseUriFromProvider(activityResultData);
+        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
+        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+
+        pullDatabase(metadata);
+
+        return metadata;
+    }
     /**
      * Synchronize local and remote database files.
      * @param metadata Database file metadata.
