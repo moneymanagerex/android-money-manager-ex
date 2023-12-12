@@ -722,4 +722,6 @@
   <string name="loan">Darlehen</string>
   <string name="loan_account">Darlehenskonten</string>
   <string name="shares_accounts">Aktienkonto</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

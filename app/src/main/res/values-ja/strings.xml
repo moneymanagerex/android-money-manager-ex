@@ -722,4 +722,6 @@
   <string name="loan">ローン</string>
   <string name="loan_account">ローン口座</string>
   <string name="shares_accounts">証券口座</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

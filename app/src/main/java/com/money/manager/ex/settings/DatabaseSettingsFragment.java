@@ -94,9 +94,6 @@ public class DatabaseSettingsFragment
         // Migration of databases from version 1.4 to the location in 2.0.
         setVisibilityOfMigrationButton();
 
-        // Create database
-        initCreateDatabaseOption();
-
         // Fix duplicates
         initFixDuplicates();
     }
@@ -187,73 +184,6 @@ public class DatabaseSettingsFragment
         }
 
     }
-
-    private void initCreateDatabaseOption() {
-        Preference preference = findPreference(getString(R.string.pref_database_create));
-        if (preference == null) return;
-
-        preference.setSummary(getString(R.string.create_db_summary));
-
-        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                promptForDatabaseFilename();
-                return false;
-            }
-        };
-
-        preference.setOnPreferenceClickListener(clickListener);
-    }
-
-    private void promptForDatabaseFilename() {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.create_db)
-                .content(R.string.create_db_dialog_content)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(getString(R.string.create_db_hint),
-                        null, false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                                boolean success = createDatabase(charSequence.toString());
-                                if (success) {
-                                    Toast.makeText(getActivity(), R.string.create_db_success,
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getActivity(), R.string.create_db_error,
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .show();
-    }
-
-    private boolean createDatabase(String filename) {
-        // validation
-        if (TextUtils.isEmpty(filename)) return false;
-
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getActivity());
-
-        // Create the db file. Store the path in the preferences.
-        String dbPath = dbUtils.createDatabase(filename);
-        if (TextUtils.isEmpty(dbPath)) return false;
-
-        // TODO create a companion file in External Public Directory via SAF
-        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath);
-        boolean isSet = dbUtils.useDatabase(db);
-        if (!isSet) return false;
-
-        // set main activity to reload, to open the new db file.
-        MainActivity.setRestartActivity(true);
-
-        // update the displayed value.
-        refreshDbPath();
-        showNumberOfRecentFiles();
-
-        return true;
-    }
-
     private void refreshDbPath() {
 
         DatabaseMetadata db = mDatabases.get().getCurrent();

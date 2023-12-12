@@ -24,14 +24,20 @@
         android:icon="?attr/ic_action_folder_open"
         android:orderInCategory="1000"
         android:title="@string/menu_open_database"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menu_create_database"
+        android:icon="?attr/ic_action_folder_open"
+        android:orderInCategory="1012"
+        android:title="@string/menu_create_database"
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/menu_add_transaction_account"
         android:icon="?attr/ic_action_add"
         android:orderInCategory="1001"
         android:title="@string/new_transaction"
         android:visible="false"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/menu_sync"
         android:orderInCategory="1002"

@@ -59,11 +59,6 @@
 
     <Preference
         android:icon="@null"
-        android:key="@string/pref_database_create"
-        android:title="@string/create_db" />
-
-    <Preference
-        android:icon="@null"
         android:key="@string/pref_db_fix_duplicates"
         android:title="@string/db_fix_duplicates" />
 

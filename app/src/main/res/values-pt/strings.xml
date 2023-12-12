@@ -667,4 +667,6 @@
   <string name="save">Guardar</string>
   <string name="title_budget_show_simple_view">Mostrar vista simples do orçamento</string>
   <string name="summary_budget_show_simple_view">Se os orçamentos estão verificados usar a exibição simplificada</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

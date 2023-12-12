@@ -652,4 +652,6 @@
   <!-- Create Database screen -->
   <!-- Settings -->
   <string name="per_database_settings">Per-Baza de date</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

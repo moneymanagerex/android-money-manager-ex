@@ -718,4 +718,6 @@
   <string name="save">Guardar</string>
   <string name="title_budget_show_simple_view">Mostrar vista simple del presupuesto</string>
   <string name="summary_budget_show_simple_view">Si se marca los presupuestos utilizan la vista simplificada</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

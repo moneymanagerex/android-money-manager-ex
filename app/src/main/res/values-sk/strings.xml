@@ -686,4 +686,6 @@
   <string name="save">Uložiť</string>
   <string name="title_budget_show_simple_view">Zobrazenie jednoduchého rozpočtu</string>
   <string name="loan">Pôžička</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

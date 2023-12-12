@@ -687,4 +687,6 @@
   <string name="select_language">Виберіть мову</string>
   <!-- Settings -->
   <string name="save">Зберегти</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

@@ -589,6 +589,8 @@
   <string name="every_6_hours">Mỗi 6 giờ</string>
   <string name="every_12_hours">Mỗi giờ 12</string>
   <string name="never">Không bao giờ</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
   <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->

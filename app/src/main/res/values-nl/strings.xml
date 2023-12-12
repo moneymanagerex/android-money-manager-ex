@@ -722,4 +722,6 @@
   <string name="loan">Lening</string>
   <string name="loan_account">Leningen</string>
   <string name="shares_accounts">Aandelen</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

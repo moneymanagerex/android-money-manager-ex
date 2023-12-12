@@ -723,4 +723,6 @@
   <string name="loan">قرض</string>
   <string name="loan_account">قرض اکاؤنٹس</string>
   <string name="shares_accounts">حصص اکاؤنٹس</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

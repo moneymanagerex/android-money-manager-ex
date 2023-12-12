@@ -722,4 +722,6 @@
   <string name="loan">Prêt</string>
   <string name="loan_account">Comptes de prêt</string>
   <string name="shares_accounts">Comptes Titres</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>
