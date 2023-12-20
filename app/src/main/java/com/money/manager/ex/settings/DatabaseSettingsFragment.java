@@ -19,26 +19,20 @@ package com.money.manager.ex.settings;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
@@ -90,9 +84,6 @@ public class DatabaseSettingsFragment
 
         // Check integrity
         initDatabaseIntegrityOption();
-
-        // Migration of databases from version 1.4 to the location in 2.0.
-        setVisibilityOfMigrationButton();
 
         // Fix duplicates
         initFixDuplicates();
@@ -147,43 +138,6 @@ public class DatabaseSettingsFragment
         preference.setSummary(version);
     }
 
-    private void setVisibilityOfMigrationButton() {
-        Preference migratePreference = findPreference(getString(R.string.pref_database_migrate_14_to_20));
-        if (migratePreference == null) return;
-
-        // check if there is a database at the old location.
-        final DatabaseMigrator14To20 migrator = new DatabaseMigrator14To20(getActivity());
-        boolean legacyDataExists = migrator.legacyDataExists();
-
-        // display description.
-        migratePreference.setSummary(getString(R.string.database_migrate_14_to_20_explanation));
-        // + " (" + migrator.getLegacyDbPath() + ")");
-
-        Preference.OnPreferenceClickListener migrateClicked = new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                boolean success = migrator.migrateLegacyDatabase();
-                if (success) {
-                    Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_success, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), R.string.database_migrate_14_to_20_failure, Toast.LENGTH_LONG).show();
-                }
-                // The return value indicates whether to persist the preference,
-                // which is not used in this case.
-                return false;
-            }
-        };
-
-        // hide preference if there is no legacy data.
-        if (!legacyDataExists) {
-            PreferenceScreen screen = getPreferenceScreen();
-            screen.removePreference(migratePreference);
-        } else {
-            // enable listener for migration.
-            migratePreference.setOnPreferenceClickListener(migrateClicked);
-        }
-
-    }
     private void refreshDbPath() {
 
         DatabaseMetadata db = mDatabases.get().getCurrent();
