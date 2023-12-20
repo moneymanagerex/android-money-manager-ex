@@ -124,8 +124,6 @@ public class WatchlistFragment
         }
 
         mUpdateCounter = 0;
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Watchlist.name()));
     }
 
     @Override
