@@ -20,9 +20,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.money.manager.ex.R;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.money.manager.ex.R;
 
 /**
  * ViewHolder for the linear drawer items.

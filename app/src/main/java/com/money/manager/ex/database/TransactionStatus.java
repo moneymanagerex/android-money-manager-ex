@@ -18,9 +18,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
-import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionStatuses;
 
