@@ -236,12 +236,11 @@ public class FileStorageHelper {
      * Retrieves the database file from a document Uri.
      */
     private Uri getDatabaseUriFromProvider(Intent activityResultData) {
-        Uri uri = null;
         if (activityResultData == null) {
             return null;
         }
 
-        uri = activityResultData.getData();
+        Uri uri = activityResultData.getData();
         //Timber.i("blah", "Uri: " + uri.toString());
 
         // Take persistable URI permission.
