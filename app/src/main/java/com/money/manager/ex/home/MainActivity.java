@@ -589,15 +589,7 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-//                SyncManager sync = new SyncManager(this);
-//                sync.triggerSynchronization();
-//                // re-set the sync timer.
-//                sync.startSyncServiceHeartbeat();
-
-                // Synchronize with the storage provider.
-                FileStorageHelper storage = new FileStorageHelper(this);
-                DatabaseMetadata current = mDatabases.get().getCurrent();
-                storage.synchronize(current);
+                onceSynchronize();
                 break;
 
             case R.id.menu_open_database:
