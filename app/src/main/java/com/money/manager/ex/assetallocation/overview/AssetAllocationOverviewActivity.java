@@ -62,8 +62,6 @@ public class AssetAllocationOverviewActivity
 
         // Toolbar
         setUpToolbar();
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationOverview.name()));
     }
 
     @Override

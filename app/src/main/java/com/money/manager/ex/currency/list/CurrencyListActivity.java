@@ -64,8 +64,6 @@ public class CurrencyListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
         }
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.CurrencyList.name()));
     }
 
     @Override

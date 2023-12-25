@@ -23,12 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs when selecting the

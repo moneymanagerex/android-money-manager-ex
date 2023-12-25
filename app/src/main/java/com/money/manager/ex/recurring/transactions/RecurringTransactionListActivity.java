@@ -66,8 +66,6 @@ public class RecurringTransactionListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.RecurringTransactionList.name()));
     }
 
     @Override

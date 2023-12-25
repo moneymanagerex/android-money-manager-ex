@@ -50,8 +50,6 @@ public class BudgetsActivity
         setDisplayHomeAsUpEnabled(true);
 
         createFragments();
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Budget.name()));
     }
 
     // Menu / toolbar

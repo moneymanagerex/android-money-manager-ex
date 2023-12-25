@@ -49,8 +49,6 @@ public class PortfolioActivity
             PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Portfolio.name()));
     }
 
 

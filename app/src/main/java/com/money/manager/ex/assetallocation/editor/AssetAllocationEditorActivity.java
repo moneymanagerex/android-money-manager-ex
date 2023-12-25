@@ -91,8 +91,6 @@ public class AssetAllocationEditorActivity
             mLoaderCallbacks = setUpLoaderCallbacks();
             getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
         }
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocation.name()));
     }
 
     @Override

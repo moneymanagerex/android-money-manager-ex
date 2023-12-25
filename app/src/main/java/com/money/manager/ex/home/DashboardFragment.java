@@ -22,7 +22,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -37,6 +36,13 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -55,11 +61,6 @@ import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import java.util.Calendar;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.MoneyFactory;
 
 /**

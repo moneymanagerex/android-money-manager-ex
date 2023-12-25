@@ -25,17 +25,16 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Build;
-import androidx.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -47,7 +46,6 @@ import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.io.File;
@@ -199,9 +197,6 @@ public class Core {
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {
             payee = new Payee();
-//            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
-//            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
-//            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
             payee.loadFromCursor(cursor);
 
             cursor.close();
@@ -362,11 +357,7 @@ public class Core {
         Resources resources = getContext().getResources();
         Configuration config = resources.getConfiguration();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.locale = locale;
-        } else {
-            config.setLocale(locale);
-        }
+        config.setLocale(locale);
 
         // set new locale
         resources.updateConfiguration(config, resources.getDisplayMetrics());

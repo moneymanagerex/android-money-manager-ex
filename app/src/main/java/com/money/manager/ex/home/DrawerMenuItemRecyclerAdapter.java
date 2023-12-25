@@ -19,9 +19,9 @@ package com.money.manager.ex.home;
 
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 /**
  * INCOMPLETE
