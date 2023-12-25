@@ -102,50 +102,6 @@ public class Core {
                 })
                 .show();
     }
-
-    /**
-     * Backup current database
-     * @return new File database backup
-     */
-    public File backupDatabase() {
-        File database = new File(new DatabaseManager(getContext()).getDatabasePath());
-        if (!database.exists()) return null;
-
-        //create folder to copy database
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        File folderOutput = new File(dbManager.getDefaultDatabaseDirectory());
-
-        //take a folder of database
-        ArrayList<File> filesFromCopy = new ArrayList<>();
-        //add current database
-        filesFromCopy.add(database);
-        //get file journal
-        File folder = database.getParentFile();
-        if (folder != null) {
-            for (File file : folder.listFiles()) {
-                if (file.getName().startsWith(database.getName()) && !database.getName().equals(file.getName())) {
-                    filesFromCopy.add(file);
-                }
-            }
-        }
-        //copy all files
-        for (int i = 0; i < filesFromCopy.size(); i++) {
-            try {
-                MmxFileUtils.copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
-            } catch (Exception e) {
-                Timber.e(e, "backing up the database");
-                return null;
-            }
-        }
-
-        return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
-    }
-
-//    public String getAppVersionBuild() {
-//        return Integer.toString(getAppVersionCode());
-//    }
-
     /**
      * Get a versioncode of the application.
      * @return application version name

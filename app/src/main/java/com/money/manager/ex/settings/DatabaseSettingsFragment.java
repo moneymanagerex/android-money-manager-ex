@@ -16,7 +16,11 @@
  */
 package com.money.manager.ex.settings;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -29,6 +33,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
@@ -39,6 +44,10 @@ import com.money.manager.ex.utils.DonateDialogUtils;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.inject.Inject;
 
@@ -205,6 +214,52 @@ public class DatabaseSettingsFragment
         preference.setOnPreferenceClickListener(clickListener);
     }
 
+    private void requestBackup() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_TITLE, "your_export_db.mmb"); // Set a default file name
+
+        startActivityForResult(intent, RequestCodes.CODE_BACKUP);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RequestCodes.CODE_BACKUP && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                // Perform the backup operation using the selected URI
+                backupDatabase(uri);
+            }
+        }
+    }
+
+    private void backupDatabase(Uri destinationUri) {
+        try {
+            DatabaseMetadata db = mDatabases.get().getCurrent();
+            InputStream inputStream = new FileInputStream(db.localPath);
+            OutputStream outputStream = getActivity().getContentResolver().openOutputStream(destinationUri);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            inputStream.close();
+            outputStream.close();
+
+            // Show a success message or handle as needed
+            showToast("Backup successful");
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle errors appropriately
+            showToast("Backup failed");
+        }
+    }
+
     private void initExportDbOption() {
         final Preference pMoveDatabase = findPreference(getString(PreferenceConstants.PREF_DATABASE_BACKUP));
         if (pMoveDatabase != null) {
@@ -212,35 +267,19 @@ public class DatabaseSettingsFragment
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    // copy files
-                    Core core = new Core(getActivity().getApplicationContext());
-                    File newDatabases = core.backupDatabase();
-                    if (newDatabases != null) {
-                        Toast.makeText(getActivity(), Html.fromHtml(getString(R.string.database_has_been_moved,
-                                "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
-                        //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
-                        // update the database file
-//                        MoneyManagerApplication.setDatabasePath(getActivity().getApplicationContext(),
-//                                newDatabases.getAbsolutePath());
-                        new AppSettings(getActivity().getApplicationContext()).getDatabaseSettings()
-                                .setDatabasePath(newDatabases.getAbsolutePath());
-                        DonateDialogUtils.resetDonateDialog(getActivity().getApplicationContext());
-                        // set to restart activity
-                        MainActivity.setRestartActivity(true);
-                    } else {
-                        Toast.makeText(getActivity(), R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG)
-                                .show();
-                    }
+                    requestBackup();
                     return false;
                 }
             });
-            pMoveDatabase.setEnabled(new DatabaseManager(getActivity().getApplicationContext())
-                    .getDatabasePath().startsWith("/data/"));
         }
     }
 
     private void showToast(int resourceId, int duration) {
         Toast.makeText(getActivity(), resourceId, duration).show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void initFixDuplicates() {

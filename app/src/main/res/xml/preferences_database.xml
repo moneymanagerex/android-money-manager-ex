@@ -34,11 +34,6 @@
 
     <Preference
         android:icon="@null"
-        android:key="@string/pref_database_migrate_14_to_20"
-        android:title="@string/database_migrate_14_to_20" />
-
-    <Preference
-        android:icon="@null"
         android:key="@string/pref_clear_recent_files"
         android:title="@string/clear_recent_files_list" />
 
