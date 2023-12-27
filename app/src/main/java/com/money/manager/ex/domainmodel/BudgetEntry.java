@@ -26,7 +26,6 @@ public class BudgetEntry
     public static final String BUDGETENTRYID = "BUDGETENTRYID";
     public static final String BUDGETYEARID = "BUDGETYEARID";
     public static final String CATEGID = "CATEGID";
-    public static final String SUBCATEGID = "SUBCATEGID";
     public static final String PERIOD = "PERIOD";
 
 }

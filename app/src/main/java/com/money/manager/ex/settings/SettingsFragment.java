@@ -20,17 +20,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.UIHelper;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 import timber.log.Timber;
 
 /**
@@ -155,20 +155,6 @@ public class SettingsFragment
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), SyncPreferencesActivity.class));
                     return true;
-                }
-            });
-        }
-
-        //donate
-        final Preference pDonate = findPreference(getString(PreferenceConstants.PREF_DONATE));
-        if (pDonate != null) {
-            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
-                    .color(uiHelper.getSecondaryTextColor()));
-            pDonate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), DonateActivity.class));
-                    return false;
                 }
             });
         }

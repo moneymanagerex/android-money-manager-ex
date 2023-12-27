@@ -38,7 +38,6 @@ public class CategoryService
 
     public CategoryService(Context context) {
         super(context);
-
     }
 
     private CategoryRepository mRepository;
@@ -144,12 +143,6 @@ public class CategoryService
     public boolean isCategoryUsed(int categoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
-        return links > 0;
-    }
-
-    public boolean isSubcategoryUsed(int subcategoryId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(Category.CATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
         return links > 0;
     }
 

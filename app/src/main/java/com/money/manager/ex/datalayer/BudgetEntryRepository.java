@@ -24,6 +24,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.domainmodel.Category;
 
 import java.util.HashMap;
 
@@ -45,7 +46,6 @@ public class BudgetEntryRepository
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
-                BudgetEntry.SUBCATEGID,
                 BudgetEntry.PERIOD};
     }
 
@@ -88,14 +88,19 @@ public class BudgetEntryRepository
 
         HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
 
+        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+
         while (cursor.moveToNext()) {
             BudgetEntry budgetEntry = new BudgetEntry();
             budgetEntry.loadFromCursor(cursor);
 
             int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
-            int subcategoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.SUBCATEGID));
-
-            budgetEntryHashMap.put(getKeyForCategories(categoryId, subcategoryId), budgetEntry);
+            Category category = categoryRepository.load(categoryId);
+            if (category.getParentId() > 0) {
+                budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
+            } else {
+                budgetEntryHashMap.put(getKeyForCategories(categoryId, categoryId), budgetEntry);
+            }
         }
         cursor.close();
 
