@@ -59,19 +59,22 @@
                             <div class="col-sm-4">
                                 <!-- PayPal donation link -->
                                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                    <input type="hidden" name="cmd" value="_s-xclick">
-                                    <input type="hidden" name="hosted_button_id" value="5U7RXC25C9UES">
+                                    <input type="hidden" name="cmd" value="_donations">
+                                    <input type="hidden" name="business" value="moneymanagerex@gmail.com">
+                                    <input type="hidden" name="lc" value="US">
+                                    <input type="hidden" name="item_name" value="MoneyManagerEx">
+                                    <input type="hidden" name="no_note" value="0">
+                                    <input type="hidden" name="currency_code" value="USD">
+                                    <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+
                                     <input type="image" src="images/paypal-donate.png" border="0" name="submit"
                                            alt="PayPal - The safer, easier way to pay online!"
                                            style="width: 160px; margin: 6px auto;" />
-                                    <!--<input type="image" src="https://www.paypalobjects.com/en_US/AT/i/btn/btn_donateCC_LG.gif"-->
-                                    <!--border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"-->
-                                    <!--style="width: 155px; margin: 6px auto;">-->
                                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                                 </form>
                             </div>
                             <div class="col-sm-4">
-                                <!-- Wechat donation QR -->
+                                <!-- WeChat donation QR -->
                                 <img src="images/wechat-donate.png" style="width: 90px; margin: 6px auto;" />
                             </div>
                             <!-- BitCoin donation link -->
@@ -116,11 +119,11 @@
         <p>
             Money Manager Ex for Android is a port of the desktop personal finance application
             <a href="http://www.moneymanagerex.org/">Money Manager Ex</a>, currently available for Windows, Mac OSX and
-            Linux. The Android version mirrors the best features of the desktop version, while adding mobility
-            and the database synchronization.
+            Linux. The Android version mirrors the best features of the desktop version while adding mobility
+            and database synchronization.
         </p>
         <p>
-            In Money Manager Ex project, we strive to develop a good personal finance software that we use
+            In Money Manager Ex project, we strive to develop good personal finance software that we use
             ourselves. We also do this for fun and the love of programming. We are a non-profit, informal
             organization although we do accept donations and use them towards the hosting fees. Any leftovers for the Android version will also go towards acquiring a device for the app testing.
         </p>
@@ -250,7 +253,7 @@
         <p>
             In special situations, you can reach us by email:
             <a href="mailto:android@moneymanagerex.org">android@moneymanagerex.org</a>. Please note that we do not 
-            provide support via email due to the voluntary nature of the project, fairly small number of project members,
+            provide support via email due to the voluntary nature of the project, a fairly small number of project members,
             and a large number of end users.
         </p>
 
@@ -269,7 +272,7 @@
         </h3>
 
         <p>
-            The key to the success of the project are the users' contributions. There are several ways you can leave your mark.
+            The key to the success of the project is the users' contributions. There are several ways you can leave your mark.
         </p> 
 
         <h4>Development</h4>
@@ -325,7 +328,7 @@
             This way you can directly help the project and ensure that the stable releases are bulletproof.
         </p>
         <p>
-            Should you want to try out the latest version of Money Manager Ex for Android, you can access through 
+            Should you want to try out the latest version of Money Manager Ex for Android, you can access it through 
             F-Droid.  Just enable pre-release versions and they will be listed in the version history but will not be 
             offered as regular app updates. This allows easy reverting to previous versions should something go wrong.
         </p>
