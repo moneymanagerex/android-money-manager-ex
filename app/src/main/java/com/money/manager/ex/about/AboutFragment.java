@@ -32,10 +32,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
@@ -45,7 +46,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
-import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {
@@ -186,15 +186,6 @@ public class AboutFragment extends Fragment {
 
                 Intent lynxActivityIntent = LynxActivity.getIntent(getActivity(), lynxConfig);
                 startActivity(lynxActivityIntent);
-            }
-        });
-
-        // Donate, button
-        Button buttonDonate = view.findViewById(R.id.buttonDonateInApp);
-        buttonDonate.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DonateActivity.class));
             }
         });
 

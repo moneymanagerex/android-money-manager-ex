@@ -54,7 +54,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PasscodeActivity;
@@ -669,9 +668,6 @@ public class MainActivity
                 break;
             case R.id.menu_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            case R.id.menu_donate:
-                startActivity(new Intent(this, DonateActivity.class));
                 break;
             default:
                 // if no match, return false
