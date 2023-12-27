@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -53,7 +54,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PasscodeActivity;
@@ -668,9 +668,6 @@ public class MainActivity
                 break;
             case R.id.menu_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            case R.id.menu_donate:
-                startActivity(new Intent(this, DonateActivity.class));
                 break;
             default:
                 // if no match, return false
@@ -1359,6 +1356,17 @@ public class MainActivity
         FileStorageHelper storage = new FileStorageHelper(this);
         DatabaseMetadata current = mDatabases.get().getCurrent();
         storage.synchronize(current);
+
+        logSynchronize(current);
+    }
+
+    private void logSynchronize(DatabaseMetadata metadata) {
+        Uri uri = Uri.parse(metadata.remotePath);
+        String authority = uri.getAuthority();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("authority", authority);
+        mFirebaseAnalytics.logEvent("synchronize", bundle);
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {
