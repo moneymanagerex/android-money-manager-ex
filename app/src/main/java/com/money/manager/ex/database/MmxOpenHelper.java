@@ -16,11 +16,8 @@
  */
 package com.money.manager.ex.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,17 +25,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.datalayer.CategoryRepository;
-import com.money.manager.ex.datalayer.InfoRepositorySql;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
-import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.domainmodel.Subcategory;
-import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
+import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
@@ -57,7 +50,7 @@ public class MmxOpenHelper
     /**
      * Database schema version.
      */
-    private static final int databaseVersion = 7;
+    private static final int databaseVersion = 19;
 
     // Dynamic
 
@@ -71,7 +64,7 @@ public class MmxOpenHelper
 
     }
 
-    private Context mContext;
+    private final Context mContext;
     private String mPassword = "";
 
     public Context getContext() {
@@ -219,7 +212,7 @@ public class MmxOpenHelper
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
-        String sqlStatement[] = sqlRaw.split(";");
+        String[] sqlStatement = sqlRaw.split(";");
 
         // process all statements
         for (String aSqlStatment : sqlStatement) {
@@ -265,7 +258,7 @@ public class MmxOpenHelper
         // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             int resourceId = mContext.getResources()
-                    .getIdentifier("database_version_" + Integer.toString(i),
+                    .getIdentifier("database_version_" + i,
                             "raw", mContext.getPackageName());
             if (resourceId > 0) {
                 executeRawSql(db, resourceId);
@@ -281,67 +274,9 @@ public class MmxOpenHelper
         }
 
         initDateFormat(database);
-        initCategories(database);
+    //    initCategories(database);
 
         return true;
-    }
-
-    private void initCategories(SQLiteDatabase database) {
-        try {
-            Cursor countCategories = database.rawQuery("SELECT * FROM CATEGORY_V1", null);
-            if (countCategories == null || countCategories.getCount() > 0) return;
-
-            int keyCategory = 0;
-            String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1",
-                    "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5",
-                    "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
-                    "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
-                    "37;10", "38;10", "39;13", "40;13", "41;13"};
-
-            for (String item : categories) {
-                int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
-                int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
-
-                if (categoryId != keyCategory) {
-                    keyCategory = categoryId;
-                    int idStringCategory = mContext.getResources()
-                            .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
-
-                    if (idStringCategory > 0) {
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(Category.CATEGID, categoryId);
-                        contentValues.put(Category.CATEGNAME, mContext.getString(idStringCategory));
-
-                        // Update existing records, inserted via the db creation script.
-                        int updated = database.update(CategoryRepository.tableName, contentValues,
-                                Category.CATEGID + "=?", new String[] { Integer.toString(categoryId) });
-                        if (updated <= 0) {
-                            Timber.w("updating %s for category %s", contentValues.toString(), Integer.toString(categoryId));
-                        }
-                    }
-                }
-
-                int idStringSubcategory = mContext.getResources()
-                        .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
-                if (idStringSubcategory > 0) {
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
-                    contentValues.put(Subcategory.CATEGID, categoryId);
-                    contentValues.put(Subcategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
-
-                    int updated = database.update(SubcategoryRepository.tableName, contentValues,
-                            Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
-                    if (updated <= 0) {
-                        Timber.w("update failed, %s for subcategory %s", contentValues.toString(),
-                                Integer.toString(subCategoryId));
-                    }
-                }
-            }
-
-            countCategories.close();
-        } catch (Exception e) {
-            Timber.e(e, "init database, categories");
-        }
     }
 
     /**
@@ -422,7 +357,7 @@ public class MmxOpenHelper
     }
 
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 
@@ -436,7 +371,7 @@ public class MmxOpenHelper
         String backupExtension = Files.getFileExtension(backupFileNameWithExtension);
 
         // append last db version
-        backupName += "_v" + Integer.toString(oldVersion);
+        backupName += "_v" + oldVersion;
 
         backupFileNameWithExtension = backupName + "." + backupExtension;
 

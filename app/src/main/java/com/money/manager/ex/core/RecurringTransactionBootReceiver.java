@@ -54,7 +54,7 @@ public class RecurringTransactionBootReceiver
 
         // compose intent
         Intent receiverIntent = new Intent(context, RecurringTransactionReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
         // take hour to start
         String hour = settings.getNotificationTime();

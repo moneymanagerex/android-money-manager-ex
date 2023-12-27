@@ -215,12 +215,9 @@ public class SettingsFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQUEST_GENERAL_PREFERENCES:
-                // always recreate activity when returning from general preferences, instead of
-                // trying to figure out if something has changed.
-                getActivity().recreate();
-                break;
+        if (requestCode == REQUEST_GENERAL_PREFERENCES) {// always recreate activity when returning from general preferences, instead of
+            // trying to figure out if something has changed.
+            getActivity().recreate();
         }
     }
 

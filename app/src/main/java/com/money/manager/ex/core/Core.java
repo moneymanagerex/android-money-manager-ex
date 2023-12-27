@@ -25,17 +25,16 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Build;
-import android.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -47,7 +46,6 @@ import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.io.File;
@@ -74,7 +72,7 @@ public class Core {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    private Context mContext;
+    private final Context mContext;
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<AppSettings> appSettingsLazy;
 
@@ -104,50 +102,6 @@ public class Core {
                 })
                 .show();
     }
-
-    /**
-     * Backup current database
-     * @return new File database backup
-     */
-    public File backupDatabase() {
-        File database = new File(new DatabaseManager(getContext()).getDatabasePath());
-        if (!database.exists()) return null;
-
-        //create folder to copy database
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        File folderOutput = new File(dbManager.getDefaultDatabaseDirectory());
-
-        //take a folder of database
-        ArrayList<File> filesFromCopy = new ArrayList<>();
-        //add current database
-        filesFromCopy.add(database);
-        //get file journal
-        File folder = database.getParentFile();
-        if (folder != null) {
-            for (File file : folder.listFiles()) {
-                if (file.getName().startsWith(database.getName()) && !database.getName().equals(file.getName())) {
-                    filesFromCopy.add(file);
-                }
-            }
-        }
-        //copy all files
-        for (int i = 0; i < filesFromCopy.size(); i++) {
-            try {
-                MmxFileUtils.copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
-            } catch (Exception e) {
-                Timber.e(e, "backing up the database");
-                return null;
-            }
-        }
-
-        return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
-    }
-
-//    public String getAppVersionBuild() {
-//        return Integer.toString(getAppVersionCode());
-//    }
-
     /**
      * Get a versioncode of the application.
      * @return application version name
@@ -187,10 +141,10 @@ public class Core {
         Payee payee = null;
 
         String sql =
-        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID, P.SUBCATEGID " +
+        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
         "FROM CHECKINGACCOUNT_V1 C " +
         "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
-        "WHERE C.TransCode <> 'Transfer' " +
+        "WHERE C.TransCode <> 'Transfer' AND (c.DELETEDTIME IS NULL OR c.DELETEDTIME = '') " +
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
@@ -199,10 +153,6 @@ public class Core {
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {
             payee = new Payee();
-//            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
-//            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
-//            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
-//            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(Payee.SUBCATEGID)));
             payee.loadFromCursor(cursor);
 
             cursor.close();
@@ -363,11 +313,7 @@ public class Core {
         Resources resources = getContext().getResources();
         Configuration config = resources.getConfiguration();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.locale = locale;
-        } else {
-            config.setLocale(locale);
-        }
+        config.setLocale(locale);
 
         // set new locale
         resources.updateConfiguration(config, resources.getDisplayMetrics());

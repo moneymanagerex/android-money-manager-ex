@@ -19,23 +19,20 @@ package org.moneymanagerex.android.testhelpers;
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.Intent;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
-
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowLog;
 
 import java.lang.reflect.Field;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.Fragment;
 
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running

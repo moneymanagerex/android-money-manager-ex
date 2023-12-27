@@ -45,7 +45,7 @@ public enum Recurrence {
         mValue = value;
     }
 
-    private int mValue;
+    private final int mValue;
 
     public static Recurrence valueOf(int value) {
         // set auto execute without user acknowledgement

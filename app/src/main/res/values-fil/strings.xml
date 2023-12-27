@@ -722,4 +722,6 @@
   <string name="loan">Pautang</string>
   <string name="loan_account">Mga Loan Account</string>
   <string name="shares_accounts">Mga Share Account</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

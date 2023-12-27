@@ -39,8 +39,6 @@ public class EditTransactionActivityConstants {
     public static final String KEY_PAYEE_NAME = "AllDataActivity:PayeeName";
     public static final String KEY_CATEGORY_ID = "AllDataActivity:CategoryId";
     public static final String KEY_CATEGORY_NAME = "AllDataActivity:CategoryName";
-    public static final String KEY_SUBCATEGORY_ID = "AllDataActivity:SubCategoryId";
-    public static final String KEY_SUBCATEGORY_NAME = "AllDataActivity:SubCategoryName";
     public static final String KEY_NOTES = "AllDataActivity:Notes";
     public static final String KEY_TRANS_NUMBER = "AllDataActivity:TransNumber";
     public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitCategory";

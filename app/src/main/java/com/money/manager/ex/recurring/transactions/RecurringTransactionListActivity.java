@@ -66,8 +66,6 @@ public class RecurringTransactionListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.RecurringTransactionList.name()));
     }
 
     @Override
@@ -75,32 +73,30 @@ public class RecurringTransactionListActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         // check request code
-        switch (requestCode) {
-            case INTENT_REQUEST_PASSCODE:
-                boolean isAuthenticated = false;
-                if (resultCode == RESULT_OK && data != null) {
+        if (requestCode == INTENT_REQUEST_PASSCODE) {
+            boolean isAuthenticated = false;
+            if (resultCode == RESULT_OK && data != null) {
 
-                    String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                    if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
-                        Passcode passcode = new Passcode(getApplicationContext());
-                        String passDb = passcode.getPasscode();
+                String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
+                if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
+                    Passcode passcode = new Passcode(getApplicationContext());
+                    String passDb = passcode.getPasscode();
 
-                        if (passIntent != null && passDb != null) {
-                            isAuthenticated = passIntent.equals(passDb);
-                            if (!isAuthenticated) {
-                                Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
-                            }
+                    if (passIntent != null && passDb != null) {
+                        isAuthenticated = passIntent.equals(passDb);
+                        if (!isAuthenticated) {
+                            Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                         }
                     }
-                    else {
-                        isAuthenticated = true;
-                    }
+                } else {
+                    isAuthenticated = true;
+                }
 
-                }
-                // close if not authenticated
-                if (!isAuthenticated) {
-                    this.finish();
-                }
+            }
+            // close if not authenticated
+            if (!isAuthenticated) {
+                this.finish();
+            }
         }
     }
 }

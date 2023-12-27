@@ -64,11 +64,11 @@ public class CalculateRunningBalanceTask2
         this.selectionBundle = selection;
     }
 
-    private Context context;
+    private final Context context;
     private HashMap<Integer, Money> balances;
-    private int accountId;
-    private Date startingDate;
-    private Bundle selectionBundle;
+    private final int accountId;
+    private final Date startingDate;
+    private final Bundle selectionBundle;
 
     /**
      * Override this method to perform a computation on a background thread. The

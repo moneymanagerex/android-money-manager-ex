@@ -35,7 +35,6 @@ public class BudgetRepository
 
     public BudgetRepository(Context context) {
         super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear");
-
     }
 
     @Override

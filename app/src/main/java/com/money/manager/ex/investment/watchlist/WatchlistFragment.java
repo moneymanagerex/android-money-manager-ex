@@ -98,7 +98,7 @@ public class WatchlistFragment
         args.putInt(KEY_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
-        fragment.setFragmentName(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
+        fragment.setFragmentName(WatchlistFragment.class.getSimpleName() + "_" + accountId);
 
         return fragment;
     }
@@ -124,8 +124,6 @@ public class WatchlistFragment
         }
 
         mUpdateCounter = 0;
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Watchlist.name()));
     }
 
     @Override
@@ -514,7 +512,7 @@ public class WatchlistFragment
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return null;
 
-        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
+        Spinner spinner = actionBar.getCustomView().findViewById(R.id.spinner);
         return spinner;
     }
 
@@ -557,7 +555,7 @@ public class WatchlistFragment
         this.viewHolder.mListHeader = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
 
         // favorite icon
-        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.mListHeader.findViewById(R.id.imageViewAccountFav);
+        this.viewHolder.imgAccountFav = this.viewHolder.mListHeader.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
         this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -577,7 +575,7 @@ public class WatchlistFragment
         });
 
         // Edit account
-        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.mListHeader.findViewById(R.id.imageViewGotoAccount);
+        this.viewHolder.imgGotoAccount = this.viewHolder.mListHeader.findViewById(R.id.imageViewGotoAccount);
         this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

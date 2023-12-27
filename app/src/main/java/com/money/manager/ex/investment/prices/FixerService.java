@@ -126,7 +126,7 @@ public class FixerService
 
         // Notify the user of the prices that have been downloaded.
         String message = getContext().getString(R.string.download_complete) +
-            " (" + updatedCurrencies.toString().substring(0, updatedCurrencies.toString().length() - 1) + ")";
+            " (" + updatedCurrencies.substring(0, updatedCurrencies.toString().length() - 1) + ")";
         uiHelper.showToast(message, Toast.LENGTH_LONG);
     }
 

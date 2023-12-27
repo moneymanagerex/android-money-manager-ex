@@ -57,7 +57,7 @@ public enum AccountTypes {
     }
 
     public boolean equalsName(String otherTitle) {
-        return (otherTitle == null) ? false : title.equalsIgnoreCase(otherTitle);
+        return title.equalsIgnoreCase(otherTitle);
     }
 
     public String toString(){

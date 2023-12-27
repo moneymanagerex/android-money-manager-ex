@@ -23,12 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs when selecting the
@@ -160,7 +160,7 @@ public class DrawerMenuGroupAdapter
         }
 
         // Show/hide chevron
-        FontIconView chevronView = (FontIconView) convertView.findViewById(R.id.caretView);
+        FontIconView chevronView = convertView.findViewById(R.id.caretView);
         if (getChildrenCount(groupPosition) > 0) {
             if (isExpanded) {
                 // the group is not expanded and has children.

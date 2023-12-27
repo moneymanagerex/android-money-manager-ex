@@ -46,7 +46,7 @@ public class QifRecord {
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     public Context getContext() {
         return mContext;
@@ -83,10 +83,8 @@ public class QifRecord {
             // Cleared: * or c. We don't have Cleared in MMEX.
             // Reconciled: X or R
             builder.append("C");
-            switch (status) {
-                case "R":
-                    builder.append(status);
-                    break;
+            if (status.equals("R")) {
+                builder.append(status);
             }
         }
 
@@ -168,7 +166,7 @@ public class QifRecord {
 
         // category
         CategoryService service = new CategoryService(getContext());
-        String category = service.getCategorySubcategoryName(split.getCategoryId(), split.getSubcategoryId());
+        String category = service.getCategorySubcategoryName(split.getCategoryId());
         builder.append("S");
         builder.append(category);
         builder.append(lineSeparator);

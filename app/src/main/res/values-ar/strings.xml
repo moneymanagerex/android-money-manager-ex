@@ -418,4 +418,6 @@
   <!-- Settings -->
   <string name="per_database_settings">في قاعدة البيانات</string>
   <string name="save">حفظ</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

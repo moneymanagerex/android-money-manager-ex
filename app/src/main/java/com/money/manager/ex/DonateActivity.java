@@ -83,7 +83,7 @@ public class DonateActivity
 
     @OnClick(R.id.homepageButton)
     protected void onHomepageClick() {
-        String siteUrl = "http://android.moneymanagerex.org/";
+        String siteUrl = "https://moneymanagerex.org/?utm_campaign=Application_Android";
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
 

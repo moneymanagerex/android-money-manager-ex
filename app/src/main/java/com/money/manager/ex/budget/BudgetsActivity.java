@@ -50,8 +50,6 @@ public class BudgetsActivity
         setDisplayHomeAsUpEnabled(true);
 
         createFragments();
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Budget.name()));
     }
 
     // Menu / toolbar
@@ -106,7 +104,7 @@ public class BudgetsActivity
     // Private methods
 
     private void createFragments() {
-        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        LinearLayout fragmentDetail = findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
         Core core = new Core(getApplicationContext());
@@ -132,7 +130,7 @@ public class BudgetsActivity
     }
 
     private void showBudgetDetails(long id, String budgetName) {
-        String tag = BudgetDetailFragment.class.getName() + "_" + Long.toString(id);
+        String tag = BudgetDetailFragment.class.getName() + "_" + id;
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
 
         if (fragment == null) {

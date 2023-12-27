@@ -59,5 +59,4 @@ public class QueryAllDataRepository
     public Cursor query(String selection, String sort) {
         return openCursor(null, selection, null, sort);
     }
-
 }

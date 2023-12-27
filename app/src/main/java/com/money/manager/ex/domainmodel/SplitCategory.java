@@ -45,7 +45,6 @@ public class SplitCategory
     public static final String SPLITTRANSID = "SPLITTRANSID";
     public static final String TRANSID = "TRANSID";
     public static final String CATEGID = "CATEGID";
-    public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
@@ -54,7 +53,6 @@ public class SplitCategory
 
         entity.setId(Constants.NOT_SET);
         entity.setCategoryId(categoryId);
-        entity.setSubcategoryId(subcategoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
 
@@ -105,11 +103,6 @@ public class SplitCategory
     }
 
     @Override
-    public Integer getSubcategoryId() {
-        return getInt(SUBCATEGID);
-    }
-
-    @Override
     public void setCategoryId(int categoryId) {
         setInt(CATEGID, categoryId);
     }
@@ -117,11 +110,6 @@ public class SplitCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
-    }
-
-    @Override
-    public void setSubcategoryId(Integer subCategoryId) {
-        setInt(SUBCATEGID, subCategoryId);
     }
 
     @Override

@@ -45,7 +45,6 @@ public class SplitCategoriesRepository
             SplitCategory.SPLITTRANSID,
             SplitCategory.TRANSID,
             SplitCategory.CATEGID,
-            SplitCategory.SUBCATEGID,
             SplitCategory.SPLITTRANSAMOUNT };
     }
 
@@ -56,7 +55,7 @@ public class SplitCategoriesRepository
      */
     public ArrayList<ISplitTransaction> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitCategory.TRANSID + "=" + Integer.toString(transId),
+            SplitCategory.TRANSID + "=" + transId,
             null,
             SplitCategory.SPLITTRANSID);
         if (curSplit == null) return null;

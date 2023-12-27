@@ -69,8 +69,8 @@ public class CategoriesReportFragment
 
         //create header view
         LinearLayout mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        TextView txtColumn1 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) mListViewHeader.findViewById(R.id.textViewColumn2);
+        TextView txtColumn1 = mListViewHeader.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = mListViewHeader.findViewById(R.id.textViewColumn2);
         //set header
         txtColumn1.setText(R.string.category);
         txtColumn1.setTypeface(null, Typeface.BOLD);
@@ -81,8 +81,8 @@ public class CategoriesReportFragment
 
         //create footer view
         mListViewFooter = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
-        txtColumn1 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn1);
-        txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
+        txtColumn1 = mListViewFooter.findViewById(R.id.textViewColumn1);
+        txtColumn2 = mListViewFooter.findViewById(R.id.textViewColumn2);
         //set footer
         txtColumn1.setText(R.string.total);
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -118,51 +118,47 @@ public class CategoriesReportFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         super.onLoadFinished(loader, data);
 
-        switch (loader.getId()) {
-            case ID_LOADER:
-                //parse cursor for calculate total
-                if (data == null) return;
+        if (loader.getId() == ID_LOADER) {//parse cursor for calculate total
+            if (data == null) return;
 
-                CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
-                Money totalAmount = MoneyFactory.fromString("0");
-                while (data.moveToNext()) {
-                    String totalRow = data.getString(data.getColumnIndex("TOTAL"));
-                    if (!TextUtils.isEmpty(totalRow)) {
-                        totalAmount = totalAmount.add(MoneyFactory.fromString(totalRow));
-                    } else {
-                        new UIHelper(getActivity()).showToast("reading total");
+            Money totalAmount = MoneyFactory.fromString("0");
+            while (data.moveToNext()) {
+                String totalRow = data.getString(data.getColumnIndex("TOTAL"));
+                if (!TextUtils.isEmpty(totalRow)) {
+                    totalAmount = totalAmount.add(MoneyFactory.fromString(totalRow));
+                } else {
+                    new UIHelper(getActivity()).showToast("reading total");
+                }
+            }
+            TextView txtColumn2 = mListViewFooter.findViewById(R.id.textViewColumn2);
+            txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
+
+            // solved bug chart
+            if (data.getCount() > 0) {
+                getListView().removeFooterView(mListViewFooter);
+                getListView().addFooterView(mListViewFooter);
+            }
+
+            if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showChart();
+
                     }
-                }
-                TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);
-                txtColumn2.setText(currencyService.getBaseCurrencyFormatted(totalAmount));
-
-                // solved bug chart
-                if (data.getCount() > 0) {
-                    getListView().removeFooterView(mListViewFooter);
-                    getListView().addFooterView(mListViewFooter);
-                }
-
-                if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            showChart();
-
-                        }
-                    }, 1000);
-                }
+                }, 1000);
+            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_chart:
-                showChart();
-                break;
+        if (item.getItemId() == R.id.menu_chart) {
+            showChart();
         }
 
         if (item.getItemId() < 0) {
@@ -172,7 +168,7 @@ public class CategoriesReportFragment
                 whereClause += " AND ";
             else
                 whereClause = "";
-            whereClause += " " + ViewMobileData.CATEGID + "=" + Integer.toString(Math.abs(item.getItemId()));
+            whereClause += " " + ViewMobileData.CATEGID + "=" + Math.abs(item.getItemId());
             //create arguments
             Bundle args = new Bundle();
             args.putString(KEY_WHERE_CLAUSE, whereClause);

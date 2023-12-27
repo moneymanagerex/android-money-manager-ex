@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -109,7 +109,7 @@ public class AccountTransactionListFragment
 
         // set name of child fragment
         fragment.setFragmentName(AccountTransactionListFragment.class.getSimpleName() + "_" +
-            Integer.toString(accountId));
+                accountId);
 
         return fragment;
     }
@@ -334,14 +334,12 @@ public class AccountTransactionListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_SUMMARY:
-                // Account summary (balances).
-                Select query = new Select()
+        if (id == ID_LOADER_SUMMARY) {// Account summary (balances).
+            Select query = new Select()
                     .where(QueryAccountBills.ACCOUNTID + "=?",
-                            new String[] { Integer.toString(mAccountId) });
+                            Integer.toString(mAccountId));
 
-                return new MmxCursorLoader(getActivity(),
+            return new MmxCursorLoader(getActivity(),
                     new QueryAccountBills(getActivity()).getUri(),
                     query);
         }
@@ -454,7 +452,7 @@ public class AccountTransactionListFragment
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return null;
 
-        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
+        Spinner spinner = actionBar.getCustomView().findViewById(R.id.spinner);
         return spinner;
     }
 
@@ -511,11 +509,11 @@ public class AccountTransactionListFragment
         this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
 
         // take reference text view from layout
-        this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
-        this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
-        this.viewHolder.txtAccountDifference = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
+        this.viewHolder.txtAccountBalance = this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
+        this.viewHolder.txtAccountReconciled = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtAccountDifference = this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
         // favorite icon
-        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
+        this.viewHolder.imgAccountFav = this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
         // set listener click on favorite icon for change image
         this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
@@ -535,7 +533,7 @@ public class AccountTransactionListFragment
         });
 
         // goto account
-        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
+        this.viewHolder.imgGotoAccount = this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
         this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

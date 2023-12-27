@@ -20,9 +20,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.money.manager.ex.R;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.money.manager.ex.R;
 
 /**
  * ViewHolder for the linear drawer items.
@@ -33,8 +33,8 @@ public class DrawerViewHolder
     public DrawerViewHolder(View itemView) {
         super(itemView);
 
-        TextView textViewItem = (TextView)itemView.findViewById(R.id.textViewItem);
-        ImageView imageViewIcon = (ImageView)itemView.findViewById(R.id.imageViewIcon);
+        TextView textViewItem = itemView.findViewById(R.id.textViewItem);
+        ImageView imageViewIcon = itemView.findViewById(R.id.imageViewIcon);
         View viewDivider = itemView.findViewById(R.id.viewDivider);
 
         this.textViewItem = textViewItem;

@@ -24,7 +24,6 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -41,7 +40,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -59,8 +67,6 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.Passcode;
@@ -68,6 +74,8 @@ import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -106,12 +114,6 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import dagger.Lazy;
 import icepick.State;
 import rx.Single;
@@ -126,7 +128,7 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     /**
      * @return the mRestart
      */
@@ -177,7 +179,7 @@ public class MainActivity
             finish();
             return;
         }
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
@@ -214,10 +216,17 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
+        onceSynchronize();
+
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
-        String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
+        String uid = infoService.getInfoValue(InfoKeys.UID);
+        if (uid == null || uid.isEmpty()) {
+            // TODO create a new one
+        } else {
+            mFirebaseAnalytics.setUserId(uid);
+        }
         // fragments
         initHomeFragment();
 
@@ -298,24 +307,16 @@ public class MainActivity
         if (resultCode != RESULT_OK) return;
 
         switch (requestCode) {
-//            case RequestCodes.SELECT_FILE:
-//                // Opening from intent.
-//                if (resultCode != RESULT_OK) return;
-//
-//                String selectedPath = UIHelper.getSelectedFile(data);
-//                if(TextUtils.isEmpty(selectedPath)) {
-//                    new UIHelper(this).showToast(R.string.invalid_database);
-//                    return;
-//                }
-//
-//                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
-//                changeDatabase(db);
-//                break;
-
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
                 changeDatabase(db);
+                break;
+
+            case RequestCodes.CREATE_DOCUMENT:
+                FileStorageHelper storageHelper2 = new FileStorageHelper(this);
+                DatabaseMetadata db2 = storageHelper2.createDatabase(data);
+                changeDatabase(db2);
                 break;
 
             case RequestCodes.PASSCODE:
@@ -372,21 +373,16 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // toggle drawer with the menu hardware button.
-                if (mDrawer != null) {
-                    if (mDrawer.isDrawerOpen(mDrawerLayout)) {
-                        mDrawer.closeDrawer(mDrawerLayout);
-                    } else {
-                        mDrawer.openDrawer(mDrawerLayout);
-                    }
+        // nothing
+        if (item.getItemId() == android.R.id.home) {// toggle drawer with the menu hardware button.
+            if (mDrawer != null) {
+                if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+                    mDrawer.closeDrawer(mDrawerLayout);
+                } else {
+                    mDrawer.openDrawer(mDrawerLayout);
                 }
-                return true;
-
-            default:
-                // nothing
-                break;
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -593,20 +589,16 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-//                SyncManager sync = new SyncManager(this);
-//                sync.triggerSynchronization();
-//                // re-set the sync timer.
-//                sync.startSyncServiceHeartbeat();
-
-                // Synchronize with the storage provider.
-                FileStorageHelper storage = new FileStorageHelper(this);
-                DatabaseMetadata current = mDatabases.get().getCurrent();
-                storage.synchronize(current);
+                onceSynchronize();
                 break;
 
             case R.id.menu_open_database:
                 FileStorageHelper helper = new FileStorageHelper(this);
                 helper.showStorageFilePicker();
+                break;
+
+            case R.id.menu_create_database:
+                (new FileStorageHelper(this)).showCreateFilePicker();
                 break;
 
             case R.id.menu_account:
@@ -772,7 +764,7 @@ public class MainActivity
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
-        String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + accountId;
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
@@ -781,7 +773,7 @@ public class MainActivity
     }
 
     public void showPortfolioFragment(int accountId) {
-        String tag = PortfolioFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = PortfolioFragment.class.getSimpleName() + "_" + accountId;
         PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
             fragment = PortfolioFragment.newInstance(accountId);
@@ -790,7 +782,7 @@ public class MainActivity
     }
 
     public void showWatchlistFragment(int accountId) {
-        String tag = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        String tag = WatchlistFragment.class.getSimpleName() + "_" + accountId;
         WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
             fragment = WatchlistFragment.newInstance(accountId);
@@ -844,6 +836,9 @@ public class MainActivity
         // Open Database. Display the recent db list.
         ArrayList<DrawerMenuItem> childDatabases = getRecentDatabasesDrawerMenuItems();
         childItems.add(childDatabases);
+
+        // Create Database
+        childItems.add(null);
 
         // Synchronization
 //        if (new SyncManager(this).isActive()) {
@@ -1033,6 +1028,12 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_folder_open)
                         .color(iconColor)));
 
+        // Create database
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_create_database)
+                .withText(getString(R.string.create_database))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_create_new_folder)
+                        .color(iconColor)));
+
         // Cloud synchronize
 //        if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
@@ -1060,10 +1061,10 @@ public class MainActivity
                         .color(iconColor)));
 
         // Asset Allocation
-        menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-                .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-                        .color(iconColor)));
+        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
+        //        .withText(getString(R.string.asset_allocation))
+        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+        //                .color(iconColor)));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
@@ -1082,11 +1083,11 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings)
                         .color(iconColor)));
         // Donate
-        menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
-                .withText(getString(R.string.donate))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
-                        .color(iconColor))
-                .withDivider(Boolean.TRUE));
+        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
+        //        .withText(getString(R.string.donate))
+        //        .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
+        //                .color(iconColor))
+        //        .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
@@ -1354,6 +1355,12 @@ public class MainActivity
         }
     }
 
+    private void onceSynchronize() {
+        FileStorageHelper storage = new FileStorageHelper(this);
+        DatabaseMetadata current = mDatabases.get().getCurrent();
+        storage.synchronize(current);
+    }
+
     private void showFragment_Internal(Fragment fragment, String tag) {
         // Check if fragment is already added.
         if (fragment.isAdded()) return;
@@ -1446,10 +1453,10 @@ public class MainActivity
                         .color(iconColor)));
 
         // Asset Allocation Overview
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
-                .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-                        .color(iconColor)));
+        // adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
+        //        .withText(getString(R.string.asset_allocation))
+        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+        //                .color(iconColor)));
 
         new MaterialDialog.Builder(this)
                 .title(text)

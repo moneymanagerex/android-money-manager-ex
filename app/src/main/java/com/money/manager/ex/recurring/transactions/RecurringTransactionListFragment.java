@@ -147,10 +147,8 @@ public class RecurringTransactionListFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle calendar
-        switch (item.getItemId()) {
-            case R.id.menuCalendar:
-                showCaldroidFragment();
-                break;
+        if (item.getItemId() == R.id.menuCalendar) {
+            showCaldroidFragment();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -219,17 +217,16 @@ public class RecurringTransactionListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_REPEATING:
-                String select = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    select = Account.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
-                }
-                Select query = new Select(mBillDeposits.getAllColumns())
-                        .where(select)
-                        .orderBy(QueryBillDeposits.NEXTOCCURRENCEDATE);
+        if (id == ID_LOADER_REPEATING) {
+            String select = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                select = Account.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
+            }
+            Select query = new Select(mBillDeposits.getAllColumns())
+                    .where(select)
+                    .orderBy(QueryBillDeposits.NEXTOCCURRENCEDATE);
 
-                return new MmxCursorLoader(getActivity(), mBillDeposits.getUri(), query);
+            return new MmxCursorLoader(getActivity(), mBillDeposits.getUri(), query);
         }
 
         return null;
@@ -237,33 +234,31 @@ public class RecurringTransactionListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_REPEATING:
-                AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                if (adapter != null) {
+        if (loader.getId() == ID_LOADER_REPEATING) {
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            if (adapter != null) {
 //                    adapter.swapCursor(null);
-                    adapter.changeCursor(null);
-                }
+                adapter.changeCursor(null);
+            }
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER_REPEATING:
-                if (data == null) return;
+        if (loader.getId() == ID_LOADER_REPEATING) {
+            if (data == null) return;
 
-                AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
-                        AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
-                setListAdapter(adapter);
+            AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
+                    AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
+            setListAdapter(adapter);
 
-                if (isResumed()) {
-                    setListShown(true);
-                    if (data.getCount() <= 0 && getFloatingActionButton() != null)
-                        getFloatingActionButton().show(true);
-                } else {
-                    setListShownNoAnimation(true);
-                }
+            if (isResumed()) {
+                setListShown(true);
+                if (data.getCount() <= 0 && getFloatingActionButton() != null)
+                    getFloatingActionButton().show(true);
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
     }
 

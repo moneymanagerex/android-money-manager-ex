@@ -76,7 +76,7 @@ public class UIHelper {
     }
 
     @Inject Lazy<AppSettings> appSettingsLazy;
-    private Context context;
+    private final Context context;
 
     public Context getContext() {
         return this.context;

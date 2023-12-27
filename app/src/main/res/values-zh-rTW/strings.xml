@@ -718,4 +718,6 @@
   <string name="save">儲存</string>
   <string name="title_budget_show_simple_view">顯示簡單預算視圖</string>
   <string name="summary_budget_show_simple_view">如果選中的預算使用簡化的視圖</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

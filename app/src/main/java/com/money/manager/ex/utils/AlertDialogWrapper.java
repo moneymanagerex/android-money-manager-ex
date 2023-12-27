@@ -36,7 +36,7 @@ public class AlertDialogWrapper {
         builder = new MaterialDialog.Builder(context);
     }
 
-    private MaterialDialog.Builder builder;
+    private final MaterialDialog.Builder builder;
 
     public AlertDialogWrapper setCancelable(boolean cancelable) {
         builder.cancelable(cancelable);

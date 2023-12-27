@@ -38,7 +38,7 @@ public class PayeeService
         this.payeeRepository = new PayeeRepository(context);
     }
 
-    private PayeeRepository payeeRepository;
+    private final PayeeRepository payeeRepository;
 
     public Payee loadByName(String name) {
         Payee payee = null;
@@ -94,7 +94,6 @@ public class PayeeService
         Payee payee = new Payee();
         payee.setName(name);
         payee.setCategoryId(-1);
-        payee.setSubcategoryId(-1);
 
         int id = this.payeeRepository.add(payee);
 

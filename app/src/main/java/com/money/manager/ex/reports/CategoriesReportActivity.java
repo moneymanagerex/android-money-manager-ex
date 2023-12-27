@@ -47,7 +47,7 @@ public class CategoriesReportActivity
         }
 
         setContentView(R.layout.report_chart_fragments_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             // set actionbar

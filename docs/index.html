@@ -51,35 +51,34 @@
                         </div>
                         <!-- donation links -->
                         <div class="row">
-                            <div class="col">
-                                <a href="https://f-droid.org/app/com.money.manager.ex">
-                                    <img src="https://f-droid.org/badge/get-it-on.png"
-                                        alt="Get it on F-Droid" height="80">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-12">
                                 <hr />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <!-- PayPal donation link -->
                                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                    <input type="hidden" name="cmd" value="_s-xclick">
-                                    <input type="hidden" name="hosted_button_id" value="5U7RXC25C9UES">
+                                    <input type="hidden" name="cmd" value="_donations">
+                                    <input type="hidden" name="business" value="moneymanagerex@gmail.com">
+                                    <input type="hidden" name="lc" value="US">
+                                    <input type="hidden" name="item_name" value="MoneyManagerEx">
+                                    <input type="hidden" name="no_note" value="0">
+                                    <input type="hidden" name="currency_code" value="USD">
+                                    <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+
                                     <input type="image" src="images/paypal-donate.png" border="0" name="submit"
                                            alt="PayPal - The safer, easier way to pay online!"
                                            style="width: 160px; margin: 6px auto;" />
-                                    <!--<input type="image" src="https://www.paypalobjects.com/en_US/AT/i/btn/btn_donateCC_LG.gif"-->
-                                    <!--border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"-->
-                                    <!--style="width: 155px; margin: 6px auto;">-->
                                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                                 </form>
                             </div>
+                            <div class="col-sm-4">
+                                <!-- WeChat donation QR -->
+                                <img src="images/wechat-donate.png" style="width: 90px; margin: 6px auto;" />
+                            </div>
                             <!-- BitCoin donation link -->
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <!-- https://en.bitcoin.it/wiki/Promotional_graphics -->
                                 <a href="bitcoin:1GrtxxsQmyMHorBMzd72uMpdPwjTYWaqQZ?label=donation">
                                     <img src="https://en.bitcoin.it/w/images/en/7/74/BC_Rnd_64px.png" style="width:150px;" />
@@ -120,11 +119,11 @@
         <p>
             Money Manager Ex for Android is a port of the desktop personal finance application
             <a href="http://www.moneymanagerex.org/">Money Manager Ex</a>, currently available for Windows, Mac OSX and
-            Linux. The Android version mirrors the best features of the desktop version, while adding mobility
-            and the database synchronization.
+            Linux. The Android version mirrors the best features of the desktop version while adding mobility
+            and database synchronization.
         </p>
         <p>
-            In Money Manager Ex project, we strive to develop a good personal finance software that we use
+            In Money Manager Ex project, we strive to develop good personal finance software that we use
             ourselves. We also do this for fun and the love of programming. We are a non-profit, informal
             organization although we do accept donations and use them towards the hosting fees. Any leftovers for the Android version will also go towards acquiring a device for the app testing.
         </p>
@@ -254,7 +253,7 @@
         <p>
             In special situations, you can reach us by email:
             <a href="mailto:android@moneymanagerex.org">android@moneymanagerex.org</a>. Please note that we do not 
-            provide support via email due to the voluntary nature of the project, fairly small number of project members,
+            provide support via email due to the voluntary nature of the project, a fairly small number of project members,
             and a large number of end users.
         </p>
 
@@ -273,7 +272,7 @@
         </h3>
 
         <p>
-            The key to the success of the project are the users' contributions. There are several ways you can leave your mark.
+            The key to the success of the project is the users' contributions. There are several ways you can leave your mark.
         </p> 
 
         <h4>Development</h4>
@@ -329,7 +328,7 @@
             This way you can directly help the project and ensure that the stable releases are bulletproof.
         </p>
         <p>
-            Should you want to try out the latest version of Money Manager Ex for Android, you can access through 
+            Should you want to try out the latest version of Money Manager Ex for Android, you can access it through 
             F-Droid.  Just enable pre-release versions and they will be listed in the version history but will not be 
             offered as regular app updates. This allows easy reverting to previous versions should something go wrong.
         </p>
@@ -367,17 +366,26 @@
     <!-- scripts -->
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <!-- analytics? -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-12VNJRY8Y2"></script>
     <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
     
-        ga('create', 'UA-51521761-7', 'auto');
-        ga('send', 'pageview');
+      gtag('config', 'G-12VNJRY8Y2');
     </script>
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2857821988452598"
+         crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2857821988452598"
+         data-ad-slot="9821370883"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 </body>
 </html>
 

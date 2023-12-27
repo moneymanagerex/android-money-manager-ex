@@ -9,9 +9,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
@@ -20,7 +21,6 @@ import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-import androidx.appcompat.app.AppCompatActivity;
 import timber.log.Timber;
 
 /**
@@ -40,7 +39,7 @@ public class FileStorageHelper {
         _host = host;
     }
 
-    private AppCompatActivity _host;
+    private final AppCompatActivity _host;
 
     public Context getContext() {
         return _host;
@@ -60,8 +59,6 @@ public class FileStorageHelper {
             // ACTION_GET_CONTENT in older versions of Android.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            // intent.setType("text/plain");
-            //intent.setType("application/x-sqlite3");
             intent.setType("*/*");
             host.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
@@ -70,6 +67,22 @@ public class FileStorageHelper {
             showSelectLocalFileDialog();
         }
 
+    }
+
+    public void showCreateFilePicker() {
+        // show the file picker
+        int requestCode = RequestCodes.CREATE_DOCUMENT;
+        AppCompatActivity host = _host;
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_TITLE, "your_data.mmb");
+            host.startActivityForResult(intent, requestCode);
+        } catch (ActivityNotFoundException e) {
+            Timber.e(e, "No storage providers found.");
+        }
     }
 
     /**
@@ -87,6 +100,15 @@ public class FileStorageHelper {
         return metadata;
     }
 
+    public DatabaseMetadata createDatabase(Intent activityResultData) {
+        Uri docUri = getDatabaseUriFromProvider(activityResultData);
+        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
+        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+
+        pullDatabase(metadata);
+
+        return metadata;
+    }
     /**
      * Synchronize local and remote database files.
      * @param metadata Database file metadata.
@@ -156,10 +178,6 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     private void pullDatabase(DatabaseMetadata metadata) {
-        // Delete previous local file, if found.
-        File prevFile = new File(metadata.localPath);
-        boolean deleted = prevFile.delete();
-
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
@@ -183,20 +201,6 @@ public class FileStorageHelper {
      * @param metadata Database file metadata.
      */
     private void pushDatabase(DatabaseMetadata metadata) {
-//        // handle remote changes
-//        boolean isRemoteChanged = isRemoteFileChanged(metadata);
-//        if (isRemoteChanged) {
-//            Timber.w("The remote file was modified in the meantime");
-//            return;
-//        }
-//
-//        // Check for local modifications.
-//        boolean isLocalFileChanged = isLocalFileChanged(metadata);
-//        if (!isLocalFileChanged) {
-//            Timber.i("Local copy not modified.");
-//            return;
-//        }
-
         // upload local file
         uploadDatabase(metadata);
 
@@ -208,7 +212,7 @@ public class FileStorageHelper {
         DocFileMetadata remote = getRemoteMetadata(remoteUri);
         Date remoteLastChangedDate = remote.lastModified.toDate();
 
-        if(remoteLastChangedDate.before(localLastModified)) {
+        if (remoteLastChangedDate.before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
             pollNewRemoteTimestamp(metadata);
@@ -232,12 +236,11 @@ public class FileStorageHelper {
      * Retrieves the database file from a document Uri.
      */
     private Uri getDatabaseUriFromProvider(Intent activityResultData) {
-        Uri uri = null;
         if (activityResultData == null) {
             return null;
         }
 
-        uri = activityResultData.getData();
+        Uri uri = activityResultData.getData();
         //Timber.i("blah", "Uri: " + uri.toString());
 
         // Take persistable URI permission.
@@ -254,10 +257,8 @@ public class FileStorageHelper {
         metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        //String dataDir = new ContextWrapper(this._host).getDataDir("xy");
-        //File dbPath = new ContextWrapper(this._host).getDatabasePath("xy");
+        // TODO add cloud storage provider in the path?
         String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        //Paths.get(localPath, fileMetadata.Name);
         metadata.localPath = localPath + File.separator + fileMetadata.Name;
 
         return metadata;
@@ -274,46 +275,31 @@ public class FileStorageHelper {
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
 
-        Cursor cursor = host.getContentResolver()
-                .query(uri, null, null, null, null, null);
-
-        try {
+        try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 return null;
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
-
-            result.Name = cursor.getString(
-                    cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-
+            // Use constant values for column names to avoid errors
+            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-//            String size = null;
-//            if (!cursor.isNull(sizeIndex)) {
-//                // Technically the column stores an int, but cursor.getString()
-//                // will do the conversion automatically.
-//                size = cursor.getString(sizeIndex);
-//            } else {
-//                size = "Unknown";
-//            }
-            result.Size = cursor.getInt(sizeIndex);
+            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
 
+            result.Name = cursor.getString(displayNameIndex);
 
-            int modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
-            //String lastModified = null;
-            long lastModifiedTicks = -1;
-            // get the last modified date
-            if (!cursor.isNull(modifiedIndex)) {
-                lastModifiedTicks = cursor.getLong(modifiedIndex);
+            if (!cursor.isNull(sizeIndex)) {
+                result.Size = cursor.getInt(sizeIndex);
+            } else {
+                result.Size = -1; // or set to a default value
             }
-            // timestamp
-            //String dateString = lastModifiedDate.toIsoDateTimeString();
-            result.lastModified = new MmxDate(lastModifiedTicks);
 
-            //Timber.i("check the values");
+            if (!cursor.isNull(lastModifiedIndex)) {
+                result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
+            } else {
+                result.lastModified = null; // or set to a default value
+            }
         } catch (Exception e) {
             Timber.e(e);
-        } finally {
-            cursor.close();
         }
 
         // check the values
@@ -369,34 +355,27 @@ public class FileStorageHelper {
      * @param uri Remote Uri
      * @throws IOException boom
      */
-    private void downloadDatabase(Uri uri, String localPath) throws IOException {
+    private void downloadDatabase(Uri uri, String localPath) throws Exception {
         ContentResolver resolver = getContext().getContentResolver();
 
-        //ParcelFileDescriptor parcelFileDescriptor = resolver.openFileDescriptor(uri, "r");
-        //FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        // Use try-with-resources to automatically close resources
+        File tempDatabaseFile = File.createTempFile("database", ".db", getContext().getFilesDir());
+        try (FileOutputStream outputStream = new FileOutputStream(tempDatabaseFile);
+             InputStream is = resolver.openInputStream(uri)) {
 
-        //ContentProviderClient providerClient = resolver.acquireContentProviderClient(uri);
-        //ParcelFileDescriptor descriptor = providerClient.openFile(uri, "r");
-
-        // Prepare output
-        FileOutputStream outputStream = new FileOutputStream(localPath);
-
-        // Copy contents
-        InputStream is = null;
-        try {
-            //Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            is = resolver.openInputStream(uri);
+            // Copy contents
             long bytesCopied = ByteStreams.copy(is, outputStream);
-            Timber.d("copied %d bytes", bytesCopied);
+            Timber.i("copied %d bytes", bytesCopied);
         } catch (Exception e) {
-           Timber.e(e);
-        } finally {
-            // Cleanup
-            is.close();
-            outputStream.close();
-            //parcelFileDescriptor.close();
-            //providerClient.close();
+            Timber.e(e);
+            return;
         }
+
+        // Replace local database with downloaded version
+        File localDatabaseFile = new File(localPath);
+        Timber.i("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
+        // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
+        Files.move(tempDatabaseFile, localDatabaseFile);
     }
 
     /**
@@ -413,24 +392,18 @@ public class FileStorageHelper {
         String dbDirectory = dbManager.getDefaultDatabaseDirectory();
         // Environment.getDefaultDatabaseDirectory().getPath()
 
-        // This always works
-        Intent i = new Intent(host, FilePickerActivity.class);
         // This works if you defined the intent filter
-        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-
+         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+         intent.setType("*/*");
         // Set these depending on your use case. These are the defaults.
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
 
         // Configure initial directory by specifying a String.
         // You could specify a String like "/storage/emulated/0/", but that can
         // dangerous. Always use Android's API calls to get paths to the SD-card or
         // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, dbDirectory);
         // Environment.getExternalStorageDirectory().getPath()
 
-        host.startActivityForResult(i, requestCode);
+        host.startActivityForResult(intent, requestCode);
     }
 
     /**
@@ -467,10 +440,9 @@ public class FileStorageHelper {
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
                     saveMetadata(metadata);
                     Timber.i("The remote file updated at " +
-                            remote.lastModified.toIsoDateShortTimeString());
+                            remote.lastModified.toIsoString());
                     // do not poll further.
                 }
-
             }
         };
         // Trigger the first run.

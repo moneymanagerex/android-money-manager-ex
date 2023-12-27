@@ -36,7 +36,7 @@ import org.robolectric.annotation.Config;
  * Tests related to database open helper.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class MmexHelperTests {
 
     @Before

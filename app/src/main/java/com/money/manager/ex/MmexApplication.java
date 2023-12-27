@@ -19,7 +19,7 @@ package com.money.manager.ex;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.TextView;
 import com.evernote.android.job.JobManager;
@@ -235,9 +235,7 @@ public class MmexApplication
             InfoService service = new InfoService(this.getApplicationContext());
             boolean updateSuccessful = service.setInfoValue(InfoKeys.USERNAME, userName);
 
-            if (!updateSuccessful) {
-                return false;
-            }
+            return updateSuccessful;
         }
 
         return true;

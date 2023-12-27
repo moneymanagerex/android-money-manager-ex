@@ -19,9 +19,9 @@ package com.money.manager.ex.home;
 
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 /**
  * INCOMPLETE
@@ -35,7 +35,7 @@ public class DrawerMenuItemRecyclerAdapter
         this.items = new ArrayList<>();
     }
 
-    private ArrayList<DrawerMenuItem> items;
+    private final ArrayList<DrawerMenuItem> items;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

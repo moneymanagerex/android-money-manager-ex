@@ -10,10 +10,6 @@ Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manag
 
 Money Manager Ex for Android is a mobile companion to PC/desktop personal finance applications currently available for Windows, Mac OSX and LINUX. It can be used with the same database used by MoneyManagerEx Desktop, or as an addition to GnuCash or other applications that import transactions via .qif files.
 
-#### Links
-
-[![MoneyManagerEx for Android on PlayStore](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](http://play.google.com/store/apps/details?id=com.money.manager.ex)
-
 #### Contributing
 
 There are several ways you can contribute to the project:
@@ -27,10 +23,6 @@ There are several ways you can contribute to the project:
 
 If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
 
-#### Beta Testing
-
-You can install the Beta version from [Google Play](https://play.google.com/store/apps/details?id=com.money.manager.ex.beta) in parallel to the stable version, and help us out testing the app before it reaches the Stable channel.
-
 # Build
 
 To build the project, the following settings are recommended:
@@ -41,7 +33,7 @@ To build the project, the following settings are recommended:
 
 ## Continuous Integration
 
-Travis CI build is active for the project. It runs a build on every check-in and a pull request. Sometimes it fails when the new build tools are introduced in the project but not on Travis.
+// TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
 
 # License
 

@@ -37,15 +37,15 @@ public class AssetClassViewHolder {
     public static AssetClassViewHolder initialize(View view) {
         AssetClassViewHolder instance = new AssetClassViewHolder();
 
-        instance.container = (LinearLayout) view.findViewById(R.id.container);
+        instance.container = view.findViewById(R.id.container);
 
-        instance.assetClassTextView = (RobotoTextView) view.findViewById(R.id.assetClassTextView);
-        instance.allocationTextView = (RobotoTextView) view.findViewById(R.id.allocationTextView);
-        instance.valueTextView = (RobotoTextView) view.findViewById(R.id.valueTextView);
-        instance.currentAllocationTextView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
-        instance.currentValueTextView = (RobotoTextView) view.findViewById(R.id.currentValueTextView);
-        instance.differenceTextView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
-        instance.differencePercentTextView = (RobotoTextView) view.findViewById(R.id.differencePercentTextView);
+        instance.assetClassTextView = view.findViewById(R.id.assetClassTextView);
+        instance.allocationTextView = view.findViewById(R.id.allocationTextView);
+        instance.valueTextView = view.findViewById(R.id.valueTextView);
+        instance.currentAllocationTextView = view.findViewById(R.id.currentAllocationTextView);
+        instance.currentValueTextView = view.findViewById(R.id.currentValueTextView);
+        instance.differenceTextView = view.findViewById(R.id.differenceTextView);
+        instance.differencePercentTextView = view.findViewById(R.id.differencePercentTextView);
 
         return instance;
     }

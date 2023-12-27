@@ -75,11 +75,11 @@ public class CurrencyService
 
     private Integer mBaseCurrencyId = null;
     // hash map of all currencies
-    private SparseArray<Currency> mCurrencies;
+    private final SparseArray<Currency> mCurrencies;
     /**
      * a fast lookup for symbol -> id. i.e. EUR->2.
      */
-    private HashMap<String, Integer> mCurrencyCodes;
+    private final HashMap<String, Integer> mCurrencyCodes;
 
     /**
      * @param currencyId of the currency to be get
@@ -362,7 +362,7 @@ public class CurrencyService
                 newCurrency.setDecimalPoint(".");
                 newCurrency.setGroupSeparator(",");
 
-                int scale = (int) Math.pow((double)10, (double) localeCurrency.getDefaultFractionDigits());
+                int scale = (int) Math.pow(10, localeCurrency.getDefaultFractionDigits());
                 newCurrency.setScale(scale);
 
                 newCurrency.setConversionRate(1.0);

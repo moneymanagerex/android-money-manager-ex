@@ -27,5 +27,4 @@ public class DatabaseSettingsActivity
         super.onCreate(savedInstance);
         setSettingFragment(new DatabaseSettingsFragment());
     }
-
 }

@@ -38,7 +38,7 @@ import org.robolectric.annotation.Config;
  * Tests for edit transaction activity.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class EditTransactionTests {
 
     private Context context;

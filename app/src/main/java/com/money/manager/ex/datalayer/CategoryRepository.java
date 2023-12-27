@@ -39,13 +39,14 @@ public class CategoryRepository
     public String[] getAllColumns() {
         return new String[] {"CATEGID AS _id",
             Category.CATEGID,
-            Category.CATEGNAME};
+            Category.CATEGNAME,
+            Category.PARENTID};
     }
 
     public Category load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Category category = (Category) first(Category.class,
+        Category category = first(Category.class,
                 getAllColumns(),
                 Category.CATEGID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),
@@ -59,6 +60,18 @@ public class CategoryRepository
                 new String[] { Category.CATEGID },
                 Category.CATEGNAME + "=?",
                 new String[] { name },
+                null);
+
+        if (temp == null) return Constants.NOT_SET;
+
+        return temp.getId();
+    }
+
+    public int loadIdByName(String name, int parentId) {
+        Category temp = first(Category.class,
+                new String[] { Category.CATEGID },
+                Category.CATEGNAME + "=? AND" + Category.PARENTID + "=?",
+                new String[] { name, Integer.toString(parentId)},
                 null);
 
         if (temp == null) return Constants.NOT_SET;

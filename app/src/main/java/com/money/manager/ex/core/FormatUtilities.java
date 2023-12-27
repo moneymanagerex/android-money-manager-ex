@@ -52,7 +52,7 @@ public class FormatUtilities {
         this.context = app;
     }
 
-    private Context context;
+    private final Context context;
     @Inject CurrencyService currencyService;
 
     /**

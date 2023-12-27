@@ -71,7 +71,7 @@ public class AssetAllocationService
 
     public AssetClassRepository repository;
 
-    private CurrencyService mCurrencyService;
+    private final CurrencyService mCurrencyService;
     /**
      * Hashmap of Account Id / Currency Id pairs to speed up the calculation with caching.
      */

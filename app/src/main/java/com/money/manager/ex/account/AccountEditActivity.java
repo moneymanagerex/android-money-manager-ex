@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -47,10 +48,13 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcels;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import icepick.State;
 import info.javaperformance.money.Money;
@@ -73,6 +77,8 @@ public class AccountEditActivity
     private static final int MINUS = 1;
 
     private Account mAccount;
+
+    private final MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils();
 
     // Action type
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
@@ -179,9 +185,8 @@ public class AccountEditActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id) {
-            case MenuHelper.save:
-                return onActionDoneClick();
+        if (id == MenuHelper.save) {
+            return onActionDoneClick();
         }
 
         return super.onOptionsItemSelected(item);
@@ -251,12 +256,17 @@ public class AccountEditActivity
         mAccount.setContactInfo(mViewHolder.edtContact.getText().toString());
         mAccount.setAccessInfo(mViewHolder.edtAccessInfo.getText().toString());
         mAccount.setNotes(mViewHolder.edtNotes.getText().toString());
-
         if (mViewHolder.spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
             Money initialBalance = mAccount.getInitialBalance();
             initialBalance = initialBalance.negate();
             mAccount.setInitialBalance(initialBalance);
         }
+        Date date = mAccount.getInitialDate();
+        if (date == null) {
+            date = new MmxDate().toDate();
+            mAccount.setInitialDate(date);
+        }
+        showDate(date);
     }
 
     private void displayDefaultAccount() {
@@ -306,7 +316,7 @@ public class AccountEditActivity
         adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mViewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
         if (!(TextUtils.isEmpty(mAccount.getTypeName()))) {
-            if (Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName()) >= 0) {
+            if (Arrays.asList(mAccountTypeValues).contains(mAccount.getTypeName())) {
                 int position = Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName());
                 mViewHolder.accountTypeSpinner.setSelection(position, true);
             }
@@ -323,7 +333,7 @@ public class AccountEditActivity
         mViewHolder.spinAccountStatus.setAdapter(adapterAccountStatus);
         adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (!(TextUtils.isEmpty(mAccount.getStatus()))) {
-            if (Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()) >= 0) {
+            if (Arrays.asList(mAccountStatusValues).contains(mAccount.getStatus())) {
                 mViewHolder.spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()), true);
             }
         } else {
@@ -331,6 +341,13 @@ public class AccountEditActivity
             AccountStatuses status = AccountStatuses.get(selectedStatus);
             mAccount.setStatus(status);
         }
+
+        Date date = mAccount.getInitialDate();
+        if (date == null) {
+            date = new MmxDate().toDate();
+            mAccount.setInitialDate(date);
+        }
+        showDate(date);
 
         // Set up control listeners
 
@@ -376,6 +393,50 @@ public class AccountEditActivity
                 Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, RequestCodes.CURRENCY);
+            }
+        });
+
+        //Date picker
+        mViewHolder.txtInitialDate.setOnClickListener(new View.OnClickListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                @Override
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                    Date dateTime = dateTimeUtils.from(year, monthOfYear, dayOfMonth);
+                    mAccount.setInitialDate(dateTime);
+                    showDate(dateTime);
+                }
+            };
+
+            @Override
+            public void onClick(View v) {
+                MmxDate dateTime = new MmxDate(mAccount.getInitialDate());
+
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                        .setOnDateSetListener(listener)
+                        .setFirstDayOfWeek(dateTimeUtils.getFirstDayOfWeek())
+                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+                if (new UIHelper(getApplicationContext()).isUsingDarkTheme()) {
+                    datePicker.setThemeDark();
+                }
+                datePicker.show(getSupportFragmentManager(), "datepicker");
+            }
+        });
+
+        mViewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date dateTime = new MmxDate(mAccount.getInitialDate()).minusDays(1).toDate();
+                mAccount.setInitialDate(dateTime);
+                showDate(dateTime);
+            }
+        });
+
+        mViewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date dateTime = new MmxDate(mAccount.getInitialDate()).plusDays(1).toDate();
+                mAccount.setInitialDate(dateTime);
+                showDate(dateTime);
             }
         });
 
@@ -433,6 +494,20 @@ public class AccountEditActivity
             mViewHolder.edtNotes.setText(mAccount.getNotes());
         }
 
+        Date date = mAccount.getInitialDate();
+        if (date == null) {
+            date = new MmxDate().toDate();
+            mAccount.setInitialDate(date);
+        }
+        showDate(date);
+    }
+
+    private void showDate(Date dateTime) {
+        // Constants.LONG_DATE_MEDIUM_DAY_PATTERN
+        String format = "EEE, " + dateTimeUtils.getUserDatePattern(this);
+        //String display = dateTime.toString(format);
+        String display = dateTimeUtils.format(dateTime, format);
+        mViewHolder.txtInitialDate.setText(display);
     }
 
     private void initializeDefaultAccountControls() {
@@ -587,8 +662,8 @@ public class AccountEditActivity
             core.alert(R.string.error_status_empty);
             return false;
         }
+        return mAccount.getInitialDate() != null;
 
         // TODO: Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
-        return true;
     }
 }

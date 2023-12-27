@@ -52,11 +52,8 @@ import javax.money.format.MonetaryFormats;
 
 import timber.log.Timber;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Testing the new JavaMoney library and types. JSR 354
@@ -64,7 +61,7 @@ import static org.junit.Assert.assertTrue;
  * http://www.baeldung.com/java-money-and-currency
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
+
 public class JavaMoneyTests {
 
     @Before
@@ -288,7 +285,7 @@ public class JavaMoneyTests {
         // change currency
         MonetaryAmount euros = FastMoney.of(random.getNumber(), "EUR");
         assertThat(euros.getNumber().doubleValueExact(), equalTo(random.getNumber().doubleValueExact()));
-        assertFalse(euros.getCurrency().equals(random.getCurrency()));
+        assertNotEquals(euros.getCurrency(), random.getCurrency());
 
         // comparison
         assertTrue(random.isLessThan(maximum));

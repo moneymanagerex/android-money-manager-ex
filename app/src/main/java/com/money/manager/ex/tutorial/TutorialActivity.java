@@ -76,17 +76,14 @@ public class TutorialActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQUEST_GENERAL_PREFERENCES:
-                // back from general preferences.
+        if (requestCode == REQUEST_GENERAL_PREFERENCES) {// back from general preferences.
 
-                setResult(AppCompatActivity.RESULT_OK);
+            setResult(AppCompatActivity.RESULT_OK);
 
-                // Mark tutorial as seen.
-                new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
+            // Mark tutorial as seen.
+            new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
 
-                startMainActivity();
-                break;
+            startMainActivity();
         }
     }
 

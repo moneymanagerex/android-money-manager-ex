@@ -22,7 +22,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.io.File;
-import java.util.Date;
 
 /**
  * An entry in the recent databases list.

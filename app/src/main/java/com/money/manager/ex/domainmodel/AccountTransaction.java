@@ -49,18 +49,17 @@ public class AccountTransaction
      */
     public static AccountTransaction create() {
         return create(Constants.NOT_SET, Constants.NOT_SET, TransactionTypes.Withdrawal,
-                Constants.NOT_SET, Constants.NOT_SET, MoneyFactory.fromDouble(0));
+                Constants.NOT_SET, MoneyFactory.fromDouble(0));
     }
 
     public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
-                                            int categoryId, int subCategoryId, Money amount) {
+                                            int categoryId, Money amount) {
         AccountTransaction tx = new AccountTransaction();
 
         tx.setAccountId(accountId);
         tx.setPayeeId(payeeId);
         tx.setTransactionType(type);
         tx.setCategoryId(categoryId);
-        tx.setSubcategoryId(subCategoryId);
         tx.setAmount(amount);
 
         tx.setAmountTo(MoneyFactory.fromDouble(0));
@@ -73,7 +72,6 @@ public class AccountTransaction
 
         setAccountToId(Constants.NOT_SET);
         setCategoryId(Constants.NOT_SET);
-        setSubcategoryId(Constants.NOT_SET);
         setFollowUpId(Constants.NOT_SET);
     }
 
@@ -212,14 +210,6 @@ public class AccountTransaction
 
     public void setStatus(String value) {
         setString(ITransactionEntity.STATUS, value);
-    }
-
-    public Integer getSubcategoryId() {
-        return getInt(ITransactionEntity.SUBCATEGID);
-    }
-
-    public void setSubcategoryId(Integer value) {
-        setInt(ITransactionEntity.SUBCATEGID, value);
     }
 
     public String getTransCode() {

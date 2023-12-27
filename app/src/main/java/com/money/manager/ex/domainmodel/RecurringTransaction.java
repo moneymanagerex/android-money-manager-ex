@@ -68,7 +68,6 @@ public class RecurringTransaction
 
         setPayeeId(Constants.NOT_SET);
         setCategoryId(Constants.NOT_SET);
-        setSubcategoryId(Constants.NOT_SET);
         setRecurrence(Recurrence.ONCE);
         setTransactionType(TransactionTypes.Withdrawal);
     }
@@ -285,14 +284,6 @@ public class RecurringTransaction
 
     public void setStatus(String value) {
         setString(ITransactionEntity.STATUS, value);
-    }
-
-    public Integer getSubcategoryId() {
-        return getInt(ITransactionEntity.SUBCATEGID);
-    }
-
-    public void setSubcategoryId(Integer value) {
-        setInt(ITransactionEntity.SUBCATEGID, value);
     }
 
     public Integer getToAccountId() {

@@ -165,7 +165,59 @@
                     android:focusableInTouchMode="false"
                     android:textStyle="bold" />
             </LinearLayout>
+            <!-- Initial Balance -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Initial date" />
+            <!-- Date -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal">
 
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-today"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/previousDayButton"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:iiv_icon="gmd-keyboard-arrow-left"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewDate"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/date"
+                    android:textStyle="bold"
+                    android:textAlignment="center" />
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/nextDayButton"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:iiv_icon="gmd-keyboard-arrow-right"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
+            </LinearLayout>
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"

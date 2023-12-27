@@ -20,7 +20,7 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -174,10 +174,10 @@ public abstract class BaseExpandableListFragment
 
     protected void onMenuItemSearchClick(MenuItem item) {
         View searchView = getActivity().getActionBar().getCustomView();
-        final EditText edtSearch = (EditText) searchView.findViewById(R.id.editTextSearchView);
+        final EditText edtSearch = searchView.findViewById(R.id.editTextSearchView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         // se in visualizzazione prendo l'edittext
-        if (mDisplayShowCustomEnabled == false) {
+        if (!mDisplayShowCustomEnabled) {
             // rendo visibile l'edittext di ricerca
             edtSearch.setText("");
             edtSearch.requestFocus();
@@ -222,7 +222,7 @@ public abstract class BaseExpandableListFragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFloatingActionButton = view.findViewById(R.id.fab);
         if (mFloatingActionButton != null) {
             mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -291,7 +291,6 @@ public abstract class BaseExpandableListFragment
     }
 
     public void onFloatingActionButtonClickListener() {
-        return;
     }
 
     // End floating button events.

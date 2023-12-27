@@ -41,9 +41,6 @@ public interface ISplitTransaction
     Integer getCategoryId();
     void setCategoryId(int categoryId);
 
-    Integer getSubcategoryId();
-    void setSubcategoryId(Integer subCategoryId);
-
     TransactionTypes getTransactionType(TransactionTypes parentTransactionType);
     void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType);
 }

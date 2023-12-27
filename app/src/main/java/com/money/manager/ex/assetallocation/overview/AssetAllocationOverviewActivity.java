@@ -62,8 +62,6 @@ public class AssetAllocationOverviewActivity
 
         // Toolbar
         setUpToolbar();
-
-//        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationOverview.name()));
     }
 
     @Override
@@ -192,7 +190,7 @@ public class AssetAllocationOverviewActivity
     }
 
     private void setUpToolbar() {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -204,14 +202,14 @@ public class AssetAllocationOverviewActivity
 
         // Title.
         CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(getString(R.string.asset_allocation));
     }
 
     private void showTotal(AssetClass assetAllocation) {
         if (assetAllocation == null) return;
 
-        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
+        RobotoTextView totalView = findViewById(R.id.totalAmountTextView);
         if (totalView == null) return;
 
         totalView.setText(getFormatter().getValueFormattedInBaseCurrency(assetAllocation.getValue()));

@@ -63,6 +63,7 @@
     <string name="version">Version</string>
     <string name="build">Build</string>
     <string name="path">Database path</string>
+    <string name="remote_path">Remote path</string>
     <string name="database_version">Database version</string>
     <string name="title_show_tutorial">Show tutorial</string>
     <string name="summary_show_tutorial">Show tutorial on the next run?</string>
@@ -568,7 +569,7 @@
     <string name="update_available">Update available</string>
     <string name="update_available_online">There is an updated database file available online. Would you like to update?</string>
     <string name="currency_not_found">Currency not found</string>
-    <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
+    <string name="homepage">Our homepage is https://moneymanagerex.org/</string>
     <string name="current_database">Current database</string>
     <string name="about_logcat_header">You can send us the application log by clicking the button below.</string>
     <string name="transaction_type_filter">Filter by Transaction Type</string>
@@ -758,7 +759,7 @@
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
     <string name="intro_create_db">You can create a new file and set up the initial preferences.</string>
     <string name="intro_open_db">Or you can select an existing file from your device.</string>
-    <string name="intro_sync2">To use cloud services, open the file from a preferred document provider.</string>
+    <string name="intro_sync">To use cloud services, open the file from a preferred document provider.</string>
     <!-- Create Database screen -->
     <string name="select_language">Select language</string>
     <string name="run">Run Money Manager Ex</string>
@@ -776,4 +777,6 @@
     <string name="loan_account">Loan Accounts</string>
     <string name="shares_accounts">Shares Accounts</string>
     <string name="currency">Currency</string>
+    <string name="menu_create_database">Create Database</string>
+    <string name="create_database">Create Database</string>
 </resources>

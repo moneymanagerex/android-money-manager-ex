@@ -54,11 +54,9 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
@@ -115,15 +113,15 @@ public class EditTransactionCommonFunctions {
     // Controls
     public EditTransactionViewHolder viewHolder;
 
-    private MmxBaseFragmentActivity activity;
+    private final MmxBaseFragmentActivity activity;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
-    private BriteDatabase mDatabase;
+    private final BriteDatabase mDatabase;
 
     private List<Account> AccountList;
-    private ArrayList<String> mAccountNameList = new ArrayList<>();
-    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<String> mAccountNameList = new ArrayList<>();
+    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
@@ -191,7 +189,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getDepositButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.depositButtonIcon);
+        return getActivity().findViewById(R.id.depositButtonIcon);
     }
 
     public Integer getDestinationCurrencyId() {
@@ -232,11 +230,11 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getTransferButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.transferButtonIcon);
+        return getActivity().findViewById(R.id.transferButtonIcon);
     }
 
     public FontIconView getWithdrawalButtonIcon() {
-        return (FontIconView) getActivity().findViewById(R.id.withdrawalButtonIcon);
+        return getActivity().findViewById(R.id.withdrawalButtonIcon);
     }
 
     public boolean hasPayee() {
@@ -368,7 +366,7 @@ public class EditTransactionCommonFunctions {
 
         // To Account
 
-        if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountToId()) >= 0) {
+        if (transactionEntity.hasAccountTo() && mAccountIdList.contains(transactionEntity.getAccountToId())) {
             viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountToId()), true);
         }
         viewHolder.spinAccountTo.setOnItemSelectedListener(listener);
@@ -472,7 +470,7 @@ public class EditTransactionCommonFunctions {
         showDate(date);
 
         viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear, dayOfMonth);
@@ -624,7 +622,7 @@ public class EditTransactionCommonFunctions {
 
         // select current value
         if (!(TextUtils.isEmpty(transactionEntity.getStatus()))) {
-            if (Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()) >= 0) {
+            if (Arrays.asList(mStatusValues).contains(transactionEntity.getStatus())) {
                 viewHolder.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()), true);
             }
         } else {
@@ -758,22 +756,21 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadCategoryName() {
-        if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
+        if(!this.transactionEntity.hasCategory()) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
+            // TODO parent category : category
+            if (category.getParentId() > 0)
+            {
+                Category parentCategory = categoryRepository.load(category.getParentId());
+                if (parentCategory != null)
+                    this.categoryName = parentCategory.getName() + " : " + category.getName();
+            }
         } else {
             this.categoryName = null;
-        }
-
-        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
-        Subcategory subcategory = subRepo.load(this.transactionEntity.getSubcategoryId());
-        if (subcategory != null) {
-            this.subCategoryName = subcategory.getName();
-        } else {
-            this.subCategoryName = null;
         }
 
         return true;
@@ -839,8 +836,6 @@ public class EditTransactionCommonFunctions {
             case RequestCodes.CATEGORY:
                 this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                this.transactionEntity.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
-                subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
                 displayCategoryName();
                 break;
@@ -1045,7 +1040,6 @@ public class EditTransactionCommonFunctions {
         // otherwise
 
         this.transactionEntity.setCategoryId(payee.getCategoryId());
-        this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
 
         loadCategoryName();
 
@@ -1213,7 +1207,6 @@ public class EditTransactionCommonFunctions {
         displayAmountFrom();
 
         transactionEntity.setCategoryId(splitTransaction.getCategoryId());
-        transactionEntity.setSubcategoryId(splitTransaction.getSubcategoryId());
         loadCategoryName();
 //        displayCategoryName();
 
@@ -1296,7 +1289,6 @@ public class EditTransactionCommonFunctions {
 
         if (this.transactionEntity.hasCategory()) {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
-            entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
         }
 
         return entity;
@@ -1334,7 +1326,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private MmxBaseFragmentActivity getActivity() {
-        return (MmxBaseFragmentActivity) activity;
+        return activity;
     }
 
     private MmxBaseFragmentActivity getContext() {
@@ -1440,7 +1432,6 @@ public class EditTransactionCommonFunctions {
     private void resetCategory() {
         // Reset the Sub/Category on the transaction.
         transactionEntity.setCategoryId(Constants.NOT_SET);
-        transactionEntity.setSubcategoryId(Constants.NOT_SET);
     }
 
     private void showDate(Date dateTime) {

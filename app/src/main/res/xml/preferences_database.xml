@@ -24,13 +24,13 @@
 
     <Preference
         android:icon="@null"
-        android:key="@string/pref_database_version"
-        android:title="@string/database_version" />
+        android:key="@string/pref_remote_path"
+        android:title="@string/remote_path" />
 
     <Preference
         android:icon="@null"
-        android:key="@string/pref_database_migrate_14_to_20"
-        android:title="@string/database_migrate_14_to_20" />
+        android:key="@string/pref_database_version"
+        android:title="@string/database_version" />
 
     <Preference
         android:icon="@null"
@@ -51,11 +51,6 @@
         android:icon="@null"
         android:key="@string/pref_db_check_schema"
         android:title="@string/db_check_schema" />
-
-    <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_create"
-        android:title="@string/create_db" />
 
     <Preference
         android:icon="@null"

@@ -709,4 +709,6 @@
   <string name="save">Uložit</string>
   <string name="title_budget_show_simple_view">Zobrazovat zjednodušené rozpočty</string>
   <string name="summary_budget_show_simple_view">Používat jednodušší pohled na rozpočty</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

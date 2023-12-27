@@ -40,7 +40,7 @@ public class HelpActivity
         // adjust actionbar
         setDisplayHomeAsUpEnabled(true);
 
-        mWebView = (WebView) findViewById(R.id.webViewContent);
+        mWebView = findViewById(R.id.webViewContent);
         // enable javascript
         mWebView.getSettings().setJavaScriptEnabled(true);
 

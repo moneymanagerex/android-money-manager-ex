@@ -530,4 +530,6 @@
   <!-- Create Database screen -->
   <!-- Settings -->
   <string name="per_database_settings">Zbirke podatkovnih baz</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

@@ -720,4 +720,6 @@
   <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
   <string name="loan">Empréstimo</string>
   <string name="loan_account">Contas de empréstimo</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

@@ -42,7 +42,7 @@ public class AssetAllocationContentObserver
         this.loader = loader;
     }
 
-    private Loader<AssetClass> loader;
+    private final Loader<AssetClass> loader;
 
     @Override
     public void onChange(boolean selfChange) {

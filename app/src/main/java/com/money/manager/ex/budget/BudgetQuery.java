@@ -46,7 +46,7 @@ public class BudgetQuery
     public static String PERIOD = "PERIOD";
     public static String AMOUNT = "AMOUNT";
 
-    private Context mContext;
+    private final Context mContext;
 
     // get all columns
     @Override

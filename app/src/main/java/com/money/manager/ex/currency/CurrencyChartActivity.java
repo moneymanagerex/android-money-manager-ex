@@ -85,7 +85,7 @@ public class CurrencyChartActivity
         String url = String.format("http://chart.finance.yahoo.com/z?s=%s%s=x&t=5d&z=m",
                 currencySymbol, baseCurrencySymbol);
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageChart);
+        ImageView imageView = findViewById(R.id.imageChart);
 
         Picasso.with(this).load(url).into(imageView);
     }

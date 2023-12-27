@@ -18,24 +18,17 @@
 package com.money.manager.ex.home;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import android.text.TextUtils;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.docstorage.DocFileMetadata;
-import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.SyncPreferencesActivity;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
@@ -81,23 +74,20 @@ public class SelectDatabaseActivity
             return;
         }
 
-        switch (requestCode) {
-//            case RequestCodes.SELECT_FILE:
-//                //if (resultCode != RESULT_OK) return;
-//                String selectedPath = UIHelper.getSelectedFile(data);
-//                if(TextUtils.isEmpty(selectedPath)) {
-//                    new UIHelper(this).showToast(R.string.invalid_database);
-//                    return;
-//                }
-//
-//                onDatabaseSelected(selectedPath);
-//                break;
-
-            case RequestCodes.SELECT_DOCUMENT:
-                // file selected at a Storage Access Framework.
-                FileStorageHelper storageHelper = new FileStorageHelper(this);
-                storageHelper.selectDatabase(data);
-                onDatabaseSelected();
+        //            case RequestCodes.SELECT_FILE:
+        //                //if (resultCode != RESULT_OK) return;
+        //                String selectedPath = UIHelper.getSelectedFile(data);
+        //                if(TextUtils.isEmpty(selectedPath)) {
+        //                    new UIHelper(this).showToast(R.string.invalid_database);
+        //                    return;
+        //                }
+        //
+        //                onDatabaseSelected(selectedPath);
+        //                break;
+        if (requestCode == RequestCodes.SELECT_DOCUMENT) {// file selected at a Storage Access Framework.
+            FileStorageHelper storageHelper = new FileStorageHelper(this);
+            storageHelper.selectDatabase(data);
+            onDatabaseSelected();
         }
     }
 

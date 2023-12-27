@@ -29,7 +29,7 @@ public abstract class ServiceBase {
         mContext = context;
     }
 
-    private Context mContext;
+    private final Context mContext;
 
     public Context getContext() {
         return mContext;

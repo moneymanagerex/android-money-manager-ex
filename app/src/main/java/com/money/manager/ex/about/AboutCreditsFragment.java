@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.about;
 
+import static com.money.manager.ex.R.raw.credits_thirdparty;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +50,7 @@ public class AboutCreditsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        WebView webView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
+        WebView webView = getActivity().findViewById(R.id.about_thirdsparty_credits);
 
 //        webView.loadData(MmxFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
 
@@ -56,7 +58,7 @@ public class AboutCreditsFragment extends Fragment {
         WebSettings settings = webView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
 
-        webView.loadData(MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty),
+        webView.loadData(MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), credits_thirdparty),
                 "text/html; charset=utf-8", null);
     }
 }

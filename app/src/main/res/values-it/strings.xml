@@ -722,4 +722,6 @@
   <string name="loan">Prestito</string>
   <string name="loan_account">Conti di prestito</string>
   <string name="shares_accounts">Conti di Azioni</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

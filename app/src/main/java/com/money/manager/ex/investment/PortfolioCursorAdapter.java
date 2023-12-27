@@ -46,9 +46,9 @@ public class PortfolioCursorAdapter
         //mContext = context;
     }
 
-    private LayoutInflater mInflater;
-    private HashMap<Integer, Integer> mHeadersAccountIndex;
-    private SparseBooleanArray mCheckedPosition;
+    private final LayoutInflater mInflater;
+    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final SparseBooleanArray mCheckedPosition;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -57,9 +57,9 @@ public class PortfolioCursorAdapter
         // holder
         PortfolioItemDataViewHolder holder = new PortfolioItemDataViewHolder();
 
-        holder.symbolTextView = (TextView) view.findViewById(R.id.symbolTextView);
-        holder.numSharesView = (TextView) view.findViewById(R.id.numSharesView);
-        holder.priceTextView = (TextView) view.findViewById(R.id.priceTextView);
+        holder.symbolTextView = view.findViewById(R.id.symbolTextView);
+        holder.numSharesView = view.findViewById(R.id.numSharesView);
+        holder.priceTextView = view.findViewById(R.id.priceTextView);
 
         // set holder to view
         view.setTag(holder);

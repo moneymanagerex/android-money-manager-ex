@@ -45,9 +45,7 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -255,65 +253,60 @@ public class CategoryListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_LOADER_CATEGORYSUB:
-                // update id selected
-                if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-                    CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                    mIdGroupChecked = adapter.getIdGroupChecked();
-                    mIdChildChecked = adapter.getIdChildChecked();
-                }
-                // clear arraylist and hashmap
-                mCategories.clear();
-                mSubCategories.clear();
+        if (id == ID_LOADER_CATEGORYSUB) {// update id selected
+            if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
+                CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
+                mIdGroupChecked = adapter.getIdGroupChecked();
+                mIdChildChecked = adapter.getIdChildChecked();
+            }
+            // clear arraylist and hashmap
+            mCategories.clear();
+            mSubCategories.clear();
 
-                // load data
-                String whereClause = null;
-                String selectionArgs[] = null;
-                if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
-                            + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
-                    selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
-                }
-                Select query = new Select(mQuery.getAllColumns())
+            // load data
+            String whereClause = null;
+            String[] selectionArgs = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause = QueryCategorySubCategory.CATEGNAME + " LIKE ? OR "
+                        + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
+            }
+            Select query = new Select(mQuery.getAllColumns())
                     .where(whereClause, selectionArgs)
                     .orderBy(QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
 
-                return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
+            return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
         }
         return null;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                // clear the data storage collections.
-                mCategories.clear();
-                mSubCategories.clear();
+        if (loader.getId() == ID_LOADER_CATEGORYSUB) {// clear the data storage collections.
+            mCategories.clear();
+            mSubCategories.clear();
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_LOADER_CATEGORYSUB:
-                setListAdapter(getAdapter(data));
+        if (loader.getId() == ID_LOADER_CATEGORYSUB) {
+            setListAdapter(getAdapter(data));
 
-                if (isResumed()) {
-                    setListShown(true);
+            if (isResumed()) {
+                setListShown(true);
 
-                    boolean noData = data == null || data.getCount() <= 0;
-                    if (noData && getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
+                boolean noData = data == null || data.getCount() <= 0;
+                if (noData && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
                 }
+            } else {
+                setListShownNoAnimation(true);
+            }
 
-                for (int i = 0; i < mPositionToExpand.size(); i++) {
-                    getExpandableListView().expandGroup(mPositionToExpand.get(i));
-                }
+            for (int i = 0; i < mPositionToExpand.size(); i++) {
+                getExpandableListView().expandGroup(mPositionToExpand.get(i));
+            }
         }
     }
 
@@ -340,11 +333,8 @@ public class CategoryListFragment
                             for (int child = 0; child < mSubCategories.get(mCategories.get(groupIndex)).size(); child++) {
                                 if (mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubCategId() == subCategId) {
                                     result = new Intent();
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
+                                    result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, subCategId);
                                     result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
-                                            mSubCategories.get(mCategories.get(groupIndex)).get(child).getCategName().toString());
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
-                                    result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME,
                                             mSubCategories.get(mCategories.get(groupIndex)).get(child).getSubcategoryName().toString());
                                     break;
                                 }
@@ -461,16 +451,13 @@ public class CategoryListFragment
      * Show alter binaryDialog confirm delete category or sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
-        boolean canDelete;
+        boolean canDelete = false;
         CategoryService service = new CategoryService(getActivity());
         ContentValues values = new ContentValues();
 
         if (categoryIds.subCategId <= 0) {
             values.put(Category.CATEGID, categoryIds.categId);
             canDelete = !service.isCategoryUsed(categoryIds.categId);
-        } else {
-            values.put(Subcategory.SUBCATEGID, categoryIds.subCategId);
-            canDelete = !service.isSubcategoryUsed(categoryIds.categId);
         }
         if (!(canDelete)) {
             new MaterialDialog.Builder(getContext())
@@ -497,18 +484,11 @@ public class CategoryListFragment
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        int rowsDelete;
+                        int rowsDelete = 0;
                         if (categoryIds.subCategId <= 0) {
                             CategoryRepository repo = new CategoryRepository(getActivity());
                             rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
                                     Category.CATEGID + "=" + categoryIds.categId,
-                                    null);
-                        } else {
-                            SubcategoryRepository repo = new SubcategoryRepository(getActivity());
-
-                            rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
-                                    Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
-                                            Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
                                     null);
                         }
                         if (rowsDelete == 0) {
@@ -600,8 +580,8 @@ public class CategoryListFragment
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
 
-        final EditText edtSubCategName = (EditText) viewDialog.findViewById(R.id.editTextCategName);
-        final Spinner spnCategory = (Spinner) viewDialog.findViewById(R.id.spinnerCategory);
+        final EditText edtSubCategName = viewDialog.findViewById(R.id.editTextCategName);
+        final Spinner spnCategory = viewDialog.findViewById(R.id.spinnerCategory);
         // set category description
         edtSubCategName.setText(subCategName);
         if (!TextUtils.isEmpty(subCategName)) {
@@ -616,7 +596,7 @@ public class CategoryListFragment
         ArrayList<Integer> categoryIds = new ArrayList<>();
         for (Category category : categories) {
             categoryIds.add(category.getId());
-            categoryNames.add(category.getName().toString());
+            categoryNames.add(category.getName());
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -648,10 +628,10 @@ public class CategoryListFragment
                         // get category id
                         int categId = categories.get(spnCategory.getSelectedItemPosition()).getId();
                         ContentValues values = new ContentValues();
-                        values.put(Subcategory.CATEGID, categId);
-                        values.put(Subcategory.SUBCATEGNAME, name);
+                        values.put(Category.PARENTID, categId);
+                        values.put(Category.CATEGNAME, name);
 
-                        SubcategoryRepository repo = new SubcategoryRepository(getActivity());
+                        CategoryRepository repo = new CategoryRepository(getActivity());
 
                         // check type transaction is request
                         switch (type) {
@@ -664,10 +644,8 @@ public class CategoryListFragment
                                 if (getActivity().getContentResolver().update(
                                         repo.getUri(),
                                         values,
-                                        Subcategory.CATEGID + "="
-                                                + categoryId + " AND "
-                                                + Subcategory.SUBCATEGID
-                                                + "=" + subCategoryId, null) == 0) {
+                                        Category.CATEGID + "="
+                                                + categoryId, null) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

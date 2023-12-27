@@ -32,15 +32,12 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /**
  * Test Account model.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
 public class AccountTests {
 
     private Account account;
@@ -54,7 +51,7 @@ public class AccountTests {
     public void testInstantiation() {
         Account account = new Account();
 
-        assertTrue(account != null);
+        assertNotNull(account);
     }
 
     //@Test

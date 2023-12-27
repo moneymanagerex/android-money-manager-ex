@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.utils;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,10 +25,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
-import android.os.Environment;
 
-import com.money.manager.ex.MmxContentProvider;
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
@@ -49,11 +52,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import dagger.Lazy;
 import timber.log.Timber;
-
-import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
  * Various database-related utility functions
@@ -84,9 +84,7 @@ public class MmxDatabaseUtils {
         // also add .emb in the future.
 
         if (!dbFile.canRead()) return false;
-        if (!dbFile.canWrite()) return false;
-
-        return true;
+        return dbFile.canWrite();
     }
 
     // Dynamic
@@ -102,7 +100,7 @@ public class MmxDatabaseUtils {
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
-    private Context mContext;
+    private final Context mContext;
 
     public Context getContext() {
         return mContext;
@@ -313,8 +311,7 @@ public class MmxDatabaseUtils {
         ArrayList<String> tableNames = new ArrayList<>();
 
         while (line != null) {
-            boolean found = false;
-            if (line.contains(textToMatch)) found = true;
+            boolean found = line.contains(textToMatch);
             if (!found && line.contains(textToMatch.toUpperCase())) found = true;
 
             if (found) {

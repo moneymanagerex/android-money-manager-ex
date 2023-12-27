@@ -84,7 +84,7 @@ public class EditPriceDialog
     @State int mCurrencyId = Constants.NOT_SET;
 
     private EditPriceViewHolder viewHolder;
-    private Lazy<FormatUtilities> formatUtilitiesLazy;
+    private final Lazy<FormatUtilities> formatUtilitiesLazy;
 
     public EditPriceDialog() {
         super();
@@ -218,7 +218,7 @@ public class EditPriceDialog
                 datePicker.show(((FragmentActivity) getContext()).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
             }
 
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     mPrice.date = new MmxDate(year, monthOfYear, dayOfMonth).toDate();

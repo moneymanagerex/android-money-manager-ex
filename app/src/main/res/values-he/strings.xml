@@ -438,6 +438,8 @@
   <string name="every_6_hours">כל 6 שעות</string>
   <string name="every_12_hours">כל 12 שעות</string>
   <string name="never">אף פעם</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
   <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->

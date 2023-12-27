@@ -42,8 +42,8 @@ import info.javaperformance.money.MoneyFactory;
 public class IncomeVsExpensesAdapter
     extends CursorAdapter {
 
-    private LayoutInflater mInflater;
-    private Context mContext;
+    private final LayoutInflater mInflater;
+    private final Context mContext;
 
     @SuppressWarnings("deprecation")
     public IncomeVsExpensesAdapter(Context context, Cursor c) {
@@ -54,11 +54,11 @@ public class IncomeVsExpensesAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView txtYear = (TextView) view.findViewById(R.id.textViewYear);
-        TextView txtMonth = (TextView) view.findViewById(R.id.textViewMonth);
-        TextView txtIncome = (TextView) view.findViewById(R.id.textViewIncome);
-        TextView txtExpenses = (TextView) view.findViewById(R.id.textViewExpenses);
-        TextView txtDifference = (TextView) view.findViewById(R.id.textViewDifference);
+        TextView txtYear = view.findViewById(R.id.textViewYear);
+        TextView txtMonth = view.findViewById(R.id.textViewMonth);
+        TextView txtIncome = view.findViewById(R.id.textViewIncome);
+        TextView txtExpenses = view.findViewById(R.id.textViewExpenses);
+        TextView txtDifference = view.findViewById(R.id.textViewDifference);
         // take data
         int year, month;
         year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));

@@ -719,4 +719,6 @@ http://android.moneymanagerex.org/</string>
   <string name="save">Kaydet</string>
   <string name="title_budget_show_simple_view">Basit bütçe görünümünü göster</string>
   <string name="summary_budget_show_simple_view">Kontrol edilen bütçeler basitleştirilmiş görünümü kullanıyorsa</string>
+    <string name="menu_create_database">Create Database</string>
+  <string name="create_database">Create Database</string>
 </resources>

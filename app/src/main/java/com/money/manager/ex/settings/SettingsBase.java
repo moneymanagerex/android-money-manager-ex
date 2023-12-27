@@ -36,7 +36,7 @@ abstract class SettingsBase {
     }
 
     // Context for preferences is the Application Context.
-    private Context mContext;
+    private final Context mContext;
 
     // common
 
