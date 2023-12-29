@@ -109,6 +109,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -224,9 +227,12 @@ public class MainActivity
         String uid = infoService.getInfoValue(InfoKeys.UID);
         if (uid == null || uid.isEmpty()) {
             // TODO create a new one
-        } else {
-            mFirebaseAnalytics.setUserId(uid);
+            uid = "android_" + Instant.now()
+                    .atZone(ZoneId.of("UTC"))
+                    .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+            infoService.setInfoValue(InfoKeys.UID, uid);
         }
+        mFirebaseAnalytics.setUserId(uid);
         // fragments
         initHomeFragment();
 
