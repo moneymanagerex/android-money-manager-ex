@@ -298,9 +298,6 @@
             android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
         <activity
-            android:name=".DonateActivity"
-            android:label="@string/donate" />
-        <activity
                 android:name=".HelpActivity"
                 android:label="@string/help" android:exported="true">
             <intent-filter>
