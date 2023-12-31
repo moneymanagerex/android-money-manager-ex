@@ -34,6 +34,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -66,9 +70,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.Lazy;
@@ -479,18 +480,6 @@ public class SearchParametersFragment
                     " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
                     ")" +
                     ")");
-
-            // subcategory
-            if (categorySub.subCategId != Constants.NOT_SET) {
-                // Subcategory. Also check the splits.
-                where.addStatement("(" +
-                        "(" + QueryAllData.SubcategID + "=" + categorySub.subCategId + ") " +
-                        " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-                        " FROM " + SplitCategory.TABLE_NAME +
-                        " WHERE " + SplitCategory.TRANSID + " = " + QueryAllData.ID + ")" +
-                        ")" +
-                        ")");
-            }
         }
 
         // transaction number

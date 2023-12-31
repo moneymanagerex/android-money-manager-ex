@@ -344,7 +344,7 @@ public class CategoryListFragment
                             result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
                             result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
                                     mCategories.get(groupIndex).getName());
-                            result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
+                            result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                             result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, "");
                         }
                     }
