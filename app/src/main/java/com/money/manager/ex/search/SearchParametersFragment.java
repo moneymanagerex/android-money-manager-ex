@@ -400,9 +400,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity())
-                .amount(amount)
-                .show(RequestCodes.AMOUNT_FROM);
+        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_FROM);
     }
 
     @OnClick(R.id.textViewToAmount)
@@ -412,7 +410,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity()).amount(amount).show(RequestCodes.AMOUNT_TO);
+        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_TO);
     }
 
     // Private
@@ -613,9 +611,9 @@ public class SearchParametersFragment
     }
 
     private void displayAmountFrom() {
-            FormatUtilities format = new FormatUtilities(getActivity());
-            String displayAmount = format.formatWithLocale(getSearchParameters().amountFrom);
-            viewHolder.txtAmountFrom.setText(displayAmount);
+        FormatUtilities format = new FormatUtilities(getActivity());
+        String displayAmount = format.formatWithLocale(getSearchParameters().amountFrom);
+        viewHolder.txtAmountFrom.setText(displayAmount);
     }
 
     private void displayAmountTo() {
