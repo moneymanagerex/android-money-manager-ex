@@ -50,7 +50,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.amplitude.android.Amplitude;
+import com.amplitude.android.AmplitudeKt;
+import com.amplitude.core.ServerZone;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -113,12 +115,14 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 import icepick.State;
+import kotlin.Unit;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -131,7 +135,7 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-    private FirebaseAnalytics mFirebaseAnalytics;
+    private Amplitude mAmplitude;
     /**
      * @return the mRestart
      */
@@ -182,7 +186,14 @@ public class MainActivity
             finish();
             return;
         }
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
+                , getApplicationContext()
+                , configuration -> {
+                    configuration.setServerZone(ServerZone.EU);
+                    return Unit.INSTANCE;
+                }
+        );
+      //  mAmplitude.getConfiguration().setServerZone(ServerZone.EU);
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
@@ -232,7 +243,7 @@ public class MainActivity
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
             infoService.setInfoValue(InfoKeys.UID, uid);
         }
-        mFirebaseAnalytics.setUserId(uid);
+        mAmplitude.setUserId(uid);
         // fragments
         initHomeFragment();
 
@@ -1369,10 +1380,9 @@ public class MainActivity
     private void logSynchronize(DatabaseMetadata metadata) {
         Uri uri = Uri.parse(metadata.remotePath);
         String authority = uri.getAuthority();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("authority", authority);
-        mFirebaseAnalytics.logEvent("synchronize", bundle);
+        mAmplitude.track("synchronize", new HashMap() {{
+            put("authority", authority);
+        }});
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {
