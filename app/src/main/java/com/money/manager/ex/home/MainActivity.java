@@ -53,6 +53,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
 import com.amplitude.core.ServerZone;
+import com.amplitude.android.DefaultTrackingOptions;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -189,11 +191,10 @@ public class MainActivity
         mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
-                    configuration.setServerZone(ServerZone.EU);
+                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);;
                     return Unit.INSTANCE;
                 }
         );
-      //  mAmplitude.getConfiguration().setServerZone(ServerZone.EU);
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
