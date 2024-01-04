@@ -18,13 +18,13 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -34,7 +34,6 @@ import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.sync.SyncManager;
@@ -145,23 +144,21 @@ public class PriceEditActivity
     protected void onDateClick() {
         MmxDate priceDate = model.date;
 
-        CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-            @Override
-            public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                model.date = new MmxDate(year, monthOfYear, dayOfMonth);
-
-                model.display(PriceEditActivity.this, viewHolder);
-            }
+        DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+            model.date = new MmxDate(year, month, dayOfMonth);
+            model.display(PriceEditActivity.this, viewHolder);
         };
 
-        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                .setOnDateSetListener(listener)
-                .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear(), priceDate.getDayOfMonth());
-        if (new UIHelper(this).isUsingDarkTheme()) {
-            datePicker.setThemeDark();
-        }
-        datePicker.show(getSupportFragmentManager(), datePicker.getClass().getSimpleName());
+        DatePickerDialog datePicker = new DatePickerDialog(
+                PriceEditActivity.this,
+                listener,
+                priceDate.getYear(),
+                priceDate.getMonthOfYear(),
+                priceDate.getDayOfMonth()
+        );
+
+        // Customize the DatePickerDialog if needed
+        datePicker.show();
     }
 
     @OnClick(R.id.previousDayButton)

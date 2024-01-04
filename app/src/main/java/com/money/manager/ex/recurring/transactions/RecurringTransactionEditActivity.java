@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,36 +25,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -356,30 +353,25 @@ public class RecurringTransactionEditActivity
 //        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateUtils.from(year, monthOfYear, dayOfMonth);
-
-                    setPaymentDate(dateTime);
-                }
-            };
-
             @Override
             public void onClick(View v) {
-                // Show calendar with the current date selected.
-
-                //Date dateTime = getPaymentDate();
                 MmxDate dateTime = new MmxDate(getPaymentDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(dateUtils.getFirstDayOfWeek())
-                        .setOnDateSetListener(listener)
-                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonth() - 1, dateTime.getDayOfMonth());
-                if (new UIHelper(RecurringTransactionEditActivity.this).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getSupportFragmentManager(), TAG_DATEPICKER);
+                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    Date selectedDate = dateUtils.from(year, month, dayOfMonth);
+                    setPaymentDate(selectedDate);
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        RecurringTransactionEditActivity.this, // replace with the actual activity or context
+                        listener,
+                        dateTime.getYear(),
+                        dateTime.getMonthOfYear() - 1, // DatePickerDialog month is zero-based
+                        dateTime.getDayOfMonth()
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 

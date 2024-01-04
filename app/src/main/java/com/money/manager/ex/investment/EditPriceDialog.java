@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,7 +25,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -34,8 +37,8 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.PriceDownloadedEventBundler;
-import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
@@ -51,9 +54,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import dagger.Lazy;
 import icepick.Icepick;
 import icepick.State;
@@ -208,22 +208,21 @@ public class EditPriceDialog
             public void onClick(View v) {
                 MmxDate priceDate = new MmxDate(mPrice.date);
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                        .setOnDateSetListener(listener)
-                        .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear(), priceDate.getDayOfMonth());
-                if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(((FragmentActivity) getContext()).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
-            }
-
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    mPrice.date = new MmxDate(year, monthOfYear, dayOfMonth).toDate();
+                final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    mPrice.date = new MmxDate(year, month, dayOfMonth).toDate();
                     showDate();
-                }
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        getActivity(),
+                        listener,
+                        priceDate.getYear(),
+                        priceDate.getMonthOfYear(),
+                        priceDate.getDayOfMonth()
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             };
         };
         viewHolder.dateTextView.setOnClickListener(dateClickListener);

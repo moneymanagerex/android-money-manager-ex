@@ -56,18 +56,6 @@ public class UiTestHelpersRobotium {
         }
     }
 
-    public void clearPreferences(Context context) {
-        // clear default preferences
-        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit();
-
-        clearDropboxPreferences(context);
-    }
-
-    public void clearDropboxPreferences(Context context) {
-        context.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE)
-                .edit().clear().commit();
-    }
-
 //    public void clickOnNeutralDialogButton() {
 //        // Positive = 1
 //        // Negative = 2
