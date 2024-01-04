@@ -365,7 +365,6 @@
             <!-- android:value=".home.MainActivity" /> -->
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
-        <activity android:name=".home.CreateDatabaseActivity" />
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
