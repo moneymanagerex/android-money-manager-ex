@@ -113,11 +113,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -231,8 +233,6 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
-        onceSynchronize();
-
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
 
@@ -242,9 +242,26 @@ public class MainActivity
             uid = "android_" + Instant.now()
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-            infoService.setInfoValue(InfoKeys.UID, uid);
         }
         mAmplitude.setUserId(uid);
+
+        onceSynchronize();
+        infoService.setInfoValue(InfoKeys.UID, uid);
+
+        String uuid = getSharedPreferences("UUID", Context.MODE_PRIVATE).getString("uuid", null);
+        if (uuid == null || uuid.isEmpty()) {
+            try {
+                uuid = UUID.nameUUIDFromBytes(MessageDigest.getInstance("MD5").digest(uid.getBytes())).toString().replace("-", "");
+            } catch (Exception e) {
+                uuid = uid;
+                Timber.e(e, "error generate UUID");
+            }
+            SharedPreferences.Editor editor = getSharedPreferences("UUID", Context.MODE_PRIVATE).edit();
+            editor.putString("uuid", uid);
+            editor.apply();
+        }
+        mAmplitude.setDeviceId(uuid);
+
         // fragments
         initHomeFragment();
 

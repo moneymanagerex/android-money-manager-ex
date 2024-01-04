@@ -73,20 +73,13 @@ public class SelectDatabaseActivity
             Timber.w("The activity result is not OK");
             return;
         }
-
-        //            case RequestCodes.SELECT_FILE:
-        //                //if (resultCode != RESULT_OK) return;
-        //                String selectedPath = UIHelper.getSelectedFile(data);
-        //                if(TextUtils.isEmpty(selectedPath)) {
-        //                    new UIHelper(this).showToast(R.string.invalid_database);
-        //                    return;
-        //                }
-        //
-        //                onDatabaseSelected(selectedPath);
-        //                break;
         if (requestCode == RequestCodes.SELECT_DOCUMENT) {// file selected at a Storage Access Framework.
             FileStorageHelper storageHelper = new FileStorageHelper(this);
             storageHelper.selectDatabase(data);
+            onDatabaseSelected();
+        } else if (requestCode == RequestCodes.CREATE_DOCUMENT) {
+            FileStorageHelper storageHelper = new FileStorageHelper(this);
+            storageHelper.createDatabase(data);
             onDatabaseSelected();
         }
     }
@@ -103,10 +96,8 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.createDatabaseButton)
     void onCreateDatabaseClick() {
-        // show the create database screen
-        Intent intent = new Intent(this, CreateDatabaseActivity.class);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        startActivity(intent);
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showCreateFilePicker();
     }
 
     @OnClick(R.id.openDatabaseButton)
