@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -30,9 +31,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
@@ -73,10 +78,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -470,26 +471,25 @@ public class EditTransactionCommonFunctions {
         showDate(date);
 
         viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear, dayOfMonth);
-                    setDate(dateTime);
-                }
-            };
-
             @Override
             public void onClick(View v) {
                 MmxDate dateTime = new MmxDate(transactionEntity.getDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                    .setOnDateSetListener(listener)
-                    .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                if (new UIHelper(getContext()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    Date selectedDate = dateTimeUtilsLazy.get().from(year, month, dayOfMonth);
+                    setDate(selectedDate);
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        getContext(),
+                        listener,
+                        dateTime.getYear(),
+                        dateTime.getMonthOfYear(),
+                        dateTime.getDayOfMonth()
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 

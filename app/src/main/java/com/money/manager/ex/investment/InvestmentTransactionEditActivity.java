@@ -17,6 +17,7 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,7 +30,6 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -343,29 +343,28 @@ public class InvestmentTransactionEditActivity
         // Purchase Date
 
         viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    setDirty(true);
-
-                    MmxDate dateTime = new MmxDate(year, monthOfYear, dayOfMonth);
-                    viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
-                }
-            };
-
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mStock.getPurchaseDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                        .setOnDateSetListener(listener)
-                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                if (new UIHelper(InvestmentTransactionEditActivity.this).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
+                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    setDirty(true);
+
+                    MmxDate dateTime = new MmxDate(year, month, dayOfMonth);
+                    viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        InvestmentTransactionEditActivity.this,
+                        listener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 

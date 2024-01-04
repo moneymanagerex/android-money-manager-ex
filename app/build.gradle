@@ -31,9 +31,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1008
+        versionCode 1009
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2024.01.01"
+        versionName "2024.01.04"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -153,7 +153,6 @@ dependencies {
             , 'com.github.pedrovgs:lynx:1.6'
             , 'de.hdodenhof:circleimageview:2.2.0'
             , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
-            , 'com.code-troopers.betterpickers:library:3.1.0'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
             // , 'javax.money:money-api-bp:1.0.1'

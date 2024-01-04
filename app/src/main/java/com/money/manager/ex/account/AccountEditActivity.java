@@ -17,6 +17,7 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,7 +30,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -41,9 +41,9 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
@@ -398,27 +398,25 @@ public class AccountEditActivity
 
         //Date picker
         mViewHolder.txtInitialDate.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateTimeUtils.from(year, monthOfYear, dayOfMonth);
-                    mAccount.setInitialDate(dateTime);
-                    showDate(dateTime);
-                }
+            final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                Date dateTime = dateTimeUtils.from(year, month, dayOfMonth);
+                mAccount.setInitialDate(dateTime);
+                showDate(dateTime);
             };
 
             @Override
             public void onClick(View v) {
                 MmxDate dateTime = new MmxDate(mAccount.getInitialDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setOnDateSetListener(listener)
-                        .setFirstDayOfWeek(dateTimeUtils.getFirstDayOfWeek())
-                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                if (new UIHelper(getApplicationContext()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getSupportFragmentManager(), "datepicker");
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        AccountEditActivity.this,
+                        listener,
+                        dateTime.getYear(),
+                        dateTime.getMonthOfYear(),
+                        dateTime.getDayOfMonth()
+                );
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 

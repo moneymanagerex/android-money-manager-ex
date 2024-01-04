@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.search;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,7 +40,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -343,12 +344,12 @@ public class SearchParametersFragment
     void onDateFromClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateFrom);
 
-        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+        DatePickerDialog datePicker = new DatePickerDialog(
+                getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, month, dayOfMonth);
 
                         SearchParameters parameters = getSearchParameters();
                         parameters.dateFrom = date.toDate();
@@ -357,25 +358,25 @@ public class SearchParametersFragment
                         String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
                         viewHolder.txtDateFrom.setText(displayText);
                     }
-                })
-                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
-
-        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-            datePicker.setThemeDark();
-        }
-        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                },
+                currentValue.getYear(),
+                currentValue.getMonthOfYear(),
+                currentValue.getDayOfMonth()
+        );
+        // Optionally, you can customize the DatePickerDialog further if needed
+        datePicker.show();
     }
 
     @OnClick(R.id.textViewToDate)
     void onDateToClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateTo);
 
-        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+        DatePickerDialog datePicker = new DatePickerDialog(
+                getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, month, dayOfMonth);
 
                         SearchParameters parameters = getSearchParameters();
                         parameters.dateTo = date.toDate();
@@ -384,13 +385,13 @@ public class SearchParametersFragment
                         String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
                         viewHolder.txtDateTo.setText(displayText);
                     }
-                })
-                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
-
-        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-            datePicker.setThemeDark();
-        }
-        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                },
+                currentValue.getYear(),
+                currentValue.getMonthOfYear(),
+                currentValue.getDayOfMonth()
+        );
+        // Optionally, you can customize the DatePickerDialog further if needed
+        datePicker.show();
     }
 
     @OnClick(R.id.textViewFromAmount)
