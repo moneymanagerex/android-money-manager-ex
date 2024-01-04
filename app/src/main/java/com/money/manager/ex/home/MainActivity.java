@@ -238,29 +238,15 @@ public class MainActivity
 
         String uid = infoService.getInfoValue(InfoKeys.UID);
         if (uid == null || uid.isEmpty()) {
-            // TODO create a new one
             uid = "android_" + Instant.now()
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         }
         mAmplitude.setUserId(uid);
+        mAmplitude.setDeviceId(MmexApplication.getOrCreateUUID(getApplicationContext()));
 
         onceSynchronize();
         infoService.setInfoValue(InfoKeys.UID, uid);
-
-        String uuid = getSharedPreferences("UUID", Context.MODE_PRIVATE).getString("uuid", null);
-        if (uuid == null || uuid.isEmpty()) {
-            try {
-                uuid = UUID.nameUUIDFromBytes(MessageDigest.getInstance("MD5").digest(uid.getBytes())).toString().replace("-", "");
-            } catch (Exception e) {
-                uuid = uid;
-                Timber.e(e, "error generate UUID");
-            }
-            SharedPreferences.Editor editor = getSharedPreferences("UUID", Context.MODE_PRIVATE).edit();
-            editor.putString("uuid", uid);
-            editor.apply();
-        }
-        mAmplitude.setDeviceId(uuid);
 
         // fragments
         initHomeFragment();

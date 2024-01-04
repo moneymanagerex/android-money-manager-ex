@@ -18,12 +18,13 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
-
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
+
 import timber.log.Timber;
 
 /**
