@@ -52,9 +52,7 @@ import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
-import com.amplitude.core.ServerZone;
 import com.amplitude.android.DefaultTrackingOptions;
-
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -65,8 +63,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
-import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -113,13 +109,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -647,10 +641,6 @@ public class MainActivity
                 intent = new Intent(this, BudgetsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_asset_allocation:
-                intent = new Intent(this, AssetAllocationOverviewActivity.class);
-                startActivity(intent);
-                break;
             case R.id.menu_search_transaction:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
@@ -680,9 +670,6 @@ public class MainActivity
                 break;
             case R.id.menu_report_income_vs_expenses:
                 startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_asset_allocation_overview:
-                startActivity(new Intent(this, AssetAllocationReportActivity.class));
                 break;
             case R.id.menu_help:
                 startActivity(new Intent(MainActivity.this, HelpActivity.class));
