@@ -705,6 +705,10 @@ public class EditTransactionCommonFunctions {
                 cursor.close();
             }
         });
+
+        if (!transactionEntity.hasId()) {
+            viewHolder.btnTransNumber.callOnClick();
+        }
     }
 
     public void initTransactionTypeSelector() {
