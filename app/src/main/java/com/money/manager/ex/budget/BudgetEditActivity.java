@@ -17,15 +17,16 @@
 
 package com.money.manager.ex.budget;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.NumberPicker;
 
-import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
-import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -34,9 +35,6 @@ import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDate;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,24 +105,25 @@ public class BudgetEditActivity
             year = currentYear;
         }
 
-        new NumberPickerBuilder()
-            .setFragmentManager(getSupportFragmentManager())
-            .setStyleResId(R.style.BetterPickersDialogFragment)
-            .setLabelText(getString(R.string.year))
-            .setPlusMinusVisibility(View.INVISIBLE)
-            .setDecimalVisibility(View.INVISIBLE)
-            .setMinNumber(BigDecimal.valueOf(currentYear - 10))
-            .setMaxNumber(BigDecimal.valueOf(currentYear + 10))
-            .setCurrentNumber(year)
-            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                @Override
-                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                    mModel.setYear(number.intValue());
-                    viewHolder.refreshYear();
-                    viewHolder.refreshName();
-                }
-            })
-            .show();
+        NumberPicker numberPicker = new NumberPicker(this);
+        numberPicker.setMinValue(currentYear - 10);
+        numberPicker.setMaxValue(currentYear + 10);
+        numberPicker.setValue(year);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.year))
+                .setView(numberPicker)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int selectedYear = numberPicker.getValue();
+                        mModel.setYear(selectedYear);
+                        viewHolder.refreshYear();
+                        viewHolder.refreshName();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     @OnClick(R.id.budgetMonthTextView)
@@ -136,24 +135,25 @@ public class BudgetEditActivity
             month = new MmxDate().getMonthOfYear();
         }
 
-        new NumberPickerBuilder()
-            .setFragmentManager(getSupportFragmentManager())
-            .setStyleResId(R.style.BetterPickersDialogFragment)
-            .setLabelText(getString(R.string.month))
-            .setPlusMinusVisibility(View.INVISIBLE)
-            .setDecimalVisibility(View.INVISIBLE)
-            .setMinNumber(BigDecimal.ONE)
-            .setMaxNumber(BigDecimal.valueOf(12))
-            .setCurrentNumber(month)
-            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                @Override
-                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                    mModel.setMonth(number.intValue());
-                    viewHolder.refreshMonth();
-                    viewHolder.refreshName();
-                }
-            })
-            .show();
+        NumberPicker numberPicker = new NumberPicker(this);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(12);
+        numberPicker.setValue(month);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.month))
+                .setView(numberPicker)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int selectedMonth = numberPicker.getValue();
+                        mModel.setMonth(selectedMonth);
+                        viewHolder.refreshMonth();
+                        viewHolder.refreshName();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     /*

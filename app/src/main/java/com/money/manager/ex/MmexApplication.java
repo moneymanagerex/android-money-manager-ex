@@ -49,6 +49,7 @@ import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
 
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.multidex.MultiDexApplication;
@@ -129,6 +130,38 @@ public class MmexApplication
 
         // Job Manager initialization.
         initializeJobManager();
+
+        getOrCreateUUID(this);
+    }
+
+    public static String getOrCreateUUID(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String appUUID = preferences.getString("uuid", null);
+
+        if (appUUID == null || appUUID.isEmpty()) {
+            // UUID does not exist in preferences, generate and store it
+            appUUID = generateAndStoreUUID(context);
+        }
+
+        return appUUID;
+    }
+
+    private static String generateAndStoreUUID(Context context) {
+        // Generate a random UUID
+        UUID uuid = UUID.randomUUID();
+
+        // Convert UUID to string and remove hyphens
+        String appUUID = uuid.toString().replace("-", "");
+
+        // Store the generated UUID using SharedPreferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString("uuid", appUUID).apply();
+
+        // Log the generated UUID for verification (you can remove this in production)
+        Timber.d("Generated UUID: " + appUUID);
+
+        return appUUID;
     }
 
     /**
@@ -321,5 +354,4 @@ public class MmexApplication
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), iconFontPath);
     }
-
 }

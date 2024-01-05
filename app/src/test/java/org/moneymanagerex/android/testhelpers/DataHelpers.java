@@ -16,34 +16,25 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.content.ContentResolver;
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.PayeeService;
-
-import org.robolectric.fakes.BaseCursor;
-import org.robolectric.shadows.ShadowContentResolver;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

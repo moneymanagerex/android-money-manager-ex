@@ -17,8 +17,6 @@
 
 apply plugin: 'com.android.application'
 
-apply plugin: 'com.android.application'
-
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -153,7 +151,6 @@ dependencies {
             , 'com.github.pedrovgs:lynx:1.6'
             , 'de.hdodenhof:circleimageview:2.2.0'
             , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
-            , 'com.code-troopers.betterpickers:library:3.1.0'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
             // , 'javax.money:money-api-bp:1.0.1'

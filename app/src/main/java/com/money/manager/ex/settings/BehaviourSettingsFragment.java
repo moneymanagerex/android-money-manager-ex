@@ -17,17 +17,18 @@
 package com.money.manager.ex.settings;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.widget.Toast;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import android.widget.Toast;
-
-import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxDate;
@@ -90,29 +91,27 @@ public class BehaviourSettingsFragment
     private void showTimePicker() {
         final BehaviourSettings settings = new BehaviourSettings(getActivity());
 
-        RadialTimePickerDialogFragment.OnTimeSetListener timeSetListener = new RadialTimePickerDialogFragment.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
-                String value = String.format("%02d:%02d", hourOfDay, minute);
-                settings.setNotificationTime(value);
-            }
-        };
-
-        // get time to display (current setting)
+        // Get time to display (current setting)
         String timeString = settings.getNotificationTime();
-//        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.TIME_FORMAT);
-//        DateTime currentValue = formatter.parseDateTime(timeString);
         MmxDate currentValue = new MmxDate(timeString, Constants.TIME_FORMAT);
 
         int hour = currentValue != null ? currentValue.getHourOfDay() : 8;
         int minute = currentValue != null ? currentValue.getMinuteOfHour() : 0;
 
-        RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment()
-            .setOnTimeSetListener(timeSetListener)
-            .setForced24hFormat()
-            .setStartTime(hour, minute)
-            .setThemeDark();
-        timePicker.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);
+        TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minuteOfHour) -> {
+            String value = String.format("%02d:%02d", hourOfDay, minuteOfHour);
+            settings.setNotificationTime(value);
+        };
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                requireContext(),
+                timeSetListener,
+                hour,
+                minute,
+                DateFormat.is24HourFormat(requireContext())
+        );
+
+        timePickerDialog.show();
     }
 
     //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates

@@ -52,9 +52,7 @@ import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
-import com.amplitude.core.ServerZone;
 import com.amplitude.android.DefaultTrackingOptions;
-
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -65,8 +63,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
-import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -231,20 +227,21 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
-        onceSynchronize();
-
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
 
         String uid = infoService.getInfoValue(InfoKeys.UID);
         if (uid == null || uid.isEmpty()) {
-            // TODO create a new one
             uid = "android_" + Instant.now()
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-            infoService.setInfoValue(InfoKeys.UID, uid);
         }
         mAmplitude.setUserId(uid);
+        mAmplitude.setDeviceId(MmexApplication.getOrCreateUUID(getApplicationContext()));
+
+        onceSynchronize();
+        infoService.setInfoValue(InfoKeys.UID, uid);
+
         // fragments
         initHomeFragment();
 
@@ -644,10 +641,6 @@ public class MainActivity
                 intent = new Intent(this, BudgetsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_asset_allocation:
-                intent = new Intent(this, AssetAllocationOverviewActivity.class);
-                startActivity(intent);
-                break;
             case R.id.menu_search_transaction:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;
@@ -677,9 +670,6 @@ public class MainActivity
                 break;
             case R.id.menu_report_income_vs_expenses:
                 startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_asset_allocation_overview:
-                startActivity(new Intent(this, AssetAllocationReportActivity.class));
                 break;
             case R.id.menu_help:
                 startActivity(new Intent(MainActivity.this, HelpActivity.class));

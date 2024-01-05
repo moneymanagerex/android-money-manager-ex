@@ -48,7 +48,7 @@ public class BudgetNameParser {
         if (name.contains(SEPARATOR)) {
             return getMonthFromYearMonth(name);
         } else {
-            return Integer.parseInt(name);
+            return 0;
         }
     }
 

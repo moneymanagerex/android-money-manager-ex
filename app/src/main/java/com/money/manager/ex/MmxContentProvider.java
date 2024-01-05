@@ -42,8 +42,6 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
@@ -104,8 +102,6 @@ public class MmxContentProvider
         List<Dataset> objMoneyManager = Arrays.asList(
             new AccountRepository(context),
             new AccountTransactionRepository(context),
-            new AssetClassRepository(context),
-            new AssetClassStockRepository(context),
             new BudgetEntryRepository(context),
             new BudgetRepository(context),
             new CategoryRepository(context),

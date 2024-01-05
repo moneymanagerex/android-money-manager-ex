@@ -31,7 +31,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.util.ArrayList;
@@ -214,15 +213,6 @@ public abstract class RepositoryBase<T extends EntityBase>
     protected ContentProviderResult[] bulkUpdate(EntityBase[] entities) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-        for (EntityBase entity : entities) {
-            AssetClass assetClass = (AssetClass) entity;
-
-            operations.add(ContentProviderOperation.newUpdate(this.getUri())
-                .withValues(entity.contentValues)
-                .withSelection(AssetClass.ID + "=?", new String[] {Integer.toString(assetClass.getId())})
-                .build());
-        }
-
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
@@ -244,13 +234,6 @@ public abstract class RepositoryBase<T extends EntityBase>
     protected ContentProviderResult[] bulkDelete(List<Integer> ids) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-        for (int id : ids) {
-            operations.add(ContentProviderOperation.newDelete(this.getUri())
-//                .withValues(entity.contentValues)
-                .withSelection(AssetClass.ID + "=?", new String[]{Integer.toString(id)})
-                .build());
-        }
-
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
@@ -260,5 +243,4 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
         return results;
     }
-
 }
