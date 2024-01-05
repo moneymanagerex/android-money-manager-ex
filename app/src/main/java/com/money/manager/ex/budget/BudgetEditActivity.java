@@ -17,8 +17,6 @@
 
 package com.money.manager.ex.budget;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,9 +35,6 @@ import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDate;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
