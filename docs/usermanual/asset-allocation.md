@@ -1,5 +1,6 @@
 **Obsolete. Asset management is removed from 2023 series**
-**see https://github.com/moneymanagerex/android-money-manager-ex/commit/e64368d0f0588614fca268fee9e17c6c77312f5b **
+
+see https://github.com/moneymanagerex/android-money-manager-ex/commit/e64368d0f0588614fca268fee9e17c6c77312f5b 
 
 # Asset Allocation
 
