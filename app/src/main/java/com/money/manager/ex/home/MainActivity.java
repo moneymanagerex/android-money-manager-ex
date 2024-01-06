@@ -1363,16 +1363,17 @@ public class MainActivity
     private void onceSynchronize() {
         FileStorageHelper storage = new FileStorageHelper(this);
         DatabaseMetadata current = mDatabases.get().getCurrent();
-        storage.synchronize(current);
+        String result = storage.synchronize(current);
 
-        logSynchronize(current);
+        logSynchronize(current, result);
     }
 
-    private void logSynchronize(DatabaseMetadata metadata) {
+    private void logSynchronize(DatabaseMetadata metadata, String result) {
         Uri uri = Uri.parse(metadata.remotePath);
         String authority = uri.getAuthority();
         mAmplitude.track("synchronize", new HashMap() {{
             put("authority", authority);
+            put("result", result);
         }});
     }
 

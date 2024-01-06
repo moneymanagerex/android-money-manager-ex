@@ -113,12 +113,12 @@ public class FileStorageHelper {
      * Synchronize local and remote database files.
      * @param metadata Database file metadata.
      */
-    public void synchronize(DatabaseMetadata metadata) {
+    public String synchronize(DatabaseMetadata metadata) {
         // validation
         // Make sure we have a valid storage-access-framework url.
         if (!metadata.remotePath.startsWith("content://")) {
             Timber.w("Invalid remote Uri. Please re-open the database.");
-            return;
+            return "Invalid remote Uri";
         }
 
         // check if we have remote changes
@@ -132,19 +132,22 @@ public class FileStorageHelper {
             String message = "Conflict! Both files have been modified.";
             //throw new RuntimeException();
             Timber.e(message);
-            return;
+            return "Conflict";
         }
         if (remoteChanged) {
             // download
             pullDatabase(metadata);
+            return "pullDatabase";
         }
         if (localChanged) {
             // upload
             pushDatabase(metadata);
+            return "pushDatabase";
         }
         if (!remoteChanged && !localChanged) {
             Timber.i("Not synchronizing. Files have not been modified.");
         }
+        return "no change";
     }
 
     /*
