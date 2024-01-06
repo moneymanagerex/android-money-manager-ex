@@ -1,3 +1,7 @@
+**Obsolete. Asset management is removed from 2023 series**
+
+see https://github.com/moneymanagerex/android-money-manager-ex/commit/e64368d0f0588614fca268fee9e17c6c77312f5b 
+
 # Asset Allocation
 
 Asset Allocation is an important concept in investment. To use the Asset Allocation module in MoneyManagerEx (MMEX), you should know the basics of asset allocation and rebalancing, and have experience setting up and maintaining an asset allocation model. For some good articles on the topic see [Related links](#related) section below.

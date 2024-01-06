@@ -1,3 +1,5 @@
+**obsolete**: new remote file management with SAF
+
 # Dropbox Concepts
 
 Here we describe how MMEX for Android works with Dropbox to synchronize the database with MMEX running on other platforms or other devices.
