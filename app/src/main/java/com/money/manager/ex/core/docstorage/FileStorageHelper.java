@@ -113,12 +113,12 @@ public class FileStorageHelper {
      * Synchronize local and remote database files.
      * @param metadata Database file metadata.
      */
-    public void synchronize(DatabaseMetadata metadata) {
+    public String synchronize(DatabaseMetadata metadata) {
         // validation
         // Make sure we have a valid storage-access-framework url.
         if (!metadata.remotePath.startsWith("content://")) {
             Timber.w("Invalid remote Uri. Please re-open the database.");
-            return;
+            return "Invalid remote Uri";
         }
 
         // check if we have remote changes
@@ -132,19 +132,22 @@ public class FileStorageHelper {
             String message = "Conflict! Both files have been modified.";
             //throw new RuntimeException();
             Timber.e(message);
-            return;
+            return "Conflict";
         }
         if (remoteChanged) {
             // download
             pullDatabase(metadata);
+            return "pullDatabase";
         }
         if (localChanged) {
             // upload
             pushDatabase(metadata);
+            return "pushDatabase";
         }
         if (!remoteChanged && !localChanged) {
             Timber.i("Not synchronizing. Files have not been modified.");
         }
+        return "no change";
     }
 
     /*
@@ -187,6 +190,9 @@ public class FileStorageHelper {
             return;
         }
 
+        DocFileMetadata remote = getRemoteMetadata(uri);
+        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
+
         // Store the local snapshot timestamp, the time when the file was downloaded.
         MmxDate localSnapshot = getLocalFileModifiedDate(metadata);
         metadata.localSnapshotTimestamp = localSnapshot.toIsoString();
@@ -210,15 +216,14 @@ public class FileStorageHelper {
 
         Uri remoteUri = Uri.parse(metadata.remotePath);
         DocFileMetadata remote = getRemoteMetadata(remoteUri);
-        Date remoteLastChangedDate = remote.lastModified.toDate();
 
-        if (remoteLastChangedDate.before(localLastModified)) {
+        if (remote.lastModified.toDate().before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
             pollNewRemoteTimestamp(metadata);
+        } else {
+            metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
         }
-
-        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
         metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
 
         saveMetadata(metadata);
@@ -373,7 +378,7 @@ public class FileStorageHelper {
 
         // Replace local database with downloaded version
         File localDatabaseFile = new File(localPath);
-        Timber.i("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
+        Timber.d("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
         // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
         Files.move(tempDatabaseFile, localDatabaseFile);
     }
