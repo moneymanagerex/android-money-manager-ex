@@ -190,6 +190,9 @@ public class FileStorageHelper {
             return;
         }
 
+        DocFileMetadata remote = getRemoteMetadata(uri);
+        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
+
         // Store the local snapshot timestamp, the time when the file was downloaded.
         MmxDate localSnapshot = getLocalFileModifiedDate(metadata);
         metadata.localSnapshotTimestamp = localSnapshot.toIsoString();
@@ -375,7 +378,7 @@ public class FileStorageHelper {
 
         // Replace local database with downloaded version
         File localDatabaseFile = new File(localPath);
-        Timber.i("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
+        Timber.d("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
         // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
         Files.move(tempDatabaseFile, localDatabaseFile);
     }
