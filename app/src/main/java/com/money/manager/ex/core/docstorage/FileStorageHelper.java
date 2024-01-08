@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -199,7 +200,15 @@ public class FileStorageHelper {
 
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        dbUtils.useDatabase(metadata);
+
+        // issue #1359
+        try {
+            dbUtils.useDatabase(metadata);
+        } catch (Exception e) {
+            Timber.e(e);
+            Toast.makeText(getContext(),"Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     /**
