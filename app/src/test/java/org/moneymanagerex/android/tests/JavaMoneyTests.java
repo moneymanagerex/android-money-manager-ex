@@ -259,7 +259,7 @@ public class JavaMoneyTests {
 
         // Then
 
-        assertEquals(actual, "3.162,25 EUR");
+        assertEquals(actual, "3.162,25 EUR");
     }
 
     @Test
