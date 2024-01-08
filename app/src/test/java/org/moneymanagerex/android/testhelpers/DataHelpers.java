@@ -123,35 +123,4 @@ public class DataHelpers {
 //        BaseCursor cursor = new AccountCursor();
 //        shadow.setCursor(cursor);
 //    }
-
-    public static void createAllocation() {
-        Context context = UnitTestHelper.getContext();
-        AssetClassRepository repo = new AssetClassRepository(context);
-        AssetClassStockRepository linkRepo = new AssetClassStockRepository(context);
-        StockRepository stockRepo = new StockRepository(context);
-        AccountRepository accountRepo = new AccountRepository(context);
-
-        // Currency
-        CurrencyService currencyService = new CurrencyService(context);
-        Currency eur = currencyService.getCurrency("EUR");
-
-        // Investment account
-        Account account = Account.create("investment", AccountTypes.INVESTMENT, AccountStatuses.OPEN,
-            true, eur.getCurrencyId());
-        accountRepo.save(account);
-        int accountId = account.getId();
-
-        // Stock symbols
-        Stock stock = Stock.create();
-        stock.setSymbol("VHY.ax");
-        stock.setHeldAt(accountId);
-        stockRepo.insert(stock);
-
-        AssetClass stocks = AssetClass.create("stocks");
-        stocks.setAllocation(MoneyFactory.fromString("70"));
-        repo.insert(stocks);
-
-        AssetClassStock link = AssetClassStock.create(stocks.getId(), stock.getSymbol());
-        linkRepo.insert(link);
-    }
 }
