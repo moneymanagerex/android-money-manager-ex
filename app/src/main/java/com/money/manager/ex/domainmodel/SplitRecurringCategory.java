@@ -46,14 +46,16 @@ public class SplitRecurringCategory
     public static final String CATEGID = "CATEGID";
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
+    public static final String NOTES = "NOTES";
 
     public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                                TransactionTypes parentTransactionType, Money amount) {
+                                                TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
+        entity.setNotes(notes);
 
         TransactionTypes splitType;
         if (amount.isZero() || amount.compareTo(MoneyFactory.fromDouble(0)) == -1) {
@@ -113,6 +115,15 @@ public class SplitRecurringCategory
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
     }
 
+	@Override
+    public String getNotes() {
+        return getString(NOTES);
+    }
+
+    @Override
+    public void setNotes(String value) {
+        setString(NOTES, value);
+    }
     @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
