@@ -319,7 +319,9 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) return;
+        // don't accidentally bypass passcode (failures), e.g. pressing physical back button
+        // see old merge #1338 and issue #1293
+        if (resultCode != RESULT_OK && requestCode != RequestCodes.PASSCODE) return;
 
         switch (requestCode) {
             case RequestCodes.SELECT_DOCUMENT:
