@@ -133,7 +133,6 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-    private Amplitude mAmplitude;
     /**
      * @return the mRestart
      */
@@ -184,13 +183,7 @@ public class MainActivity
             finish();
             return;
         }
-        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
-                , getApplicationContext()
-                , configuration -> {
-                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);;
-                    return Unit.INSTANCE;
-                }
-        );
+        Amplitude amplitude = MmexApplication.getAmplitude();
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
@@ -236,10 +229,8 @@ public class MainActivity
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         }
-        mAmplitude.setUserId(uid);
-        mAmplitude.setDeviceId(MmexApplication.getOrCreateUUID(getApplicationContext()));
+        amplitude.setUserId(uid);
 
-        onceSynchronize();
         infoService.setInfoValue(InfoKeys.UID, uid);
 
         // fragments
@@ -606,7 +597,10 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-                onceSynchronize();
+                SyncManager sync = new SyncManager(this);
+                sync.triggerSynchronization();
+                // re-set the sync timer.
+                sync.startSyncServiceHeartbeat();
                 break;
 
             case R.id.menu_open_database:
@@ -1360,23 +1354,6 @@ public class MainActivity
                 Timber.e(e, "showing the current database path");
             }
         }
-    }
-
-    private void onceSynchronize() {
-        FileStorageHelper storage = new FileStorageHelper(this);
-        DatabaseMetadata current = mDatabases.get().getCurrent();
-        String result = storage.synchronize(current);
-
-        logSynchronize(current, result);
-    }
-
-    private void logSynchronize(DatabaseMetadata metadata, String result) {
-        Uri uri = Uri.parse(metadata.remotePath);
-        String authority = uri.getAuthority();
-        mAmplitude.track("synchronize", new HashMap() {{
-            put("authority", authority);
-            put("result", result);
-        }});
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {

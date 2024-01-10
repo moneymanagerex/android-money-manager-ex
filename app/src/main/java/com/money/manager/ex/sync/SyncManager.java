@@ -22,12 +22,14 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.evernote.android.job.JobManager;
-import com.google.common.io.ByteStreams;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -48,20 +50,12 @@ import com.money.manager.ex.utils.NetworkUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
 import dagger.Lazy;
-import rx.Single;
-import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -270,15 +264,15 @@ public class SyncManager {
 //            progressDialog.show();
         }
 
+        DatabaseMetadata current = mDatabases.get().getCurrent();
         String localFile = getDatabases().getCurrent().localPath;
         Messenger messenger = null;
         if (getContext() instanceof AppCompatActivity) {
             // Messenger handles received messages from the sync service. Can run only in a looper thread.
-            messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
+            messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog));
         }
 
-        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
-                localFile, remoteFile, messenger);
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, current.localPath, current.remotePath, messenger);
         // start service
         SyncService.enqueueWork(getContext(), syncServiceIntent);
 
@@ -435,14 +429,12 @@ public class SyncManager {
             return;
         }
 
-        // easy comparison, just by the file name.
-        if (!areFileNamesSame(localPath, remotePath)) {
-            // The current file was probably opened through Open Database.
-            Toast.makeText(getContext(), R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
-            return;
-        }
-
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
+        Uri uri = Uri.parse(remotePath);
+        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+            put("authority", uri.getAuthority());
+            put("result", "triggerSynchronization");
+        }});
     }
 
     public void triggerDownload() {
@@ -685,7 +677,7 @@ public class SyncManager {
 
         return PendingIntent.getService(getContext(),
                 SyncConstants.REQUEST_DELAYED_SYNC,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                intent, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_IMMUTABLE);
     }
 
     private AlarmManager getAlarmManager() {

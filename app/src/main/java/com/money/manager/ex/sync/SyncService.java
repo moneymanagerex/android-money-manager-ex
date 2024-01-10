@@ -25,29 +25,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
-import androidx.core.app.JobIntentService;
-
 import android.text.TextUtils;
+
+import androidx.core.app.JobIntentService;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
-import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import rx.SingleSubscriber;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -102,6 +101,7 @@ public class SyncService
         }
 
         // check if the device is online.
+        // check if the device is online.
         NetworkUtils network = new NetworkUtils(getApplicationContext());
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
@@ -120,50 +120,25 @@ public class SyncService
             return;
         }
 
-//        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-//        if (remoteFile == null) {
-//            sendMessage(SyncServiceMessage.ERROR);
-//            sendStopEvent();
-//            return;
-//        }
         File localFile = new File(localFilename);
-
-        // todo: modify this part after db initial upload has been implemented.
-//        if (remoteFile == null) {
-//            // file not found on remote server.
-//            if (intent.getAction().equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
-//                // Create a new entry in the root?
-//                Log.w(LOGCAT, "remoteFile is null. SyncService forcing creation of the new remote file.");
-//                remoteFile = new CloudMetaData();
-//                remoteFile.setPath(remoteFilename);
-//            } else {
-//                Timber.e("remoteFile is null. SyncService.onHandleIntent premature exit.");
-//                sendMessage(SyncServiceMessage.ERROR);
-//                return;
-//            }
-//        }
-
-        // check if name is same
-//        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
-//            Timber.w("Local filename different from the remote!");
-//            sendMessage(SyncServiceMessage.ERROR);
-//            sendStopEvent();
-//            return;
-//        }
+        DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
+        FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
 
         // Execute action.
-//        switch (action) {
-//            case SyncConstants.INTENT_ACTION_DOWNLOAD:
-//                triggerDownload(localFile, remoteFile);
-//                break;
-//            case SyncConstants.INTENT_ACTION_UPLOAD:
-//                triggerUpload(localFile, remoteFile);
-//                break;
-//            case SyncConstants.INTENT_ACTION_SYNC:
-//            default:
-//                triggerSync(localFile, remoteFile);
-//                break;
-//        }
+        switch (action) {
+            case SyncConstants.INTENT_ACTION_DOWNLOAD:
+                storage.pullDatabase(currentDb);
+                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                break;
+            case SyncConstants.INTENT_ACTION_UPLOAD:
+                storage.pushDatabase(currentDb);
+                sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+                break;
+            case SyncConstants.INTENT_ACTION_SYNC:
+            default:
+                triggerSync(localFile);
+                break;
+        }
     }
 
     @Override
@@ -290,59 +265,53 @@ public class SyncService
 
     }
 
-//    private void triggerSync(File localFile, CloudMetaData remoteFile) {
-//        SyncManager sync = new SyncManager(getApplicationContext());
-//
-//        // are there local changes?
-//        boolean isLocalModified = false;
-//        DatabaseMetadata currentDb = this.recentDatabasesProvider
-//                .get(localFile.getAbsolutePath());
-//        // todo remove the null-check below after the default record is established.
-//        if (currentDb != null) {
-//            isLocalModified = currentDb.isLocalFileChanged;
-//        }
-//        Timber.d("local file has changes: %b", isLocalModified);
-//
-//        // are there remote changes?
-//        boolean isRemoteModified = false;
-//        try {
-//            isRemoteModified = sync.isRemoteFileModified(remoteFile);
-//        } catch (RuntimeException e) {
-//            Timber.e(e, "No remote change data found in metadata! Please re-synchronize manually.");
-//            // notify the user!
-//            sendMessage(SyncServiceMessage.ERROR);
-//            return;
-//        }
-//        Timber.d("Remote file has changes: %b", isRemoteModified);
-//
-//        // possible outcomes:
-//
-//        if (!isLocalModified && !isRemoteModified) {
-//            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
-//            sendStopEvent();
-//            return;
-//        }
-//        if (isLocalModified && isRemoteModified) {
-//            // if both changed, there is a conflict!
-//            Timber.w(getString(R.string.both_files_modified));
-//            sendMessage(SyncServiceMessage.CONFLICT);
-//            sendStopEvent();
-//            showNotificationForConflict();
-//            return;
-//        }
-//        if (isRemoteModified) {
-//            Timber.d("Remote file %s changed. Triggering download.", remoteFile.getPath());
-//            // download file
-//            triggerDownload(localFile, remoteFile);
-//            return;
-//        }
-//        if (isLocalModified) {
-//            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
-//            // upload file
-//            triggerUpload(localFile, remoteFile);
-//            return;
-//        }
-//    }
+    private void triggerSync(File localFile) {
+        SyncManager sync = new SyncManager(getApplicationContext());
+
+        DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
+        FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
+        boolean isLocalModified = storage.isLocalFileChanged(currentDb);
+        boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+        Timber.d("local file has changes: %b", isLocalModified);
+        Timber.d("Remote file has changes: %b", isRemoteModified);
+        Uri uri = Uri.parse(currentDb.remotePath);
+
+        // possible outcomes:
+        if (!isLocalModified && !isRemoteModified) {
+            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+            sendStopEvent();
+            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+                put("authority", uri.getAuthority());
+                put("result", "no change");
+            }});
+            return;
+        }
+
+        if (isLocalModified && isRemoteModified) {
+            // if both changed, there is a conflict!
+            Timber.w(getString(R.string.both_files_modified));
+            sendMessage(SyncServiceMessage.CONFLICT);
+            sendStopEvent();
+            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+                put("authority", uri.getAuthority());
+                put("result", "Conflict");
+            }});
+            showNotificationForConflict();
+            return;
+        }
+        if (isRemoteModified) {
+            Timber.d("Remote file %s changed. Triggering download.", currentDb.remotePath);
+            // download file
+            storage.pullDatabase(currentDb);
+            return;
+        }
+        if (isLocalModified) {
+            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
+            // upload file
+            storage.pushDatabase(currentDb);
+            return;
+        }
+    }
 
     private boolean sendMessage(SyncServiceMessage message) {
         if (mOutMessenger == null) return true;
