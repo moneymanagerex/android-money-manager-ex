@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.amplitude.android.Amplitude;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.money.manager.ex.MmexApplication;
@@ -24,7 +23,7 @@ import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
-import com.amplitude.android.Amplitude;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -39,11 +38,11 @@ import timber.log.Timber;
  * Functions to assist with selecting database file.
  */
 public class FileStorageHelper {
+    private final Context _host;
+
     public FileStorageHelper(Context host) {
         _host = host;
     }
-
-    private final Context _host;
 
     public Context getContext() {
         return _host;

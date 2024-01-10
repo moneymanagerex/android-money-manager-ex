@@ -25,11 +25,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.JobIntentService;
-
 import android.text.TextUtils;
+
+import androidx.core.app.JobIntentService;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -40,18 +38,15 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
-import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import rx.SingleSubscriber;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
