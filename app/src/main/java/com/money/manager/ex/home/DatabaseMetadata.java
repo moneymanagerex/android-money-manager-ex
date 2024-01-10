@@ -45,7 +45,6 @@ public class DatabaseMetadata {
         File file = new File(this.localPath);
         return file.getName();
     }
-
     public boolean isSynchronised() {
         return !TextUtils.isEmpty(remotePath);
     }

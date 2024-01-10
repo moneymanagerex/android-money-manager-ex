@@ -15,20 +15,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.amplitude.android.Amplitude;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
-
+import com.amplitude.android.Amplitude;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 
 import timber.log.Timber;
 
@@ -36,11 +39,11 @@ import timber.log.Timber;
  * Functions to assist with selecting database file.
  */
 public class FileStorageHelper {
-    public FileStorageHelper(AppCompatActivity host) {
+    public FileStorageHelper(Context host) {
         _host = host;
     }
 
-    private final AppCompatActivity _host;
+    private final Context _host;
 
     public Context getContext() {
         return _host;
@@ -54,8 +57,7 @@ public class FileStorageHelper {
     public void showStorageFilePicker() {
         // show the file picker
         int requestCode = RequestCodes.SELECT_DOCUMENT;
-        AppCompatActivity host = _host;
-
+        AppCompatActivity host = (AppCompatActivity) _host;
         try {
             // ACTION_GET_CONTENT in older versions of Android.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -73,8 +75,7 @@ public class FileStorageHelper {
     public void showCreateFilePicker() {
         // show the file picker
         int requestCode = RequestCodes.CREATE_DOCUMENT;
-        AppCompatActivity host = _host;
-
+        AppCompatActivity host = (AppCompatActivity) _host;
         try {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -155,7 +156,7 @@ public class FileStorageHelper {
         Private area
      */
 
-    private boolean isLocalFileChanged(DatabaseMetadata metadata) {
+    public boolean isLocalFileChanged(DatabaseMetadata metadata) {
         MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
         Date localLastModified = localLastModifiedMmxDate.toDate();
         // The timestamp when the local file was downloaded.
@@ -165,7 +166,7 @@ public class FileStorageHelper {
         return result;
     }
 
-    private boolean isRemoteFileChanged(DatabaseMetadata metadata) {
+    public boolean isRemoteFileChanged(DatabaseMetadata metadata) {
         DocFileMetadata remote = getRemoteMetadata(metadata);
 
         // Check if the remote file was modified since fetched.
@@ -181,7 +182,7 @@ public class FileStorageHelper {
      * Copies the remote database locally and updates the metadata.
      * @param metadata Database file metadata.
      */
-    private void pullDatabase(DatabaseMetadata metadata) {
+    public void pullDatabase(DatabaseMetadata metadata) {
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
@@ -209,13 +210,18 @@ public class FileStorageHelper {
             Toast.makeText(getContext(),"Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
             return;
         }
+        dbUtils.useDatabase(metadata);
+        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+                       put("authority", uri.getAuthority());
+                        put("result", "pullDatabase");
+                    }});
     }
 
     /**
      * Pushes the local file to the document provider and updates the metadata.
      * @param metadata Database file metadata.
      */
-    private void pushDatabase(DatabaseMetadata metadata) {
+    public void pushDatabase(DatabaseMetadata metadata) {
         // upload local file
         uploadDatabase(metadata);
 
@@ -236,6 +242,11 @@ public class FileStorageHelper {
         metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
 
         saveMetadata(metadata);
+
+        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+            put("authority", remoteUri.getAuthority());
+            put("result", "pushDatabase");
+        }});
     }
 
     /**
@@ -284,7 +295,7 @@ public class FileStorageHelper {
     }
 
     private DocFileMetadata getRemoteMetadata(Uri uri) {
-        AppCompatActivity host = _host;
+        Context host = _host;
 
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
@@ -399,7 +410,7 @@ public class FileStorageHelper {
      */
     private void showSelectLocalFileDialog() {
         int requestCode = RequestCodes.SELECT_FILE;
-        AppCompatActivity host = _host;
+        AppCompatActivity host = (AppCompatActivity) _host;
 
         //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
         DatabaseManager dbManager = new DatabaseManager(getContext());

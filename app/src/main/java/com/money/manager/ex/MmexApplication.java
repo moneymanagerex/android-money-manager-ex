@@ -19,9 +19,15 @@ package com.money.manager.ex;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.TextView;
+
+import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
+
+import com.amplitude.android.Amplitude;
+import com.amplitude.android.AmplitudeKt;
+import com.amplitude.android.DefaultTrackingOptions;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -52,8 +58,8 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import androidx.multidex.MultiDexApplication;
 import info.javaperformance.money.Money;
+import kotlin.Unit;
 import timber.log.Timber;
 
 /**
@@ -67,12 +73,18 @@ import timber.log.Timber;
 public class MmexApplication
     extends MultiDexApplication {
 
+    static private Amplitude mAmplitude;
     private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
 
     public static MmexApplication getApp() {
         return appInstance;
+    }
+
+    public static Amplitude getAmplitude()
+    {
+        return mAmplitude;
     }
 
     public static float getTextSize() {
@@ -132,6 +144,16 @@ public class MmexApplication
         initializeJobManager();
 
         getOrCreateUUID(this);
+
+        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
+                , getApplicationContext()
+                , configuration -> {
+                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);;
+                    return Unit.INSTANCE;
+                }
+        );
+
+        mAmplitude.setDeviceId(getOrCreateUUID(getApplicationContext()));
     }
 
     public static String getOrCreateUUID(Context context) {
