@@ -117,9 +117,9 @@ public class GeneralSettingsFragment
         }
 
         // send anonymous usage data
-        final SwitchPreferenceCompat spreference = (SwitchPreferenceCompat) findPreference(getString(R.string.pref_anonymous_usage));
-        if (spreference == null) {
-            spreference.setOnPreferenceChangeListener((preference, newValue) -> {
+        final SwitchPreferenceCompat sPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.pref_anonymous_usage));
+        if (sPreference != null) {
+            sPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 // Handle the switch state change
                 boolean isChecked = (Boolean) newValue;
                 MmexApplication.getAmplitude().getConfiguration().setOptOut(isChecked);
