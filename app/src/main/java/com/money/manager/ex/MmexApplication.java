@@ -143,17 +143,16 @@ public class MmexApplication
         // Job Manager initialization.
         initializeJobManager();
 
-        getOrCreateUUID(this);
-
         mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
-                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);;
+                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);
+                    configuration.setOptOut(new AppSettings(this).getGeneralSettings().getSendUsage());
                     return Unit.INSTANCE;
                 }
         );
 
-        mAmplitude.setDeviceId(getOrCreateUUID(getApplicationContext()));
+        mAmplitude.setDeviceId(getOrCreateUUID(this));
     }
 
     public static String getOrCreateUUID(Context context) {
