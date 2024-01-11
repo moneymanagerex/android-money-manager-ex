@@ -93,6 +93,6 @@ public class GeneralSettings
     }
 
     public boolean getSendUsage() {
-        return get(R.string.pref_anonymous_usage, false);
+        return get(R.string.pref_anonymous_usage, true);
     }
 }

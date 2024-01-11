@@ -28,7 +28,6 @@ import androidx.preference.PreferenceManager;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
 import com.amplitude.android.DefaultTrackingOptions;
-import com.amplitude.core.ServerZone;
 import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -144,11 +143,10 @@ public class MmexApplication
         // Job Manager initialization.
         initializeJobManager();
 
-        mAmplitude = AmplitudeKt.Amplitude("88406964174f784efe36942cfdacce61"
+        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
                     configuration.setDefaultTracking(DefaultTrackingOptions.ALL);
-                    configuration.setServerZone(ServerZone.EU);
                     configuration.setOptOut(new AppSettings(this).getGeneralSettings().getSendUsage());
                     return Unit.INSTANCE;
                 }

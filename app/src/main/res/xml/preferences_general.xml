@@ -54,7 +54,7 @@
         android:title="@string/default_payee" />
     <SwitchPreferenceCompat
         android:icon="@null"
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="@string/pref_anonymous_usage"
         android:title="@string/title_anonymous_usage"
         android:summary="@string/summary_anonymous_usage" />
