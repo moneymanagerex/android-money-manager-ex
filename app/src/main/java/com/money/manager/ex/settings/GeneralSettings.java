@@ -92,4 +92,7 @@ public class GeneralSettings
         return NumericHelper.toInteger(value);
     }
 
+    public boolean getSendUsage() {
+        return get(R.string.pref_anonymous_usage, true);
+    }
 }

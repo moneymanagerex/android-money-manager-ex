@@ -21,7 +21,9 @@ import android.os.Bundle;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 
@@ -111,6 +113,18 @@ public class GeneralSettingsFragment
                     setSummaryListPreference(lstDefaultPayee, newValue.toString(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
                     return true;
                 }
+            });
+        }
+
+        // send anonymous usage data
+        final SwitchPreferenceCompat spreference = (SwitchPreferenceCompat) findPreference(getString(R.string.pref_anonymous_usage));
+        if (spreference == null) {
+            spreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                // Handle the switch state change
+                boolean isChecked = (Boolean) newValue;
+                MmexApplication.getAmplitude().getConfiguration().setOptOut(isChecked);
+                // Add your logic here based on the switch state
+                return true; // Return true to persist the preference change
             });
         }
     }

@@ -779,4 +779,7 @@
     <string name="currency">Currency</string>
     <string name="menu_create_database">Create Database</string>
     <string name="create_database">Create Database</string>
+    <string name="pref_anonymous_usage">prefanonymoususage</string>
+    <string name="summary_anonymous_usage">Enable to help us sending anonymous data about MMEX usage</string>
+    <string name="title_anonymous_usage">Send anonymous usage data</string>
 </resources>
