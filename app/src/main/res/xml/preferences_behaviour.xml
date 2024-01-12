@@ -70,6 +70,12 @@
 
     <SwitchPreferenceCompat
         android:icon="@null"
+        android:defaultValue="false"
+        android:key="@string/pref_auto_transaction_number"
+        android:title="@string/title_auto_transaction_number" />
+
+    <SwitchPreferenceCompat
+        android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_show_tutorial"
         android:title="@string/title_show_tutorial"

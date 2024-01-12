@@ -64,6 +64,7 @@ import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
@@ -706,7 +707,7 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        if (!transactionEntity.hasId()) {
+        if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
             viewHolder.btnTransNumber.callOnClick();
         }
     }
