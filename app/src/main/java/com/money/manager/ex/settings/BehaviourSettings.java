@@ -83,6 +83,9 @@ public class BehaviourSettings
         set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
     }
 
+    public boolean getAutoTransactionNumber(){
+        return get(R.string.pref_auto_transaction_number, false);
+    }
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

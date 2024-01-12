@@ -782,4 +782,6 @@
     <string name="pref_anonymous_usage">prefanonymoususage</string>
     <string name="summary_anonymous_usage">Enable to help us sending anonymous data about MMEX usage</string>
     <string name="title_anonymous_usage">Send anonymous usage data</string>
+    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
+    <string name="title_auto_transaction_number">Auto populate transaction number</string>
 </resources>
