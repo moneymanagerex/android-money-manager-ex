@@ -109,10 +109,10 @@ public class DataHelpers {
         // split categories
         SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
         SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1,
-                tx.getTransactionType(), MoneyFactory.fromDouble(25));
+                tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 1");
         splitRepo.insert(split1);
         SplitCategory split2 = SplitCategory.create(tx.getId(), 1, -1,
-                tx.getTransactionType(), MoneyFactory.fromDouble(25));
+                tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 2");
         splitRepo.insert(split2);
     }
 
