@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -89,7 +90,7 @@ public class RecurringTransactionNotifications {
         // set launch from notification // check pin code
         intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // todo: Actions
 //        Intent skipIntent = new Intent(intent);
@@ -126,6 +127,7 @@ public class RecurringTransactionNotifications {
         }
     }
 
+    @SuppressLint("Range")
     private SyncNotificationModel getNotificationContent(Cursor cursor) {
         SyncNotificationModel result = new SyncNotificationModel();
 
@@ -134,7 +136,7 @@ public class RecurringTransactionNotifications {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         while (cursor.moveToNext()) {
-            String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+            @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
             // check if payee name is null, then put toAccountName
             if (TextUtils.isEmpty(payeeName))
                 payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
