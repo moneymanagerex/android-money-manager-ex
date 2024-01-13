@@ -20,7 +20,8 @@ package com.money.manager.ex.transactions;
 import android.content.Context;
 import android.os.Build;
 import android.text.Editable;
-import android.text.TextUtils;
+// not used
+// import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -209,12 +210,12 @@ public class SplitCategoriesAdapter
         viewHolder.txtNotesSplit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                // todo: empty method?
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                // todo: empty method?
             }
 
             @Override
