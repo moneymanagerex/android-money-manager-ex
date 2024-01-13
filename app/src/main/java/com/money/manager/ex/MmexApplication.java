@@ -138,6 +138,9 @@ public class MmexApplication
 
         initializeDependencyInjection();
 
+        // Job Manager initialization.
+        initializeJobManager();
+
         mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
@@ -178,6 +181,14 @@ public class MmexApplication
         Timber.d("Generated UUID: " + appUUID);
 
         return appUUID;
+    }
+
+    /**
+     * Initializes job manager.
+     * Implemented as a separate method so that it can be overridden in unit tests.
+     */
+    public void initializeJobManager() {
+        // TODO
     }
 
     /**
