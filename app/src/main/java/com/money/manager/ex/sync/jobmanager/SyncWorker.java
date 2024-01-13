@@ -17,20 +17,24 @@
 
 package com.money.manager.ex.sync.jobmanager;
 
-import com.evernote.android.job.Job;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 /**
  * For use with JobManager.
  */
 
-public class SyncJob extends Job {
+public class SyncWorker extends Worker {
+    public SyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
     @NonNull
     @Override
-    protected Result onRunJob(Params params) {
-        // todo: sync
-
-        return Result.SUCCESS;
+    public Result doWork() {
+        // Your existing job logic
+        return Result.success();
     }
 }

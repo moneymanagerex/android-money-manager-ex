@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.evernote.android.job.JobManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -88,10 +87,11 @@ public class SyncManager {
 
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
-
+/*
         if (scheduledJobId != Constants.NOT_SET) {
-            JobManager.instance().cancel(scheduledJobId);
+            WorkManager.getInstance(getContext()).cancelWorkById(scheduledJobId);
         }
+*/
     }
 
     public Context getContext() {
