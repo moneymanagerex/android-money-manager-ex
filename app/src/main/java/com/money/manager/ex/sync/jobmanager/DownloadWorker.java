@@ -17,26 +17,24 @@
 
 package com.money.manager.ex.sync.jobmanager;
 
-import com.evernote.android.job.Job;
-import com.evernote.android.job.JobCreator;
-import com.money.manager.ex.sync.SyncConstants;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 /**
- * Synchronization job creator for use with JobManager.
+ * Download job for JobManager
  */
 
-public class SyncJobCreator implements JobCreator {
+public class DownloadWorker extends Worker {
+    public DownloadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+    @NonNull
     @Override
-    public Job create(String tag) {
-        switch (tag) {
-            case SyncConstants.INTENT_ACTION_SYNC:
-                return new SyncJob();
-            case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                return null;
-            case SyncConstants.INTENT_ACTION_UPLOAD:
-                return null;
-            default:
-                return null;
-        }
+    public Result doWork() {
+        // Your existing job logic
+        return Result.success();
     }
 }

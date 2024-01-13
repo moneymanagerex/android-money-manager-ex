@@ -28,7 +28,6 @@ import androidx.preference.PreferenceManager;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
 import com.amplitude.android.DefaultTrackingOptions;
-import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -46,7 +45,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.sync.jobmanager.SyncJobCreator;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
@@ -140,14 +138,11 @@ public class MmexApplication
 
         initializeDependencyInjection();
 
-        // Job Manager initialization.
-        initializeJobManager();
-
         mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
                     configuration.setDefaultTracking(DefaultTrackingOptions.ALL);
-                    configuration.setOptOut(new AppSettings(this).getGeneralSettings().getSendUsage());
+                    configuration.setOptOut(!new AppSettings(this).getGeneralSettings().getSendUsage());
                     return Unit.INSTANCE;
                 }
         );
@@ -183,15 +178,6 @@ public class MmexApplication
         Timber.d("Generated UUID: " + appUUID);
 
         return appUUID;
-    }
-
-    /**
-     * Initializes job manager.
-     * Implemented as a separate method so that it can be overridden in unit tests.
-     */
-    public void initializeJobManager() {
-        JobManager.create(this)
-            .addJobCreator(new SyncJobCreator());
     }
 
     /**

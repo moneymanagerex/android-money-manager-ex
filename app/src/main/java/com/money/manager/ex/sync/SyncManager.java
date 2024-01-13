@@ -28,8 +28,8 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.WorkManager;
 
-import com.evernote.android.job.JobManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -52,6 +52,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -88,10 +89,11 @@ public class SyncManager {
 
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
-
+/*
         if (scheduledJobId != Constants.NOT_SET) {
-            JobManager.instance().cancel(scheduledJobId);
+            WorkManager.getInstance(getContext()).cancelWorkById(scheduledJobId);
         }
+*/
     }
 
     public Context getContext() {

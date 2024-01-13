@@ -17,18 +17,24 @@
 
 package com.money.manager.ex.sync.jobmanager;
 
-import com.evernote.android.job.Job;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 /**
  * Upload job for JobManager.
  */
 
-public class UploadJob extends Job {
+public class UploadWorker extends Worker {
+    public UploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
     @NonNull
     @Override
-    protected Result onRunJob(Params params) {
-        return null;
+    public Result doWork() {
+        // Your existing job logic
+        return Result.success();
     }
 }
