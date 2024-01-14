@@ -45,7 +45,8 @@ public class SplitRecurringCategoriesRepository
             SplitRecurringCategory.TRANSID,
             SplitRecurringCategory.CATEGID,
             SplitRecurringCategory.SUBCATEGID,
-            SplitRecurringCategory.SPLITTRANSAMOUNT };
+            SplitRecurringCategory.SPLITTRANSAMOUNT,
+            SplitRecurringCategory.NOTES };
     }
 
     /**

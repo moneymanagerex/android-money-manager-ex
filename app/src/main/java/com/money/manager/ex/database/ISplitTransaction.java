@@ -38,6 +38,9 @@ public interface ISplitTransaction
     Money getAmount();
     void setAmount(Money splitTransAmount);
 
+    String getNotes();
+    void setNotes(String value);
+
     Integer getCategoryId();
     void setCategoryId(int categoryId);
 

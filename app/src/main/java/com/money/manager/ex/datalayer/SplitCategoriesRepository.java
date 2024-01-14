@@ -45,7 +45,9 @@ public class SplitCategoriesRepository
             SplitCategory.SPLITTRANSID,
             SplitCategory.TRANSID,
             SplitCategory.CATEGID,
-            SplitCategory.SPLITTRANSAMOUNT };
+			
+            SplitCategory.SPLITTRANSAMOUNT,
+            SplitCategory.NOTES};
     }
 
     /**

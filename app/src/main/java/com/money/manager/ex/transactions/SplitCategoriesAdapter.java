@@ -19,6 +19,10 @@ package com.money.manager.ex.transactions;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.Editable;
+// not used
+// import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +78,7 @@ public class SplitCategoriesAdapter
 
         initAmountControl(viewHolder);
         initCategorySelector(viewHolder);
+        initNotesControls(viewHolder);
         initTransactionTypeButton(viewHolder);
 
         return viewHolder;
@@ -89,6 +94,7 @@ public class SplitCategoriesAdapter
         bindCategory(getContext(), holder, split);
         bindTransactionTypeButton(split, holder);
         bindAmount(split, holder);
+        bindNotes(split, holder);
     }
 
     @Override
@@ -119,6 +125,12 @@ public class SplitCategoriesAdapter
         String buttonText = service.getCategorySubcategoryName(split.getCategoryId());
         holder.txtSelectCategory.setText(buttonText);
     }
+
+    private void bindNotes(ISplitTransaction splitTransaction, SplitItemViewHolder holder) {
+        String notes = splitTransaction.getNotes();
+        holder.txtNotesSplit.setText(notes);
+    }
+
 
     private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
         int green;
@@ -190,6 +202,29 @@ public class SplitCategoriesAdapter
                 }
                 split.setTransactionType(newTransactionType, transactionType);
                 notifyItemChanged(position);
+            }
+        });
+    }
+
+    public void initNotesControls(final SplitItemViewHolder viewHolder) {
+        viewHolder.txtNotesSplit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // todo: empty method?
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // todo: empty method?
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int position = viewHolder.getAdapterPosition();
+                // change transaction type.
+                ISplitTransaction split = splitTransactions.get(position);
+                split.setNotes(editable.toString());
+//                notifyItemChanged(position);
             }
         });
     }

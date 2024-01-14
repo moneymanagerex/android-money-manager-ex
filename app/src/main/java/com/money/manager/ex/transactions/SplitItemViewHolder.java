@@ -36,6 +36,7 @@ public class SplitItemViewHolder
 
     @BindView(R.id.textViewCategory) public TextView txtSelectCategory;
     @BindView(R.id.editTextTotAmount) public TextView txtAmount;
+    @BindView(R.id.notesEditSplit) public TextView txtNotesSplit;
     @BindView(R.id.transactionTypeButton) public FontIconView transactionTypeButton;
 
     public SplitItemViewHolder(View itemView) {

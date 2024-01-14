@@ -46,15 +46,16 @@ public class SplitCategory
     public static final String TRANSID = "TRANSID";
     public static final String CATEGID = "CATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
+    public static final String NOTES = "NOTES";
 
-    public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       TransactionTypes parentTransactionType, Money amount) {
+    public static SplitCategory create(int transactionId, int categoryId, int subcategoryId, TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
         entity.setCategoryId(categoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
+        entity.setNotes(notes);
 
         TransactionTypes splitType;
         if (amount.isZero() || amount.compareTo(MoneyFactory.fromDouble(0)) == -1) {
@@ -110,6 +111,15 @@ public class SplitCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
+    }
+    
+    @Override
+    public String getNotes() {
+        return getString(NOTES);
+    }
+    @Override
+    public void setNotes(String value) {
+        setString(NOTES, value);
     }
 
     @Override
