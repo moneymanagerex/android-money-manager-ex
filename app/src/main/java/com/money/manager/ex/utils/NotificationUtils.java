@@ -50,8 +50,8 @@ public class NotificationUtils {
         //int importance = NotificationManager.IMPORTANCE_LOW;
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-        // ToDo: Replace channelName with channelId or similar to resolve issue #1244
-        // Todo: add language support
+        // Replace channelName with channelId or similar to resolve issue #1244
+        // add language support
         // String channelName = context.getString(R.string.app_name);
         // Retrive dynamic cluster for notification
         String channelName;
