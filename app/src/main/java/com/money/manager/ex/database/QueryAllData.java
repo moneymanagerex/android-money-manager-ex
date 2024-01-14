@@ -45,7 +45,7 @@ public class QueryAllData
 //    public static final String FromAccountId = "FromAccountId";
 //    public static final String FromAmount = "FromAmount";
 //    public static final String FromCurrencyId = "FromCurrencyId";
-    public static final String SPLITTED = "Splitted";
+    public static final String SPLITTED = "SPLITTED";
     public static final String ParentCategID = "ParentCategID";
     public static final String CategID = "CategID";
     public static final String SubcategID = "SubcategID";
