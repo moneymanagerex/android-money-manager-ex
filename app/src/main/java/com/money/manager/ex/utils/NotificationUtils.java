@@ -22,7 +22,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.money.manager.ex.R;
+//  TODO: Restore
+//   import com.money.manager.ex.R;
 
 /**
  * Assisting the creation of notifications on and after Android 8.
@@ -35,7 +36,11 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_UPLOAD_COMPLETE = "Mmex Upload Complete";
     public static final String CHANNEL_ID_CONFLICT = "Mmex Sync Conflict";
 
-    public static final String NOTIFICATION_CHANNEL_NAME = "Mmex Notification Channel";
+    // Channel for notification recurring transaction
+    // ToDo: Set as language depending
+    public static final String CHANNEL_ID_RECURRING = "Recurring Transaction Notification";
+//  ToDo: set notification name into language depend
+//    public static final String NOTIFICATION_CHANNEL_NAME = "Mmex Notification Channel";
 
     public static void createNotificationChannel(Context context, String channelId) {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
@@ -46,12 +51,18 @@ public class NotificationUtils {
         //int importance = NotificationManager.IMPORTANCE_LOW;
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-        String channelName = context.getString(R.string.app_name);
+        // ToDo: Replace channelName with channelId or similar to resolve issue #1244
+        // Todo: add language support
+        // String channelName = context.getString(R.string.app_name);
+        String channelName = channelId;
 
         NotificationChannel channel = new NotificationChannel(
                 channelId, channelName, importance);
 
-        channel.setDescription(NOTIFICATION_CHANNEL_NAME);
+        // ToDo: Set notification description based on channel & language
+        // channel.setDescription(NOTIFICATION_CHANNEL_NAME);
+        String channelDesc = channelId;
+        channel.setDescription(channelDesc);
 
         //channel.setSound();
 
