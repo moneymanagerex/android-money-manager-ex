@@ -21,15 +21,15 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1013
+        versionCode 1014
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2024.01.13"
+        versionName "2024.01.16"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
