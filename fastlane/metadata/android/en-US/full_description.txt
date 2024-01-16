@@ -1,0 +1,17 @@
+A simple and easy-to-use application to manage personal finances, bank accounts,
+family budget, and so on. 
+It's main goal is to add a mobile implementation for
+an application we love to use on our Desktop Money Manager EX.
+
+-------------------------------------------------
+<b>Features</b>
+------------------------------------------------
+
+* Management of single transactions
+* Account, payee, category, currency management
+* Storage card Import/Export
+* Cloud Storage based synchronization
+* Security, application lock/unlock
+* Repeating transactions
+* Charts
+* Supported languages: English, Italian, Portuguese, Spanish and Russian
