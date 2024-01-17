@@ -1,0 +1,1 @@
+Gestió d'ingressos i despeses en un dispositiu mòbil, sincronització al núvol
