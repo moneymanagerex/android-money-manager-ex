@@ -22,7 +22,6 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -50,7 +49,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -430,11 +428,6 @@ public class SyncManager {
         }
 
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
-        Uri uri = Uri.parse(remotePath);
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
-            put("authority", uri.getAuthority());
-            put("result", "triggerSynchronization");
-        }});
     }
 
     public void triggerDownload() {

@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -50,9 +49,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.amplitude.android.Amplitude;
-import com.amplitude.android.AmplitudeKt;
-import com.amplitude.android.DefaultTrackingOptions;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -113,14 +109,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 import icepick.State;
-import kotlin.Unit;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -183,7 +177,6 @@ public class MainActivity
             finish();
             return;
         }
-        Amplitude amplitude = MmexApplication.getAmplitude();
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
@@ -229,7 +222,6 @@ public class MainActivity
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         }
-        amplitude.setUserId(uid);
 
         infoService.setInfoValue(InfoKeys.UID, uid);
 
