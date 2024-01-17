@@ -27,9 +27,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1014
+        versionCode 1015
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2024.01.16"
+        versionName "2024.01.17"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
@@ -262,7 +262,6 @@ dependencies {
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    implementation 'com.amplitude:analytics-android:1.12.2'
 }
 
 configurations {

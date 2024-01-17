@@ -25,9 +25,6 @@ import android.widget.TextView;
 import androidx.multidex.MultiDexApplication;
 import androidx.preference.PreferenceManager;
 
-import com.amplitude.android.Amplitude;
-import com.amplitude.android.AmplitudeKt;
-import com.amplitude.android.DefaultTrackingOptions;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -57,7 +54,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import info.javaperformance.money.Money;
-import kotlin.Unit;
 import timber.log.Timber;
 
 /**
@@ -71,18 +67,12 @@ import timber.log.Timber;
 public class MmexApplication
     extends MultiDexApplication {
 
-    static private Amplitude mAmplitude;
     private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
 
     public static MmexApplication getApp() {
         return appInstance;
-    }
-
-    public static Amplitude getAmplitude()
-    {
-        return mAmplitude;
     }
 
     public static float getTextSize() {
@@ -141,16 +131,7 @@ public class MmexApplication
         // Job Manager initialization.
         initializeJobManager();
 
-        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
-                , getApplicationContext()
-                , configuration -> {
-                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);
-                    configuration.setOptOut(!new AppSettings(this).getGeneralSettings().getSendUsage());
-                    return Unit.INSTANCE;
-                }
-        );
-
-        mAmplitude.setDeviceId(getOrCreateUUID(this));
+        getOrCreateUUID(this);
     }
 
     public static String getOrCreateUUID(Context context) {
