@@ -38,7 +38,8 @@ import timber.log.Timber;
 
 public class RecurringTransactionNotifications {
 
-    public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
+    // Notification channel definition will be move into NotificationUtils to centralize loghic
+    // public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
 
     public RecurringTransactionNotifications(Context context) {
@@ -101,9 +102,9 @@ public class RecurringTransactionNotifications {
 
         // create notification
         try {
-            NotificationUtils.createNotificationChannel(getContext(), CHANNEL_ID);
+            NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_RECURRING);
 
-            Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+            Notification notification = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_RECURRING)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(mContext.getString(R.string.application_name))

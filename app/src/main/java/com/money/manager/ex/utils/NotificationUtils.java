@@ -24,18 +24,22 @@ import android.graphics.Color;
 
 import com.money.manager.ex.R;
 
+import java.lang.reflect.Field;
+
+import timber.log.Timber;
+
 /**
  * Assisting the creation of notifications on and after Android 8.
  */
 
 public class NotificationUtils {
 
-    public static final String CHANNEL_ID_DOWNLOADING = "Mmex Downloading";
-    public static final String CHANNEL_ID_UPLOADING = "Mmex Uploading";
-    public static final String CHANNEL_ID_UPLOAD_COMPLETE = "Mmex Upload Complete";
-    public static final String CHANNEL_ID_CONFLICT = "Mmex Sync Conflict";
+    public static final String CHANNEL_ID_RECURRING = "notification_channel_recurring";
 
-    public static final String NOTIFICATION_CHANNEL_NAME = "Mmex Notification Channel";
+    public static final String CHANNEL_ID_DOWNLOADING = "notification_channel_fileoperation_downloadin";
+    public static final String CHANNEL_ID_UPLOADING = "notification_channel_fileoperation_uploadin";
+    public static final String CHANNEL_ID_UPLOAD_COMPLETE = "notification_channel_fileoperation_complete";
+    public static final String CHANNEL_ID_CONFLICT = "notification_channel_fileoperation_conflict";
 
     public static void createNotificationChannel(Context context, String channelId) {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
@@ -46,12 +50,40 @@ public class NotificationUtils {
         //int importance = NotificationManager.IMPORTANCE_LOW;
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-        String channelName = context.getString(R.string.app_name);
+        // Replace channelName with channelId or similar to resolve issue #1244
+        // add language support
+        // String channelName = context.getString(R.string.app_name);
+        // Retrive dynamic cluster for notification
+        String channelName;
+        String channelDesc;
+        Field resourceField;
+        int resourceId;
+        try {
+            //Get the Name
+            resourceField = R.string.class.getDeclaredField(channelId);
+            resourceId = resourceField.getInt(resourceField);
+            channelName = context.getString(resourceId);
+        } catch (Exception e) {
+            Timber.e(e, "Unable to found resourceId: ["+channelId+"]");
+            channelName = channelId;
+        }
+
+        try {
+            resourceField = R.string.class.getDeclaredField(channelId+"__description");
+            resourceId = resourceField.getInt(resourceField);
+            channelDesc = context.getString(resourceId);
+
+        } catch (Exception e) {
+            Timber.e(e, "Unable to found resourceId: ["+channelId+"__description]");
+            channelDesc = channelName;
+        }
 
         NotificationChannel channel = new NotificationChannel(
                 channelId, channelName, importance);
 
-        channel.setDescription(NOTIFICATION_CHANNEL_NAME);
+        //  Set notification description based on channel & language
+        // channel.setDescription(NOTIFICATION_CHANNEL_NAME);
+        channel.setDescription(channelDesc);
 
         //channel.setSound();
 

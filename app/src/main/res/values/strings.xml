@@ -82,7 +82,7 @@
     <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transaction Status Notification</string>
     <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg or New Transaction screen</string>
-    <string name="notification_click_to_edit_transaction">Touch to edit the transaction...</string>
+    <string name="notification_click_to_edit_transaction">Touch to edit the transaction&#8230;</string>
     <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
 
@@ -784,4 +784,19 @@
     <string name="title_anonymous_usage">Send anonymous usage data</string>
     <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Auto populate transaction number</string>
+
+    <!-- Notification Setting -->
+    <!-- Old string
+    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
+    -->
+    <string name="notification_channel_recurring">Recurring Transaction Notification</string>
+    <string name="notification_channel_recurring__description">Overdue Recurring Transaction Notification</string>
+
+    <string name="notification_channel_fileoperation_downloadin">Mmex Downloading</string>
+    <string name="notification_channel_fileoperation_uploadin">Mmex Uploading</string>
+    <string name="notification_channel_fileoperation_complete">Mmex Upload Complete</string>
+    <string name="notification_channel_fileoperation_conflict">Mmex Sync Conflict</string>
+
+
 </resources>

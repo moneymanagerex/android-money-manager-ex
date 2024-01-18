@@ -724,4 +724,6 @@
   <string name="shares_accounts">Conti di Azioni</string>
     <string name="menu_create_database">Create Database</string>
   <string name="create_database">Create Database</string>
+  <string name="notification_channel_recurring">Notifica per Transazioni Ricorrenti</string>
+  <string name="notification_channel_recurring__description">Notifica per transazioni ricorrenti scadute</string>
 </resources>
