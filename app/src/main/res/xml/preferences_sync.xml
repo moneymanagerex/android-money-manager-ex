@@ -68,15 +68,6 @@
         android:summary="@string/cloud_upload"
         android:title="@string/upload" />
 
-    <!-- upload immediately -->
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="true"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_upload_immediately"
-        android:summary="@string/summary_sync_upload_immediate"
-        android:title="@string/title_sync_upload_immediate" />
-
     <!-- sync on start -->
     <SwitchPreferenceCompat
         android:title="@string/sync_on_start"
