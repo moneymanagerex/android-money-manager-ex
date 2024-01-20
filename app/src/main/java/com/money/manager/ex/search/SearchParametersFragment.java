@@ -76,7 +76,7 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
+// import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
