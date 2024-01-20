@@ -498,7 +498,7 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.Notes + " LIKE '%" + searchParameters.notes + "%'");
         }
 
-        Timber.d(this.getClass().getName(),"Where: " + where.getWhere());
+        // Timber.d(this.getClass().getName(),"Where: " + where.getWhere());
         return where.getWhere();
     }
 
