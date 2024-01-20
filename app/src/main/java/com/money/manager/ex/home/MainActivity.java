@@ -49,6 +49,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.amplitude.android.Amplitude;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -177,6 +178,7 @@ public class MainActivity
             finish();
             return;
         }
+        Amplitude amplitude = MmexApplication.getAmplitude();
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
@@ -222,6 +224,7 @@ public class MainActivity
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         }
+        amplitude.setUserId(uid);
 
         infoService.setInfoValue(InfoKeys.UID, uid);
 

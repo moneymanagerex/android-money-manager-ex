@@ -280,6 +280,10 @@ public class SyncService
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
             sendStopEvent();
+            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+                put("authority", uri.getAuthority());
+                put("result", "no change");
+            }});
             return;
         }
 
@@ -288,6 +292,10 @@ public class SyncService
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(SyncServiceMessage.CONFLICT);
             sendStopEvent();
+            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+                put("authority", uri.getAuthority());
+                put("result", "Conflict");
+            }});
             showNotificationForConflict();
             return;
         }

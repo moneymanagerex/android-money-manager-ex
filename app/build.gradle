@@ -262,6 +262,7 @@ dependencies {
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
+    implementation 'com.amplitude:analytics-android:1.12.2'
 }
 
 configurations {

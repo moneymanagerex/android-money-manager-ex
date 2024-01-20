@@ -23,6 +23,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 
@@ -121,6 +122,7 @@ public class GeneralSettingsFragment
             sPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 // Handle the switch state change
                 boolean isChecked = (Boolean) newValue;
+                MmexApplication.getAmplitude().getConfiguration().setOptOut(!isChecked);
                 // Add your logic here based on the switch state
                 return true; // Return true to persist the preference change
             });
