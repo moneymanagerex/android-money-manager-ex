@@ -31,7 +31,6 @@ import androidx.preference.SwitchPreferenceCompat;
 public class SyncPreferencesViewHolder {
 
     SwitchPreferenceCompat syncEnabled;
-    public ListPreference providerList;
     public Preference remoteFile;
     public ListPreference syncInterval;
     public Preference resetPreferences;
@@ -42,7 +41,6 @@ public class SyncPreferencesViewHolder {
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 
         syncEnabled = (SwitchPreferenceCompat) view.findPreference(view.getString(R.string.pref_sync_enabled));
-        providerList = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_provider));
         remoteFile = view.findPreference(view.getString(R.string.pref_remote_file));
         syncInterval = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_interval));
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));

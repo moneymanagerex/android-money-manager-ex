@@ -194,42 +194,6 @@ public class SyncPreferenceFragment
             }
         });
 
-
-        // provider
-        viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                final SyncManager sync = getSyncManager();
-                // set the new provider
-//                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
-
-                // log in to the provider immediately and update to persistence.
-//                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-//                    sync.login()
-//                            .subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new SingleSubscriber<Void>() {
-//                                @Override
-//                                public void onSuccess(Void value) {
-//                                    // nothing.
-//                                }
-//
-//                                @Override
-//                                public void onError(Throwable error) {
-//                                    String errorMessage = error.getMessage();
-//                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
-//                                        Timber.w("authentication cancelled");
-//                                    } else {
-//                                        Timber.e(error, "logging in to cloud provider");
-//                                    }
-//                                }
-//                            })
-//                );
-
-                return true;
-            }
-        });
-
         // remote file
         viewHolder.remoteFile.setSummary(getSyncManager().getRemotePath());
         viewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

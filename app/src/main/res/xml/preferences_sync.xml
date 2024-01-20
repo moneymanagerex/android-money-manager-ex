@@ -24,17 +24,6 @@
         android:title="@string/sync_enabled"
         android:defaultValue="false" />
 
-    <!-- cloud storage provider -->
-    <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_sync_provider"
-        android:dependency="@string/pref_sync_enabled"
-        android:title="@string/sync_provider"
-        android:summary="%s"
-        android:entries="@array/cloud_provider_names"
-        android:entryValues="@array/cloud_provider_values"
-        android:defaultValue="1" />
-
     <!-- synchronization interval -->
     <ListPreference
         android:icon="@null"
