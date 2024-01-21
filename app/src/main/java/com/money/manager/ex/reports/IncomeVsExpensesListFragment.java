@@ -168,6 +168,9 @@ public class IncomeVsExpensesListFragment
                 double income = 0, expenses = 0;
                 if (data == null) return;
 
+                // move to first record #1539
+                data.moveToPosition(-1);
+
                 while (data.moveToNext()) {
                     if (data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                         income += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
@@ -193,6 +196,9 @@ public class IncomeVsExpensesListFragment
 
             case ID_LOADER_YEARS:
                 if (data != null && data.moveToFirst()) {
+                    // move to first record #1539
+                    data.moveToPosition(-1);
+
                     while (!data.isAfterLast()) {
                         int year = data.getInt(data.getColumnIndex("Year"));
                         if (!mYearsSelected.get(year, false)) {

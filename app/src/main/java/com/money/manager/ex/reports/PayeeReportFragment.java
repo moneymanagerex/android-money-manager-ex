@@ -131,6 +131,9 @@ public class PayeeReportFragment
         if (loader.getId() == ID_LOADER) {
             if (data == null) return;
 
+            // move to first record #1539
+            data.moveToPosition(-1);
+
             //parse cursor for calculate total
             double totalAmount = 0;
             while (data.moveToNext()) {
