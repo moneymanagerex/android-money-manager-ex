@@ -133,7 +133,7 @@ public class AboutFragment extends Fragment {
         txtWebsite.setText(htmlText);
         txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
-        clickListenerWebsite.setUrl("http://android.moneymanagerex.org/");
+        clickListenerWebsite.setUrl("http://android.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
         txtWebsite.setOnClickListener(clickListenerWebsite);
 
         // report set link
@@ -164,7 +164,7 @@ public class AboutFragment extends Fragment {
         imageViewGithub.setOnClickListener(clickListenerGithub);
         // image view twitter
         OnClickListenerUrl clickListenerTwitter = new OnClickListenerUrl();
-        clickListenerTwitter.setUrl("https://twitter.com/MMEX4Android");
+        clickListenerTwitter.setUrl("https://twitter.com/MoneyManagerEx");
         ImageView imageViewTwitter = view.findViewById(R.id.imageViewTwitter);
         imageViewTwitter.setOnClickListener(clickListenerTwitter);
         // GPLv2 license
