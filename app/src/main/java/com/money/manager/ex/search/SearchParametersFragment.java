@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,7 +77,6 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-// import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -330,7 +330,7 @@ public class SearchParametersFragment
         setSearchParameters(searchParameters);
 
         String where = assembleWhereClause();
-
+        Log.d(this.getClass().getName(),"Where: \n"+where);
         return where;
     }
 
@@ -498,7 +498,6 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.Notes + " LIKE '%" + searchParameters.notes + "%'");
         }
 
-        // Timber.d(this.getClass().getName(),"Where: " + where.getWhere());
         return where.getWhere();
     }
 

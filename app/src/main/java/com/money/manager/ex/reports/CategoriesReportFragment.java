@@ -121,6 +121,9 @@ public class CategoriesReportFragment
         if (loader.getId() == ID_LOADER) {//parse cursor for calculate total
             if (data == null) return;
 
+            // move to first record #1539
+            data.moveToPosition(-1);
+
             CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
             Money totalAmount = MoneyFactory.fromString("0");
