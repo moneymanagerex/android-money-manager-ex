@@ -76,6 +76,7 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+// import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -469,12 +470,19 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.PayeeID, " = ", searchParameters.payeeId);
         }
         // category
+
         if (searchParameters.category != null) {
-            CategorySub categorySub = searchParameters.category;
+            // Issue 1532 need to check subcategory first
+            int categId;
+            if  ( searchParameters.category.subCategId != 0 ) {
+                categId = searchParameters.category.subCategId;
+            } else {
+                categId = searchParameters.category.categId;
+            }
             // Category. Also check the splits.
             where.addStatement("(" +
-                    "(" + QueryAllData.CategID + "=" + categorySub.categId + ") " +
-                    " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
+                    "(" + QueryAllData.CategID + "=" + categId + ") " +
+                    " OR (" + categId + " IN (select " + QueryAllData.CategID +
                     " FROM " + SplitCategory.TABLE_NAME +
                     " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
                     ")" +
@@ -490,6 +498,7 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.Notes + " LIKE '%" + searchParameters.notes + "%'");
         }
 
+        // Timber.d(this.getClass().getName(),"Where: " + where.getWhere());
         return where.getWhere();
     }
 
