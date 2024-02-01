@@ -20,6 +20,8 @@ import android.content.ContentValues;
 
 import org.parceler.Parcel;
 
+import java.util.Objects;
+
 /**
  * Category
  */
@@ -32,9 +34,11 @@ public class Category
     public static final String ACTIVE = "ACTIVE";
     public static final String PARENTID = "PARENTID";
 
-    public Category() {
-        super();
-    }
+    // Wolfsolver One Category List
+    public static final String BASECATEGNAME = "BASECATEGNAME";
+    public static final String PARENTCATEGNAME = "PARENTCATEGNAME";
+
+    public Category() { super(); }
 
     public Category(ContentValues contentValues) {
         super(contentValues);
@@ -63,4 +67,16 @@ public class Category
     public void setName(String value) {
         setString(CATEGNAME, value);
     }
+
+    public String getBaseCategName( ) { return ( getString(BASECATEGNAME) == null ? "" : getString(BASECATEGNAME)) ;}
+    public void setBaseCategName( String value) { setString(BASECATEGNAME, value); }
+
+    public String getParentCategName( ) { return ( getString(PARENTCATEGNAME) == null ? "" : getString(PARENTCATEGNAME)) ;}
+    public void setParentCategName( String value) { setString(PARENTCATEGNAME, value); }
+
+    public String getCategFullName ( ) {
+        if ( getParentCategName().isEmpty() ) {
+            return  getName();
+        }
+        return getParentCategName() + " : " +getName(); }
 }

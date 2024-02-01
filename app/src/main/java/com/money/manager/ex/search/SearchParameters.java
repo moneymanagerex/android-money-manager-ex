@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.search;
 
+import com.money.manager.ex.domainmodel.Category;
+
 import org.parceler.Parcel;
 
 import java.util.Date;
@@ -63,6 +65,7 @@ public class SearchParameters {
     public String payeeName;
 
     public CategorySub category;
+//    public Category categoryNested;
 
     public String transactionNumber;
     public String notes;

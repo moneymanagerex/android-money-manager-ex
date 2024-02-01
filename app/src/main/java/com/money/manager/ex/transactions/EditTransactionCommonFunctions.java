@@ -766,14 +766,17 @@ public class EditTransactionCommonFunctions {
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
-            this.categoryName = category.getName();
-            // TODO parent category : category
-            if (category.getParentId() > 0)
-            {
-                Category parentCategory = categoryRepository.load(category.getParentId());
-                if (parentCategory != null)
-                    this.categoryName = parentCategory.getName() + " : " + category.getName();
-            }
+
+// Wolfsolver use neested category
+//            this.categoryName = category.getName();
+//            // TODO parent category : category
+//            if (category.getParentId() > 0)
+//            {
+//                Category parentCategory = categoryRepository.load(category.getParentId());
+//                if (parentCategory != null)
+//                    this.categoryName = parentCategory.getName() + " : " + category.getName();
+//            }
+            this.categoryName = category.getCategFullName();
         } else {
             this.categoryName = null;
         }

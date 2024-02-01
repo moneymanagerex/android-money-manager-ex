@@ -103,7 +103,8 @@ public class BudgetAdapter
 
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
+// EP            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
+            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGNAME);
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 

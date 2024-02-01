@@ -41,8 +41,7 @@ public class CategoryService
     }
 
     private CategoryRepository mRepository;
-
-    public int loadIdByName(String name) {
+     public int loadIdByName(String name) {
         return getRepository().loadIdByName(name);
     }
 
@@ -113,8 +112,8 @@ public class CategoryService
      * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
-
+//        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
+        Select query = new Select().orderBy(Category.CATEGNAME);
         return getRepository().query(Category.class, query);
     }
 
@@ -152,4 +151,5 @@ public class CategoryService
         }
         return mRepository;
     }
+
 }

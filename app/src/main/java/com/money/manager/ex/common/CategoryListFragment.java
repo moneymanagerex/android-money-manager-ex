@@ -175,6 +175,7 @@ public class CategoryListFragment
         }
 
         // context menu from resource
+        menu.add(Menu.NONE, ContextMenuIds.ADD.getId(), Menu.NONE, getString(R.string.add_subcategory));
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
@@ -193,10 +194,16 @@ public class CategoryListFragment
         categoryIds.categName = "";
         categoryIds.subCategId = Constants.NOT_SET;
         categoryIds.subCategName = "";
+        categoryIds.categBaseName = ""; // WolfSolver nested Category
 
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
             categoryIds.categId = mCategories.get(group).getId();
             categoryIds.categName = mCategories.get(group).getName();
+            // WolfSolver nested Category
+            categoryIds.categBaseName = mCategories.get(group).getBaseCategName();
+            categoryIds.parentCategName = mCategories.get(group).getParentCategName();
+            categoryIds.parentId = mCategories.get(group).getParentId();
+
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             categoryIds.categId = mSubCategories.get(mCategories.get(group)).get(child).getCategId();
             categoryIds.subCategId = mSubCategories.get(mCategories.get(group)).get(child).getSubCategId();
@@ -206,10 +213,14 @@ public class CategoryListFragment
         // manage select menu
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
         switch (menuId) {
+            case ADD:   // // WolfSolver nested Category
+                // WolfSolver TODO add subcategory to this category
+                break;
             case EDIT:
                 if (categoryIds.subCategId == ExpandableListView.INVALID_POSITION) {
                     showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
-                            categoryIds.categName);
+// // WolfSolver nested Category categoryIds.categName);
+                    categoryIds.categBaseName); // WolfSolver nested Category
                 } else {
                     showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
                             categoryIds.subCategId, categoryIds.subCategName);
@@ -325,7 +336,7 @@ public class CategoryListFragment
                 int subCategId = adapter.getIdChildChecked();
 
                 if (categId == ExpandableListView.INVALID_POSITION) return;
-
+// Wolfsover TODO: Remove This For and assign directly to line 353
                 for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
                     if (mCategories.get(groupIndex).getId() == categId) {
                         // Get subcategory
@@ -402,6 +413,10 @@ public class CategoryListFragment
                 Category category = new Category();
                 category.setId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
                 category.setName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))).toString());
+// WolfSolver Neested Caterogy
+                category.setBaseCategName(data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGBASENAME)).toString());
+                category.setParentId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.PARENTID)));
+                category.setParentCategName(data.getString(data.getColumnIndex(QueryCategorySubCategory.PARENTCATEGNAME)).toString());
 
                 // add list
                 mCategories.add(category);

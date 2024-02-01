@@ -51,7 +51,12 @@ public class CategoryRepository
                 Category.CATEGID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),
                 null);
-
+        // WolfSolver - neested category
+        category.setBaseCategName(category.getName());
+        if  (category.getParentId()>0) {
+            Category parent = load(category.getParentId());
+            category.setParentCategName(parent.getCategFullName());
+        }
         return category;
     }
 

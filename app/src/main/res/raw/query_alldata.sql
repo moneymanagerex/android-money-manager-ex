@@ -1,9 +1,17 @@
+--query_alldata.sql
 -- Account Transactions list
+WITH RECURSIVE categories(categid, categname, parentid) AS
+    (SELECT a.categid, a.categname, a.parentid FROM category_v1 a WHERE parentid = '-1'
+        UNION ALL
+     SELECT c.categid, r.categname || ':' || c.categname, c.parentid
+     FROM categories r, category_v1 c
+	 WHERE r.categid = c.parentid
+	 )
 SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    ifnull(PARENTCAT.CATEGNAME, CAT.CategName) as Category,
+    CAT.CategName as Category,
     CAT.CategName as Subcategory,
     TX.Status AS Status,
     TX.NOTES AS Notes,
@@ -19,9 +27,10 @@ SELECT     TX.TransID AS ID,
     TX.ToTransAmount as ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) as ToCurrencyId,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
-    ifnull( PARENTCAT.CategID, CAT.CategID ) AS ParentCategID,
+--    ifnull( PARENTCAT.CategID, CAT.CategID ) AS ParentCategID,
+    -1 AS ParentCategID,
     TX.CATEGID AS CategID,
-    ifnull( CAT.CategID, -1 ) AS SubcategID,
+    -1 AS SubcategID,
     ifnull( PAYEE.PayeeName, '') AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -30,8 +39,8 @@ SELECT     TX.TransID AS ID,
     d.day AS Day,
     d.finyear AS finyear
 FROM CHECKINGACCOUNT_V1 TX
-    LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
-    LEFT JOIN CATEGORY_V1 PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
+    LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
+    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID

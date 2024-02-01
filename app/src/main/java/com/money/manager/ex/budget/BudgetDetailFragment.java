@@ -154,7 +154,8 @@ public class BudgetDetailFragment
                 if (id == LOADER_BUDGET) {
                     QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
                     Select query = new Select(categories.getAllColumns())
-                            .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
+// EP                            .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
+                            .orderBy(QueryCategorySubCategory.CATEGNAME);
 
                     result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
                 }

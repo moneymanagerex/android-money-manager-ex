@@ -1,5 +1,4 @@
--- query_categorysubcategory.sql
--- based on one_category_list
+-- one_category_list.sql
 WITH RECURSIVE categories(categid, categname, catbasename, parentid, parentcategname, active ) AS
     (SELECT a.categid, a.categname, a.categname as catbasename, a.parentid, null as parentcategname, a.ACTIVE
 	    FROM category_v1 a WHERE parentid = '-1'
@@ -8,15 +7,6 @@ WITH RECURSIVE categories(categid, categname, catbasename, parentid, parentcateg
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
-select categid as _id,
-       CATEGID as CATEGID,
-	   categname as CATEGNAME,
-	   -1 as SUBCATEGID,
-       "" as SUBCATEGNAME,
---	   categname as CATEGSUBNAME,
-	   catbasename as CATEGBASENAME,
-	   parentid as PARENTID,
-	   ifnull( parentcategname, "") as PARENTCATEGNAME
-from categories
+select *  from categories
 -- where active = 1
 order by categname

@@ -1,12 +1,20 @@
 /*
     Query mobiledata. This is the base for most other queries.
 */
+WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcategname ) AS
+    (SELECT a.categid, a.categname, a.categname as catshortname, a.parentid, null as parentcategname FROM category_v1 a WHERE parentid = '-1'
+        UNION ALL
+     SELECT c.categid, r.categname || ':' || c.categname, c.CATEGNAME as catshortname, c.parentid, r.categname as parentcategname
+     FROM categories r, category_v1 c
+	 WHERE r.categid = c.parentid
+	 )
 SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    coalesce( SPARENTCAT.CategName, PARENTCAT.CategName, SCAT.CategName, CAT.CategName, '' ) AS Category,
-    coalesce( SCAT.CategName, CAT.CategName, '' ) AS Subcategory,
+    coalesce( SCAT.categname, CAT.categname ) as CategoryFullName,
+    coalesce( SCAT.parentcategname, SCAT.catshortname, CAT.parentcategname, CAT.catshortname ) AS Category,
+    coalesce( SCAT.catshortname, CAT.catshortname ) AS Subcategory,
     cf.currency_symbol AS currency,
     TX.Status AS Status,
     TX.NOTES AS Notes,
@@ -22,7 +30,7 @@ SELECT     TX.TransID AS ID,
     ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
     coalesce( SPARENTCAT.CATEGID, PARENTCAT.CATEGID, st.CategId, TX.CategId ) AS CATEGID,
-    ifnull( ifnull(st.CategID, TX.CategId ) , -1 ) AS SubcategID,
+    -1 AS SubcategID,
     ifnull( PAYEE.PayeeName, '') AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -33,16 +41,17 @@ SELECT     TX.TransID AS ID,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
         * ifnull(cfTo.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
-    LEFT JOIN CATEGORY_V1 CAT ON CAT.CATEGID = TX.CATEGID
-    LEFT JOIN CATEGORY_V1 PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
+    LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
+--    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
+    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
     LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
     LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
     LEFT JOIN splittransactions_v1 st ON TX.transid = st.transid
-    LEFT JOIN CATEGORY_V1 SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
-    LEFT JOIN CATEGORY_V1 SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.PARENTID
+    LEFT JOIN categories SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
+    LEFT JOIN categories SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.CATEGID
     LEFT JOIN  (
         SELECT    transid AS id,
             date( transdate ) AS transdate,

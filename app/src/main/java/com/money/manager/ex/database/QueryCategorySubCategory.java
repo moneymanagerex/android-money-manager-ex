@@ -29,26 +29,34 @@ public class QueryCategorySubCategory extends Dataset {
     public static final String CATEGNAME = "CATEGNAME";
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SUBCATEGNAME = "SUBCATEGNAME";
-    public static final String CATEGSUBNAME = "CATEGSUBNAME";
+    // EP REMOVED - public static final String CATEGSUBNAME = "CATEGSUBNAME";
+    public static final String CATEGBASENAME = "CATEGBASENAME";
+    public static final String PARENTID = "PARENTID";
+    public static final String PARENTCATEGNAME = "PARENTCATEGNAME";
+
     //definizione dei campi
     private int categId;
     private CharSequence categName;
     private int subCategId;
-    private CharSequence mSubcategoryName;
-    private CharSequence categSubName;
+    private CharSequence subcategoryName;
+    // EP Removed private CharSequence categSubName;
+    private CharSequence categBaseName;
+    private int parentId;
+    private CharSequence parentCategName;
 
     // definizione del costruttore
+
     public QueryCategorySubCategory(Context context) {
             super(MmxFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{ID, CATEGID, CATEGNAME, SUBCATEGID, SUBCATEGNAME, CATEGSUBNAME};
+        return new String[]{ID, CATEGID, CATEGNAME, SUBCATEGID, SUBCATEGNAME, CATEGBASENAME, PARENTID, PARENTCATEGNAME};
     }
 
     public int getCategId() {
-        return categId;
+        return this.categId;
     }
 
     public void setCategId(int categId) {
@@ -56,14 +64,14 @@ public class QueryCategorySubCategory extends Dataset {
     }
 
     public CharSequence getCategName() {
-        return categName;
+        return this.categName;
     }
 
     public void setCategName(CharSequence categName) {
         this.categName = categName;
     }
 
-    public CharSequence getCategSubName() {
+/*     public CharSequence getCategSubName() {
         return categSubName;
     }
 
@@ -71,21 +79,33 @@ public class QueryCategorySubCategory extends Dataset {
         this.categSubName = categSubName;
     }
 
-    public int getSubCategId() {
-        return subCategId;
-    }
+ */
+
+    public int getSubCategId() { return this.subCategId; }
 
     public void setSubCategId(int subCategId) {
         this.subCategId = subCategId;
     }
 
     public CharSequence getSubcategoryName() {
-        return mSubcategoryName;
+        return this.subcategoryName;
     }
 
     public void setSubcategoryName(CharSequence mSubcategoryName) {
-        this.mSubcategoryName = mSubcategoryName;
+        this.subcategoryName = mSubcategoryName;
     }
+
+    public CharSequence getCategBaseName( ) { return  this.categBaseName ;}
+    public void setCategBaseName( CharSequence mCategBaseName) {
+        this.categBaseName = mCategBaseName;
+    }
+    public int getParentId( ) { return  this.parentId; }
+    public void setParentId( int mParentId) { this.parentId = mParentId ;}
+    public CharSequence getParentCategName( ) { return  this.parentCategName ;}
+    public void setParentCategName( CharSequence mParentCategName) {
+        this.parentCategName = mParentCategName;
+    }
+
 
     @Override
     public void setValueFromCursor(Cursor c) {
@@ -102,6 +122,8 @@ public class QueryCategorySubCategory extends Dataset {
         this.setCategName(c.getString(c.getColumnIndex(CATEGNAME)));
         this.setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
         this.setSubcategoryName(c.getString(c.getColumnIndex(SUBCATEGNAME)));
-        this.setCategSubName(c.getString(c.getColumnIndex(CATEGSUBNAME)));
+        this.setCategBaseName(c.getString(c.getColumnIndex(CATEGBASENAME)));
+        this.setParentId((c.getInt((c.getColumnIndex(PARENTID)))));
+        this.setParentCategName(c.getString(c.getColumnIndex(PARENTCATEGNAME)));
     }
 }

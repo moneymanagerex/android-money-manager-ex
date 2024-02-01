@@ -328,7 +328,7 @@ public class SearchParametersFragment
         // Store parameters from UI.
         SearchParameters searchParameters = collectSearchCriteria();
         setSearchParameters(searchParameters);
-
+        // WolfSolver TODO sarebbe utile che la where cercasse anche nelle sotto categorie
         String where = assembleWhereClause();
         Log.d(this.getClass().getName(),"Where: \n"+where);
         return where;
@@ -474,7 +474,7 @@ public class SearchParametersFragment
         if (searchParameters.category != null) {
             // Issue 1532 need to check subcategory first
             int categId;
-            if  ( searchParameters.category.subCategId != 0 ) {
+            if  ( searchParameters.category.subCategId > 0 ) { // WolfSolver Fix for nested category
                 categId = searchParameters.category.subCategId;
             } else {
                 categId = searchParameters.category.categId;
