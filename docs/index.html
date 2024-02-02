@@ -15,378 +15,377 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/mmex.css">
 </head>
 <body>
-    <section class="page-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-4 hidden-xs">
-                    <a href="appDemo.html">
-                        <img src="images/phone.png" />
-                    </a>
+<section class="page-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 hidden-xs">
+                <a href="appDemo.html">
+                    <img src="images/phone.png" />
+                </a>
+            </div>
+            <div class="col-sm-8">
+                <div class="container-fluid">
+                    <!-- logo -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <img src="images/ic_logo_money_manager_ex.png" />
+                        </div>
+                    </div>
+                    <!-- title -->
+                    <div class="row">
+                        <table style="height: 20rem; width: 100%;">
+                            <tr>
+                                <td valign="middle">
+                                    <p style="font-size: 3rem;">
+                                        <strong>Money Manager Ex</strong> for
+                                        <strong>Android</strong>
+                                    </p>
+                                    <p style="font-size: 1.2rem;">
+                                        Money Manager Ex is a free, open-source, cross-platform, easy-to-use
+                                        personal finance software. It primarily helps organize one's finances and
+                                        keeps track of where, when, and how the money flows
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- donation links -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- PayPal donation link -->
+                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_donations">
+                                <input type="hidden" name="business" value="moneymanagerex@gmail.com">
+                                <input type="hidden" name="lc" value="US">
+                                <input type="hidden" name="item_name" value="MoneyManagerEx">
+                                <input type="hidden" name="no_note" value="0">
+                                <input type="hidden" name="currency_code" value="USD">
+                                <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+
+                                <input type="image" src="images/paypal-donate.png" border="0" name="submit"
+                                       alt="PayPal - The safer, easier way to pay online!"
+                                       style="width: 160px; margin: 6px auto;" />
+                                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                            </form>
+                        </div>
+                        <div class="col-sm-4">
+                            <!-- WeChat donation QR -->
+                            <img src="images/wechat-donate.png" style="width: 90px; margin: 6px auto;" />
+                        </div>
+                        <!-- BitCoin donation link -->
+                        <div class="col-sm-4">
+                            <!-- https://en.bitcoin.it/wiki/Promotional_graphics -->
+                            <a href="bitcoin:1GrtxxsQmyMHorBMzd72uMpdPwjTYWaqQZ?label=donation">
+                                <img src="https://en.bitcoin.it/w/images/en/7/74/BC_Rnd_64px.png" style="width:150px;" />
+                                <img src="images/btc.png" style="width: 90px; margin: 6px auto;" />
+                                <p class="text-center" style="font-size: small; color: lightgray;">1GrtxxsQmyMHorBMzd72uMpdPwjTYWaqQZ</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-8">
-                    <div class="container-fluid">
-                        <!-- logo -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <img src="images/ic_logo_money_manager_ex.png" />
-                            </div>
-                        </div>
-                        <!-- title -->
-                        <div class="row">
-                            <table style="height: 20rem; width: 100%;">
-                                <tr>
-                                    <td valign="middle">
-                                        <p style="font-size: 3rem;">
-                                            <strong>Money Manager Ex</strong> for
-                                            <strong>Android</strong>
-                                        </p>
-                                        <p style="font-size: 1.2rem;">
-                                            Money Manager Ex is a free, open-source, cross-platform, easy-to-use
-                                            personal finance software. It primarily helps organize one's finances and
-                                            keeps track of where, when, and how the money flows
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- donation links -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <hr />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <!-- PayPal donation link -->
-                                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                    <input type="hidden" name="cmd" value="_donations">
-                                    <input type="hidden" name="business" value="moneymanagerex@gmail.com">
-                                    <input type="hidden" name="lc" value="US">
-                                    <input type="hidden" name="item_name" value="MoneyManagerEx">
-                                    <input type="hidden" name="no_note" value="0">
-                                    <input type="hidden" name="currency_code" value="USD">
-                                    <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
 
-                                    <input type="image" src="images/paypal-donate.png" border="0" name="submit"
-                                           alt="PayPal - The safer, easier way to pay online!"
-                                           style="width: 160px; margin: 6px auto;" />
-                                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                                </form>
-                            </div>
-                            <div class="col-sm-4">
-                                <!-- WeChat donation QR -->
-                                <img src="images/wechat-donate.png" style="width: 90px; margin: 6px auto;" />
-                            </div>
-                            <!-- BitCoin donation link -->
-                            <div class="col-sm-4">
-                                <!-- https://en.bitcoin.it/wiki/Promotional_graphics -->
-                                <a href="bitcoin:1GrtxxsQmyMHorBMzd72uMpdPwjTYWaqQZ?label=donation">
-                                    <img src="https://en.bitcoin.it/w/images/en/7/74/BC_Rnd_64px.png" style="width:150px;" />
-                                    <img src="images/btc.png" style="width: 90px; margin: 6px auto;" />
-                                    <p class="text-center" style="font-size: small; color: lightgray;">1GrtxxsQmyMHorBMzd72uMpdPwjTYWaqQZ</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- footer -->
-                    <div style="text-align: left; font-style: italic; margin-top: 3rem;">
-                        Desktop version of Money Manager Ex runs on all the major OS's, like <b>Windows</b>,
-                        <b>MacOS</b>, and <b>Linux</b>.
-                    </div>
+                <!-- footer -->
+                <div style="text-align: left; font-style: italic; margin-top: 3rem;">
+                    Desktop version of Money Manager Ex runs on all the major OS's, like <b>Windows</b>,
+                    <b>MacOS</b>, and <b>Linux</b>.
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- fork on Github -->
-    <a href="https://github.com/moneymanagerex/android-money-manager-ex">
-        <img class="hidden-sm hidden-xs" style="position: absolute; top: 0; right: 0; border: 0;"
-             src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
-             alt="Fork me on GitHub"
-             data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
-    </a>
+<!-- fork on Github -->
+<a href="https://github.com/moneymanagerex/android-money-manager-ex">
+    <img class="hidden-sm hidden-xs" style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+</a>
 
-    <section class="main-content">
-        <h2>
-            MoneyManagerEx for Android
-        </h2>
+<section class="main-content">
+    <h2>
+        MoneyManagerEx for Android
+    </h2>
 
-        <h3>
-            Introduction
-        </h3>
+    <h3>
+        Introduction
+    </h3>
 
-        <p>
-            Money Manager Ex for Android is a port of the desktop personal finance application
-            <a href="http://www.moneymanagerex.org/">Money Manager Ex</a>, currently available for Windows, Mac OSX and
-            Linux. The Android version mirrors the best features of the desktop version while adding mobility
-            and database synchronization.
-        </p>
-        <p>
-            In Money Manager Ex project, we strive to develop good personal finance software that we use
-            ourselves. We also do this for fun and the love of programming. We are a non-profit, informal
-            organization although we do accept donations and use them towards the hosting fees. Any leftovers for the Android version will also go towards acquiring a device for the app testing.
-        </p>
+    <p>
+        Money Manager Ex for Android is a port of the desktop personal finance application
+        <a href="http://www.moneymanagerex.org/">Money Manager Ex</a>, currently available for Windows, Mac OSX and
+        Linux. The Android version mirrors the best features of the desktop version while adding mobility
+        and database synchronization.
+    </p>
+    <p>
+        In Money Manager Ex project, we strive to develop good personal finance software that we use
+        ourselves. We also do this for fun and the love of programming. We are a non-profit, informal
+        organization although we do accept donations and use them towards the hosting fees. Any leftovers for the Android version will also go towards acquiring a device for the app testing.
+    </p>
 
-        <h3>
-            Change Log
-        </h3>
-        <p>
-            The app versions are listed on our <a href="https://github.com/moneymanagerex/android-money-manager-ex/milestones?direction=desc&sort=due_date&state=closed" target="_blank">Milestones page</a>.
-        </p>
-        <p>
-            The published releases are available at our <a href="https://github.com/moneymanagerex/android-money-manager-ex/releases" target="_blank">Releases page</a>.
-        </p>
+    <h3>
+        Change Log
+    </h3>
+    <p>
+        The app versions are listed on our <a href="https://github.com/moneymanagerex/android-money-manager-ex/milestones?direction=desc&sort=due_date&state=closed" target="_blank">Milestones page</a>.
+    </p>
+    <p>
+        The published releases are available at our <a href="https://github.com/moneymanagerex/android-money-manager-ex/releases" target="_blank">Releases page</a>.
+    </p>
 
-<!-- remove demo version -->
-<!--        <h3>
-            Demo
-        </h3>
-        <p>
-            To test run the application in your browser, please click <a href="appDemo.html">here</a> or on the phone screenshot at the top, if visible.
-        </p>   -->
+    <!-- remove demo version -->
+    <!--        <h3>
+                Demo
+            </h3>
+            <p>
+                To test run the application in your browser, please click <a href="appDemo.html">here</a> or on the phone screenshot at the top, if visible.
+            </p>   -->
 
-        <h3>
-            Documentation
-        </h3>
-        <p>
-            See our <a href="https://github.com/moneymanagerex/android-money-manager-ex/wiki" target="_blank">Wiki pages</a> for
-            documentation and tutorials.
-        </p>
-        <p>
-            A <a href="/usermanual/">User Manual</a> is a
-            useful guide for newcomers and experienced users alike.
-        </p>
+    <h3>
+        Documentation
+    </h3>
+    <p>
+        See our <a href="https://github.com/moneymanagerex/android-money-manager-ex/wiki" target="_blank">Wiki pages</a> for
+        documentation and tutorials.
+    </p>
+    <p>
+        A <a href="/usermanual/">User Manual</a> is a
+        useful guide for newcomers and experienced users alike.
+    </p>
 
-        <h3>
-            Download
-        </h3>
+    <h3>
+        Download
+    </h3>
 
-        <p>
-            The app will be available through <a href="https://f-droid.org/packages/com.money.manager.ex/">F-Droid repository</a> , but for now you need to download manually.
-        </p>
-        <p>
-            Download latest release (and historical) from our
-            <a href="https://github.com/moneymanagerex/android-money-manager-ex/releases">Releases page</a>.
-            <br>Detail install istruction <a href="/install">here</a>.
-        </p>
+    <p>
+        The app is available through <a href="https://f-droid.org/packages/com.money.manager.ex/">F-Droid repository</a>.<br>
+    </p>
+    <p>
+        Source Code and Release info for stable, pre-release and historical can be found on our
+        <a href="https://github.com/moneymanagerex/android-money-manager-ex/releases">Releases page on github</a>.
+        <br>Detail manual installation istruction <a href="/install">here</a>.
+    </p>
 
-        <h3>
-            Features
-        </h3>
-        <p>
-            All the feature requests can be tracked at our 
+    <h3>
+        Features
+    </h3>
+    <p>
+        All the feature requests can be tracked at our
+        <a href="https://github.com/moneymanagerex/android-money-manager-ex/issues">
+            issue tracker on GitHub.
+        </a>.
+    </p>
+
+    <h4>Highlights</h4>
+
+    <ul>
+        <li> Opening databases by using storage access framework, allowing you to pick your favourite
+            storage provider, whether cloud or local.
+        </li>
+        <li>Transaction management</li>
+        <li>Multiple accounts and account types, currencies, and languages.</li>
+        <li>Account, payee, category, currency management</li>
+        <li>Budgets (view only, currently)</li>
+        <li>Investment watchlists</li>
+        <li>Asset Allocation</li>
+        <li>Storage card Import/Export</li>
+        <li>Security - application lock/unlock with pin code</li>
+        <li>Recurring transactions</li>
+        <li>Reports and Charts</li>
+    </ul>
+
+    <h4>Planned</h4>
+
+    <ul>
+        <li>Database encryption support (prototype ready!)</li>
+        <li>Attachments</li>
+        <li>
             <a href="https://github.com/moneymanagerex/android-money-manager-ex/issues">
-                issue tracker on GitHub.
-            </a>.
-        </p>
-
-        <h4>Highlights</h4>
-
-        <ul>
-            <li> Opening databases by using storage access framework, allowing you to pick your favourite
-                storage provider, whether cloud or local.
-            </li>
-            <li>Transaction management</li>
-            <li>Multiple accounts and account types, currencies, and languages.</li>
-            <li>Account, payee, category, currency management</li>
-            <li>Budgets (view only, currently)</li>
-            <li>Investment watchlists</li>
-            <li>Asset Allocation</li>
-            <li>Storage card Import/Export</li>
-            <li>Security - application lock/unlock with pin code</li>
-            <li>Recurring transactions</li>
-            <li>Reports and Charts</li>
-        </ul>
-
-        <h4>Planned</h4>
-
-        <ul>
-            <li>Database encryption support (prototype ready!)</li>
-            <li>Attachments</li>
-            <li>
-                <a href="https://github.com/moneymanagerex/android-money-manager-ex/issues">
-                    and more... Click to see our
-                    list and/or submit a feature request or a bug report.
-                </a>
-            </li>
-        </ul>
-
-        <h3>
-            Screenshots
-        </h3><a name="screenshots"></a>
-
-        <ul>
-            <li>
-                <a target="_blank" href="http://imgur.com/a/L1lLO">MMEX Screenshots, phone</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://imgur.com/a/nGkGC">MMEX Screenshots, 7" tablet</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://imgur.com/a/7Ui1Z">MMEX Screenshots, 10" tablet</a>
-            </li>
-            <li>
-                <a target="_blank" href="http://imgur.com/a/2S6qo">Wiki Screenshots</a>
-            </li>
-            <li>
-                <a target="_blank" href="https://www.flickr.com/photos/alen_siljak/sets/72157651244653906">Screenshots 1</a>
-            </li>
-            <li>
-                <a target="_blank" href="https://drive.google.com/open?id=0B91YMan-BezzfjVLd0Z6QUlTZUg5VjFWNFc3OFpnMmFZRll2a0xEYUNoRlVmaFVlWmZnVDQ&authuser=0">Material design</a>
-            </li>
-        </ul>
-
-        <h3>
-            Contact
-        </h3>
-
-        <p>
-            <a href="https://twitter.com/MMEXForAndroid">
-                Follow us on
-                <img src="images/twitter.png" alt="Twitter" style="width: 110px; position: relative; top: -3px;" />
+                and more... Click to see our
+                list and/or submit a feature request or a bug report.
             </a>
-            for the latest announcements.
-        </p>
-        <p>
-            Discussions, questions, and useful advice can be found in the Android <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">forum</a>
-        </p>
-        <p>
-            In special situations, you can reach us by email:
-            <a href="mailto:android@moneymanagerex.org">android@moneymanagerex.org</a>. Please note that we do not 
-            provide support via email due to the voluntary nature of the project, a fairly small number of project members,
-            and a large number of end users.
-        </p>
+        </li>
+    </ul>
 
-        <h3>
-            Support
-        </h3>
+    <h3>
+        Screenshots
+    </h3><a name="screenshots"></a>
 
-        <p>
-            You can request from other users in the
-            <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">Android section</a>
-            of the Money Manager Ex Support Forum.
-        </p>
+    <ul>
+        <li>
+            <a target="_blank" href="http://imgur.com/a/L1lLO">MMEX Screenshots, phone</a>
+        </li>
+        <li>
+            <a target="_blank" href="http://imgur.com/a/nGkGC">MMEX Screenshots, 7" tablet</a>
+        </li>
+        <li>
+            <a target="_blank" href="http://imgur.com/a/7Ui1Z">MMEX Screenshots, 10" tablet</a>
+        </li>
+        <li>
+            <a target="_blank" href="http://imgur.com/a/2S6qo">Wiki Screenshots</a>
+        </li>
+        <li>
+            <a target="_blank" href="https://www.flickr.com/photos/alen_siljak/sets/72157651244653906">Screenshots 1</a>
+        </li>
+        <li>
+            <a target="_blank" href="https://drive.google.com/open?id=0B91YMan-BezzfjVLd0Z6QUlTZUg5VjFWNFc3OFpnMmFZRll2a0xEYUNoRlVmaFVlWmZnVDQ&authuser=0">Material design</a>
+        </li>
+    </ul>
 
-        <h3>
-            Contribution
-        </h3>
+    <h3>
+        Contact
+    </h3>
 
-        <p>
-            The key to the success of the project is the users' contributions. There are several ways you can leave your mark.
-        </p> 
+    <p>
+        <a href="https://twitter.com/MMEXForAndroid">
+            Follow us on
+            <img src="images/twitter.png" alt="Twitter" style="width: 110px; position: relative; top: -3px;" />
+        </a>
+        for the latest announcements.
+    </p>
+    <p>
+        Discussions, questions, and useful advice can be found in the Android <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">forum</a>
+    </p>
+    <p>
+        In special situations, you can reach us by email:
+        <a href="mailto:android@moneymanagerex.org">android@moneymanagerex.org</a>. Please note that we do not
+        provide support via email due to the voluntary nature of the project, a fairly small number of project members,
+        and a large number of end users.
+    </p>
 
-        <h4>Development</h4>
+    <h3>
+        Support
+    </h3>
 
-        <p>
-            Being an Open Source project, we welcome any contribution in coding features and corrections. You are welcome to
-            join the project and submit pull requests. Simply clone the repository on GitHub and start hacking away.
-        </p>
-        <p>
-            If you (still) believe that coding is not for you, please watch <a href="https://www.youtube.com/watch?v=TK1mBqKvIyU">this inspirational video</a>. It might change your mind.
-        </p>
+    <p>
+        You can request from other users in the
+        <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">Android section</a>
+        of the Money Manager Ex Support Forum.
+    </p>
 
-        <a name="translation"></a>
-        <h4>
-            Translation
-        </h4>
+    <h3>
+        Contribution
+    </h3>
 
-        <p>
-            If you want to join our translation team, visit
-            <a href="https://crowdin.net/project/android-money-manager-ex">
-                MoneyManagerEx for Android on
-                <img src="images/crowdin-logo-150.png" style="width: 150px;" />.
-            </a>
-        </p>
+    <p>
+        The key to the success of the project is the users' contributions. There are several ways you can leave your mark.
+    </p>
 
-        <h4>
-            Documentation
-        </h4>
-        <p>
-            You can also contribute to the documentation at the <a href="https://github.com/moneymanagerex/android-money-manager-ex/wiki">Wiki pages</a> and User Documentation by writing description of the app screens and providing screenshots. To edit wiki pages offline, please see the <a href="https://help.github.com/articles/adding-and-editing-wiki-pages-locally/">instructions</a>.
-        </p>
-        
-        <h4>
-            Support
-        </h4>
-        <p>
-            You can assist less experienced users by providing helpful answers in the <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">Android section</a> of the MMEX support forums.
-        </p>
-        
-        <a name="testing"></a>
-        <div class="pull-right">
-        	<a href="https://play.google.com/store/apps/details?id=com.money.manager.ex.beta" target="_blank">
-        		<img src="images/beta.png" />
-        	</a>
-        </div>
+    <h4>Development</h4>
 
-        <h4>
-            Testing - Pre-Release Versions
-        </h4>
+    <p>
+        Being an Open Source project, we welcome any contribution in coding features and corrections. You are welcome to
+        join the project and submit pull requests. Simply clone the repository on GitHub and start hacking away.
+    </p>
+    <p>
+        If you (still) believe that coding is not for you, please watch <a href="https://www.youtube.com/watch?v=TK1mBqKvIyU">this inspirational video</a>. It might change your mind.
+    </p>
 
-        <p>
-            Your assistance with testing the pre-release (Beta) versions of the app is highly appreciated. 
-            This way you can directly help the project and ensure that the stable releases are bulletproof.
-        </p>
-        <p>
-            Should you want to try out the latest version of Money Manager Ex for Android, you can access it through 
-            F-Droid.  Just enable pre-release versions and they will be listed in the version history but will not be 
-            offered as regular app updates. This allows easy reverting to previous versions should something go wrong.
-        </p>
+    <a name="translation"></a>
+    <h4>
+        Translation
+    </h4>
 
-        <h3>License</h3><a name="license"></a>
+    <p>
+        If you want to join our translation team, visit
+        <a href="https://crowdin.net/project/android-money-manager-ex">
+            MoneyManagerEx for Android on
+            <img src="images/crowdin-logo-150.png" style="width: 150px;" />.
+        </a>
+    </p>
 
-        <p>
-            The source code is published under <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">
-                GPL license
-                <img src="http://www.gnu.org/graphics/lgplv3-88x31.png" />
-            </a>.
-        </p>
+    <h4>
+        Documentation
+    </h4>
+    <p>
+        You can also contribute to the documentation at the <a href="https://github.com/moneymanagerex/android-money-manager-ex/wiki">Wiki pages</a> and User Documentation by writing description of the app screens and providing screenshots. To edit wiki pages offline, please see the <a href="https://help.github.com/articles/adding-and-editing-wiki-pages-locally/">instructions</a>.
+    </p>
 
-        <h4>Infringement Case</h4>
+    <h4>
+        Support
+    </h4>
+    <p>
+        You can assist less experienced users by providing helpful answers in the <a href="http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186">Android section</a> of the MMEX support forums.
+    </p>
 
-        <p>
-            Even though we provide the source code for free, under the GPL License, we have lived to see the first copyright infringement and plagiarism case. <a href="shree.html">More details here</a>.
-        </p>
+    <a name="testing"></a>
+    <div class="pull-right">
+        <a href="https://play.google.com/store/apps/details?id=com.money.manager.ex.beta" target="_blank">
+            <img src="images/beta.png" />
+        </a>
+    </div>
 
-        <footer class="site-footer">
+    <h4>
+        Testing - Pre-Release Versions
+    </h4>
+
+    <p>
+        Your assistance with testing the pre-release (Beta) versions of the app is highly appreciated.
+        This way you can directly help the project and ensure that the stable releases are bulletproof.
+    </p>
+    <p>
+        Should you want to try out the latest version of Money Manager Ex for Android, you can access it through
+        F-Droid.  Just enable pre-release versions and they will be listed in the version history but will not be
+        offered as regular app updates. This allows easy reverting to previous versions should something go wrong.
+    </p>
+
+    <h3>License</h3><a name="license"></a>
+
+    <p>
+        The source code is published under <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">
+        GPL license
+        <img src="http://www.gnu.org/graphics/lgplv3-88x31.png" />
+    </a>.
+    </p>
+
+    <h4>Infringement Case</h4>
+
+    <p>
+        Even though we provide the source code for free, under the GPL License, we have lived to see the first copyright infringement and plagiarism case. <a href="shree.html">More details here</a>.
+    </p>
+
+    <footer class="site-footer">
             <span class="site-footer-owner">
                 <a href="https://github.com/moneymanagerex/android-money-manager-ex">Android-money-manager-ex</a> is
                 maintained by <a href="https://github.com/moneymanagerex">moneymanagerex</a>.
             </span>
 
-            <small>
+        <small>
                 <span class="site-footer-credits">
                     Design by MoneyManagerEx for Android team. - <a href="/privacypolicy.html">Privacy Policy</a>
                 </span>
-            </small>
-        </footer>
+        </small>
+    </footer>
 
-    </section>
+</section>
 
-    <!-- scripts -->
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-12VNJRY8Y2"></script>
-    <script>
+<!-- scripts -->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12VNJRY8Y2"></script>
+<script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', 'G-12VNJRY8Y2');
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2857821988452598"
-         crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2857821988452598"
-         data-ad-slot="9821370883"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2857821988452598"
+        crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2857821988452598"
+     data-ad-slot="9821370883"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
          (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 </body>
 </html>
-
