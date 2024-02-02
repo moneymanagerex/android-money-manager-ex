@@ -197,7 +197,8 @@ public class IncomeVsExpensesListFragment
             case ID_LOADER_YEARS:
                 if (data != null && data.moveToFirst()) {
                     // move to first record #1539
-                    data.moveToPosition(-1);
+// work moving issue #1546                    data.moveToPosition(-1);
+                    data.moveToFirst(); // issue #1546 set correct first record
 
                     while (!data.isAfterLast()) {
                         int year = data.getInt(data.getColumnIndex("Year"));
