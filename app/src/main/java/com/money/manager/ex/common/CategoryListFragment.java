@@ -175,7 +175,7 @@ public class CategoryListFragment
         }
 
         // context menu from resource
-        menu.add(Menu.NONE, ContextMenuIds.ADD.getId(), Menu.NONE, getString(R.string.add_subcategory));
+        menu.add(Menu.NONE, ContextMenuIds.ADD.getId(), Menu.NONE, getString(R.string.add_subcategory)); // WolfSolver Add subcategory for item
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
