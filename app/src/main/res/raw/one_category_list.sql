@@ -1,9 +1,5 @@
 -- one_category_list.sql
 -- set are required from Codacy
-SET NOCOUNT ON
-SET QUOTED_IDENTIFIER ON
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-SET ANSI_NULLS ON
 WITH RECURSIVE categories(categid, categname, catbasename, parentid, parentcategname, active ) AS
     (SELECT a.categid, a.categname, a.categname AS catbasename, a.parentid, NULL AS parentcategname, a.active
 	    FROM category_v1 a WHERE parentid = '-1'
