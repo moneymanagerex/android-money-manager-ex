@@ -1,5 +1,10 @@
 --query_alldata.sql
 -- Account Transactions list
+-- set are required from Codacy
+SET NOCOUNT ON
+SET QUOTED_IDENTIFIER ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET ANSI_NULLS ON
 WITH RECURSIVE categories(categid, categname, parentid) AS
     (SELECT a.categid, a.categname, a.parentid FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
@@ -11,21 +16,21 @@ SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    CAT.categName as category, -- Wolfsolver set full category name
-    NULL as subcategory,       -- Wolfsolver ignore subcategory
+    CAT.categName AS category, -- Wolfsolver set full category name
+    NULL AS subcategory,       -- Wolfsolver ignore subcategory
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
-    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount as Amount,
+    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount AS Amount,
     FromAcc.CurrencyID as CurrencyID,
     cf.currency_symbol AS currency,
     FromAcc.AccountID as AccountID,
     FromAcc.AccountName as AccountName,
     -- Destination
-    ifnull(ToAcc.AccountId, FromAcc.AccountId) as ToAccountId,
-    ifnull(ToAcc.AccountName, FromAcc.AccountName) as ToAccountName,
-    TX.ToTransAmount as ToAmount,
-    ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) as ToCurrencyId,
+    ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountId,
+    ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
+    TX.ToTransAmount AS ToAmount,
+    ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyId,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
 --    ifnull( PARENTCAT.CategID, CAT.CategID ) AS ParentCategID,
     -1 AS ParentCategID,

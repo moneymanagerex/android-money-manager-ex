@@ -1,4 +1,9 @@
---query_budgets.sql -- DA VERIFICARE CON SORGENTE ORIGINALE
+--query_budgets.sql
+-- set are required from Codacy
+SET NOCOUNT ON
+SET QUOTED_IDENTIFIER ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET ANSI_NULLS ON
 WITH RECURSIVE categories(categid, categname, parentid) AS
     (SELECT a.categid, a.categname, a.parentid FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
@@ -9,6 +14,6 @@ WITH RECURSIVE categories(categid, categname, parentid) AS
 -- Get the Budgets for display
 SELECT b.*,
 	c.CategName,
-	NULL as SubCategName
+	NULL AS SubCategName
 FROM budgettable_v1 b
     LEFT OUTER JOIN categories c ON b.categid = c.categid
