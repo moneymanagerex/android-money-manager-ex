@@ -11,8 +11,8 @@ SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    CAT.CategName as Category, -- Wolfsolver set full category name
-    null as Subcategory,       -- Wolfsolver ignore subcategory
+    CAT.categName as category, -- Wolfsolver set full category name
+    NULL as subcategory,       -- Wolfsolver ignore subcategory
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,

@@ -7,8 +7,8 @@ WITH RECURSIVE categories(categid, categname, parentid) AS
 	 WHERE r.categid = c.parentid
 	 )
 -- Get the Budgets for display
-select b.*,
+SELECT b.*,
 	c.CategName,
-	null as SubCategName
-from budgettable_v1 b
-    left outer join categories c on b.categid = c.categid
+	NULL as SubCategName
+FROM budgettable_v1 b
+    LEFT OUTER JOIN categories c ON b.categid = c.categid

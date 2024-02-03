@@ -24,11 +24,6 @@ import android.os.Parcelable;
  * Created by Alen on 13/07/2015.
  */
 public class CategorySub implements Parcelable {
-
-    public CategorySub() {
-        // default constructor
-    }
-
     public int categId;
     public String categName;
     public int subCategId;
@@ -36,6 +31,10 @@ public class CategorySub implements Parcelable {
     public int parentId;
     public String categBaseName;
     public String parentCategName;
+
+    public CategorySub() {
+        // default constructor
+    }
 
     protected CategorySub(Parcel in) {
         categId = in.readInt();

@@ -2,9 +2,9 @@
     Query mobiledata. This is the base for most other queries.
 */
 WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcategname ) AS
-    (SELECT a.categid, a.categname, a.categname as catshortname, a.parentid, null as parentcategname FROM category_v1 a WHERE parentid = '-1'
+    (SELECT a.categid, a.categname, a.categname AS catshortname, a.parentid, NULL AS parentcategname FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
-     SELECT c.categid, r.categname || ':' || c.categname, c.CATEGNAME as catshortname, c.parentid, r.categname as parentcategname
+     SELECT c.categid, r.categname || ':' || c.categname, c.CATEGNAME AS catshortname, c.parentid, r.categname AS parentcategname
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
@@ -12,7 +12,7 @@ SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     d.userdate AS UserDate,
-    coalesce( SCAT.categname, CAT.categname ) as CategoryFullName,
+    coalesce( SCAT.categname, CAT.categname ) AS CategoryFullName,
     coalesce( SCAT.parentcategname, SCAT.catshortname, CAT.parentcategname, CAT.catshortname ) AS Category,
     coalesce( SCAT.catshortname, CAT.catshortname ) AS Subcategory,
     cf.currency_symbol AS currency,
@@ -64,4 +64,4 @@ FROM CHECKINGACCOUNT_V1 TX
             LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
             LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
     ) d ON d.id = TX.TRANSID
-WHERE (TX.DELETEDTIME is null or TX.DELETEDTIME = '')
+WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
