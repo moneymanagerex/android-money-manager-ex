@@ -1,6 +1,6 @@
 -- query_categorysubcategory.sql
 -- based on one_category_list
--- set are required from Codacy
+-- set are required from Codacy.
 SET NOCOUNT ON
 SET QUOTED_IDENTIFIER ON
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
