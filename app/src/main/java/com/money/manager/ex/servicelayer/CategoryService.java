@@ -112,8 +112,8 @@ public class CategoryService
      * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-//        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
-        Select query = new Select().orderBy(Category.CATEGNAME);
+        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
+// WS TODO We need to retrive all category in resursive...        Select query = new Select().orderBy(Category.CATEGNAME);
         return getRepository().query(Category.class, query);
     }
 

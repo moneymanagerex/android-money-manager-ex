@@ -605,6 +605,9 @@ public class CategoryListFragment
 
         // Fill categories list.
         CategoryService categoryService = new CategoryService(getActivity());
+// Wolfsolver: ToDo categoryService use CATEGORY_V1 Table (and we cannot change this)
+// solution: disable create of subcategory from this point (add will be moved inside listview)
+// solution 2: create a new categoryRecursiveService that work on one-category-list
         final List<Category> categories = categoryService.getList();
 
         ArrayList<String> categoryNames = new ArrayList<>();
