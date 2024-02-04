@@ -21,12 +21,12 @@
     <dimen name="input_dialog_button_height">72dp</dimen>
 </resources>
 
-<!-- References:
-https://developer.android.com/guide/practices/screens_support.html
+        <!-- References:
+        https://developer.android.com/guide/practices/screens_support.html
 
-Typical numbers for screen width dp are:
-    320: a phone screen (240x320 ldpi, 320x480 mdpi, 480x800 hdpi, etc).
-    480: a tweener tablet like the Streak (480x800 mdpi).
-    600: a 7” tablet (600x1024).
-    720: a 10” tablet (720x1280, 800x1280, etc).
--->
+        Typical numbers for screen width dp are:
+            320: a phone screen (240x320 ldpi, 320x480 mdpi, 480x800 hdpi, etc).
+            480: a tweener tablet like the Streak (480x800 mdpi).
+            600: a 7” tablet (600x1024).
+            720: a 10” tablet (720x1280, 800x1280, etc).
+        -->

@@ -22,15 +22,15 @@ import com.money.manager.ex.MmexApplication;
 /**
  * Application class for unit tests.
  * Overrides initialization of Job Manager to enable running unit tests with Robolectric.
- *
+ * <p>
  * TODO: Implement a Test Application for Robolectric to use
  */
 
 public class TestApplication
-    extends MmexApplication {
+        extends MmexApplication {
 
     @Override
-    public void initializeJobManager(){
+    public void initializeJobManager() {
         // do nothing
     }
 }

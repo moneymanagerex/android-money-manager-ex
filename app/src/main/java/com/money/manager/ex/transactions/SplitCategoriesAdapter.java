@@ -20,12 +20,12 @@ package com.money.manager.ex.transactions;
 import android.content.Context;
 import android.os.Build;
 import android.text.Editable;
-// not used
-// import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
@@ -41,7 +41,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -49,12 +48,8 @@ import info.javaperformance.money.MoneyFactory;
  * Adapter for the recycler view version of Split Categories view.
  */
 public class SplitCategoriesAdapter
-    extends RecyclerView.Adapter<SplitItemViewHolder>
-    implements SplitItemTouchAdapter {
-
-    public SplitCategoriesAdapter() {
-        splitTransactions = new ArrayList<>();
-    }
+        extends RecyclerView.Adapter<SplitItemViewHolder>
+        implements SplitItemTouchAdapter {
 
     public List<ISplitTransaction> splitTransactions;
     public int currencyId;
@@ -62,19 +57,22 @@ public class SplitCategoriesAdapter
      * Transaction type for the main transaction that contains the splits.
      */
     public TransactionTypes transactionType;
-
     private Context mContext;
+
+    public SplitCategoriesAdapter() {
+        splitTransactions = new ArrayList<>();
+    }
 
     /**
      * Inflate a layout from XML and return the holder.
      */
     @Override
-    public SplitItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SplitItemViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         mContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.item_splittransaction, parent, false);
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        final View view = inflater.inflate(R.layout.item_splittransaction, parent, false);
 
-        SplitItemViewHolder viewHolder = new SplitItemViewHolder(view);
+        final SplitItemViewHolder viewHolder = new SplitItemViewHolder(view);
 
         initAmountControl(viewHolder);
         initCategorySelector(viewHolder);
@@ -88,10 +86,10 @@ public class SplitCategoriesAdapter
      * Populate data into the item through holder.
      */
     @Override
-    public void onBindViewHolder(SplitItemViewHolder holder, int position) {
-        ISplitTransaction split = this.splitTransactions.get(position);
+    public void onBindViewHolder(final SplitItemViewHolder holder, final int position) {
+        final ISplitTransaction split = splitTransactions.get(position);
 
-        bindCategory(getContext(), holder, split);
+        bindCategory(mContext, holder, split);
         bindTransactionTypeButton(split, holder);
         bindAmount(split, holder);
         bindNotes(split, holder);
@@ -106,45 +104,45 @@ public class SplitCategoriesAdapter
         return mContext;
     }
 
-    private void bindAmount(ISplitTransaction splitTransaction, SplitItemViewHolder holder) {
+    private void bindAmount(final ISplitTransaction splitTransaction, final SplitItemViewHolder holder) {
         Money displayAmount = splitTransaction.getAmount();
-        if (displayAmount != null && !(displayAmount.isZero())) {
+        if (null != displayAmount && !(displayAmount.isZero())) {
             // Change the sign to positive.
-            if(displayAmount.toDouble() < 0) {
+            if (0 > displayAmount.toDouble()) {
                 displayAmount = displayAmount.negate();
             }
         }
 
-        FormatUtilities formatter = new FormatUtilities(getContext());
+        final FormatUtilities formatter = new FormatUtilities(mContext);
         formatter.formatAmountTextView(holder.txtAmount, displayAmount, currencyId);
     }
 
-    private void bindCategory(Context context, SplitItemViewHolder holder, ISplitTransaction split) {
-        CategoryService service = new CategoryService(context);
+    private void bindCategory(final Context context, final SplitItemViewHolder holder, final ISplitTransaction split) {
+        final CategoryService service = new CategoryService(context);
 
-        String buttonText = service.getCategorySubcategoryName(split.getCategoryId());
+        final String buttonText = service.getCategorySubcategoryName(split.getCategoryId());
         holder.txtSelectCategory.setText(buttonText);
     }
 
-    private void bindNotes(ISplitTransaction splitTransaction, SplitItemViewHolder holder) {
-        String notes = splitTransaction.getNotes();
+    private void bindNotes(final ISplitTransaction splitTransaction, final SplitItemViewHolder holder) {
+        final String notes = splitTransaction.getNotes();
         holder.txtNotesSplit.setText(notes);
     }
 
 
-    private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
-        int green;
-        int red;
+    private void bindTransactionTypeButton(final ISplitTransaction split, final SplitItemViewHolder viewHolder) {
+        final int green;
+        final int red;
         // 15
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            green = getContext().getColor(R.color.material_green_700);
-            red = getContext().getColor(R.color.material_red_700);
+        if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT) {
+            green = mContext.getColor(R.color.material_green_700);
+            red = mContext.getColor(R.color.material_red_700);
         } else {
-            green = getContext().getResources().getColor(R.color.material_green_700);
-            red = getContext().getResources().getColor(R.color.material_red_700);
+            green = mContext.getResources().getColor(R.color.material_green_700);
+            red = mContext.getResources().getColor(R.color.material_red_700);
         }
 
-        if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
+        if (TransactionTypes.Withdrawal == split.getTransactionType(transactionType)) {
             // withdrawal
             viewHolder.transactionTypeButton.setText(R.string.ic_diff_removed);
             viewHolder.transactionTypeButton.setTextColor(red);
@@ -160,11 +158,11 @@ public class SplitCategoriesAdapter
 
         viewHolder.txtAmount.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
-                Object tag = v.getTag();
-                Money amount;
-                if (tag == null) {
+                final Object tag = v.getTag();
+                final Money amount;
+                if (null == tag) {
                     amount = MoneyFactory.fromString("0");
                 } else {
                     amount = MoneyFactory.fromString(tag.toString());
@@ -180,7 +178,7 @@ public class SplitCategoriesAdapter
         holder.txtSelectCategory.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // request category selection
                 EventBus.getDefault().post(new CategoryRequestedEvent(holder.getAdapterPosition()));
             }
@@ -190,12 +188,12 @@ public class SplitCategoriesAdapter
     private void initTransactionTypeButton(final SplitItemViewHolder viewHolder) {
         viewHolder.transactionTypeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                int position = viewHolder.getAdapterPosition();
+            public void onClick(final View v) {
+                final int position = viewHolder.getAdapterPosition();
                 // change transaction type.
-                ISplitTransaction split = splitTransactions.get(position);
-                TransactionTypes newTransactionType;
-                if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
+                final ISplitTransaction split = splitTransactions.get(position);
+                final TransactionTypes newTransactionType;
+                if (TransactionTypes.Withdrawal == split.getTransactionType(transactionType)) {
                     newTransactionType = TransactionTypes.Deposit;
                 } else {
                     newTransactionType = TransactionTypes.Withdrawal;
@@ -209,20 +207,20 @@ public class SplitCategoriesAdapter
     public void initNotesControls(final SplitItemViewHolder viewHolder) {
         viewHolder.txtNotesSplit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
                 // todo: empty method?
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
                 // todo: empty method?
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                int position = viewHolder.getAdapterPosition();
+            public void afterTextChanged(final Editable editable) {
+                final int position = viewHolder.getAdapterPosition();
                 // change transaction type.
-                ISplitTransaction split = splitTransactions.get(position);
+                final ISplitTransaction split = splitTransactions.get(position);
                 split.setNotes(editable.toString());
 //                notifyItemChanged(position);
             }
@@ -234,7 +232,7 @@ public class SplitCategoriesAdapter
      */
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
+    public void onItemMove(final int fromPosition, final int toPosition) {
 //        if (fromPosition < toPosition) {
 //            for (int i = fromPosition; i < toPosition; i++) {
 //                Collections.swap(mItems, i, i + 1);
@@ -249,12 +247,12 @@ public class SplitCategoriesAdapter
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         // add the removed item to the collection
-        ISplitTransaction tx = splitTransactions.get(position);
+        final ISplitTransaction tx = splitTransactions.get(position);
         EventBus.getDefault().post(new SplitItemRemovedEvent(tx));
 
-        this.splitTransactions.remove(position);
+        splitTransactions.remove(position);
         notifyItemRemoved(position);
     }
 }

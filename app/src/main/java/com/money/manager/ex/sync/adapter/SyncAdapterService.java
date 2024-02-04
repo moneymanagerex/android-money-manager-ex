@@ -28,7 +28,7 @@ import android.os.IBinder;
  * onPerformSync().
  */
 public class SyncAdapterService
-    extends Service {
+        extends Service {
 
     // The authority for the sync adapter's content provider
     public static final String AUTHORITY = "com.money.manager.ex.sync.adapter";
@@ -36,11 +36,10 @@ public class SyncAdapterService
     public static final String ACCOUNT_TYPE = "com.money.manager.ex.sync";
     // The account name
     public static final String ACCOUNT = "Synchronization";
-
-    // Storage for an instance of the sync adapter
-    private static SyncAdapter sSyncAdapter = null;
     // Object to use as a thread-safe lock
     private static final Object sSyncAdapterLock = new Object();
+    // Storage for an instance of the sync adapter
+    private static SyncAdapter sSyncAdapter = null;
 
     /*
      * Instantiate the sync adapter object.

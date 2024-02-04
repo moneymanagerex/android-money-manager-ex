@@ -30,26 +30,26 @@ import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
  * Account Transaction repository.
  */
 public class QueryAllDataRepository
-    extends RepositoryBase {
+        extends RepositoryBase {
 
     public QueryAllDataRepository(Context context) {
         super(context, MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
-            "queryalldata");
+                "queryalldata");
     }
 
     @Override
     public String[] getAllColumns() {
         return new String[]{"ID AS _id", QueryAllData.ID, QueryAllData.TransactionType,
-            QueryAllData.Date, QueryAllData.UserDate, QueryAllData.Year, QueryAllData.Month,
-            QueryAllData.Day, QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.Amount,
-            QueryAllData.BaseConvRate, QueryAllData.CURRENCYID, QueryAllData.AccountName,
-            QueryAllData.ACCOUNTID,
+                QueryAllData.Date, QueryAllData.UserDate, QueryAllData.Year, QueryAllData.Month,
+                QueryAllData.Day, QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.Amount,
+                QueryAllData.BaseConvRate, QueryAllData.CURRENCYID, QueryAllData.AccountName,
+                QueryAllData.ACCOUNTID,
 //                FromAccountName, FromAccountId, FromAmount, FromCurrencyId,
-            QueryAllData.SPLITTED, QueryAllData.ParentCategID, QueryAllData.SubcategID,
-            QueryAllData.Payee, QueryAllData.PayeeID, QueryAllData.TransactionNumber,
-            QueryAllData.Status, QueryAllData.Notes, QueryAllData.ToAccountName,
-            QueryAllData.TOACCOUNTID, QueryAllData.ToAmount, QueryAllData.ToCurrencyId,
-            QueryAllData.currency, QueryAllData.finyear};
+                QueryAllData.SPLITTED, QueryAllData.ParentCategID, QueryAllData.SubcategID,
+                QueryAllData.Payee, QueryAllData.PayeeID, QueryAllData.TransactionNumber,
+                QueryAllData.Status, QueryAllData.Notes, QueryAllData.ToAccountName,
+                QueryAllData.TOACCOUNTID, QueryAllData.ToAmount, QueryAllData.ToCurrencyId,
+                QueryAllData.currency, QueryAllData.finyear};
     }
 
     public int add(AccountTransactionDisplay entity) {

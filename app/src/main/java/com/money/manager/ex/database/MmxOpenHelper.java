@@ -45,7 +45,7 @@ import timber.log.Timber;
  * Actual helper class for accessing an SQLite database.
  */
 public class MmxOpenHelper
-    extends SQLiteOpenHelper {
+        extends SQLiteOpenHelper {
 
     /**
      * Database schema version.
@@ -53,9 +53,11 @@ public class MmxOpenHelper
     private static final int databaseVersion = 19;
 
     // Dynamic
-
+    private final Context mContext;
+    private String mPassword = "";
     /**
      * Constructor. This is where the database path gets set.
+     *
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
@@ -63,9 +65,6 @@ public class MmxOpenHelper
         this.mContext = context;
 
     }
-
-    private final Context mContext;
-    private String mPassword = "";
 
     public Context getContext() {
         return this.mContext;
@@ -79,6 +78,7 @@ public class MmxOpenHelper
 
     /**
      * Called when the database is being created.
+     *
      * @param db Database instance.
      */
     @Override
@@ -233,6 +233,7 @@ public class MmxOpenHelper
 
     /**
      * Get SQLite Version installed
+     *
      * @return version of SQLite
      */
     public String getSQLiteVersion() {
@@ -274,7 +275,7 @@ public class MmxOpenHelper
         }
 
         initDateFormat(database);
-    //    initCategories(database);
+        //    initCategories(database);
 
         return true;
     }
@@ -282,6 +283,7 @@ public class MmxOpenHelper
     /**
      * The creation of the record is done in tables_v1.sql initialization script.
      * Here we only update the record to the current system's date format.
+     *
      * @param database Database being initialized.
      */
     private void initDateFormat(SQLiteDatabase database) {
@@ -313,9 +315,9 @@ public class MmxOpenHelper
 //                .toString();
 
         Cursor currencyCursor = db.rawQuery(
-            "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
-            " WHERE " + Info.INFONAME + "=?",
-            new String[]{ InfoKeys.BASECURRENCYID});
+                "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
+                        " WHERE " + Info.INFONAME + "=?",
+                new String[]{InfoKeys.BASECURRENCYID});
         if (currencyCursor == null) return;
 
         // Get id of the base currency record.

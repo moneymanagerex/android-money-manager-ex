@@ -18,12 +18,11 @@
 package com.money.manager.ex.view.behaviors;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
-
-import android.util.AttributeSet;
-import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,7 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  */
 
 public class ScrollAwareFABBehavior
-    extends CoordinatorLayout.Behavior<FloatingActionButton>  {
+        extends CoordinatorLayout.Behavior<FloatingActionButton> {
     // FloatingActionButton.Behavior
 
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {

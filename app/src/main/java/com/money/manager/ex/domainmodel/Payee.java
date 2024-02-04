@@ -24,17 +24,16 @@ import com.money.manager.ex.Constants;
  * Payee model.
  */
 public class Payee
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String PAYEEID = "PAYEEID";
     public static final String PAYEENAME = "PAYEENAME";
     public static final String CATEGID = "CATEGID";
 
     public Payee() {
-        super();
     }
 
-    public Payee(ContentValues contentValues) {
+    public Payee(final ContentValues contentValues) {
         super(contentValues);
     }
 
@@ -42,27 +41,27 @@ public class Payee
         return getInt(PAYEEID);
     }
 
-    public void setId(Integer value) {
-        setInt(Payee.PAYEEID, value);
+    public void setId(final Integer value) {
+        setInt(PAYEEID, value);
     }
 
     public String getName() {
-        return getString(Payee.PAYEENAME);
+        return getString(PAYEENAME);
     }
 
-    public void setName(String value) {
-        setString(Payee.PAYEENAME, value);
+    public void setName(final String value) {
+        setString(PAYEENAME, value);
     }
 
     public Integer getCategoryId() {
-        return getInt(Payee.CATEGID);
+        return getInt(CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
-        setInt(Payee.CATEGID, value);
+    public void setCategoryId(final Integer value) {
+        setInt(CATEGID, value);
     }
 
     public boolean hasCategory() {
-        return this.getCategoryId() != null && this.getCategoryId() != Constants.NOT_SET;
+        return null != this.getCategoryId() && Constants.NOT_SET != this.getCategoryId();
     }
 }

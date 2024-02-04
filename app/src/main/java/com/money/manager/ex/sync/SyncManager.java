@@ -63,9 +63,15 @@ import timber.log.Timber;
 public class SyncManager {
 
     public static int scheduledJobId = Constants.NOT_SET;
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
+    private final Context mContext;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
+    //CloudStorageClient mStorageClient;
+    private SyncPreferences mPreferences;
+    // Used to temporarily disable auto-upload while performing batch updates.
+    private boolean mAutoUploadDisabled = false;
     @Inject
     public SyncManager(Context context) {
         mContext = context;
@@ -73,14 +79,6 @@ public class SyncManager {
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-
-    private final Context mContext;
-    //CloudStorageClient mStorageClient;
-    private SyncPreferences mPreferences;
-    // Used to temporarily disable auto-upload while performing batch updates.
-    private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
         Timber.d("Aborting scheduled download");
@@ -101,6 +99,7 @@ public class SyncManager {
     /**
      * Performs checks if automatic synchronization should be performed.
      * Used also on immediate upload after file changed.
+     *
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
@@ -201,6 +200,7 @@ public class SyncManager {
 
     /**
      * Assembles the path where the local synchronised file is expected to be found.
+     *
      * @return The path of the local cached copy of the remote database.
      */
     public String getDefaultLocalPath() {
@@ -222,6 +222,7 @@ public class SyncManager {
     /**
      * Gets last saved datetime of the remote file modification from the preferences.
      * Get the saved date from Database Metadata.
+     *
      * @param remotePath file name, key
      * @return date of last modification
      */
@@ -286,6 +287,7 @@ public class SyncManager {
      * Indicates whether synchronization can be performed, meaning all of the criteria must be
      * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online,
      * remote file is set.
+     *
      * @return A boolean indicating that sync can be performed.
      */
     public boolean isActive() {
@@ -412,9 +414,8 @@ public class SyncManager {
 //        // todo sync
 //        // todo abort scheduled job, if any.
 //    }
-
     public void triggerSynchronization() {
-        if (!isActive())  return;
+        if (!isActive()) return;
 
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = new DatabaseManager(getContext()).getDatabasePath();
@@ -467,7 +468,8 @@ public class SyncManager {
 
     /**
      * Upload the file to cloud storage.
-     * @param localPath The path to the file to upload.
+     *
+     * @param localPath  The path to the file to upload.
      * @param remoteFile The remote path.
      */
     public boolean upload(String localPath, String remoteFile) {
@@ -552,6 +554,7 @@ public class SyncManager {
 
     /**
      * Compares the local and remote db filenames. Use for safety check before synchronization.
+     *
      * @return A boolean indicating if the filenames are the same.
      */
     private boolean areFileNamesSame(String localPath, String remotePath) {
@@ -662,7 +665,7 @@ public class SyncManager {
         Timber.d("Setting delayed upload alarm.");
 
         // start the sync service after 30 seconds.
-        alarm.set(AlarmManager.RTC_WAKEUP, new MmxDate().getMillis() + 30*1000, pendingIntent);
+        alarm.set(AlarmManager.RTC_WAKEUP, new MmxDate().getMillis() + 30 * 1000, pendingIntent);
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
@@ -677,7 +680,7 @@ public class SyncManager {
 
         return PendingIntent.getService(getContext(),
                 SyncConstants.REQUEST_DELAYED_SYNC,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+                intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private AlarmManager getAlarmManager() {

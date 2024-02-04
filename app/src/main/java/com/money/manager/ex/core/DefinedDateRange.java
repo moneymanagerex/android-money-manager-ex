@@ -24,12 +24,19 @@ import android.os.Parcelable;
  * Represent one selectable date range, i.e. Last 7 Days, Current Month, etc.
  */
 public class DefinedDateRange
-    implements Parcelable {
+        implements Parcelable {
 
-    public DefinedDateRange() {
-//        this.context = context;
-    }
+    public static final Creator<DefinedDateRange> CREATOR = new Creator<DefinedDateRange>() {
+        @Override
+        public DefinedDateRange createFromParcel(Parcel in) {
+            return new DefinedDateRange(in);
+        }
 
+        @Override
+        public DefinedDateRange[] newArray(int size) {
+            return new DefinedDateRange[size];
+        }
+    };
     public DefinedDateRangeName key;
     /**
      * Used for display sorting.
@@ -46,24 +53,16 @@ public class DefinedDateRange
 
 //    private Context context;
 
+    public DefinedDateRange() {
+//        this.context = context;
+    }
+
     protected DefinedDateRange(Parcel in) {
         this.key = DefinedDateRangeName.valueOf(in.readString());
         order = in.readInt();
         nameResourceId = in.readInt();
         menuResourceId = in.readInt();
     }
-
-    public static final Creator<DefinedDateRange> CREATOR = new Creator<DefinedDateRange>() {
-        @Override
-        public DefinedDateRange createFromParcel(Parcel in) {
-            return new DefinedDateRange(in);
-        }
-
-        @Override
-        public DefinedDateRange[] newArray(int size) {
-            return new DefinedDateRange[size];
-        }
-    };
 
     public String getLocalizedName(Context context) {
         return context.getString(this.nameResourceId);

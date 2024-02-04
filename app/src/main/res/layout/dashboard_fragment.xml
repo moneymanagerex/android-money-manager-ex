@@ -17,56 +17,56 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/theme_background_color"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?attr/theme_background_color"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linearLayoutScreen1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="?attr/shape_white_background_shadow"
-        android:orientation="vertical"
-        android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top">
+            android:id="@+id/linearLayoutScreen1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/shape_white_background_shadow"
+            android:orientation="vertical"
+            android:padding="@dimen/mmx_padding"
+            android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+            android:layout_marginRight="@dimen/mmx_margin_bottom_top">
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutScreen2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="?attr/shape_white_background_shadow"
-        android:orientation="vertical"
-        android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+            android:id="@+id/linearLayoutScreen2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/shape_white_background_shadow"
+            android:orientation="vertical"
+            android:padding="@dimen/mmx_padding"
+            android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+            android:layout_marginRight="@dimen/mmx_margin_bottom_top">
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutScreen3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="?attr/shape_white_background_shadow"
-        android:orientation="vertical"
-        android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+            android:id="@+id/linearLayoutScreen3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/shape_white_background_shadow"
+            android:orientation="vertical"
+            android:padding="@dimen/mmx_padding"
+            android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+            android:layout_marginRight="@dimen/mmx_margin_bottom_top">
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutScreen4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/shape_white_background_shadow"
-        android:orientation="vertical"
-        android:padding="@dimen/mmx_padding"
-        android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-        android:layout_marginRight="@dimen/mmx_margin_bottom_top" >
+            android:id="@+id/linearLayoutScreen4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/shape_white_background_shadow"
+            android:orientation="vertical"
+            android:padding="@dimen/mmx_padding"
+            android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+            android:layout_marginRight="@dimen/mmx_margin_bottom_top">
     </LinearLayout>
 
 </LinearLayout>

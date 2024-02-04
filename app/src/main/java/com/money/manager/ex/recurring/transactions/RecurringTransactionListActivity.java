@@ -31,7 +31,7 @@ import androidx.fragment.app.FragmentManager;
  * Not used.
  */
 public class RecurringTransactionListActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;

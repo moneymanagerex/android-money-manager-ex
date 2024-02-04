@@ -22,22 +22,21 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import java.util.Date;
 
 /**
  * Account entity
  */
 @Parcel
 public class Account
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String ACCOUNTID = "ACCOUNTID";
     public static final String ACCOUNTNAME = "ACCOUNTNAME";
@@ -54,15 +53,18 @@ public class Account
     public static final String CURRENCYID = "CURRENCYID";
     public static final String INITIALDATE = "INITIALDATE";
 
-    public static Account from(Cursor c) {
-        Account account = new Account();
+    public Account() {
+    }
+
+    public static Account from(final Cursor c) {
+        final Account account = new Account();
         account.loadFromCursor(c);
         return account;
     }
 
-    public static Account create(String name, AccountTypes type, AccountStatuses status,
-                                 boolean favorite, int currencyId) {
-        Account account = new Account();
+    public static Account create(final String name, final AccountTypes type, final AccountStatuses status,
+                                 final boolean favorite, final int currencyId) {
+        final Account account = new Account();
 
         account.setName(name);
         account.setType(type);
@@ -77,140 +79,136 @@ public class Account
         return account;
     }
 
-    public Account() {
-        super();
-    }
-
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, INITIALBAL);
     }
 
     public Integer getId() {
-        return getInt(Account.ACCOUNTID);
+        return getInt(ACCOUNTID);
     }
 
-    public void setId(Integer value) {
-        setInt(Account.ACCOUNTID, value);
+    public void setId(final Integer value) {
+        setInt(ACCOUNTID, value);
     }
 
     public Integer getCurrencyId() {
-        return getInt(Account.CURRENCYID);
+        return getInt(CURRENCYID);
     }
 
-    public void setCurrencyId(Integer currencyId) {
-        setInt(Account.CURRENCYID, currencyId);
+    public void setCurrencyId(final Integer currencyId) {
+        setInt(CURRENCYID, currencyId);
     }
 
     public String getName() {
-        return getString(Account.ACCOUNTNAME);
+        return getString(ACCOUNTNAME);
     }
 
-    public void setName(String value) {
-        setString(Account.ACCOUNTNAME, value);
+    public void setName(final String value) {
+        setString(ACCOUNTNAME, value);
     }
 
     public String getTypeName() {
-        return getString(Account.ACCOUNTTYPE);
+        return getString(ACCOUNTTYPE);
     }
 
     public AccountTypes getType() {
-        String typeName = getTypeName();
+        final String typeName = getTypeName();
         return AccountTypes.get(typeName);
     }
 
-    public void setType(AccountTypes value) {
-        setString(Account.ACCOUNTTYPE, value.title);
+    public void setType(final AccountTypes value) {
+        setString(ACCOUNTTYPE, value.title);
     }
 
     public String getAccountNumber() {
-        return getString(Account.ACCOUNTNUM);
+        return getString(ACCOUNTNUM);
     }
 
-    public void setAccountNumber(String value) {
+    public void setAccountNumber(final String value) {
         setString(ACCOUNTNUM, value);
     }
 
     public String getStatus() {
-        return getString(Account.STATUS);
+        return getString(STATUS);
     }
 
-    public void setStatus(AccountStatuses value) {
-        setString(Account.STATUS, value.title);
+    public void setStatus(final AccountStatuses value) {
+        setString(STATUS, value.title);
     }
 
     public String getNotes() {
-        return getString(Account.NOTES);
+        return getString(NOTES);
     }
 
-    public void setNotes(String value) {
-        setString(Account.NOTES, value);
+    public void setNotes(final String value) {
+        setString(NOTES, value);
     }
 
     public String getHeldAt() {
-        return getString(Account.HELDAT);
+        return getString(HELDAT);
     }
 
-    public void setHeldAt(String value) {
-        setString(Account.HELDAT, value);
+    public void setHeldAt(final String value) {
+        setString(HELDAT, value);
     }
 
     public String getContactInfo() {
-        return getString(Account.CONTACTINFO);
+        return getString(CONTACTINFO);
     }
 
-    public void setContactInfo(String value) {
-        setString(Account.CONTACTINFO, value);
+    public void setContactInfo(final String value) {
+        setString(CONTACTINFO, value);
     }
 
     public String getAccessInfo() {
-        return getString(Account.ACCESSINFO);
+        return getString(ACCESSINFO);
     }
 
-    public void setAccessInfo(String value) {
-        setString(Account.ACCESSINFO, value);
+    public void setAccessInfo(final String value) {
+        setString(ACCESSINFO, value);
     }
 
     public Money getInitialBalance() {
-        return getMoney(Account.INITIALBAL);
+        return getMoney(INITIALBAL);
+    }
+
+    public void setInitialBalance(final Money value) {
+        setMoney(INITIALBAL, value);
     }
 
     public boolean hasInitialBalance() {
-        return this.getInitialBalance() != null && !getInitialBalance().equals(Constants.NOT_SET);
-    }
-
-    public void setInitialBalance(Money value) {
-        setMoney(Account.INITIALBAL, value);
+        return null != this.getInitialBalance() && !getInitialBalance().equals(Constants.NOT_SET);
     }
 
     public Boolean getFavorite() {
-        return getBoolean(Account.FAVORITEACCT);
+        return getBoolean(FAVORITEACCT);
     }
 
-    public void setFavorite(boolean value) {
-        setBoolean(Account.FAVORITEACCT, value);
+    public void setFavorite(final boolean value) {
+        setBoolean(FAVORITEACCT, value);
     }
 
     public String getWebSite() {
-        return getString(Account.WEBSITE);
+        return getString(WEBSITE);
     }
 
-    public void setWebSite(String value) {
-        setString(Account.WEBSITE, value);
+    public void setWebSite(final String value) {
+        setString(WEBSITE, value);
     }
 
     public Date getInitialDate() {
-        String dateString = getString(Account.INITIALDATE);
-        return dateString != null
+        final String dateString = getString(INITIALDATE);
+        return null != dateString
                 ? new MmxDate(dateString).toDate()
                 : null;
     }
 
-    public void setInitialDate(Date date) {
-        String dateString = new MmxDate(date).toIsoDateString();
-        setString(Account.INITIALDATE, dateString);
+    public void setInitialDate(final Date date) {
+        final String dateString = new MmxDate(date).toIsoDateString();
+        setString(INITIALDATE, dateString);
     }
 }

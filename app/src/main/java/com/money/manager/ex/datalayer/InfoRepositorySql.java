@@ -31,7 +31,7 @@ import javax.inject.Inject;
  * Repository for InfoTable
  */
 public class InfoRepositorySql
-    extends SqlRepositoryBase<Info> {
+        extends SqlRepositoryBase<Info> {
 
     public static final String TABLE_NAME = "infotable_v1";
 
@@ -47,8 +47,8 @@ public class InfoRepositorySql
 
     public List<Info> loadAll(String infoName) {
         Select sql = new Select()
-            .from(TABLE_NAME)
-            .where(Info.INFONAME + "=?", infoName);
+                .from(TABLE_NAME)
+                .where(Info.INFONAME + "=?", infoName);
 
         Cursor c = this.query(sql);
         if (c == null) return null;

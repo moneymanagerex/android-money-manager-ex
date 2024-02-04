@@ -21,6 +21,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +42,7 @@ import timber.log.Timber;
 //import net.sqlcipher.database.SQLiteDatabase;
 
 public abstract class MmxBaseFragmentActivity
-    extends AppCompatActivity {
+        extends AppCompatActivity {
 
     public CompositeSubscription compositeSubscription;
 
@@ -108,7 +109,7 @@ public abstract class MmxBaseFragmentActivity
     @Override
     protected void onStart() {
         super.onStart();
-            // set elevation actionbar 0
+        // set elevation actionbar 0
 //            if (getSupportActionBar() != null) {
 //                getSupportActionBar().setElevation(0);
 //            }
@@ -169,6 +170,7 @@ public abstract class MmxBaseFragmentActivity
 
     /**
      * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
+     *
      * @param toolbar Toolbar element.
      */
     public void showStandardToolbarActions(View toolbar) {
@@ -177,9 +179,10 @@ public abstract class MmxBaseFragmentActivity
 
     /**
      * Allows customization of the toolbar buttons
-     * @param toolbar       Toolbar element to attach to.
-     * @param actionCancel  R.id of the negative (cancel) button
-     * @param actionDone    R.id of the positive (action) button
+     *
+     * @param toolbar      Toolbar element to attach to.
+     * @param actionCancel R.id of the negative (cancel) button
+     * @param actionDone   R.id of the positive (action) button
      */
     public void showStandardToolbarActions(View toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {

@@ -32,31 +32,31 @@ import java.text.ParseException;
  * http://www.respmech.com/mym2qifw/qif_new.htm
  */
 public class QifGenerator implements IQifGenerator {
-    public QifGenerator(Context context) {
+    private final Context mContext;
+
+    public QifGenerator(final Context context) {
         mContext = context;
     }
 
-    private final Context mContext;
-
-    public String createFromAdapter(AllDataAdapter adapter)
+    public String createFromAdapter(final AllDataAdapter adapter)
             throws ParseException {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
-        Cursor cursor = adapter.getCursor();
-        int originalCursorPosition = cursor.getPosition();
+        final Cursor cursor = adapter.getCursor();
+        final int originalCursorPosition = cursor.getPosition();
         cursor.moveToFirst();
 
         int previousAccountId = 0;
-        QifHeader header = new QifHeader(mContext);
-        QifRecord record = new QifRecord(mContext);
-        AccountTransactionDisplay transaction = new AccountTransactionDisplay();
+        final QifHeader header = new QifHeader(mContext);
+        final QifRecord record = new QifRecord(mContext);
+        final AccountTransactionDisplay transaction = new AccountTransactionDisplay();
 
         while (!cursor.isAfterLast()) {
             // get data from cursor.
             transaction.loadFromCursor(cursor);
 
-            int accountId;
-            if (transaction.getTransactionType() == TransactionTypes.Transfer) {
+            final int accountId;
+            if (TransactionTypes.Transfer == transaction.getTransactionType()) {
                 accountId = transaction.getToAccountId();
             } else {
                 accountId = transaction.getAccountId();
@@ -64,12 +64,12 @@ public class QifGenerator implements IQifGenerator {
             if (accountId != previousAccountId) {
                 previousAccountId = accountId;
                 // add header record
-                String headerRecord = header.parse(cursor);
+                final String headerRecord = header.parse(cursor);
                 builder.append(headerRecord);
             }
 
             // add transaction record
-            String row = record.parse(transaction);
+            final String row = record.parse(transaction);
 
             builder.append(row);
             cursor.moveToNext();

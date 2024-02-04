@@ -30,13 +30,6 @@ import com.money.manager.ex.utils.MmxFileUtils;
 public class BudgetQuery
         extends Dataset {
 
-    public BudgetQuery(Context context) {
-        super(MmxFileUtils.getRawAsString(context, R.raw.query_budgets), DatasetType.QUERY,
-                BudgetQuery.class.getSimpleName());
-
-        this.mContext = context;
-    }
-
     public static String BUDGETENTRYID = "BUDGETENTRYID";
     public static String BUDGETYEARID = "BUDGETYEARID";
     public static String CATEGID = "CATEGID";
@@ -45,13 +38,19 @@ public class BudgetQuery
     public static String SUBCATEGNAME = "SUBCATEGNAME";
     public static String PERIOD = "PERIOD";
     public static String AMOUNT = "AMOUNT";
-
     private final Context mContext;
+
+    public BudgetQuery(Context context) {
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_budgets), DatasetType.QUERY,
+                BudgetQuery.class.getSimpleName());
+
+        this.mContext = context;
+    }
 
     // get all columns
     @Override
     public String[] getAllColumns() {
-        return new String[]{ BUDGETENTRYID + " AS _id",
+        return new String[]{BUDGETENTRYID + " AS _id",
                 BUDGETENTRYID,
                 BUDGETYEARID,
                 CATEGID,

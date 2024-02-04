@@ -109,39 +109,35 @@ import timber.log.Timber;
  * The starting fragment that contains the accounts groups with accounts and their balances.
  */
 public class HomeFragment
-    extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
-//    private static final int LOADER_USER_NAME = 1;
+    //    private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
     private static final int LOADER_INCOME_EXPENSES = 4;
 
     private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
-
-    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
-
-    private CurrencyService mCurrencyService;
-    private boolean mHideReconciled;
-
-    // This is the collapsible list of account groups with accounts.
-    private ExpandableListView mExpandableListView;
-    private ViewGroup linearHome, linearFooter, linearWelcome;
-    private TextView txtTotalAccounts, txtFooterSummary, txtFooterSummaryReconciled;
-    private ProgressBar prgAccountBills;
-    private FloatingActionButton mFloatingActionButton;
-
     /**
      * List of account types in lowercase (i.e. checking, investment, ...)
      */
     private final List<String> mAccountTypes = new ArrayList<>();
     private final HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private final HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
-
+    @Inject
+    Lazy<InfoRepositorySql> infoRepositorySqlLazy;
+    @State
+    int accountBalancedId = Constants.NOT_SET;
+    private CurrencyService mCurrencyService;
+    private boolean mHideReconciled;
+    // This is the collapsible list of account groups with accounts.
+    private ExpandableListView mExpandableListView;
+    private ViewGroup linearHome, linearFooter, linearWelcome;
+    private TextView txtTotalAccounts, txtFooterSummary, txtFooterSummaryReconciled;
+    private ProgressBar prgAccountBills;
+    private FloatingActionButton mFloatingActionButton;
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
-
-    @State int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
     @Override
@@ -241,8 +237,8 @@ public class HomeFragment
 
                 QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
                 query = new Select(queryAccountBills.getAllColumns())
-                    .where(where)
-                    .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
+                        .where(where)
+                        .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
                 result = new MmxCursorLoader(getActivity(), queryAccountBills.getUri(), query);
                 break;
@@ -254,11 +250,11 @@ public class HomeFragment
 //                report.filterTransactionsSource(transactionsFilter);
 
                 String whereStatement =
-                    IncomeVsExpenseReportEntity.Month + "="
-                    + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                        " AND " +
-                        IncomeVsExpenseReportEntity.YEAR + "=" +
-                            Calendar.getInstance().get(Calendar.YEAR);
+                        IncomeVsExpenseReportEntity.Month + "="
+                                + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                                " AND " +
+                                IncomeVsExpenseReportEntity.YEAR + "=" +
+                                Calendar.getInstance().get(Calendar.YEAR);
 
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query = new Select(report.getAllColumns())
@@ -269,7 +265,7 @@ public class HomeFragment
             default:
                 result = null;
         }
-        return  result;
+        return result;
     }
 
     @Override
@@ -427,7 +423,7 @@ public class HomeFragment
 //        menu.setHeaderIcon(android.R.drawable.ic_menu_manage);
         menu.setHeaderTitle(account.getAccountName());
         String[] menuItems = getResources().getStringArray(R.array.context_menu_account_dashboard);
-        for(String menuItem : menuItems) {
+        for (String menuItem : menuItems) {
             menu.add(menuItem);
         }
 
@@ -457,7 +453,7 @@ public class HomeFragment
 
         // get the action
         String menuItemTitle = item.getTitle().toString();
-        
+
         if (menuItemTitle.equalsIgnoreCase(getString(R.string.edit))) {
             Intent intent = new Intent(getActivity(), AccountEditActivity.class);
             intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, accountId);
@@ -558,7 +554,7 @@ public class HomeFragment
             // text view into layout
             txtFooterSummary = linearFooter.findViewById(R.id.textViewItemAccountTotal);
             txtFooterSummaryReconciled = linearFooter.findViewById(R.id.textViewItemAccountTotalReconciled);
-            if(mHideReconciled) {
+            if (mHideReconciled) {
                 txtFooterSummaryReconciled.setVisibility(View.GONE);
             }
             // set text
@@ -570,7 +566,7 @@ public class HomeFragment
             // set color textview
             txtTextSummary.setTextColor(Color.GRAY);
             txtFooterSummary.setTextColor(Color.GRAY);
-            if(!mHideReconciled) {
+            if (!mHideReconciled) {
                 txtFooterSummaryReconciled.setTextColor(Color.GRAY);
             }
         }
@@ -579,7 +575,7 @@ public class HomeFragment
         // set text
         txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curTotal)));
         txtFooterSummary.setText(txtTotalAccounts.getText());
-        if(!mHideReconciled) {
+        if (!mHideReconciled) {
             txtFooterSummaryReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curReconciled)));
         }
         // add footer
@@ -630,39 +626,39 @@ public class HomeFragment
         return this.accountBeingBalanced;
     }
 
+    private void setAccountBeingBalanced(QueryAccountBills account) {
+        this.accountBeingBalanced = account;
+        accountBalancedId = account.getAccountId();
+    }
+
     /**
      * Load username on the background thread, set the username and then fire an event.
      * This should be moved to the MainActivity, which actually handles the event and updates the UI.
      */
     private void loadUsername() {
         ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-        Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                InfoService infoService = new InfoService(getActivity());
-                return infoService.getInfoValue(InfoKeys.USERNAME);
-            }
-        })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new SingleSubscriber<String>() {
-                @Override
-                public void onSuccess(String value) {
-                    MmexApplication.getApp().setUserName(value);
-                    EventBus.getDefault().post(new UsernameLoadedEvent());
-                }
+                Single.fromCallable(new Callable<String>() {
+                            @Override
+                            public String call() throws Exception {
+                                InfoService infoService = new InfoService(getActivity());
+                                return infoService.getInfoValue(InfoKeys.USERNAME);
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleSubscriber<String>() {
+                            @Override
+                            public void onSuccess(String value) {
+                                MmexApplication.getApp().setUserName(value);
+                                EventBus.getDefault().post(new UsernameLoadedEvent());
+                            }
 
-                @Override
-                public void onError(Throwable error) {
-                    Timber.e(error, "error loading username");
-                }
-            })
+                            @Override
+                            public void onError(Throwable error) {
+                                Timber.e(error, "error loading username");
+                            }
+                        })
         );
-    }
-
-    private void setAccountBeingBalanced(QueryAccountBills account) {
-        this.accountBeingBalanced = account;
-        accountBalancedId = account.getAccountId();
     }
 
     /**
@@ -752,13 +748,13 @@ public class HomeFragment
             String key = getSettingsKeyFromGroupPosition(i);
             Boolean expanded = settings.get(key, true);
 
-            if(expanded) {
+            if (expanded) {
                 mExpandableListView.expandGroup(i);
             }
         }
     }
 
-    private QueryAccountBills getSelectedAccount(android.view.MenuItem item){
+    private QueryAccountBills getSelectedAccount(android.view.MenuItem item) {
         ExpandableListView.ExpandableListContextMenuInfo info = null;
         ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
         // clicking any context item in child fragments will also come here. We need only

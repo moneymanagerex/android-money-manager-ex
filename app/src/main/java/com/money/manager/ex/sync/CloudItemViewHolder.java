@@ -19,30 +19,29 @@ package com.money.manager.ex.sync;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.view.RobotoTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
  * View holder for the cloud items (folder, file).
  */
 public class CloudItemViewHolder
-    extends RecyclerView.ViewHolder {
-
-    public CloudItemViewHolder(View itemView) {
-        super(itemView);
-
-        initialize(itemView);
-    }
+        extends RecyclerView.ViewHolder {
 
     public int itemPosition;
     public String itemPath;
     // view elements
     public RobotoTextView nameTextView;
+    public CloudItemViewHolder(View itemView) {
+        super(itemView);
+
+        initialize(itemView);
+    }
 
     private void initialize(View view) {
         // e clicks on the parent element

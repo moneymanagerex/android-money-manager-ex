@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.widget.Adapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
@@ -34,10 +35,10 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -58,19 +59,19 @@ import timber.log.Timber;
  * Various business logic pieces related to Account(s).
  */
 public class AccountService
-    extends ServiceBase {
+        extends ServiceBase {
 
-    public AccountService(Context context) {
+    public AccountService(final Context context) {
         super(context);
 
     }
 
-    public Account createAccount(String name, AccountTypes accountType, AccountStatuses status,
-                                 boolean favourite, int currencyId) {
-        Account account = Account.create(name, accountType, status, favourite, currencyId);
+    public Account createAccount(final String name, final AccountTypes accountType, final AccountStatuses status,
+                                 final boolean favourite, final int currencyId) {
+        final Account account = Account.create(name, accountType, status, favourite, currencyId);
 
         // update
-        AccountRepository repo = new AccountRepository(getContext());
+        final AccountRepository repo = new AccountRepository(getContext());
         repo.save(account);
 
         return account;
@@ -78,13 +79,14 @@ public class AccountService
 
     /**
      * Loads account list, applying the current preferences for Open & Favourite accounts.
+     *
      * @return List of accounts
      */
     public List<Account> getAccountList() {
-        AppSettings settings = new AppSettings(getContext());
+        final AppSettings settings = new AppSettings(getContext());
 
-        boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
-        boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
+        final boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
+        final boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
 
         return getAccountList(open, favourite);
     }
@@ -92,11 +94,12 @@ public class AccountService
     /**
      * Load account list with given parameters.
      * Includes all account types.
+     *
      * @param open     show open accounts
      * @param favorite show favorite account
      * @return List<Account> list of accounts selected
      */
-    public List<Account> getAccountList(boolean open, boolean favorite) {
+    public List<Account> getAccountList(final boolean open, final boolean favorite) {
         // create a return list
         return loadAccounts(open, favorite, null);
     }
@@ -105,41 +108,42 @@ public class AccountService
      * Calculate simple balance by adding together all transactions before and on the
      * given date. To get the real balance, this amount should be subtracted from the
      * account initial balance.
+     *
      * @param isoDate date in ISO format
      */
-    public Money calculateBalanceOn(int accountId, String isoDate) {
+    public Money calculateBalanceOn(final int accountId, final String isoDate) {
         Money total = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
 
-        WhereStatementGenerator where = new WhereStatementGenerator();
+        final WhereStatementGenerator where = new WhereStatementGenerator();
         // load all transactions on the account before and on given date.
         where.addStatement(
-            where.concatenateOr(
-                where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
-                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
-            )
+                where.concatenateOr(
+                        where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
+                        where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
+                )
         );
 
         where.addStatement(ITransactionEntity.TRANSDATE, "<=", isoDate);
         where.addStatement(ITransactionEntity.STATUS, "<>", TransactionStatuses.VOID.getCode());
 
-        String selection = where.getWhere();
+        final String selection = where.getWhere();
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        final AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
-            null,
-            selection,
-            null,
-            null);
-        if (cursor == null) return total;
+        final Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
+                null,
+                selection,
+                null,
+                null);
+        if (null == cursor) return total;
 
-        AccountTransactionDisplay tx = new AccountTransactionDisplay();
+        final AccountTransactionDisplay tx = new AccountTransactionDisplay();
         Money amount;
 
         // calculate balance.
         while (cursor.moveToNext()) {
             tx.contentValues.clear();
-            String transType = cursor.getString(cursor.getColumnIndex(ITransactionEntity.TRANSCODE));
+            final String transType = cursor.getString(cursor.getColumnIndex(ITransactionEntity.TRANSCODE));
 
             // Some users have invalid Transaction Type. Should we check .contains()?
 
@@ -179,33 +183,33 @@ public class AccountService
         return total;
     }
 
-    public String getAccountCurrencyCode(int accountId) {
-        AccountRepository repo = new AccountRepository(getContext());
-        Account account = (Account) repo.first(Account.class,
-            new String[] {Account.CURRENCYID},
-            Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(accountId)},
-            null);
-        int currencyId = account.getCurrencyId();
+    public String getAccountCurrencyCode(final int accountId) {
+        final AccountRepository repo = new AccountRepository(getContext());
+        final Account account = (Account) repo.first(Account.class,
+                new String[]{Account.CURRENCYID},
+                Account.ACCOUNTID + "=?",
+                new String[]{Integer.toString(accountId)},
+                null);
+        final int currencyId = account.getCurrencyId();
 
-        CurrencyService currencyService = new CurrencyService(getContext());
+        final CurrencyService currencyService = new CurrencyService(getContext());
         return currencyService.getCurrency(currencyId).getCode();
     }
 
-    public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
+    public Cursor getCursor(final boolean open, final boolean favorite, final List<String> accountTypes) {
         try {
             return getCursorInternal(open, favorite, accountTypes);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Timber.e(ex, "getting cursor in account repository");
         }
         return null;
     }
 
     public List<String> getTransactionAccountTypeNames() {
-        List<String> accountTypeNames = new ArrayList<>();
-        List<AccountTypes> accountTypes = getTransactionAccountTypes();
+        final List<String> accountTypeNames = new ArrayList<>();
+        final List<AccountTypes> accountTypes = getTransactionAccountTypes();
 
-        for (AccountTypes type : accountTypes) {
+        for (final AccountTypes type : accountTypes) {
             accountTypeNames.add(type.toString());
         }
 
@@ -213,7 +217,7 @@ public class AccountService
     }
 
     public List<AccountTypes> getTransactionAccountTypes() {
-        List<AccountTypes> list = new ArrayList<>();
+        final List<AccountTypes> list = new ArrayList<>();
 
         list.add(AccountTypes.CASH);
         list.add(AccountTypes.CHECKING);
@@ -225,105 +229,106 @@ public class AccountService
         return list;
     }
 
-    public List<Account> getTransactionAccounts(boolean openOnly, boolean favoriteOnly) {
-        List<String> accountTypeNames = getTransactionAccountTypeNames();
+    public List<Account> getTransactionAccounts(final boolean openOnly, final boolean favoriteOnly) {
+        final List<String> accountTypeNames = getTransactionAccountTypeNames();
 
-        List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
+        final List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
 
         return result;
     }
 
     /**
      * Check if the account is used in any of the transactions.
+     *
      * @param accountId id of the account
      * @return a boolean indicating if there are any transactions using this account.
      */
-    public boolean isAccountUsed(int accountId) {
-        WhereStatementGenerator where = new WhereStatementGenerator();
+    public boolean isAccountUsed(final int accountId) {
+        final WhereStatementGenerator where = new WhereStatementGenerator();
         // transactional accounts
         where.addStatement(
-            where.concatenateOr(
-                where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
-                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
-            )
+                where.concatenateOr(
+                        where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
+                        where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
+                )
         );
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int txCount = repo.count(where.getWhere(), null);
+        final AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        final int txCount = repo.count(where.getWhere(), null);
 
         // investment accounts
-        StockRepository stockRepository = new StockRepository(getContext());
+        final StockRepository stockRepository = new StockRepository(getContext());
         where.clear();
         where.addStatement(StockFields.HELDAT, "=", accountId);
-        int investmentCount = stockRepository.count(where.getWhere(), null);
+        final int investmentCount = stockRepository.count(where.getWhere(), null);
 
-        return (txCount + investmentCount) > 0;
+        return 0 < (txCount + investmentCount);
     }
 
-    public void loadTransactionAccountsToSpinner(Spinner spinner) {
-        if (spinner == null) return;
+    public void loadTransactionAccountsToSpinner(final Spinner spinner) {
+        if (null == spinner) return;
 
-        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        final LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
 
-        Cursor cursor = this.getCursor(settings.getViewOpenAccounts(),
-            settings.getViewFavouriteAccounts(), this.getTransactionAccountTypeNames());
+        final Cursor cursor = getCursor(settings.getViewOpenAccounts(),
+                settings.getViewFavouriteAccounts(), getTransactionAccountTypeNames());
 
-        int[] adapterRowViews = new int[] { android.R.id.text1 };
+        final int[] adapterRowViews = {android.R.id.text1};
 
-        ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
-            android.R.layout.simple_spinner_item,
-            cursor,
-            new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
-            adapterRowViews,
-            SimpleCursorAdapter.NO_SELECTION);
+        final ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
+                android.R.layout.simple_spinner_item,
+                cursor,
+                new String[]{Account.ACCOUNTNAME, Account.ACCOUNTID},
+                adapterRowViews,
+                Adapter.NO_SELECTION);
 //        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cursorAdapter.setDropDownViewResource(R.layout.toolbar_spinner_item_dropdown);
 
         spinner.setAdapter(cursorAdapter);
     }
 
-    public void loadInvestmentAccountsToSpinner(Spinner spinner, boolean showAllAccountsItem) {
-        if (spinner == null) return;
+    public void loadInvestmentAccountsToSpinner(final Spinner spinner, final boolean showAllAccountsItem) {
+        if (null == spinner) return;
 
-        AccountRepository repo = new AccountRepository(getContext());
-        Cursor cursor = repo.getInvestmentAccountsCursor(true);
+        final AccountRepository repo = new AccountRepository(getContext());
+        final Cursor cursor = repo.getInvestmentAccountsCursor(true);
         Cursor finalCursor = cursor;
 
         if (showAllAccountsItem) {
             // append All Accounts item
-            MatrixCursor extras = new MatrixCursor(new String[]{"_id", Account.ACCOUNTID,
+            final MatrixCursor extras = new MatrixCursor(new String[]{"_id", Account.ACCOUNTID,
                     Account.ACCOUNTNAME, Account.INITIALBAL});
-            String title = getContext().getString(R.string.all_accounts);
+            final String title = getContext().getString(R.string.all_accounts);
             extras.addRow(new String[]{Integer.toString(Constants.NOT_SET),
                     Integer.toString(Constants.NOT_SET), title, "0.0"});
-            Cursor[] cursors = {extras, cursor};
+            final Cursor[] cursors = {extras, cursor};
             finalCursor = new MergeCursor(cursors);
         }
 
-        int[] adapterRowViews = new int[] { android.R.id.text1 };
+        final int[] adapterRowViews = {android.R.id.text1};
 
-        ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
-            android.R.layout.simple_spinner_item,
+        final ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
+                android.R.layout.simple_spinner_item,
                 finalCursor,
-            new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
-            adapterRowViews,
-            SimpleCursorAdapter.NO_SELECTION);
+                new String[]{Account.ACCOUNTNAME, Account.ACCOUNTID},
+                adapterRowViews,
+                Adapter.NO_SELECTION);
         cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(cursorAdapter);
     }
 
-    public List<Account> loadAccounts(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
-        List<Account> result = new ArrayList<>();
+    public List<Account> loadAccounts(final boolean openOnly, final boolean favoriteOnly, final List<String> accountTypes) {
+        final List<Account> result = new ArrayList<>();
 
-        Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
-        if (cursor == null) {
+        final Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
+        if (null == cursor) {
             new UIHelper(getContext()).showToast("Error reading accounts list!");
             return result;
         }
 
         while (cursor.moveToNext()) {
-            Account account = new Account();
+            final Account account = new Account();
             account.loadFromCursor(cursor);
             result.add(account);
         }
@@ -332,28 +337,29 @@ public class AccountService
         return result;
     }
 
-    public Money loadInitialBalance(int accountId) {
-        AccountRepository repo = new AccountRepository(getContext());
-        Account account = repo.load(accountId);
+    public Money loadInitialBalance(final int accountId) {
+        final AccountRepository repo = new AccountRepository(getContext());
+        final Account account = repo.load(accountId);
         return account.getInitialBalance();
     }
 
     /**
      * Loads account details with balances.
      * Needs to be better organized to limit the where clause.
+     *
      * @param where selection criteria for Select Account Bills
      * @return current balance in the currency of the account.
      */
-    public Money loadBalance(String where) {
+    public Money loadBalance(final String where) {
         Money curTotal = MoneyFactory.fromString("0");
 
-        QueryAccountBills accountBills = new QueryAccountBills(getContext());
-        Cursor cursor = getContext().getContentResolver().query(accountBills.getUri(),
+        final QueryAccountBills accountBills = new QueryAccountBills(getContext());
+        final Cursor cursor = getContext().getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
                 null);
-        if (cursor == null) return curTotal;
+        if (null == cursor) return curTotal;
 
         // calculate summary
         while (cursor.moveToNext()) {
@@ -367,16 +373,16 @@ public class AccountService
 
     // Private
 
-    private Cursor getCursorInternal(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
-        AccountRepository repo = new AccountRepository(getContext());
+    private Cursor getCursorInternal(final boolean openOnly, final boolean favoriteOnly, final List<String> accountTypes) {
+        final AccountRepository repo = new AccountRepository(getContext());
 
         String where = getWhereFilterFor(openOnly, favoriteOnly);
 
-        if (accountTypes != null && accountTypes.size() > 0) {
+        if (null != accountTypes && 0 < accountTypes.size()) {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
+        final Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
                 repo.getAllColumns(),
                 where,
                 null,
@@ -385,8 +391,8 @@ public class AccountService
         return cursor;
     }
 
-    private String getWhereFilterFor(boolean openOnly, boolean favoriteOnly) {
-        StringBuilder where = new StringBuilder();
+    private String getWhereFilterFor(final boolean openOnly, final boolean favoriteOnly) {
+        final StringBuilder where = new StringBuilder();
 
         if (openOnly) {
             where.append("LOWER(STATUS)='open'");
@@ -401,12 +407,12 @@ public class AccountService
         return where.toString();
     }
 
-    private String getWherePartFor(List<String> accountTypes) {
-        StringBuilder where = new StringBuilder();
+    private String getWherePartFor(final List<String> accountTypes) {
+        final StringBuilder where = new StringBuilder();
         where.append(Account.ACCOUNTTYPE);
         where.append(" IN (");
-        for(String type : accountTypes) {
-            if (accountTypes.indexOf(type) > 0) {
+        for (final String type : accountTypes) {
+            if (0 < accountTypes.indexOf(type)) {
                 // if not first, add comma before the type name
                 where.append(',');
             }

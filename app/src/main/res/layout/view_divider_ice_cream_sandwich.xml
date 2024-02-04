@@ -16,8 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <View xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="1dp" 
-    android:background="@drawable/divider_ice_cream_sandwich" >
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@drawable/divider_ice_cream_sandwich">
 
 </View>

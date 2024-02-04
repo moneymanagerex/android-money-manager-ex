@@ -21,9 +21,9 @@ package com.money.manager.ex.transactions.events;
  * Category is being requested.
  */
 public class CategoryRequestedEvent {
-    public CategoryRequestedEvent(int requestId) {
+    public int requestId;
+
+    public CategoryRequestedEvent(final int requestId) {
         this.requestId = requestId;
     }
-
-    public int requestId;
 }

@@ -30,7 +30,7 @@ import com.money.manager.ex.domainmodel.RecurringTransaction;
  * Recurring transaction repository.
  */
 public class RecurringTransactionRepository
-    extends RepositoryBase<RecurringTransaction>{
+        extends RepositoryBase<RecurringTransaction> {
 
     public RecurringTransactionRepository(Context context) {
         super(context, "billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
@@ -38,7 +38,7 @@ public class RecurringTransactionRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String [] { RecurringTransaction.BDID + " AS _id", RecurringTransaction.BDID,
+        return new String[]{RecurringTransaction.BDID + " AS _id", RecurringTransaction.BDID,
                 ITransactionEntity.ACCOUNTID,
                 ITransactionEntity.TOACCOUNTID,
                 ITransactionEntity.PAYEEID,
@@ -57,7 +57,7 @@ public class RecurringTransactionRepository
     }
 
     public int delete(int id) {
-        return super.delete(RecurringTransaction.BDID + "=?", new String[] { Integer.toString(id)});
+        return super.delete(RecurringTransaction.BDID + "=?", new String[]{Integer.toString(id)});
     }
 
     public RecurringTransaction load(int id) {

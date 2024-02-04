@@ -17,87 +17,87 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_select_database"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.money.manager.ex.home.SelectDatabaseActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_select_database"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.money.manager.ex.home.SelectDatabaseActivity">
 
     <include layout="@layout/toolbar"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/mmx_activity_vertical_margin"
-            android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
-            android:paddingRight="@dimen/mmx_activity_horizontal_margin"
-            android:paddingTop="@dimen/mmx_activity_vertical_margin"
-            android:orientation="vertical">
-
-        <!-- Intro -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="@string/intro_text" />
-
-        <!-- Create Database text -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="@string/intro_create_db" />
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/RaisedButton">
-                <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/createDatabaseButton"
+                android:paddingBottom="@dimen/mmx_activity_vertical_margin"
+                android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
+                android:paddingRight="@dimen/mmx_activity_horizontal_margin"
+                android:paddingTop="@dimen/mmx_activity_vertical_margin"
+                android:orientation="vertical">
+
+            <!-- Intro -->
+            <com.money.manager.ex.view.RobotoTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_db" />
+                    android:paddingTop="10dp"
+                    android:text="@string/intro_text"/>
+
+            <!-- Create Database text -->
+            <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/intro_create_db"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RaisedButton">
+                <com.money.manager.ex.view.RobotoButton
+                        android:id="@+id/createDatabaseButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/create_db"/>
             </LinearLayout>
 
-        <!-- Open Database text -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="@string/intro_open_db" />
+            <!-- Open Database text -->
+            <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/intro_open_db"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RaisedButton">
-            <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/openDatabaseButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/open_database" />
-        </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RaisedButton">
+                <com.money.manager.ex.view.RobotoButton
+                        android:id="@+id/openDatabaseButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_database"/>
+            </LinearLayout>
 
-        <!-- Configure Synchronisation text -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="@string/intro_sync" />
+            <!-- Configure Synchronisation text -->
+            <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/intro_sync"/>
 
-        <!--<LinearLayout-->
+            <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
             <!--style="@style/RaisedButton">-->
             <!--<com.money.manager.ex.view.RobotoButton-->
-                <!--android:id="@+id/setupSyncButton"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/configure_sync" />-->
-        <!--</LinearLayout>-->
+            <!--android:id="@+id/setupSyncButton"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/configure_sync" />-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
     </ScrollView>

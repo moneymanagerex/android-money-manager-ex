@@ -45,10 +45,14 @@ import info.javaperformance.money.MoneyFactory;
  * Adapter for the Home screen expandable accounts list.
  */
 public class HomeAccountsExpandableAdapter
-    extends BaseExpandableListAdapter {
+        extends BaseExpandableListAdapter {
 
     private final Context mContext;
-
+    private final boolean mHideReconciled;
+    private final CurrencyService mCurrencyService;
+    private List<String> mAccountTypes = new ArrayList<>();
+    private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
+    private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
     public HomeAccountsExpandableAdapter(Context context, List<String> accountTypes,
                                          HashMap<String, List<QueryAccountBills>> accountsByType,
                                          HashMap<String, QueryAccountBills> totalsByType,
@@ -60,12 +64,6 @@ public class HomeAccountsExpandableAdapter
         mHideReconciled = hideReconciled;
         mCurrencyService = new CurrencyService(mContext);
     }
-
-    private List<String> mAccountTypes = new ArrayList<>();
-    private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
-    private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
-    private final boolean mHideReconciled;
-    private final CurrencyService mCurrencyService;
 
     @Override
     public int getGroupCount() {
@@ -123,7 +121,7 @@ public class HomeAccountsExpandableAdapter
             holder.txtAccountTotal.setTypeface(null, Typeface.BOLD);
 
             holder.txtAccountReconciled = convertView.findViewById(R.id.textViewItemAccountTotalReconciled);
-            if(mHideReconciled) {
+            if (mHideReconciled) {
                 holder.txtAccountReconciled.setVisibility(View.GONE);
             } else {
                 holder.txtAccountReconciled.setTypeface(null, Typeface.BOLD);
@@ -142,7 +140,7 @@ public class HomeAccountsExpandableAdapter
             // set account type value
             String totalDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
             holder.txtAccountTotal.setText(totalDisplay);
-            if(!mHideReconciled) {
+            if (!mHideReconciled) {
                 String reconciledDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
                 holder.txtAccountReconciled.setText(reconciledDisplay);
             }
@@ -155,11 +153,11 @@ public class HomeAccountsExpandableAdapter
             int iconSize = 30;
             int iconColor = uiHelper.getSecondaryTextColor();
 
-            if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
+            if (AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_money_banknote)
                         .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
-            } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
+            } else if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_temple)
                         .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
@@ -223,7 +221,7 @@ public class HomeAccountsExpandableAdapter
         holder.txtAccountTotal.setText(value);
 
         // reconciled
-        if(mHideReconciled) {
+        if (mHideReconciled) {
             holder.txtAccountReconciled.setVisibility(View.GONE);
         } else {
             value = mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));

@@ -20,15 +20,8 @@ package com.money.manager.ex.account;
  * Enumeration of account statuses.
  */
 public enum AccountStatuses {
-    OPEN ("Open"),
-    CLOSED ("Closed");
-
-    public static AccountStatuses get(String title) {
-        for(AccountStatuses status : AccountStatuses.values()) {
-            if (status.title.equals(title)) return status;
-        }
-        return null;
-    }
+    OPEN("Open"),
+    CLOSED("Closed");
 
     public final String title;
 
@@ -36,11 +29,18 @@ public enum AccountStatuses {
         title = s;
     }
 
+    public static AccountStatuses get(String title) {
+        for (AccountStatuses status : AccountStatuses.values()) {
+            if (status.title.equals(title)) return status;
+        }
+        return null;
+    }
+
     public boolean equalsName(String otherName) {
         return title.equalsIgnoreCase(otherName);
     }
 
-    public String toString(){
+    public String toString() {
         return title;
     }
 }

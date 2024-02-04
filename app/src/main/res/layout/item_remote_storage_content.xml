@@ -17,20 +17,20 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mmx_list_item_height"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="?attr/selectableItemBackground"
-    android:paddingStart="@dimen/mmx_list_item_padding_side"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingEnd="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side">
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/mmx_list_item_height"
+              android:clickable="true"
+              android:focusable="true"
+              android:background="?attr/selectableItemBackground"
+              android:paddingStart="@dimen/mmx_list_item_padding_side"
+              android:paddingLeft="@dimen/mmx_list_item_padding_side"
+              android:paddingEnd="@dimen/mmx_list_item_padding_side"
+              android:paddingRight="@dimen/mmx_list_item_padding_side">
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"/>
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
 </LinearLayout>

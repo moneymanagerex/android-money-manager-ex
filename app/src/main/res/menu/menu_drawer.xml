@@ -16,43 +16,43 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_1"
-            android:checked="true"
-            android:icon="@drawable/ic_action_calculator_dark"
-            android:title="item 1"/>
+                android:id="@+id/navigation_item_1"
+                android:checked="true"
+                android:icon="@drawable/ic_action_calculator_dark"
+                android:title="item 1"/>
         <item
-            android:id="@+id/navigation_item_2"
-            android:icon="@drawable/ic_action_alarm_on_dark"
-            android:title="test"/>
+                android:id="@+id/navigation_item_2"
+                android:icon="@drawable/ic_action_alarm_on_dark"
+                android:title="test"/>
     </group>
 
     <item
-        android:id="@+id/menu_update_exchange_rate"
-        android:icon="?attr/ic_action_reload"
-        android:title="@string/update_menu_currency_exchange_rates"
-        app:showAsAction="always"/>
+            android:id="@+id/menu_update_exchange_rate"
+            android:icon="?attr/ic_action_reload"
+            android:title="@string/update_menu_currency_exchange_rates"
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/blah"
-        android:title="parent item">
+            android:id="@+id/blah"
+            android:title="parent item">
     </item>
 
     <item
-        android:id="@+id/navigation_subheader"
-        android:title="navigation_subheader">
+            android:id="@+id/navigation_subheader"
+            android:title="navigation_subheader">
         <menu>
             <item
-                android:id="@+id/navigation_sub_item_1"
-                android:icon="@drawable/ic_action_assessment_dark"
-                android:title="ring/navigation_sub_item_1"/>
+                    android:id="@+id/navigation_sub_item_1"
+                    android:icon="@drawable/ic_action_assessment_dark"
+                    android:title="ring/navigation_sub_item_1"/>
             <item
-                android:id="@+id/navigation_sub_item_2"
-                android:icon="@drawable/ic_action_attach_money_dark"
-                android:title="navigation_sub_item_2"/>
+                    android:id="@+id/navigation_sub_item_2"
+                    android:icon="@drawable/ic_action_attach_money_dark"
+                    android:title="navigation_sub_item_2"/>
         </menu>
     </item>
 

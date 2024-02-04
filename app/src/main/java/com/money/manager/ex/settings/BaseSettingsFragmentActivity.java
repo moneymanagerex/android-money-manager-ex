@@ -37,7 +37,7 @@ import androidx.preference.PreferenceFragmentCompat;
  * Base activity for the settings activities.
  */
 public class BaseSettingsFragmentActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {

@@ -41,7 +41,7 @@ public class QueryAccountBills
     public static final String RECONCILED = "RECONCILED";
     public static final String TOTALBASECONVRATE = "TOTALBASECONVRATE";
     public static final String RECONCILEDBASECONVRATE = "RECONCILEDBASECONVRATE";
-
+    private final Context context;
     private int accountId;
     private String accountName;
     private String status;
@@ -52,8 +52,6 @@ public class QueryAccountBills
     private double reconciled;
     private double totalBaseConvRate;
     private double reconciledBaseConvRate;
-
-    private final Context context;
 
     // constructor
     public QueryAccountBills(Context context) {

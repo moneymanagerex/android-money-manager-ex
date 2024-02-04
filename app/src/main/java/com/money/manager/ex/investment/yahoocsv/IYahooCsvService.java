@@ -32,8 +32,9 @@ public interface IYahooCsvService {
 
     /**
      * "http://download.finance.yahoo.com/d/quotes.csv?f=sl1d1c4&e=.csv"
+     *
      * @param symbol Yahoo Finance symbol to update
-     * //@return Contents of the CSV result from Yahoo
+     *               //@return Contents of the CSV result from Yahoo
      */
     @GET("/d/quotes.csv?f=sl1d1c4&e=.csv")
     Call<String> getPrice(@Query("s") String symbol);

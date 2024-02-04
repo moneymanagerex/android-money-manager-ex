@@ -19,12 +19,13 @@ package com.money.manager.ex.investment;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,23 +34,29 @@ import butterknife.ButterKnife;
  */
 public class EditPriceViewHolder {
 
-    @BindView(R.id.symbolTextView) public RobotoTextView symbolTextView;
-    @BindView(R.id.amountTextView) public RobotoTextView amountTextView;
-    @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
+    @BindView(R.id.symbolTextView)
+    public RobotoTextView symbolTextView;
+    @BindView(R.id.amountTextView)
+    public RobotoTextView amountTextView;
+    @BindView(R.id.dateTextView)
+    public RobotoTextView dateTextView;
 //    @BindView(R.id.dateControl) public DateDisplay dateDisplay;
 
-//    @BindView(R.id.previousDayButton) @Nullable public FontIconView previousDayButton;
-    @BindView(R.id.previousDayButton) @Nullable
+    //    @BindView(R.id.previousDayButton) @Nullable public FontIconView previousDayButton;
+    @BindView(R.id.previousDayButton)
+    @Nullable
     public IconicsImageView previousDayButton;
 
-//    @BindView(R.id.nextDayButton) @Nullable public FontIconView nextDayButton;
-    @BindView(R.id.nextDayButton) @Nullable public IconicsImageView nextDayButton;
+    //    @BindView(R.id.nextDayButton) @Nullable public FontIconView nextDayButton;
+    @BindView(R.id.nextDayButton)
+    @Nullable
+    public IconicsImageView nextDayButton;
 
-    public void bind(View view) {
+    public void bind(final View view) {
         ButterKnife.bind(this, view);
     }
 
-    public void bind(AppCompatActivity activity) {
+    public void bind(final AppCompatActivity activity) {
         ButterKnife.bind(this, activity);
     }
 }

@@ -22,9 +22,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
+ *
  */
 public class QueryAllData
-    extends Dataset {
+        extends Dataset {
 
     // FIELDS
     public static final String ID = "ID";
@@ -41,7 +42,7 @@ public class QueryAllData
     public static final String CURRENCYID = "CurrencyID";
     public static final String AccountName = "AccountName";
     public static final String ACCOUNTID = "AccountID";
-//    public static final String FromAccountName = "FromAccountName";
+    //    public static final String FromAccountName = "FromAccountName";
 //    public static final String FromAccountId = "FromAccountId";
 //    public static final String FromAmount = "FromAmount";
 //    public static final String FromCurrencyId = "FromCurrencyId";

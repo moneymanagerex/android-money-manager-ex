@@ -27,7 +27,7 @@ import info.javaperformance.money.Money;
  * A record/row in the Income/Expense report.
  */
 public class IncomeVsExpenseReportEntity
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String YEAR = "Year";
     public static final String Month = "Month";
@@ -35,15 +35,15 @@ public class IncomeVsExpenseReportEntity
     public static final String Expenses = "Expenses";
     public static final String Transfers = "Transfers";
 
-    public static IncomeVsExpenseReportEntity from(Cursor c) {
-        IncomeVsExpenseReportEntity entity = new IncomeVsExpenseReportEntity();
+    public static IncomeVsExpenseReportEntity from(final Cursor c) {
+        final IncomeVsExpenseReportEntity entity = new IncomeVsExpenseReportEntity();
         entity.loadFromCursor(c);
 
         return entity;
     }
 
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, Income);

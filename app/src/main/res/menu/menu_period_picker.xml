@@ -16,36 +16,36 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_period"
-        android:icon="?attr/ic_action_calendar_day"
-        android:title="@string/time_frame"
-        app:showAsAction="ifRoom">
+            android:id="@+id/menu_period"
+            android:icon="?attr/ic_action_calendar_day"
+            android:title="@string/time_frame"
+            app:showAsAction="ifRoom">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_custom_dates"
-                    android:title="@string/custom_dates"/>
+                        android:id="@+id/menu_custom_dates"
+                        android:title="@string/custom_dates"/>
                 <item
-                    android:id="@+id/menu_current_month"
-                    android:title="@string/current_month"/>
+                        android:id="@+id/menu_current_month"
+                        android:title="@string/current_month"/>
                 <item
-                    android:id="@+id/menu_last_month"
-                    android:title="@string/last_month"/>
+                        android:id="@+id/menu_last_month"
+                        android:title="@string/last_month"/>
                 <item
-                    android:id="@+id/menu_last_30_days"
-                    android:title="@string/last30days"/>
+                        android:id="@+id/menu_last_30_days"
+                        android:title="@string/last30days"/>
                 <item
-                    android:id="@+id/menu_current_year"
-                    android:title="@string/current_year"/>
+                        android:id="@+id/menu_current_year"
+                        android:title="@string/current_year"/>
                 <item
-                    android:id="@+id/menu_last_year"
-                    android:title="@string/last_year"/>
+                        android:id="@+id/menu_last_year"
+                        android:title="@string/last_year"/>
                 <item
-                    android:id="@+id/menu_all_time"
-                    android:title="@string/all_time"/>
+                        android:id="@+id/menu_all_time"
+                        android:title="@string/all_time"/>
             </group>
         </menu>
     </item>

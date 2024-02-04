@@ -23,7 +23,7 @@ import android.database.DatabaseUtils;
  * Currency entity
  */
 public class Currency
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String CURRENCYID = "CURRENCYID";
     public static final String CURRENCYNAME = "CURRENCYNAME";
@@ -37,19 +37,19 @@ public class Currency
     public static final String BASECONVRATE = "BASECONVRATE";
     public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
 
-    public static Currency fromCursor(Cursor c) {
-        Currency currency = new Currency();
+    public static Currency fromCursor(final Cursor c) {
+        final Currency currency = new Currency();
         currency.loadFromCursor(c);
         return currency;
     }
 
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all Double values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, SCALE, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, BASECONVRATE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, SCALE, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, BASECONVRATE, contentValues);
     }
 
     public Double getBaseConversionRate() {
@@ -60,7 +60,7 @@ public class Currency
         return getString(CENT_NAME);
     }
 
-    public void setCentName(String value) {
+    public void setCentName(final String value) {
         setString(CENT_NAME, value);
     }
 
@@ -71,11 +71,15 @@ public class Currency
         return getString(CURRENCY_SYMBOL);
     }
 
+    public void setCode(final String value) {
+        setString(CURRENCY_SYMBOL, value);
+    }
+
     public int getCurrencyId() {
         return getInt(CURRENCYID);
     }
 
-    public void setCurrencyid(int value) {
+    public void setCurrencyid(final int value) {
         setInt(CURRENCYID, value);
     }
 
@@ -83,7 +87,7 @@ public class Currency
         return getString(DECIMAL_POINT);
     }
 
-    public void setDecimalPoint(String value) {
+    public void setDecimalPoint(final String value) {
         setString(DECIMAL_POINT, value);
     }
 
@@ -91,35 +95,31 @@ public class Currency
         return getString(GROUP_SEPARATOR);
     }
 
+    public void setGroupSeparator(final String value) {
+        setString(GROUP_SEPARATOR, value);
+    }
+
     public String getName() {
         return getString(CURRENCYNAME);
     }
 
-    public void setName(String value) {
+    public void setName(final String value) {
         setString(CURRENCYNAME, value);
-    }
-
-    public void setCode(String value) {
-        setString(CURRENCY_SYMBOL, value);
     }
 
     public String getPfxSymbol() {
         return getString(PFX_SYMBOL);
     }
 
-    public void setPfxSymbol(String value) {
+    public void setPfxSymbol(final String value) {
         setString(PFX_SYMBOL, value);
-    }
-
-    public void setGroupSeparator(String value) {
-        setString(GROUP_SEPARATOR, value);
     }
 
     public Integer getScale() {
         return getInt(SCALE);
     }
 
-    public void setScale(int value) {
+    public void setScale(final int value) {
         setInt(SCALE, value);
     }
 
@@ -127,15 +127,15 @@ public class Currency
         return getString(SFX_SYMBOL);
     }
 
-    public void setSfxSymbol(String value) {
+    public void setSfxSymbol(final String value) {
         setString(SFX_SYMBOL, value);
     }
 
-    public void setConversionRate(Double value) {
+    public void setConversionRate(final Double value) {
         setDouble(BASECONVRATE, value);
     }
 
-    public void setUnitName(String value) {
+    public void setUnitName(final String value) {
         setString(UNIT_NAME, value);
     }
 }

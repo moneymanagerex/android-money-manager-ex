@@ -64,33 +64,36 @@ import timber.log.Timber;
  * Here we define the parcel converter for Money type.
  */
 @ParcelClasses(
-    @ParcelClass(
-        value = Money.class,
-        annotation = @Parcel(converter = MoneyParcelConverter.class))
+        @ParcelClass(
+                value = Money.class,
+                annotation = @Parcel(converter = MoneyParcelConverter.class))
 )
 public class MmexApplication
-    extends MultiDexApplication {
+        extends MultiDexApplication {
 
-    static private Amplitude mAmplitude;
+    private static Amplitude mAmplitude;
     private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
+    public MmxComponent iocComponent;
+    public AtomicReference<MmxOpenHelper> openHelperAtomicReference;
 
     public static MmexApplication getApp() {
         return appInstance;
     }
 
-    public static Amplitude getAmplitude()
-    {
+    public static Amplitude getAmplitude() {
         return mAmplitude;
     }
 
     public static float getTextSize() {
-        return MmexApplication.mTextSize;
+        return mTextSize;
     }
 
-    public static void setTextSize(float textSize) {
-        MmexApplication.mTextSize = textSize;
+    // Instance fields.
+
+    public static void setTextSize(final float textSize) {
+        mTextSize = textSize;
     }
 
     /**
@@ -101,12 +104,37 @@ public class MmexApplication
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    // Instance fields.
-
-    public MmxComponent iocComponent;
-    public AtomicReference<MmxOpenHelper> openHelperAtomicReference;
-
     // Overrides.
+
+    public static String getOrCreateUUID(final Context context) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String appUUID = preferences.getString("uuid", null);
+
+        if (null == appUUID || appUUID.isEmpty()) {
+            // UUID does not exist in preferences, generate and store it
+            appUUID = generateAndStoreUUID(context);
+        }
+
+        return appUUID;
+    }
+
+    private static String generateAndStoreUUID(final Context context) {
+        // Generate a random UUID
+        final UUID uuid = UUID.randomUUID();
+
+        // Convert UUID to string and remove hyphens
+        final String appUUID = uuid.toString().replace("-", "");
+
+        // Store the generated UUID using SharedPreferences
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString("uuid", appUUID).apply();
+
+        // Log the generated UUID for verification (you can remove this in production)
+        Timber.d("Generated UUID: " + appUUID);
+
+        return appUUID;
+    }
 
     @Override
     public void onCreate() {
@@ -116,14 +144,14 @@ public class MmexApplication
         appInstance = this;
 
         // set default text size.
-        setTextSize(new TextView(getApplicationContext()).getTextSize());
+        mTextSize = new TextView(getApplicationContext()).getTextSize();
 
         // Font
-        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         RobotoView.setUserFont(Integer.parseInt(
-            appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
         RobotoView.setUserFontSize(getApplicationContext(),
-            appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
+                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
 
         registerCustomFonts();
 
@@ -151,36 +179,6 @@ public class MmexApplication
         );
 
         mAmplitude.setDeviceId(getOrCreateUUID(this));
-    }
-
-    public static String getOrCreateUUID(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        String appUUID = preferences.getString("uuid", null);
-
-        if (appUUID == null || appUUID.isEmpty()) {
-            // UUID does not exist in preferences, generate and store it
-            appUUID = generateAndStoreUUID(context);
-        }
-
-        return appUUID;
-    }
-
-    private static String generateAndStoreUUID(Context context) {
-        // Generate a random UUID
-        UUID uuid = UUID.randomUUID();
-
-        // Convert UUID to string and remove hyphens
-        String appUUID = uuid.toString().replace("-", "");
-
-        // Store the generated UUID using SharedPreferences
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putString("uuid", appUUID).apply();
-
-        // Log the generated UUID for verification (you can remove this in production)
-        Timber.d("Generated UUID: " + appUUID);
-
-        return appUUID;
     }
 
     /**
@@ -211,7 +209,7 @@ public class MmexApplication
     }
 
     @Override
-    public void attachBaseContext(Context base) {
+    public void attachBaseContext(final Context base) {
         super.attachBaseContext(base);
 //        super.attachBaseContext(IconicsContextWrapper.wrap(base));
 
@@ -223,10 +221,10 @@ public class MmexApplication
 
     // dynamic
 
-    public void initDb(String path) {
-        MmxOpenHelper db = createDbInstance(path);
+    public void initDb(final String path) {
+        final MmxOpenHelper db = createDbInstance(path);
 
-        if (openHelperAtomicReference == null) {
+        if (null == openHelperAtomicReference) {
             openHelperAtomicReference = new AtomicReference<>(db);
         } else {
             // close existing db
@@ -244,32 +242,32 @@ public class MmexApplication
 
     public Locale getAppLocale() {
         Locale locale = null;
-        Context context = getApplicationContext();
+        final Context context = getApplicationContext();
 
-        String language = new AppSettings(context).getGeneralSettings().getApplicationLanguage();
+        final String language = new AppSettings(context).getGeneralSettings().getApplicationLanguage();
 
-        if(!TextUtils.isEmpty(language)) {
+        if (!TextUtils.isEmpty(language)) {
             try {
                 locale = new Locale(language);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Timber.e(e, "parsing locale: %s", language);
             }
         }
 
         // in case the above failed
-        if (locale == null) {
+        if (null == locale) {
             // use the default locale.
             locale = context.getResources().getConfiguration().locale;
         }
-        if (locale == null) {
+        if (null == locale) {
             locale = Locale.getDefault();
         }
 
         return locale;
     }
 
-    public boolean setUserName(String userName) {
-        return this.setUserName(userName, false);
+    public boolean setUserName(final String userName) {
+        return setUserName(userName, false);
     }
 
     /**
@@ -279,12 +277,12 @@ public class MmexApplication
      * the main activity.
      */
     @Deprecated
-    public boolean setUserName(String userName, boolean save) {
+    public boolean setUserName(final String userName, final boolean save) {
         MmexApplication.userName = userName;
 
         if (save) {
-            InfoService service = new InfoService(this.getApplicationContext());
-            boolean updateSuccessful = service.setInfoValue(InfoKeys.USERNAME, userName);
+            final InfoService service = new InfoService(getApplicationContext());
+            final boolean updateSuccessful = service.setInfoValue(InfoKeys.USERNAME, userName);
 
             return updateSuccessful;
         }
@@ -292,11 +290,11 @@ public class MmexApplication
         return true;
     }
 
-    public String loadUserNameFromDatabase(Context context) {
-        InfoService service = new InfoService(context);
-        String username = service.getInfoValue(InfoKeys.USERNAME);
+    public String loadUserNameFromDatabase(final Context context) {
+        final InfoService service = new InfoService(context);
+        final String username = service.getInfoValue(InfoKeys.USERNAME);
 
-        String result = TextUtils.isEmpty(username) ? "" : username;
+        final String result = TextUtils.isEmpty(username) ? "" : username;
 
         return result;
     }
@@ -307,10 +305,10 @@ public class MmexApplication
      * @param context Executing context
      * @return total
      */
-    public double getSummaryAccounts(Context context) {
+    public double getSummaryAccounts(final Context context) {
         try {
             return getSummaryAccountsInternal(context);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "getting summary accounts");
         }
         return 0;
@@ -331,10 +329,10 @@ public class MmexApplication
         Private
     */
 
-    private double getSummaryAccountsInternal(Context context) {
+    private double getSummaryAccountsInternal(final Context context) {
         double curTotal = 0;
 
-        LookAndFeelSettings settings = new AppSettings(context)
+        final LookAndFeelSettings settings = new AppSettings(context)
                 .getLookAndFeelSettings();
         // compose whereClause
         String where = "";
@@ -346,13 +344,13 @@ public class MmexApplication
         if (settings.getViewFavouriteAccounts()) {
             where = "LOWER(FAVORITEACCT)='true'";
         }
-        QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
+        final QueryAccountBills accountBills = new QueryAccountBills(context);
+        final Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
                 null);
-        if (cursor == null) return 0;
+        if (null == cursor) return 0;
 
         // calculate summary
         while (cursor.moveToNext()) {
@@ -364,7 +362,7 @@ public class MmexApplication
     }
 
     private void registerCustomFonts() {
-        String iconFontPath = "fonts/mmex.ttf";
+        final String iconFontPath = "fonts/mmex.ttf";
 
         // Font icons
         Iconics.registerFont(new MMXIconFont());

@@ -19,7 +19,6 @@ package com.money.manager.ex.core;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.widget.SearchView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
@@ -27,6 +26,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SearchView;
 
 import com.money.manager.ex.R;
 

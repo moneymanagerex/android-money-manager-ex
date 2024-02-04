@@ -17,12 +17,12 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_qif_export"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/qif_export"
-        app:showAsAction="ifRoom|withText"/>
+            android:id="@+id/menu_qif_export"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/qif_export"
+            app:showAsAction="ifRoom|withText"/>
 
 </menu>

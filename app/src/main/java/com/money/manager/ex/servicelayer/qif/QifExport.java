@@ -33,7 +33,7 @@ import timber.log.Timber;
 public class QifExport
         extends TextFileExport {
 
-    public QifExport(Context context) {
+    public QifExport(final Context context) {
         super(context);
 
         mContext = context;
@@ -42,27 +42,27 @@ public class QifExport
     /**
      * Export the transactions into qif format and offer file for sharing.
      */
-    public void export(AllDataAdapter adapter) {
+    public void export(final AllDataAdapter adapter) {
         // just e errors here
         try {
-            this.export_internal(adapter);
-        } catch (Exception e) {
+            export_internal(adapter);
+        } catch (final Exception e) {
             Timber.e(e, ".qif export");
         }
     }
 
     // Private
 
-    private void export_internal(AllDataAdapter adapter)
+    private void export_internal(final AllDataAdapter adapter)
             throws Exception {
-        String fileName = generateFileName();
+        final String fileName = generateFileName();
 
         // get data into qif structure
-        IQifGenerator generator = getQifGenerator();
-        String content = generator.createFromAdapter(adapter);
-        String title = getContext().getString(R.string.qif_export);
+        final IQifGenerator generator = getQifGenerator();
+        final String content = generator.createFromAdapter(adapter);
+        final String title = getContext().getString(R.string.qif_export);
 
-        boolean success = this.export(fileName, content, title);
+        final boolean success = export(fileName, content, title);
     }
 
 //    private void dumpContentIntoFile(String content, File file) {
@@ -101,7 +101,7 @@ public class QifExport
 
     private String generateFileName() {
         // use just the date for now?
-        String format = "yyyy-MM-dd_HHmmss";
+        final String format = "yyyy-MM-dd_HHmmss";
         String result = new MmxDate().toString(format);
 
         // append file extension.
@@ -112,9 +112,10 @@ public class QifExport
 
     /**
      * factory method for Qif generator.
+     *
      * @return implementation of Qif generator interface.
      */
     private IQifGenerator getQifGenerator() {
-        return new QifGenerator(this.mContext);
+        return new QifGenerator(mContext);
     }
 }

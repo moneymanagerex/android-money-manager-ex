@@ -73,7 +73,6 @@ public class MmxDateTimeUtils {
     }
 
     /**
-     *
      * @param resourceId String Id for name of the period.
      * @return Date range that matches the period selected.
      */
@@ -85,6 +84,7 @@ public class MmxDateTimeUtils {
     /**
      * Creates a date range from the period name. Used when selecting a date range from the
      * localized menus.
+     *
      * @param period Period name in local language.
      * @return Date Range object.
      */
@@ -158,6 +158,7 @@ public class MmxDateTimeUtils {
 
     /**
      * Get pattern defined by the user.
+     *
      * @return pattern user define
      */
     public String getUserDatePattern(Context context) {
@@ -173,7 +174,7 @@ public class MmxDateTimeUtils {
 
         // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
         String[] dateFormats = context.getResources().getStringArray(R.array.date_format_mask);
-        if (TextUtils.isEmpty(pattern) && dateFormats.length > 0){
+        if (TextUtils.isEmpty(pattern) && dateFormats.length > 0) {
             pattern = dateFormats[0];
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
                     .replace("%y", "yy").replace("%Y", "yyyy")

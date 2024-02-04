@@ -17,7 +17,9 @@
 package com.money.manager.ex.view;
 
 import android.content.Context;
+
 import androidx.appcompat.widget.AppCompatEditText;
+
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -80,6 +82,6 @@ public class RobotoEditText extends AppCompatEditText {
      * @param attrs   The attributes of the XML tag that is inflating the widget.
      */
     private void parseAttributes(Context context, AttributeSet attrs) {
-    	RobotoView.parseAttributes(context, this, attrs);
+        RobotoView.parseAttributes(context, this, attrs);
     }
 }

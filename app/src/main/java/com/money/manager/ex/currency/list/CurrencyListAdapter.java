@@ -32,7 +32,7 @@ import androidx.cursoradapter.widget.CursorAdapter;
  * Adapter for the list of currencies
  */
 public class CurrencyListAdapter
-    extends CursorAdapter {
+        extends CursorAdapter {
 
     //private Context mContext;
 

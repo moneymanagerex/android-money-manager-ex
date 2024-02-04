@@ -28,7 +28,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 
 public class MoneyBundler
-    implements Bundler<Money> {
+        implements Bundler<Money> {
     @Override
     public void put(String key, Money money, Bundle bundle) {
         bundle.putString(key, money.toString());

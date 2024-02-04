@@ -59,7 +59,18 @@ import timber.log.Timber;
  * This class implements all the methods of utility for the management of currencies.
  */
 public class CurrencyService
-    extends ServiceBase {
+        extends ServiceBase {
+
+    // hash map of all currencies
+    private final SparseArray<Currency> mCurrencies;
+    /**
+     * a fast lookup for symbol -> id. i.e. EUR->2.
+     */
+    private final HashMap<String, Integer> mCurrencyCodes;
+    @Inject
+    CurrencyRepositorySql mRepository;
+    private Integer mBaseCurrencyId = null;
+    private CurrencyRepository oldRepository;
 
     @Inject
     public CurrencyService(Context context) {
@@ -70,16 +81,6 @@ public class CurrencyService
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
-
-    @Inject CurrencyRepositorySql mRepository;
-
-    private Integer mBaseCurrencyId = null;
-    // hash map of all currencies
-    private final SparseArray<Currency> mCurrencies;
-    /**
-     * a fast lookup for symbol -> id. i.e. EUR->2.
-     */
-    private final HashMap<String, Integer> mCurrencyCodes;
 
     /**
      * @param currencyId of the currency to be get
@@ -175,8 +176,8 @@ public class CurrencyService
         usedList = usedList.substring(0, usedList.length() - 2);
 
         Select query = new Select(getRepository().getAllColumns())
-            .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")")
-            .orderBy(Currency.CURRENCYNAME);
+                .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")")
+                .orderBy(Currency.CURRENCYNAME);
 
         return getRepository().query(Currency.class, query);
     }
@@ -270,6 +271,7 @@ public class CurrencyService
 
     /**
      * Formats the given value, in base currency, as a string for display.
+     *
      * @param value to format
      * @return formatted value
      */
@@ -312,7 +314,6 @@ public class CurrencyService
         return result;
     }
 
-    private CurrencyRepository oldRepository;
     public CurrencyRepository getRepository() {
         if (oldRepository == null) {
             oldRepository = new CurrencyRepository(getContext());
@@ -415,7 +416,7 @@ public class CurrencyService
                 defaultLocale = Locale.getDefault();
             }
             // Check if there is a country.
-            if (!TextUtils.isEmpty(defaultLocale.getCountry() )) {
+            if (!TextUtils.isEmpty(defaultLocale.getCountry())) {
                 currency = java.util.Currency.getInstance(defaultLocale);
             }
             // Otherwise no country info in the locale. Just use the default.
@@ -445,7 +446,8 @@ public class CurrencyService
      * Fetches a currency by symbol.
      * Ran on database creation during OpenHelper instantiation.
      * todo Test if any advanced helpers can be used at that stage?
-     * @param db    Database instance.
+     *
+     * @param db             Database instance.
      * @param currencySymbol Currency symbol to load.
      * @return Id of the currency with the given symbol.
      */
@@ -455,9 +457,9 @@ public class CurrencyService
         // Cannot use any other db source here as this happens on database creation!
 
         Cursor cursor = db.query(CurrencyRepositorySql.TABLE_NAME,
-                new String[]{ Currency.CURRENCYID },
+                new String[]{Currency.CURRENCYID},
                 Currency.CURRENCY_SYMBOL + "=?",
-                new String[]{ currencySymbol },
+                new String[]{currencySymbol},
                 null, null, null);
 
         if (cursor == null) return result;
@@ -490,7 +492,7 @@ public class CurrencyService
         updateExchangeRates(currencies);
     }
 
-    public void updateExchangeRates(List<Currency> currencies){
+    public void updateExchangeRates(List<Currency> currencies) {
         if (currencies == null || currencies.size() <= 0) return;
 
         String symbol;

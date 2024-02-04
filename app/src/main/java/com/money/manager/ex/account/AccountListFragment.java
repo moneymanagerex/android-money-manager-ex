@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -55,8 +56,8 @@ import static androidx.core.content.ContextCompat.startActivity;
  * List of accounts.
  */
 public class AccountListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ACCOUNT = 0;
 
@@ -81,7 +82,7 @@ public class AccountListFragment
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null,
-                new String[]{ Account.ACCOUNTNAME },
+                new String[]{Account.ACCOUNTNAME},
                 new int[]{android.R.id.text1}, 0);
         setListAdapter(adapter);
 
@@ -211,6 +212,7 @@ public class AccountListFragment
     /**
      * Called when the action bar search text has changed. Update the search filter, and restart
      * the loader to do a new query with this filter.
+     *
      * @param newText The search text
      * @return whether the event was handled or not
      */
@@ -267,29 +269,29 @@ public class AccountListFragment
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_account)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirmDelete)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    AccountRepository repo = new AccountRepository(getActivity());
-                    if (!repo.delete(accountId)) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                .title(R.string.delete_account)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        AccountRepository repo = new AccountRepository(getActivity());
+                        if (!repo.delete(accountId)) {
+                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                        }
+                        // restart loader
+                        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
                     }
-                    // restart loader
-                    getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.cancel();
-                }
-            })
-            .build().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+                .build().show();
     }
 
     /**

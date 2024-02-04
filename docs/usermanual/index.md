@@ -5,16 +5,16 @@
 - [[Database]]
 - [[Cloud Synchronization]]
 - Entities
-  - [Accounts](#Accounts)
-  - [Categories](Categories)
-  - [Currencies](Currencies)
-  - [Payees](#Payees)
+    - [Accounts](#Accounts)
+    - [Categories](Categories)
+    - [Currencies](Currencies)
+    - [Payees](#Payees)
 - [[Transactions]]
-  - [Account Transactions List](Account Transactions List)
-  - [Void transaction](Void-Transaction)
-  - [Delete transaction](Delete-Transaction)
-  - [Transfers](Transfers)
-  - [Transaction Status Filter](Transaction Status Filter)
+    - [Account Transactions List](Account Transactions List)
+    - [Void transaction](Void-Transaction)
+    - [Delete transaction](Delete-Transaction)
+    - [Transfers](Transfers)
+    - [Transaction Status Filter](Transaction Status Filter)
 - [[Recurring Transactions]]
 - [Transaction Filter](#Transaction_Filter)
 - [Asset Allocation](asset-allocation)
@@ -24,7 +24,8 @@
 
 ## <a name="Introduction"></a>Introduction
 
-<a href="Home">MoneyManagerEx for Android</a> is a port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of its sisters' Desktop applications, while adding mobility and synchronization.
+<a href="Home">MoneyManagerEx for Android</a> is a port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best
+features of its sisters' Desktop applications, while adding mobility and synchronization.
 <p></p>
 The primary goal of MoneyManagerEx and <strong><a href="Home">MoneyManagerEx for Android</a></strong> is to simplify the process of tracking financial information, in an easy to use program that can be used as regular as necessary, to help us keep track of where our money comes from and more importantly, where our money goes, in order to make better financial decisions for our future.
 <p></p>
@@ -39,7 +40,9 @@ What is an Account in <a href="Home">MoneyManagerEx for Android?</a> Account is 
 
 To create a new account, from the menu, Manage → Account → Add (+)
 
-<strong>Name of the Account</strong>: This is a required field. The recommendation is to name your accounts uniquely and in relation to real world accounts. Example: With <a href="CitiBank">CitiBank</a>, we have a Savings account and a credit card Visa account. You could name your accounts as "<a href="CitiBank">CitiBank</a> Savings" and “Citibank Visa”.<br>
+<strong>Name of the Account</strong>: This is a required field. The recommendation is to name your accounts uniquely and in relation to real world accounts. Example:
+With <a href="CitiBank">CitiBank</a>, we have a Savings account and a credit card Visa account. You could name your accounts as "<a href="CitiBank">CitiBank</a> Savings" and
+“Citibank Visa”.<br>
 
 <strong>Type of Account</strong>:
 <ol>
@@ -51,9 +54,11 @@ For a correct management you must have the correct balance for the account you a
 <p></p>
 The <strong>Status</strong> of the account can be set to "Open" or "Closed". Closed accounts are those no longer active. The setting of this state is only one way to simplify the vision. When you start the application displays all the Accounts, but you can make it visible only open account by setting "View open accounts" (Manage → Settings → Display)
 
-<strong>Currency</strong>: You can set the currency associated with the account and can be different to the base currency. The exchange rate of the currency can be changed using the menu: Manage → Currency
+<strong>Currency</strong>: You can set the currency associated with the account and can be different to the base currency. The exchange rate of the currency can be changed using
+the menu: Manage → Currency
 
-Once you have created an account, you can edit any of the account information fields using the menu: Manage → Account. A list of your accounts will appear, and holding on an account you can choose to edit or delete it.
+Once you have created an account, you can edit any of the account information fields using the menu: Manage → Account. A list of your accounts will appear, and holding on an
+account you can choose to edit or delete it.
 
 ## <a name="Payees"></a>Payees
 
@@ -67,5 +72,6 @@ To edit or delete a Payee hold on the desired Payee will open a context menu wit
 
 ## <a name="Transaction_Filter"></a>Transaction Filter
 
-<a href="Home">MoneyManagerEx for Android</a> allows you to search for transactions by setting the criteria, such as from date to date, all transactions of an account, transactions by state, by amount or notes.
+<a href="Home">MoneyManagerEx for Android</a> allows you to search for transactions by setting the criteria, such as from date to date, all transactions of an account, transactions
+by state, by amount or notes.
  

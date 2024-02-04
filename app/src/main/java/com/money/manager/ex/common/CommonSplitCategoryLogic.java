@@ -49,12 +49,13 @@ public class CommonSplitCategoryLogic {
 
     /**
      * Adjusts the sign on the amount, required for storage.
+     *
      * @return Returns the amount that should be stored in the Split based on its Transaction Type
      * and parent transaction's Transaction Type.
      * Example: User enters 10 for Withdrawal on Withdrawal transaction. The sign will be +1.
-     *          User enters 10 for Deposit on Withdrawal transaction. The sign will be -1.
-     *          User enters 10 for Withdrawal on Deposit transaction. The sign will be -1.
-     *          User enters 10 for Deposit on Deposit transaction. The sign will be +1.
+     * User enters 10 for Deposit on Withdrawal transaction. The sign will be -1.
+     * User enters 10 for Withdrawal on Deposit transaction. The sign will be -1.
+     * User enters 10 for Deposit on Deposit transaction. The sign will be +1.
      */
     public static Money getStorageAmount(TransactionTypes parentType, Money amount, ISplitTransaction split) {
         int splitSign = split.getTransactionType(parentType) == parentType

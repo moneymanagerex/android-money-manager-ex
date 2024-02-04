@@ -16,73 +16,73 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/listPreferredItemHeight"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="?attr/listPreferredItemHeight"
+              android:orientation="horizontal">
 
     <RelativeLayout
-        android:layout_width="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:layout_height="match_parent">
+            android:layout_width="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/expandable_list_indicator"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerInParent="true" />
+                android:id="@+id/expandable_list_indicator"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/indent"
-        android:layout_width="20dp"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:orientation="horizontal" />
+            android:id="@+id/indent"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="horizontal"/>
 
     <!-- text -->
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:mode="twoLine"
-        android:orientation="vertical"
-        android:paddingBottom="2dip"
-        android:paddingTop="2dip"
-        android:layout_weight="1" >
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:mode="twoLine"
+            android:orientation="vertical"
+            android:paddingBottom="2dip"
+            android:paddingTop="2dip"
+            android:layout_weight="1">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@android:id/text1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/category"
-            android:layout_marginTop="6dip"
-            android:layout_gravity="start"
-            android:textAppearance="?attr/textAppearanceListItem" />
+                android:id="@android:id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/category"
+                android:layout_marginTop="6dip"
+                android:layout_gravity="start"
+                android:textAppearance="?attr/textAppearanceListItem"/>
         <!-- android:textSize="16sp" -->
 
         <TextView
-            android:id="@android:id/text2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:id="@android:id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </LinearLayout>
 
     <!-- selector -->
     <LinearLayout
-        android:id="@+id/selector"
-        android:layout_width="?attr/listPreferredItemHeight"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@color/button_background_inactive_dark" >
-        <com.shamanland.fonticon.FontIconView
-            android:text="@string/ic_chevron_right"
-            android:textColor="@color/md_accent"
-            android:layout_gravity="center"
+            android:id="@+id/selector"
+            android:layout_width="?attr/listPreferredItemHeight"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="30sp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:background="@color/button_background_inactive_dark">
+        <com.shamanland.fonticon.FontIconView
+                android:text="@string/ic_chevron_right"
+                android:textColor="@color/md_accent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
     </LinearLayout>
 
 </LinearLayout>

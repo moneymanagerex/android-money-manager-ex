@@ -23,13 +23,14 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 import androidx.viewpager.widget.ViewPager;
+
 import timber.log.Timber;
 
 /**
  * About the app
  */
 public class AboutActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 
@@ -43,12 +44,12 @@ public class AboutActivity
 
         mViewPager = findViewById(R.id.viewpager);
         mViewPager.setAdapter(new AboutTabAdapter(getSupportFragmentManager(),
-            new String[]{
-                getString(R.string.about),
-                getString(R.string.changelog),
-                getString(R.string.credits),
-                getString(R.string.libraries)
-            }));
+                new String[]{
+                        getString(R.string.about),
+                        getString(R.string.changelog),
+                        getString(R.string.credits),
+                        getString(R.string.libraries)
+                }));
 
         // Tab Layout
         TabLayout tabLayout = findViewById(R.id.tabs);

@@ -17,7 +17,9 @@
 package com.money.manager.ex.view;
 
 import android.content.Context;
+
 import androidx.appcompat.widget.AppCompatButton;
+
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -25,7 +27,7 @@ import android.widget.TextView;
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android.
  */
 public class RobotoButton
-    extends AppCompatButton {
+        extends AppCompatButton {
 
     /**
      * Simple constructor to use when creating a widget from code.
@@ -84,6 +86,6 @@ public class RobotoButton
      * @param attrs   The attributes of the XML tag that is inflating the widget.
      */
     private void parseAttributes(Context context, AttributeSet attrs) {
-    	RobotoView.parseAttributes(context, this, attrs);
+        RobotoView.parseAttributes(context, this, attrs);
     }
 }

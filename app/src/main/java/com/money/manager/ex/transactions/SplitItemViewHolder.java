@@ -20,10 +20,11 @@ package com.money.manager.ex.transactions;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,14 +33,18 @@ import butterknife.ButterKnife;
  * Adapter position is provided automatically by .getAdapterPosition().
  */
 public class SplitItemViewHolder
-    extends RecyclerView.ViewHolder {
+        extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.textViewCategory) public TextView txtSelectCategory;
-    @BindView(R.id.editTextTotAmount) public TextView txtAmount;
-    @BindView(R.id.notesEditSplit) public TextView txtNotesSplit;
-    @BindView(R.id.transactionTypeButton) public FontIconView transactionTypeButton;
+    @BindView(R.id.textViewCategory)
+    public TextView txtSelectCategory;
+    @BindView(R.id.editTextTotAmount)
+    public TextView txtAmount;
+    @BindView(R.id.notesEditSplit)
+    public TextView txtNotesSplit;
+    @BindView(R.id.transactionTypeButton)
+    public FontIconView transactionTypeButton;
 
-    public SplitItemViewHolder(View itemView) {
+    public SplitItemViewHolder(final View itemView) {
         super(itemView);
 
 //        transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);

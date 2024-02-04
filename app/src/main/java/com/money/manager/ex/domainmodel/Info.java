@@ -21,14 +21,14 @@ package com.money.manager.ex.domainmodel;
  * InfoTable entity
  */
 public class Info
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String INFOID = "INFOID";
     public static final String INFONAME = "INFONAME";
     public static final String INFOVALUE = "INFOVALUE";
 
-    public static Info create(String key, String value) {
-        Info entity = new Info();
+    public static Info create(final String key, final String value) {
+        final Info entity = new Info();
         entity.setName(key);
         entity.setValue(value);
         return entity;
@@ -42,11 +42,11 @@ public class Info
         return getString(INFONAME);
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         setString(INFONAME, name);
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         setString(INFOVALUE, value);
     }
 }

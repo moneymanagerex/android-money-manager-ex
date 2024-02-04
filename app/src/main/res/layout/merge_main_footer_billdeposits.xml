@@ -16,29 +16,29 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayoutRepeatingTransaction"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="horizontal" >
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/linearLayoutRepeatingTransaction"
+              android:layout_width="match_parent"
+              android:layout_height="48dp"
+              android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/imageViewClock"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
-        app:srcCompat="?attr/ic_action_warning" />
+            android:id="@+id/imageViewClock"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            app:srcCompat="?attr/ic_action_warning"/>
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewOverdue"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="@string/num_repeating_transaction_expired"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        app:typeface="roboto_light" />
+            android:id="@+id/textViewOverdue"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/num_repeating_transaction_expired"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            app:typeface="roboto_light"/>
 
 </LinearLayout>

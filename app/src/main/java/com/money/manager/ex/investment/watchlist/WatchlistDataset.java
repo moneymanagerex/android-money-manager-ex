@@ -30,7 +30,9 @@ import com.money.manager.ex.utils.MmxFileUtils;
  * Watchlist query.
  */
 public class WatchlistDataset
-    extends Dataset {
+        extends Dataset {
+
+    private final Context mContext;
 
     public WatchlistDataset(Context context) {
         super(MmxFileUtils.getRawAsString(context, R.raw.query_watchlist), DatasetType.QUERY,
@@ -39,11 +41,9 @@ public class WatchlistDataset
         mContext = context;
     }
 
-    private final Context mContext;
-
     @Override
     public String[] getAllColumns() {
-        return new String[] {
+        return new String[]{
                 StockFields.STOCKID + " AS _id",
                 StockFields.STOCKID,
                 StockFields.HELDAT,

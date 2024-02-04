@@ -20,21 +20,21 @@
     <!--<style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>-->
 
     <!--<style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner">-->
-        <!--<item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>-->
-        <!--<item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>-->
+    <!--<item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>-->
+    <!--<item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>-->
     <!--</style>-->
 
     <style name="Money.EditText" parent="Widget.AppCompat.EditText"/>
 
     <!--<style name="Money.Button" parent="Widget.AppCompat.Button">-->
-        <!--<item name="android:background">@color/md_primary</item>-->
-        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>-->
-        <!--<item name="android:elevation">@dimen/mmx_elevation</item>-->
-        <!--<item name="android:layout_margin">3dp</item>-->
-        <!--<item name="android:shadowColor">@android:color/black</item>-->
-        <!--<item name="android:shadowDx">1</item>-->
-        <!--<item name="android:shadowDy">1</item>-->
-        <!--<item name="android:shadowRadius">1</item>-->
-        <!--&lt;!&ndash;<item name="android:textColor">@color/button_foreground_active</item>&ndash;&gt;-->
+    <!--<item name="android:background">@color/md_primary</item>-->
+    <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>-->
+    <!--<item name="android:elevation">@dimen/mmx_elevation</item>-->
+    <!--<item name="android:layout_margin">3dp</item>-->
+    <!--<item name="android:shadowColor">@android:color/black</item>-->
+    <!--<item name="android:shadowDx">1</item>-->
+    <!--<item name="android:shadowDy">1</item>-->
+    <!--<item name="android:shadowRadius">1</item>-->
+    <!--&lt;!&ndash;<item name="android:textColor">@color/button_foreground_active</item>&ndash;&gt;-->
     <!--</style>-->
 </resources>

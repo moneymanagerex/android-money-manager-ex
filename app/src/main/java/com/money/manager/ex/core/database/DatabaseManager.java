@@ -1,5 +1,7 @@
 package com.money.manager.ex.core.database;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -12,17 +14,15 @@ import java.io.File;
 
 import timber.log.Timber;
 
-import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
-
 /**
  * The intention is to encapsulate as much of the database file management procedures here.
  */
 public class DatabaseManager {
+    private final Context mContext;
+
     public DatabaseManager(Context context) {
         mContext = context;
     }
-
-    private final Context mContext;
 
     public Context getContext() {
         return mContext;
@@ -33,6 +33,7 @@ public class DatabaseManager {
      * database file.
      * Creates a default database file if the one from preferences is not found. Sets this file as
      * the default database.
+     *
      * @return Full path to the current database file.
      */
     public String getDatabasePath() {
@@ -44,7 +45,7 @@ public class DatabaseManager {
         if (!TextUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
-            if (databaseFile.getAbsoluteFile().exists())  {
+            if (databaseFile.getAbsoluteFile().exists()) {
                 return databaseFile.getPath();
             }
         }
@@ -69,6 +70,7 @@ public class DatabaseManager {
     /**
      * Generates the default database path, including the filename. This is used for database
      * creation and display of the default value during creation.
+     *
      * @return The default database path.
      */
     public String getDefaultDatabasePath() {
@@ -81,6 +83,7 @@ public class DatabaseManager {
      * are created here by default.
      * The directory is created if it does not exist.
      * Ref: https://gist.github.com/granoeste/5574148
+     *
      * @return the default database directory
      */
     public String getDefaultDatabaseDirectory() {
@@ -102,6 +105,7 @@ public class DatabaseManager {
 
     /**
      * /sdcard/MoneyManagerEx
+     *
      * @return the location for the database in the publicly accessible storage
      */
     private File getDbExternalStorageDirectory() {
@@ -134,6 +138,7 @@ public class DatabaseManager {
     /**
      * External files directory
      * /storage/sdcard0/Android/data/package/files
+     *
      * @return directory to store the database in external files dir.
      */
     private File getExternalFilesDirectory() {
@@ -155,7 +160,6 @@ public class DatabaseManager {
     }
 
     /**
-     *
      * @return app's files directory
      */
     private File getPackageDirectory() {
@@ -179,7 +183,7 @@ public class DatabaseManager {
             }
         }
 
-        return dbDirectory ;
+        return dbDirectory;
     }
 
 }

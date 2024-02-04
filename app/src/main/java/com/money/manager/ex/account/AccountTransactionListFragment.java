@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -77,6 +79,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -85,8 +88,8 @@ import info.javaperformance.money.MoneyFactory;
  * Shows the list of transactions.
  */
 public class AccountTransactionListFragment
-    extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String ARG_ACCOUNT_ID = "arg:accountId";
 
@@ -95,6 +98,16 @@ public class AccountTransactionListFragment
 
     private static final int ID_LOADER_SUMMARY = 2;
     private static final String TAG_FILTER_DIALOG = "FilterDialogTag";
+    private AllDataListFragment mAllDataListFragment;
+    private Integer mAccountId = null;
+    private String mFragmentName;
+    private Money mAccountBalance = MoneyFactory.fromDouble(0),
+            mAccountReconciled = MoneyFactory.fromDouble(0);
+    private Account mAccount;
+    private AccountTransactionsListViewHolder viewHolder;
+    // filter
+    private TransactionFilter mFilter;
+    private boolean mSortTransactionsByType = true;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -113,19 +126,6 @@ public class AccountTransactionListFragment
 
         return fragment;
     }
-
-    private AllDataListFragment mAllDataListFragment;
-    private Integer mAccountId = null;
-    private String mFragmentName;
-    private Money mAccountBalance = MoneyFactory.fromDouble(0),
-            mAccountReconciled = MoneyFactory.fromDouble(0);
-    private Account mAccount;
-    private AccountTransactionsListViewHolder viewHolder;
-
-    // filter
-    private TransactionFilter mFilter;
-
-    private boolean mSortTransactionsByType = true;
 
     @Override
     public void onAttach(Context context) {
@@ -269,7 +269,7 @@ public class AccountTransactionListFragment
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
                     MenuItemCompat.setShowAsAction(itemOpenDatabase, !itemSync.isVisible()
-                        ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+                            ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
@@ -490,6 +490,7 @@ public class AccountTransactionListFragment
 
     /**
      * Initialize the Transaction Type filter.
+     *
      * @param menu menu/toolbar to add the icon to.
      */
     private void initTransactionStatusMenu(Menu menu) {
@@ -552,7 +553,7 @@ public class AccountTransactionListFragment
         // turn filters on/off
         TransactionStatuses status = null;
 
-        switch(id) {
+        switch (id) {
             case R.id.menu_none:
                 status = TransactionStatuses.NONE;
                 break;
@@ -640,7 +641,7 @@ public class AccountTransactionListFragment
         Bundle arguments = prepareQuery();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-            getContext(), this.mAccountId, mFilter.dateRange.dateFrom, arguments);
+                getContext(), this.mAccountId, mFilter.dateRange.dateFrom, arguments);
         // events now handled in onEvent, using an event bus.
         task.execute();
 
@@ -658,6 +659,7 @@ public class AccountTransactionListFragment
 
     /**
      * Prepare SQL query for record selection.
+     *
      * @return bundle with query
      */
     private Bundle prepareQuery() {
@@ -666,10 +668,10 @@ public class AccountTransactionListFragment
 //        where.addStatement("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
 //            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
         where.addStatement(
-            where.concatenateOr(
-                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", mAccountId),
-                where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
-            ));
+                where.concatenateOr(
+                        where.getStatement(ITransactionEntity.TOACCOUNTID, "=", mAccountId),
+                        where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
+                ));
 
         where.addStatement(QueryAllData.Date, ">=", new MmxDate(mFilter.dateRange.dateFrom)
                 .toIsoDateString());
@@ -730,11 +732,11 @@ public class AccountTransactionListFragment
             CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
             this.viewHolder.txtAccountBalance.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountBalance));
+                    mAccount.getCurrencyId(), mAccountBalance));
             this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled));
+                    mAccount.getCurrencyId(), mAccountReconciled));
             this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
+                    mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
         }
     }
 
@@ -890,7 +892,7 @@ public class AccountTransactionListFragment
 
     private void updateFilterDateRange() {
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
-            .getShowTransactions();
+                .getShowTransactions();
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 

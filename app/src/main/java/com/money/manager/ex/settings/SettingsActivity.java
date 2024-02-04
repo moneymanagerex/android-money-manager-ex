@@ -26,15 +26,18 @@ import com.money.manager.ex.core.Core;
 import javax.inject.Inject;
 
 import androidx.preference.PreferenceFragmentCompat;
+
 import dagger.Lazy;
 
 public class SettingsActivity
-    extends BaseSettingsFragmentActivity {
+        extends BaseSettingsFragmentActivity {
 
     public static final String EXTRA_FRAGMENT = "extraFragment";
 
-    @Inject Lazy<AppSettings> appSettingsLazy;
-    @Inject Lazy<Core> coreLazy;
+    @Inject
+    Lazy<AppSettings> appSettingsLazy;
+    @Inject
+    Lazy<Core> coreLazy;
 
     @Override
     protected void onCreate(Bundle savedInstance) {

@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -35,6 +36,19 @@ public final class Calculator {
     /*
         Static / Factory methods.
      */
+
+    private final FragmentActivity activity;
+    private final Intent intent;
+    private Fragment fragment;
+
+    /*
+        Instance
+     */
+
+    private Calculator(FragmentActivity activity) {
+        this.activity = activity;
+        this.intent = new Intent(this.activity, CalculatorActivity.class);
+    }
 
     public static Calculator forActivity(FragmentActivity activity) {
         Calculator calculator = new Calculator(activity);
@@ -51,6 +65,7 @@ public final class Calculator {
 
     /**
      * Extracts the entered amount in onActivityResult.
+     *
      * @return Amount entered
      */
     public static Money getAmountFromResult(Intent data) {
@@ -61,19 +76,6 @@ public final class Calculator {
 
         return MoneyFactory.fromString(stringExtra);
     }
-
-    /*
-        Instance
-     */
-
-    private Calculator(FragmentActivity activity) {
-        this.activity = activity;
-        this.intent = new Intent(this.activity, CalculatorActivity.class);
-    }
-
-    private final FragmentActivity activity;
-    private Fragment fragment;
-    private final Intent intent;
 
     public void show(int requestCode) {
         if (fragment == null) {

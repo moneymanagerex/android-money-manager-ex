@@ -17,8 +17,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:divider="?attr/dividerVertical"
               android:dividerPadding="12dip"
@@ -28,37 +28,37 @@
     <!-- id must match corresponding menu item id -->
 
     <LinearLayout
-        android:id="@+id/action_cancel"
-        style="@style/EditEventCustomActionButton"
-        android:clickable="true">
+            android:id="@+id/action_cancel"
+            style="@style/EditEventCustomActionButton"
+            android:clickable="true">
 
         <ImageView
-            android:id="@+id/image_cancel"
-            style="@style/EditEventCustomActionButtonImage"
-            app:srcCompat="?attr/ic_action_cancel"/>
+                android:id="@+id/image_cancel"
+                style="@style/EditEventCustomActionButtonImage"
+                app:srcCompat="?attr/ic_action_cancel"/>
 
         <TextView
-            android:id="@+id/text_cancel"
-            style="@style/EditViewCustomActionButtonText"
-            android:text="@android:string/cancel"/>
+                android:id="@+id/text_cancel"
+                style="@style/EditViewCustomActionButtonText"
+                android:text="@android:string/cancel"/>
     </LinearLayout>
 
     <!-- id must match corresponding menu item id -->
 
     <LinearLayout
-        android:id="@+id/action_search"
-        style="@style/EditEventCustomActionButton"
-        android:clickable="true">
+            android:id="@+id/action_search"
+            style="@style/EditEventCustomActionButton"
+            android:clickable="true">
 
         <ImageView
-            android:id="@+id/image_done"
-            style="@style/EditEventCustomActionButtonImage"
-            app:srcCompat="?attr/ic_action_search"/>
+                android:id="@+id/image_done"
+                style="@style/EditEventCustomActionButtonImage"
+                app:srcCompat="?attr/ic_action_search"/>
 
         <TextView
-            android:id="@+id/text_done"
-            style="@style/EditViewCustomActionButtonText"
-            android:text="@android:string/search_go"/>
+                android:id="@+id/text_done"
+                style="@style/EditViewCustomActionButtonText"
+                android:text="@android:string/search_go"/>
     </LinearLayout>
 
 </LinearLayout>

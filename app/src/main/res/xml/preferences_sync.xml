@@ -19,67 +19,67 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreferenceCompat
-        android:icon="@null"
-        android:key="@string/pref_sync_enabled"
-        android:title="@string/sync_enabled"
-        android:defaultValue="false" />
+            android:icon="@null"
+            android:key="@string/pref_sync_enabled"
+            android:title="@string/sync_enabled"
+            android:defaultValue="false"/>
 
     <!-- synchronization interval -->
     <ListPreference
-        android:icon="@null"
-        android:defaultValue="180"
-        android:dependency="@string/pref_sync_enabled"
-        android:entries="@array/timeout_synchronize_items"
-        android:entryValues="@array/timeout_synchronize_values"
-        android:key="@string/pref_sync_interval"
-        android:summary="@string/summary_synchronization_interval"
-        android:title="@string/synchronization_interval" />
+            android:icon="@null"
+            android:defaultValue="180"
+            android:dependency="@string/pref_sync_enabled"
+            android:entries="@array/timeout_synchronize_items"
+            android:entryValues="@array/timeout_synchronize_values"
+            android:key="@string/pref_sync_interval"
+            android:summary="@string/summary_synchronization_interval"
+            android:title="@string/synchronization_interval"/>
 
     <!-- remote path -->
     <Preference
-        android:icon="@null"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_remote_file"
-        android:title="@string/remote_file" />
+            android:icon="@null"
+            android:dependency="@string/pref_sync_enabled"
+            android:key="@string/pref_remote_file"
+            android:title="@string/remote_file"/>
 
     <!-- download -->
     <PreferenceScreen
-        android:icon="@null"
-        android:dependency="@string/pref_remote_file"
-        android:key="@string/pref_sync_download"
-        android:summary="@string/cloud_download"
-        android:title="@string/download" />
+            android:icon="@null"
+            android:dependency="@string/pref_remote_file"
+            android:key="@string/pref_sync_download"
+            android:summary="@string/cloud_download"
+            android:title="@string/download"/>
     <!-- upload -->
     <PreferenceScreen
-        android:icon="@null"
-        android:dependency="@string/pref_remote_file"
-        android:key="@string/pref_sync_upload"
-        android:summary="@string/cloud_upload"
-        android:title="@string/upload" />
+            android:icon="@null"
+            android:dependency="@string/pref_remote_file"
+            android:key="@string/pref_sync_upload"
+            android:summary="@string/cloud_upload"
+            android:title="@string/upload"/>
 
     <!-- sync on start -->
     <SwitchPreferenceCompat
-        android:title="@string/sync_on_start"
-        android:summary="@string/sync_on_app_start"
-        android:key="@string/pref_sync_on_app_start"
-        android:defaultValue="false"
-        android:dependency="@string/pref_sync_enabled"
-        android:icon="@null" />
+            android:title="@string/sync_on_start"
+            android:summary="@string/sync_on_app_start"
+            android:key="@string/pref_sync_on_app_start"
+            android:defaultValue="false"
+            android:dependency="@string/pref_sync_enabled"
+            android:icon="@null"/>
 
     <!-- sync only on wi-fi -->
     <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="false"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_sync_via_wifi"
-        android:title="@string/auto_sync_via_wifi"
-        android:summary="@string/auto_sync_via_wifi_summary" />
+            android:icon="@null"
+            android:defaultValue="false"
+            android:dependency="@string/pref_sync_enabled"
+            android:key="@string/pref_sync_via_wifi"
+            android:title="@string/auto_sync_via_wifi"
+            android:summary="@string/auto_sync_via_wifi_summary"/>
 
     <!-- log out -->
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_reset_preferences"
-        android:title="@string/reset_preferences" />
+            android:icon="@null"
+            android:key="@string/pref_reset_preferences"
+            android:title="@string/reset_preferences"/>
 
     <!-- todo: help -->
 

@@ -27,11 +27,11 @@ import com.money.manager.ex.R;
 public class AllDataMultiChoiceModeListener
         implements AbsListView.MultiChoiceModeListener {
 
+    private IAllDataMultiChoiceModeListenerCallbacks mCallbacks;
+
     public void setListener(IAllDataMultiChoiceModeListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
-
-    private IAllDataMultiChoiceModeListenerCallbacks mCallbacks;
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, android.view.Menu menu) {
@@ -52,6 +52,7 @@ public class AllDataMultiChoiceModeListener
 
     /**
      * Handle the toolbar icon click (delete, copy, etc.)
+     *
      * @param mode
      * @param item
      * @return

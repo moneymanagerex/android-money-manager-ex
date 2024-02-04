@@ -19,6 +19,7 @@ package com.money.manager.ex.investment;
 import android.widget.TextView;
 
 /**
+ *
  */
 public class StocksDataViewHolder {
     TextView symbolTextView;

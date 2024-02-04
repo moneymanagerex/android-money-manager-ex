@@ -16,29 +16,11 @@
  */
 package org.moneymanagerex.android.espresso;
 
-import android.support.test.rule.ActivityTestRule;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.search.SearchActivity;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withHint;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
 /**
  * This is not operational because it is not possible to select a subcategory - a child item
  * in expandable list view.
  * There is the correct test in Robotium test suite.
- *
+ * <p>
  * Various Search activity tests.
  */
 //public class SearchTests {

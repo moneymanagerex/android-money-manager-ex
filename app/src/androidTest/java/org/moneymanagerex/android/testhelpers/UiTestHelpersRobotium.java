@@ -16,24 +16,21 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.content.Context;
-import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-import android.view.View;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.robotium.solo.Solo;
 
 import timber.log.Timber;
 
 public class UiTestHelpersRobotium {
 
-    public UiTestHelpersRobotium(Solo solo) {
+    //    private ActivityInstrumentationTestCase2 host;
+    public Solo solo;
+
+    public UiTestHelpersRobotium(final Solo solo) {
         this.solo = solo;
 //        this.host = host;
 
@@ -41,17 +38,14 @@ public class UiTestHelpersRobotium {
 //        this.context = solo.getCurrentActivity();
     }
 
-//    private ActivityInstrumentationTestCase2 host;
-    public Solo solo;
-
-    public static Solo setUp(ActivityInstrumentationTestCase2 host) {
+    public static Solo setUp(final ActivityInstrumentationTestCase2 host) {
         host.injectInstrumentation(InstrumentationRegistry.getInstrumentation());
 
         return new Solo(host.getInstrumentation(), host.getActivity());
     }
 
-    public static void tearDown(Solo solo) {
-        if (solo != null) {
+    public static void tearDown(final Solo solo) {
+        if (null != solo) {
             solo.finishOpenedActivities();
         }
     }
@@ -70,11 +64,32 @@ public class UiTestHelpersRobotium {
 //        clickOnView(buttonId);
 //    }
 
-    public void clickOnView(int viewId) {
+    public static void uninstallApp() {
+        final Runtime rt = Runtime.getRuntime();
+        try {
+            final Process pr = rt.exec("adb uninstall your.package");
+            pr.waitFor();
+        } catch (final Exception e) {
+            Timber.e(e, "uninstalling app");
+        }
+    }
+
+    public void clickOnView(final int viewId) {
         solo.clickOnView(solo.getView(viewId));
     }
 
-    public void clickOnMaterialDialogButton(DialogButtons button) {
+//    public static void clickOnActionBarHomeButton(Solo solo) {
+////        View homeView = solo.getView(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.id.home : R.id.home);
+////        solo.clickOnView(homeView);
+//
+////        solo.setNavigationDrawer(Solo.OPENED);
+//
+////        solo.clickOnScreen(50, 50);
+//
+//        solo.clickOnActionBarHomeButton();
+//    }
+
+    public void clickOnMaterialDialogButton(final DialogButtons button) {
         int viewId = Constants.NOT_SET;
 
         switch (button) {
@@ -91,33 +106,12 @@ public class UiTestHelpersRobotium {
         clickOnView(viewId);
     }
 
-//    public static void clickOnActionBarHomeButton(Solo solo) {
-////        View homeView = solo.getView(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.id.home : R.id.home);
-////        solo.clickOnView(homeView);
-//
-////        solo.setNavigationDrawer(Solo.OPENED);
-//
-////        solo.clickOnScreen(50, 50);
-//
-//        solo.clickOnActionBarHomeButton();
-//    }
-
-    public static void uninstallApp() {
-        Runtime rt = Runtime.getRuntime();
-        try {
-            Process pr = rt.exec("adb uninstall your.package");
-            pr.waitFor();
-        } catch (Exception e) {
-            Timber.e(e, "uninstalling app");
-        }
-    }
-
     public void clickOnFloatingButton() {
         solo.clickOnView(solo.getView(R.id.fab));
     }
 
-    public void enterInNumericInput(String value) {
-        for (Character character : value.toCharArray()) {
+    public void enterInNumericInput(final String value) {
+        for (final Character character : value.toCharArray()) {
             switch (character) {
                 case '.':
                     solo.clickOnView(solo.getView(R.id.buttonKeyNumDecimal));

@@ -16,24 +16,24 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
 
     <Spinner
-        android:id="@+id/spinnerCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <com.money.manager.ex.view.RobotoEditText
-        android:id="@+id/editTextCategName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/subcategory"
-        android:inputType="none" >
+            android:id="@+id/editTextCategName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/subcategory"
+            android:inputType="none">
 
-        <requestFocus />
+        <requestFocus/>
     </com.money.manager.ex.view.RobotoEditText>
 
 </LinearLayout>

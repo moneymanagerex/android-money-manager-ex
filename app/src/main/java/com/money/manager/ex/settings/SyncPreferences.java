@@ -27,7 +27,7 @@ import com.money.manager.ex.R;
  * Handles sync-related preferences.
  */
 public class SyncPreferences
-    extends SettingsBase {
+        extends SettingsBase {
 
     public SyncPreferences(Context context) {
         super(context);
@@ -58,6 +58,10 @@ public class SyncPreferences
         return get(R.string.pref_sync_enabled, false);
     }
 
+    public void setSyncEnabled(boolean value) {
+        set(R.string.pref_sync_enabled, value);
+    }
+
     public int getSyncInterval() {
         int defaultSchedule = 30;   // time in minutes
         String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));
@@ -68,6 +72,15 @@ public class SyncPreferences
         return scheduleInt;
     }
 
+    /**
+     * Set synchronization period.
+     *
+     * @param value Sync frequency in minutes.
+     */
+    public void setSyncInterval(int value) {
+        set(R.string.pref_sync_interval, Integer.toString(value));
+    }
+
     public boolean getUploadImmediately() {
         return get(R.string.pref_upload_immediately, true);
     }
@@ -76,18 +89,6 @@ public class SyncPreferences
         String realKey = getContext().getString(key);
 
         return getPreferences().getString(realKey, defaultValue);
-    }
-
-    public void setSyncEnabled(boolean value) {
-        set(R.string.pref_sync_enabled, value);
-    }
-
-    /**
-     * Set synchronization period.
-     * @param value Sync frequency in minutes.
-     */
-    public void setSyncInterval(int value) {
-        set(R.string.pref_sync_interval, Integer.toString(value));
     }
 
     public boolean shouldSyncOnlyOnWifi() {

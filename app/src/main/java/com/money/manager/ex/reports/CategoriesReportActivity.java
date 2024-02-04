@@ -17,6 +17,7 @@
 package com.money.manager.ex.reports;
 
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,8 +27,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class CategoriesReportActivity
-    extends MmxBaseFragmentActivity {
-    
+        extends MmxBaseFragmentActivity {
+
     public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
     public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
     public boolean mIsDualPanel = false;
@@ -62,8 +63,8 @@ public class CategoriesReportActivity
         //insert fragment
         if (fm.findFragmentById(R.id.fragmentMain) == null) {
             fm.beginTransaction()
-                .add(R.id.fragmentMain, fragment, CategoriesReportFragment.class.getSimpleName())
-                .commit();
+                    .add(R.id.fragmentMain, fragment, CategoriesReportFragment.class.getSimpleName())
+                    .commit();
         }
     }
 }

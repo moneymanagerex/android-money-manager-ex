@@ -17,22 +17,18 @@
 package org.moneymanagerex.android.tests;
 
 import com.google.gson.Gson;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.LinkedHashMap;
 
@@ -47,7 +43,7 @@ public class RecentDatabaseProviderTests {
 
     @Before
     public void setUp() throws Exception {
-        MmexApplication app = (MmexApplication) RuntimeEnvironment.application;
+        final MmexApplication app = (MmexApplication) RuntimeEnvironment.application;
         _testObject = new RecentDatabasesProvider(app);
     }
 
@@ -62,38 +58,38 @@ public class RecentDatabaseProviderTests {
 
         _testObject.save();
         // test
-        String preference = _testObject.readPreference();
+        final String preference = _testObject.readPreference();
 //        Assert.assertEquals("{}", preference);
 //        assertThat(preference).isEqualTo("{}");
 
         // update full collection
 
-        LinkedHashMap<String, DatabaseMetadata> testEntries = getEntries();
+        final LinkedHashMap<String, DatabaseMetadata> testEntries = getEntries();
         _testObject.map = testEntries;
         _testObject.save();
 
         // Load
 
         _testObject.load();
-        LinkedHashMap<String, DatabaseMetadata> actual = _testObject.map;
-        Gson gson = new Gson();
+        final LinkedHashMap<String, DatabaseMetadata> actual = _testObject.map;
+        final Gson gson = new Gson();
 
         // compare individual elements.
-        
-        for (DatabaseMetadata entry : actual.values()) {
-            DatabaseMetadata expected = testEntries.get(entry.localPath);
+
+        for (final DatabaseMetadata entry : actual.values()) {
+            final DatabaseMetadata expected = testEntries.get(entry.localPath);
 //            assertThat(gson.toJson(entry)).isEqualTo(gson.toJson(expected));
         }
     }
 
     //@Test
     public void testInsert() {
-        DatabaseMetadata entry = getEntry(false);
-        String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remotePath\":\"\",\"linkedToCloud\":false}}";
+        final DatabaseMetadata entry = getEntry(false);
+        final String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remotePath\":\"\",\"linkedToCloud\":false}}";
 
         _testObject.add(entry);
 
-        String actual = _testObject.toJson();
+        final String actual = _testObject.toJson();
 
         Assert.assertEquals(expected, actual);
     }
@@ -108,13 +104,13 @@ public class RecentDatabaseProviderTests {
 
     //@Test
     public void add_does_not_create_duplicate() {
-        DatabaseMetadata entry1 = DatabaseMetadataFactory.getInstance("path1");
+        final DatabaseMetadata entry1 = DatabaseMetadataFactory.getInstance("path1");
         _testObject.add(entry1);
 
-        DatabaseMetadata entry2 = DatabaseMetadataFactory.getInstance("path2");
+        final DatabaseMetadata entry2 = DatabaseMetadataFactory.getInstance("path2");
         _testObject.add(entry2);
 
-        DatabaseMetadata entry1Duplicate = DatabaseMetadataFactory.getInstance("path1");
+        final DatabaseMetadata entry1Duplicate = DatabaseMetadataFactory.getInstance("path1");
         _testObject.add(entry1Duplicate);
 
         // _testObject.get("path1");
@@ -124,20 +120,20 @@ public class RecentDatabaseProviderTests {
     // Private
 
     private LinkedHashMap<String, DatabaseMetadata> getEntries() {
-        LinkedHashMap<String, DatabaseMetadata> map = new LinkedHashMap<>();
+        final LinkedHashMap<String, DatabaseMetadata> map = new LinkedHashMap<>();
 
-        for(int i = 0; i < 3; i++) {
-            DatabaseMetadata entry = getEntry(true);
+        for (int i = 0; 3 > i; i++) {
+            final DatabaseMetadata entry = getEntry(true);
             map.put(entry.localPath, entry);
         }
 
         return map;
     }
 
-    private DatabaseMetadata getEntry(boolean useRandomPath) {
-        DatabaseMetadata entry = new DatabaseMetadata();
+    private DatabaseMetadata getEntry(final boolean useRandomPath) {
+        final DatabaseMetadata entry = new DatabaseMetadata();
 
-        String unique = useRandomPath ? Double.toString(Math.random()) : "";
+        final String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
         entry.remotePath = "";
         entry.localPath = "filename" + unique + ".mmb";

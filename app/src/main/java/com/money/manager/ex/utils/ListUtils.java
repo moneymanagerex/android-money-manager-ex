@@ -29,7 +29,7 @@ public class ListUtils {
     public String toCommaDelimitedString(List<String> list) {
         StringBuilder csvBuilder = new StringBuilder();
 
-        for(String item : list){
+        for (String item : list) {
             csvBuilder.append(item);
             csvBuilder.append(SEPARATOR);
         }

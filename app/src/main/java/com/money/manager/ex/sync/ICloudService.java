@@ -22,5 +22,6 @@ package com.money.manager.ex.sync;
  */
 public interface ICloudService {
     void upload();
+
     void download();
 }

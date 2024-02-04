@@ -28,7 +28,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
  * Adapter for the tabs on the About page.
  */
 public class AboutTabAdapter
-    extends FragmentPagerAdapter {
+        extends FragmentPagerAdapter {
 
     private static final int NUM_ITEMS = 4;
     private final String[] tabTitles;

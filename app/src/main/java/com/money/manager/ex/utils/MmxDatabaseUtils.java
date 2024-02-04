@@ -60,6 +60,24 @@ import timber.log.Timber;
  */
 public class MmxDatabaseUtils {
 
+    private final Context mContext;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabasesLazy;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
+    @Inject
+    Lazy<InfoRepositorySql> infoRepositorySqlLazy;
+
+    // Dynamic
+
+    @Inject
+    public MmxDatabaseUtils(Context context) {
+        mContext = context;
+
+        // dependency injection
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
+
     public static void closeCursor(Cursor c) {
         if (c == null || c.isClosed()) return;
 
@@ -67,7 +85,7 @@ public class MmxDatabaseUtils {
     }
 
     public static String[] getArgsForId(int id) {
-        String[] result = new String[] { Integer.toString(id) };
+        String[] result = new String[]{Integer.toString(id)};
         return result;
     }
 
@@ -87,27 +105,13 @@ public class MmxDatabaseUtils {
         return dbFile.canWrite();
     }
 
-    // Dynamic
-
-    @Inject
-    public MmxDatabaseUtils(Context context){
-        mContext = context;
-
-        // dependency injection
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
-    @Inject Lazy<MmxOpenHelper> openHelper;
-    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
-    private final Context mContext;
-
     public Context getContext() {
         return mContext;
     }
 
     /**
      * Runs SQLite pragma check on the database file.
+     *
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
@@ -119,6 +123,7 @@ public class MmxDatabaseUtils {
     /**
      * Checks if all the required tables are present.
      * Should be expanded and improved to check for the whole schema.
+     *
      * @return A boolean indicating whether the schema is correct.
      */
     public boolean checkSchema() {
@@ -136,6 +141,7 @@ public class MmxDatabaseUtils {
 
     /**
      * Creates a new database file at the default location, with the given db file name.
+     *
      * @param fileName File name for the new database. Extension .mmb will be appended if not
      *                 included in the fileName. Excludes path!
      *                 If null, a default file name will be used.
@@ -163,7 +169,7 @@ public class MmxDatabaseUtils {
             // delete them, leaving only the first one
             int keepId = results.get(0).getId();
 
-            for(Info toBeDeleted : results) {
+            for (Info toBeDeleted : results) {
                 int idToDelete = toBeDeleted.getId();
                 if (idToDelete != keepId) {
                     repo.delete(idToDelete);
@@ -197,6 +203,7 @@ public class MmxDatabaseUtils {
      * recent files. Resets the data layer.
      * All that is needed after this method is to (re-)start the Main Activity, which will read all
      * the stored preferences.
+     *
      * @return Indicator whether the database is valid for use.
      */
     public boolean useDatabase(@NonNull DatabaseMetadata database) {
@@ -245,7 +252,7 @@ public class MmxDatabaseUtils {
         // If there is anything left, the script schema has more tables than the db.
         if (!scriptTables.isEmpty()) {
             StringBuilder message = new StringBuilder("Tables missing: ");
-            for(String table:scriptTables) {
+            for (String table : scriptTables) {
                 message.append(table);
                 message.append(" ");
             }
@@ -259,7 +266,7 @@ public class MmxDatabaseUtils {
     }
 
     private String createDatabase_Internal(String filename)
-        throws IOException {
+            throws IOException {
 
         filename = cleanupFilename(filename);
 
@@ -333,6 +340,7 @@ public class MmxDatabaseUtils {
 
     /**
      * Get all table Details from teh sqlite_master table in Db.
+     *
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {

@@ -17,19 +17,19 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingStart="@dimen/mmx_list_item_padding_side"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:paddingEnd="@dimen/mmx_list_item_padding_side" >
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:paddingStart="@dimen/mmx_list_item_padding_side"
+              android:paddingLeft="@dimen/mmx_list_item_padding_side"
+              android:paddingRight="@dimen/mmx_list_item_padding_side"
+              android:paddingEnd="@dimen/mmx_list_item_padding_side">
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/name"
-        android:textColor="@color/md_accent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/name"
+            android:textColor="@color/md_accent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

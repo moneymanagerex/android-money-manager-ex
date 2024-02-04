@@ -33,7 +33,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Repository for Accounts
  */
 public class AccountRepository
-    extends RepositoryBase {
+        extends RepositoryBase {
 
     public AccountRepository(Context context) {
         super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");
@@ -42,10 +42,10 @@ public class AccountRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+        return new String[]{"ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
-                Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
+                Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID};
     }
 
     public Account load(int id) {
@@ -58,12 +58,13 @@ public class AccountRepository
     }
 
     public boolean delete(int id) {
-        int result = super.delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(id)});
+        int result = super.delete(Account.ACCOUNTID + "=?", new String[]{Integer.toString(id)});
         return result > 0;
     }
 
     /**
      * Loads account data with balances.
+     *
      * @param id Id of the account to load.
      * @return QueryAccountBills entity.
      */
@@ -76,7 +77,7 @@ public class AccountRepository
                 result.getUri(),
                 result.getAllColumns(),
                 selection,
-                new String[] { Integer.toString(id) },
+                new String[]{Integer.toString(id)},
                 null);
         if (cursor == null) return null;
 
@@ -92,19 +93,21 @@ public class AccountRepository
     public int loadIdByName(String name) {
         int result = -1;
 
-        if(TextUtils.isEmpty(name)) { return result; }
+        if (TextUtils.isEmpty(name)) {
+            return result;
+        }
 
         String selection = Account.ACCOUNTNAME + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(
                 this.getUri(),
-                new String[] { Account.ACCOUNTID },
+                new String[]{Account.ACCOUNTID},
                 selection,
-                new String[] { name },
+                new String[]{name},
                 null);
         if (cursor == null) return result;
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             result = cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID));
         }
 
@@ -115,10 +118,10 @@ public class AccountRepository
 
     public Integer loadCurrencyIdFor(int id) {
         Account account = (Account) first(Account.class,
-            new String[] { Account.CURRENCYID },
-            Account.ACCOUNTID + "=?",
-            MmxDatabaseUtils.getArgsForId(id),
-            null);
+                new String[]{Account.CURRENCYID},
+                Account.ACCOUNTID + "=?",
+                MmxDatabaseUtils.getArgsForId(id),
+                null);
 
         if (account == null) {
             return null;
@@ -134,8 +137,8 @@ public class AccountRepository
         String name = null;
 
         Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},
-            Account.ACCOUNTID + "=?",
-            new String[]{Integer.toString(id)}
+                Account.ACCOUNTID + "=?",
+                new String[]{Integer.toString(id)}
         );
         if (cursor == null) return null;
 
@@ -153,8 +156,9 @@ public class AccountRepository
 
     /**
      * Updates entity.
+     *
      * @param value Account to be updated.
-     * @return  Boolean indicating whether the update was successful.
+     * @return Boolean indicating whether the update was successful.
      */
     public boolean save(Account value) {
         Integer id = value.getId();
@@ -178,9 +182,9 @@ public class AccountRepository
         }
 
         Cursor c = openCursor(this.getAllColumns(),
-            where.getWhere(),
-            null,
-            "lower (" + Account.ACCOUNTNAME + ")");
+                where.getWhere(),
+                null,
+                "lower (" + Account.ACCOUNTNAME + ")");
 
         return c;
     }

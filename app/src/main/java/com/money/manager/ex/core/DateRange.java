@@ -26,13 +26,13 @@ import java.util.Date;
 @Parcel
 public class DateRange {
 
-    public DateRange() {}
+    public Date dateFrom;
+    public Date dateTo;
 
+    public DateRange() {
+    }
     public DateRange(Date dateFrom, Date dateTo) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
-
-    public Date dateFrom;
-    public Date dateTo;
 }

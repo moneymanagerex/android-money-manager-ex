@@ -38,8 +38,17 @@ import java.util.List;
 import androidx.fragment.app.FragmentActivity;
 
 public class CategoryExpandableListAdapter
-	extends BaseExpandableListAdapter {
+        extends BaseExpandableListAdapter {
 
+    private final Context mContext;
+    private final int mLayout;
+    private final List<Category> mCategories;
+    private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
+    private final boolean mShowSelector;
+    private final int[] expandedStateSet = {android.R.attr.state_expanded};
+    private final int[] emptyStateSet = {};
+    private int mIdGroupChecked = ListView.INVALID_POSITION;
+    private int mIdChildChecked = ListView.INVALID_POSITION;
     public CategoryExpandableListAdapter(Context context, int layout,
                                          List<Category> categories,
                                          HashMap<Category,
@@ -52,54 +61,40 @@ public class CategoryExpandableListAdapter
         mShowSelector = showSelector;
     }
 
-	private final Context mContext;
-	private final int mLayout;
-	
-	private final List<Category> mCategories;
-	private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
-	
-	private int mIdGroupChecked = ListView.INVALID_POSITION;
-	private int mIdChildChecked = ListView.INVALID_POSITION;
-
-    private final boolean mShowSelector;
-
-    private final int[] expandedStateSet = {android.R.attr.state_expanded};
-    private final int[] emptyStateSet = {};
-
-	@Override
-	public Object getChild(int groupPosition, int childPosition) {
-		if (groupPosition < mCategories.size()) {
-			Category category = mCategories.get(groupPosition);
-			List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
-			if (childPosition < categorySubCategories.size()) {
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        if (groupPosition < mCategories.size()) {
+            Category category = mCategories.get(groupPosition);
+            List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
+            if (childPosition < categorySubCategories.size()) {
                 return categorySubCategories.get(childPosition);
             }
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
-	}
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
 
-	@Override
-	public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-							 View convertView, ViewGroup parent) {
-		CategoryListItemViewHolderChild holder;
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(mLayout, null);
-			
-			holder = new CategoryListItemViewHolderChild(convertView);
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                             View convertView, ViewGroup parent) {
+        CategoryListItemViewHolderChild holder;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(mLayout, null);
 
-			convertView.setTag(holder);
-		} else {
+            holder = new CategoryListItemViewHolderChild(convertView);
+
+            convertView.setTag(holder);
+        } else {
             holder = (CategoryListItemViewHolderChild) convertView.getTag();
         }
-		
-		QueryCategorySubCategory entity = (QueryCategorySubCategory) getChild(groupPosition, childPosition);
-		if (entity == null) return convertView;
+
+        QueryCategorySubCategory entity = (QueryCategorySubCategory) getChild(groupPosition, childPosition);
+        if (entity == null) return convertView;
 
         holder.text1.setText(entity.getSubcategoryName());
 
@@ -126,51 +121,51 @@ public class CategoryExpandableListAdapter
 //				}
 //			});
 //		} else {
-			holder.selector.setVisibility(View.GONE);
+        holder.selector.setVisibility(View.GONE);
 //		}
 
         // indent subcategory
         holder.indent.setVisibility(View.VISIBLE);
 
-		return convertView;
-	}
+        return convertView;
+    }
 
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		return mSubCategories.get(mCategories.get(groupPosition)).size();
-	}
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return mSubCategories.get(mCategories.get(groupPosition)).size();
+    }
 
-	@Override
-	public Object getGroup(int groupPosition) {
-		return mCategories.get(groupPosition);
-	}
+    @Override
+    public Object getGroup(int groupPosition) {
+        return mCategories.get(groupPosition);
+    }
 
-	@Override
-	public int getGroupCount() {
-		return mCategories.size();
-	}
+    @Override
+    public int getGroupCount() {
+        return mCategories.size();
+    }
 
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition;
-	}
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
 
-	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-		CategoryListItemViewHolderGroup holder;
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(mLayout, null);
-			
-			holder = new CategoryListItemViewHolderGroup(convertView);
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        CategoryListItemViewHolderGroup holder;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(mLayout, null);
 
-			convertView.setTag(holder);
-		} else {
-			holder = (CategoryListItemViewHolderGroup)convertView.getTag();
-		}
+            holder = new CategoryListItemViewHolderGroup(convertView);
 
-		// prevent exceptions. todo: Find out how this happens in the first place.
-		if (mCategories.size() == 0) return convertView;
+            convertView.setTag(holder);
+        } else {
+            holder = (CategoryListItemViewHolderGroup) convertView.getTag();
+        }
+
+        // prevent exceptions. todo: Find out how this happens in the first place.
+        if (mCategories.size() == 0) return convertView;
 
         Category category = mCategories.get(groupPosition);
 
@@ -208,9 +203,9 @@ public class CategoryExpandableListAdapter
 
             boolean hasChildren = getChildrenCount(groupPosition) != 0;
             if (!hasChildren) {
-                holder.collapseImageView.setVisibility( View.INVISIBLE );
+                holder.collapseImageView.setVisibility(View.INVISIBLE);
             } else {
-                holder.collapseImageView.setVisibility( View.VISIBLE );
+                holder.collapseImageView.setVisibility(View.VISIBLE);
 
                 if (drawable != null) {
                     drawable.setState(isExpanded ? expandedStateSet : emptyStateSet);
@@ -218,48 +213,48 @@ public class CategoryExpandableListAdapter
             }
         }
 
-		return convertView;
-	}
+        return convertView;
+    }
 
-	@Override
-	public boolean hasStableIds() {
-		return false;
-	}
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
 
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return true;
-	}
-	
-	public int getIdGroupChecked() {
-		return mIdGroupChecked;
-	}
-	
-	public int getIdChildChecked() {
-		return mIdChildChecked;
-	}
-	
-	public void setIdGroupChecked(int idGroup) {
-		// If an existing group is clicked, collapse it. Reset the expanded id.
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    public int getIdGroupChecked() {
+        return mIdGroupChecked;
+    }
+
+    public void setIdGroupChecked(int idGroup) {
+        // If an existing group is clicked, collapse it. Reset the expanded id.
 //        if (mIdGroupChecked == idGroup) {
 //            mIdGroupChecked = ListView.INVALID_POSITION;
 //        } else {
-		mIdGroupChecked = idGroup;
-		mIdChildChecked = ExpandableListView.INVALID_POSITION;
+        mIdGroupChecked = idGroup;
+        mIdChildChecked = ExpandableListView.INVALID_POSITION;
 //        }
-	}
-	
-	public void setIdChildChecked(int idGroup, int idChild) {
-		mIdGroupChecked = idGroup;
-		mIdChildChecked = idChild;
-	}
+    }
 
-	private void closeFragment() {
+    public int getIdChildChecked() {
+        return mIdChildChecked;
+    }
+
+    public void setIdChildChecked(int idGroup, int idChild) {
+        mIdGroupChecked = idGroup;
+        mIdChildChecked = idChild;
+    }
+
+    private void closeFragment() {
         FragmentActivity activity = (FragmentActivity) getContext();
         CategoryListFragment fragment =
-            (CategoryListFragment) activity
-                .getSupportFragmentManager()
-                .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+                (CategoryListFragment) activity
+                        .getSupportFragmentManager()
+                        .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
         fragment.setResultAndFinish();
     }
 

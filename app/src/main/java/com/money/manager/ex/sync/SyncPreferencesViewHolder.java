@@ -17,26 +17,26 @@
 
 package com.money.manager.ex.sync;
 
-import com.money.manager.ex.R;
-
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.money.manager.ex.R;
+
 /**
  * View holder for sync preferences.
  */
 public class SyncPreferencesViewHolder {
 
-    SwitchPreferenceCompat syncEnabled;
     public Preference remoteFile;
     public ListPreference syncInterval;
     public Preference resetPreferences;
     public PreferenceScreen download;
     public PreferenceScreen upload;
     public SwitchPreferenceCompat syncOnStart;
+    SwitchPreferenceCompat syncEnabled;
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 

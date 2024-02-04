@@ -24,7 +24,6 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -38,7 +37,9 @@ import info.javaperformance.money.MoneyFactory;
  */
 @Parcel
 public class EntityBase
-    implements IEntity {
+        implements IEntity {
+
+    public ContentValues contentValues;
 
     /**
      * Default constructor.
@@ -47,39 +48,37 @@ public class EntityBase
         contentValues = new ContentValues();
     }
 
-    protected EntityBase(ContentValues contentValues) {
+    protected EntityBase(final ContentValues contentValues) {
         this.contentValues = contentValues;
     }
 
-    public ContentValues contentValues;
-
-    public void loadFromCursor(Cursor c) {
-        this.contentValues.clear();
+    public void loadFromCursor(final Cursor c) {
+        contentValues.clear();
 
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
 
     public ContentValues getContentValues() {
-        return this.contentValues;
+        return contentValues;
     }
 
-    protected Boolean getBoolean(String column) {
+    protected Boolean getBoolean(final String column) {
         return contentValues.getAsBoolean(column);
     }
 
-    protected void setBoolean(String column, Boolean value) {
+    protected void setBoolean(final String column, final Boolean value) {
         contentValues.put(column, value.toString().toUpperCase());
     }
 
-    protected Money getMoney(String fieldName) {
-        String value = contentValues.getAsString(fieldName);
-        if (value == null || TextUtils.isEmpty(value)) return null;
+    protected Money getMoney(final String fieldName) {
+        final String value = contentValues.getAsString(fieldName);
+        if (null == value || TextUtils.isEmpty(value)) return null;
 
-        Money result = MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
+        final Money result = MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
         return result;
     }
 
-    protected void setMoney(String fieldName, Money value) {
+    protected void setMoney(final String fieldName, final Money value) {
         contentValues.put(fieldName, value.toString());
     }
 
@@ -88,8 +87,8 @@ public class EntityBase
 //        return MmxJodaDateTimeUtils.from(dateString);
 //    }
 
-    protected Date getDate(String field) {
-        String dateString = getString(field);
+    protected Date getDate(final String field) {
+        final String dateString = getString(field);
         return new MmxDate(dateString).toDate();
     }
 
@@ -98,32 +97,32 @@ public class EntityBase
 //        contentValues.put(fieldName, dateString);
 //    }
 
-    protected void setDate(String fieldName, Date value) {
-        String dateString = new MmxDate(value).toIsoDateString();
+    protected void setDate(final String fieldName, final Date value) {
+        final String dateString = new MmxDate(value).toIsoDateString();
         contentValues.put(fieldName, dateString);
     }
 
-    protected Integer getInt(String column) {
+    protected Integer getInt(final String column) {
         return contentValues.getAsInteger(column);
     }
 
-    protected void setInt(String fieldName, Integer value) {
+    protected void setInt(final String fieldName, final Integer value) {
         contentValues.put(fieldName, value);
     }
 
-    protected String getString(String fieldName) {
+    protected String getString(final String fieldName) {
         return contentValues.getAsString(fieldName);
     }
 
-    protected void setString(String fieldName, String value) {
+    protected void setString(final String fieldName, final String value) {
         contentValues.put(fieldName, value);
     }
 
-    protected Double getDouble(String column) {
+    protected Double getDouble(final String column) {
         return contentValues.getAsDouble(column);
     }
 
-    protected void setDouble(String column, Double value) {
+    protected void setDouble(final String column, final Double value) {
         contentValues.put(column, value);
     }
 }

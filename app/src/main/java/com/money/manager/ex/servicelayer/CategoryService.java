@@ -34,19 +34,19 @@ import java.util.List;
  * Category
  */
 public class CategoryService
-    extends ServiceBase {
-
-    public CategoryService(Context context) {
-        super(context);
-    }
+        extends ServiceBase {
 
     private CategoryRepository mRepository;
 
-    public int loadIdByName(String name) {
+    public CategoryService(final Context context) {
+        super(context);
+    }
+
+    public int loadIdByName(final String name) {
         return getRepository().loadIdByName(name);
     }
 
-    public int loadIdByName(String name, int parentId) {
+    public int loadIdByName(final String name, final int parentId) {
         return getRepository().loadIdByName(name, parentId);
     }
 
@@ -55,50 +55,49 @@ public class CategoryService
 
         name = name.trim();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
         values.put(Category.PARENTID, -1);
 
-        CategoryRepository repo = new CategoryRepository(getContext());
+        final CategoryRepository repo = new CategoryRepository(getContext());
 
-        Uri result = getContext().getContentResolver()
+        final Uri result = getContext().getContentResolver()
                 .insert(repo.getUri(), values);
-        long id = ContentUris.parseId(result);
+        final long id = ContentUris.parseId(result);
 
         return ((int) id);
     }
 
-    public int createNewSubcategory(String name, int categoryId) {
+    public int createNewSubcategory(String name, final int categoryId) {
         if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
         values.put(Category.PARENTID, categoryId);
 
-        CategoryRepository repo = new CategoryRepository(getContext());
+        final CategoryRepository repo = new CategoryRepository(getContext());
 
-        Uri result = getContext().getContentResolver()
+        final Uri result = getContext().getContentResolver()
                 .insert(repo.getUri(), values);
-        long id = ContentUris.parseId(result);
+        final long id = ContentUris.parseId(result);
 
         return ((int) id);
     }
 
-    public String getCategorySubcategoryName(int categoryId) {
+    public String getCategorySubcategoryName(final int categoryId) {
         String categoryName = "";
 
-        if (categoryId != Constants.NOT_SET) {
-            CategoryRepository categoryRepository = new CategoryRepository(getContext());
-            Category category = categoryRepository.load(categoryId);
-            if (category != null) {
+        if (Constants.NOT_SET != categoryId) {
+            final CategoryRepository categoryRepository = new CategoryRepository(getContext());
+            final Category category = categoryRepository.load(categoryId);
+            if (null != category) {
                 categoryName = category.getName();
                 // TODO parent category : category
-                if (category.getParentId() > 0)
-                {
-                    Category parentCategory = categoryRepository.load(category.getParentId());
-                    if (parentCategory != null)
+                if (0 < category.getParentId()) {
+                    final Category parentCategory = categoryRepository.load(category.getParentId());
+                    if (null != parentCategory)
                         categoryName = parentCategory.getName() + " : " + category.getName();
                 }
             } else {
@@ -113,22 +112,22 @@ public class CategoryService
      * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
+        final Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
 
         return getRepository().query(Category.class, query);
     }
 
-    public int update(int id, String name) {
-        if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
+    public int update(final int id, String name) {
+        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
 
-        CategoryRepository repo = new CategoryRepository(getContext());
+        final CategoryRepository repo = new CategoryRepository(getContext());
 
-        int result = getContext().getContentResolver().update(repo.getUri(),
+        final int result = getContext().getContentResolver().update(repo.getUri(),
                 values,
                 Category.CATEGID + "=" + id, null);
 
@@ -137,17 +136,18 @@ public class CategoryService
 
     /**
      * Checks account transactions to find any that use given category
+     *
      * @param categoryId Id of the category for which to check.
      * @return A boolean indicating if the category is in use.
      */
-    public boolean isCategoryUsed(int categoryId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
-        return links > 0;
+    public boolean isCategoryUsed(final int categoryId) {
+        final AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        final int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
+        return 0 < links;
     }
 
     private CategoryRepository getRepository() {
-        if (mRepository == null) {
+        if (null == mRepository) {
             mRepository = new CategoryRepository(getContext());
         }
         return mRepository;

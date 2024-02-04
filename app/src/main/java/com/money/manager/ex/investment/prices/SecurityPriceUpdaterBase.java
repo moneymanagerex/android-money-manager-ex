@@ -26,8 +26,8 @@ import java.util.List;
  */
 
 public class SecurityPriceUpdaterBase
-    extends PriceUpdaterBase
-    implements ISecurityPriceUpdater {
+        extends PriceUpdaterBase
+        implements ISecurityPriceUpdater {
     public SecurityPriceUpdaterBase(Context context) {
         super(context);
     }

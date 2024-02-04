@@ -16,140 +16,140 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/mmx_margin"
-    android:orientation="vertical" >
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="@dimen/mmx_margin"
+              android:orientation="vertical">
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewAccountName"
-        style="?attr/headerTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:visibility="gone" />
+            android:id="@+id/textViewAccountName"
+            style="?attr/headerTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mmx_margin"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mmx_margin"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/linearLayoutDate"
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@color/holo_blue_light"
-            android:minHeight="52dp"
-            android:orientation="vertical" >
+                android:id="@+id/linearLayoutDate"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@color/holo_blue_light"
+                android:minHeight="52dp"
+                android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewMonth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                app:typeface="roboto_light" />
+                    android:id="@+id/textViewMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                app:typeface="roboto_light" />
+                    android:id="@+id/textViewDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    app:typeface="roboto_light"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewYear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                app:typeface="roboto_light" />
+                    android:id="@+id/textViewYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/mmx_margin"
-            android:layout_marginRight="@dimen/mmx_margin"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewPayee"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/mmx_margin"
+                android:layout_marginRight="@dimen/mmx_margin"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewCategorySub"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:singleLine="true" />
+                    android:id="@+id/textViewPayee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewNotes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                android:textStyle="italic"
-                android:visibility="gone"
-                app:typeface="roboto_condensed_italic" />
+                    android:id="@+id/textViewCategorySub"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:singleLine="true"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    app:typeface="roboto_condensed_italic"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewStatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:ellipsize="end"
-                android:gravity="center_vertical|right"
-                android:singleLine="true"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                android:textStyle="italic"
-                app:typeface="roboto_condensed_italic" />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="right"
-                android:textStyle="bold" />
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|right"
+                    android:singleLine="true"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    android:textStyle="italic"
+                    app:typeface="roboto_condensed_italic"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:gravity="right"
+                    android:textStyle="bold"/>
 
             <!-- balance -->
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewBalance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="center_vertical|right"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                android:textStyle="italic"
-                android:visibility="gone"
-                app:typeface="roboto_condensed_italic" />
+                    android:id="@+id/textViewBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:gravity="center_vertical|right"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    app:typeface="roboto_condensed_italic"/>
         </LinearLayout>
     </LinearLayout>
 

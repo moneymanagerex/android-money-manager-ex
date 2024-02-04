@@ -28,7 +28,7 @@ public class PreferenceConstants {
     public static final Integer PREF_SECURITY = R.string.pref_security;
     public static final Integer PREF_DATABASE = R.string.pref_database;
 
-//    public static final Integer PREF_LAST_VERSION_KEY = R.string.pref_last_version_key;
+    //    public static final Integer PREF_LAST_VERSION_KEY = R.string.pref_last_version_key;
     public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
 
     // General

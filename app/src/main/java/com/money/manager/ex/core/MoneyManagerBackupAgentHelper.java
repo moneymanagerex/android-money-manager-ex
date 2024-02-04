@@ -21,18 +21,17 @@ import android.app.backup.BackupAgentHelper;
 import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.database.DatabaseManager;
 
 /**
  * Manage preferences backup.
  */
 public class MoneyManagerBackupAgentHelper
-    extends BackupAgentHelper {
+        extends BackupAgentHelper {
 
     private static final String KEY_BACKUP_APP_PREFERENCES = "KEY_BACKUP_APP_PREFERENCES";
     private static final String KEY_BACKUP_DROPBOX_PREFERENCES = "KEY_BACKUP_DROPBOX_PREFERENCES";
-//    private static final String KEY_BACKUP_RECENT_DB_PREFERENCES = "KEY_BACKUP_RECENT_DB_PREFERENCES";
+    //    private static final String KEY_BACKUP_RECENT_DB_PREFERENCES = "KEY_BACKUP_RECENT_DB_PREFERENCES";
     private static final String KEY_BACKUP_DB = "KEY_BACKUP_DB";
 
     @Override

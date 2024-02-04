@@ -16,24 +16,24 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ListView
-        android:id="@+id/listviewFolderDropBox"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:choiceMode="singleChoice" 
-        android:visibility="gone">
+            android:id="@+id/listviewFolderDropBox"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:choiceMode="singleChoice"
+            android:visibility="gone">
     </ListView>
 
-    <com.money.manager.ex.view.RobotoTextView android:id="@+id/textViewLinkDropBox" 
-        android:layout_height="match_parent" 
-        android:layout_width="match_parent"
-        android:text="@string/dropbox_link"
-        android:gravity="center"
-        android:textSize="20dp" />
+    <com.money.manager.ex.view.RobotoTextView android:id="@+id/textViewLinkDropBox"
+                                              android:layout_height="match_parent"
+                                              android:layout_width="match_parent"
+                                              android:text="@string/dropbox_link"
+                                              android:gravity="center"
+                                              android:textSize="20dp"/>
 
 </LinearLayout>

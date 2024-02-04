@@ -19,8 +19,6 @@ package com.money.manager.ex.log;
 
 import android.util.Log;
 
-//import com.crashlytics.android.Crashlytics;
-
 import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;

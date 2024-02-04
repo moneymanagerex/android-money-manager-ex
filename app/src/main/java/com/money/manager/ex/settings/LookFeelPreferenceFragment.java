@@ -33,13 +33,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
+
 import timber.log.Timber;
 
 /**
  * Look & feel preferences.
  */
 public class LookFeelPreferenceFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

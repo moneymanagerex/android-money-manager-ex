@@ -43,49 +43,66 @@ public interface ITransactionEntity {
     String FOLLOWUPID = "FOLLOWUPID";
 
     Integer getId();
+
     void setId(Integer value);
+
     boolean hasId();
 
     Integer getAccountId();
+
     void setAccountId(Integer value);
 
     Integer getAccountToId();
+
     void setAccountToId(Integer value);
+
     boolean hasAccountTo();
 
     Integer getCategoryId();
+
     void setCategoryId(Integer value);
+
     boolean hasCategory();
 
     /**
      * @return the splitTransAmount
      */
     Money getAmount();
+
     /**
      * @param value the splitTransAmount to set
      */
     void setAmount(Money value);
 
     Money getAmountTo();
+
     void setAmountTo(Money value);
 
     Date getDate();
-    String getDateString();
+
     void setDate(Date value);
 
+    String getDateString();
+
     String getNotes();
+
     void setNotes(String value);
 
     Integer getPayeeId();
+
     void setPayeeId(Integer value);
+
     boolean hasPayee();
 
     String getStatus();
+
     void setStatus(String value);
 
     String getTransactionNumber();
+
     void setTransactionNumber(String value);
 
     TransactionTypes getTransactionType();
+
     void setTransactionType(TransactionTypes value);
 }

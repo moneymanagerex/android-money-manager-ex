@@ -124,36 +124,26 @@ import timber.log.Timber;
  * Main activity of the application.
  */
 public class MainActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-    /**
-     * @return the mRestart
-     */
-    public static boolean isRestartActivitySet() {
-        return mRestartActivity;
-    }
-
-    public static void setRestartActivity(boolean mRestart) {
-        MainActivity.mRestartActivity = mRestart;
-    }
-
-    // private
-
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
 
+    // private
     // state if restart activity
     private static boolean mRestartActivity = false;
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-
-    @State boolean dbUpdateCheckDone = false;
-    @State boolean mIsSynchronizing = false;
-    @State boolean isAuthenticated = false;
-    @State int deviceOrientation = Constants.NOT_SET;
-
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
+    @State
+    boolean dbUpdateCheckDone = false;
+    @State
+    boolean mIsSynchronizing = false;
+    @State
+    boolean isAuthenticated = false;
+    @State
+    int deviceOrientation = Constants.NOT_SET;
     private boolean isInAuthentication = false;
     private boolean isRecurringTransactionStarted = false;
     // navigation drawer
@@ -167,6 +157,17 @@ public class MainActivity
     // sync rotating icon
     private MenuItem mSyncMenuItem = null;
     private UIHelper mUiHelper;
+
+    /**
+     * @return the mRestart
+     */
+    public static boolean isRestartActivitySet() {
+        return mRestartActivity;
+    }
+
+    public static void setRestartActivity(boolean mRestart) {
+        MainActivity.mRestartActivity = mRestart;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,8 +338,7 @@ public class MainActivity
                                 Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                             }
                         }
-                    }
-                    else {
+                    } else {
                         isAuthenticated = true;
                     }
                 }
@@ -474,18 +474,19 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync started event.
      */
     @Subscribe
     public void onEvent(SyncStartingEvent event) {
         Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = true;
-                invalidateOptionsMenu();
-                return null;
-            }
-        })
+                    @Override
+                    public Void call() throws Exception {
+                        mIsSynchronizing = true;
+                        invalidateOptionsMenu();
+                        return null;
+                    }
+                })
                 .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -493,21 +494,22 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync stopped event.
      */
     @Subscribe
     public void onEvent(SyncStoppingEvent event) {
         Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = false;
-                invalidateOptionsMenu();
-                return null;
-            }
-        })
-            .subscribeOn(AndroidSchedulers.mainThread())
+                    @Override
+                    public Void call() throws Exception {
+                        mIsSynchronizing = false;
+                        invalidateOptionsMenu();
+                        return null;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
 //            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe();
+                .subscribe();
     }
 
     /**
@@ -556,6 +558,13 @@ public class MainActivity
         return mIsDualPanel;
     }
 
+    /**
+     * @param mIsDualPanel the mIsDualPanel to set
+     */
+    public void setDualPanel(boolean mIsDualPanel) {
+        this.mIsDualPanel = mIsDualPanel;
+    }
+
     public int getContentId() {
         return isDualPanel()
                 ? R.id.fragmentDetail
@@ -570,6 +579,7 @@ public class MainActivity
 
     /**
      * Handle the drawer item click. Invoked by the actual click handler.
+     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
@@ -676,6 +686,12 @@ public class MainActivity
         return result;
     }
 
+//    private void shutdownApp() {
+//        finish();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(1);
+//    }
+
     /**
      * for the change setting restart process application
      */
@@ -693,19 +709,6 @@ public class MainActivity
         startActivity(intent);
 
         finish();
-    }
-
-//    private void shutdownApp() {
-//        finish();
-//        android.os.Process.killProcess(android.os.Process.myPid());
-//        System.exit(1);
-//    }
-
-    /**
-     * @param mIsDualPanel the mIsDualPanel to set
-     */
-    public void setDualPanel(boolean mIsDualPanel) {
-        this.mIsDualPanel = mIsDualPanel;
     }
 
     /**
@@ -742,8 +745,8 @@ public class MainActivity
     /**
      * Displays the fragment and associate the tag
      *
-     * @param fragment    Fragment to display
-     * @param tag Tag/name to search for.
+     * @param fragment Fragment to display
+     * @param tag      Tag/name to search for.
      */
     public void showFragment(Fragment fragment, String tag) {
         try {
@@ -858,7 +861,7 @@ public class MainActivity
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)
-                    .color(iconColor)));
+                        .color(iconColor)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
@@ -957,29 +960,29 @@ public class MainActivity
 
         // We will use the sync button for uploading the database to the storage.
         //if (new SyncManager(this).isActive()) {
-            // add rotating icon
-            if (menu.findItem(id) == null) {
-                boolean hasAnimation = false;
+        // add rotating icon
+        if (menu.findItem(id) == null) {
+            boolean hasAnimation = false;
 
-                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
-                    hasAnimation = true;
-                    // There is a running animation. Clear it on the old reference.
-                    stopSyncIconRotation(mSyncMenuItem);
-                }
-
-                // create (new) menu item.
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_item_sync_progress, menu);
-                mSyncMenuItem = menu.findItem(id);
-                UIHelper ui = new UIHelper(this);
-                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
-                mSyncMenuItem.setIcon(syncIcon);
-
-                if (hasAnimation) {
-                    // continue animation.
-                    startSyncIconRotation(mSyncMenuItem);
-                }
+            if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
+                hasAnimation = true;
+                // There is a running animation. Clear it on the old reference.
+                stopSyncIconRotation(mSyncMenuItem);
             }
+
+            // create (new) menu item.
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_item_sync_progress, menu);
+            mSyncMenuItem = menu.findItem(id);
+            UIHelper ui = new UIHelper(this);
+            Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
+            mSyncMenuItem.setIcon(syncIcon);
+
+            if (hasAnimation) {
+                // continue animation.
+                startSyncIconRotation(mSyncMenuItem);
+            }
+        }
 //        } else {
 //            if (mSyncMenuItem != null) {
 //                stopSyncIconRotation(mSyncMenuItem);
@@ -1032,7 +1035,7 @@ public class MainActivity
 
         // Cloud synchronize
 //        if (new SyncManager(this).isActive()) {
-            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
                         .color(iconColor)));
@@ -1088,8 +1091,8 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
 //                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)))
-            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
-                    .color(iconColor)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
+                        .color(iconColor)));
 
         return menuItems;
     }
@@ -1109,10 +1112,10 @@ public class MainActivity
 
                 if (entry.isSynchronised()) {
                     item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
-                        .color(iconColor));
+                            .color(iconColor));
                 } else {
                     item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
-                        .color(iconColor));
+                            .color(iconColor));
                 }
                 childDatabases.add(item);
             }
@@ -1122,7 +1125,7 @@ public class MainActivity
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
                 .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared)
-                    .color(iconColor))
+                        .color(iconColor))
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
@@ -1262,6 +1265,7 @@ public class MainActivity
 
     /**
      * called when quick-switching the recent databases from the navigation menu.
+     *
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
@@ -1308,7 +1312,7 @@ public class MainActivity
         ImageView imageView = new ImageView(this);
         UIHelper uiHelper = new UIHelper(this);
         imageView.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
-            .color(uiHelper.getToolbarItemColor()));
+                .color(uiHelper.getToolbarItemColor()));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
@@ -1328,6 +1332,7 @@ public class MainActivity
 
     /**
      * Shown database path with toast message
+     *
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
@@ -1342,9 +1347,9 @@ public class MainActivity
 //                    .commit();
             try {
                 Toast.makeText(context,
-                        Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
-                        Toast.LENGTH_LONG)
-                    .show();
+                                Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
+                                Toast.LENGTH_LONG)
+                        .show();
             } catch (Exception e) {
                 Timber.e(e, "showing the current database path");
             }
@@ -1380,6 +1385,7 @@ public class MainActivity
     /**
      * display any screens that need to be shown before the app actually runs.
      * This usually happens only on the first run of the app.
+     *
      * @return Indicator if another screen is showing. This means that this activity should close
      * and not proceed with initialisation.
      */
@@ -1416,7 +1422,7 @@ public class MainActivity
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
                 .withText(getString(R.string.payees))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                    .color(iconColor)));
+                        .color(iconColor)));
 
         // where money goes
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)

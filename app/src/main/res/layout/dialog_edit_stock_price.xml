@@ -16,56 +16,56 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <com.shamanland.fonticon.FontIconView
-            android:id="@+id/previousDayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/ic_chevron_left"
-            android:textSize="@dimen/fonticon_drawer"
-             />
+                android:id="@+id/previousDayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/ic_chevron_left"
+                android:textSize="@dimen/fonticon_drawer"
+        />
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/dateTextView"
-            style="@style/Money.TextView.Widget.EditText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:drawableLeft="?attr/ic_calendar_day"
-            android:drawableStart="?attr/ic_calendar_day"
-            android:hint="@string/date"
-            android:textStyle="bold"/>
+                android:id="@+id/dateTextView"
+                style="@style/Money.TextView.Widget.EditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:drawableLeft="?attr/ic_calendar_day"
+                android:drawableStart="?attr/ic_calendar_day"
+                android:hint="@string/date"
+                android:textStyle="bold"/>
 
         <com.shamanland.fonticon.FontIconView
-            android:id="@+id/nextDayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/ic_chevron_right"
-            android:textSize="@dimen/fonticon_drawer"
-            android:background="?attr/selectableItemBackground" />
+                android:id="@+id/nextDayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/ic_chevron_right"
+                android:textSize="@dimen/fonticon_drawer"
+                android:background="?attr/selectableItemBackground"/>
     </LinearLayout>
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/amountTextView"
-        style="@style/Money.TextView.Widget.EditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="?attr/ic_calculator"
-        android:drawableStart="?attr/ic_calculator"
-        android:gravity="end"
-        android:hint="@string/amount"
-        android:textStyle="bold"/>
+            android:id="@+id/amountTextView"
+            style="@style/Money.TextView.Widget.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="?attr/ic_calculator"
+            android:drawableStart="?attr/ic_calculator"
+            android:gravity="end"
+            android:hint="@string/amount"
+            android:textStyle="bold"/>
 
 </LinearLayout>

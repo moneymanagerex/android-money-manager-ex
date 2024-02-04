@@ -24,13 +24,19 @@ import java.util.List;
  */
 public enum AccountTypes {
     CASH("Cash"),
-    CHECKING ("Checking"),
-    INVESTMENT ("Investment"),
-    TERM ("Term"),
-    CREDIT_CARD ("Credit Card"),
-    LOAN ("Loan"),
-    SHARES ("Shares");
+    CHECKING("Checking"),
+    INVESTMENT("Investment"),
+    TERM("Term"),
+    CREDIT_CARD("Credit Card"),
+    LOAN("Loan"),
+    SHARES("Shares");
 
+
+    public final String title;
+
+    AccountTypes(String s) {
+        title = s;
+    }
 
     public static AccountTypes get(String name) {
         for (AccountTypes type : AccountTypes.values()) {
@@ -50,17 +56,11 @@ public enum AccountTypes {
         return list.toArray(result);
     }
 
-    public final String title;
-
-    AccountTypes(String s) {
-        title = s;
-    }
-
     public boolean equalsName(String otherTitle) {
         return title.equalsIgnoreCase(otherTitle);
     }
 
-    public String toString(){
+    public String toString() {
         return this.title;
     }
 }

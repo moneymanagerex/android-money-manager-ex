@@ -18,7 +18,9 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +34,14 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
 import androidx.cursoradapter.widget.CursorAdapter;
+
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for the Payee report.
  */
 public class PayeeReportAdapter
-    extends CursorAdapter {
+        extends CursorAdapter {
     private static final String TAG = "PayeeReportAdapter";
     private final LayoutInflater mInflater;
     private final Context mContext;

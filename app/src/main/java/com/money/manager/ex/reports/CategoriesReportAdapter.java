@@ -18,7 +18,9 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,18 +34,19 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
 import androidx.cursoradapter.widget.CursorAdapter;
+
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for the Categories report.
  */
 public class CategoriesReportAdapter
-    extends CursorAdapter {
+        extends CursorAdapter {
 
     private final LayoutInflater mInflater;
     private final Context mContext;
 
-//    @SuppressWarnings("deprecation")
+    //    @SuppressWarnings("deprecation")
     public CategoriesReportAdapter(Context context, Cursor c) {
         super(context, c, false);
 

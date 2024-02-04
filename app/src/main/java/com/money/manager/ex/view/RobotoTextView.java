@@ -17,7 +17,9 @@
 package com.money.manager.ex.view;
 
 import android.content.Context;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -84,6 +86,6 @@ public class RobotoTextView extends AppCompatTextView {
     private void parseAttributes(Context context, AttributeSet attrs) {
         if (isInEditMode()) return;
 
-    	RobotoView.parseAttributes(context, this, attrs);
+        RobotoView.parseAttributes(context, this, attrs);
     }
 }

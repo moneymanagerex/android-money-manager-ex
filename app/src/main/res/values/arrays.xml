@@ -17,7 +17,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+           tools:ignore="MissingTranslation">
 
     <!-- Themes -->
     <string-array name="themes_names">
@@ -68,10 +68,10 @@
 
     <!-- Accounttype items and values -->
     <!--<string-array name="accounttype_values">-->
-        <!--<item>Checking</item>-->
-        <!--<item>Investment</item>-->
-        <!--<item>Term</item>-->
-        <!--<item>Credit Card</item>-->
+    <!--<item>Checking</item>-->
+    <!--<item>Investment</item>-->
+    <!--<item>Term</item>-->
+    <!--<item>Credit Card</item>-->
     <!--</string-array>-->
     <string-array name="accounttype_items">
         <item>@string/cash</item>
@@ -95,9 +95,9 @@
 
     <!-- context menu for watchlist entries -->
     <!--<string-array name="context_menu_watchlist">-->
-        <!--<item>@string/download_price</item>-->
-        <!--<item>@string/edit_price</item>-->
-        <!--<item>@string/delete</item>-->
+    <!--<item>@string/download_price</item>-->
+    <!--<item>@string/edit_price</item>-->
+    <!--<item>@string/delete</item>-->
     <!--</string-array>-->
 
     <!-- context menu options for currency list -->

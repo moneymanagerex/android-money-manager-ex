@@ -29,12 +29,11 @@ import timber.log.Timber;
  * Inherited by exchange rate and security price updaters.
  */
 public class PriceUpdaterBase {
+    private final Context mContext;
+    private ProgressDialog mDialog = null;
     public PriceUpdaterBase(Context context) {
         mContext = context;
     }
-
-    private final Context mContext;
-    private ProgressDialog mDialog = null;
 
     public Context getContext() {
         return mContext;

@@ -50,11 +50,10 @@ import timber.log.Timber;
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
  */
 public class YqlSecurityPriceUpdaterRetrofit
-    extends PriceUpdaterBase
-    implements ISecurityPriceUpdater {
+        extends PriceUpdaterBase
+        implements ISecurityPriceUpdater {
 
     /**
-     *
      * @param context Executing context
      */
     public YqlSecurityPriceUpdaterRetrofit(Context context) {

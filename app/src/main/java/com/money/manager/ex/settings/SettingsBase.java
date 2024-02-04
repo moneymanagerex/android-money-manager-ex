@@ -27,6 +27,9 @@ import timber.log.Timber;
  */
 abstract class SettingsBase {
 
+    // Context for preferences is the Application Context.
+    private final Context mContext;
+
     SettingsBase(Context context) {
         if (context.getApplicationContext() != null) {
             this.mContext = context.getApplicationContext();
@@ -34,9 +37,6 @@ abstract class SettingsBase {
             this.mContext = context;
         }
     }
-
-    // Context for preferences is the Application Context.
-    private final Context mContext;
 
     // common
 
@@ -47,6 +47,7 @@ abstract class SettingsBase {
     /**
      * Override to set the preferences to use. For shared, use
      * PreferenceManager.getDefaultSharedPreferences(mContext);
+     *
      * @return preferences (either shared or private).
      */
     protected abstract SharedPreferences getPreferences();
@@ -82,14 +83,14 @@ abstract class SettingsBase {
      */
     public void set(String key, String value) {
         getPreferences().edit()
-            .putString(key, value)
-            .apply();
+                .putString(key, value)
+                .apply();
     }
 
     public void set(Integer settingsKey, String value) {
         getPreferences().edit()
-            .putString(getSettingsKey(settingsKey), value)
-            .apply();
+                .putString(getSettingsKey(settingsKey), value)
+                .apply();
     }
 
     // Boolean
@@ -114,8 +115,8 @@ abstract class SettingsBase {
 
     public void set(String key, boolean value) {
         getPreferences().edit()
-            .putBoolean(key, value)
-            .apply();
+                .putBoolean(key, value)
+                .apply();
     }
 
     public void set(Integer key, boolean value) {
@@ -131,7 +132,8 @@ abstract class SettingsBase {
 
     /**
      * Retrieve setting by passing the R.string.key
-     * @param settingKey R.string.key_name
+     *
+     * @param settingKey   R.string.key_name
      * @param defaultValue The default value to use if setting not found.
      * @return The setting value or default.
      */

@@ -33,7 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class BudgetsActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private boolean mIsDualPanel = false;
 
@@ -93,12 +93,12 @@ public class BudgetsActivity
 
     // Public methods
 
-    public void setDualPanel(boolean mIsDualPanel) {
-        this.mIsDualPanel = mIsDualPanel;
-    }
-
     public boolean isDualPanel() {
         return mIsDualPanel;
+    }
+
+    public void setDualPanel(boolean mIsDualPanel) {
+        this.mIsDualPanel = mIsDualPanel;
     }
 
     // Private methods

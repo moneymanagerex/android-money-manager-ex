@@ -19,21 +19,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <!-- Navigation Drawer -->
-        <include layout="@layout/toolbar"/>
+    <!-- Navigation Drawer -->
+    <include layout="@layout/toolbar"/>
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/fragmentMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="vertical"/>
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/fragmentDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:visibility="gone"/>
+</LinearLayout>

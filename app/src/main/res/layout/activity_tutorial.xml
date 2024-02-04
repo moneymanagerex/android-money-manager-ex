@@ -16,43 +16,43 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:windowSoftInputMode="stateAlwaysHidden">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:windowSoftInputMode="stateAlwaysHidden">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager_default"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+                android:id="@+id/viewpager_default"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator_default"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+                android:id="@+id/indicator_default"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/close"
-            android:id="@+id/skipTextView"
-            android:textSize="@dimen/mmx_text_view_size_medium"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_alignTop="@+id/indicator_default"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textAllCaps = "true"
-            android:textColor="@color/material_white"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/close"
+                android:id="@+id/skipTextView"
+                android:textSize="@dimen/mmx_text_view_size_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignTop="@+id/indicator_default"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textAllCaps="true"
+                android:textColor="@color/material_white"/>
     </RelativeLayout>
 
 </LinearLayout>

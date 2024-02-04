@@ -16,25 +16,25 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <!--<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"-->
-                 <!--android:id="@android:id/text1"-->
-                 <!--style="?android:attr/spinnerDropDownItemStyle"-->
-                 <!--android:singleLine="true"-->
-                 <!--android:layout_width="match_parent"-->
-                 <!--android:background="@color/background_material_light"-->
-                 <!--android:textColor="@color/abc_primary_text_material_light"-->
-                 <!--android:layout_height="48dp"-->
-                 <!--android:ellipsize="marquee"/>-->
+<!--android:id="@android:id/text1"-->
+<!--style="?android:attr/spinnerDropDownItemStyle"-->
+<!--android:singleLine="true"-->
+<!--android:layout_width="match_parent"-->
+<!--android:background="@color/background_material_light"-->
+<!--android:textColor="@color/abc_primary_text_material_light"-->
+<!--android:layout_height="48dp"-->
+<!--android:ellipsize="marquee"/>-->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:drawablePadding="8dp"
-    android:gravity="center_vertical|start"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textSize="16sp"
-    android:text="@string/account"
-    android:textColor="@color/md_primary_dark"
-    />
-    <!-- text color is overriden in code, ToolbarSpinnerAdapter -->
-    <!--android:textColor="#ff333333"-->
+          android:id="@android:id/text1"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:drawablePadding="8dp"
+          android:gravity="center_vertical|start"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"
+          android:textSize="16sp"
+          android:text="@string/account"
+          android:textColor="@color/md_primary_dark"
+/>
+        <!-- text color is overriden in code, ToolbarSpinnerAdapter -->
+        <!--android:textColor="#ff333333"-->

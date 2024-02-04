@@ -28,22 +28,22 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
 public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
-	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-			int[] appWidgetIds) {
-		
-		for (int i = 0; i < appWidgetIds.length; ++i) {
-			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_button_add_transaction);
-			// register on click in icon launch application
-			Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
-			intent.setAction(Intent.ACTION_INSERT);
-			intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvoder.java");
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-			remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
-		    
-			// update widget
-			appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-		}
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
-	}
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+
+        for (int i = 0; i < appWidgetIds.length; ++i) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_button_add_transaction);
+            // register on click in icon launch application
+            Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
+            intent.setAction(Intent.ACTION_INSERT);
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvoder.java");
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
+
+            // update widget
+            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+        }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
 }

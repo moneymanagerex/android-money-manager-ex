@@ -32,18 +32,18 @@ public enum ContextMenuIds {
     SaveAsHtml(8),
     Portfolio(9);
 
-    public static ContextMenuIds get(int id) {
-        for(ContextMenuIds itemId : ContextMenuIds.values()) {
-            if (itemId.getId() == id) return itemId;
-        }
-        return null;
-    }
+    private final int id;
 
     ContextMenuIds(int id) {
         this.id = id;
     }
 
-    private final int id;
+    public static ContextMenuIds get(int id) {
+        for (ContextMenuIds itemId : ContextMenuIds.values()) {
+            if (itemId.getId() == id) return itemId;
+        }
+        return null;
+    }
 
     public int getId() {
         return this.id;

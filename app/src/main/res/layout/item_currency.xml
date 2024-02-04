@@ -16,41 +16,41 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/row"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/mmx_margin"
-    android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:layout_gravity="center_vertical"
-    android:minHeight="@dimen/mmx_list_item_height_dense"
-    android:paddingStart="@dimen/mmx_list_item_padding_side"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:paddingEnd="@dimen/mmx_list_item_padding_side" >
+              android:id="@+id/row"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/mmx_margin"
+              android:baselineAligned="false"
+              android:orientation="horizontal"
+              android:layout_gravity="center_vertical"
+              android:minHeight="@dimen/mmx_list_item_height_dense"
+              android:paddingStart="@dimen/mmx_list_item_padding_side"
+              android:paddingLeft="@dimen/mmx_list_item_padding_side"
+              android:paddingRight="@dimen/mmx_list_item_padding_side"
+              android:paddingEnd="@dimen/mmx_list_item_padding_side">
 
     <!-- name -->
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/mmx_margin"
-        android:layout_marginEnd="@dimen/mmx_margin"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?attr/textAppearanceListItemSmall" />
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/mmx_margin"
+            android:layout_marginEnd="@dimen/mmx_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceListItemSmall"/>
 
     <!-- rate -->
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:layout_gravity="center_vertical|end"
-        android:gravity="end"
-        android:textStyle="bold"
-        android:textAppearance="?attr/textAppearanceListItemSmall" />
+            android:id="@+id/rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical|end"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceListItemSmall"/>
 
 </LinearLayout>

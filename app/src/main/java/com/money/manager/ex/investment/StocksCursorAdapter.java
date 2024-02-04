@@ -22,7 +22,8 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import androidx.cursoradapter.widget.CursorAdapter;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -30,33 +31,31 @@ import com.money.manager.ex.datalayer.StockFields;
 
 import java.util.HashMap;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-
 /**
  * Cursor adapter for stock list (watchlist).
  */
 public class StocksCursorAdapter
-    extends CursorAdapter {
-
-    public StocksCursorAdapter(Context context, Cursor cursor) {
-        super(context, cursor, Constants.NOT_SET);
-
-        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mHeadersAccountIndex = new HashMap<>();
-        mCheckedPosition = new SparseBooleanArray();
-        //mContext = context;
-    }
+        extends CursorAdapter {
 
     private final LayoutInflater mInflater;
     private final HashMap<Integer, Integer> mHeadersAccountIndex;
     private final SparseBooleanArray mCheckedPosition;
 
+    public StocksCursorAdapter(final Context context, final Cursor cursor) {
+        super(context, cursor, Constants.NOT_SET);
+
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mHeadersAccountIndex = new HashMap<>();
+        mCheckedPosition = new SparseBooleanArray();
+        //mContext = context;
+    }
+
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.item_watchlist, parent, false);
+    public View newView(final Context context, final Cursor cursor, final ViewGroup parent) {
+        final View view = mInflater.inflate(R.layout.item_watchlist, parent, false);
 
         // holder
-        StocksDataViewHolder holder = new StocksDataViewHolder();
+        final StocksDataViewHolder holder = new StocksDataViewHolder();
 
         holder.symbolTextView = view.findViewById(R.id.symbolTextView);
         holder.nameTextView = view.findViewById(R.id.nameTextView);
@@ -69,26 +68,26 @@ public class StocksCursorAdapter
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, final Cursor cursor) {
         // take a holder
-        StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
+        final StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
+        final int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
         // symbol
-        String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
+        final String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
         holder.symbolTextView.setText(symbol);
 
         // name
-        String name = cursor.getString(cursor.getColumnIndex(StockFields.STOCKNAME));
+        final String name = cursor.getString(cursor.getColumnIndex(StockFields.STOCKNAME));
         holder.nameTextView.setText(name);
 
         // price
-        String price = cursor.getString(cursor.getColumnIndex(StockFields.CURRENTPRICE));
+        final String price = cursor.getString(cursor.getColumnIndex(StockFields.CURRENTPRICE));
         holder.priceTextView.setText(price);
 
         // check if item is checked

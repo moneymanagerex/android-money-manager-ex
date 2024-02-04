@@ -17,6 +17,7 @@
 package com.money.manager.ex.reports;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -44,8 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IncomeVsExpensesChartFragment
-    extends Fragment
-    implements OnChartValueSelectedListener {
+        extends Fragment
+        implements OnChartValueSelectedListener {
 
 //    private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
 

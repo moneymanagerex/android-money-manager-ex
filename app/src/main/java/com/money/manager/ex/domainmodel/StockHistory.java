@@ -27,7 +27,7 @@ import java.util.Date;
  * A stock history record.
  */
 public class StockHistory
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String HISTID = "HISTID";
     public static final String SYMBOL = "SYMBOL";
@@ -36,19 +36,18 @@ public class StockHistory
     public static final String UPDTYPE = "UPDTYPE";
 
     public StockHistory() {
-        super();
+    }
+
+    protected StockHistory(final Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, VALUE, this.contentValues);
-    }
-
-    protected StockHistory(Parcel in) {
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+        DatabaseUtils.cursorDoubleToCursorValues(c, VALUE, contentValues);
     }
 
     public int getHistId() {

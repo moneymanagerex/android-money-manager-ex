@@ -32,11 +32,11 @@ import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.EditPriceDialog;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.PriceEditModel;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
@@ -69,21 +69,34 @@ public interface MmxComponent {
 
     // Activities
     void inject(CalculatorActivity activity);
+
     void inject(CheckingTransactionEditActivity activity);
+
     void inject(InvestmentTransactionEditActivity activity);
+
     void inject(MainActivity activity);
+
     void inject(PriceEditActivity activity);
+
     void inject(RecurringTransactionEditActivity activity);
+
     void inject(SelectDatabaseActivity activity);
+
     void inject(SettingsActivity activity);
 
     // Fragments
     void inject(BaseReportFragment fragment);
+
     void inject(CurrencyListFragment fragment);
+
     void inject(DatabaseSettingsFragment fragment);
+
     void inject(HomeFragment fragment);
+
     void inject(RecurringTransactionListFragment fragment);
+
     void inject(SearchParametersFragment fragment);
+
     void inject(SyncPreferenceFragment fragment);
 
     // Dialogs
@@ -94,22 +107,33 @@ public interface MmxComponent {
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
+
     void inject(MorningstarPriceUpdater updater);
+
     void inject(AppSettings settings);
+
     void inject(Core core);
+
     void inject(MmxContentProvider provider);
+
     void inject(MmxDatabaseUtils utils);
+
     void inject(SyncManager sync);
+
     void inject(SyncServiceMessageHandler handler);
+
     void inject(Passcode object);
+
     void inject(EditTransactionCommonFunctions object);
 
     // Helpers
     void inject(UIHelper helper);
+
     void inject(FormatUtilities utils);
 
     // Business Services
     void inject(CurrencyService service);
+
     void inject(InfoService service);
 
     // Intent Services
@@ -117,6 +141,7 @@ public interface MmxComponent {
 
     // Repositories
     void inject(StockRepositorySql repository);
+
     void inject(StockHistoryRepositorySql repository);
 
     // Adapters

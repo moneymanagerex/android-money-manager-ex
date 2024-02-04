@@ -19,7 +19,9 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
@@ -35,7 +37,7 @@ import timber.log.Timber;
  * Budget preferences
  */
 public class BudgetSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public BudgetSettings(Context context) {
         super(context);

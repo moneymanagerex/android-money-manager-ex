@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,8 +27,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -60,16 +67,8 @@ import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -77,83 +76,82 @@ import timber.log.Timber;
  * The list of securities.
  */
 public class WatchlistItemsFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int ID_LOADER = 1;
     public static final String KEY_ACCOUNT_ID = "WatchlistItemsFragment:AccountId";
-
-    /**
-     * Create a new instance of the fragment with accountId params
-     * @return new instance AllDataListFragment
-     */
-    public static WatchlistItemsFragment newInstance() {
-        WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        return fragment;
-    }
-
-    // non-static
-
     public Integer accountId;
 
+    // non-static
     private Account mAccount;
     private boolean mAutoStarLoader = true;
-    private View mListHeader = null;
+    private View mListHeader;
     private StockRepository mStockRepository;
     private StockHistoryRepository mStockHistoryRepository;
 
+    /**
+     * Create a new instance of the fragment with accountId params
+     *
+     * @return new instance AllDataListFragment
+     */
+    public static WatchlistItemsFragment newInstance() {
+        final WatchlistItemsFragment fragment = new WatchlistItemsFragment();
+        return fragment;
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        setHasOptionsMenu(true);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
+        if (null != savedInstanceState && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
             // get data from saved instance state
-            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+            accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
         } else {
-            this.accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+            accountId = getArguments().getInt(KEY_ACCOUNT_ID);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
+        final View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
 
         return layout;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
 
-        Context context = getActivity();
-        mStockRepository =  new StockRepository(context);
+        final Context context = getActivity();
+        mStockRepository = new StockRepository(context);
 
         // create adapter
-        StocksCursorAdapter adapter = new StocksCursorAdapter(context, null);
+        final StocksCursorAdapter adapter = new StocksCursorAdapter(context, null);
 
         // e list item click.
-        getListView().setOnItemClickListener(new OnItemClickListener() {
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 // Ignore the header row.
-                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
+                if (0 < getListView().getHeaderViewsCount() && 0 == position) return;
 
-                if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                if (null != getListAdapter() && getListAdapter() instanceof StocksCursorAdapter) {
                     getActivity().openContextMenu(view);
                 }
             }
         });
 
         // if header is not null add to list view
-        if (getListAdapter() == null) {
-            if (mListHeader != null) {
+        if (null == getListAdapter()) {
+            if (null != mListHeader) {
                 getListView().addHeaderView(mListHeader);
             } else {
                 getListView().removeHeaderView(mListHeader);
@@ -167,7 +165,7 @@ public class WatchlistItemsFragment
         registerForContextMenu(getListView());
 
         // start loader
-        if (isAutoStarLoader()) {
+        if (mAutoStarLoader) {
             reloadData();
         }
 
@@ -176,11 +174,11 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RequestCodes.PRICE) {
-            if (resultCode != AppCompatActivity.RESULT_OK) return;
+        if (RequestCodes.PRICE == requestCode) {
+            if (Activity.RESULT_OK != resultCode) return;
 
             reloadData();
         }
@@ -189,20 +187,20 @@ public class WatchlistItemsFragment
     // context menu
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         // ignore the header row if the headers are shown.
-        if (hasHeaderRow() && info.position == 0) return;
+        if (hasHeaderRow() && 0 == info.position) return;
 
-        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        final Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
-        int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
+        final int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL)));
 
-        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        final MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice);
         menuHelper.addToContextMenu(ContextMenuIds.EditPrice);
         menuHelper.addToContextMenu(ContextMenuIds.DELETE);
@@ -210,27 +208,28 @@ public class WatchlistItemsFragment
 
     /**
      * Context menu click handler. Update individual price.
+     *
      * @param item selected context menu item.
      * @return indicator whether the action is handled or not.
      */
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+    public boolean onContextItemSelected(final android.view.MenuItem item) {
+        final ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
         if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 //        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) ;
 
-        Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+        final Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 //        long packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
-        int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
+        final int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
-        Stock stock = Stock.from(cursor);
-        String symbol = stock.getSymbol();
+        final Stock stock = Stock.from(cursor);
+        final String symbol = stock.getSymbol();
 
         boolean result = false;
-        ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
+        final ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
 
         switch (menuId) {
             case DownloadPrice:
@@ -241,16 +240,16 @@ public class WatchlistItemsFragment
 
             case EditPrice:
                 // Edit price
-                int accountId = stock.getHeldAt();
-                Money currentPrice = stock.getCurrentPrice();
+                final int accountId = stock.getHeldAt();
+                final Money currentPrice = stock.getCurrentPrice();
 
-                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+                final Intent intent = IntentFactory.getPriceEditIntent(getActivity());
                 intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
                 intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
                 intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
                 getAccount();
                 intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
-                String dateString = new MmxDate().toIsoDateString();
+                final String dateString = new MmxDate().toIsoDateString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
                 startActivityForResult(intent, RequestCodes.PRICE);
 
@@ -281,17 +280,17 @@ public class WatchlistItemsFragment
     // Loader
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        MmxCursorLoader result;
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
+        final MmxCursorLoader result;
 
         //animation
         setListShown(false);
 
-        if (id == ID_LOADER) {// compose selection and sort
+        if (ID_LOADER == id) {// compose selection and sort
             String selection = "";
-            if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_WHERE)) {
-                ArrayList<String> whereClause = args.getStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE);
-                if (whereClause != null) {
+            if (null != args && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_WHERE)) {
+                final ArrayList<String> whereClause = args.getStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE);
+                if (null != whereClause) {
                     for (int i = 0; i < whereClause.size(); i++) {
                         selection += (!TextUtils.isEmpty(selection) ? " AND " : "") + whereClause.get(i);
                     }
@@ -300,11 +299,11 @@ public class WatchlistItemsFragment
 
             // set sort
             String sort = "";
-            if (args != null && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_SORT)) {
+            if (null != args && args.containsKey(AllDataListFragment.KEY_ARGUMENTS_SORT)) {
                 sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
             }
 
-            Select query = new Select(mStockRepository.getAllColumns())
+            final Select query = new Select(mStockRepository.getAllColumns())
                     .where(selection)
                     .orderBy(sort);
 
@@ -316,22 +315,22 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(final Loader<Cursor> loader) {
         // reset the cursor reference to reduce memory leaks
         ((CursorAdapter) getListAdapter()).changeCursor(null);
 //        ((CursorAdapter) getListAdapter()).swapCursor(null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == ID_LOADER) {// send the data to the view adapter.
-            StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
+    public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
+        if (ID_LOADER == loader.getId()) {// send the data to the view adapter.
+            final StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
             adapter.changeCursor(data);
 
             if (isResumed()) {
                 setListShown(true);
 
-                if (getFloatingActionButton() != null) {
+                if (null != getFloatingActionButton()) {
                     getFloatingActionButton().show(true);
                 }
             } else {
@@ -348,27 +347,27 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle saveInstanceState) {
+    public void onSaveInstanceState(final Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
 
-        saveInstanceState.putInt(KEY_ACCOUNT_ID, this.accountId);
+        saveInstanceState.putInt(KEY_ACCOUNT_ID, accountId);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         try {
-            MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
-            if (activity != null) {
-                ActionBar actionBar = activity.getSupportActionBar();
-                if(actionBar != null) {
-                    View customView = actionBar.getCustomView();
-                    if (customView != null) {
+            final MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
+            if (null != activity) {
+                final ActionBar actionBar = activity.getSupportActionBar();
+                if (null != actionBar) {
+                    final View customView = actionBar.getCustomView();
+                    if (null != customView) {
                         actionBar.setCustomView(null);
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "stopping watchlist items fragment");
         }
     }
@@ -383,30 +382,30 @@ public class WatchlistItemsFragment
     }
 
     /**
+     * @param mAutoStarLoader the mAutoStarLoader to set
+     */
+    public void setAutoStarLoader(final boolean mAutoStarLoader) {
+        this.mAutoStarLoader = mAutoStarLoader;
+    }
+
+    /**
      * Start loader into fragment
      */
     public void reloadData() {
         // reset the account so that it gets loaded when referenced the next time.
         mAccount = null;
 
-        Bundle arguments = prepareArgsForChildFragment();
+        final Bundle arguments = prepareArgsForChildFragment();
         // mLoaderArgs
         getLoaderManager().restartLoader(ID_LOADER, arguments, this);
     }
 
-    /**
-     * @param mAutoStarLoader the mAutoStarLoader to set
-     */
-    public void setAutoStarLoader(boolean mAutoStarLoader) {
-        this.mAutoStarLoader = mAutoStarLoader;
-    }
-
-    public void setListHeader(View mHeaderList) {
-        this.mListHeader = mHeaderList;
+    public void setListHeader(final View mHeaderList) {
+        mListHeader = mHeaderList;
     }
 
     public StockHistoryRepository getStockHistoryRepository() {
-        if (mStockHistoryRepository == null) {
+        if (null == mStockHistoryRepository) {
             mStockHistoryRepository = new StockHistoryRepository(getActivity());
         }
         return mStockHistoryRepository;
@@ -415,22 +414,22 @@ public class WatchlistItemsFragment
     // Private
 
     private Account getAccount() {
-        if (this.accountId == Constants.NOT_SET) return null;
-        if (this.mAccount != null) return mAccount;
+        if (Constants.NOT_SET == this.accountId) return null;
+        if (null != this.mAccount) return mAccount;
 
-        AccountRepository repo = new AccountRepository(getActivity());
-        mAccount = repo.load(this.accountId);
+        final AccountRepository repo = new AccountRepository(getActivity());
+        mAccount = repo.load(accountId);
 
         return mAccount;
     }
 
     private void displayHeaderData() {
-        TextView label = getView().findViewById(R.id.cashBalanceLabel);
-        TextView textView = getView().findViewById(R.id.cashBalanceTextView);
-        if (label == null || textView == null) return;
+        final TextView label = getView().findViewById(R.id.cashBalanceLabel);
+        final TextView textView = getView().findViewById(R.id.cashBalanceTextView);
+        if (null == label || null == textView) return;
 
         // Clear if no account id, i.e. all accounts displayed.
-        if (this.accountId == Constants.NOT_SET) {
+        if (Constants.NOT_SET == this.accountId) {
             label.setText("");
             textView.setText("");
             return;
@@ -439,25 +438,25 @@ public class WatchlistItemsFragment
         label.setText(getString(R.string.cash));
 
         getAccount();
-        if (mAccount == null) return;
+        if (null == mAccount) return;
 
-        FormatUtilities formatter = new FormatUtilities(getActivity());
+        final FormatUtilities formatter = new FormatUtilities(getActivity());
         textView.setText(formatter.format(
-            mAccount.getInitialBalance(), mAccount.getCurrencyId()));
+                mAccount.getInitialBalance(), mAccount.getCurrencyId()));
     }
 
     private boolean hasHeaderRow() {
-        return getListView().getHeaderViewsCount() > 0;
+        return 0 < getListView().getHeaderViewsCount();
     }
 
     private Bundle prepareArgsForChildFragment() {
-        ArrayList<String> selection = new ArrayList<>();
+        final ArrayList<String> selection = new ArrayList<>();
 
-        if (this.accountId != Constants.NOT_SET) {
-            selection.add(StockFields.HELDAT + "=" + this.accountId);
+        if (Constants.NOT_SET != this.accountId) {
+            selection.add(StockFields.HELDAT + "=" + accountId);
         }
 
-        Bundle args = new Bundle();
+        final Bundle args = new Bundle();
         args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, StockFields.SYMBOL + " ASC");
 
@@ -465,14 +464,14 @@ public class WatchlistItemsFragment
     }
 
     private void openEditInvestmentActivity() {
-        Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
-        intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, this.accountId);
+        final Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
+        intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, accountId);
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }
 
     private void showDeleteConfirmationDialog(final int id) {
-        UIHelper ui = new UIHelper(getContext());
+        final UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.delete_transaction)
@@ -481,8 +480,8 @@ public class WatchlistItemsFragment
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        StockRepository repo = new StockRepository(getActivity());
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull final DialogAction which) {
+                        final StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
                             new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
                         }
@@ -494,7 +493,7 @@ public class WatchlistItemsFragment
                 .negativeText(android.R.string.cancel)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull final DialogAction which) {
                         // close binaryDialog
                         dialog.cancel();
                     }

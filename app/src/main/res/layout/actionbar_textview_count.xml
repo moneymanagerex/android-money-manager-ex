@@ -16,11 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <com.money.manager.ex.view.RobotoTextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/textViewCount"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingRight="@dimen/mmx_margin"
-    app:typeface="roboto_medium" 
-    style="@android:style/TextAppearance.Large"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/textViewCount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="@dimen/mmx_margin"
+        app:typeface="roboto_medium"
+        style="@android:style/TextAppearance.Large"/>

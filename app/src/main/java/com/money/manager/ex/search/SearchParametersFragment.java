@@ -82,30 +82,28 @@ import info.javaperformance.money.MoneyFactory;
  * The form with search parameter input fields.
  */
 public class SearchParametersFragment
-    extends Fragment {
+        extends Fragment {
 
-    private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
     public static final String DATEPICKER_TAG = "datepicker";
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
+    private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
+    // arrays list account name and account id
+    private final ArrayList<String> mAccountNameList = new ArrayList<>();
+    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
+    // status item and values
+    private final ArrayList<String> mStatusItems = new ArrayList<>();
+    private final ArrayList<String> mStatusValues = new ArrayList<>();
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
     private SearchParametersViewHolder viewHolder;
-
     private Spinner spinAccount, spinStatus, spinCurrency;
     private EditText txtNotes;
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
-    // arrays list account name and account id
-    private final ArrayList<String> mAccountNameList = new ArrayList<>();
-    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private List<Account> mAccountList;
     // currencies
     private ArrayList<String> mCurrencySymbolList = new ArrayList<>();
-    private final ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
     private List<Currency> mCurrencies;
-    // status item and values
-    private final ArrayList<String> mStatusItems = new ArrayList<>();
-    private final ArrayList<String> mStatusValues = new ArrayList<>();
 
     public static SearchParametersFragment createInstance() {
         SearchParametersFragment fragment = new SearchParametersFragment();
@@ -221,7 +219,7 @@ public class SearchParametersFragment
 
         // Icons
         UIHelper ui = new UIHelper(getContext());
-        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null,null);
+        viewHolder.edtNotes.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
 
         // Store search criteria values into the controls.
         displaySearchCriteria(view);
@@ -296,7 +294,7 @@ public class SearchParametersFragment
         MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -324,21 +322,21 @@ public class SearchParametersFragment
         return parameters;
     }
 
+    public void setSearchParameters(SearchParameters parameters) {
+        if (parameters == null) return;
+
+        getArguments().putParcelable(KEY_SEARCH_CRITERIA, Parcels.wrap(parameters));
+        displaySearchCriteria();
+    }
+
     public String getWhereStatement() {
         // Store parameters from UI.
         SearchParameters searchParameters = collectSearchCriteria();
         setSearchParameters(searchParameters);
 
         String where = assembleWhereClause();
-        Log.d(this.getClass().getName(),"Where: \n"+where);
+        Log.d(this.getClass().getName(), "Where: \n" + where);
         return where;
-    }
-
-    public void setSearchParameters(SearchParameters parameters) {
-        if (parameters == null) return;
-
-        getArguments().putParcelable(KEY_SEARCH_CRITERIA, Parcels.wrap(parameters));
-        displaySearchCriteria();
     }
 
     @OnClick(R.id.textViewFromDate)
@@ -419,6 +417,7 @@ public class SearchParametersFragment
 
     /**
      * Assemble SQL query from the search parameters.
+     *
      * @return where clause with parameters
      */
     private String assembleWhereClause() {
@@ -474,7 +473,7 @@ public class SearchParametersFragment
         if (searchParameters.category != null) {
             // Issue 1532 need to check subcategory first
             int categId;
-            if  ( searchParameters.category.subCategId != 0 ) {
+            if (searchParameters.category.subCategId != 0) {
                 categId = searchParameters.category.subCategId;
             } else {
                 categId = searchParameters.category.categId;

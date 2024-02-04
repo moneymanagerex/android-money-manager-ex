@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 
 import androidx.annotation.NonNull;
+
 import info.javaperformance.money.Money;
 import rx.Observable;
 import rx.Subscriber;
@@ -51,12 +52,11 @@ import timber.log.Timber;
  */
 public class CurrencyUIFeatures {
 
+    private final Context context;
+    private CurrencyService currencyService;
     public CurrencyUIFeatures(Context context) {
         this.context = context;
     }
-
-    private final Context context;
-    private CurrencyService currencyService;
 
     public Context getContext() {
         return context;
@@ -85,7 +85,6 @@ public class CurrencyUIFeatures {
     }
 
     /**
-     *
      * @return Indicator whether the rate was successfully updated.
      */
     public boolean onPriceDownloaded(String symbol, Money price, Date date) {
@@ -132,16 +131,16 @@ public class CurrencyUIFeatures {
                         dialog.cancel();
                     }
                 })
-        .build().show();
+                .build().show();
     }
 
     public void showDialogImportAllCurrencies() {
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.attention)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.question_import_currencies)
+                .title(R.string.attention)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.question_import_currencies)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -156,31 +155,31 @@ public class CurrencyUIFeatures {
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     public void showDialogUpdateExchangeRates() {
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.download)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.question_update_currency_exchange_rates)
-            .positiveText(android.R.string.ok)
+                .title(R.string.download)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.question_update_currency_exchange_rates)
+                .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(true));
                     }
                 })
-            .negativeText(android.R.string.cancel)
+                .negativeText(android.R.string.cancel)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     /**
@@ -189,9 +188,9 @@ public class CurrencyUIFeatures {
     public void showActiveInactiveSelectorForUpdate() {
         // offer active and all currencies
         String[] options = new String[]{
-            getContext().getString(R.string.active_currencies),
-            getContext().getString(R.string.all_currencies
-        )};
+                getContext().getString(R.string.active_currencies),
+                getContext().getString(R.string.all_currencies
+                )};
 
         new MaterialDialog.Builder(getContext())
                 .title(R.string.update_menu_currency_exchange_rates)
@@ -229,11 +228,11 @@ public class CurrencyUIFeatures {
                 getContext().getString(R.string.import_currencies_in_progress));
 
         Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return getService().importCurrenciesFromSystemLocales();
-            }
-        })
+                    @Override
+                    public Boolean call() throws Exception {
+                        return getService().importCurrenciesFromSystemLocales();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Boolean>() {

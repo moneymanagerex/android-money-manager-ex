@@ -33,7 +33,7 @@ import com.money.manager.ex.R;
 import info.javaperformance.money.MoneyFactory;
 
 public class SummaryWidgetProvider
-    extends AppWidgetProvider {
+        extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,

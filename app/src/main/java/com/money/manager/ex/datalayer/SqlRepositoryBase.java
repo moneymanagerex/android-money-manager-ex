@@ -33,13 +33,12 @@ import timber.log.Timber;
  */
 
 abstract class SqlRepositoryBase<T extends EntityBase> {
+    public BriteDatabase database;
+    public String tableName;
     SqlRepositoryBase(String tableName, BriteDatabase db) {
         this.tableName = tableName;
         this.database = db;
     }
-
-    public BriteDatabase database;
-    public String tableName;
 
     public long insert(ContentValues values) {
         return database.insert(tableName, values);
@@ -68,10 +67,10 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         T entity = null;
 
         String sql = new Select(projection)
-            .from(tableName)
-            .where(selection)
-            .orderBy(sort)
-            .toString();
+                .from(tableName)
+                .where(selection)
+                .orderBy(sort)
+                .toString();
 
         try {
             Cursor c = database.query(sql, args);

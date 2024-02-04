@@ -30,18 +30,18 @@ import java.util.List;
 @Parcel
 public class StatusFilter {
 
+    /**
+     * The filter collection contains the Status Codes for SQL filter.
+     */
+    public ArrayList<String> filter;
+
+    // fields
+
     public StatusFilter() {
         this.filter = new ArrayList<>();
 
         loadAllStatuses();
     }
-
-    // fields
-
-    /**
-     * The filter collection contains the Status Codes for SQL filter.
-     */
-    public ArrayList<String> filter;
 
     // methods
 
@@ -85,13 +85,14 @@ public class StatusFilter {
     /**
      * This method checks the current statuses by their menu id instead of name, which is
      * localized when using different app language.
+     *
      * @param menuId Id of the menu item that represents the status.
      * @return Whether the status is selected.
      */
     public boolean contains(int menuId) {
         // get menu ids for all the statuses included.
         List<Integer> menuIds = new ArrayList<>();
-        for(String statusCode : this.filter) {
+        for (String statusCode : this.filter) {
             if (statusCode.equals(TransactionStatuses.NONE.getCode())) {
                 menuIds.add(R.id.menu_none);
             }
@@ -114,6 +115,7 @@ public class StatusFilter {
     /**
      * Used when assembling SQL statements.
      * i.e. ('R', 'F')
+     *
      * @return statuses as the parameters for the SQL query
      */
     public String getSqlParameters() {

@@ -42,11 +42,11 @@ import info.javaperformance.money.Money;
  * http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns
  */
 public class QifRecord {
-    public QifRecord(Context context) {
+    private final Context mContext;
+
+    public QifRecord(final Context context) {
         mContext = context;
     }
-
-    private final Context mContext;
 
     public Context getContext() {
         return mContext;
@@ -54,21 +54,22 @@ public class QifRecord {
 
     /**
      * Parses the data and generates a QIF record for transaction.
+     *
      * @return A string representing one QIF record
      */
-    public String parse(AccountTransactionDisplay transaction) throws ParseException {
+    public String parse(final AccountTransactionDisplay transaction) throws ParseException {
         final String lineSeparator = System.getProperty("line.separator");
 
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         // Date
-        String date = parseDate(transaction);
+        final String date = parseDate(transaction);
         builder.append("D");
         builder.append(date);
         builder.append(lineSeparator);
 
         // Amount
-        String amount = parseAmount(transaction);
+        final String amount = parseAmount(transaction);
 //        builder.append("U");
 //        builder.append(this.Amount);
 //        builder.append(System.lineSeparator());
@@ -78,18 +79,18 @@ public class QifRecord {
 
         // Cleared status
 //        String status = parseCleared(transaction);
-        String status = transaction.getStatusCode();
+        final String status = transaction.getStatusCode();
         if (!TextUtils.isEmpty(status)) {
             // Cleared: * or c. We don't have Cleared in MMEX.
             // Reconciled: X or R
             builder.append("C");
-            if (status.equals("R")) {
+            if ("R".equals(status)) {
                 builder.append(status);
             }
         }
 
         // Payee
-        String payee = transaction.getPayee();
+        final String payee = transaction.getPayee();
         if (!TextUtils.isEmpty(payee)) {
             builder.append("P");
             builder.append(payee);
@@ -99,8 +100,8 @@ public class QifRecord {
         // Categories / Transfers
         String category;
 //        String transactionTypeName = getTransactionTypeName(transaction);
-        TransactionTypes transactionType = transaction.getTransactionType();
-        if (transactionType.equals(TransactionTypes.Transfer)) {
+        final TransactionTypes transactionType = transaction.getTransactionType();
+        if (transactionType == TransactionTypes.Transfer) {
             // Category is the destination account name.
             category = transaction.getAccountName();
             // in square brackets
@@ -109,21 +110,21 @@ public class QifRecord {
             // Category
             category = parseCategory(transaction);
         }
-        if (category != null) {
+        if (null != category) {
             builder.append("L");
             builder.append(category);
             builder.append(lineSeparator);
         }
 
         // Split Categories
-        boolean splitCategory = transaction.getIsSplit();
+        final boolean splitCategory = transaction.getIsSplit();
         if (splitCategory) {
-            String splits = getSplitCategories(transaction);
+            final String splits = getSplitCategories(transaction);
             builder.append(splits);
         }
 
         // Memo
-        String memo = transaction.getNotes();
+        final String memo = transaction.getNotes();
         if (!TextUtils.isEmpty(memo)) {
             builder.append("M");
             builder.append(memo);
@@ -136,37 +137,37 @@ public class QifRecord {
         return builder.toString();
     }
 
-    public String getSplitCategories(AccountTransactionDisplay transaction) {
-        StringBuilder builder = new StringBuilder();
+    public String getSplitCategories(final AccountTransactionDisplay transaction) {
+        final StringBuilder builder = new StringBuilder();
 
         // retrieve splits
-        SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
-        int transactionId = transaction.getId();
-        ArrayList<ISplitTransaction> splits = repo.loadSplitCategoriesFor(transactionId);
-        if (splits == null) return Constants.EMPTY_STRING;
+        final SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
+        final int transactionId = transaction.getId();
+        final ArrayList<ISplitTransaction> splits = repo.loadSplitCategoriesFor(transactionId);
+        if (null == splits) return Constants.EMPTY_STRING;
 
-        String transactionType = transaction.getTransactionTypeName();
+        final String transactionType = transaction.getTransactionTypeName();
 
-        for(ISplitTransaction split : splits) {
-            String splitRecord = getSplitCategory(split, transactionType);
+        for (final ISplitTransaction split : splits) {
+            final String splitRecord = getSplitCategory(split, transactionType);
             builder.append(splitRecord);
         }
 
         return builder.toString();
     }
 
-    private String getSplitCategory(ISplitTransaction split, String transactionType) {
+    private String getSplitCategory(final ISplitTransaction split, final String transactionType) {
         final String lineSeparator = System.getProperty("line.separator");
 
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         // S = category in split
         // $ = amount in split
         // E = memo in split
 
         // category
-        CategoryService service = new CategoryService(getContext());
-        String category = service.getCategorySubcategoryName(split.getCategoryId());
+        final CategoryService service = new CategoryService(mContext);
+        final String category = service.getCategorySubcategoryName(split.getCategoryId());
         builder.append("S");
         builder.append(category);
         builder.append(lineSeparator);
@@ -174,10 +175,10 @@ public class QifRecord {
         // amount
         Money amount = split.getAmount();
         // e sign
-        if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Withdrawal)) {
+        if (TransactionTypes.valueOf(transactionType) == TransactionTypes.Withdrawal) {
             amount = amount.negate();
         }
-        if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
+        if (TransactionTypes.valueOf(transactionType) == TransactionTypes.Deposit) {
             // leave positive?
         }
         builder.append("$");
@@ -190,21 +191,21 @@ public class QifRecord {
         return builder.toString();
     }
 
-    private String parseDate(AccountTransactionDisplay transaction) throws ParseException {
-        Date date = transaction.getDate();
+    private String parseDate(final AccountTransactionDisplay transaction) throws ParseException {
+        final Date date = transaction.getDate();
 
         // todo: get Quicken date format from preferences.
-        String qifDatePattern = "MM/dd''yy";
+        final String qifDatePattern = "MM/dd''yy";
 //        DateTimeFormatter qifFormat = DateTimeFormat.forPattern();
 //        return qifFormat.print(date);
 
-        MmxDate dateTime = new MmxDate(date);
+        final MmxDate dateTime = new MmxDate(date);
         return dateTime.toString(qifDatePattern);
     }
 
-    private String parseAmount(AccountTransactionDisplay transaction) {
-        String amount;
-        if (transaction.getTransactionType().equals(TransactionTypes.Transfer)) {
+    private String parseAmount(final AccountTransactionDisplay transaction) {
+        final String amount;
+        if (transaction.getTransactionType() == TransactionTypes.Transfer) {
             amount = transaction.getToAmount().toString();
         } else {
             amount = transaction.getAmount().toString();
@@ -212,9 +213,9 @@ public class QifRecord {
         return amount;
     }
 
-    private String parseCategory(AccountTransactionDisplay transaction) {
-        String category = transaction.getCategory();
-        String subCategory = transaction.getSubcategory();
+    private String parseCategory(final AccountTransactionDisplay transaction) {
+        final String category = transaction.getCategory();
+        final String subCategory = transaction.getSubcategory();
 
         if (!TextUtils.isEmpty(subCategory)) {
             return category + ":" + subCategory;

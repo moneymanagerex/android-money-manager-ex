@@ -32,7 +32,7 @@ import com.money.manager.ex.servicelayer.InfoService;
  * Settings in the General category.
  */
 public class GeneralSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public GeneralSettings(Context context) {
         super(context);
@@ -51,6 +51,7 @@ public class GeneralSettings
 
     /**
      * Set application locale.
+     *
      * @param value Language ISO code (i.e. bs, en)
      */
     public void setApplicationLanguage(String value) {
@@ -59,6 +60,7 @@ public class GeneralSettings
 
     /**
      * Fetches the default account id. The default account is set per database.
+     *
      * @return Default account id.
      */
     public Integer getDefaultAccountId() {

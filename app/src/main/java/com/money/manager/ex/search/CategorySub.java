@@ -25,22 +25,6 @@ import android.os.Parcelable;
  */
 public class CategorySub implements Parcelable {
 
-    public CategorySub() {
-        // default constructor
-    }
-
-    public int categId;
-    public String categName;
-    public int subCategId;
-    public String subCategName;
-
-    protected CategorySub(Parcel in) {
-        categId = in.readInt();
-        categName = in.readString();
-        subCategId = in.readInt();
-        subCategName = in.readString();
-    }
-
     public static final Creator<CategorySub> CREATOR = new Creator<CategorySub>() {
         @Override
         public CategorySub createFromParcel(Parcel in) {
@@ -52,6 +36,21 @@ public class CategorySub implements Parcelable {
             return new CategorySub[size];
         }
     };
+    public int categId;
+    public String categName;
+    public int subCategId;
+    public String subCategName;
+
+    public CategorySub() {
+        // default constructor
+    }
+
+    protected CategorySub(Parcel in) {
+        categId = in.readInt();
+        categName = in.readString();
+        subCategId = in.readInt();
+        subCategName = in.readString();
+    }
 
     @Override
     public int describeContents() {

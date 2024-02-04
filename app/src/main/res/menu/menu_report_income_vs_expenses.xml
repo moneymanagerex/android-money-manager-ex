@@ -18,32 +18,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_chart"
-        android:icon="?attr/ic_action_bargraph"
-        android:title="@string/show_chart"
-        app:showAsAction="always"/>
+            android:id="@+id/menu_chart"
+            android:icon="?attr/ic_action_bargraph"
+            android:title="@string/show_chart"
+            app:showAsAction="always"/>
     <item
-        android:id="@+id/menu_sort"
-        android:icon="?attr/ic_action_sort_1"
-        android:title="@string/sort"
-        app:showAsAction="always">
+            android:id="@+id/menu_sort"
+            android:icon="?attr/ic_action_sort_1"
+            android:title="@string/sort"
+            app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_sort_asceding"
-                    android:title="@string/sort_by_ascending"
-                    android:checked="true"/>
+                        android:id="@+id/menu_sort_asceding"
+                        android:title="@string/sort_by_ascending"
+                        android:checked="true"/>
                 <item
-                    android:id="@+id/menu_sort_desceding"
-                    android:title="@string/sort_by_desceding"/>
+                        android:id="@+id/menu_sort_desceding"
+                        android:title="@string/sort_by_desceding"/>
             </group>
         </menu>
     </item>
     <item
-        android:id="@+id/menu_period"
-        android:icon="?attr/ic_action_calendar_day"
-        app:showAsAction="always"
-        android:title="@string/select_the_years_to_be_displayed">
+            android:id="@+id/menu_period"
+            android:icon="?attr/ic_action_calendar_day"
+            app:showAsAction="always"
+            android:title="@string/select_the_years_to_be_displayed">
     </item>
 
 </menu>

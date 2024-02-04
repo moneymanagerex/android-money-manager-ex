@@ -32,11 +32,11 @@ public enum SyncServiceMessage {
     SYNC_DISABLED(1),
     CONFLICT(2);
 
+    public int code;
+
     SyncServiceMessage(int value) {
         code = value;
     }
-
-    public int code;
 
     public static SyncServiceMessage parse(int code) {
         for (SyncServiceMessage item : SyncServiceMessage.values()) {

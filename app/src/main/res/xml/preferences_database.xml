@@ -18,47 +18,47 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_path"
-        android:title="@string/path" />
+            android:icon="@null"
+            android:key="@string/pref_database_path"
+            android:title="@string/path"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_remote_path"
-        android:title="@string/remote_path" />
+            android:icon="@null"
+            android:key="@string/pref_remote_path"
+            android:title="@string/remote_path"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_version"
-        android:title="@string/database_version" />
+            android:icon="@null"
+            android:key="@string/pref_database_version"
+            android:title="@string/database_version"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_clear_recent_files"
-        android:title="@string/clear_recent_files_list" />
+            android:icon="@null"
+            android:key="@string/pref_clear_recent_files"
+            android:title="@string/clear_recent_files_list"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_backup"
-        android:title="@string/menu_move_database_to_external_storage" />
+            android:icon="@null"
+            android:key="@string/pref_database_backup"
+            android:title="@string/menu_move_database_to_external_storage"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_database_check_integrity"
-        android:title="@string/db_check_integrity" />
+            android:icon="@null"
+            android:key="@string/pref_database_check_integrity"
+            android:title="@string/db_check_integrity"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_db_check_schema"
-        android:title="@string/db_check_schema" />
+            android:icon="@null"
+            android:key="@string/pref_db_check_schema"
+            android:title="@string/db_check_schema"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_db_fix_duplicates"
-        android:title="@string/db_fix_duplicates" />
+            android:icon="@null"
+            android:key="@string/pref_db_fix_duplicates"
+            android:title="@string/db_fix_duplicates"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_sqlite_version"
-        android:title="@string/android_sqlite_vesion" />
+            android:icon="@null"
+            android:key="@string/pref_sqlite_version"
+            android:title="@string/android_sqlite_vesion"/>
 </PreferenceScreen>

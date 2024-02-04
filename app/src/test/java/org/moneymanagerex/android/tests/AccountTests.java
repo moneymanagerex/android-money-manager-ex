@@ -16,9 +16,12 @@
  */
 package org.moneymanagerex.android.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -27,12 +30,8 @@ import com.money.manager.ex.domainmodel.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import static junit.framework.Assert.*;
 
 /**
  * Test Account model.
@@ -44,12 +43,12 @@ public class AccountTests {
 
     @Before
     public void setup() {
-        this.account = new Account();
+        account = new Account();
     }
 
     @Test
     public void testInstantiation() {
-        Account account = new Account();
+        final Account account = new Account();
 
         assertNotNull(account);
     }
@@ -58,16 +57,16 @@ public class AccountTests {
     public void testPropertySetting() {
         final int id = 3;
 
-        this.account.setId(id);
+        account.setId(id);
 
-        int actual = this.account.getId();
+        final int actual = account.getId();
 
         assertEquals(id, actual);
     }
 
     //@Test
     public void testThrowException() {
-        Integer actual = this.account.getId();
+        final Integer actual = account.getId();
 
         assertNull(actual);
     }
@@ -77,23 +76,23 @@ public class AccountTests {
         // Given
 
         UnitTestHelper.setupContentProvider();
-        Context context = UnitTestHelper.getContext();
-        AccountRepository repo = new AccountRepository(context);
-        Account account = Account.create("first", AccountTypes.CHECKING, AccountStatuses.OPEN,
-            true, 1);
-        String accountNumber = "blah blah";
+        final Context context = UnitTestHelper.getContext();
+        final AccountRepository repo = new AccountRepository(context);
+        final Account account = Account.create("first", AccountTypes.CHECKING, AccountStatuses.OPEN,
+                true, 1);
+        final String accountNumber = "blah blah";
 
         // When
 
         repo.save(account);
-        Integer id = account.getId();
+        final Integer id = account.getId();
 
         Account loaded = repo.load(id);
         loaded.setAccountNumber(accountNumber);
         repo.save(loaded);
 
         loaded = repo.load(id);
-        String actual = loaded.getAccountNumber();
+        final String actual = loaded.getAccountNumber();
 
         // Then
 //        assertThat(id).isEqualTo(1);

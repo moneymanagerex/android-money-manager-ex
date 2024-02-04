@@ -44,18 +44,18 @@ import timber.log.Timber;
  */
 
 public class SyncServiceMessageHandler
-    extends Handler {
+        extends Handler {
 
+    private final Context context;
+    private final ProgressDialog progressDialog;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
     public SyncServiceMessageHandler(Context context, ProgressDialog progressDialog) {
         MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
         this.progressDialog = progressDialog;
     }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-    private final Context context;
-    private final ProgressDialog progressDialog;
 
     @Override
     public void handleMessage(Message msg) {

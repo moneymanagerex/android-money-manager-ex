@@ -15,34 +15,34 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_edit"
-        android:title="@string/edit">
+            android:id="@+id/menu_edit"
+            android:title="@string/edit">
     </item>
     <item
-        android:id="@+id/menu_delete"
-        android:title="@string/delete">
+            android:id="@+id/menu_delete"
+            android:title="@string/delete">
     </item>
     <item
-        android:id="@+id/menu_reconciled"
-        android:title="@string/status_reconciled">
+            android:id="@+id/menu_reconciled"
+            android:title="@string/status_reconciled">
     </item>
     <item
-        android:id="@+id/menu_none"
-        android:title="@string/status_none">
+            android:id="@+id/menu_none"
+            android:title="@string/status_none">
     </item>
     <item
-        android:id="@+id/menu_follow_up"
-        android:title="@string/status_follow_up">
+            android:id="@+id/menu_follow_up"
+            android:title="@string/status_follow_up">
     </item>
     <item
-        android:id="@+id/menu_duplicate"
-        android:title="@string/status_duplicate">
+            android:id="@+id/menu_duplicate"
+            android:title="@string/status_duplicate">
     </item>
     <item
-        android:id="@+id/menu_void"
-        android:title="@string/status_void">
+            android:id="@+id/menu_void"
+            android:title="@string/status_void">
     </item>
 </menu>

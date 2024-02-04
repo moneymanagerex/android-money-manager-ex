@@ -21,11 +21,10 @@ package com.money.manager.ex.budget.events;
  * A budget was selected in the list
  */
 public class BudgetSelectedEvent {
+    public long yearId;
+    public String name;
     public BudgetSelectedEvent(long budgetYearId, String budgetName) {
         this.yearId = budgetYearId;
         this.name = budgetName;
     }
-
-    public long yearId;
-    public String name;
 }

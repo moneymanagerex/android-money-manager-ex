@@ -16,42 +16,43 @@
  */
 package com.money.manager.ex.transactions;
 
+import static java.lang.Integer.parseInt;
+
 import android.content.Intent;
 import android.net.Uri;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
@@ -63,6 +64,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -70,15 +73,14 @@ import icepick.State;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
-import static java.lang.Integer.parseInt;
-
 /**
  * Activity for editing Checking Account Transaction
  */
 public class CheckingTransactionEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
-    @State public String mIntentAction;
+    @State
+    public String mIntentAction;
 
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
@@ -89,20 +91,20 @@ public class CheckingTransactionEditActivity
     private EditTransactionCommonFunctions mCommon;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        ITransactionEntity model = AccountTransaction.create();
+        final ITransactionEntity model = AccountTransaction.create();
         mCommon = new EditTransactionCommonFunctions(this, model, database);
 
 //        showStandardToolbarActions();
         mCommon.initializeToolbar();
 
         // restore state, if any.
-        if ((savedInstanceState != null)) {
+        if ((null != savedInstanceState)) {
             restoreInstanceState(savedInstanceState);
         }
 
@@ -110,8 +112,8 @@ public class CheckingTransactionEditActivity
         mCommon.findControls(this);
 
         // manage intent
-        if (getIntent() != null) {
-            boolean handled = handleIntent(savedInstanceState);
+        if (null != getIntent()) {
+            final boolean handled = handleIntent(savedInstanceState);
             if (!handled) {
                 finish();
                 return;
@@ -129,24 +131,24 @@ public class CheckingTransactionEditActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         mCommon.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuHelper helper = new MenuHelper(this, menu);
+        final MenuHelper helper = new MenuHelper(this, menu);
         helper.addSaveToolbarIcon();
 
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 return onActionCancelClick();
@@ -158,7 +160,7 @@ public class CheckingTransactionEditActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Save the whole transaction.
@@ -203,23 +205,24 @@ public class CheckingTransactionEditActivity
     // Events
 
     @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        int id = Integer.parseInt(event.requestId);
+    public void onEvent(final AmountEnteredEvent event) {
+        final int id = parseInt(event.requestId);
         mCommon.onFinishedInputAmountDialog(id, event.amount);
     }
 
     /**
      * Handle user's confirmation to delete any Split Categories when switching to
      * Transfer transaction type.
+     *
      * @param event
      */
     @Subscribe
-    public void onEvent(DialogPositiveClickedEvent event) {
+    public void onEvent(final DialogPositiveClickedEvent event) {
         mCommon.confirmDeletingCategories();
     }
 
     @Subscribe
-    public void onEvent(DialogNegativeClickedEvent event) {
+    public void onEvent(final DialogNegativeClickedEvent event) {
         mCommon.cancelChangingTransactionToTransfer();
     }
 
@@ -229,23 +232,23 @@ public class CheckingTransactionEditActivity
 
     private boolean createSplitCategoriesFromRecurringTransaction() {
         // check if category and sub-category are not set.
-        if(!(mCommon.transactionEntity.getCategoryId() <= 0)) return false;
+        if (!(0 >= mCommon.transactionEntity.getCategoryId())) return false;
 
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
-        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
-        ArrayList<ISplitTransaction> splitTemplates = recurringTransaction.loadSplitTransactions();
-        if(mCommon.mSplitTransactions == null) mCommon.mSplitTransactions = new ArrayList<>();
+        final RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
+        final ArrayList<ISplitTransaction> splitTemplates = recurringTransaction.loadSplitTransactions();
+        if (null == mCommon.mSplitTransactions) mCommon.mSplitTransactions = new ArrayList<>();
 
         // For each of the templates, create a new record.
-        for(int i = 0; i <= splitTemplates.size() - 1; i++) {
-            SplitRecurringCategory record = (SplitRecurringCategory) splitTemplates.get(i);
+        for (int i = 0; i <= splitTemplates.size() - 1; i++) {
+            final SplitRecurringCategory record = (SplitRecurringCategory) splitTemplates.get(i);
 
-            SplitCategory newSplit = new SplitCategory();
+            final SplitCategory newSplit = new SplitCategory();
             newSplit.setAmount(record.getAmount());
             newSplit.setCategoryId(record.getCategoryId());
-			newSplit.setNotes(record.getNotes());
+            newSplit.setNotes(record.getNotes());
 
             mCommon.mSplitTransactions.add(newSplit);
         }
@@ -261,9 +264,9 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
         // Remove transaction id in split categories.
-        if (mCommon.mSplitTransactions != null) {
+        if (null != mCommon.mSplitTransactions) {
             // Reset ids so that the transactions get inserted on update.
-            for (ISplitTransaction split : mCommon.mSplitTransactions) {
+            for (final ISplitTransaction split : mCommon.mSplitTransactions) {
                 split.setId(Constants.NOT_SET);
             }
         }
@@ -273,13 +276,14 @@ public class CheckingTransactionEditActivity
     /**
      * Get any parameters, if sent, when intent was raised. This is used when called
      * from Tasker or any external caller.
+     *
      * @param intent The intent received.
      */
-    private boolean externalIntegration(Intent intent) {
-        Uri data = intent.getData();
-        if (data == null) return false;
+    private boolean externalIntegration(final Intent intent) {
+        final Uri data = intent.getData();
+        if (null == data) return false;
 
-        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
+        final IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
 
         // current date
         mCommon.transactionEntity.setDate(new MmxDate().toDate());
@@ -287,23 +291,23 @@ public class CheckingTransactionEditActivity
         // transaction type
         mCommon.transactionEntity.setTransactionType(parameters.transactionType);
 
-        if (parameters.accountId > 0) {
-            this.mCommon.transactionEntity.setAccountId(parameters.accountId);
+        if (0 < parameters.accountId) {
+            mCommon.transactionEntity.setAccountId(parameters.accountId);
         }
-        if (parameters.accountToId > 0) {
-            this.mCommon.transactionEntity.setAccountToId(parameters.accountToId);
+        if (0 < parameters.accountToId) {
+            mCommon.transactionEntity.setAccountToId(parameters.accountToId);
         }
 
         mCommon.transactionEntity.setAmount(parameters.amount);
 
         // transfer amount
-        if (parameters.transactionType == TransactionTypes.Transfer){
-            if (parameters.amountTo != null){
+        if (TransactionTypes.Transfer == parameters.transactionType) {
+            if (null != parameters.amountTo) {
                 mCommon.transactionEntity.setAmountTo(parameters.amountTo);
             } else {
                 //convert the to amount from the both currency details
-                CurrencyService currencyService = new CurrencyService(this);
-                AccountRepository accountRepository = new AccountRepository(this);
+                final CurrencyService currencyService = new CurrencyService(this);
+                final AccountRepository accountRepository = new AccountRepository(this);
                 mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
                         mCommon.transactionEntity.getAmount(),
                         accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
@@ -311,27 +315,27 @@ public class CheckingTransactionEditActivity
         }
 
         // payee
-        if (parameters.payeeId > 0) {
-            this.mCommon.transactionEntity.setPayeeId(parameters.payeeId);
-            this.mCommon.payeeName = parameters.payeeName;
+        if (0 < parameters.payeeId) {
+            mCommon.transactionEntity.setPayeeId(parameters.payeeId);
+            mCommon.payeeName = parameters.payeeName;
         } else {
             // create payee if it does not exist
-            if (parameters.payeeName != null) {
-                PayeeService payeeService = new PayeeService(this);
-                Payee payee = payeeService.createNew(parameters.payeeName);
+            if (null != parameters.payeeName) {
+                final PayeeService payeeService = new PayeeService(this);
+                final Payee payee = payeeService.createNew(parameters.payeeName);
                 mCommon.transactionEntity.setPayeeId(payee.getId());
                 mCommon.payeeName = payee.getName();
             }
         }
 
         // category
-        if (parameters.categoryId > 0) {
+        if (0 < parameters.categoryId) {
             mCommon.transactionEntity.setCategoryId(parameters.categoryId);
             mCommon.categoryName = parameters.categoryName;
         } else {
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
-                CategoryService newCategory = new CategoryService(this);
+            if (null != parameters.categoryName && !parameters.categoryName.isEmpty()) {
+                final CategoryService newCategory = new CategoryService(this);
                 mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
                 mCommon.categoryName = parameters.categoryName;
             } else {
@@ -369,7 +373,7 @@ public class CheckingTransactionEditActivity
         mCommon.initSplitCategories();
 
         // mark checked if there are existing split categories.
-        boolean hasSplit = mCommon.hasSplitCategories();
+        final boolean hasSplit = mCommon.hasSplitCategories();
         mCommon.setSplit(hasSplit);
 
         // Amount and total amount
@@ -382,20 +386,20 @@ public class CheckingTransactionEditActivity
         mCommon.initNotesControls();
     }
 
-    private boolean loadTransaction(int transId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(this);
-        AccountTransaction tx = repo.load(transId);
-        if (tx == null) return false;
+    private boolean loadTransaction(final int transId) {
+        final AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        final AccountTransaction tx = repo.load(transId);
+        if (null == tx) return false;
 
         mCommon.transactionEntity = tx;
 
         // Load Split Categories.
-        if (mCommon.mSplitTransactions == null) {
-            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+        if (null == mCommon.mSplitTransactions) {
+            final SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
             mCommon.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
         }
 
-        AccountRepository accountRepository = new AccountRepository(this);
+        final AccountRepository accountRepository = new AccountRepository(this);
         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
@@ -404,10 +408,10 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
-    private boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadRecurringTransaction(final int recurringTransactionId) {
         try {
             return loadRecurringTransactionInternal(recurringTransactionId);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             Timber.e(ex, "loading recurring transaction");
             return false;
         }
@@ -415,13 +419,14 @@ public class CheckingTransactionEditActivity
 
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
+     *
      * @param recurringTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        RecurringTransaction recurringTx = repo.load(recurringTransactionId);
-        if (recurringTx == null) return false;
+    private boolean loadRecurringTransactionInternal(final int recurringTransactionId) {
+        final RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        final RecurringTransaction recurringTx = repo.load(recurringTransactionId);
+        if (null == recurringTx) return false;
 
         // Copy properties from recurring transaction
 
@@ -429,7 +434,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
         mCommon.transactionEntity.setAccountToId(recurringTx.getToAccountId());
 
-        String transCode = recurringTx.getTransactionCode();
+        final String transCode = recurringTx.getTransactionCode();
         mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
         mCommon.transactionEntity.setStatus(recurringTx.getStatus());
         mCommon.transactionEntity.setAmount(recurringTx.getAmount());
@@ -439,7 +444,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setTransactionNumber(recurringTx.getTransactionNumber());
         mCommon.transactionEntity.setNotes(recurringTx.getNotes());
 
-        AccountRepository accountRepository = new AccountRepository(this);
+        final AccountRepository accountRepository = new AccountRepository(this);
         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
@@ -454,27 +459,28 @@ public class CheckingTransactionEditActivity
     /**
      * Get the parameters from the intent (parameters sent from the caller).
      * Also used for Tasker integration, for example.
+     *
      * @param savedInstanceState parameters
      */
-    private boolean handleIntent(Bundle savedInstanceState) {
-        Intent intent = getIntent();
+    private boolean handleIntent(final Bundle savedInstanceState) {
+        final Intent intent = getIntent();
         mIntentAction = intent.getAction();
 
-        if (mIntentAction == null) {
+        if (null == mIntentAction) {
             Timber.w("no intent action passed to CheckingTransactionEditActivity e intent");
             return false;
         }
 
-        if (savedInstanceState == null) {
-            int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
-            if (accountId != Constants.NOT_SET) {
+        if (null == savedInstanceState) {
+            final int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
+            if (Constants.NOT_SET != accountId) {
                 mCommon.transactionEntity.setAccountId(accountId);
             }
 
             // Edit transaction.
 
-            if (mIntentAction != null) {
-                int transactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
+            if (null != mIntentAction) {
+                final int transactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
 
                 switch (mIntentAction) {
                     case Intent.ACTION_EDIT:
@@ -487,7 +493,7 @@ public class CheckingTransactionEditActivity
                         break;
                     case Intent.ACTION_INSERT:
                         mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
-                        if (mRecurringTransactionId > Constants.NOT_SET) {
+                        if (Constants.NOT_SET < mRecurringTransactionId) {
                             loadRecurringTransaction(mRecurringTransactionId);
                         }
                 }
@@ -497,21 +503,21 @@ public class CheckingTransactionEditActivity
         // New transaction
 
         if (mIntentAction.equals(Intent.ACTION_INSERT)) {
-            if (mCommon.transactionEntity.getStatus() == null) {
-                String defaultStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            if (null == mCommon.transactionEntity.getStatus()) {
+                final String defaultStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
                 mCommon.transactionEntity.setStatus(defaultStatus);
             }
 
             if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
 
                 executor.execute(() -> {
                     try {
-                        Core core = new Core(getApplicationContext());
-                        Payee payee = core.getLastPayeeUsed();
-                        if (payee != null && mCommon.transactionEntity.getPayeeId() == Constants.NOT_SET) {
+                        final Core core = new Core(getApplicationContext());
+                        final Payee payee = core.getLastPayeeUsed();
+                        if (null != payee && Constants.NOT_SET == mCommon.transactionEntity.getPayeeId()) {
                             // get id payee and category
                             mCommon.transactionEntity.setPayeeId(payee.getId());
                             mCommon.payeeName = payee.getName();
@@ -525,7 +531,7 @@ public class CheckingTransactionEditActivity
                                 mCommon.displayCategoryName();
                             });
                         }
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         Timber.e(e, "loading default payee");
                     }
                 });
@@ -534,28 +540,24 @@ public class CheckingTransactionEditActivity
                 executor.shutdown();
             }
 
-            if (intent.getData() != null) {
+            if (null != intent.getData()) {
                 if (!externalIntegration(intent)) return false;
-            }
-            else //start activity from SMS Receiver Transaction
+            } else //start activity from SMS Receiver Transaction
             {
-                try
-                {
+                try {
                     Bundle extras = intent.getExtras();
 
-                    if(extras != null &&
+                    if (null != extras &&
                             extras.getString(EditTransactionActivityConstants.KEY_TRANS_SOURCE)
-                                    .contentEquals("SmsReceiverTransactions.java"))
-                    {
-                        AccountRepository accountRepository = new AccountRepository(this);
+                                    .contentEquals("SmsReceiverTransactions.java")) {
+                        final AccountRepository accountRepository = new AccountRepository(this);
 
-                        if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
-                        {
-                            mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
-                            mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                        if (0 < Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID))) {
+                            mCommon.transactionEntity.setAccountId(parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountToId(parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
                             //convert the to amount from the both currency details
-                            CurrencyService currencyService = new CurrencyService(this);
+                            final CurrencyService currencyService = new CurrencyService(this);
                             mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
                                     mCommon.transactionEntity.getAmount(),
                                     accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
@@ -569,34 +571,32 @@ public class CheckingTransactionEditActivity
                         mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
                         mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
-                        if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
-                        {
-                            mCommon.payeeName="";
+                        if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty()) {
+                            mCommon.payeeName = "";
 
-                            if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                            if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
-                                Core core = new Core(this);
-                                Payee payee = core.getLastPayeeUsed();
+                                final Core core = new Core(this);
+                                final Payee payee = core.getLastPayeeUsed();
 
-                                if (payee != null) {
+                                if (null != payee) {
                                     mCommon.transactionEntity.setPayeeId(payee.getId());
                                     mCommon.payeeName = payee.getName();
                                     mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
                                 }
                             }
-                        }
-                        else
-                        {
-                            mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                        } else {
+                            mCommon.transactionEntity.setPayeeId(parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
                             mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
                             mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
                         }
 
                         //keeping the Category or Sub from the intent if payee name is empty or not defaulted
-                        if(mCommon.payeeName.isEmpty())
-                        {
-                            String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
-                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
+                        if (mCommon.payeeName.isEmpty()) {
+                            final String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
+                            if (!catID.isEmpty()) {
+                                mCommon.transactionEntity.setCategoryId(parseInt(catID));
+                            }
 
                             mCommon.loadCategoryName();
                         }
@@ -604,21 +604,19 @@ public class CheckingTransactionEditActivity
                         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
                         extras = null;
                     }
-                }
-                catch(Exception e)
-                {
+                } catch (final Exception e) {
                     Timber.e(e);
                     Toast.makeText(this, "MMEX: Bank Transaction Process EXCEPTION --> "
-                            +  e, Toast.LENGTH_LONG).show();
+                            + e, Toast.LENGTH_LONG).show();
                 }
             }
 
             // Select the default account if none set.
-            Integer account = mCommon.transactionEntity.getAccountId();
-            if (account == null || account == Constants.NOT_SET) {
-                AppSettings settings = new AppSettings(this);
-                Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-                if (defaultAccountId == null) {
+            final Integer account = mCommon.transactionEntity.getAccountId();
+            if (null == account || Constants.NOT_SET == account) {
+                final AppSettings settings = new AppSettings(this);
+                final Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+                if (null == defaultAccountId) {
                     // Show toast message.
                     new UIHelper(this).showToast(getString(R.string.default_account_not_set));
                     return false;
@@ -629,7 +627,7 @@ public class CheckingTransactionEditActivity
         }
 
         // set title
-        if (getSupportActionBar() != null) {
+        if (null != getSupportActionBar()) {
             getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
                     ? R.string.new_transaction
                     : R.string.edit_transaction);
@@ -638,8 +636,8 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
+    private void restoreInstanceState(final Bundle savedInstanceState) {
+        final Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
         mCommon.transactionEntity = Parcels.unwrap(parcelTx);
 
         mCommon.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
@@ -659,12 +657,13 @@ public class CheckingTransactionEditActivity
 
     /**
      * Save data to the database.
+     *
      * @return true if update data successful
      */
     private boolean saveData() {
         if (!mCommon.validateData()) return false;
 
-        boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        final boolean isTransfer = mCommon.transactionEntity.getTransactionType() == TransactionTypes.Transfer;
 
         if (!isTransfer) {
             mCommon.resetTransfer();
@@ -680,7 +679,7 @@ public class CheckingTransactionEditActivity
             saveTransaction();
         }
 
-        if(!mCommon.isSplitSelected()) {
+        if (!mCommon.isSplitSelected()) {
             // Delete any split categories if split is unchecked.
             mCommon.removeAllSplitCategories();
         }
@@ -690,27 +689,27 @@ public class CheckingTransactionEditActivity
         saveDefaultPayee(isTransfer);
 
         // Process recurring transaction.
-        if (mRecurringTransactionId != Constants.NOT_SET) {
-            RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
+        if (Constants.NOT_SET != mRecurringTransactionId) {
+            final RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
             service.moveNextOccurrence();
         }
 
         return true;
     }
 
-    private void saveDefaultPayee(boolean isTransfer) {
+    private void saveDefaultPayee(final boolean isTransfer) {
         if ((isTransfer) || !mCommon.hasPayee() || mCommon.hasSplitCategories()) {
             return;
         }
-        if (mCommon.transactionEntity == null) return;
+        if (null == mCommon.transactionEntity) return;
 
-        PayeeRepository payeeRepository = new PayeeRepository(this);
-        Payee payee = payeeRepository.load(mCommon.transactionEntity.getPayeeId());
-        if (payee == null) return;
+        final PayeeRepository payeeRepository = new PayeeRepository(this);
+        final Payee payee = payeeRepository.load(mCommon.transactionEntity.getPayeeId());
+        if (null == payee) return;
 
         payee.setCategoryId(mCommon.transactionEntity.getCategoryId());
 
-        boolean saved = payeeRepository.save(payee);
+        final boolean saved = payeeRepository.save(payee);
         if (!saved) {
             Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
             Timber.w("Update Payee with Id=%d return <= 0", mCommon.transactionEntity.getPayeeId());
@@ -719,9 +718,9 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveSplitCategories() {
-        Integer transactionId = mCommon.transactionEntity.getId();
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
-        ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
+        final Integer transactionId = mCommon.transactionEntity.getId();
+        final SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+        final ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
 
         // deleted old split transaction
         if (!deletedSplits.isEmpty()) {
@@ -729,19 +728,19 @@ public class CheckingTransactionEditActivity
         }
 
         // update split transaction
-        boolean hasSplitCategories = mCommon.hasSplitCategories();
+        final boolean hasSplitCategories = mCommon.hasSplitCategories();
         if (hasSplitCategories) {
-            for (ISplitTransaction split : mCommon.mSplitTransactions) {
-                SplitCategory entity = (SplitCategory) split;
+            for (final ISplitTransaction split : mCommon.mSplitTransactions) {
+                final SplitCategory entity = (SplitCategory) split;
 
                 // do nothing if the split is marked for deletion.
-                if(deletedSplits.contains(split)) {
+                if (deletedSplits.contains(split)) {
                     continue;
                 }
 
                 entity.setTransId(transactionId);
 
-                if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
+                if (null == entity.getId() || Constants.NOT_SET == entity.getId()) {
                     // insert data
                     if (!splitRepo.insert(entity)) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
@@ -763,7 +762,7 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveTransaction() {
-        AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        final AccountTransactionRepository repo = new AccountTransactionRepository(this);
 
         if (!mCommon.transactionEntity.hasId()) {
             // insert
@@ -776,7 +775,7 @@ public class CheckingTransactionEditActivity
             }
         } else {
             // update
-            boolean updated = repo.update((AccountTransaction) mCommon.transactionEntity);
+            final boolean updated = repo.update((AccountTransaction) mCommon.transactionEntity);
             if (!updated) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Timber.w("Update transaction failed!");

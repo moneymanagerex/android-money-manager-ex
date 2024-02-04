@@ -29,6 +29,11 @@ import com.money.manager.ex.view.RobotoTextView;
  * View Holder for subcategory list item.
  */
 public class CategoryListItemViewHolderChild {
+    //    public ViewGroup textContainer;
+    public RobotoTextView text1;
+    public TextView text2;
+    public LinearLayout selector;
+    public ViewGroup indent;
     public CategoryListItemViewHolderChild(View view) {
 //        textContainer = (ViewGroup) view.findViewById(R.id.textContainer);
         text1 = view.findViewById(android.R.id.text1);
@@ -36,10 +41,4 @@ public class CategoryListItemViewHolderChild {
         selector = view.findViewById(R.id.selector);
         indent = view.findViewById(R.id.indent);
     }
-
-//    public ViewGroup textContainer;
-    public RobotoTextView text1;
-    public TextView text2;
-    public LinearLayout selector;
-    public ViewGroup indent;
 }

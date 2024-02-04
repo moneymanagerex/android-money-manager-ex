@@ -23,7 +23,13 @@ import com.money.manager.ex.R;
  */
 public enum FilterDatePeriods {
     ALLTIME(R.string.all_time),
-;
+    ;
+
+    private final int code;
+
+    FilterDatePeriods(int code) {
+        this.code = code;
+    }
 
     public static FilterDatePeriods get(int code) {
         for (FilterDatePeriods value : FilterDatePeriods.values()) {
@@ -35,12 +41,6 @@ public enum FilterDatePeriods {
         throw new IllegalArgumentException("no transaction status found for " + code);
 //        return null;
     }
-
-    FilterDatePeriods(int code) {
-        this.code = code;
-    }
-
-    private final int code;
 
     public int getCode() {
         return this.code;

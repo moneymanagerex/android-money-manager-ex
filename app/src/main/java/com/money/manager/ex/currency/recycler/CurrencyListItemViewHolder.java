@@ -29,8 +29,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * View holder for the currency list implemented with recycler view.
  */
 public class CurrencyListItemViewHolder
-    extends RecyclerView.ViewHolder {
+        extends RecyclerView.ViewHolder {
 
+    public LinearLayout row;
+    public TextView name;
+    public TextView rate;
     public CurrencyListItemViewHolder(View view) {
         super(view);
 
@@ -39,8 +42,4 @@ public class CurrencyListItemViewHolder
         name = view.findViewById(R.id.name);
         rate = view.findViewById(R.id.rate);
     }
-
-    public LinearLayout row;
-    public TextView name;
-    public TextView rate;
 }

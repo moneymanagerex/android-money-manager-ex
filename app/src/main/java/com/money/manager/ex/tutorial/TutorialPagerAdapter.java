@@ -25,7 +25,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
  * Adapter that returns the tutorial pages.
  */
 public class TutorialPagerAdapter
-    extends FragmentStatePagerAdapter {
+        extends FragmentStatePagerAdapter {
 
     public TutorialPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -36,7 +36,7 @@ public class TutorialPagerAdapter
     public Fragment getItem(int i) {
         Fragment pageFragment;
 
-        switch(i){
+        switch (i) {
             case 0:
                 pageFragment = new TutorialAccountsFragment();
                 break;

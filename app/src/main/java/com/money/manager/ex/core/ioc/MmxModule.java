@@ -19,9 +19,9 @@ package com.money.manager.ex.core.ioc;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -36,10 +36,10 @@ import dagger.Provides;
  */
 
 @Module(
-    includes = {
-        DbModule.class,
-        RepositoryModule.class
-    }
+        includes = {
+                DbModule.class,
+                RepositoryModule.class
+        }
 )
 public final class MmxModule {
     private final MmexApplication application;
@@ -48,23 +48,27 @@ public final class MmxModule {
         this.application = application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     MmexApplication provideApplication() {
         return application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     Context provideAppContext() {
         return application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     SharedPreferences provideSharedPreferences() {
 //        return application.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     AppSettings provideAppSettings(MmexApplication application) {
         return new AppSettings(application);
     }

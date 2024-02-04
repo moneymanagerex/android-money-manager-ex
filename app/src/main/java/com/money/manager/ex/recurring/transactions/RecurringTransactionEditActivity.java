@@ -67,7 +67,7 @@ import timber.log.Timber;
  * Recurring transactions are stored in BillsDeposits table.
  */
 public class RecurringTransactionEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
@@ -84,10 +84,13 @@ public class RecurringTransactionEditActivity
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String TAG_DATEPICKER = "DatePicker";
 
-    @Inject BriteDatabase database;
-    @Inject MmxDateTimeUtils dateUtils;
+    @Inject
+    BriteDatabase database;
+    @Inject
+    MmxDateTimeUtils dateUtils;
 
-    @State String mIntentAction;
+    @State
+    String mIntentAction;
 
     private RecurringTransactionViewHolder mViewHolder;
     private EditTransactionCommonFunctions mCommon;
@@ -434,6 +437,7 @@ public class RecurringTransactionEditActivity
 
     /**
      * this method allows you to search the transaction data
+     *
      * @param recurringTransactionId transaction id
      * @return true if data selected, false nothing
      */
@@ -537,7 +541,7 @@ public class RecurringTransactionEditActivity
             saveTransaction();
         }
 
-        if(!mCommon.isSplitSelected()) {
+        if (!mCommon.isSplitSelected()) {
             // Delete any split categories if split is unchecked.
             mCommon.removeAllSplitCategories();
         }

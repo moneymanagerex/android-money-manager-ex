@@ -43,11 +43,13 @@ import timber.log.Timber;
  * Activity for selecting a database in the initial setup of the app.
  */
 public class SelectDatabaseActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
-    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

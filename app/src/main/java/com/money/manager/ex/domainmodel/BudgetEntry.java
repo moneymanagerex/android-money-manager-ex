@@ -21,7 +21,7 @@ package com.money.manager.ex.domainmodel;
  * A Budget Entry, part of the budget.
  */
 public class BudgetEntry
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String BUDGETENTRYID = "BUDGETENTRYID";
     public static final String BUDGETYEARID = "BUDGETYEARID";

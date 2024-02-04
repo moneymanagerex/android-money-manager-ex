@@ -19,44 +19,44 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Language -->
     <ListPreference
-        android:icon="@null"
-        android:defaultValue=""
-        android:entries="@array/application_locale_entries"
-        android:entryValues="@array/application_locale_values"
-        android:key="@string/pref_locale"
-        android:title="@string/locale_application" />
+            android:icon="@null"
+            android:defaultValue=""
+            android:entries="@array/application_locale_entries"
+            android:entryValues="@array/application_locale_values"
+            android:key="@string/pref_locale"
+            android:title="@string/locale_application"/>
 
     <!-- Theme -->
     <ListPreference
-        android:defaultValue="@string/theme_light"
-        android:entries="@array/themes_names"
-        android:entryValues="@array/themes_values"
-        android:icon="@null"
-        android:key="@string/pref_theme"
-        android:title="@string/theme_application"/>
+            android:defaultValue="@string/theme_light"
+            android:entries="@array/themes_names"
+            android:entryValues="@array/themes_values"
+            android:icon="@null"
+            android:key="@string/pref_theme"
+            android:title="@string/theme_application"/>
 
     <!-- default status -->
     <ListPreference
-        android:icon="@null"
-        android:defaultValue=""
-        android:entries="@array/status_items"
-        android:entryValues="@array/status_values"
-        android:key="@string/pref_default_status"
-        android:title="@string/default_status" />
+            android:icon="@null"
+            android:defaultValue=""
+            android:entries="@array/status_items"
+            android:entryValues="@array/status_values"
+            android:key="@string/pref_default_status"
+            android:title="@string/default_status"/>
 
     <!-- default payee -->
     <ListPreference
-        android:icon="@null"
-        android:defaultValue="N"
-        android:entries="@array/new_transaction_dialog_items"
-        android:entryValues="@array/new_transaction_dialog_values"
-        android:key="@string/pref_default_payee"
-        android:title="@string/default_payee" />
+            android:icon="@null"
+            android:defaultValue="N"
+            android:entries="@array/new_transaction_dialog_items"
+            android:entryValues="@array/new_transaction_dialog_values"
+            android:key="@string/pref_default_payee"
+            android:title="@string/default_payee"/>
     <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="false"
-        android:key="@string/pref_anonymous_usage"
-        android:title="@string/title_anonymous_usage"
-        android:summary="@string/summary_anonymous_usage" />
+            android:icon="@null"
+            android:defaultValue="false"
+            android:key="@string/pref_anonymous_usage"
+            android:title="@string/title_anonymous_usage"
+            android:summary="@string/summary_anonymous_usage"/>
 
 </PreferenceScreen>

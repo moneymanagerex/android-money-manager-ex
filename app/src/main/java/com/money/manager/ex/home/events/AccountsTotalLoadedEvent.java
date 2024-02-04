@@ -21,9 +21,9 @@ package com.money.manager.ex.home.events;
  * Used to display the total balance in navigation drawer.
  */
 public class AccountsTotalLoadedEvent {
+    public String amount;
+
     public AccountsTotalLoadedEvent(String amount) {
         this.amount = amount;
     }
-
-    public String amount;
 }

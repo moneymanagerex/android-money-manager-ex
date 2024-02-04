@@ -55,7 +55,9 @@
     <string name="preferences_behaviour">Behaviour</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Base currency changed</string>
-    <string name="base_currency_change_notification">The base currency has been changed. Please update the currency exchange rates to get correct amounts in the new base currency.</string>
+    <string name="base_currency_change_notification">The base currency has been changed. Please update the currency exchange rates to get correct amounts in the new base
+        currency.
+    </string>
 
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
@@ -81,7 +83,9 @@
     <string name="granted_receive_sms_access">Permission already granted for RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transaction Status Notification</string>
-    <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg or New Transaction screen</string>
+    <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg
+        or New Transaction screen
+    </string>
     <string name="notification_click_to_edit_transaction">Touch to edit the transaction&#8230;</string>
     <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
@@ -293,7 +297,7 @@
     <string name="income">Income</string>
     <string name="expenses">Expenses</string>
     <string name="difference">Difference</string>
-    <string name="no_data">No records were found. Try adjusting the visible period or tap the green plus button to create one. </string>
+    <string name="no_data">No records were found. Try adjusting the visible period or tap the green plus button to create one.</string>
     <string name="no_stock_data">No stock data available for this account.</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
@@ -352,7 +356,10 @@
     <string name="open_database">Open Database</string>
     <string name="synchronization_interval">Synchronization Interval</string>
     <string name="summary_synchronization_interval">How often should synchronize?</string>
-    <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the Dropbox sync need to update the configuration.\nThe authentication and the selection of the database is located in the Settings.\nAs of version 1.2.0, Money Manager Ex for Android can automatically synchronize the database.</string>
+    <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the
+        Dropbox sync need to update the configuration.\nThe authentication and the selection of the database is located in the Settings.\nAs of version 1.2.0, Money Manager Ex for
+        Android can automatically synchronize the database.
+    </string>
     <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
     <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
     <string name="menu_open_database">Open database</string>
@@ -413,7 +420,9 @@
     <string name="show_chart">Show Chart</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="welcome_header">Welcome to MoneyManagerEx!</string>
-    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Either adjust the filter for visible accounts in the Settings, or select one of the options below.</string>
+    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Either adjust the filter for visible accounts in
+        the Settings, or select one of the options below.
+    </string>
     <string name="welcome_body_dropbox">If you already use MoneyManagerEx on Windows, Linux or Mac, you can link to a cloud storage provider to synchronize your database</string>
     <string name="configure_sync">Configure Synchronization</string>
     <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
@@ -426,7 +435,7 @@
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
-    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
+    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue</string>
     <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>
@@ -507,7 +516,9 @@
     <string name="pref_transaction_sort_by_type_summary">Arrange daily transactions by transaction type (deposit, transfer, withdrawal)</string>
     <string name="pref_transaction_sort_by_type_title">Sort Transactions by Type</string>
     <string name="warning">Warning</string>
-    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
+    <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split
+        Categories?
+    </string>
     <string name="qif_export">Qif Export</string>
     <string name="update_prices">Update prices</string>
     <string name="update_price">Update price</string>
@@ -735,7 +746,9 @@
     <string name="checking_remote_for_changes">Checking remote storage for database modifications.</string>
     <string name="title_sync_upload_immediate">Upload the database immediately after change</string>
     <string name="summary_sync_upload_immediate">This option allows to automatically upload as soon as you change the database</string>
-    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
+    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your
+        computer, and after you do the refresh.
+    </string>
     <string name="select_remote_file">Select a remote file from the cloud storage</string>
     <string name="confirm_download">Do you want to download the remote file now?</string>
     <string name="file_exists">File exists</string>
@@ -747,7 +760,9 @@
     <string name="no_remote_file">Please select the remote file to use for synchronization.</string>
 
     <!-- Warnings -->
-    <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>
+    <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as
+        favourite.
+    </string>
 
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>

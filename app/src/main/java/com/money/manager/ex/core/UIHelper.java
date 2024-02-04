@@ -22,6 +22,10 @@ import android.content.Intent;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -34,9 +38,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
@@ -49,8 +50,23 @@ import timber.log.Timber;
  */
 public class UIHelper {
 
+    private final Context context;
+
+    /*
+        Instance
+     */
+    @Inject
+    Lazy<AppSettings> appSettingsLazy;
+
+    public UIHelper(Context context) {
+        this.context = context;
+
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
+
     /**
      * Extracts the path to the selected database file.
+     *
      * @param data Intent
      * @return Path to the selected file.
      */
@@ -64,19 +80,6 @@ public class UIHelper {
 
         return filePath;
     }
-
-    /*
-        Instance
-     */
-
-    public UIHelper(Context context) {
-        this.context = context;
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
-
-    @Inject Lazy<AppSettings> appSettingsLazy;
-    private final Context context;
 
     public Context getContext() {
         return this.context;
@@ -132,12 +135,13 @@ public class UIHelper {
 
     public int getDimenInDp(int dimenId) {
         int sizeInDp = (int) (getContext().getResources().getDimension(dimenId)
-            / getContext().getResources().getDisplayMetrics().density);
+                / getContext().getResources().getDisplayMetrics().density);
         return sizeInDp;
     }
 
     /**
      * Creates an icon with default settings. The default color is the toolbar item color.
+     *
      * @param icon Icon to instantiate.
      * @return Drawable (Iconics drawable).
      */
@@ -150,8 +154,8 @@ public class UIHelper {
 
     public int getPrimaryTextColor() {
         return isUsingDarkTheme()
-            ? ContextCompat.getColor(getContext(), android.R.color.primary_text_dark)
-            : ContextCompat.getColor(getContext(), android.R.color.primary_text_light);
+                ? ContextCompat.getColor(getContext(), android.R.color.primary_text_dark)
+                : ContextCompat.getColor(getContext(), android.R.color.primary_text_light);
     }
 
     public int getSecondaryTextColor() {
@@ -170,6 +174,7 @@ public class UIHelper {
 
     /**
      * Return application theme choice from user
+     *
      * @return application theme id
      */
     public int getThemeId() {
@@ -198,6 +203,7 @@ public class UIHelper {
     /**
      * Resolves the attribute into a resource id.
      * For example attr/color resolves into color.red, which is used to get the Color object.
+     *
      * @param attr id attribute
      * @return resource id for the given attribute.
      */

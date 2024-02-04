@@ -58,8 +58,8 @@ import timber.log.Timber;
  */
 
 public class FixerService
-    extends PriceUpdaterBase
-    implements IExchangeRateUpdater {
+        extends PriceUpdaterBase
+        implements IExchangeRateUpdater {
 
     public FixerService(Context context) {
         super(context);
@@ -126,7 +126,7 @@ public class FixerService
 
         // Notify the user of the prices that have been downloaded.
         String message = getContext().getString(R.string.download_complete) +
-            " (" + updatedCurrencies.substring(0, updatedCurrencies.toString().length() - 1) + ")";
+                " (" + updatedCurrencies.substring(0, updatedCurrencies.toString().length() - 1) + ")";
         uiHelper.showToast(message, Toast.LENGTH_LONG);
     }
 
@@ -148,8 +148,7 @@ public class FixerService
 
         // prices
         Set<Map.Entry<String, JsonElement>> entries = rates.entrySet();
-        for (Map.Entry<String, JsonElement> entry : entries)
-        {
+        for (Map.Entry<String, JsonElement> entry : entries) {
             SecurityPriceModel priceModel = getSecurityPriceFor(entry, dateString);
             if (priceModel == null) continue;
 

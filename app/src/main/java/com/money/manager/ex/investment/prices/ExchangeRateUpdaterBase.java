@@ -24,7 +24,7 @@ import android.content.Context;
  */
 
 public class ExchangeRateUpdaterBase
-    extends PriceUpdaterBase {
+        extends PriceUpdaterBase {
     public ExchangeRateUpdaterBase(Context context) {
         super(context);
     }

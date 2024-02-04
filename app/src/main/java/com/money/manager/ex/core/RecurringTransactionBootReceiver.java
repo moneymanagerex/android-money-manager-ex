@@ -34,7 +34,7 @@ import timber.log.Timber;
  * This class handles BOOT_RECEIVED event.
  */
 public class RecurringTransactionBootReceiver
-    extends BroadcastReceiver {
+        extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -54,7 +54,7 @@ public class RecurringTransactionBootReceiver
 
         // compose intent
         Intent receiverIntent = new Intent(context, RecurringTransactionReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // take hour to start
         String hour = settings.getNotificationTime();
@@ -81,6 +81,6 @@ public class RecurringTransactionBootReceiver
         alarmManager.cancel(pendingIntent);
         // start alarm manager
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-            AlarmManager.INTERVAL_DAY, pendingIntent);
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

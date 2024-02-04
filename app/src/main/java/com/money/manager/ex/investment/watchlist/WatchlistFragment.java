@@ -23,6 +23,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,6 +76,7 @@ import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -83,10 +85,18 @@ import timber.log.Timber;
  * Not sure why it was done in two fragments. Probably because the list can not have additional items?
  */
 public class WatchlistFragment
-    extends Fragment {
+        extends Fragment {
 
     private static final String KEY_ACCOUNT_ID = "WatchlistFragment:AccountId";
     private static final String KEY_ACCOUNT = "WatchlistFragment:Account";
+    private WatchlistItemsFragment mDataFragment;
+    private String mFragmentName;
+    private StockRepository mStockRepository;
+    private Account mAccount;
+    // price update counter. Used to know when all the prices are done downloading.
+    private int mUpdateCounter;
+    private int mToUpdateTotal;
+    private WatchlistViewHolder viewHolder;
 
     /**
      * @param accountId ID Account to be display
@@ -102,16 +112,6 @@ public class WatchlistFragment
 
         return fragment;
     }
-
-    private WatchlistItemsFragment mDataFragment;
-    private String mFragmentName;
-    private StockRepository mStockRepository;
-    private Account mAccount;
-
-    // price update counter. Used to know when all the prices are done downloading.
-    private int mUpdateCounter;
-    private int mToUpdateTotal;
-    private WatchlistViewHolder viewHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -249,6 +249,7 @@ public class WatchlistFragment
     /**
      * Handle menu item click.
      * Update prices.
+     *
      * @param item Menu item selected
      * @return indicator whether the selection was handled
      */
@@ -325,9 +326,10 @@ public class WatchlistFragment
 
     /**
      * Called from asynchronous task when a first price is downloaded.
+     *
      * @param symbol Stock symbol
-     * @param price Stock price
-     * @param date Date of the price
+     * @param price  Stock price
+     * @param date   Date of the price
      */
     private void onPriceDownloaded(String symbol, Money price, Date date) {
         // prices updated.
@@ -350,6 +352,7 @@ public class WatchlistFragment
 
     /**
      * Price update requested from the securities list context menu.
+     *
      * @param symbol Stock symbol for which to fetch the price.
      */
     private void onPriceUpdateRequested(String symbol) {
@@ -425,7 +428,7 @@ public class WatchlistFragment
         int itemCount = mDataFragment.getListAdapter().getCount();
         String[] result = new String[itemCount];
 
-        for(int i = 0; i < itemCount; i++) {
+        for (int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
             String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
 
@@ -458,9 +461,9 @@ public class WatchlistFragment
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.download)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirm_price_download)
+                .title(R.string.download)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.confirm_price_download)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -486,8 +489,8 @@ public class WatchlistFragment
                         dialog.dismiss();
                     }
                 })
-            .build()
-            .show();
+                .build()
+                .show();
     }
 
     private int getAccountId() {
@@ -566,8 +569,8 @@ public class WatchlistFragment
 
                 if (!saved) {
                     Toast.makeText(getActivity(),
-                        getActivity().getResources().getString(R.string.db_update_failed),
-                        Toast.LENGTH_LONG).show();
+                            getActivity().getResources().getString(R.string.db_update_failed),
+                            Toast.LENGTH_LONG).show();
                 } else {
                     setImageViewFavorite();
                 }
@@ -618,9 +621,9 @@ public class WatchlistFragment
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.purge_history)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.purge_history_confirmation)
+                .title(R.string.purge_history)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.purge_history_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -631,11 +634,11 @@ public class WatchlistFragment
                         if (deleted > 0) {
                             new SyncManager(getActivity()).dataChanged();
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                                     .show();
                         } else {
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
                                     .show();
                         }
 
@@ -646,10 +649,11 @@ public class WatchlistFragment
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();                    }
+                        dialog.dismiss();
+                    }
                 })
-            .build()
-            .show();
+                .build()
+                .show();
     }
 
     /**

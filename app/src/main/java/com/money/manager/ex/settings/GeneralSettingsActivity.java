@@ -22,7 +22,7 @@ import android.os.Bundle;
 import com.money.manager.ex.R;
 
 public class GeneralSettingsActivity
-    extends BaseSettingsFragmentActivity {
+        extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {

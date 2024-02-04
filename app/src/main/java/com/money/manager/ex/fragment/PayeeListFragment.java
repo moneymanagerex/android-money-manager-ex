@@ -64,18 +64,15 @@ import androidx.loader.content.Loader;
  * List of Payees. Used as a picker/selector also.
  */
 public class PayeeListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    public static String mAction = Intent.ACTION_EDIT;
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // add menu ite,
 //    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
-
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
-
+    public static String mAction = Intent.ACTION_EDIT;
     private Context mContext;
     private String mCurFilter;
     private int mSort = 0;
@@ -99,7 +96,7 @@ public class PayeeListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { Payee.PAYEENAME },
+                layout, null, new String[]{Payee.PAYEENAME},
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
@@ -233,7 +230,7 @@ public class PayeeListFragment
                                     dialog.dismiss();
                                 }
                             })
-                        .create().show();
+                            .create().show();
                 }
                 break;
 
@@ -341,31 +338,31 @@ public class PayeeListFragment
 
     private void showDialogDeletePayee(final int payeeId) {
         new AlertDialogWrapper(getContext())
-            .setTitle(R.string.delete_payee)
-            .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
-            .setMessage(R.string.confirmDelete)
-            .setPositiveButton(android.R.string.ok,
-                    new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                .setTitle(R.string.delete_payee)
+                .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok,
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                        PayeeRepository repo = new PayeeRepository(getActivity());
-                        boolean success = repo.delete(payeeId);
-                        if (success) {
-                            Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-                        }
+                                PayeeRepository repo = new PayeeRepository(getActivity());
+                                boolean success = repo.delete(payeeId);
+                                if (success) {
+                                    Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
+                                }
 
-                        restartLoader();
-                    }
-                })
-            .setNegativeButton(android.R.string.cancel,
-                    new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.cancel();
-                        }
-                    })
-            .create().show();
+                                restartLoader();
+                            }
+                        })
+                .setNegativeButton(android.R.string.cancel,
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.cancel();
+                            }
+                        })
+                .create().show();
     }
 
     private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {
@@ -380,56 +377,56 @@ public class PayeeListFragment
         UIHelper ui = new UIHelper(getContext());
 
         new AlertDialogWrapper(getContext())
-            .setView(viewDialog)
-            .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
-            .setTitle(R.string.edit_payeeName)
-        .setPositiveButton(android.R.string.ok,
-                new MaterialDialog.SingleButtonCallback() {
+                .setView(viewDialog)
+                .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
+                .setTitle(R.string.edit_payeeName)
+                .setPositiveButton(android.R.string.ok,
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                // take payee name from the input field.
+                                String name = edtPayeeName.getText().toString();
+
+                                PayeeService service = new PayeeService(mContext);
+
+                                // check if action in update or insert
+                                switch (type) {
+                                    case INSERT:
+                                        Payee payee = service.createNew(name);
+                                        if (payee != null) {
+                                            // Created a new payee. But only if picking a payee for another activity.
+                                            if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
+                                                // Select it and close.
+                                                sendResultToActivity(payee.getId(), name);
+                                                return;
+                                            }
+                                        } else {
+                                            // error inserting.
+                                            Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                    case UPDATE:
+                                        int updateResult = service.update(payeeId, name);
+                                        if (updateResult <= 0) {
+                                            Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                    case DELETE:
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                // restart loader
+                                restartLoader();
+                            }
+                        })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        // take payee name from the input field.
-                        String name = edtPayeeName.getText().toString();
-
-                        PayeeService service = new PayeeService(mContext);
-
-                        // check if action in update or insert
-                        switch (type) {
-                            case INSERT:
-                                Payee payee = service.createNew(name);
-                                if (payee != null) {
-                                    // Created a new payee. But only if picking a payee for another activity.
-                                    if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
-                                        // Select it and close.
-                                        sendResultToActivity(payee.getId(), name);
-                                        return;
-                                    }
-                                } else {
-                                    // error inserting.
-                                    Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case UPDATE:
-                                int updateResult = service.update(payeeId, name);
-                                if (updateResult <= 0) {
-                                    Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case DELETE:
-                                break;
-                            default:
-                                break;
-                        }
-                        // restart loader
-                        restartLoader();
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
                 })
-        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        })
-        .create().show();
+                .create().show();
     }
 
     @Override

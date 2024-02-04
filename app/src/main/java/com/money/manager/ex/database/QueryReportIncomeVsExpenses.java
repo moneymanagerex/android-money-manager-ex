@@ -25,7 +25,7 @@ import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 public class QueryReportIncomeVsExpenses
-    extends Dataset {
+        extends Dataset {
 
     public QueryReportIncomeVsExpenses(Context context) {
         super("", DatasetType.QUERY, "report_income_vs_expenses");
@@ -36,17 +36,17 @@ public class QueryReportIncomeVsExpenses
     @Override
     public String[] getAllColumns() {
         return new String[]{"ROWID AS _id",
-            IncomeVsExpenseReportEntity.YEAR,
-            IncomeVsExpenseReportEntity.Month,
-            IncomeVsExpenseReportEntity.Income,
-            IncomeVsExpenseReportEntity.Expenses,
-            IncomeVsExpenseReportEntity.Transfers};
+                IncomeVsExpenseReportEntity.YEAR,
+                IncomeVsExpenseReportEntity.Month,
+                IncomeVsExpenseReportEntity.Income,
+                IncomeVsExpenseReportEntity.Expenses,
+                IncomeVsExpenseReportEntity.Transfers};
     }
 
     private void initialize(Context context, String whereStatement) {
         ViewMobileData mobileData = new ViewMobileData(context);
         // add where statement
-        if(!TextUtils.isEmpty(whereStatement)) {
+        if (!TextUtils.isEmpty(whereStatement)) {
             mobileData.setWhere(whereStatement);
         }
         String mobileDataQuery = mobileData.getSource();

@@ -24,6 +24,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -67,6 +68,7 @@ import javax.inject.Inject;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
 import dagger.Lazy;
 
 /**
@@ -74,8 +76,8 @@ import dagger.Lazy;
  * Includes floating action button.
  */
 public class RecurringTransactionListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
@@ -304,9 +306,9 @@ public class RecurringTransactionListFragment
 
         // create alert binaryDialog
         new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_repeating_transaction)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirmDelete)
+                .title(R.string.delete_repeating_transaction)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -326,16 +328,16 @@ public class RecurringTransactionListFragment
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     private void confirmSkip(final int id) {
         UIHelper ui = new UIHelper(getContext());
 
         new MaterialDialog.Builder(getContext())
-            .title(R.string.skip_next_occurrence)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.skip_next_occurrence_confirmation)
+                .title(R.string.skip_next_occurrence)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .content(R.string.skip_next_occurrence_confirmation)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -353,7 +355,7 @@ public class RecurringTransactionListFragment
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     private void showCaldroidFragment() {
@@ -443,8 +445,8 @@ public class RecurringTransactionListFragment
      * start RepeatingTransaction for insert or edit transaction
      *
      * @param billDepositsId Id of the recurring transaction.
-     * @param purposeCode       Code that indicates why we are opening the editor.
-     *                          example: REQUEST_ADD_REPEATING_TRANSACTION
+     * @param purposeCode    Code that indicates why we are opening the editor.
+     *                       example: REQUEST_ADD_REPEATING_TRANSACTION
      */
     private void startRecurringTransactionEditActivity(Integer billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID

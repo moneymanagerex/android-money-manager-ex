@@ -16,13 +16,10 @@
  */
 package com.money.manager.ex.sync;
 
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.settings.SyncPreferences;
 
@@ -33,27 +30,27 @@ import timber.log.Timber;
  * Triggered by the timer/heartbeat. Set up in SyncSchedulerBroadcastReceiver.
  */
 public class SyncBroadcastReceiver
-	extends BroadcastReceiver {
+        extends BroadcastReceiver {
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
         Timber.d("receiving a sync intent");
 
-		SyncManager sync = new SyncManager(context);
+        SyncManager sync = new SyncManager(context);
         if (!sync.canSync()) return;
 
-		// check sync interval.
-		if (new SyncPreferences(context).getSyncInterval() == 0) return;
+        // check sync interval.
+        if (new SyncPreferences(context).getSyncInterval() == 0) return;
 
-		// Trigger synchronization
+        // Trigger synchronization
 
-		Intent myIntent = new Intent(context, SyncService.class);
-		myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
+        Intent myIntent = new Intent(context, SyncService.class);
+        myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-		myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE,
-				new DatabaseManager(context).getDatabasePath());
-		myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
+        myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE,
+                new DatabaseManager(context).getDatabasePath());
+        myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
-		SyncService.enqueueWork(context, myIntent);
-	}
+        SyncService.enqueueWork(context, myIntent);
+    }
 }

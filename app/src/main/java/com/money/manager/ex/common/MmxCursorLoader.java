@@ -20,6 +20,7 @@ package com.money.manager.ex.common;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+
 import androidx.loader.content.CursorLoader;
 
 import com.money.manager.ex.datalayer.Select;
@@ -30,7 +31,7 @@ import timber.log.Timber;
  * The cursor loader with exception handling. It should be used instead of ordinary CursorLoader.
  */
 public class MmxCursorLoader
-    extends CursorLoader {
+        extends CursorLoader {
 
     public MmxCursorLoader(Context context) {
         super(context);

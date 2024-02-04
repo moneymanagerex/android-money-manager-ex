@@ -59,6 +59,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -66,17 +67,16 @@ import timber.log.Timber;
  * Income/Expense Report, list.
  */
 public class IncomeVsExpensesListFragment
-    extends ListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends ListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ID_LOADER_REPORT = 1;
     private static final int ID_LOADER_YEARS = 2;
     private static final String SORT_ASCENDING = "ASC";
     private static final String SORT_DESCENDING = "DESC";
     private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
-
-    private View mFooterListView;
     private final SparseBooleanArray mYearsSelected = new SparseBooleanArray();
+    private View mFooterListView;
     private String mSort = SORT_ASCENDING;
 
     @Override
@@ -99,7 +99,7 @@ public class IncomeVsExpensesListFragment
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //        AppCompatActivity activity = (AppCompatActivity) getActivity();
 //        if (activity != null) {
-            //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
 
         // create adapter
@@ -132,8 +132,8 @@ public class IncomeVsExpensesListFragment
                 }
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query = new Select(report.getAllColumns())
-                    .where(selection)
-                    .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
+                        .where(selection)
+                        .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
 
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
@@ -298,7 +298,7 @@ public class IncomeVsExpensesListFragment
                         return true;
                     }
                 })
-                        //.alwaysCallMultiChoiceCallback()
+                //.alwaysCallMultiChoiceCallback()
                 .positiveText(android.R.string.ok)
                 .show();
     }
@@ -326,8 +326,8 @@ public class IncomeVsExpensesListFragment
     private View addListViewHeader() {
         TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
         int[] ids = new int[]{
-            R.id.textViewYear, R.id.textViewMonth, R.id.textViewIncome,
-            R.id.textViewExpenses, R.id.textViewDifference
+                R.id.textViewYear, R.id.textViewMonth, R.id.textViewIncome,
+                R.id.textViewExpenses, R.id.textViewDifference
         };
         for (int id : ids) {
             TextView textView = row.findViewById(id);
@@ -387,7 +387,6 @@ public class IncomeVsExpensesListFragment
 
     /**
      * Start loader with arrays year
-     *
      */
     private void startLoader() {
         Bundle bundle = new Bundle();
@@ -434,10 +433,10 @@ public class IncomeVsExpensesListFragment
         UIHelper uiHelper = new UIHelper(getActivity());
         if (income - Math.abs(expenses) < 0) {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+                    uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
         } else {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+                    uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
         }
     }
 

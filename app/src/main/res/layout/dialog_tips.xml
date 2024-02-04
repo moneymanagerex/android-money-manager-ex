@@ -16,42 +16,42 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp" >
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewTips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tips_new_version_dropbox" 
-                android:textSize="16sp"/>
+                    android:id="@+id/textViewTips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tips_new_version_dropbox"
+                    android:textSize="16sp"/>
 
             <WebView
-                android:id="@+id/webViewTips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/theme_background_color"
-                android:visibility="gone" />
+                    android:id="@+id/webViewTips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/theme_background_color"
+                    android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
 
     <com.money.manager.ex.view.RobotoCheckBox
-        android:id="@+id/checkBoxDontShow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/dont_show_again" />
+            android:id="@+id/checkBoxDontShow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/dont_show_again"/>
 
 </LinearLayout>

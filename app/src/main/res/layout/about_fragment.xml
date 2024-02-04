@@ -23,176 +23,176 @@
             android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:contentDescription="@string/logo"
-            app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/version"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewCopyright"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/application_copyright"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewWebSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/android_website"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewLinkWebSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/mmex_website"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewLinkFeedback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="4dp"
-            android:gravity="center_horizontal"
-            android:text="@string/send_feedback"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewIssuesTracker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/issues_tracker"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewLogcat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@string/send_me_logcat"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewGooglePlus"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_google_plus"/>
-
-            <ImageView
-                android:id="@+id/imageViewGithub"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_github"/>
-
-            <ImageView
-                android:id="@+id/imageViewTwitter"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_twitter"/>
-        </LinearLayout>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/application_credits"
-            android:visibility="gone"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewLicense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/application_license"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/divider_ice_cream_sandwich"/>
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="@string/donate_header"/>
-
-        <com.money.manager.ex.view.RobotoButton
-            android:id="@+id/buttonDonateInApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="4dp"
-            android:text="@string/donate_in_app_button"
-            android:textSize="18sp"
-            app:typeface="roboto_light"/>
-
-        <!-- Logcat -->
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="fill_parent"
+        <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/logo"
+                app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/version"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewCopyright"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/application_copyright"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewWebSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/android_website"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewLinkWebSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/mmex_website"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewLinkFeedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:gravity="center_horizontal"
+                android:text="@string/send_feedback"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewIssuesTracker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/issues_tracker"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewLogcat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@string/send_me_logcat"/>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+            <ImageView
+                    android:id="@+id/imageViewGooglePlus"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="4dp"
+                    app:srcCompat="@drawable/ic_social_google_plus"/>
+
+            <ImageView
+                    android:id="@+id/imageViewGithub"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="4dp"
+                    app:srcCompat="@drawable/ic_social_github"/>
+
+            <ImageView
+                    android:id="@+id/imageViewTwitter"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="4dp"
+                    app:srcCompat="@drawable/ic_social_twitter"/>
+        </LinearLayout>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/application_credits"
+                android:visibility="gone"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewLicense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/application_license"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/divider_ice_cream_sandwich"/>
+
+        <com.money.manager.ex.view.RobotoTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
-                android:text="@string/about_logcat_header"/>
+                android:text="@string/donate_header"/>
 
-            <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/sendLogcatButton"
-                android:layout_width="fill_parent"
+        <com.money.manager.ex.view.RobotoButton
+                android:id="@+id/buttonDonateInApp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="4dp"
-                android:text="@string/send_me_logcat"
+                android:text="@string/donate_in_app_button"
                 android:textSize="18sp"
                 app:typeface="roboto_light"/>
+
+        <!-- Logcat -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="@string/about_logcat_header"/>
+
+            <com.money.manager.ex.view.RobotoButton
+                    android:id="@+id/sendLogcatButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4dp"
+                    android:text="@string/send_me_logcat"
+                    android:textSize="18sp"
+                    app:typeface="roboto_light"/>
 
         </LinearLayout>
     </LinearLayout>

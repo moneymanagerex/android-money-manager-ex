@@ -19,14 +19,17 @@ package org.moneymanagerex.android.testhelpers;
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
+
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
@@ -38,12 +41,14 @@ import java.lang.reflect.Field;
  * Additionally simplify and standardize certain calls to assist when setting up and running
  * the unit tests.
  */
-public class UnitTestHelper {
-    public static <T extends AppCompatActivity> ActivityController<T> getController(Class<T> activityClass) {
+public enum UnitTestHelper {
+    ;
+
+    public static <T extends AppCompatActivity> ActivityController<T> getController(final Class<T> activityClass) {
         return Robolectric.buildActivity(activityClass);
     }
 
-    public static <T extends AppCompatActivity> T getActivity(ActivityController<T> controller) {
+    public static <T extends AppCompatActivity> T getActivity(final ActivityController<T> controller) {
         return controller.create().visible().start().get();
     }
 
@@ -64,15 +69,15 @@ public class UnitTestHelper {
 //
 //    }
 
-    public static Fragment getFragment(MmxBaseFragmentActivity activity, String fragmentClassName) {
-        Fragment fragment = activity.getSupportFragmentManager()
-            .findFragmentByTag(fragmentClassName);
+    public static Fragment getFragment(final MmxBaseFragmentActivity activity, final String fragmentClassName) {
+        final Fragment fragment = activity.getSupportFragmentManager()
+                .findFragmentByTag(fragmentClassName);
         return fragment;
     }
 
-    public static Intent getSelectCategoryResult(int categoryId, String categoryName,
-        int subCategId, String subCategoryName) {
-        Intent result = new Intent();
+    public static Intent getSelectCategoryResult(final int categoryId, final String categoryName,
+                                                 final int subCategId, final String subCategoryName) {
+        final Intent result = new Intent();
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categoryId);
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME, categoryName);
         result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
@@ -84,10 +89,11 @@ public class UnitTestHelper {
     /**
      * Initialize the content provider explicitly as it is not executed automatically.
      * Also, call teardownDatabase after each test, in @After.
+     *
      * @return initialized Content Provider, if needed.
      */
     public static ContentProvider setupContentProvider() {
-        ContentProvider contentProvider = new MmxContentProvider();
+        final ContentProvider contentProvider = new MmxContentProvider();
 //        shadowOf(contentProvider).getContext();
         contentProvider.onCreate();
 //        ShadowContentResolver.registerProvider(MmxContentProvider.getAuthority(), contentProvider);
@@ -95,13 +101,13 @@ public class UnitTestHelper {
         return contentProvider;
     }
 
-    private static void resetSingleton(Class clazz, String fieldName) {
-        Field instance;
+    private static void resetSingleton(final Class clazz, final String fieldName) {
+        final Field instance;
         try {
             instance = clazz.getDeclaredField(fieldName);
             instance.setAccessible(true);
             instance.set(null, null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -113,20 +119,19 @@ public class UnitTestHelper {
 //    public static void teardownDatabase() {
 //        resetSingleton(MmxOpenHelper.class, "mInstance");
 //    }
-
     public static void setupLog() {
         ShadowLog.stream = System.out;
     }
 
-    public static void setDefaultCurrency(String symbol) {
-        CurrencyRepository repo = new CurrencyRepository(getContext());
-        Currency currency = repo.loadCurrency(symbol);
-        int id = currency.getCurrencyId();
+    public static void setDefaultCurrency(final String symbol) {
+        final CurrencyRepository repo = new CurrencyRepository(getContext());
+        final Currency currency = repo.loadCurrency(symbol);
+        final int id = currency.getCurrencyId();
         setDefaultCurrency(id);
     }
 
-    public static void setDefaultCurrency(int currencyId) {
-        CurrencyService currencyService = new CurrencyService(getContext());
+    public static void setDefaultCurrency(final int currencyId) {
+        final CurrencyService currencyService = new CurrencyService(getContext());
         currencyService.setBaseCurrencyId(currencyId);
     }
 }

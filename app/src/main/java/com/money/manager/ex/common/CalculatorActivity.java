@@ -44,6 +44,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,31 +61,13 @@ import timber.log.Timber;
  */
 
 public class CalculatorActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static String EXTRA_CURRENCY_ID = "CurrencyId";
     public static String EXTRA_AMOUNT = "Amount";
     public static String EXTRA_ROUND_TO_CURRENCY = "RoundToCurrencyDecimals";
 
     public static String RESULT_AMOUNT = "AmountEntered";
-
-    /**
-     * By default, round the number to the currency Scale. Set in the factory method.
-     */
-    @State boolean roundToCurrencyDecimals;
-    //    @State String mRequestId;
-    @State(MoneyBundler.class) Money mAmount;
-    @State Integer mCurrencyId;
-    /**
-     * used to restore expression from saved instance state.
-     */
-    @State String mExpression;
-
-    // Views
-    @BindView(R.id.deleteButton) ImageButton deleteButton;
-    @BindView(R.id.textViewMain) TextView txtMain;
-    @BindView(R.id.textViewTop) TextView txtTop;
-
     private final int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
@@ -96,9 +79,32 @@ public class CalculatorActivity
             R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
             R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
     };
-
-    @Inject CurrencyService mCurrencyService;
-    @Inject Lazy<FormatUtilities> formatUtilitiesLazy;
+    /**
+     * By default, round the number to the currency Scale. Set in the factory method.
+     */
+    @State
+    boolean roundToCurrencyDecimals;
+    //    @State String mRequestId;
+    @State(MoneyBundler.class)
+    Money mAmount;
+    @State
+    Integer mCurrencyId;
+    /**
+     * used to restore expression from saved instance state.
+     */
+    @State
+    String mExpression;
+    // Views
+    @BindView(R.id.deleteButton)
+    ImageButton deleteButton;
+    @BindView(R.id.textViewMain)
+    TextView txtMain;
+    @BindView(R.id.textViewTop)
+    TextView txtTop;
+    @Inject
+    CurrencyService mCurrencyService;
+    @Inject
+    Lazy<FormatUtilities> formatUtilitiesLazy;
 
     private Integer mDefaultColor;
 
@@ -165,6 +171,7 @@ public class CalculatorActivity
 
     /**
      * Evaluate the entered expression and recalculate the resulting amount.
+     *
      * @return Boolean indicating whether the operation was successful or not.
      */
     public boolean evalExpression() {
@@ -201,6 +208,7 @@ public class CalculatorActivity
 
     /**
      * Get amount formatted in the formatting currency.
+     *
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
@@ -411,7 +419,7 @@ public class CalculatorActivity
         Currency displayCurrency = mCurrencyService.getCurrency(mCurrencyId);
 
         if (displayCurrency != null) {
-            if(roundToCurrencyDecimals) {
+            if (roundToCurrencyDecimals) {
                 // use decimals from the display currency.
                 // but decimal and group separators from the base currency.
                 result = formatUtilitiesLazy.get().format(amount, displayCurrency.getScale(),

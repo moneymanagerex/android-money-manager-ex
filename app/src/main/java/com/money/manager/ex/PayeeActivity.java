@@ -21,14 +21,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.fragment.PayeeListFragment;
-
 import androidx.fragment.app.FragmentManager;
 
+import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.fragment.PayeeListFragment;
+
 public class PayeeActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
@@ -37,7 +37,7 @@ public class PayeeActivity
     PayeeListFragment listFragment = new PayeeListFragment();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_toolbar_activity);
 
@@ -45,29 +45,29 @@ public class PayeeActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // process intent
-        Intent intent = getIntent();
-        String action = intent.getAction();
+        final Intent intent = getIntent();
+        final String action = intent.getAction();
 
         if (!TextUtils.isEmpty(action)) {
             PayeeListFragment.mAction = action;
         }
-        FragmentManager fm = getSupportFragmentManager();
+        final FragmentManager fm = getSupportFragmentManager();
         // attach fragment activity
-        if (fm.findFragmentById(R.id.content) == null) {
+        if (null == fm.findFragmentById(R.id.content)) {
             // todo: use .replace
             fm.beginTransaction()
-                .add(R.id.content, listFragment, FRAGMENTTAG)
-                .commit();
+                    .add(R.id.content, listFragment, FRAGMENTTAG)
+                    .commit();
         }
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
             // set result
-            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
+            final BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
                     .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
+            if (null != fragment) {
                 fragment.getActivity().setResult(RESULT_CANCELED);
                 fragment.getActivity().finish();
             }

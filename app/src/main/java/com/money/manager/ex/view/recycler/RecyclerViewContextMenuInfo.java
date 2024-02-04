@@ -23,13 +23,12 @@ import android.view.ContextMenu;
  * Context menu for recycler view.
  */
 public class RecyclerViewContextMenuInfo
-    implements ContextMenu.ContextMenuInfo {
+        implements ContextMenu.ContextMenuInfo {
 
+    final public int position;
+    final public long id;
     public RecyclerViewContextMenuInfo(int position, long id) {
         this.position = position;
         this.id = id;
     }
-
-    final public int position;
-    final public long id;
 }

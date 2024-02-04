@@ -16,10 +16,12 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.app.Activity;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import android.content.Context;
 
-//import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -32,13 +34,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 
 /**
@@ -61,7 +58,7 @@ public class AccountServiceTests {
         // initialize database
         // UnitTestHelper.setupContentProvider();
 
-        Context context = UnitTestHelper.getContext();
+        final Context context = UnitTestHelper.getContext();
         testObject = new AccountService(context);
     }
 
@@ -82,18 +79,18 @@ public class AccountServiceTests {
     public void getAccountCurrency() {
         // Given
         UnitTestHelper.setupContentProvider();
-        String expectedCode = "ISK";
-        Context context = UnitTestHelper.getContext();
-        CurrencyService currencyService = new CurrencyService(context);
-        Currency currency = currencyService.getCurrency(expectedCode);
-        AccountRepository repo = new AccountRepository(context);
-        Account account = Account.create("bank account", AccountTypes.CHECKING, AccountStatuses.OPEN,
-            false, currency.getCurrencyId());
+        final String expectedCode = "ISK";
+        final Context context = UnitTestHelper.getContext();
+        final CurrencyService currencyService = new CurrencyService(context);
+        final Currency currency = currencyService.getCurrency(expectedCode);
+        final AccountRepository repo = new AccountRepository(context);
+        final Account account = Account.create("bank account", AccountTypes.CHECKING, AccountStatuses.OPEN,
+                false, currency.getCurrencyId());
         repo.save(account);
-        int accountId = account.getId();
+        final int accountId = account.getId();
 
         // When
-        String actual = testObject.getAccountCurrencyCode(accountId);
+        final String actual = testObject.getAccountCurrencyCode(accountId);
 
         // Then
         assertThat(actual, equalTo(expectedCode));

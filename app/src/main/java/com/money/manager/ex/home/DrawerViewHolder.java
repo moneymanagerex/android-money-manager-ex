@@ -28,8 +28,11 @@ import com.money.manager.ex.R;
  * ViewHolder for the linear drawer items.
  */
 public class DrawerViewHolder
-    extends RecyclerView.ViewHolder {
+        extends RecyclerView.ViewHolder {
 
+    public TextView textViewItem;
+    public ImageView imageViewIcon;
+    public View viewDivider;
     public DrawerViewHolder(View itemView) {
         super(itemView);
 
@@ -41,9 +44,5 @@ public class DrawerViewHolder
         this.imageViewIcon = imageViewIcon;
         this.viewDivider = viewDivider;
     }
-
-    public TextView textViewItem;
-    public ImageView imageViewIcon;
-    public View viewDivider;
 
 }

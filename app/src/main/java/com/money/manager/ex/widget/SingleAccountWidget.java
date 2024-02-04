@@ -48,9 +48,13 @@ import timber.log.Timber;
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
  */
 public class SingleAccountWidget
-    extends AppWidgetProvider {
+        extends AppWidgetProvider {
 
     // Static
+
+    private RemoteViews mRemoteViews;
+
+    // Dynamic
 
     /**
      * Returns number of cells needed for given size of the widget.
@@ -65,8 +69,6 @@ public class SingleAccountWidget
         }
         return n - 1;
     }
-
-    // Dynamic
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -97,9 +99,9 @@ public class SingleAccountWidget
     }
 
     @Override
-    public void onAppWidgetOptionsChanged (Context context,
-                                      AppWidgetManager appWidgetManager,
-                                      int appWidgetId, Bundle newOptions) {
+    public void onAppWidgetOptionsChanged(Context context,
+                                          AppWidgetManager appWidgetManager,
+                                          int appWidgetId, Bundle newOptions) {
         // Here you can update your widget view
         int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
 //        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
@@ -115,8 +117,6 @@ public class SingleAccountWidget
 
         this.updateAppWidget(context, appWidgetManager, appWidgetId);
     }
-
-    private RemoteViews mRemoteViews;
 
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
@@ -145,7 +145,7 @@ public class SingleAccountWidget
     /**
      * Determine appropriate view based on width provided.
      *
-     * @param width current width
+     * @param width  current width
      * @param height current height
      * @return Remote views for the current widget.
      */
@@ -234,7 +234,7 @@ public class SingleAccountWidget
     private String getFormattedAccountBalance(Context context, Account account) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(QueryAccountBills.ACCOUNTID, "=", account.getId());
-        String selection =  where.getWhere();
+        String selection = where.getWhere();
 
         AccountService service = new AccountService(context);
         Money total = service.loadBalance(selection);

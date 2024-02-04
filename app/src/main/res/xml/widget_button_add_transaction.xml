@@ -16,9 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialLayout="@layout/widget_button_add_transaction"
-    android:minHeight="60dp"
-    android:minWidth="60dp"
-    android:resizeMode="horizontal|vertical"
-    android:previewImage="@drawable/drawable_widget_add_transaction_flat"
-    />
+                    android:initialLayout="@layout/widget_button_add_transaction"
+                    android:minHeight="60dp"
+                    android:minWidth="60dp"
+                    android:resizeMode="horizontal|vertical"
+                    android:previewImage="@drawable/drawable_widget_add_transaction_flat"
+/>

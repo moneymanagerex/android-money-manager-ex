@@ -20,10 +20,10 @@
 Search menu item for the toolbar.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/clearMenuItem"
-        android:title="@string/reset"
-        app:showAsAction="ifRoom" />
+          android:title="@string/reset"
+          app:showAsAction="ifRoom"/>
 
 </menu>

@@ -110,8 +110,8 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner" />
-    <style name="Money.Spinner.Style.Dark" parent="Widget.AppCompat.Spinner" />
+    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner"/>
+    <style name="Money.Spinner.Style.Dark" parent="Widget.AppCompat.Spinner"/>
 
     <style name="Money.EditText" parent="Widget.AppCompat.EditText"/>
 

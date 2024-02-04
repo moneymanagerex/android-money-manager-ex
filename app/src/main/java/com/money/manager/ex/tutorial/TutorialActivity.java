@@ -30,6 +30,7 @@ import com.money.manager.ex.settings.GeneralSettingsActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.relex.circleindicator.CircleIndicator;
@@ -39,7 +40,7 @@ import me.relex.circleindicator.CircleIndicator;
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
 public class TutorialActivity
-    extends FragmentActivity {
+        extends FragmentActivity {
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
 
@@ -88,7 +89,7 @@ public class TutorialActivity
     }
 
     @OnClick(R.id.skipTextView)
-    void onCloseClicked(){
+    void onCloseClicked() {
         // show general preferences (language)
         Intent intent = new Intent(this, GeneralSettingsActivity.class);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

@@ -16,22 +16,22 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
     <!-- The main view  -->
 
     <LinearLayout
-        android:id="@+id/headerRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:animateLayoutChanges="true"
-        android:orientation="horizontal">
+            android:id="@+id/headerRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
 
-    <!--<include-->
+        <!--<include-->
         <!--layout="@layout/merge_header_fragment_account"-->
         <!--android:layout_width="0dp"-->
         <!--android:layout_height="wrap_content"-->
@@ -39,46 +39,46 @@
         <!--android:layout_marginBottom="@dimen/money_margin"-->
         <!--android:layout_marginTop="@dimen/money_margin"-->
         <!--android:layout_weight="1"/>-->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-                  android:paddingLeft="16dp"
-                  android:paddingStart="16dp"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_weight="1"
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:paddingLeft="16dp"
+                      android:paddingStart="16dp"
 
-                  android:orientation="horizontal">
+                      android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cashBalanceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="@string/cash" />
-        <TextView
-            android:id="@+id/cashBalanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="@string/cash" />
+            <TextView
+                    android:id="@+id/cashBalanceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/cash"/>
+            <TextView
+                    android:id="@+id/cashBalanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/cash"/>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageViewGotoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginRight="16dp"
-        app:srcCompat="@drawable/ic_action_editor_mode_edit_dark"/>
+        <ImageView
+                android:id="@+id/imageViewGotoAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                app:srcCompat="@drawable/ic_action_editor_mode_edit_dark"/>
 
-    <ImageView
-        android:id="@+id/imageViewAccountFav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginRight="16dp"
-        android:background="@android:drawable/star_off"/>
+        <ImageView
+                android:id="@+id/imageViewAccountFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:background="@android:drawable/star_off"/>
 
     </LinearLayout>
 </LinearLayout>

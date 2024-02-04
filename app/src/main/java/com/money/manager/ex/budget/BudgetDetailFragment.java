@@ -39,7 +39,7 @@ import androidx.loader.content.Loader;
  * create an instance of this fragment.
  */
 public class BudgetDetailFragment
-    extends BaseListFragment {
+        extends BaseListFragment {
 
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
     private static final String ARG_BUDGET_NAME_ID = "budgetName";
@@ -48,6 +48,10 @@ public class BudgetDetailFragment
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
     private View mHeader;
+
+    public BudgetDetailFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -63,10 +67,6 @@ public class BudgetDetailFragment
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-    public BudgetDetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -118,7 +118,7 @@ public class BudgetDetailFragment
     }
 
     @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         displayBudget();
     }
 
@@ -135,8 +135,8 @@ public class BudgetDetailFragment
     private void setUpAdapter() {
         BudgetAdapter adapter = new BudgetAdapter(getActivity(),
                 null,
-                new String[]{ BudgetQuery.CATEGNAME },
-                new int[]{ R.id.categoryTextView },
+                new String[]{BudgetQuery.CATEGNAME},
+                new int[]{R.id.categoryTextView},
                 0);
 
         adapter.setBudgetName(mBudgetName);

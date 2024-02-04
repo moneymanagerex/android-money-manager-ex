@@ -27,7 +27,7 @@ public class SpinnerHelper {
         int position = -1;
         cursor.moveToFirst();
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             String text = cursor.getString(cursor.getColumnIndex(fieldName));
             if (text.equals(displayText)) {
                 position = cursor.getPosition();

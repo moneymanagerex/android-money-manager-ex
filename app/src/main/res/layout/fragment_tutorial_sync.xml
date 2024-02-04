@@ -15,59 +15,59 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/material_grey_900"
-    android:orientation="vertical"
-    tools:context="com.money.manager.ex.tutorial.TutorialSyncFragment"
-    android:paddingBottom="50dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/material_grey_900"
+        android:orientation="vertical"
+        tools:context="com.money.manager.ex.tutorial.TutorialSyncFragment"
+        android:paddingBottom="50dp">
 
     <!-- image container -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
         <com.caverock.androidsvg.SVGImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="40dp"
-            android:scaleType="fitCenter"
-            svgimageview:svg="tutorial_images/sync.svg"/>
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="40dp"
+                android:scaleType="fitCenter"
+                svgimageview:svg="tutorial_images/sync.svg"/>
 
     </LinearLayout>
 
     <!-- text container -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
 
         <!-- Title -->
         <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/sync"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="40sp"/>
+                android:id="@+id/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sync"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="40sp"/>
 
         <!-- description -->
         <TextView
-            android:id="@+id/textViewDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/tutorial_sync_1"
-            android:textColor="@color/white"/>
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/tutorial_sync_1"
+                android:textColor="@color/white"/>
 
     </LinearLayout>
 

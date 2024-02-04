@@ -21,11 +21,18 @@ package com.money.manager.ex.common;
  */
 public interface IAllDataMultiChoiceModeListenerCallbacks {
     void onMultiChoiceCreated(android.view.Menu menu);
+
     void onDestroyActionMode();
+
     void onDeleteClicked();
+
     void onChangeTransactionStatusClicked();
+
     void onTransactionStatusClicked(String status);
+
     void onSelectAllRecordsClicked();
+
     void onDuplicateTransactionsClicked();
+
     void onItemCheckedStateChanged(int position, boolean checked);
 }

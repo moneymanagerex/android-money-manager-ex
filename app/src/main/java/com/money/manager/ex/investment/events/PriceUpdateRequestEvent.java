@@ -22,9 +22,9 @@ package com.money.manager.ex.investment.events;
  */
 public class PriceUpdateRequestEvent {
 
+    public String symbol;
+
     public PriceUpdateRequestEvent(String symbol) {
         this.symbol = symbol;
     }
-
-    public String symbol;
 }

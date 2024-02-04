@@ -19,10 +19,10 @@ package com.money.manager.ex.transactions;
 import android.content.Context;
 import android.net.Uri;
 
-import com.money.manager.ex.servicelayer.CategoryService;
-import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.servicelayer.CategoryService;
+import com.money.manager.ex.servicelayer.PayeeService;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -60,55 +60,55 @@ public class IntentDataParameters {
     public String notes;
     public boolean isSilentMode;
 
-    public static IntentDataParameters parseData(Context context, Uri data) {
-        IntentDataParameters parameters = new IntentDataParameters();
+    public static IntentDataParameters parseData(final Context context, final Uri data) {
+        final IntentDataParameters parameters = new IntentDataParameters();
 
         // transaction type
-        String transactionTypeName = data.getQueryParameter(PARAM_TRANSACTION_TYPE);
-        TransactionTypes type = TransactionTypes.valueOf(transactionTypeName);
-        if (type != null) parameters.transactionType = type;
+        final String transactionTypeName = data.getQueryParameter(PARAM_TRANSACTION_TYPE);
+        final TransactionTypes type = TransactionTypes.valueOf(transactionTypeName);
+        if (null != type) parameters.transactionType = type;
 
         // account
-        String accountName = data.getQueryParameter(PARAM_ACCOUNT);
-        if (accountName != null) {
-            AccountRepository account = new AccountRepository(context);
-            int accountId = account.loadIdByName(accountName);
+        final String accountName = data.getQueryParameter(PARAM_ACCOUNT);
+        if (null != accountName) {
+            final AccountRepository account = new AccountRepository(context);
+            final int accountId = account.loadIdByName(accountName);
             parameters.accountId = accountId;
         }
-        String accountToName = data.getQueryParameter(PARAM_ACCOUNT_TO);
-        if (accountToName != null) {
-            AccountRepository accountTo = new AccountRepository(context);
-            int accountToId = accountTo.loadIdByName(accountToName);
+        final String accountToName = data.getQueryParameter(PARAM_ACCOUNT_TO);
+        if (null != accountToName) {
+            final AccountRepository accountTo = new AccountRepository(context);
+            final int accountToId = accountTo.loadIdByName(accountToName);
             parameters.accountToId = accountToId;
         }
 
         parameters.payeeName = data.getQueryParameter(PARAM_PAYEE);
-        if (parameters.payeeName != null) {
-            PayeeService payee = new PayeeService(context);
-            int payeeId = payee.loadIdByName(parameters.payeeName);
+        if (null != parameters.payeeName) {
+            final PayeeService payee = new PayeeService(context);
+            final int payeeId = payee.loadIdByName(parameters.payeeName);
             parameters.payeeId = payeeId;
         }
 
-        String amount = data.getQueryParameter(PARAM_AMOUNT);
-        if (amount != null && !amount.isEmpty()) {
+        final String amount = data.getQueryParameter(PARAM_AMOUNT);
+        if (null != amount && !amount.isEmpty()) {
             parameters.amount = MoneyFactory.fromString(amount);
         }
-        String amountTo = data.getQueryParameter(PARAM_AMOUNT_TO);
-        if (amountTo != null && !amountTo.isEmpty()){
+        final String amountTo = data.getQueryParameter(PARAM_AMOUNT_TO);
+        if (null != amountTo && !amountTo.isEmpty()) {
             parameters.amountTo = MoneyFactory.fromString(amountTo);
         }
 
         parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
-        if (parameters.categoryName != null) {
-            CategoryService category = new CategoryService(context);
-            int categoryId = category.loadIdByName(parameters.categoryName);
+        if (null != parameters.categoryName) {
+            final CategoryService category = new CategoryService(context);
+            final int categoryId = category.loadIdByName(parameters.categoryName);
             parameters.categoryId = categoryId;
         }
 
         parameters.subcategoryName = data.getQueryParameter(PARAM_SUBCATEGORY);
-        if (parameters.subcategoryName != null) {
-            CategoryService category = new CategoryService(context);
-            int subcategoryId = category.loadIdByName(parameters.subcategoryName, parameters.categoryId);
+        if (null != parameters.subcategoryName) {
+            final CategoryService category = new CategoryService(context);
+            final int subcategoryId = category.loadIdByName(parameters.subcategoryName, parameters.categoryId);
             parameters.subcategoryId = subcategoryId;
         }
 
@@ -119,12 +119,12 @@ public class IntentDataParameters {
     }
 
     public Uri toUri() {
-        StringBuilder builder = new StringBuilder("content://parameters?");
+        final StringBuilder builder = new StringBuilder("content://parameters?");
         // content://parameters?account=account_name&transactionType=transaction_type
         // &amount=amount&payee=payee_name&category=category_name
         boolean firstParamAdded = false;
 
-        if (accountName != null) {
+        if (null != accountName) {
 //        if (accountId > 0) {
             builder.append(PARAM_ACCOUNT);
             builder.append("=");
@@ -133,7 +133,7 @@ public class IntentDataParameters {
             firstParamAdded = true;
         }
 
-        if (transactionType != null) {
+        if (null != transactionType) {
             if (firstParamAdded) {
                 builder.append("&");
             }
@@ -151,22 +151,22 @@ public class IntentDataParameters {
         builder.append("=");
         builder.append(amount);
 
-        if (payeeName != null) {
+        if (null != payeeName) {
             builder.append("&");
             builder.append(PARAM_PAYEE);
             builder.append("=");
             builder.append(payeeName);
         }
 
-        if (categoryName != null) {
+        if (null != categoryName) {
             builder.append("&");
             builder.append(PARAM_CATEGORY);
             builder.append("=");
             builder.append(categoryName);
         }
 
-        String uriString = builder.toString();
-        Uri uri = Uri.parse(uriString);
+        final String uriString = builder.toString();
+        final Uri uri = Uri.parse(uriString);
 
         return uri;
     }

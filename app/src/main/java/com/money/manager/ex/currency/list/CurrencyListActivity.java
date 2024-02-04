@@ -32,7 +32,7 @@ import androidx.fragment.app.FragmentManager;
  * List of currencies.
  */
 public class CurrencyListActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
@@ -52,9 +52,9 @@ public class CurrencyListActivity
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             // restore previous device orientation if it was modified.
-            if(fragment.mPreviousOrientation != Constants.NOT_SET) {
+            if (fragment.mPreviousOrientation != Constants.NOT_SET) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
-                if(currentOrientation != fragment.mPreviousOrientation) {
+                if (currentOrientation != fragment.mPreviousOrientation) {
                     ActivityUtils.restoreOrientation(this, fragment.mPreviousOrientation);
                 }
             }

@@ -20,18 +20,18 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_sort"
-        android:icon="@drawable/ic_action_sort_dark"
-        android:title="@string/sort"
-        app:showAsAction="always">
+            android:id="@+id/menu_sort"
+            android:icon="@drawable/ic_action_sort_dark"
+            android:title="@string/sort"
+            app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_sort_name"
-                    android:title="@string/sort_by_name"/>
+                        android:id="@+id/menu_sort_name"
+                        android:title="@string/sort_by_name"/>
                 <item
-                    android:id="@+id/menu_sort_usage"
-                    android:title="@string/sort_by_usage"/>
+                        android:id="@+id/menu_sort_usage"
+                        android:title="@string/sort_by_usage"/>
             </group>
         </menu>
     </item>

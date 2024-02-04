@@ -34,7 +34,7 @@ import androidx.fragment.app.Fragment;
  * create an instance of this fragment.
  */
 public class WebChangelogFragment
-    extends Fragment {
+        extends Fragment {
 
     public WebChangelogFragment() {
         // Required empty public constructor
@@ -93,7 +93,7 @@ public class WebChangelogFragment
 
         // Show all the versions
         String url = "https://github.com/moneymanagerex/android-money-manager-ex/releases";
-        
+
         WebView webView = view.findViewById(R.id.webView);
         if (webView != null) {
             webView.loadUrl(url);

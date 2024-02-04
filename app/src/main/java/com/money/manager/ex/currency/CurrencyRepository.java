@@ -33,7 +33,7 @@ import timber.log.Timber;
  * Currency repository. Provides access to Currency entities.
  */
 public class CurrencyRepository
-    extends RepositoryBase<Currency> {
+        extends RepositoryBase<Currency> {
 
     public CurrencyRepository(Context context) {
         super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats");
@@ -43,11 +43,11 @@ public class CurrencyRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {
-            "CURRENCYID AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
-            Currency.PFX_SYMBOL, Currency.SFX_SYMBOL, Currency.DECIMAL_POINT,
-            Currency.GROUP_SEPARATOR, Currency.UNIT_NAME, Currency.CENT_NAME,
-            Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
+        return new String[]{
+                "CURRENCYID AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
+                Currency.PFX_SYMBOL, Currency.SFX_SYMBOL, Currency.DECIMAL_POINT,
+                Currency.GROUP_SEPARATOR, Currency.UNIT_NAME, Currency.CENT_NAME,
+                Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
         };
     }
 
@@ -82,14 +82,14 @@ public class CurrencyRepository
 
     public Currency loadCurrency(int currencyId) {
         return loadCurrency(
-            Currency.CURRENCYID + "=?",
-            new String[]{Integer.toString(currencyId)});
+                Currency.CURRENCYID + "=?",
+                new String[]{Integer.toString(currencyId)});
     }
 
     public Currency loadCurrency(String code) {
         return loadCurrency(
-            Currency.CURRENCY_SYMBOL + "=?",
-            new String[] { code });
+                Currency.CURRENCY_SYMBOL + "=?",
+                new String[]{code});
     }
 
     public int saveExchangeRate(int currencyId, Money exchangeRate) {
@@ -97,9 +97,9 @@ public class CurrencyRepository
         contentValues.put(Currency.BASECONVRATE, exchangeRate.toString());
 
         int result = getContext().getContentResolver().update(this.getUri(),
-            contentValues,
-            Currency.CURRENCYID + "=?",
-            new String[] { Integer.toString(currencyId) });
+                contentValues,
+                Currency.CURRENCYID + "=?",
+                new String[]{Integer.toString(currencyId)});
 
         return result;
     }

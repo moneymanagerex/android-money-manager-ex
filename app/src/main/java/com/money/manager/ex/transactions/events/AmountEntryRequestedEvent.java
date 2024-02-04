@@ -24,14 +24,14 @@ import info.javaperformance.money.Money;
  */
 public class AmountEntryRequestedEvent {
 
-    public AmountEntryRequestedEvent(int requestId, Money amount) {
-        this.requestId = requestId;
-        this.amount = amount;
-    }
-
     public int requestId;
     /**
      * Initial amount to display.
      */
     public Money amount;
+
+    public AmountEntryRequestedEvent(final int requestId, final Money amount) {
+        this.requestId = requestId;
+        this.amount = amount;
+    }
 }

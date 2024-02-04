@@ -25,73 +25,73 @@
     <TableRow>
 
         <com.money.manager.ex.view.RobotoTextView
-            style="@style/Money.TextView.Body2.Inverse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:paddingLeft="6dp"
-            android:maxLines="1"
-            android:text="@string/account_balance"/>
+                style="@style/Money.TextView.Body2.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:paddingLeft="6dp"
+                android:maxLines="1"
+                android:text="@string/account_balance"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewAccountBalance"
-            style="@style/Money.TextView.Body2.Inverse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_weight="1"
-            android:textStyle="bold"/>
+                android:id="@+id/textViewAccountBalance"
+                style="@style/Money.TextView.Body2.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textStyle="bold"/>
     </TableRow>
 
     <!-- android:layout_marginLeft="55dp" -->
     <TableRow>
 
         <com.money.manager.ex.view.RobotoTextView
-            style="@style/Money.TextView.Body2.Inverse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:paddingLeft="6dp"
-            android:maxLines="1"
-            android:text="@string/account_reconciled_balance"/>
+                style="@style/Money.TextView.Body2.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:paddingLeft="6dp"
+                android:maxLines="1"
+                android:text="@string/account_reconciled_balance"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewAccountReconciled"
-            style="@style/Money.TextView.Body2.Inverse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_weight="1"
-            android:textStyle="bold"/>
+                android:id="@+id/textViewAccountReconciled"
+                style="@style/Money.TextView.Body2.Inverse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textStyle="bold"/>
     </TableRow>
 
     <TableRow
-        android:layout_marginLeft="72dp"
-        android:visibility="gone">
+            android:layout_marginLeft="72dp"
+            android:visibility="gone">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:text="@string/difference"
-            android:textSize="@dimen/mmx_text_view_size_micro"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:text="@string/difference"
+                android:textSize="@dimen/mmx_text_view_size_micro"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewDifference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_weight="1"
-            android:textSize="@dimen/mmx_text_view_size_micro"
-            android:textStyle="bold"/>
+                android:id="@+id/textViewDifference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textSize="@dimen/mmx_text_view_size_micro"
+                android:textStyle="bold"/>
     </TableRow>
 
 </TableLayout>

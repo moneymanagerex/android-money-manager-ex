@@ -42,18 +42,18 @@ import timber.log.Timber;
  */
 public class FormatUtilities {
 
+    private final Context context;
+    @Inject
+    CurrencyService currencyService;
+
     public FormatUtilities(Context context) {
         this.context = context;
         MmexApplication.getApp().iocComponent.inject(this);
     }
-
     @Inject
     public FormatUtilities(MmexApplication app) {
         this.context = app;
     }
-
-    private final Context context;
-    @Inject CurrencyService currencyService;
 
     /**
      * Formats the amount in TextView with the given currency preferences.
@@ -85,7 +85,7 @@ public class FormatUtilities {
      * Uses the number of decimals from the base currency, separators from the app locale.
      *
      * @param amount Amount to be formatted.
-     * @return  String representation of the formatted number.
+     * @return String representation of the formatted number.
      */
     public String formatWithLocale(Money amount) {
         // Use the number of decimals from the base currency.
@@ -149,7 +149,7 @@ public class FormatUtilities {
     /**
      * Formats the amount with the currency scale, decimal & group separators, prefix and suffix.
      *
-     * @param value value to format
+     * @param value       value to format
      * @param showSymbols Whether to include the currency symbol in the output.
      * @return formatted value
      */
@@ -157,7 +157,7 @@ public class FormatUtilities {
         if (currency == null) return "n/a";
 
         String result = this.format(value, currency.getScale(),
-            currency.getDecimalSeparator(), currency.getGroupSeparator());
+                currency.getDecimalSeparator(), currency.getGroupSeparator());
 
         // check suffix
         if ((showSymbols) && (!TextUtils.isEmpty(currency.getSfxSymbol()))) {
@@ -173,6 +173,7 @@ public class FormatUtilities {
 
     /**
      * Formats the given value with the currency preferences.
+     *
      * @param value value to format
      * @return value formatted
      */
@@ -183,7 +184,7 @@ public class FormatUtilities {
     public String format(Money value, int currencyId) {
         CurrencyService currencyService = getCurrencyService();
         Currency currency = currencyService.getCurrency(currencyId);
-        
+
         return format(value, true, currency);
     }
 
@@ -225,12 +226,12 @@ public class FormatUtilities {
      * Ultimately, all the methods should converge to this one. Provides customization options for
      * the amount.
      *
-     * @param amount Amount to be formatted
-     * @param decimals Number of decimals to use.
+     * @param amount           Amount to be formatted
+     * @param decimals         Number of decimals to use.
      * @param decimalSeparator Decimal separator character.
-     * @param groupSeparator Group separator character.
-     * @param prefix the prefix to attach.
-     * @param suffix the suffix to attach.
+     * @param groupSeparator   Group separator character.
+     * @param prefix           the prefix to attach.
+     * @param suffix           the suffix to attach.
      * @return Number formatted.
      */
     public String formatNumber(Money amount, int decimals, String decimalSeparator, String groupSeparator,
@@ -292,7 +293,7 @@ public class FormatUtilities {
         // group & decimal symbols
         // currency symbol
         return this.formatNumber(amount, scale, currency.getDecimalSeparator(),
-            currency.getGroupSeparator(), currency.getPfxSymbol(), currency.getSfxSymbol());
+                currency.getGroupSeparator(), currency.getPfxSymbol(), currency.getSfxSymbol());
     }
 
     public CurrencyService getCurrencyService() {

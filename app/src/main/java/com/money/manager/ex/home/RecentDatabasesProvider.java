@@ -41,6 +41,8 @@ import timber.log.Timber;
 public class RecentDatabasesProvider {
 
     private static final String PREF_KEY = "LIST";
+    private final Context context;
+    public LinkedHashMap<String, DatabaseMetadata> map;
 
     @Inject
     public RecentDatabasesProvider(MmexApplication app) {
@@ -48,13 +50,10 @@ public class RecentDatabasesProvider {
         load();
     }
 
-    public LinkedHashMap<String, DatabaseMetadata> map;
-
-    private final Context context;
-
     /**
      * Persists a recent database entry.
-     * @param key Local file path is used as the key.
+     *
+     * @param key   Local file path is used as the key.
      * @param value The recent database object.
      * @return Indicator if the value was saved successfully.
      */
@@ -83,6 +82,7 @@ public class RecentDatabasesProvider {
 
     /**
      * Clears the recent files list. Leaves only the metadata for the current database.
+     *
      * @return boolean indicator of success.
      */
     public boolean clear() {
@@ -114,6 +114,7 @@ public class RecentDatabasesProvider {
 
     /**
      * find and return the current database
+     *
      * @return The current database metadata, if any, or null.
      */
     public DatabaseMetadata getCurrent() {
@@ -187,7 +188,7 @@ public class RecentDatabasesProvider {
         // remove the first item?
         String firstKey = null;
 
-        for(String key : this.map.keySet()) {
+        for (String key : this.map.keySet()) {
             firstKey = key;
             break;
         }
@@ -205,7 +206,8 @@ public class RecentDatabasesProvider {
     }
 
     private LinkedHashMap<String, DatabaseMetadata> parseStorageContent(String value) {
-        Type listType = new TypeToken<LinkedHashMap<String, DatabaseMetadata>>() {}.getType();
+        Type listType = new TypeToken<LinkedHashMap<String, DatabaseMetadata>>() {
+        }.getType();
         Gson gson = new Gson();
 
         LinkedHashMap<String, DatabaseMetadata> map = gson.fromJson(value, listType);

@@ -40,7 +40,7 @@ import timber.log.Timber;
  * Used for PayPal online donations handling.
  */
 public class WebViewActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String URL = "URL";
     /**
@@ -108,11 +108,11 @@ public class WebViewActivity
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_INSET);
 
         // prevent opening the browser app.
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             //show the web page in webview but not in web browser
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl (url);
+                view.loadUrl(url);
                 return true;
             }
 

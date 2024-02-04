@@ -28,8 +28,8 @@ import org.parceler.Parcel;
 @Parcel
 public class TransactionFilter {
 
-    public TransactionFilter() { }
-
     public DateRange dateRange;
     public StatusFilter transactionStatus;
+    public TransactionFilter() {
+    }
 }

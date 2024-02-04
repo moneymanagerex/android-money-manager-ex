@@ -16,23 +16,20 @@
  */
 package org.moneymanagerex.android.tests;
 
-import com.money.manager.ex.BuildConfig;
+import static org.junit.Assert.assertNotNull;
+
 import com.money.manager.ex.Constants;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.math.BigDecimal;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -65,7 +62,7 @@ public class MoneyTests {
 
     @Test
     public void instantiation() {
-        Money testObject = MoneyFactory.fromString("156");
+        final Money testObject = MoneyFactory.fromString("156");
 
         //assertThat(testObject).isNotNull();
         assertNotNull(testObject);
@@ -74,10 +71,10 @@ public class MoneyTests {
     //@Test
     public void multiplicationWith100() {
         // Given
-        Money testObject = MoneyFactory.fromString("2148.56");
+        final Money testObject = MoneyFactory.fromString("2148.56");
 
         // When
-        Money actual = testObject.multiply(100);
+        final Money actual = testObject.multiply(100);
 
 //        assertThat(actual.toString()).isEqualTo("214856");
     }
@@ -89,11 +86,11 @@ public class MoneyTests {
     //@Test
     public void multiplication() {
         // Given
-        Money value = MoneyFactory.fromString("2184.4983599999996");
-        double divisor = 7281.6612;
+        final Money value = MoneyFactory.fromString("2184.4983599999996");
+        final double divisor = 7281.6612;
 
         // When
-        Money actual = value.multiply(100).divide(divisor, 2);
+        final Money actual = value.multiply(100).divide(divisor, 2);
 
         // Then
 //        assertThat(actual.toString()).isEqualTo("30");
@@ -105,20 +102,20 @@ public class MoneyTests {
     //@Test
     public void bugTry2() {
         // allocation is 30%
-        double allocation = 30;
+        final double allocation = 30;
         // total value
-        Money totalValue = MoneyFactory.fromString("7281.6612");
+        final Money totalValue = MoneyFactory.fromString("7281.6612");
         // money value of 30% allocation
-        double value = allocation * totalValue.toDouble() / 100;
-        Money moneyValue = MoneyFactory.fromDouble(value);
+        final double value = allocation * totalValue.toDouble() / 100;
+        final Money moneyValue = MoneyFactory.fromDouble(value);
 
         // calculate the percentage of the money value
-        double currentAllocationD = moneyValue.multiply(100)
-            .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION)
-            .toDouble();
+        final double currentAllocationD = moneyValue.multiply(100)
+                .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION)
+                .toDouble();
 
-        Money currentAllocation = moneyValue.multiply(100)
-            .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION);
+        final Money currentAllocation = moneyValue.multiply(100)
+                .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION);
 
         // it should be 30, as set initially.
 //        assertThat(currentAllocationD).isEqualTo(30);
@@ -128,10 +125,10 @@ public class MoneyTests {
     //@Test
     public void isZero() {
         // Given
-        Money money = MoneyFactory.fromString("0");
+        final Money money = MoneyFactory.fromString("0");
 
         // When
-        boolean actual = money.isZero();
+        final boolean actual = money.isZero();
 
         // Then
 //        assertThat(actual).isTrue();
@@ -140,11 +137,11 @@ public class MoneyTests {
     //@Test
     public void zeroBigDecimal() {
         // Given
-        BigDecimal zero = new BigDecimal(0);
-        Money money = MoneyFactory.fromBigDecimal(zero);
+        final BigDecimal zero = new BigDecimal(0);
+        final Money money = MoneyFactory.fromBigDecimal(zero);
 
         // When
-        boolean actual = money.isZero();
+        final boolean actual = money.isZero();
 
         // Then
 //        assertThat(actual).isTrue();
@@ -153,8 +150,8 @@ public class MoneyTests {
     //@Test
     public void isPositive() {
         // Given
-        Money longMoney = MoneyFactory.fromString("3");
-        Money decimalMoney = MoneyFactory.fromBigDecimal(new BigDecimal(3));
+        final Money longMoney = MoneyFactory.fromString("3");
+        final Money decimalMoney = MoneyFactory.fromBigDecimal(new BigDecimal(3));
 
         // When
 

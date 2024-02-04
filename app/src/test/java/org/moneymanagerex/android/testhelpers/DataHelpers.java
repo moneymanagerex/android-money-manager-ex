@@ -26,92 +26,90 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.PayeeService;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
-import static org.robolectric.Shadows.shadowOf;
-
 /**
  * Database manipulation. Used for test preparation.
  */
-public class DataHelpers {
+public enum DataHelpers {
+    ;
+
     public static void insertData() {
-        Context context = UnitTestHelper.getContext();
+        final Context context = UnitTestHelper.getContext();
 
         // add account
 
-        AccountRepository accountRepository = new AccountRepository(context);
+        final AccountRepository accountRepository = new AccountRepository(context);
         // Bahraini dinar
-        Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
+        final Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
                 true, 17);
-        int accountId = accountRepository.add(account);
+        final int accountId = accountRepository.add(account);
         account.setId(accountId);
 //        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
 
         // add payees
 
-        PayeeRepository repo = new PayeeRepository(context);
-        for (int i = 0; i < 3; i++) {
-            Payee payee = new Payee();
+        final PayeeRepository repo = new PayeeRepository(context);
+        for (int i = 0; 3 > i; i++) {
+            final Payee payee = new Payee();
             payee.setName("payee" + i);
-            int payeeId = repo.add(payee);
+            final int payeeId = repo.add(payee);
 //            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
         }
 
         // add transactions
-        for (int i = 0; i < 3; i++) {
-            Money amount = MoneyFactory.fromString("-" + i);
+        for (int i = 0; 3 > i; i++) {
+            final Money amount = MoneyFactory.fromString("-" + i);
             // this is semantically wrong as there is no category & subcategory!
             createTransaction(accountId, 1, TransactionTypes.Withdrawal, -1, amount);
         }
     }
 
-    public static void createTransaction(int accountId, int payeeId, TransactionTypes type,
-                                         int categoryId, Money amount) {
-        AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
+    public static void createTransaction(final int accountId, final int payeeId, final TransactionTypes type,
+                                         final int categoryId, final Money amount) {
+        final AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
 
-        AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
+        final AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
                 categoryId, amount);
-        int txId = txRepo.add(tx);
+        final int txId = txRepo.add(tx);
 //        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
 
     }
 
     public static void createSplitTransaction() {
-        Context context = UnitTestHelper.getContext();
+        final Context context = UnitTestHelper.getContext();
 
         // currency
-        CurrencyService currencyService = new CurrencyService(context);
-        Currency euro = currencyService.getCurrency("EUR");
+        final CurrencyService currencyService = new CurrencyService(context);
+        final Currency euro = currencyService.getCurrency("EUR");
         // account
-        AccountService accountService = new AccountService(context);
-        Account account = accountService.createAccount("only", AccountTypes.CHECKING, AccountStatuses.OPEN,
-            true, euro.getCurrencyId());
+        final AccountService accountService = new AccountService(context);
+        final Account account = accountService.createAccount("only", AccountTypes.CHECKING, AccountStatuses.OPEN,
+                true, euro.getCurrencyId());
         // payee
-        PayeeService payeeService = new PayeeService(context);
-        Payee payee = payeeService.createNew("zdravko colic");
+        final PayeeService payeeService = new PayeeService(context);
+        final Payee payee = payeeService.createNew("zdravko colic");
         // transaction
-        Money amount = MoneyFactory.fromDouble(100);
-        AccountTransactionRepository txRepo = new AccountTransactionRepository(context);
-        AccountTransaction tx = AccountTransaction.create(account.getId(), payee.getId(),
-            TransactionTypes.Withdrawal, 1, amount);
+        final Money amount = MoneyFactory.fromDouble(100);
+        final AccountTransactionRepository txRepo = new AccountTransactionRepository(context);
+        final AccountTransaction tx = AccountTransaction.create(account.getId(), payee.getId(),
+                TransactionTypes.Withdrawal, 1, amount);
         txRepo.insert(tx);
         // split categories
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
-        SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1,
+        final SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
+        final SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1,
                 tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 1");
         splitRepo.insert(split1);
-        SplitCategory split2 = SplitCategory.create(tx.getId(), 1, -1,
+        final SplitCategory split2 = SplitCategory.create(tx.getId(), 1, -1,
                 tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 2");
         splitRepo.insert(split2);
     }

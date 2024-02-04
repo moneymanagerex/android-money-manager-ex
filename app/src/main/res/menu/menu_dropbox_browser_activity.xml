@@ -20,9 +20,9 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_refresh"
-        android:icon="?attr/ic_action_reload"
-        android:title="@string/refresh"
-        app:showAsAction="always|withText"/>
+            android:id="@+id/menu_refresh"
+            android:icon="?attr/ic_action_reload"
+            android:title="@string/refresh"
+            app:showAsAction="always|withText"/>
 
 </menu>

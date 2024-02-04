@@ -36,7 +36,7 @@ import timber.log.Timber;
  * Sqlite-based repository
  */
 public class StockHistoryRepositorySql
-    extends SqlRepositoryBase<StockHistory> {
+        extends SqlRepositoryBase<StockHistory> {
 
     private static final String TABLE_NAME = "stockhistory_v1";
 
@@ -91,9 +91,9 @@ public class StockHistoryRepositorySql
         String isoDate = new MmxDate(date).toIsoDateString();
 
         String sql = new Select()
-            .from(TABLE_NAME)
-            .where(StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?")
-            .toString();
+                .from(TABLE_NAME)
+                .where(StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?")
+                .toString();
 
         Cursor cursor = database.query(sql, symbol, isoDate);
         if (cursor == null) return false;
@@ -112,7 +112,7 @@ public class StockHistoryRepositorySql
         ContentValues values = getContentValues(symbol, price, date);
         String where = StockHistory.SYMBOL + "=?";
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
-        String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
+        String[] whereArgs = new String[]{symbol, values.getAsString(StockHistory.DATE)};
 
         int records = database.update(TABLE_NAME, values, where, whereArgs);
 

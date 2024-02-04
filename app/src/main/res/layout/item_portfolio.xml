@@ -16,26 +16,26 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mmx_list_item_height_dense"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:layout_margin="@dimen/mmx_margin"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
-    android:gravity="center_vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/mmx_list_item_height_dense"
+              android:paddingLeft="@dimen/mmx_list_item_padding_side"
+              android:paddingRight="@dimen/mmx_list_item_padding_side"
+              android:layout_margin="@dimen/mmx_margin"
+              android:orientation="horizontal"
+              android:baselineAligned="false"
+              android:gravity="center_vertical">
 
-        <!-- symbol -->
-        <com.money.manager.ex.view.RobotoTextView
+    <!-- symbol -->
+    <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/symbolTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:singleLine="true" />
+            android:singleLine="true"/>
 
-        <!-- number of shares -->
-        <com.money.manager.ex.view.RobotoTextView
+    <!-- number of shares -->
+    <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/numSharesView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,15 +43,15 @@
             android:layout_marginRight="@dimen/mmx_margin"
             android:gravity="end"
             android:ellipsize="end"
-            android:singleLine="true" />
+            android:singleLine="true"/>
 
-        <!-- price -->
-        <com.money.manager.ex.view.RobotoTextView
+    <!-- price -->
+    <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/priceTextView"
             android:layout_width="wrap_content"
             android:minWidth="40sp"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 </LinearLayout>

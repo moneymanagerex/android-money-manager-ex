@@ -16,12 +16,19 @@
  */
 package org.moneymanagerex.android.tests;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.money.manager.ex.BuildConfig;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.RequestCodes;
@@ -34,21 +41,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import info.javaperformance.money.MoneyFactory;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
 
 /**
@@ -62,8 +61,8 @@ public class SearchActivityTests {
 
     @Before
     public void setUp() {
-        this.controller = UnitTestHelper.getController(SearchActivity.class);
-        this.activity = UnitTestHelper.getActivity(this.controller);
+        controller = UnitTestHelper.getController(SearchActivity.class);
+        activity = UnitTestHelper.getActivity(controller);
 
         UnitTestHelper.setupContentProvider();
         UnitTestHelper.setupLog();
@@ -71,12 +70,12 @@ public class SearchActivityTests {
 
     @After
     public void tearDown() {
-        this.controller.destroy();
+        controller.destroy();
     }
 
     @Test
     public void activityOpens() {
-        assertThat(this.activity, notNullValue());
+        assertThat(activity, notNullValue());
     }
 
     /**
@@ -98,31 +97,31 @@ public class SearchActivityTests {
         // act
 
         // Click Select Category
-        TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
+        final TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
 //        assertThat(selectCategory).isNotNull();
         selectCategory.performClick();
 
         // confirm that clicking the Select Category text view opens category selector
-        ShadowActivity shadowActivity = Shadows.shadowOf(this.activity);
-        Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
+        final ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        final Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(this.activity,
 //                CategoryListActivity.class));
 //        assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
 
         // Now simulate that we received the category.
 
-        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
+        final Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
 //        assertThat(searchFragment).isNotNull();
 
         // We "selected" Food:Dining out.
-        Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
+        final Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
                 categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
         // Run search
 
-        LinearLayout searchButton = activity.findViewById(R.id.action_search);
+        final LinearLayout searchButton = activity.findViewById(R.id.action_search);
 //        assertThat(searchButton).isNotNull();
         searchButton.performClick();
 
@@ -131,20 +130,20 @@ public class SearchActivityTests {
 
         // confirm the Total is shown and the sum is 0.
 
-        Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
+        final Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
 //        assertThat(resultsFragment).isNotNull();
 
-        View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
+        final View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
 //        assertThat(totalView).isNotNull();
 //        assertThat(totalView).isInstanceOf(TextView.class);
-        TextView totalTextView = (TextView) totalView;
+        final TextView totalTextView = (TextView) totalView;
 //        assertThat(totalTextView.getText()).isEqualTo("Total");
 
         // total amount
-        View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
+        final View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
 //        assertThat(totalNumberView).isNotNull();
 //        assertThat(totalNumberView).isInstanceOf(TextView.class);
-        TextView totalNumberTextView = (TextView) totalNumberView;
+        final TextView totalNumberTextView = (TextView) totalNumberView;
 //        assertThat(totalNumberTextView.getText()).isEqualTo("KM 40.05");
     }
 
@@ -160,29 +159,29 @@ public class SearchActivityTests {
         // act
 
         // Click Select Category
-        TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
+        final TextView selectCategory = activity.findViewById(R.id.textViewSelectCategory);
         selectCategory.performClick();
 
         // confirm that clicking the Select Category text view opens category selector
-        ShadowActivity shadowActivity = Shadows.shadowOf(this.activity);
-        Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
+        final ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        final Intent expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
 //        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(this.activity,
 //            CategoryListActivity.class));
         assertThat(shadowActivity.getNextStartedActivity(), equalTo(expectedIntent));
 
         // Now simulate that we received the category.
 
-        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
+        final Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
 
         // We "selected" Food:Dining out.
-        Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCodes.CATEGORY, AppCompatActivity.RESULT_OK,
-            categoryData);
+        final Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
+                categoryData);
 //        assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
         // Run search
 
-        LinearLayout searchButton = activity.findViewById(R.id.action_search);
+        final LinearLayout searchButton = activity.findViewById(R.id.action_search);
         searchButton.performClick();
 
         //**************************************
@@ -190,17 +189,17 @@ public class SearchActivityTests {
 
         // confirm the Total is shown and the sum is 0.
 
-        Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
+        final Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
 
-        View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
+        final View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
 //        assertThat(totalView).isInstanceOf(TextView.class);
-        TextView totalTextView = (TextView) totalView;
+        final TextView totalTextView = (TextView) totalView;
 //        assertThat(totalTextView.getText()).isEqualTo("Total");
 
         // total amount
-        View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
+        final View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
 //        assertThat(totalNumberView).isInstanceOf(TextView.class);
-        TextView totalNumberTextView = (TextView) totalNumberView;
+        final TextView totalNumberTextView = (TextView) totalNumberView;
         assertThat(totalNumberTextView.getText().toString(), equalTo("KM 0.00"));
     }
 

@@ -16,57 +16,124 @@
   -->
 <!DOCTYPE html>
 <html>
-<head>
-<title>MoneyManagerEx for Android: 使用 Dropbox 與 Windows/Linux/Mac 版的 MoneyManagerEx 同步資料庫。</title>
-<style type="text/css">
-body {
-	background:#f5f5f5;
-	font-size:small;
-	margin: 10px;
-}
+    <head>
+        <title>MoneyManagerEx for Android: 使用 Dropbox 與 Windows/Linux/Mac 版的 MoneyManagerEx 同步資料庫。</title>
+        <style type="text/css">
+            body {
+                background: #f5f5f5;
+                font-size: small;
+                margin: 10px;
+            }
 
-.lists {
-	margin: 0;
-	padding: 0px 0px 0px 13px;
-	list-style-type: disk;
-}
+            .lists {
+                margin: 0;
+                padding: 0px 0px 0px 13px;
+                list-style-type: disk;
+            }
 
 
-.warning {color:#FF0000;}
+            .warning {
+                color: #FF0000;
+            }
 
-h2 { font-size:120%; }
-h3 { font-size:105%; }
-</style>
-</head>
-	<body>
-    <h2><b>MoneyManagerEx for Android</b></h2>
-    <h3>Windows/Linux/Mac 版的 MoneyManagerEx 使用 Dropbox 服務同步資料庫。</h3>
-    <p><b>必備條件：</b> 擁有 dropbox 帳號。如果沒有請至 www.dropbox.com申請一個帳號。</p>
-    <ul>
-        <li>連結 MoneyManagerEx for Android 和 Dropbox 。 選擇「連結到 Dropbox」。如果您的裝置已安裝 Dropbox 的應用程式，它會自動開啟並要求您授權予 MoneyManagerEx for Android 。 如果您沒有安裝 Dropbox 的應用程式，Android 會開啟瀏覽器至 Dropbox 的登入頁面。 在登入後，將要求您授權予 MoneyManagerEx for Android 。</li>
-        <li>如果您授權予 MoneyManagerEx for Android ，第1次將在 Dropbox 建立新資料夾 <i><i>/應用程式/MoneyManagerEx Mobile</i></i> 。 不應手動建立此資料夾!</li>
-    </ul>
+            h2 {
+                font-size: 120%;
+            }
 
-    <ul>
-        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>我在 Pc 版已有資料庫</b></h3></a>
-        <li>如果您已有 MoneyManagerEx Pc 版的一個資料庫(mmb)，請將它複製或搬移至<i>/應用程式/MoneyManagerEx Mobile</i> 這個資料夾 (建議使用電腦處理)。</li>
-        <li>由 MoneyManagerEx for Android 的 Dropbox 設定，選擇 "Dropbox 檔案"。 應用程式將開啟新視窗顯示 <i>/應用程式/MoneyManagerEx Mobile</i> 資料夾裡的全部檔案。 選擇您要連結的檔案並回到上一步。</li>
-        <li>當您回到 MoneyManagerEx for Android 的 Dropbox 設定，大約10秒後將下載您選擇的檔案，您會看見您的裝置上出現通知。 完成下載後，您的裝置會通知您檔案已可使用，您必須按一下"開啟資料庫"以完成 MoneyManagerEx for Android 和 Dropbox 之間的連結。</li>
+            h3 {
+                font-size: 105%;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            <b>MoneyManagerEx for Android</b>
+        </h2>
+        <h3>Windows/Linux/Mac 版的 MoneyManagerEx 使用 Dropbox 服務同步資料庫。</h3>
+        <p>
+            <b>必備條件：</b>
+            擁有 dropbox 帳號。如果沒有請至 www.dropbox.com申請一個帳號。
+        </p>
+        <ul>
+            <li>連結 MoneyManagerEx for Android 和 Dropbox 。 選擇「連結到 Dropbox」。如果您的裝置已安裝 Dropbox 的應用程式，它會自動開啟並要求您授權予 MoneyManagerEx for Android 。
+                如果您沒有安裝 Dropbox 的應用程式，Android 會開啟瀏覽器至 Dropbox 的登入頁面。 在登入後，將要求您授權予 MoneyManagerEx for Android 。
+            </li>
+            <li>如果您授權予 MoneyManagerEx for Android ，第1次將在 Dropbox 建立新資料夾
+                <i>
+                    <i>/應用程式/MoneyManagerEx Mobile</i>
+                </i>
+                。 不應手動建立此資料夾!
+            </li>
+        </ul>
 
-        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>我從未使用過 Pc 版，但我要同步此裝置的資料庫</b></h3></a>
-        <li>若您沒有 MoneyManagerEx Pc版的 mmb 資料庫檔，您必須點選「上傳到 Dropbox」，約10秒後會將目前使用中的資料庫上傳到 Dropbox。 結束時會通知已完成上傳，您可以在 <i>/應用程式/MoneyManagerEx Mobile</i> 資料夾中找到名稱為 data.mmb 的檔案。</li>
+        <ul>
+            <a name="mmb_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>我在 Pc 版已有資料庫</b>
+                </h3>
+            </a>
+            <li>如果您已有 MoneyManagerEx Pc 版的一個資料庫(mmb)，請將它複製或搬移至
+                <i>/應用程式/MoneyManagerEx Mobile</i>
+                這個資料夾 (建議使用電腦處理)。
+            </li>
+            <li>由 MoneyManagerEx for Android 的 Dropbox 設定，選擇 "Dropbox 檔案"。 應用程式將開啟新視窗顯示
+                <i>/應用程式/MoneyManagerEx Mobile</i>
+                資料夾裡的全部檔案。 選擇您要連結的檔案並回到上一步。
+            </li>
+            <li>當您回到 MoneyManagerEx for Android 的 Dropbox 設定，大約10秒後將下載您選擇的檔案，您會看見您的裝置上出現通知。 完成下載後，您的裝置會通知您檔案已可使用，您必須按一下"開啟資料庫"以完成
+                MoneyManagerEx for Android 和 Dropbox 之間的連結。
+            </li>
 
-        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>其他設定</b></h3></a>
-        <li>一旦帳號和資料庫檔案連結，MoneyManagerEx for Android 會依「同步時間間隔」中的設定自動與 Dropbox 同步。 如果您不想自動同步，請將「同步時間間隔」設定為「永遠不要」。</li>
-        <li>「資料庫有異動時立即上傳」允許 MoneyManagerEx for Android 在您異動資料後立即上傳資料庫到 Dropbox 。</li>
-        <li>使用「從 Dropbox 下載」或「上傳到 Dropbox 」強制下載或上傳資料庫檔案。</li>
-        <li>當 Dropbox 帳號與資料庫連結，主畫面會啟動頂端工具列的同步通知功能。</li>
-        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>常見問題</b></h3></a>
-        <li><b>Q. </b>我無法連結 Dropbox，或 MoneyManagerEx 無法同步?<br><b>A. </b> 首先您必須寄電子郵件至<a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> 描述問題。 在此期間，如果您要使用 MoneyManagerEx for Android 同步資料庫，您需要使用其他應用程式如 <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>、<a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> 或搜尋<a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>上的應用程式。.
-        <li><b>Q. </b>我要使用其他雲端服務(Drive, Box.net, Wuala等)與 MoneyManagerEx for Android 同步。 ..). 我該如何做?<br><b>A. </b>MoneyManagerEx for Android 唯一使用的雲端空間服務是 Dropbox。 如果您要透過其他雲端空間服務使用資料庫，您要到 Google Play 尋找允許您同步的其他應用程式。 資料庫將儲存於裝置的外接式記憶體中，然後可用 MoneyManagerEx for Android 開啟
-        <li><b>Q. </b> 同步後，我找不到我的資料。 我失去資料庫中的全部資料嗎？<br><b>A. </b> 別擔心，您沒有失去任何東西! 少數情況下，當您同步資料庫時會無法正確下載，且無法被 MoneyManagerEx for Android 讀取。 在這些情況下，請從 Dropbox 手動下載。 如果仍無法使用，請刪除 /com.money.manager.ex/dropbox/ 資料夾中的檔案再手動下載。
-        <li><b>Q. </b>可以還原資料庫至先前的版本嗎？<br><b>A. </b> 當然可以。 Dropbox 保存所有版本的檔案。 <a href="https://www.dropbox.com/help/11/">您可以在這裡找到 Dropbox 恢復檔案的導覽</a>
-        </li>
-    </ul>
+            <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>我從未使用過 Pc 版，但我要同步此裝置的資料庫</b>
+                </h3>
+            </a>
+            <li>若您沒有 MoneyManagerEx Pc版的 mmb 資料庫檔，您必須點選「上傳到 Dropbox」，約10秒後會將目前使用中的資料庫上傳到 Dropbox。 結束時會通知已完成上傳，您可以在
+                <i>/應用程式/MoneyManagerEx Mobile</i>
+                資料夾中找到名稱為 data.mmb 的檔案。
+            </li>
+
+            <a name="other_settings" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>其他設定</b>
+                </h3>
+            </a>
+            <li>一旦帳號和資料庫檔案連結，MoneyManagerEx for Android 會依「同步時間間隔」中的設定自動與 Dropbox 同步。 如果您不想自動同步，請將「同步時間間隔」設定為「永遠不要」。</li>
+            <li>「資料庫有異動時立即上傳」允許 MoneyManagerEx for Android 在您異動資料後立即上傳資料庫到 Dropbox 。</li>
+            <li>使用「從 Dropbox 下載」或「上傳到 Dropbox 」強制下載或上傳資料庫檔案。</li>
+            <li>當 Dropbox 帳號與資料庫連結，主畫面會啟動頂端工具列的同步通知功能。</li>
+            <a name="faq" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>常見問題</b>
+                </h3>
+            </a>
+            <li><b>Q.</b>我無法連結 Dropbox，或 MoneyManagerEx 無法同步?
+                <br>
+                <b>A.</b>
+                首先您必須寄電子郵件至
+                <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a>
+                描述問題。 在此期間，如果您要使用 MoneyManagerEx for Android 同步資料庫，您需要使用其他應用程式如<a
+                        href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>、
+                <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a>
+                或搜尋<a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>上的應用程式。.
+            <li><b>Q.</b>我要使用其他雲端服務(Drive, Box.net, Wuala等)與 MoneyManagerEx for Android 同步。 ..). 我該如何做?
+                <br>
+                <b>A.</b>MoneyManagerEx for Android 唯一使用的雲端空間服務是 Dropbox。 如果您要透過其他雲端空間服務使用資料庫，您要到 Google Play 尋找允許您同步的其他應用程式。
+                資料庫將儲存於裝置的外接式記憶體中，然後可用 MoneyManagerEx for Android 開啟
+            <li>
+                <b>Q.</b>
+                同步後，我找不到我的資料。 我失去資料庫中的全部資料嗎？
+                <br>
+                <b>A.</b>
+                別擔心，您沒有失去任何東西! 少數情況下，當您同步資料庫時會無法正確下載，且無法被 MoneyManagerEx for Android 讀取。 在這些情況下，請從 Dropbox 手動下載。 如果仍無法使用，請刪除
+                /com.money.manager.ex/dropbox/ 資料夾中的檔案再手動下載。
+            <li><b>Q.</b>可以還原資料庫至先前的版本嗎？
+                <br>
+                <b>A.</b>
+                當然可以。 Dropbox 保存所有版本的檔案。
+                <a href="https://www.dropbox.com/help/11/">您可以在這裡找到 Dropbox 恢復檔案的導覽</a>
+            </li>
+        </ul>
     </body>
 </html>

@@ -54,7 +54,7 @@ import timber.log.Timber;
  * The background service that synchronizes the database file.
  * It is being invoked by the timer.
  * It displays the sync notification and invokes the cloud api.
- *
+ * <p>
  * Changed to JobIntentService as per
  * https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f
  * to make it compatible with Android 8 Oreo.
@@ -75,6 +75,10 @@ public class SyncService
     private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
     private NotificationManager mNotificationManager;
+
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
+    }
 
     @Override
     public void onCreate() {
@@ -148,10 +152,6 @@ public class SyncService
         }
 
         super.onDestroy();
-    }
-
-    public static void enqueueWork(Context context, Intent intent) {
-        enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
     }
 
     /*

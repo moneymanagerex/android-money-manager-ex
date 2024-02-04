@@ -88,6 +88,7 @@ public class FileStorageHelper {
 
     /**
      * Open the selected database file from Storage Access Framework.
+     *
      * @param activityResultData the intent received in onActivityResult after the file
      *                           is selected in the picker.
      */
@@ -110,8 +111,10 @@ public class FileStorageHelper {
 
         return metadata;
     }
+
     /**
      * Synchronize local and remote database files.
+     *
      * @param metadata Database file metadata.
      */
     public String synchronize(DatabaseMetadata metadata) {
@@ -179,6 +182,7 @@ public class FileStorageHelper {
 
     /**
      * Copies the remote database locally and updates the metadata.
+     *
      * @param metadata Database file metadata.
      */
     public void pullDatabase(DatabaseMetadata metadata) {
@@ -206,18 +210,19 @@ public class FileStorageHelper {
             dbUtils.useDatabase(metadata);
         } catch (Exception e) {
             Timber.e(e);
-            Toast.makeText(getContext(),"Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
             return;
         }
         dbUtils.useDatabase(metadata);
         MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
-                       put("authority", uri.getAuthority());
-                        put("result", "pullDatabase");
-                    }});
+            put("authority", uri.getAuthority());
+            put("result", "pullDatabase");
+        }});
     }
 
     /**
      * Pushes the local file to the document provider and updates the metadata.
+     *
      * @param metadata Database file metadata.
      */
     public void pushDatabase(DatabaseMetadata metadata) {
@@ -270,7 +275,7 @@ public class FileStorageHelper {
         // Take persistable URI permission.
         _host.getContentResolver().takePersistableUriPermission(uri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         return uri;
     }
@@ -342,7 +347,7 @@ public class FileStorageHelper {
             pfd = resolver.openFileDescriptor(remote, "w");
 
             FileOutputStream fileOutputStream =
-                new FileOutputStream(pfd.getFileDescriptor());
+                    new FileOutputStream(pfd.getFileDescriptor());
 
             // local file
             File localFile = new File(metadata.localPath);
@@ -362,6 +367,7 @@ public class FileStorageHelper {
     /**
      * Shows how to delete the remote file. This was supposed to be used if a temp file is
      * uploaded. However, it is easy to overwrite the original file.
+     *
      * @param metadata The file info
      */
     private void deleteRemoteFile(DatabaseMetadata metadata) {
@@ -376,6 +382,7 @@ public class FileStorageHelper {
 
     /**
      * Creates a local copy of the database from document storage.
+     *
      * @param uri Remote Uri
      * @throws IOException boom
      */
@@ -417,8 +424,8 @@ public class FileStorageHelper {
         // Environment.getDefaultDatabaseDirectory().getPath()
 
         // This works if you defined the intent filter
-         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-         intent.setType("*/*");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
         // Set these depending on your use case. These are the defaults.
 
         // Configure initial directory by specifying a String.
@@ -432,6 +439,7 @@ public class FileStorageHelper {
 
     /**
      * Reads the date/time when the local database file was last changed.
+     *
      * @return The date/time of the last change
      */
     private MmxDate getLocalFileModifiedDate(DatabaseMetadata metadata) {

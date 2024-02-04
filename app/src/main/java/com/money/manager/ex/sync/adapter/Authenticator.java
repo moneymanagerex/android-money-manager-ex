@@ -29,7 +29,7 @@ import android.os.Bundle;
  */
 
 public class Authenticator
-    extends AbstractAccountAuthenticator {
+        extends AbstractAccountAuthenticator {
 
     public Authenticator(Context context) {
         super(context);

@@ -30,17 +30,17 @@
                   android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/fragmentMain"
-            android:layout_width="400dp"
-            android:layout_height="match_parent"/>
+                android:id="@+id/fragmentMain"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"/>
 
         <LinearLayout
-            android:id="@+id/fragmentChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/mmx_margin"
-            android:background="?attr/shape_background_shadow"
-            android:padding="@dimen/mmx_padding"/>
+                android:id="@+id/fragmentChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/mmx_margin"
+                android:background="?attr/shape_background_shadow"
+                android:padding="@dimen/mmx_padding"/>
 
     </LinearLayout>
 </LinearLayout>

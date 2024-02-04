@@ -26,39 +26,39 @@ import android.widget.ArrayAdapter;
 import com.money.manager.ex.R;
 
 public class DrawerMenuItemAdapter
-    extends ArrayAdapter<DrawerMenuItem> {
+        extends ArrayAdapter<DrawerMenuItem> {
 
-	public DrawerMenuItemAdapter(Context context) {
-		super(context, 0);
+    private final Context context;
 
-		this.context = context;
-	}
+    public DrawerMenuItemAdapter(Context context) {
+        super(context, 0);
 
-	private final Context context;
+        this.context = context;
+    }
 
     public Context getContext() {
         return this.context;
     }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		DrawerMenuItem item = getItem(position);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        DrawerMenuItem item = getItem(position);
 
-		DrawerViewHolder holder = null;
-		View view = convertView;
-		
-		if (view == null) {
-			view = LayoutInflater.from(getContext()).inflate(R.layout.item_drawer, null);
+        DrawerViewHolder holder = null;
+        View view = convertView;
+
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.item_drawer, null);
             view.setTag(new DrawerViewHolder(view));
         }
-		
-		if (view != null && holder == null) {
-			if (view.getTag() instanceof DrawerViewHolder) {
-				holder = (DrawerViewHolder)view.getTag();
-			}
-		}
 
-		if (item != null && holder != null) {
+        if (view != null && holder == null) {
+            if (view.getTag() instanceof DrawerViewHolder) {
+                holder = (DrawerViewHolder) view.getTag();
+            }
+        }
+
+        if (item != null && holder != null) {
             holder.textViewItem.setText(item.getText());
             holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
 
@@ -72,8 +72,8 @@ public class DrawerMenuItemAdapter
             } else {
                 holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
             }
-		}
-		
-		return view;
-	}
+        }
+
+        return view;
+    }
 }

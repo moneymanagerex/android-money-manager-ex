@@ -27,16 +27,16 @@ import androidx.recyclerview.widget.RecyclerView;
  * https://github.com/iPaulPro/Android-ItemTouchHelper-Demo/blob/master/app/src/main/java/co/paulburke/android/itemtouchhelperdemo/helper/SimpleItemTouchHelperCallback.java
  */
 public class SplitItemTouchCallback
-    extends ItemTouchHelper.Callback {
-
-    public SplitItemTouchCallback(SplitCategoriesAdapter adapter) {
-        mAdapter = adapter;
-    }
+        extends ItemTouchHelper.Callback {
 
     private final SplitCategoriesAdapter mAdapter;
 
+    public SplitItemTouchCallback(final SplitCategoriesAdapter adapter) {
+        mAdapter = adapter;
+    }
+
     @Override
-    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+    public int getMovementFlags(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder) {
 //        return 0;
 
 //        final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
@@ -58,7 +58,7 @@ public class SplitItemTouchCallback
 //    }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    public boolean onMove(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final RecyclerView.ViewHolder target) {
 //        return false;
 
         if (viewHolder.getItemViewType() != target.getItemViewType()) {
@@ -71,7 +71,7 @@ public class SplitItemTouchCallback
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
         // Notify the adapter of the dismissal
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }

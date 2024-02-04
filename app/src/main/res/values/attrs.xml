@@ -25,7 +25,7 @@
         <attr name="ic_action_calculator" format="reference"/>
         <attr name="ic_action_calendar_day" format="reference"/>
         <attr name="ic_action_cancel" format="reference"/>
-        <attr name="ic_action_cancel_contrast" format="reference" />
+        <attr name="ic_action_cancel_contrast" format="reference"/>
         <attr name="ic_action_copy" format="reference"/>
         <!--<attr name="ic_action_currency" format="reference"/>-->
         <attr name="ic_action_delete" format="reference"/>
@@ -62,7 +62,7 @@
         <attr name="ic_label_outline" format="reference"/>
         <attr name="ic_plusone" format="reference"/>
         <attr name="ic_paste" format="reference"/>
-        <attr name="ic_menu_selectall_holo_dark" format="reference" />
+        <attr name="ic_menu_selectall_holo_dark" format="reference"/>
 
         <attr name="sym_keyboard_delete" format="reference"/>
         <attr name="holo_blue_color_theme" format="color|reference"/>
@@ -80,18 +80,18 @@
         <attr name="theme_drawer_background_color" format="color|reference"/>
 
         <!-- Buttons -->
-        <attr name="button_background_inactive" format="reference" />
+        <attr name="button_background_inactive" format="reference"/>
 
         <!-- colors -->
-        <attr name="colorPrimaryLight" format="color|reference" />
-        <attr name="dividerColor" format="color|reference" />
-        <attr name="color_list_header" format="color|reference" />
+        <attr name="colorPrimaryLight" format="color|reference"/>
+        <attr name="dividerColor" format="color|reference"/>
+        <attr name="color_list_header" format="color|reference"/>
         <!--<attr name="toolbar_spinner_item_text_color" format="color|reference" />-->
-        <attr name="textColorSecondary" format="color|reference" />
+        <attr name="textColorSecondary" format="color|reference"/>
 
         <!-- number input binaryDialog / calculator -->
-        <attr name="calculator_button_background" format="reference" />
-        <attr name="calculator_button_operator_background" format="reference" />
+        <attr name="calculator_button_background" format="reference"/>
+        <attr name="calculator_button_operator_background" format="reference"/>
 
         <!-- spinner -->
         <attr name="holoSpinnerStyle" format="reference"/>

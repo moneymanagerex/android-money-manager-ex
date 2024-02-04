@@ -18,89 +18,89 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <com.money.manager.ex.view.RobotoTextView
+        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/income"
-
-                android:textColor="@color/md_green" />
+                android:orientation="horizontal">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewIncome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:singleLine="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/income"
 
-                android:textColor="@color/md_green" />
+                    android:textColor="@color/md_green"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:singleLine="true"
+
+                    android:textColor="@color/md_green"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/expenses"
-
-                android:textColor="@color/md_red" />
+                android:orientation="horizontal">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewExpenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:singleLine="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/expenses"
 
-                android:textColor="@color/md_red" />
+                    android:textColor="@color/md_red"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewExpenses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:singleLine="true"
+
+                    android:textColor="@color/md_red"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/difference" />
+                android:orientation="horizontal">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDifference"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:singleLine="true" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/difference"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewDifference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
 

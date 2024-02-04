@@ -30,7 +30,7 @@ import androidx.fragment.app.FragmentManager;
  * List of categories.
  */
 public class CategoryListActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String KEY_REQUEST_ID = "CategorySubCategory:RequestId";
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
@@ -65,8 +65,8 @@ public class CategoryListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             // todo: use replace?
             fm.beginTransaction()
-                .add(R.id.content, listFragment, FRAGMENTTAG)
-                .commit();
+                    .add(R.id.content, listFragment, FRAGMENTTAG)
+                    .commit();
         }
     }
 

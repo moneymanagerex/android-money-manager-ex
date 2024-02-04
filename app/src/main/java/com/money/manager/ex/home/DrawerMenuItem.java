@@ -83,11 +83,11 @@ public class DrawerMenuItem {
         return this;
     }
 
-    public void setTag(Object tag) {
-        this.mTag = tag;
-    }
-
     public Object getTag() {
         return this.mTag;
+    }
+
+    public void setTag(Object tag) {
+        this.mTag = tag;
     }
 }

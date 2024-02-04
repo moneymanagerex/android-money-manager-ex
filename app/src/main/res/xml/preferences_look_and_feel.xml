@@ -18,59 +18,59 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:icon="@null"
-        android:key="@string/pref_account_open_visible"
-        android:summary="@string/if_not_selected_willShowAllAccounts"
-        android:title="@string/view_accounts_opened"/>
+            android:icon="@null"
+            android:key="@string/pref_account_open_visible"
+            android:summary="@string/if_not_selected_willShowAllAccounts"
+            android:title="@string/view_accounts_opened"/>
     <CheckBoxPreference
-        android:icon="@null"
-        android:key="@string/pref_account_fav_visible"
-        android:summary="@string/if_not_selected_willShowAllAccounts"
-        android:title="@string/view_accounts_favorites"/>
+            android:icon="@null"
+            android:key="@string/pref_account_fav_visible"
+            android:summary="@string/if_not_selected_willShowAllAccounts"
+            android:title="@string/view_accounts_favorites"/>
 
     <ListPreference
-        android:defaultValue="@string/last7days"
-        android:icon="@null"
-        android:key="@string/pref_show_transaction"
-        android:title="@string/show_transaction"/>
+            android:defaultValue="@string/last7days"
+            android:icon="@null"
+            android:key="@string/pref_show_transaction"
+            android:title="@string/show_transaction"/>
     <!--android:entries="@array/show_transaction_values"-->
     <!--android:entryValues="@array/show_transaction_values"-->
 
     <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:icon="@null"
-        android:key="@string/pref_transaction_shown_balance"
-        android:summary="@string/summary_transaction_shown_balance"
-        android:title="@string/title_transaction_shown_balance"/>
+            android:defaultValue="false"
+            android:icon="@null"
+            android:key="@string/pref_transaction_shown_balance"
+            android:summary="@string/summary_transaction_shown_balance"
+            android:title="@string/title_transaction_shown_balance"/>
 
     <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:icon="@null"
-        android:key="@string/pref_transaction_hide_reconciled_amounts"
-        android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
-        android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>
+            android:defaultValue="false"
+            android:icon="@null"
+            android:key="@string/pref_transaction_hide_reconciled_amounts"
+            android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
+            android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>
 
     <!--<SwitchPreferenceCompat-->
-        <!--android:defaultValue="true"-->
-        <!--android:icon="@null"-->
-        <!--android:key="@string/pref_transaction_sort_by_type"-->
-        <!--android:summary="@string/pref_transaction_sort_by_type_summary"-->
-        <!--android:title="@string/pref_transaction_sort_by_type_title"/>-->
+    <!--android:defaultValue="true"-->
+    <!--android:icon="@null"-->
+    <!--android:key="@string/pref_transaction_sort_by_type"-->
+    <!--android:summary="@string/pref_transaction_sort_by_type_summary"-->
+    <!--android:title="@string/pref_transaction_sort_by_type_title"/>-->
 
     <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/application_font_entries"
-        android:entryValues="@array/application_font_values"
-        android:icon="@null"
-        android:key="@string/pref_application_font"
-        android:summary="@string/summary_application_font"
-        android:title="@string/title_application_font"/>
+            android:defaultValue="-1"
+            android:entries="@array/application_font_entries"
+            android:entryValues="@array/application_font_values"
+            android:icon="@null"
+            android:key="@string/pref_application_font"
+            android:summary="@string/summary_application_font"
+            android:title="@string/title_application_font"/>
     <ListPreference
-        android:defaultValue="default"
-        android:entries="@array/application_font_size_entries"
-        android:entryValues="@array/application_font_size_values"
-        android:icon="@null"
-        android:key="@string/pref_application_font_size"
-        android:summary="@string/summary_application_font_size"
-        android:title="@string/title_application_font_size"/>
+            android:defaultValue="default"
+            android:entries="@array/application_font_size_entries"
+            android:entryValues="@array/application_font_size_values"
+            android:icon="@null"
+            android:key="@string/pref_application_font_size"
+            android:summary="@string/summary_application_font_size"
+            android:title="@string/title_application_font_size"/>
 </PreferenceScreen>

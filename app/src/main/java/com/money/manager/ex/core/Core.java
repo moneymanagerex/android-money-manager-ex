@@ -42,17 +42,13 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxFileUtils;
 
-import java.io.File;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -62,6 +58,11 @@ import timber.log.Timber;
 
 public class Core {
 
+    private final Context mContext;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
+    @Inject
+    Lazy<AppSettings> appSettingsLazy;
     @Inject
     public Core(Context context) {
         super();
@@ -72,12 +73,9 @@ public class Core {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    private final Context mContext;
-    @Inject Lazy<MmxOpenHelper> openHelper;
-    @Inject Lazy<AppSettings> appSettingsLazy;
-
     /**
      * Show alert dialog.
+     *
      * @param textResourceId id of string to display as a message
      */
     public void alert(int textResourceId) {
@@ -102,14 +100,16 @@ public class Core {
                 })
                 .show();
     }
+
     /**
      * Get a versioncode of the application.
+     *
      * @return application version name
      */
     public int getAppVersionCode() {
         try {
             PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(
-                getContext().getPackageName(), 0);
+                    getContext().getPackageName(), 0);
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             Timber.e(e, "getting app version build number");
@@ -134,6 +134,7 @@ public class Core {
 
     /**
      * Method, which returns the last payee used
+     *
      * @return last payee used
      */
     public Payee getLastPayeeUsed() {
@@ -141,12 +142,12 @@ public class Core {
         Payee payee = null;
 
         String sql =
-        "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
-        "FROM CHECKINGACCOUNT_V1 C " +
-        "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
-        "WHERE C.TransCode <> 'Transfer' AND (c.DELETEDTIME IS NULL OR c.DELETEDTIME = '') " +
-        "ORDER BY C.TransDate DESC, C.TransId DESC " +
-        "LIMIT 1";
+                "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
+                        "FROM CHECKINGACCOUNT_V1 C " +
+                        "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
+                        "WHERE C.TransCode <> 'Transfer' AND (c.DELETEDTIME IS NULL OR c.DELETEDTIME = '') " +
+                        "ORDER BY C.TransDate DESC, C.TransId DESC " +
+                        "LIMIT 1";
 
         Cursor cursor = openHelper.get().getReadableDatabase().rawQuery(sql, null);
 
@@ -165,6 +166,7 @@ public class Core {
 
     /**
      * Return arrays of month formatted and localized
+     *
      * @return arrays of months
      */
     public String[] getListMonths() {
@@ -216,6 +218,7 @@ public class Core {
 
     /**
      * This method allows to highlight in bold the content of a search string
+     *
      * @param search       string
      * @param originalText string where to find
      * @return CharSequence modified
@@ -251,6 +254,7 @@ public class Core {
 
     /**
      * Function that determines if the application is running on tablet
+     *
      * @return true if running on the tablet, otherwise false
      */
     public boolean isTablet() {
@@ -261,6 +265,7 @@ public class Core {
 
     /**
      * Resolves the id attribute in color
+     *
      * @param attr id attribute
      * @return color
      */
@@ -282,6 +287,7 @@ public class Core {
 
     /**
      * Method, which allows you to change the language of the application on the fly.
+     *
      * @param languageToLoad language to load for the locale
      * @return and indicator whether the operation was successful
      * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
@@ -325,17 +331,17 @@ public class Core {
 
         // show changelog dialog
         new MaterialDialog.Builder(getContext())
-            .cancelable(false)
-            .title(R.string.changelog)
-            .customView(view, true)
-            .neutralText(android.R.string.ok)
-            .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            })
-            .build().show();
+                .cancelable(false)
+                .title(R.string.changelog)
+                .customView(view, true)
+                .neutralText(android.R.string.ok)
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
 
         // mark as seen
         int currentVersionCode = getAppVersionCode();
@@ -371,7 +377,7 @@ public class Core {
 
         // Create an array of the attributes we want to resolve
         // using values from a theme
-        int[] attrs = new int[] { attribute /* index 0 */};
+        int[] attrs = new int[]{attribute /* index 0 */};
         // Obtain the styled attributes. 'themedContext' is a context with a
         // theme, typically the current Activity (i.e. 'this')
         TypedArray ta = getContext().obtainStyledAttributes(attrs);

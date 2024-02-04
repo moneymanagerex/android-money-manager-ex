@@ -19,7 +19,9 @@ package com.money.manager.ex.common;
 import android.animation.LayoutTransition;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +45,7 @@ import androidx.core.view.MenuItemCompat;
  *
  */
 public abstract class BaseListFragment
-    extends AbsListFragment {
+        extends AbsListFragment {
 
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 
@@ -233,7 +235,8 @@ public abstract class BaseListFragment
     /**
      * metodo per l'implementazione del ritorno dei dati
      */
-    protected void setResult() { }
+    protected void setResult() {
+    }
 
     public void setupFloatingActionButton(View view) {
         mFloatingActionButton = view.findViewById(R.id.fab);

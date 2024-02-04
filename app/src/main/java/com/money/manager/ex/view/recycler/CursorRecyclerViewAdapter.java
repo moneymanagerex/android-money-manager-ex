@@ -25,13 +25,13 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder>
-    extends RecyclerView.Adapter<VH> {
+        extends RecyclerView.Adapter<VH> {
 
+    private final DataSetObserver mDataSetObserver;
     private Context mContext;
     private Cursor mCursor;
     private boolean mDataValid;
     private int mRowIdColumn;
-    private final DataSetObserver mDataSetObserver;
 
     public CursorRecyclerViewAdapter(Cursor cursor) {
         mCursor = cursor;
@@ -134,7 +134,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     }
 
     private class NotifyingDataSetObserver
-        extends DataSetObserver {
+            extends DataSetObserver {
 
         @Override
         public void onChanged() {

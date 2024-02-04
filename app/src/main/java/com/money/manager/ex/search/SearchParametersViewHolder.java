@@ -32,16 +32,23 @@ import butterknife.ButterKnife;
  */
 public class SearchParametersViewHolder {
 
+    @BindView(R.id.textViewFromDate)
+    TextView txtDateFrom;
+    @BindView(R.id.checkBoxDeposit)
+    RobotoCheckBox cbxDeposit;
+    @BindView(R.id.textViewFromAmount)
+    TextView txtAmountFrom;
+    @BindView(R.id.textViewToAmount)
+    TextView txtAmountTo;
+    @BindView(R.id.editTextTransNumber)
+    EditText txtTransNumber;
+    @BindView(R.id.textViewSelectPayee)
+    TextView txtSelectPayee;
+    @BindView(R.id.textViewToDate)
+    TextView txtDateTo;
+    @BindView(R.id.editTextNotes)
+    EditText edtNotes;
     public SearchParametersViewHolder(View view) {
         ButterKnife.bind(this, view);
     }
-
-    @BindView(R.id.textViewFromDate) TextView txtDateFrom;
-    @BindView(R.id.checkBoxDeposit) RobotoCheckBox cbxDeposit;
-    @BindView(R.id.textViewFromAmount) TextView txtAmountFrom;
-    @BindView(R.id.textViewToAmount) TextView txtAmountTo;
-    @BindView(R.id.editTextTransNumber) EditText txtTransNumber;
-    @BindView(R.id.textViewSelectPayee) TextView txtSelectPayee;
-    @BindView(R.id.textViewToDate) TextView txtDateTo;
-    @BindView(R.id.editTextNotes) EditText edtNotes;
 }

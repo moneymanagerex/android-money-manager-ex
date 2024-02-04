@@ -26,14 +26,13 @@ import com.money.manager.ex.common.WebViewActivity;
  */
 public class MyWebChromeClient extends WebChromeClient {
 
+    private final WebViewActivity MyActivity;
+
     public MyWebChromeClient(WebViewActivity parent) {
         this.MyActivity = parent;
     }
 
-    private final WebViewActivity MyActivity;
-
-    public void onProgressChanged(WebView view, int progress)
-    {
+    public void onProgressChanged(WebView view, int progress) {
         //Make the bar disappear after URL is loaded, and changes string to Loading...
 //        MyActivity.setTitle("Loading...");
 //        MyActivity.setProgress(progress * 100); //Make the bar disappear after URL is loaded

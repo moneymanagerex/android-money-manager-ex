@@ -20,27 +20,27 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_duplicate_transactions"
-        android:icon="?attr/ic_action_copy"
-        android:title="@string/duplicate_selected_transactions"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/menu_duplicate_transactions"
+            android:icon="?attr/ic_action_copy"
+            android:title="@string/duplicate_selected_transactions"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/menu_change_status"
-        android:icon="@drawable/ic_tag_text_outline_dark"
-        android:title="@string/change_status"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/menu_change_status"
+            android:icon="@drawable/ic_tag_text_outline_dark"
+            android:title="@string/change_status"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/menu_delete"
-        android:icon="?attr/ic_action_delete"
-        android:title="@string/delete_transaction"
-        app:showAsAction="ifRoom|withText"/>
+            android:id="@+id/menu_delete"
+            android:icon="?attr/ic_action_delete"
+            android:title="@string/delete_transaction"
+            app:showAsAction="ifRoom|withText"/>
 
     <item
-        android:id="@+id/menu_select_all"
-        android:icon="@drawable/ic_menu_selectall_holo_dark"
-        android:title="@string/select_all"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/menu_select_all"
+            android:icon="@drawable/ic_menu_selectall_holo_dark"
+            android:title="@string/select_all"
+            app:showAsAction="ifRoom"/>
 
 </menu>

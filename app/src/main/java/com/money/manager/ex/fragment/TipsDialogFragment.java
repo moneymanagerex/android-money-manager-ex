@@ -120,20 +120,20 @@ public class TipsDialogFragment extends DialogFragment {
         }
 
         return new AlertDialogWrapper(getContext())
-            .setTitle(getTitle())
-            .setView(view)
-            .setCancelable(false)
-        .setNeutralButton(android.R.string.ok, new OnClickListener() {
+                .setTitle(getTitle())
+                .setView(view)
+                .setCancelable(false)
+                .setNeutralButton(android.R.string.ok, new OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (getActivity() != null) {
-                    getActivity().getSharedPreferences(PREF_DIALOG, 0).edit().putBoolean(getKey(), !isCheckDontShowAgain()).commit();
-                }
-                dialog.dismiss();
-            }
-        })
-         .create();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (getActivity() != null) {
+                            getActivity().getSharedPreferences(PREF_DIALOG, 0).edit().putBoolean(getKey(), !isCheckDontShowAgain()).commit();
+                        }
+                        dialog.dismiss();
+                    }
+                })
+                .create();
     }
 
     @Override

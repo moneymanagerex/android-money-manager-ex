@@ -30,7 +30,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Source: Table Checking Account.
  */
 public class AccountTransactionRepository
-    extends RepositoryBase {
+        extends RepositoryBase {
 
     public AccountTransactionRepository(Context context) {
         super(context, "checkingaccount_v1", DatasetType.TABLE, "checkingaccount");
@@ -38,7 +38,7 @@ public class AccountTransactionRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {
+        return new String[]{
                 "TRANSID AS _id", AccountTransaction.TRANSID,
                 ITransactionEntity.ACCOUNTID,
                 ITransactionEntity.TOACCOUNTID,

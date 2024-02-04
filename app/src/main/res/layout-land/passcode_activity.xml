@@ -16,271 +16,271 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/linearLayoutInfo"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:id="@+id/linearLayoutInfo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_margin="5dp"
-                android:text="Message"
-                android:textSize="@dimen/mmx_text_view_size_medium"/>
-
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linearLayoutInfo"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_margin="5dp"
+                    android:text="Message"
+                    android:textSize="@dimen/mmx_text_view_size_medium"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/linearLayoutInfo"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                 <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextPasscode1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"/>
+                        android:id="@+id/editTextPasscode1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="@dimen/mmx_text_view_size_medium"
+                        android:textStyle="bold"/>
 
                 <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextPasscode2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"/>
+                        android:id="@+id/editTextPasscode2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="@dimen/mmx_text_view_size_medium"
+                        android:textStyle="bold"/>
 
                 <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextPasscode3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"
-                    android:maxLines="1" />
+                        android:id="@+id/editTextPasscode3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/mmx_text_view_size_medium"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
 
                 <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextPasscode4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"
-                    android:maxLines="1" />
+                        android:id="@+id/editTextPasscode4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/mmx_text_view_size_medium"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
 
                 <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextPasscode5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:gravity="center"
-                    android:inputType="textPassword"
-                    android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"
-                    android:maxLines="1" />
+                        android:id="@+id/editTextPasscode5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/mmx_text_view_size_medium"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonPasscode1"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="1"
-                android:tag="1"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode1"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:tag="1"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode2"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="2"
-                android:tag="2"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode2"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="2"
+                    android:tag="2"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode3"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="3"
-                android:tag="3"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode3"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="3"
+                    android:tag="3"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonPasscode4"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="4"
-                android:tag="4"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode4"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="4"
+                    android:tag="4"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode5"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="5"
-                android:tag="5"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode5"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="5"
+                    android:tag="5"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode6"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="6"
-                android:tag="6"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode6"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="6"
+                    android:tag="6"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonPasscode7"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="7"
-                android:tag="7"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode7"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="7"
+                    android:tag="7"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode8"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="8"
-                android:tag="8"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode8"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="8"
+                    android:tag="8"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/buttonPasscode9"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="9"
-                android:tag="9"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode9"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="9"
+                    android:tag="9"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
 
             <com.money.manager.ex.view.RobotoButton
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:tag=" "
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"
-                android:visibility="invisible"/>
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:tag=" "
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"
+                    android:visibility="invisible"/>
 
             <Button
-                android:id="@+id/buttonPasscode0"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="0"
-                android:tag="0"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscode0"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:tag="0"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
 
             <ImageButton
-                android:id="@+id/buttonPasscodeKeyBack"
-                style="@style/Money.Button"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/sym_keyboard_delete"
-                android:tag="DEL"
-                android:textSize="@dimen/mmx_text_view_size_medium"
-                android:textStyle="bold"/>
+                    android:id="@+id/buttonPasscodeKeyBack"
+                    style="@style/Money.Button"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/sym_keyboard_delete"
+                    android:tag="DEL"
+                    android:textSize="@dimen/mmx_text_view_size_medium"
+                    android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 

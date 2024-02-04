@@ -20,13 +20,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_cancel"
-        android:icon="?attr/ic_action_cancel"
-        android:title="@android:string/cancel"
-        app:showAsAction="withText|always"/>
+            android:id="@+id/menu_cancel"
+            android:icon="?attr/ic_action_cancel"
+            android:title="@android:string/cancel"
+            app:showAsAction="withText|always"/>
     <item
-        android:id="@+id/menu_done"
-        android:icon="?attr/ic_action_tick"
-        android:title="@android:string/ok"
-        app:showAsAction="withText|always"/>
+            android:id="@+id/menu_done"
+            android:icon="?attr/ic_action_tick"
+            android:title="@android:string/ok"
+            app:showAsAction="withText|always"/>
 </menu>

@@ -16,22 +16,22 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:elevation="@dimen/mmx_toolbar_elevation"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="?attr/toolbarAppPopupTheme"
-    app:layout_scrollFlags="scroll|enterAlways"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="@dimen/mmx_toolbar_elevation"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="?attr/toolbarAppPopupTheme"
+        app:layout_scrollFlags="scroll|enterAlways"/>
 
-<!--<android.support.v7.widget.Toolbar-->
-<!--android:id="@+id/toolbar"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="?attr/actionBarSize"-->
-<!--android:background="?attr/colorPrimary"-->
-<!--android:elevation="4dp"-->
-<!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-<!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:elevation="4dp"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->

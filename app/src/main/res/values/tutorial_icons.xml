@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+           tools:ignore="MissingTranslation">
 
     <!--<string name="ic_tutorial_accounts">a</string>-->
     <string name="ic_tutorial_transactions">b</string>

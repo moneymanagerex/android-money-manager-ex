@@ -24,11 +24,11 @@ public enum TransactionTypes {
     Deposit(1),
     Transfer(2);
 
+    private final int code;
+
     TransactionTypes(int i) {
         this.code = i;
     }
-
-    private final int code;
 
     public int getCode() {
         return this.code;

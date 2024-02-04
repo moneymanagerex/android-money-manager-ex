@@ -17,29 +17,29 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.money.manager.ex.currency.recycler.CurrencyRecyclerListActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:fab="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="com.money.manager.ex.currency.recycler.CurrencyRecyclerListActivity">
     <!--android:paddingTop="@dimen/mmex_list_padding_top"-->
 
     <com.money.manager.ex.view.recycler.ContextMenuRecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_action_add_dark"
-        android:visibility="gone"
-        fab:fab_colorNormal="@color/md_accent"
-        fab:fab_colorPressed="@color/md_primary_dark" />
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_action_add_dark"
+            android:visibility="gone"
+            fab:fab_colorNormal="@color/md_accent"
+            fab:fab_colorPressed="@color/md_primary_dark"/>
 
 </LinearLayout>

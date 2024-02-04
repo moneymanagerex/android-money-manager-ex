@@ -22,7 +22,7 @@ import java.util.Comparator;
  * Comparator for DatabaseMetadata objects that compares their properties.
  */
 public class RecentDatabaseEntryComparator
-    implements Comparator<DatabaseMetadata> {
+        implements Comparator<DatabaseMetadata> {
 
     /**
      * Compares the two specified objects to determine their relative ordering. The ordering

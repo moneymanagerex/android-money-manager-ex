@@ -32,7 +32,7 @@ import timber.log.Timber;
  * https://developer.android.com/training/sync-adapters/creating-sync-adapter.html
  */
 public class SyncAdapter
-    extends AbstractThreadedSyncAdapter {
+        extends AbstractThreadedSyncAdapter {
 
     // Global variables
     // Define a variable to contain a content resolver instance
@@ -70,9 +70,10 @@ public class SyncAdapter
 
     /**
      * Transfer code goes here.
-     * @param account An Account object associated with the event that triggered the sync adapter. If your server doesn't use accounts, you don't need to use the information in this object.
-     * @param bundle A Bundle containing flags sent by the event that triggered the sync adapter.
-     * @param s The authority of a content provider in the system. Your app has to have access to this provider. Usually, the authority corresponds to a content provider in your own app.
+     *
+     * @param account               An Account object associated with the event that triggered the sync adapter. If your server doesn't use accounts, you don't need to use the information in this object.
+     * @param bundle                A Bundle containing flags sent by the event that triggered the sync adapter.
+     * @param s                     The authority of a content provider in the system. Your app has to have access to this provider. Usually, the authority corresponds to a content provider in your own app.
      * @param contentProviderClient A ContentProviderClient for the content provider pointed to by the authority argument.
      *                              A ContentProviderClient is a lightweight public interface to a content provider.
      *                              It has the same basic functionality as a ContentResolver.

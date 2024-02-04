@@ -33,6 +33,16 @@ import com.money.manager.ex.utils.MmxDate;
 
 public class DatabaseMetadataFactory {
 
+    private final Context context;
+
+    public DatabaseMetadataFactory(Context context) {
+        this.context = context;
+    }
+
+    /*
+        dynamic
+     */
+
     public static DatabaseMetadata getInstance(String localPath) {
         DatabaseMetadata db = new DatabaseMetadata();
         db.localPath = localPath;
@@ -47,16 +57,6 @@ public class DatabaseMetadataFactory {
         return entry;
     }
 
-    /*
-        dynamic
-     */
-
-    public DatabaseMetadataFactory(Context context) {
-        this.context = context;
-    }
-
-    private final Context context;
-
     public Context getContext() {
         return this.context;
     }
@@ -64,6 +64,7 @@ public class DatabaseMetadataFactory {
     /**
      * Creates a database entry from the current preferences. Used for transition from preferences
      * to Database metadata records.
+     *
      * @return A database record that represents the current preferences (local/remote db paths).
      */
     public DatabaseMetadata createDefaultEntry() {

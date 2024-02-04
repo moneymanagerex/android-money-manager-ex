@@ -18,18 +18,18 @@ package com.money.manager.ex.investment;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
-import androidx.fragment.app.FragmentManager;
-
 public class PortfolioActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private static final String FRAGMENT_TAG = PortfolioFragment.class.getSimpleName();
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_portfolio);
@@ -43,10 +43,10 @@ public class PortfolioActivity
 //        if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
 //            listFragment.mAction = intent.getAction();
 //        }
-        FragmentManager fm = getSupportFragmentManager();
+        final FragmentManager fm = getSupportFragmentManager();
         // attach fragment to activity
-        if (fm.findFragmentById(R.id.content) == null) {
-            PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
+        if (null == fm.findFragmentById(R.id.content)) {
+            final PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
     }

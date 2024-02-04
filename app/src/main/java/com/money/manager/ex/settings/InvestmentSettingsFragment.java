@@ -31,13 +31,14 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
+
 import info.javaperformance.money.Money;
 
 /**
  * Look & feel preferences.
  */
 public class InvestmentSettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     private static final String KEY_THRESHOLD = "AssetAllocationThreshold";
 
@@ -113,8 +114,8 @@ public class InvestmentSettingsFragment
 
                 // show number entry form
                 AmountInputDialog
-                    .getInstance(KEY_THRESHOLD, value)
-                    .show(getFragmentManager(), KEY_THRESHOLD);
+                        .getInstance(KEY_THRESHOLD, value)
+                        .show(getFragmentManager(), KEY_THRESHOLD);
                 return true;
             }
         };

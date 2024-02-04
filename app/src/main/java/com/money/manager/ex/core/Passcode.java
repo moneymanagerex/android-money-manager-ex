@@ -36,15 +36,14 @@ import timber.log.Timber;
 public class Passcode {
 
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
-
+    private final Context mContext;
+    @Inject
+    Lazy<InfoRepositorySql> infoRepositorySqlLazy;
     public Passcode(Context context) {
         this.mContext = context.getApplicationContext();
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
-
-    private final Context mContext;
-    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
 
     public Context getContext() {
         return mContext;
@@ -52,6 +51,7 @@ public class Passcode {
 
     /**
      * Get decrypt pass-code
+     *
      * @return null if not set passcode else passcode
      */
     public String getPasscode() {
@@ -65,6 +65,7 @@ public class Passcode {
 
     /**
      * Return true if passcode has set otherwise false
+     *
      * @return indicator whether there is a passcode or not.
      */
     public boolean hasPasscode() {
@@ -73,6 +74,7 @@ public class Passcode {
 
     /**
      * Set a decrypt pass code
+     *
      * @param passcode new pass code
      */
     public boolean setPasscode(String passcode) {
@@ -95,6 +97,7 @@ public class Passcode {
 
     /**
      * Decrypt pass-code.
+     *
      * @param s encrypted pass-code
      * @return pass-code
      */
@@ -114,6 +117,7 @@ public class Passcode {
 
     /**
      * Encrypt clear pass-code
+     *
      * @param s clear pass-code
      * @return encrypted string
      */
@@ -148,6 +152,7 @@ public class Passcode {
 
     /**
      * Set a passcode into database
+     *
      * @param passcode passcode to use
      */
     private boolean savePasscode(String passcode) {

@@ -27,7 +27,7 @@ import javax.inject.Inject;
  */
 
 public class CurrencyRepositorySql
-    extends SqlRepositoryBase<Currency> {
+        extends SqlRepositoryBase<Currency> {
 
     public static final String TABLE_NAME = "currencyformats_v1";
 
@@ -38,8 +38,8 @@ public class CurrencyRepositorySql
 
     public boolean exists(String currencyCode) {
         Select query = new Select(Currency.CURRENCYID)
-            .from(tableName)
-            .where(Currency.CURRENCY_SYMBOL + "=?", currencyCode);
+                .from(tableName)
+                .where(Currency.CURRENCY_SYMBOL + "=?", currencyCode);
 
         return super.exists(query);
     }

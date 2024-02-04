@@ -45,13 +45,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
 import timber.log.Timber;
 
 /**
  *
  */
 public class PerDatabaseFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     public static final int REQUEST_PICK_CURRENCY = 1;
 
@@ -276,8 +277,8 @@ public class PerDatabaseFragment
         entryValues[0] = "-1";
         // list of currencies
         for (int i = 1; i < accounts.size() + 1; i++) {
-            entries[i] = accounts.get(i-1).getName();
-            entryValues[i] = accounts.get(i-1).getId().toString();
+            entries[i] = accounts.get(i - 1).getName();
+            entryValues[i] = accounts.get(i - 1).getId().toString();
         }
         // set value
         preference.setEntries(entries);

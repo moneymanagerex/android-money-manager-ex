@@ -37,7 +37,7 @@ import com.money.manager.ex.utils.MmxDate;
  * Look & feel preferences.
  */
 public class BehaviourSettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     private static final String KEY_NOTIFICATION_TIME = "NotificationTime";
 
@@ -115,40 +115,30 @@ public class BehaviourSettingsFragment
     }
 
     //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates
-    private void initializeSmsAutomation()
-    {
+    private void initializeSmsAutomation() {
         final BehaviourSettings settings = new BehaviourSettings(getActivity());
 
         Preference preference = findPreference(getString(PreferenceConstants.PREF_SMS_AUTOMATIC_TRANSACTIONS));
 
         if (preference == null) return;
 
-        Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener()
-        {
+        Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
 
-                if (Build.VERSION.SDK_INT >= 23)
-                {
+                if (Build.VERSION.SDK_INT >= 23) {
                     //Check the permission exists, if not request the permission from the user
                     int result = ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.RECEIVE_SMS);
 
-                    if (settings.getBankSmsTrans())
-                    {
-                        if (result == PackageManager.PERMISSION_GRANTED)
-                        {
+                    if (settings.getBankSmsTrans()) {
+                        if (result == PackageManager.PERMISSION_GRANTED) {
                             Toast.makeText(getActivity(), R.string.granted_receive_sms_access, Toast.LENGTH_LONG).show();
-                        }
-                        else
-                        {
+                        } else {
                             // request for the permission
                             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECEIVE_SMS}, 1);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         // remove the permissions
                         Toast.makeText(getActivity(), R.string.revoke_receive_sms_access, Toast.LENGTH_LONG).show();
                         settings.setBankSmsTrans(false);

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,15 +31,17 @@ import butterknife.ButterKnife;
  */
 
 class BudgetEditViewHolder {
+    @BindView(R.id.budgetNameTextView)
+    TextView budgetNameTextView;
+    @BindView(R.id.budgetYearTextView)
+    TextView budgetYearTextView;
+    @BindView(R.id.budgetMonthTextView)
+    TextView budgetMonthTextView;
+    private BudgetViewModel model;
+
     BudgetEditViewHolder(AppCompatActivity activity) {
         ButterKnife.bind(this, activity);
     }
-
-    @BindView(R.id.budgetNameTextView) TextView budgetNameTextView;
-    @BindView(R.id.budgetYearTextView) TextView budgetYearTextView;
-    @BindView(R.id.budgetMonthTextView) TextView budgetMonthTextView;
-
-    private BudgetViewModel model;
 
     public void bind(BudgetViewModel model) {
         this.model = model;

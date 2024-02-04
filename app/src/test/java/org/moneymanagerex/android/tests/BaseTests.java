@@ -16,15 +16,11 @@
  */
 package org.moneymanagerex.android.tests;
 
-import com.money.manager.ex.BuildConfig;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 /**
  * A model for test class.
@@ -64,7 +60,7 @@ public class BaseTests {
     /**
      * Exception test example.
      */
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void throwsException() {
         throw new RuntimeException("bang!");
     }

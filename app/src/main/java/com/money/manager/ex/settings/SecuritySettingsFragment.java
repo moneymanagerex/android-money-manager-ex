@@ -33,9 +33,10 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 /**
+ *
  */
 public class SecuritySettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     private static final int REQUEST_INSERT_PASSCODE = 1;
     private static final int REQUEST_EDIT_PASSCODE = 2;

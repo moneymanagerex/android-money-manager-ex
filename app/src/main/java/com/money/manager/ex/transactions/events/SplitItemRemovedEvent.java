@@ -24,9 +24,9 @@ import com.money.manager.ex.database.ISplitTransaction;
  * Called from the individual split item fragment.
  */
 public class SplitItemRemovedEvent {
-    public SplitItemRemovedEvent(ISplitTransaction entity) {
+    public ISplitTransaction entity;
+
+    public SplitItemRemovedEvent(final ISplitTransaction entity) {
         this.entity = entity;
     }
-
-    public ISplitTransaction entity;
 }

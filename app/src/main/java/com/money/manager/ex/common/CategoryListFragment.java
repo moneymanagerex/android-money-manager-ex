@@ -73,19 +73,17 @@ import static androidx.core.content.ContextCompat.startActivity;
  * when selecting the category for a transaction.
  */
 public class CategoryListFragment
-    extends BaseExpandableListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    public String mAction = Intent.ACTION_EDIT;
-    public Integer requestId;
+        extends BaseExpandableListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
-
     private static final String KEY_ID_GROUP = "CategorySubCategory:idGroup";
     private static final String KEY_ID_CHILD = "CategorySubCategory:idChild";
     private static final String KEY_CUR_FILTER = "CategorySubCategory:curFilter";
     // table or query
     private static QueryCategorySubCategory mQuery;
+    public String mAction = Intent.ACTION_EDIT;
+    public Integer requestId;
     private int mLayout;
     private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
     private int mIdChildChecked = ExpandableListView.INVALID_POSITION;
@@ -420,7 +418,7 @@ public class CategoryListFragment
                 // check if expand group
                 if (!TextUtils.isEmpty(filter)) {
                     String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD)
-                        .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+                            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
                     if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
                         mPositionToExpand.add(mCategories.size() - 1);
                     }
@@ -433,7 +431,7 @@ public class CategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-            mLayout, mCategories, mSubCategories, showSelector);
+                mLayout, mCategories, mSubCategories, showSelector);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
     }
@@ -461,26 +459,26 @@ public class CategoryListFragment
         }
         if (!(canDelete)) {
             new MaterialDialog.Builder(getContext())
-                .title(R.string.attention)
-                .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                .content(R.string.category_can_not_deleted)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .build().show();
+                    .title(R.string.attention)
+                    .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
+                    .content(R.string.category_can_not_deleted)
+                    .positiveText(android.R.string.ok)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
             return;
         }
 
         // Prompt for deletion.
         new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_category)
-            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-            .content(R.string.confirmDelete)
-            .positiveText(android.R.string.ok)
+                .title(R.string.delete_category)
+                .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
+                .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -498,7 +496,7 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 })
-            .negativeText(android.R.string.cancel)
+                .negativeText(android.R.string.cancel)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -506,7 +504,7 @@ public class CategoryListFragment
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     /**
@@ -531,9 +529,9 @@ public class CategoryListFragment
         UIHelper ui = new UIHelper(getActivity());
 
         new MaterialDialog.Builder(getContext())
-            .customView(viewDialog, true)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
-            .title(titleId)
+                .customView(viewDialog, true)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
+                .title(titleId)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -568,7 +566,7 @@ public class CategoryListFragment
                         dialog.cancel();
                     }
                 })
-        .build().show();
+                .build().show();
     }
 
     /**
@@ -613,9 +611,9 @@ public class CategoryListFragment
         UIHelper ui = new UIHelper(getActivity());
 
         new MaterialDialog.Builder(getContext())
-            .customView(viewDialog, true)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
-            .title(titleId)
+                .customView(viewDialog, true)
+                .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
+                .title(titleId)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -661,7 +659,7 @@ public class CategoryListFragment
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .build().show();
     }
 
     private void addListClickHandlers() {
@@ -714,31 +712,31 @@ public class CategoryListFragment
      */
     private void showTypeSelectorDialog() {
         new MaterialDialog.Builder(getActivity())
-            .title(R.string.choose_type)
-            .items(R.array.category_type)
-            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    /**
-                     * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                     * returning false here won't allow the newly selected radio button to actually be selected.
-                     **/
+                .title(R.string.choose_type)
+                .items(R.array.category_type)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        /**
+                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                         * returning false here won't allow the newly selected radio button to actually be selected.
+                         **/
 //                        showNameEntryDialog();
 
-                    // todo: depending on the choice, show the edit binaryDialog. 0-based
-                    if (which == 0) {
-                        showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
-                    } else {
-                        showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
-                    }
+                        // todo: depending on the choice, show the edit binaryDialog. 0-based
+                        if (which == 0) {
+                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                        } else {
+                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                        }
 
-                    return true;
-                }
-            })
-            .positiveText(android.R.string.ok)
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
 //                .negativeText(android.R.string.cancel)
-            .neutralText(android.R.string.cancel)
-            .show();
+                .neutralText(android.R.string.cancel)
+                .show();
     }
 
     private void showSearchActivityFor(SearchParameters parameters) {

@@ -21,12 +21,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteQueryBuilder;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.collection.SparseArrayCompat;
 
 import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.currency.CurrencyRepository;
@@ -49,8 +50,8 @@ import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
-import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.sync.SyncManager;
 
 import java.util.Arrays;
@@ -59,8 +60,6 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.collection.SparseArrayCompat;
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -70,63 +69,62 @@ import timber.log.Timber;
  * application data
  */
 public class MmxContentProvider
-    extends ContentProvider {
+        extends ContentProvider {
 
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
     private static final SparseArrayCompat<Object> mapContent = new SparseArrayCompat<>();
     private static String mAuthority;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
 
     public MmxContentProvider() {
-        super();
     }
-
-    @Inject Lazy<MmxOpenHelper> openHelper;
 
     public static String getAuthority() {
         return mAuthority;
     }
 
-    public static void setAuthority(String mAuthority) {
+    public static void setAuthority(final String mAuthority) {
         MmxContentProvider.mAuthority = mAuthority;
     }
 
     @Override
     public boolean onCreate() {
-        Context context = getContext();
-        if (context == null) return false;
+        final Context context = getContext();
+        if (null == context) return false;
 
-        setAuthority(context.getApplicationContext().getPackageName() + ".provider");
+        mAuthority = context.getApplicationContext().getPackageName() + ".provider";
 
-        List<Dataset> objMoneyManager = Arrays.asList(
-            new AccountRepository(context),
-            new AccountTransactionRepository(context),
-            new BudgetEntryRepository(context),
-            new BudgetRepository(context),
-            new CategoryRepository(context),
-            new CurrencyRepository(context),
+        final List<Dataset> objMoneyManager = Arrays.asList(
+                new AccountRepository(context),
+                new AccountTransactionRepository(context),
+                new BudgetEntryRepository(context),
+                new BudgetRepository(context),
+                new CategoryRepository(context),
+                new CurrencyRepository(context),
 //            new InfoRepositorySql(context),
-            new PayeeRepository(context),
-            new RecurringTransactionRepository(context),
-            new SplitCategoriesRepository(context),
-            new SplitRecurringCategoriesRepository(context),
-            new StockRepository(context),
-            new StockHistoryRepository(context),
-            new QueryAccountBills(context),
-            new QueryCategorySubCategory(context),
-            new QueryAllData(context),
-            new QueryBillDeposits(context),
-            new QueryReportIncomeVsExpenses(context),
-            new BudgetQuery(context),
-            new ViewMobileData(context),
-            new SQLDataSet()
+                new PayeeRepository(context),
+                new RecurringTransactionRepository(context),
+                new SplitCategoriesRepository(context),
+                new SplitRecurringCategoriesRepository(context),
+                new StockRepository(context),
+                new StockHistoryRepository(context),
+                new QueryAccountBills(context),
+                new QueryCategorySubCategory(context),
+                new QueryAllData(context),
+                new QueryBillDeposits(context),
+                new QueryReportIncomeVsExpenses(context),
+                new BudgetQuery(context),
+                new ViewMobileData(context),
+                new SQLDataSet()
         );
 
         // Cycle all data sets for the composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {
             // add URI
-            sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasepath(), i);
+            sUriMatcher.addURI(mAuthority, objMoneyManager.get(i).getBasepath(), i);
             // put map in the object being added in UriMatcher
             mapContent.put(i, objMoneyManager.get(i));
         }
@@ -134,27 +132,27 @@ public class MmxContentProvider
     }
 
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull final Uri uri, final String[] projection, final String selection, final String[] selectionArgs, final String sortOrder) {
         try {
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "content provider.query %s", uri);
         }
         return null;
     }
 
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
+    public Uri insert(@NonNull final Uri uri, final ContentValues values) {
         Timber.d("Insert Uri: %s", uri);
 
         // find object from uri
-        Object ret = getObjectFromUri(uri);
+        final Object ret = getObjectFromUri(uri);
         long id = Constants.NOT_SET;
-        String parse;
+        final String parse;
 
         if (ret instanceof Dataset) {
-            Dataset dataset = ((Dataset) ret);
-            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+            final Dataset dataset = ((Dataset) ret);
+            if (DatasetType.TABLE == Objects.requireNonNull(dataset.getType())) {
                 logTableInsert(dataset, values);
 
                 //database.beginTransaction();
@@ -164,7 +162,7 @@ public class MmxContentProvider
                     id = openHelper.get().getWritableDatabase()
                             .insertOrThrow(dataset.getSource(), null, values);
                     //database.setTransactionSuccessful();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     Timber.e(e, "inserting: %s", "insert");
                 }
                 parse = dataset.getBasepath() + "/" + id;
@@ -175,7 +173,7 @@ public class MmxContentProvider
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
-        if (id > 0) {
+        if (0 < id) {
             notifyChange(uri);
         }
 
@@ -184,25 +182,25 @@ public class MmxContentProvider
     }
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
+    public int update(@NonNull final Uri uri, final ContentValues values, final String whereClause, final String[] whereArgs) {
         Timber.d("Update Uri: %s", uri);
 
-        Object ret = getObjectFromUri(uri);
+        final Object ret = getObjectFromUri(uri);
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getWritableDatabase();
+        final SQLiteDatabase database = openHelper.get().getWritableDatabase();
 
         int rowsUpdate = 0;
 
         if (ret instanceof Dataset) {
-            Dataset dataset = ((Dataset) ret);
-            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+            final Dataset dataset = ((Dataset) ret);
+            if (DatasetType.TABLE == Objects.requireNonNull(dataset.getType())) {
                 logUpdate(dataset, values, whereClause, whereArgs);
 
                 try {
                     rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     Timber.e(ex, "updating: %s", "update");
                 }
             } else {
@@ -212,7 +210,7 @@ public class MmxContentProvider
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
-        if (rowsUpdate > 0) {
+        if (0 < rowsUpdate) {
             notifyChange(uri);
         }
 
@@ -221,11 +219,11 @@ public class MmxContentProvider
     }
 
     @Override
-    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull final Uri uri, final String selection, final String[] selectionArgs) {
         Timber.d("Delete URI: %s", uri);
 
         // find object from uri
-        Object ret = getObjectFromUri(uri);
+        final Object ret = getObjectFromUri(uri);
         // safety control of having the where if not clean the table
         if (TextUtils.isEmpty(selection)) {
             throw new IllegalArgumentException("Delete not permitted because not define where clause");
@@ -234,8 +232,8 @@ public class MmxContentProvider
         int rowsDelete = 0;
 
         if (ret instanceof Dataset) {
-            Dataset dataset = ((Dataset) ret);
-            if (Objects.requireNonNull(dataset.getType()) == DatasetType.TABLE) {
+            final Dataset dataset = ((Dataset) ret);
+            if (DatasetType.TABLE == Objects.requireNonNull(dataset.getType())) {
                 logDelete(dataset, selection, selectionArgs);
                 try {
                     initializeDependencies();
@@ -248,7 +246,7 @@ public class MmxContentProvider
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                     database.setTransactionSuccessful();
                     */
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     Timber.e(e, "insert");
                 }
             } else {
@@ -258,7 +256,7 @@ public class MmxContentProvider
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
-        if (rowsDelete > 0) notifyChange(uri);
+        if (0 < rowsDelete) notifyChange(uri);
 
         return rowsDelete;
     }
@@ -266,27 +264,30 @@ public class MmxContentProvider
     /**
      * Prepare statement SQL from data set object
      *
-     * @param query SQL query
+     * @param query      SQL query
      * @param projection ?
-     * @param selection ?
-     * @param sortOrder field name for sort order
+     * @param selection  ?
+     * @param sortOrder  field name for sort order
      * @return statement
      */
-    public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
-        String selectList, from, where = "", sort = "";
+    public String prepareQuery(String query, final String[] projection, final String selection, final String sortOrder) {
+        String selectList;
+        final String from;
+        String where = "";
+        String sort = "";
 
         // todo: use builder?
 //        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 //        SQLiteQueryBuilder.buildQueryString(false, )
 
         // compose select list
-        if (projection == null) {
+        if (null == projection) {
             selectList = "SELECT *";
         } else {
             selectList = "SELECT ";
 
             for (int i = 0; i < projection.length; i++) {
-                if (i > 0) {
+                if (0 < i) {
                     selectList += ", ";
                 }
                 selectList += projection[i];
@@ -322,13 +323,13 @@ public class MmxContentProvider
         return query;
     }
 
-    public Object getObjectFromUri(Uri uri) {
-        int uriMatch = sUriMatcher.match(uri);
+    public Object getObjectFromUri(final Uri uri) {
+        final int uriMatch = sUriMatcher.match(uri);
 //        Timber.d("Uri Match Result: %s", Integer.toString(uriMatch));
 
         // find key into hash map
-        Object objectRet = mapContent.get(uriMatch);
-        if (objectRet == null) {
+        final Object objectRet = mapContent.get(uriMatch);
+        if (null == objectRet) {
             throw new IllegalArgumentException("Unknown URI for Update: " + uri);
         }
 
@@ -336,12 +337,12 @@ public class MmxContentProvider
     }
 
     @Override
-    public String getType(@NonNull Uri uri) {
+    public String getType(@NonNull final Uri uri) {
         return null;
     }
 
     public void resetDatabase() {
-        if (openHelper != null) {
+        if (null != openHelper) {
             openHelper.get().close();
         }
 
@@ -352,48 +353,48 @@ public class MmxContentProvider
     // Private
 
     private void initializeDependencies() {
-        if (openHelper != null) return;
+        if (null != openHelper) return;
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    private void logTableInsert(Dataset dataset, ContentValues values) {
+    private void logTableInsert(final Dataset dataset, final ContentValues values) {
         String log = "INSERT INTO " + dataset.getSource();
-        if (values != null) {
+        if (null != values) {
             log += " VALUES ( " + values + ")";
         }
         Timber.d(log);
     }
 
-    private Cursor query_internal(Uri uri, String[] projection, String selection,
-                                  String[] selectionArgs, String sortOrder){
+    private Cursor query_internal(final Uri uri, final String[] projection, final String selection,
+                                  final String[] selectionArgs, final String sortOrder) {
         Timber.v("Querying URI: %s", uri);
         Timber.v("Querying projection: %s", projection);
         Timber.v("Querying selection: %s", selection);
         Timber.v("Querying selectionArgs: %s", selectionArgs);
 
         // find object from uri
-        Object sourceObject = getObjectFromUri(uri);
+        final Object sourceObject = getObjectFromUri(uri);
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getReadableDatabase();
-        if (database == null) {
+        final SQLiteDatabase database = openHelper.get().getReadableDatabase();
+        if (null == database) {
             Timber.e("Database could not be opened");
             return null;
         }
 
-        Cursor cursor;
+        final Cursor cursor;
 
         // check type of instance data set
         if (sourceObject instanceof Dataset) {
-            Dataset dataset = ((Dataset) sourceObject);
+            final Dataset dataset = ((Dataset) sourceObject);
 
 //            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
 
             switch (dataset.getType()) {
                 case QUERY:
-                    String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
+                    final String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
                     cursor = database.rawQuery(query, selectionArgs);
                     break;
                 case SQL:
@@ -401,7 +402,7 @@ public class MmxContentProvider
                     break;
                 case TABLE:
                 case VIEW:
-                    SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+                    final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
                     queryBuilder.setTables(dataset.getSource());
                     cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
                     break;
@@ -422,15 +423,15 @@ public class MmxContentProvider
         return cursor;
     }
 
-    private void logQuery(Dataset dataset, String[] projection, String selection,
-                          String[] selectionArgs, String sortOrder) {
+    private void logQuery(final Dataset dataset, final String[] projection, final String selection,
+                          final String[] selectionArgs, final String sortOrder) {
         // compose log verbose instruction
         String log;
         // compose log
-        if (dataset.getType() == DatasetType.SQL) {
+        if (DatasetType.SQL == dataset.getType()) {
             log = selection;
         } else {
-            if (projection != null) {
+            if (null != projection) {
                 log = "SELECT " + Arrays.asList(projection);
             } else {
                 log = "SELECT *";
@@ -442,7 +443,7 @@ public class MmxContentProvider
             if (!TextUtils.isEmpty(sortOrder)) {
                 log += " ORDER BY " + sortOrder;
             }
-            if (selectionArgs != null) {
+            if (null != selectionArgs) {
                 log += "; ARGS=" + Arrays.asList(selectionArgs);
             }
         }
@@ -450,16 +451,16 @@ public class MmxContentProvider
         Timber.d(log);
     }
 
-    private void logUpdate(Dataset dataset, ContentValues values, String whereClause, String[] whereArgs) {
+    private void logUpdate(final Dataset dataset, final ContentValues values, final String whereClause, final String[] whereArgs) {
         String log = "UPDATE " + dataset.getSource();
         // compose log verbose
-        if (values != null) {
+        if (null != values) {
             log += " SET " + values;
         }
         if (!TextUtils.isEmpty(whereClause)) {
             log += " WHERE " + whereClause;
         }
-        if (whereArgs != null) {
+        if (null != whereArgs) {
             log += "; ARGS=" + Arrays.asList(whereArgs);
         }
 
@@ -468,21 +469,21 @@ public class MmxContentProvider
         Timber.d(log);
     }
 
-    private void logDelete(Dataset dataset, String selection, String[] selectionArgs) {
+    private void logDelete(final Dataset dataset, final String selection, final String[] selectionArgs) {
         String log = "DELETE FROM " + dataset.getSource();
         // compose log verbose
         if (!TextUtils.isEmpty(selection)) {
             log += " WHERE " + selection;
         }
-        if (selectionArgs != null) {
+        if (null != selectionArgs) {
             log += "; ARGS=" + Arrays.asList(selectionArgs);
         }
         // open transaction
         Timber.d(log);
     }
 
-    private void notifyChange(Uri uri) {
-        if (getContext() == null) return;
+    private void notifyChange(final Uri uri) {
+        if (null == getContext()) return;
 
         // notify update. todo Do this also after changes via sqlite.
         getContext().getContentResolver().notifyChange(uri, null);

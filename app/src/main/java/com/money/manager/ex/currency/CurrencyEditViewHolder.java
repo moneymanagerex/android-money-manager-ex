@@ -27,6 +27,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * View Holder pattern for the currencies list.
  */
 public class CurrencyEditViewHolder {
+    public EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix,
+            edtDecimal, edtGroup, edtScale, edtConversion;
+    public Spinner spinCurrencySymbol;
+
     public static CurrencyEditViewHolder initialize(AppCompatActivity activity) {
         CurrencyEditViewHolder holder = new CurrencyEditViewHolder();
 
@@ -43,9 +47,5 @@ public class CurrencyEditViewHolder {
 
         return holder;
     }
-
-    public EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix,
-        edtDecimal, edtGroup, edtScale, edtConversion;
-    public Spinner spinCurrencySymbol;
 
 }

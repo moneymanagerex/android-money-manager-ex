@@ -31,6 +31,7 @@ public class UploadWorker extends Worker {
     public UploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+
     @NonNull
     @Override
     public Result doWork() {

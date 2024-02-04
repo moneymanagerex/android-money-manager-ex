@@ -62,6 +62,7 @@ public class IntentFactory {
     /**
      * Creates the intent that will start the Main Activity, resetting the activity stack.
      * This will prevent going back to any previous activity.
+     *
      * @return intent
      */
     public static Intent getMainActivityNew(Context context) {

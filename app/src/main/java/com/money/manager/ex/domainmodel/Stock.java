@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -36,16 +35,20 @@ import info.javaperformance.money.MoneyFactory;
  */
 @Parcel
 public class Stock
-    extends EntityBase {
+        extends EntityBase {
 
-    public static Stock from(Cursor c) {
-        Stock stock = new Stock();
+    public Stock() {
+        // default constructor.
+    }
+
+    public static Stock from(final Cursor c) {
+        final Stock stock = new Stock();
         stock.loadFromCursor(c);
         return stock;
     }
 
     public static Stock create() {
-        Stock stock = new Stock();
+        final Stock stock = new Stock();
         // Set to today.
         stock.setPurchaseDate(new MmxDate().toDate());
 
@@ -60,8 +63,8 @@ public class Stock
         return stock;
     }
 
-    public static Stock create(String date, String name, String purchasePrice, String currentPrice) {
-        Stock stock = Stock.create();
+    public static Stock create(final String date, final String name, final String purchasePrice, final String currentPrice) {
+        final Stock stock = create();
 
         stock.setPurchaseDate(date);
         stock.setName(name);
@@ -71,19 +74,15 @@ public class Stock
         return stock;
     }
 
-    public Stock() {
-        // default constructor.
-    }
-
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.COMMISSION, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.CURRENTPRICE, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.NUMSHARES, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.PURCHASEPRICE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.COMMISSION, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.CURRENTPRICE, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.NUMSHARES, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.PURCHASEPRICE, contentValues);
     }
 
     // properties
@@ -96,16 +95,16 @@ public class Stock
         return getMoney(StockFields.COMMISSION);
     }
 
-    public void setCommission(Money value) {
+    public void setCommission(final Money value) {
         setMoney(StockFields.COMMISSION, value);
     }
 
     public Money getCurrentPrice() {
-        String currentPrice = contentValues.getAsString(StockFields.CURRENTPRICE);
+        final String currentPrice = contentValues.getAsString(StockFields.CURRENTPRICE);
         return MoneyFactory.fromString(currentPrice);
     }
 
-    public void setCurrentPrice(Money currentPrice) {
+    public void setCurrentPrice(final Money currentPrice) {
         contentValues.put(StockFields.CURRENTPRICE, currentPrice.toString());
     }
 
@@ -113,7 +112,7 @@ public class Stock
         return getInt(StockFields.HELDAT);
     }
 
-    public void setHeldAt(int value) {
+    public void setHeldAt(final int value) {
         setInt(StockFields.HELDAT, value);
     }
 
@@ -121,7 +120,7 @@ public class Stock
         return getString(StockFields.NOTES);
     }
 
-    public void setNotes(String value) {
+    public void setNotes(final String value) {
         setString(StockFields.NOTES, value);
     }
 
@@ -129,29 +128,29 @@ public class Stock
         return getDouble(StockFields.NUMSHARES);
     }
 
-    public void setNumberOfShares(Double value) {
+    public void setNumberOfShares(final Double value) {
         setDouble(StockFields.NUMSHARES, value);
     }
 
     public Date getPurchaseDate() {
-        String dateString = getString(StockFields.PURCHASEDATE);
+        final String dateString = getString(StockFields.PURCHASEDATE);
         return new MmxDate(dateString).toDate();
     }
 
-    public void setPurchaseDate(Date value) {
+    public void setPurchaseDate(final Date value) {
         setDate(StockFields.PURCHASEDATE, value);
     }
 
-    public Money getPurchasePrice() {
-        String purchasePrice = contentValues.getAsString(StockFields.PURCHASEPRICE);
-        return MoneyFactory.fromString(purchasePrice);
-    }
-
-    public void setPurchaseDate(String value) {
+    public void setPurchaseDate(final String value) {
         setString(StockFields.PURCHASEDATE, value);
     }
 
-    public void setPurchasePrice(Money value) {
+    public Money getPurchasePrice() {
+        final String purchasePrice = contentValues.getAsString(StockFields.PURCHASEPRICE);
+        return MoneyFactory.fromString(purchasePrice);
+    }
+
+    public void setPurchasePrice(final Money value) {
         setMoney(StockFields.PURCHASEPRICE, value);
     }
 
@@ -159,7 +158,7 @@ public class Stock
         return getString(StockFields.STOCKNAME);
     }
 
-    public void setName(String value) {
+    public void setName(final String value) {
         setString(StockFields.STOCKNAME, value);
     }
 
@@ -167,13 +166,13 @@ public class Stock
         return getString(StockFields.SYMBOL);
     }
 
-    public void setSymbol(String value) {
+    public void setSymbol(final String value) {
         setString(StockFields.SYMBOL, value);
     }
 
     public Money getValue() {
         // value = current price * num shares
-        Money value = this.getCurrentPrice().multiply(this.getNumberOfShares());
+        final Money value = getCurrentPrice().multiply(getNumberOfShares());
 
         setMoney(StockFields.VALUE, value);
 

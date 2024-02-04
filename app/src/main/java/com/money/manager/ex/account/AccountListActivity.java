@@ -30,7 +30,7 @@ import androidx.fragment.app.FragmentManager;
  * Account list activity.
  */
 public class AccountListActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";

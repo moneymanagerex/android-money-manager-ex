@@ -37,10 +37,10 @@ import java.util.ArrayList;
 public class DrawerMenuGroupAdapter
         extends BaseExpandableListAdapter {
 
+    private final Context mContext;
     public ArrayList<DrawerMenuItem> mGroupItems;
     public ArrayList<Object> mChildItems = new ArrayList<>();
     public AppCompatActivity activity;
-    private final Context mContext;
 
     public DrawerMenuGroupAdapter(Context context, ArrayList<DrawerMenuItem> grList, ArrayList<Object> childItems) {
         this.mContext = context;
@@ -141,7 +141,7 @@ public class DrawerMenuGroupAdapter
         }
 
         if (convertView.getTag() instanceof DrawerViewHolder) {
-            holder = (DrawerViewHolder)convertView.getTag();
+            holder = (DrawerViewHolder) convertView.getTag();
         }
 
         if (item != null && holder != null) {

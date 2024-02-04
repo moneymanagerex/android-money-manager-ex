@@ -20,7 +20,6 @@ package com.money.manager.ex.servicelayer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.money.manager.ex.MmexApplication;
@@ -36,19 +35,19 @@ import timber.log.Timber;
  * Access and manipulation of the info in the Info Table
  */
 public class InfoService
-    extends ServiceBase {
+        extends ServiceBase {
 
-    public InfoService(Context context) {
+    @Inject
+    public InfoRepositorySql repository;
+
+    public InfoService(final Context context) {
         super(context);
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject
-    public InfoRepositorySql repository;
-
-    public long insertRaw(SQLiteDatabase db, String key, Integer value) {
-        ContentValues values = new ContentValues();
+    public long insertRaw(final SQLiteDatabase db, final String key, final Integer value) {
+        final ContentValues values = new ContentValues();
 
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
@@ -56,8 +55,8 @@ public class InfoService
         return db.insert(InfoRepositorySql.TABLE_NAME, null, values);
     }
 
-    public long insertRaw(SQLiteDatabase db, String key, String value) {
-        ContentValues values = new ContentValues();
+    public long insertRaw(final SQLiteDatabase db, final String key, final String value) {
+        final ContentValues values = new ContentValues();
 
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
@@ -67,55 +66,57 @@ public class InfoService
 
     /**
      * Update the values via direct access to the database.
-     * @param db        Database to use
-     * @param recordId  Id of the info record. Required for the update statement.
-     * @param key       Info Name
-     * @param value     Info Value
+     *
+     * @param db       Database to use
+     * @param recordId Id of the info record. Required for the update statement.
+     * @param key      Info Name
+     * @param value    Info Value
      * @return the number of rows affected
      */
-    public long updateRaw(SQLiteDatabase db, int recordId, String key, Integer value) {
-        ContentValues values = new ContentValues();
+    public long updateRaw(final SQLiteDatabase db, final int recordId, final String key, final Integer value) {
+        final ContentValues values = new ContentValues();
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
         return db.update(InfoRepositorySql.TABLE_NAME,
                 values,
-            Info.INFOID + "=?",
-                new String[] { Integer.toString(recordId)}
+                Info.INFOID + "=?",
+                new String[]{Integer.toString(recordId)}
         );
     }
 
-    public long updateRaw(SQLiteDatabase db, String key, String value) {
-        ContentValues values = new ContentValues();
+    public long updateRaw(final SQLiteDatabase db, final String key, final String value) {
+        final ContentValues values = new ContentValues();
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
         return db.update(InfoRepositorySql.TABLE_NAME, values,
-            Info.INFONAME + "=?",
-                new String[] { key });
+                Info.INFONAME + "=?",
+                new String[]{key});
     }
 
     /**
      * Retrieve value of info
+     *
      * @param info to be retrieve
      * @return value
      */
-    public String getInfoValue(String info) {
-        Cursor cursor;
+    public String getInfoValue(final String info) {
+        final Cursor cursor;
         String ret = null;
 
         try {
-            Select query = new Select()
+            final Select query = new Select()
                     .from(InfoRepositorySql.TABLE_NAME)
                     .where(Info.INFONAME + "=?", info);
             cursor = repository.query(query);
-            if (cursor == null) return null;
+            if (null == cursor) return null;
 
             if (cursor.moveToFirst()) {
                 ret = cursor.getString(cursor.getColumnIndex(Info.INFOVALUE));
             }
             cursor.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "retrieving info value: %s", info);
         }
 
@@ -124,25 +125,26 @@ public class InfoService
 
     /**
      * Update value of info.
-     * @param key to update
+     *
+     * @param key   to update
      * @param value value to be used
      * @return true if update success otherwise false
      */
-    public boolean setInfoValue(String key, String value) {
+    public boolean setInfoValue(final String key, final String value) {
         boolean result = false;
         // check if info exists
-        boolean exists = (getInfoValue(key) != null);
+        final boolean exists = (null != getInfoValue(key));
 
-        Info entity = Info.create(key, value);
+        final Info entity = Info.create(key, value);
 
         try {
             if (exists) {
                 result = repository.update(entity);
             } else {
-                long id = repository.insert(entity);
-                result = id > 0;
+                final long id = repository.insert(entity);
+                result = 0 < id;
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "writing info value");
         }
 

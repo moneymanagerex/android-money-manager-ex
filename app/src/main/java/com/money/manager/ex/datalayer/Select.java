@@ -34,10 +34,12 @@ public class Select {
     /**
      * Query generator. The constructor is also the projection definition. Empty arguments mean *.
      */
-    public Select() {}
+    public Select() {
+    }
 
     /**
      * The constructor with projection.
+     *
      * @param projection The fields to fetch.
      */
     public Select(String... projection) {
@@ -51,6 +53,7 @@ public class Select {
 
     /**
      * With this method the arguments can be passed directly to the database query.
+     *
      * @param selection Selection statement with placeholders for arguments.
      * @return Select object.
      */
@@ -62,8 +65,9 @@ public class Select {
     /**
      * When using this method, make sure to pass Select.selectionArgs to the .query or other action
      * methods.
+     *
      * @param selection WHERE statement
-     * @param args arguments
+     * @param args      arguments
      * @return Select object for chaining methods.
      */
     public Select where(String selection, String... args) {

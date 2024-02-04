@@ -21,10 +21,10 @@ import android.database.Cursor;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.domainmodel.Account;
 
 import java.util.HashMap;
 
@@ -32,28 +32,28 @@ import java.util.HashMap;
  * Represents qif header record.
  */
 public class QifHeader {
-    public QifHeader(Context context) {
+    private final Context mContext;
+
+    public QifHeader(final Context context) {
         mContext = context;
     }
-
-    private final Context mContext;
 
     public Context getContext() {
         return mContext;
     }
 
-    public String parse(Cursor cursor) {
-        StringBuilder builder = new StringBuilder();
+    public String parse(final Cursor cursor) {
+        final StringBuilder builder = new StringBuilder();
 
         // Line separator.
-        String separator;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        final String separator;
+        if (Build.VERSION_CODES.KITKAT >= Build.VERSION.SDK_INT) {
             separator = System.getProperty("line.separator");
         } else {
             separator = System.lineSeparator();
         }
 
-        Account account = loadAccount(cursor);
+        final Account account = loadAccount(cursor);
 
         /* header from mmex desktop:
 !Account
@@ -72,12 +72,12 @@ $57.300000
 
         // name
         builder.append("N");
-        String name = account.getName();
+        final String name = account.getName();
         builder.append(name);
         builder.append(separator);
 
         // description
-        String description = account.getNotes();
+        final String description = account.getNotes();
         if (!TextUtils.isEmpty(description)) {
             builder.append("D");
             builder.append(description);
@@ -85,7 +85,7 @@ $57.300000
         }
 
         // account type
-        String accountType = getAccountType(account);
+        final String accountType = getAccountType(account);
         builder.append("T");
         builder.append(accountType);
         builder.append(separator);
@@ -109,11 +109,11 @@ $57.300000
         return builder.toString();
     }
 
-    private String getAccountType(Account account) {
-        String accountType = account.getTypeName();
+    private String getAccountType(final Account account) {
+        final String accountType = account.getTypeName();
 
         // Translation table:
-        HashMap<String, String> accountDictionary = new HashMap<>();
+        final HashMap<String, String> accountDictionary = new HashMap<>();
         accountDictionary.put(AccountTypes.CASH.toString(), "Cash");
         accountDictionary.put(AccountTypes.CHECKING.toString(), "Bank");
         accountDictionary.put(AccountTypes.TERM.toString(), "Bank");
@@ -123,13 +123,13 @@ $57.300000
         accountDictionary.put(AccountTypes.INVESTMENT.toString(), "Port");
         // Cash?
 
-        String result = accountDictionary.get(accountType);
+        final String result = accountDictionary.get(accountType);
 
         return result;
     }
 
     private String createCreditCardHeader() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         // from quicken
         /*
@@ -142,11 +142,11 @@ L5,000.00
         return "not implemented";
     }
 
-    private Account loadAccount(Cursor cursor) {
+    private Account loadAccount(final Cursor cursor) {
 //        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
-        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
-        AccountRepository repo = new AccountRepository(getContext());
-        Account account = repo.load(accountId);
+        final int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+        final AccountRepository repo = new AccountRepository(mContext);
+        final Account account = repo.load(accountId);
         return account;
     }
 }

@@ -58,6 +58,7 @@ import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import timber.log.Timber;
@@ -74,6 +75,9 @@ import timber.log.Timber;
 public class CurrencyRecyclerListFragment
         extends Fragment {
 
+    private CurrencyService mCurrencyService;
+    private CurrencyContentObserver mObserver;
+
     public static CurrencyRecyclerListFragment createInstance() {
         CurrencyRecyclerListFragment fragment = new CurrencyRecyclerListFragment();
 
@@ -81,9 +85,6 @@ public class CurrencyRecyclerListFragment
 
         return fragment;
     }
-
-    private CurrencyService mCurrencyService;
-    private CurrencyContentObserver mObserver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -278,7 +279,7 @@ public class CurrencyRecyclerListFragment
 
             // remove from data.
             Map<String, Section> sectionMap = getAdapter().getCopyOfSectionsMap();
-            for(Section section : sectionMap.values()){
+            for (Section section : sectionMap.values()) {
                 CurrencySection currencySection = (CurrencySection) section;
                 currencySection.currencies.remove(event.itemPosition);
             }
@@ -340,7 +341,7 @@ public class CurrencyRecyclerListFragment
     }
 
     private CurrencyService getService() {
-        if(mCurrencyService == null) {
+        if (mCurrencyService == null) {
             mCurrencyService = new CurrencyService(getActivity());
         }
         return mCurrencyService;

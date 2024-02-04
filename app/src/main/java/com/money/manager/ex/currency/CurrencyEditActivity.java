@@ -53,11 +53,10 @@ public class CurrencyEditActivity
     private static final String KEY_SCALE = "CurrencyEditActivity:Scale";
     private static final String KEY_CONVERSION_TO_BASE = "CurrencyEditActivity:ConversionToBaseRate";
     private static final String KEY_ACTION = "CurrencyEditActivity:Action";
-
+    CurrencyEditViewHolder holder;
     private Integer mCurrencyId;
     // type of action
     private String mIntentAction = "";
-    CurrencyEditViewHolder holder;
 
     @Override
     public boolean onActionCancelClick() {
@@ -128,7 +127,7 @@ public class CurrencyEditActivity
         outState.putString(KEY_CURRENCY_NAME, holder.edtCurrencyName.getText().toString());
         if (holder.spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             outState.putString(KEY_CURRENCY_SYMBOL, getResources()
-                .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()]);
+                    .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()]);
         }
         outState.putString(KEY_UNIT_NAME, holder.edtCurrencyName.getText().toString());
         outState.putString(KEY_CENTS_NAME, holder.edtCentsName.getText().toString());
@@ -153,7 +152,7 @@ public class CurrencyEditActivity
         // populate values
         holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
         holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
-            .indexOf(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL))), true);
+                .indexOf(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL))), true);
         holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndex(Currency.UNIT_NAME)));
         holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndex(Currency.CENT_NAME)));
         holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndex(Currency.PFX_SYMBOL)));
@@ -173,7 +172,7 @@ public class CurrencyEditActivity
 
         holder.edtCurrencyName.setText(savedInstanceState.getString(KEY_CURRENCY_NAME));
         holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
-            .indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
+                .indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
         holder.edtUnitName.setText(savedInstanceState.getString(KEY_UNIT_NAME));
         holder.edtCentsName.setText(savedInstanceState.getString(KEY_CENTS_NAME));
         holder.edtPrefix.setText(savedInstanceState.getString(KEY_PREFIX_SYMBOL));
@@ -202,6 +201,7 @@ public class CurrencyEditActivity
 
     /**
      * This method update data into database
+     *
      * @return true if data is update into database
      */
     private boolean save() {
@@ -213,7 +213,7 @@ public class CurrencyEditActivity
 
         if (holder.spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             String code = getResources()
-                .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()];
+                    .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()];
             currency.setCode(code);
         }
 

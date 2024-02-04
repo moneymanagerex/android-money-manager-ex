@@ -26,7 +26,7 @@ import androidx.preference.PreferenceFragmentCompat;
  * Budget preferences.
  */
 public class BudgetSettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

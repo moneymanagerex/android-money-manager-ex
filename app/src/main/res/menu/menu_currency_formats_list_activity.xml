@@ -19,21 +19,21 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_update_exchange_rate"
-        android:icon="?attr/ic_action_download"
-        android:title="@string/update_menu_currency_exchange_rates"
-        app:showAsAction="always"/>
+            android:id="@+id/menu_update_exchange_rate"
+            android:icon="?attr/ic_action_download"
+            android:title="@string/update_menu_currency_exchange_rates"
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/menu_import_all_currencies"
-        android:icon="@null"
-        android:title="@string/import_all_currencies"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/menu_import_all_currencies"
+            android:icon="@null"
+            android:title="@string/import_all_currencies"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/menu_show_used"
-        android:icon="?attr/ic_action_tick"
-        android:title="@string/show_only_used"
-        android:checkable="true"
-        android:checked="true" />
+            android:id="@+id/menu_show_used"
+            android:icon="?attr/ic_action_tick"
+            android:title="@string/show_only_used"
+            android:checkable="true"
+            android:checked="true"/>
 </menu>

@@ -16,125 +16,125 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/theme_background_color"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/theme_background_color"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mmx_margin"
-            android:orientation="vertical"
-            android:padding="@dimen/mmx_padding">
-
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:contentDescription="@string/logo"
-                app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewCopyright"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:paddingTop="20dp"
-                android:text="@string/application_copyright"/>
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDonateHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:text="@string/donate_header"
-                android:textIsSelectable="false"/>
+                android:layout_margin="@dimen/mmx_margin"
+                android:orientation="vertical"
+                android:padding="@dimen/mmx_padding">
+
+            <ImageView
+                    android:id="@+id/imgLogo"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/logo"
+                    app:srcCompat="@drawable/ic_logo_money_manager_ex"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewCopyright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/application_copyright"/>
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewDonateHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:text="@string/donate_header"
+                    android:textIsSelectable="false"/>
 
             <!-- direct donation text -->
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/directDonationTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text="@string/donate_direct"
-                android:textIsSelectable="false"/>
+                    android:id="@+id/directDonationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="@string/donate_direct"
+                    android:textIsSelectable="false"/>
 
             <!-- bitcoin explanation -->
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/bitcoinDonationTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/donate_bitcoin"
-                android:textIsSelectable="false"/>
+                    android:id="@+id/bitcoinDonationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/donate_bitcoin"
+                    android:textIsSelectable="false"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/licenseDonationTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/donate_license"
-                android:textIsSelectable="false"/>
+                    android:id="@+id/licenseDonationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/donate_license"
+                    android:textIsSelectable="false"/>
 
             <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp" >
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/donateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/donate_button_text"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
+                        android:id="@+id/donateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/donate_button_text"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
 
             </RelativeLayout>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/homepage"/>
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homepage"/>
 
             <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp" >
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/homepageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/homepage_button"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
+                        android:id="@+id/homepageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/homepage_button"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
 
             </RelativeLayout>
 

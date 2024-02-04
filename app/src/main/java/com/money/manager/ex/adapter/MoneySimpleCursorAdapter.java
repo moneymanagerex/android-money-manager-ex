@@ -26,17 +26,19 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.view.RobotoView;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+
 import timber.log.Timber;
 
 /**
+ *
  */
 public class MoneySimpleCursorAdapter
         extends SimpleCursorAdapter {
 
-    //private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
-    private String mHighlight;
     private final Core mCore;
     private final Context mContext;
+    //private static final String LOGCAT = MoneySimpleCursorAdapter.class.getSimpleName();
+    private String mHighlight;
 
     public MoneySimpleCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);

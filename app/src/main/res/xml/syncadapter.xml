@@ -17,10 +17,10 @@
   -->
 
 <sync-adapter
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.money.manager.ex.sync.adapter"
-    android:accountType="com.money.manager.ex.sync"
-    android:userVisible="true"
-    android:supportsUploading="false"
-    android:allowParallelSyncs="false"
-    android:isAlwaysSyncable="true"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:contentAuthority="com.money.manager.ex.sync.adapter"
+        android:accountType="com.money.manager.ex.sync"
+        android:userVisible="true"
+        android:supportsUploading="false"
+        android:allowParallelSyncs="false"
+        android:isAlwaysSyncable="true"/>

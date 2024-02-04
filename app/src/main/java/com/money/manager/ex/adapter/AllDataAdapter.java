@@ -19,7 +19,9 @@ package com.money.manager.ex.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
@@ -46,6 +48,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import androidx.cursoradapter.widget.CursorAdapter;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -53,8 +56,27 @@ import info.javaperformance.money.MoneyFactory;
  * Adapter for all_data query. The list of transactions (account/recurring).
  */
 public class AllDataAdapter
-    extends CursorAdapter {
+        extends CursorAdapter {
 
+    private final LayoutInflater mInflater;
+    // hash map for group
+    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final SparseBooleanArray mCheckedPosition;
+    private final Context mContext;
+    private final ArrayList<TextView> requestingBalanceUpdate;
+    // define cursor field
+    public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
+            CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
+            TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
+    // type cursor
+    private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
+    // account and currency
+    private int mAccountId = Constants.NOT_SET;
+    private int mCurrencyId = Constants.NOT_SET;
+    // show account name and show balance
+    private boolean mShowAccountName = false;
+    private boolean mShowBalanceAmount = false;
+    private HashMap<Integer, Money> balances;
     public AllDataAdapter(Context context, Cursor c, TypeCursor typeCursor) {
         super(context, c, -1);
 
@@ -68,34 +90,6 @@ public class AllDataAdapter
 
         setFieldFromTypeCursor();
     }
-
-    // source type: AllData or RecurringTransaction
-    public enum TypeCursor {
-        ALLDATA,
-        RECURRINGTRANSACTION
-    }
-
-    // type cursor
-    private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
-
-    // define cursor field
-    public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
-        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
-        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
-
-    private final LayoutInflater mInflater;
-    // hash map for group
-    private final HashMap<Integer, Integer> mHeadersAccountIndex;
-    private final SparseBooleanArray mCheckedPosition;
-    // account and currency
-    private int mAccountId = Constants.NOT_SET;
-    private int mCurrencyId = Constants.NOT_SET;
-    // show account name and show balance
-    private boolean mShowAccountName = false;
-    private boolean mShowBalanceAmount = false;
-    private final Context mContext;
-    private HashMap<Integer, Money> balances;
-    private final ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -294,15 +288,15 @@ public class AllDataAdapter
         return mShowAccountName;
     }
 
-    public void resetAccountHeaderIndexes() {
-        mHeadersAccountIndex.clear();
-    }
-
     /**
      * @param showAccountName the mShowAccountName to set
      */
     public void setShowAccountName(boolean showAccountName) {
         this.mShowAccountName = showAccountName;
+    }
+
+    public void resetAccountHeaderIndexes() {
+        mHeadersAccountIndex.clear();
     }
 
     /**
@@ -384,6 +378,7 @@ public class AllDataAdapter
     /**
      * The most important indicator. Detects whether the values should be from FROM or TO
      * record.
+     *
      * @return boolean indicating whether to use *TO values (amountTo)
      */
     private boolean useDestinationValues(boolean isTransfer, Cursor cursor) {
@@ -485,5 +480,11 @@ public class AllDataAdapter
             // store for later.
             this.requestingBalanceUpdate.add(textView);
         }
+    }
+
+    // source type: AllData or RecurringTransaction
+    public enum TypeCursor {
+        ALLDATA,
+        RECURRINGTRANSACTION
     }
 }

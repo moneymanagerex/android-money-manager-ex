@@ -23,11 +23,11 @@ import com.money.manager.ex.R;
  */
 public class DatabaseSettings {
 
+    private final AppSettings mAppSettings;
+
     public DatabaseSettings(AppSettings mainSettings) {
         mAppSettings = mainSettings;
     }
-
-    private final AppSettings mAppSettings;
 
     public String getDatabasePath() {
         String path = mAppSettings.get(R.string.pref_database_path, "");

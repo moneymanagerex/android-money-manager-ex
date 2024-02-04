@@ -28,7 +28,7 @@ import timber.log.Timber;
  */
 
 public class DebugTree
-    extends Timber.DebugTree {
+        extends Timber.DebugTree {
 
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {

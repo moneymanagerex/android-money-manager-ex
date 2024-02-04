@@ -40,9 +40,20 @@ public class BudgetEntryRepository
         super(context, TABLE_NAME, DatasetType.TABLE, "budgettable");
     }
 
+    /**
+     * Returns a string value which is used as a key in the budget entry thread cache
+     *
+     * @param categoryId
+     * @param subCategoryId
+     * @return
+     */
+    public static String getKeyForCategories(int categoryId, int subCategoryId) {
+        return categoryId + "_" + subCategoryId;
+    }
+
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETENTRYID AS _id",
+        return new String[]{"BUDGETENTRYID AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
@@ -61,16 +72,6 @@ public class BudgetEntryRepository
                 null,
                 null);
         return result;
-    }
-
-    /**
-     * Returns a string value which is used as a key in the budget entry thread cache
-     * @param categoryId
-     * @param subCategoryId
-     * @return
-     */
-    public static String getKeyForCategories(int categoryId, int subCategoryId) {
-        return categoryId + "_" + subCategoryId;
     }
 
     public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {

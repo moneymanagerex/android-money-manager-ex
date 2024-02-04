@@ -17,151 +17,151 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/mmx_activity_vertical_margin"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="@dimen/mmx_activity_vertical_margin"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="@dimen/mmx_padding"
-        android:paddingBottom="@dimen/mmx_padding"
-        android:orientation="vertical"
-        android:gravity="bottom">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/mmx_padding"
+            android:paddingBottom="@dimen/mmx_padding"
+            android:orientation="vertical"
+            android:gravity="bottom">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewTop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="right"
-            android:textSize="14sp"
-            app:typeface="roboto_light"/>
+                android:id="@+id/textViewTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:textSize="14sp"
+                app:typeface="roboto_light"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:gravity="right"
-            android:text="€ 0.00"
-            android:textSize="@dimen/input_dialog_text_size"
-            app:typeface="roboto_light"/>
+                android:id="@+id/textViewMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:text="€ 0.00"
+                android:textSize="@dimen/input_dialog_text_size"
+                app:typeface="roboto_light"/>
 
     </LinearLayout>
 
     <!-- separator -->
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <androidx.gridlayout.widget.GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:columnCount="4"
-            app:rowCount="5"
-            app:alignmentMode="alignBounds"
-            android:layout_gravity="center">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:columnCount="4"
+                app:rowCount="5"
+                app:alignmentMode="alignBounds"
+                android:layout_gravity="center">
 
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyClear"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="C" />
+                    android:id="@+id/buttonKeyClear"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="C"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyLeftParenthesis"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="(" />
+                    android:id="@+id/buttonKeyLeftParenthesis"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="("/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyRightParenthesis"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text=")" />
+                    android:id="@+id/buttonKeyRightParenthesis"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text=")"/>
             <ImageButton
-                android:id="@+id/deleteButton"
-                style="@style/Money.Button.Input.Dialog.Full.Operator" />
+                    android:id="@+id/deleteButton"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"/>
 
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum7"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="7"/>
+                    android:id="@+id/buttonKeyNum7"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="7"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum8"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="8"/>
+                    android:id="@+id/buttonKeyNum8"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="8"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum9"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="9"/>
+                    android:id="@+id/buttonKeyNum9"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="9"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyDiv"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="/"/>
+                    android:id="@+id/buttonKeyDiv"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="/"/>
 
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum4"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="4"/>
+                    android:id="@+id/buttonKeyNum4"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="4"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum5"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="5"/>
+                    android:id="@+id/buttonKeyNum5"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="5"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum6"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="6"/>
+                    android:id="@+id/buttonKeyNum6"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="6"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyMultiplication"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="*"/>
+                    android:id="@+id/buttonKeyMultiplication"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="*"/>
 
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum1"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="1"/>
+                    android:id="@+id/buttonKeyNum1"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="1"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum2"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="2"/>
+                    android:id="@+id/buttonKeyNum2"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="2"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum3"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="3"/>
+                    android:id="@+id/buttonKeyNum3"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="3"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyLess"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="-"/>
+                    android:id="@+id/buttonKeyLess"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="-"/>
 
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNumDecimal"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="."/>
+                    android:id="@+id/buttonKeyNumDecimal"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="."/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyNum0"
-                style="@style/Money.Button.Input.Dialog.Full"
-                android:text="0"/>
+                    android:id="@+id/buttonKeyNum0"
+                    style="@style/Money.Button.Input.Dialog.Full"
+                    android:text="0"/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyEqual"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="="/>
+                    android:id="@+id/buttonKeyEqual"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="="/>
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonKeyAdd"
-                style="@style/Money.Button.Input.Dialog.Full.Operator"
-                android:text="+"/>
+                    android:id="@+id/buttonKeyAdd"
+                    style="@style/Money.Button.Input.Dialog.Full.Operator"
+                    android:text="+"/>
 
         </androidx.gridlayout.widget.GridLayout>
     </ScrollView>

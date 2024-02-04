@@ -24,7 +24,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -38,13 +37,25 @@ import info.javaperformance.money.MoneyFactory;
  */
 @Parcel
 public class AccountTransaction
-    extends EntityBase
-    implements ITransactionEntity {
+        extends EntityBase
+        implements ITransactionEntity {
 
     public static final String TRANSID = "TRANSID";
 
+    public AccountTransaction() {
+
+        setAccountToId(Constants.NOT_SET);
+        setCategoryId(Constants.NOT_SET);
+        setFollowUpId(Constants.NOT_SET);
+    }
+
+    public AccountTransaction(final ContentValues contentValues) {
+        super(contentValues);
+    }
+
     /**
      * Creates default, empty transaction.
+     *
      * @return Account Transaction records with default values.
      */
     public static AccountTransaction create() {
@@ -52,9 +63,9 @@ public class AccountTransaction
                 Constants.NOT_SET, MoneyFactory.fromDouble(0));
     }
 
-    public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
-                                            int categoryId, Money amount) {
-        AccountTransaction tx = new AccountTransaction();
+    public static AccountTransaction create(final int accountId, final int payeeId, final TransactionTypes type,
+                                            final int categoryId, final Money amount) {
+        final AccountTransaction tx = new AccountTransaction();
 
         tx.setAccountId(accountId);
         tx.setPayeeId(payeeId);
@@ -67,44 +78,32 @@ public class AccountTransaction
         return tx;
     }
 
-    public AccountTransaction() {
-        super();
-
-        setAccountToId(Constants.NOT_SET);
-        setCategoryId(Constants.NOT_SET);
-        setFollowUpId(Constants.NOT_SET);
-    }
-
-    public AccountTransaction(ContentValues contentValues) {
-        super(contentValues);
-    }
-
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, TRANSAMOUNT, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, TOTRANSAMOUNT, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TRANSAMOUNT, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TOTRANSAMOUNT, contentValues);
     }
 
     public Integer getId() {
         return getInt(TRANSID);
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         setInt(TRANSID, id);
     }
 
     public boolean hasId() {
-        return getId() != null && getId() != Constants.NOT_SET;
+        return null != getId() && Constants.NOT_SET != getId();
     }
 
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(Integer value) {
+    public void setAccountId(final Integer value) {
         setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
@@ -114,37 +113,37 @@ public class AccountTransaction
     }
 
     @Override
-    public void setAccountToId(Integer value) {
+    public void setAccountToId(final Integer value) {
         setInt(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
-        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
+        return null != getAccountToId() && Constants.NOT_SET != getAccountToId();
     }
 
     public Money getAmount() {
         Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
-        if (amount == null) {
-            amount = 0D;
+        if (null == amount) {
+            amount = 0.0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
+        final Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
-    public void setAmount(Money value) {
+    public void setAmount(final Money value) {
         setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
     public Money getAmountTo() {
         Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
-        if (amount == null) {
-            amount = 0D;
+        if (null == amount) {
+            amount = 0.0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
+        final Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
-    public void setAmountTo(Money value) {
+    public void setAmountTo(final Money value) {
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
@@ -152,12 +151,12 @@ public class AccountTransaction
         return getInt(ITransactionEntity.CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
+    public void setCategoryId(final Integer value) {
         setInt(ITransactionEntity.CATEGID, value);
     }
 
     public boolean hasCategory() {
-        return getCategoryId() != null && getCategoryId() != Constants.NOT_SET;
+        return null != getCategoryId() && Constants.NOT_SET != getCategoryId();
     }
 
     public String getDateString() {
@@ -165,14 +164,14 @@ public class AccountTransaction
     }
 
     public Date getDate() {
-        String dateString = getDateString();
-        return dateString != null
-            ? new MmxDate(dateString).toDate()
-            : null;
+        final String dateString = getDateString();
+        return null != dateString
+                ? new MmxDate(dateString).toDate()
+                : null;
     }
 
-    public void setDate(Date value) {
-        String dateString = new MmxDate(value).toIsoDateString();
+    public void setDate(final Date value) {
+        final String dateString = new MmxDate(value).toIsoDateString();
         setString(ITransactionEntity.TRANSDATE, dateString);
     }
 
@@ -180,7 +179,7 @@ public class AccountTransaction
         return getInt(FOLLOWUPID);
     }
 
-    public void setFollowUpId(Integer value) {
+    public void setFollowUpId(final Integer value) {
         setInt(FOLLOWUPID, value);
     }
 
@@ -188,7 +187,7 @@ public class AccountTransaction
         return getString(ITransactionEntity.NOTES);
     }
 
-    public void setNotes(String value) {
+    public void setNotes(final String value) {
         setString(ITransactionEntity.NOTES, value);
     }
 
@@ -196,19 +195,19 @@ public class AccountTransaction
         return getInt(ITransactionEntity.PAYEEID);
     }
 
-    public void setPayeeId(Integer value) {
+    public void setPayeeId(final Integer value) {
         setInt(ITransactionEntity.PAYEEID, value);
     }
 
     public boolean hasPayee() {
-        return getPayeeId() != null && getPayeeId() != Constants.NOT_SET;
+        return null != getPayeeId() && Constants.NOT_SET != getPayeeId();
     }
 
     public String getStatus() {
         return getString(ITransactionEntity.STATUS);
     }
 
-    public void setStatus(String value) {
+    public void setStatus(final String value) {
         setString(ITransactionEntity.STATUS, value);
     }
 
@@ -220,17 +219,17 @@ public class AccountTransaction
         return getString(ITransactionEntity.TRANSACTIONNUMBER);
     }
 
-    public void setTransactionNumber(String value) {
+    public void setTransactionNumber(final String value) {
         setString(ITransactionEntity.TRANSACTIONNUMBER, value);
     }
 
     public TransactionTypes getTransactionType() {
-        String code = getTransCode();
+        final String code = getTransCode();
         return TransactionTypes.valueOf(code);
     }
 
     @Override
-    public void setTransactionType(TransactionTypes value) {
+    public void setTransactionType(final TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
     }
 }

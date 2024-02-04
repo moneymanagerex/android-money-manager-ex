@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * RecyclerView with a context menu.
  */
 public class ContextMenuRecyclerView
-    extends RecyclerView {
+        extends RecyclerView {
 
     private RecyclerViewContextMenuInfo mContextMenuInfo;
 

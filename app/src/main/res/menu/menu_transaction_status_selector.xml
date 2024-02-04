@@ -17,35 +17,35 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuTransactionStatusSelector"
-        app:showAsAction="ifRoom"
-        android:icon="?attr/ic_action_foursquare"
-        android:title="@string/status_filter">
+            android:id="@+id/menuTransactionStatusSelector"
+            app:showAsAction="ifRoom"
+            android:icon="?attr/ic_action_foursquare"
+            android:title="@string/status_filter">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_none"
-                    android:title="@string/status_none"
-                    android:checkable="true" />
+                        android:id="@+id/menu_none"
+                        android:title="@string/status_none"
+                        android:checkable="true"/>
                 <item
-                    android:id="@+id/menu_reconciled"
-                    android:title="@string/status_reconciled"
-                    android:checkable="true" />
+                        android:id="@+id/menu_reconciled"
+                        android:title="@string/status_reconciled"
+                        android:checkable="true"/>
                 <item
-                    android:id="@+id/menu_void"
-                    android:title="@string/status_void"
-                    android:checkable="true" />
+                        android:id="@+id/menu_void"
+                        android:title="@string/status_void"
+                        android:checkable="true"/>
                 <item
-                    android:id="@+id/menu_follow_up"
-                    android:title="@string/status_follow_up"
-                    android:checkable="true" />
+                        android:id="@+id/menu_follow_up"
+                        android:title="@string/status_follow_up"
+                        android:checkable="true"/>
                 <item
-                    android:id="@+id/menu_duplicate"
-                    android:title="@string/status_duplicate"
-                    android:checkable="true" />
+                        android:id="@+id/menu_duplicate"
+                        android:title="@string/status_duplicate"
+                        android:checkable="true"/>
             </group>
         </menu>
     </item>

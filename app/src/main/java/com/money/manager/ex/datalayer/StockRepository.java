@@ -39,7 +39,7 @@ import info.javaperformance.money.Money;
  * Data repository for Stock entities.
  */
 public class StockRepository
-    extends RepositoryBase<Stock> {
+        extends RepositoryBase<Stock> {
 
     @Inject
     public StockRepository(Context context) {
@@ -47,9 +47,9 @@ public class StockRepository
 
     }
 
-//    @Override
+    //    @Override
     public String[] getAllColumns() {
-        String [] idColumn = new String[] {
+        String[] idColumn = new String[]{
                 "STOCKID AS _id"
         };
 
@@ -59,7 +59,7 @@ public class StockRepository
     }
 
     public boolean delete(int id) {
-        int result = super.delete(StockFields.STOCKID + "=?", new String[] { Integer.toString(id)});
+        int result = super.delete(StockFields.STOCKID + "=?", new String[]{Integer.toString(id)});
         return result > 0;
     }
 
@@ -67,7 +67,7 @@ public class StockRepository
         Field[] fields = StockFields.class.getFields();
         String[] names = new String[fields.length];
 
-        for(int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < fields.length; i++) {
             names[i] = fields[i].getName();
         }
 
@@ -80,12 +80,13 @@ public class StockRepository
         return first(Stock.class,
                 null,
                 StockFields.STOCKID + "=?",
-                new String[] { Integer.toString(id) },
+                new String[]{Integer.toString(id)},
                 null);
     }
 
     /**
      * Load multiple items by id.
+     *
      * @param ids Array of ids to load.
      * @return List of stocks.
      */
@@ -101,9 +102,9 @@ public class StockRepository
         }
 
         Cursor c = openCursor(null,
-            StockFields.STOCKID + " IN (" + placeHolders + ")",
-            idParams,
-            null);
+                StockFields.STOCKID + " IN (" + placeHolders + ")",
+                idParams,
+                null);
         if (c == null) return null;
 
         List<Stock> result = getEntities(c);
@@ -118,9 +119,9 @@ public class StockRepository
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
         Cursor c = openCursor(null,
-            StockFields.SYMBOL + " IN (" + placeHolders + ")",
-            symbols,
-            null);
+                StockFields.SYMBOL + " IN (" + placeHolders + ")",
+                symbols,
+                null);
         if (c == null) return null;
 
         List<Stock> result = getEntities(c);
@@ -130,13 +131,14 @@ public class StockRepository
 
     /**
      * Retrieves all record ids which refer the given symbol.
+     *
      * @return array of ids of records which contain the symbol.
      */
     public int[] findIdsBySymbol(String symbol) {
         int[] result;
 
         Cursor cursor = getContext().getContentResolver().query(this.getUri(),
-                new String[]{ StockFields.STOCKID },
+                new String[]{StockFields.STOCKID},
                 StockFields.SYMBOL + "=?", new String[]{symbol},
                 null);
         if (cursor == null) return null;
@@ -168,8 +170,9 @@ public class StockRepository
 
     /**
      * Update price for all the records with this symbol.
+     *
      * @param symbol Stock symbol
-     * @param price Stock price
+     * @param price  Stock price
      */
     public void updateCurrentPrice(String symbol, Money price) {
         int[] ids = findIdsBySymbol(symbol);

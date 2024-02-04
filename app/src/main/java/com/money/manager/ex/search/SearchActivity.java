@@ -39,7 +39,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 public class SearchActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 
@@ -48,11 +48,11 @@ public class SearchActivity
      */
     public boolean ShowAccountHeaders = true;
 
-	private boolean mIsDualPanel = false;
+    private boolean mIsDualPanel = false;
     private SearchParametersFragment mSearchParametersFragment;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
 
@@ -70,15 +70,15 @@ public class SearchActivity
     }
 
     @Override
-	protected void onResume() {
-		super.onResume();
-		AllDataListFragment fragment;
-		fragment = (AllDataListFragment) getSupportFragmentManager()
-            .findFragmentByTag(AllDataListFragment.class.getSimpleName());
-		if (fragment != null && fragment.isVisible()) {
-			fragment.loadData();
-		}
-	}
+    protected void onResume() {
+        super.onResume();
+        AllDataListFragment fragment;
+        fragment = (AllDataListFragment) getSupportFragmentManager()
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+        if (fragment != null && fragment.isVisible()) {
+            fragment.loadData();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -172,7 +172,7 @@ public class SearchActivity
     private void showSearchResultsFragment(String where) {
         //create a fragment for search results.
         AllDataListFragment searchResultsFragment = (AllDataListFragment) this.getSupportFragmentManager()
-            .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
 
         if (searchResultsFragment != null) {
             this.getSupportFragmentManager().beginTransaction()

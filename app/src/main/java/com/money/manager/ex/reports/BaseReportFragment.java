@@ -43,24 +43,24 @@ import javax.inject.Inject;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
 import dagger.Lazy;
 
 public abstract class BaseReportFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected static final int ID_LOADER = 1;
     protected static final String KEY_ITEM_SELECTED = "PayeeReportFragment:ItemSelected";
     protected static final String KEY_WHERE_CLAUSE = "PayeeReportFragment:WhereClause";
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -205,7 +205,7 @@ public abstract class BaseReportFragment
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
             whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
-                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
+                    "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
         }
 
         //check item
@@ -247,10 +247,6 @@ public abstract class BaseReportFragment
      */
     protected abstract String prepareQuery(String whereClause);
 
-    protected void setWhereClause(String mWhereClause) {
-        this.mWhereClause = mWhereClause;
-    }
-
     /**
      * Start loader with arguments
      *
@@ -264,34 +260,38 @@ public abstract class BaseReportFragment
         return mWhereClause;
     }
 
+    protected void setWhereClause(String mWhereClause) {
+        this.mWhereClause = mWhereClause;
+    }
+
     private void showDialogCustomDates() {
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-            .customView(R.layout.dialog_choose_date_report, false)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                    View view = materialDialog.getCustomView();
-                    DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
-                    DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
+                .customView(R.layout.dialog_choose_date_report, false)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        View view = materialDialog.getCustomView();
+                        DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
+                        DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
 
-                    mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
-                    mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
+                        mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
+                        mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
-                    String whereClause =
-                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
-                                "' AND " +
-                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
+                        String whereClause =
+                                ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                        "' AND " +
+                                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
-                    Bundle args = new Bundle();
-                    args.putString(KEY_WHERE_CLAUSE, whereClause);
+                        Bundle args = new Bundle();
+                        args.putString(KEY_WHERE_CLAUSE, whereClause);
 
-                    startLoader(args);
+                        startLoader(args);
 
-                    //super.onPositive(binaryDialog);
-                }
-            })
-            .show();
+                        //super.onPositive(binaryDialog);
+                    }
+                })
+                .show();
         // set date if is null
         if (mDateFrom == null) mDateFrom = new MmxDate().today().toDate();
         if (mDateTo == null) mDateTo = new MmxDate().today().toDate();

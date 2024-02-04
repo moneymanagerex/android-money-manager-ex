@@ -37,33 +37,31 @@ import java.io.StringWriter;
  * This class was used for reporting uncaught exceptions before using Crashlytics.
  */
 public class ExceptionHandler
-    implements Thread.UncaughtExceptionHandler
-{
+        implements Thread.UncaughtExceptionHandler {
 //    public static void warn(String message) {
 //        Log.w("manual", message);
 //        Crashlytics.log(message);
 //    }
 
+    private final String LINE_SEPARATOR = "\n";
+    private final Context mContext;
+    private final Object mHost;
     public ExceptionHandler(Context context) {
         mContext = context;
         mHost = context;
     }
-
     /**
      * Basic constructor
+     *
      * @param context Context / activity.
-     * @param host The class where the exception originates. Used to get the class name
-     *             for Logcat.
+     * @param host    The class where the exception originates. Used to get the class name
+     *                for Logcat.
      */
     public ExceptionHandler(Context context, Object host) {
         mContext = context;
         mHost = host;
 //        this.originalHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
-
-    private final String LINE_SEPARATOR = "\n";
-    private final Context mContext;
-    private final Object mHost;
 
     public Context getContext() {
         return mContext;
@@ -103,9 +101,10 @@ public class ExceptionHandler
 
     /**
      * Display a toast message.
+     *
      * @param message Message text to display.
-     * @param length Length of display. See Toast.Long and Toast.Short.
-     * reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
+     * @param length  Length of display. See Toast.Long and Toast.Short.
+     *                reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
      */
     public void showMessage(final String message, final int length) {
         if (this.mContext == null) return;
@@ -191,9 +190,9 @@ public class ExceptionHandler
     // private
 
     private void sendEmail(String text) {
-        Intent intent = new Intent (Intent.ACTION_SEND);
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("plain/text");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[] { Constants.EMAIL });
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Unexpected Exception Log");
 //        intent.putExtra (Intent.EXTRA_STREAM, Uri.parse("file://" + fullName));
         intent.putExtra(Intent.EXTRA_TEXT, text); // do this so some email clients don't complain about empty body.

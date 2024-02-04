@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.Loader;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -58,7 +59,7 @@ import timber.log.Timber;
  * Categories report fragment.
  */
 public class CategoriesReportFragment
-    extends BaseReportFragment {
+        extends BaseReportFragment {
 
     private LinearLayout mListViewFooter;
 
@@ -219,14 +220,14 @@ public class CategoriesReportFragment
 
         //data to compose builder
         String[] projectionIn = new String[]{
-            "ROWID AS _id", // this does not fetch anything, unfortunately.
-            ViewMobileData.CATEGID, ViewMobileData.Category,
-            ViewMobileData.SubcategID, ViewMobileData.Subcategory,
-            "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+                "ROWID AS _id", // this does not fetch anything, unfortunately.
+                ViewMobileData.CATEGID, ViewMobileData.Category,
+                ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
         String selection = ViewMobileData.Status + "<>'V' AND " +
-            ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
@@ -264,6 +265,7 @@ public class CategoriesReportFragment
 
     /**
      * List item clicked. Show the transaction list for the category.
+     *
      * @param l        The ListView where the click happened
      * @param v        The view that was clicked within the ListView
      * @param position The position of the view in the list

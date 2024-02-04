@@ -21,8 +21,8 @@
       tools:context="com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity">
 
     <item
-        android:id="@+id/menu_currencies"
-        android:icon="?attr/ic_action_reload"
-        android:title="@string/currencies"
-        app:showAsAction="ifRoom" />
+            android:id="@+id/menu_currencies"
+            android:icon="?attr/ic_action_reload"
+            android:title="@string/currencies"
+            app:showAsAction="ifRoom"/>
 </menu>

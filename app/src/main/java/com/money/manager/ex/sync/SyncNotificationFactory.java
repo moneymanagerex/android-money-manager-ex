@@ -31,11 +31,11 @@ import com.money.manager.ex.utils.NotificationUtils;
  * Creates notifications for sync messages.
  */
 public class SyncNotificationFactory {
+    private final Context context;
+
     public SyncNotificationFactory(Context context) {
         this.context = context;
     }
-
-    private final Context context;
 
     public Context getContext() {
         return this.context;
@@ -43,6 +43,7 @@ public class SyncNotificationFactory {
 
     /**
      * Get the builder of a notification for download
+     *
      * @return notification
      */
     public Notification getNotificationForDownload() {
@@ -75,17 +76,17 @@ public class SyncNotificationFactory {
         inboxStyle.addLine(getContext().getString(R.string.dropbox_open_database_downloaded));
 
         return new NotificationCompat.Builder(getContext(), channel_id)
-            .addAction(R.drawable.ic_action_folder_open_dark, getContext().getString(R.string.open_database), pendingIntent)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .setContentTitle(getContext().getString(R.string.sync_notification_title))
-            .setContentText(getContext().getString(R.string.dropbox_open_database_downloaded))
-            ////.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
-            .setSmallIcon(R.drawable.ic_stat_notification)
-            .setTicker(getContext().getString(R.string.dropbox_file_ready_for_use))
-            .setStyle(inboxStyle)
-            .setColor(getContext().getResources().getColor(R.color.md_primary))
-            .build();
+                .addAction(R.drawable.ic_action_folder_open_dark, getContext().getString(R.string.open_database), pendingIntent)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(getContext().getString(R.string.sync_notification_title))
+                .setContentText(getContext().getString(R.string.dropbox_open_database_downloaded))
+                ////.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setTicker(getContext().getString(R.string.dropbox_file_ready_for_use))
+                .setStyle(inboxStyle)
+                .setColor(getContext().getResources().getColor(R.color.md_primary))
+                .build();
     }
 
     /**
@@ -137,6 +138,7 @@ public class SyncNotificationFactory {
 
     /**
      * Get a notification builder with progress bar
+     *
      * @param notification existing builder
      * @param totalBytes   total bytes to transfer
      * @param bytes        bytes transfer
@@ -160,13 +162,13 @@ public class SyncNotificationFactory {
         NotificationUtils.createNotificationChannel(getContext(), channel_id);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), channel_id)
-            .setContentTitle(getContext().getString(R.string.sync_notification_title))
-            .setAutoCancel(false)
-            .setSubText(getContext().getString(R.string.sync_conflict))
-            .setContentText(getContext().getString(R.string.both_files_modified))
+                .setContentTitle(getContext().getString(R.string.sync_notification_title))
+                .setAutoCancel(false)
+                .setSubText(getContext().getString(R.string.sync_conflict))
+                .setContentText(getContext().getString(R.string.both_files_modified))
 //                .setLargeIcon(icon.toBitmap())
-            .setSmallIcon(R.drawable.ic_stat_notification)
-            .setColor(uiHelper.getToolbarItemColor());
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setColor(uiHelper.getToolbarItemColor());
 
         return notification.build();
     }

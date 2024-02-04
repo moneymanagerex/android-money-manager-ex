@@ -16,59 +16,137 @@
   -->
 <!DOCTYPE html>
 <html>
-<head>
-<title>MoneyManagerEx para sa Android: Isang datos sa pag-synchronize sa MoneyManagerEx para sa Windows/Linux/Mac gamit ang serbisyo ng Dropbox
- 
-Context | Request Context</title>
-<style type="text/css">
-body {
-	background:#f5f5f5;
-	font-size:small;
-	margin: 10px;
-}
+    <head>
+        <title>MoneyManagerEx para sa Android: Isang datos sa pag-synchronize sa MoneyManagerEx para sa Windows/Linux/Mac gamit ang serbisyo ng Dropbox
 
-.lists {
-	margin: 0;
-	padding: 0px 0px 0px 13px;
-	list-style-type: disk;
-}
+            Context | Request Context
+        </title>
+        <style type="text/css">
+            body {
+                background: #f5f5f5;
+                font-size: small;
+                margin: 10px;
+            }
+
+            .lists {
+                margin: 0;
+                padding: 0px 0px 0px 13px;
+                list-style-type: disk;
+            }
 
 
-.warning {color:#FF0000;}
+            .warning {
+                color: #FF0000;
+            }
 
-h2 { font-size:120%; }
-h3 { font-size:105%; }
-</style>
-</head>
-	<body>
-    <h2><b>MoneyManagerEx para sa Android</b></h2>
-    <h3>Pag-synchronize ng database gamit ang MoneyManagerEx para sa Windows / Linux / Mac gamit ang serbisyo ng Dropbox.</h3>
-    <p><b> Kinakailangan: </b> may dropbox account. Kung hindi mo pa rin ito pumunta sa www.dropbox.com at lumikha ng isang bagong account.</p>
-    <ul>
-        <li>Ikonekta MoneyManagerEx para sa Android na may Dropbox. Piliin ang "Mag-link sa Dropbox." Kung naka-install ang iyong device sa Dropbox app, awtomatiko itong bubukas at hihilingin sa iyo na pahintulutan ang MoneyManagerEx para sa Android na ma-access ang iyong Dropbox. Kung hindi mo pa na-install ang Dropbox app sa iyong device, Android buksan ang browser sa login page ng Dropbox. Pagkatapos mag-log in, tatanungin ka upang pahintulutan ang MoneyManagerEx para sa Android para ma-access ang iyong Dropbox.</li>
-        <li>Kung papahintulutan mo ang MoneyManagerEx para sa Android, sa unang pagkakataon ay nilikha ng awtomatiko ng Dropbox, mga folder <i><i>/Apps/MoneyManagerEx Mobile</i></i> sa loob ng iyong Dropbox na espasyo. Ang folder na ito ay hindi dapat malilikha ng mano-mano!</li>
-    </ul>
+            h2 {
+                font-size: 120%;
+            }
 
-    <ul>
-        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>Ginamit ko na ang datos para sa desktop na bersyon</b></h3></a>
-        <li>Kung mayroon ka ng datos (mmb) sa MoneyManagerEx Desktop na bersyon, dapat mong kopyahin o ilipat ang mga file (s) sa loob ng folder <i>/Apps/MoneyManagerEx Mobile</i> (inirerekumendang paggamit ng kompyuter para sa operasyong ito).</li>
-        <li>Mula sa Dropbox settings ng MoneyManagerEx para sa Android, pindotin "Dropbox naka-link file". Magbubukas ang application ng isang bagong window sa lahat ng mga file sa folder <i> / Apps / MoneyManagerEx Mobile </i>. Piliin ang file na nais mong kumonekta at bumalik.</li>
-        <li>Sa sandaling bumalik ka sa mga setting ng Dropbox ng MoneyManagerEx para sa Android, pagkatapos ng mga 10 segundo magsisimula itong i-download ang napiling file, maaari mong makita ang abiso na magbubukas sa iyong device. Kapag natapos ang pag-download, aabisuhan ka ng iyong device na ang file ay handa nang gamitin at dapat kang mag-click sa "Buksan ang Database" upang makumpleto ang link sa pagitan ng MoneyManagerEx para sa Android at Dropbox.</li>
+            h3 {
+                font-size: 105%;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            <b>MoneyManagerEx para sa Android</b>
+        </h2>
+        <h3>Pag-synchronize ng database gamit ang MoneyManagerEx para sa Windows / Linux / Mac gamit ang serbisyo ng Dropbox.</h3>
+        <p>
+            <b>Kinakailangan:</b>
+            may dropbox account. Kung hindi mo pa rin ito pumunta sa www.dropbox.com at lumikha ng isang bagong account.
+        </p>
+        <ul>
+            <li>Ikonekta MoneyManagerEx para sa Android na may Dropbox. Piliin ang "Mag-link sa Dropbox." Kung naka-install ang iyong device sa Dropbox app, awtomatiko itong
+                bubukas at hihilingin sa iyo na pahintulutan ang MoneyManagerEx para sa Android na ma-access ang iyong Dropbox. Kung hindi mo pa na-install ang Dropbox app sa iyong
+                device, Android buksan ang browser sa login page ng Dropbox. Pagkatapos mag-log in, tatanungin ka upang pahintulutan ang MoneyManagerEx para sa Android para
+                ma-access ang iyong Dropbox.
+            </li>
+            <li>Kung papahintulutan mo ang MoneyManagerEx para sa Android, sa unang pagkakataon ay nilikha ng awtomatiko ng Dropbox, mga folder
+                <i>
+                    <i>/Apps/MoneyManagerEx Mobile</i>
+                </i>
+                sa loob ng iyong Dropbox na espasyo. Ang folder na ito ay hindi dapat malilikha ng mano-mano!
+            </li>
+        </ul>
 
-        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>Hindi ko na ginagamit ang desktop na bersyon at nais kong i-synchronize ang database sa device</b></h3></a>
-        <li>Kung wala kang isang file ng mmb MoneyManagerEx Desktop na Bersyon, dapat kang mag-click sa "Mag-upload sa database ng Dropbox." Pagkatapos ng humigit-kumulang 10 segundo, ang pag-upload sa Dropbox ng kasalukuyang database ay magsisimula. Sa dulo ng proseso magkakaroon ng abiso para sa pagkumpleto ng pag-upload, at sa <i> / Apps / MoneyManagerEx Mobile </i> makikita mo ang isang file na pinangalanang data.mmb.</li>
+        <ul>
+            <a name="mmb_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Ginamit ko na ang datos para sa desktop na bersyon</b>
+                </h3>
+            </a>
+            <li>Kung mayroon ka ng datos (mmb) sa MoneyManagerEx Desktop na bersyon, dapat mong kopyahin o ilipat ang mga file (s) sa loob ng folder
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                (inirerekumendang paggamit ng kompyuter para sa operasyong ito).
+            </li>
+            <li>Mula sa Dropbox settings ng MoneyManagerEx para sa Android, pindotin "Dropbox naka-link file". Magbubukas ang application ng isang bagong window sa lahat ng mga
+                file sa folder<i>/ Apps / MoneyManagerEx Mobile</i>. Piliin ang file na nais mong kumonekta at bumalik.
+            </li>
+            <li>Sa sandaling bumalik ka sa mga setting ng Dropbox ng MoneyManagerEx para sa Android, pagkatapos ng mga 10 segundo magsisimula itong i-download ang napiling file,
+                maaari mong makita ang abiso na magbubukas sa iyong device. Kapag natapos ang pag-download, aabisuhan ka ng iyong device na ang file ay handa nang gamitin at dapat
+                kang mag-click sa "Buksan ang Database" upang makumpleto ang link sa pagitan ng MoneyManagerEx para sa Android at Dropbox.
+            </li>
 
-        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>Iba pang mga setting</b></h3></a>
-        <li>Sa sandaling ginawa mo ang link na account at file, awtomatikong sini-sync ng MoneyManagerEx para sa Android ang Dropbox bawat x minuto na nakatakda sa setting na "Synchronization Interval". Kung hindi mo nais na i-synchronize awtomatikong itakda ang "Pag-synchronize ng Interval" sa zero.</li>
-        <li>Mahalaga na itakda ang "I-upload ang database kaagad pagkatapos baguhin". Ang pag-setup na ito ay nagbibigay-daan sa MoneyManagerEx para sa Android na i-upload ang database sa Dropbox kaagad pagkatapos gumawa ka ng isang pagbabago.</li>
-        <li>Gamitin ang "I-download ang database mula sa Dropbox" o "Mag-upload ng database sa Dropbox" upang pilitin ang operasyon upang I-download o I-upload ang database, kung sakaling malalabo.</li>
-        <li>Kapag na-link mo ang iyong Dropbox account at pinapagana ng file sa pangunahing window ang pag-andar ng pag-synchronize sa tuktok na toolbar.</li>
-        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>FAQ</b></h3></a>
-        <li><b>Q. </b>Hindi ako makakonekta sa Dropbox, o MoneyManagerEx hindi naka-sync?<br><b>A. </b> Ang unang bagay na kailangan mong gawin ay magpadala sa amin ng isang email sa <a href="android.money.manager.ex@gmail.com"> android.money.manager.ex@gmail.com </a> na naglalarawan ng problema. Samantala, kung nais mong i-synchronize ang iyong database gamit ang MoneyManagerEx para sa Android, kakailanganin mong gumamit ng iba pang mga application para sa layuning ito, tulad ng <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite"> FolderSync </a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync"> Dropsync </1> o maghanap ng isang application <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0"> Google Play </a>.
-        <li><b>Q. Gusto kong i-synchronize ang MoneyManagerEx para sa Android sa iba pang mga serbisyo ng cloud (Drive, Box.net, Wuala, atbp. ..). Paano ko gagawin.<br><b>A. </b>Sa MoneyManagerEx para sa Android ang tanging serbisyo ng cloud storage na magagamit ay Dropbox. Kung nais mong gamitin ang database sa iba pang mga serbisyo ng cloud storage, gugustuhin mong mahanap sa Google Play ang application na nagbibigay-daan sa iyo upang i-synchronise sa iyong serbisyo. Ang database ay isi-save sa panlabas na memorya ng device, at pagkatapos ay buksan sa MoneyManagerEx para sa Android
-        <li><b>Q. </b>Pagkatapos ng pag-sync hindi na ko nakikita ang aking data. Nawala ko ang lahat ng data sa aking database?<br><b>A. </b>Huwag kang mag-alala, wala kang nawala! Sa mga bihirang kaso posible na, kapag na-synchronize mo ang database, ang file ay hindi maayos na na-download at hindi na ito nababasa ng MoneyManagerEx para sa Android. Sa mga kasong ito, kakailanganin mong pilitin ang pag-download ng database mula sa dropbox. Kung hindi pa nabuksan ang database, inirerekumenda namin na tanggalin mo ang mga file sa /com.money.manager.ex/dropbox/ at muling subukan ang sapilitang pag-download ng mga file mula sa Dropbox.
-        <li><b>Q. </b>Maaari ko bang ibalik ang isang nakaraang bersyon ng database?<br><b>A. </b> Siyempre po. Dropbox ay nagpapanatili ng lahat na bersyon sa lahat ng iyong mga file. <a href="https://www.dropbox.com/help/11/">Dito maari mong hanapin ang gabay ng Dropbox kung paano ibalik ang file</a>
-        </li>
-    </ul>
+            <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Hindi ko na ginagamit ang desktop na bersyon at nais kong i-synchronize ang database sa device</b>
+                </h3>
+            </a>
+            <li>Kung wala kang isang file ng mmb MoneyManagerEx Desktop na Bersyon, dapat kang mag-click sa "Mag-upload sa database ng Dropbox." Pagkatapos ng humigit-kumulang 10
+                segundo, ang pag-upload sa Dropbox ng kasalukuyang database ay magsisimula. Sa dulo ng proseso magkakaroon ng abiso para sa pagkumpleto ng pag-upload, at sa
+                <i>/ Apps / MoneyManagerEx Mobile</i>
+                makikita mo ang isang file na pinangalanang data.mmb.
+            </li>
+
+            <a name="other_settings" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Iba pang mga setting</b>
+                </h3>
+            </a>
+            <li>Sa sandaling ginawa mo ang link na account at file, awtomatikong sini-sync ng MoneyManagerEx para sa Android ang Dropbox bawat x minuto na nakatakda sa setting na
+                "Synchronization Interval". Kung hindi mo nais na i-synchronize awtomatikong itakda ang "Pag-synchronize ng Interval" sa zero.
+            </li>
+            <li>Mahalaga na itakda ang "I-upload ang database kaagad pagkatapos baguhin". Ang pag-setup na ito ay nagbibigay-daan sa MoneyManagerEx para sa Android na i-upload ang
+                database sa Dropbox kaagad pagkatapos gumawa ka ng isang pagbabago.
+            </li>
+            <li>Gamitin ang "I-download ang database mula sa Dropbox" o "Mag-upload ng database sa Dropbox" upang pilitin ang operasyon upang I-download o I-upload ang database,
+                kung sakaling malalabo.
+            </li>
+            <li>Kapag na-link mo ang iyong Dropbox account at pinapagana ng file sa pangunahing window ang pag-andar ng pag-synchronize sa tuktok na toolbar.</li>
+            <a name="faq" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>FAQ</b>
+                </h3>
+            </a>
+            <li><b>Q.</b>Hindi ako makakonekta sa Dropbox, o MoneyManagerEx hindi naka-sync?
+                <br>
+                <b>A.</b>
+                Ang unang bagay na kailangan mong gawin ay magpadala sa amin ng isang email sa
+                <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a>
+                na naglalarawan ng problema. Samantala, kung nais mong i-synchronize ang iyong database gamit ang MoneyManagerEx para sa Android, kakailanganin mong gumamit ng iba
+                pang mga application para sa layuning ito, tulad ng<a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>,<a
+                        href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</1> o maghanap ng isang application<a
+                        href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>.
+            <li>
+                <b>Q. Gusto kong i-synchronize ang MoneyManagerEx para sa Android sa iba pang mga serbisyo ng cloud (Drive, Box.net, Wuala, atbp. ..). Paano ko gagawin.
+                    <br>
+                    <b>A.</b>Sa MoneyManagerEx para sa Android ang tanging serbisyo ng cloud storage na magagamit ay Dropbox. Kung nais mong gamitin ang database sa iba pang mga
+                    serbisyo ng cloud storage, gugustuhin mong mahanap sa Google Play ang application na nagbibigay-daan sa iyo upang i-synchronise sa iyong serbisyo. Ang database
+                    ay isi-save sa panlabas na memorya ng device, at pagkatapos ay buksan sa MoneyManagerEx para sa Android
+                    <li><b>Q.</b>Pagkatapos ng pag-sync hindi na ko nakikita ang aking data. Nawala ko ang lahat ng data sa aking database?
+                        <br>
+                        <b>A.</b>Huwag kang mag-alala, wala kang nawala! Sa mga bihirang kaso posible na, kapag na-synchronize mo ang database, ang file ay hindi maayos na
+                        na-download at hindi na ito nababasa ng MoneyManagerEx para sa Android. Sa mga kasong ito, kakailanganin mong pilitin ang pag-download ng database mula sa
+                        dropbox. Kung hindi pa nabuksan ang database, inirerekumenda namin na tanggalin mo ang mga file sa /com.money.manager.ex/dropbox/ at muling subukan ang
+                        sapilitang pag-download ng mga file mula sa Dropbox.
+                    <li><b>Q.</b>Maaari ko bang ibalik ang isang nakaraang bersyon ng database?
+                        <br>
+                        <b>A.</b>
+                        Siyempre po. Dropbox ay nagpapanatili ng lahat na bersyon sa lahat ng iyong mga file.
+                        <a href="https://www.dropbox.com/help/11/">Dito maari mong hanapin ang gabay ng Dropbox kung paano ibalik ang file</a>
+                    </li>
+        </ul>
     </body>
 </html>

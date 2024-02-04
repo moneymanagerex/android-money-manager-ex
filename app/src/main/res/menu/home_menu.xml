@@ -20,17 +20,17 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Search, should appear as action button -->
     <item
-        android:id="@+id/menu_search"
-        android:icon="?attr/ic_action_search"
-        android:title="@string/search"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/menu_search"
+            android:icon="?attr/ic_action_search"
+            android:title="@string/search"
+            app:showAsAction="ifRoom"/>
     <!-- Settings, should always be in the overflow -->
     <!--<item android:id="@+id/action_settings"-->
     <!--android:title="@string/action_settings"-->
     <!--app:showAsAction="never" />-->
 
     <!--<item android:id="@+id/menu_sync_dropbox"-->
-        <!--android:icon="?attr/ic_action_dropbox"-->
-        <!--android:title="@string/synchronize"-->
-        <!--app:showAsAction="never" />-->
+    <!--android:icon="?attr/ic_action_dropbox"-->
+    <!--android:title="@string/synchronize"-->
+    <!--app:showAsAction="never" />-->
 </menu>

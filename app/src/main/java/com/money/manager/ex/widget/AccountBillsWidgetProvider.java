@@ -35,7 +35,7 @@ import info.javaperformance.money.MoneyFactory;
  * All Accounts widget
  */
 public class AccountBillsWidgetProvider
-    extends AppWidgetProvider {
+        extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,

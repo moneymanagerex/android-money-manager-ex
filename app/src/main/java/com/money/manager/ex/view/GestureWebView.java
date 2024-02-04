@@ -28,7 +28,10 @@ import android.webkit.WebView;
  * WebView with gesture listener. Allows handling custom gestures like long-press, double-tap, etc.
  */
 public class GestureWebView
-    extends WebView {
+        extends WebView {
+
+    //private Context context;
+    private final GestureDetector gestureDetector;
 
     public GestureWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,9 +39,6 @@ public class GestureWebView
 //        this.context = context;
         this.gestureDetector = initializeGestureDetector(context);
     }
-
-    //private Context context;
-    private final GestureDetector gestureDetector;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

@@ -16,7 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
@@ -27,25 +26,25 @@
               tools:context="com.money.manager.ex.assetallocation.AssetClassEditFragment">
 
     <!--<ScrollView-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:fillViewport="true"-->
-        <!--android:orientation="vertical">-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:fillViewport="true"-->
+    <!--android:orientation="vertical">-->
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
             android:paddingRight="@dimen/mmx_activity_side_padding">
 
-            <!-- todo: parent asset class -->
-            <com.money.manager.ex.view.RobotoTextView
+        <!-- todo: parent asset class -->
+        <com.money.manager.ex.view.RobotoTextView
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/parent"/>
-            <com.money.manager.ex.view.RobotoTextView
+        <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/parentAssetClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,67 +52,67 @@
                 android:gravity="top|start"
                 android:hint="@string/parent"
                 android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
+                android:textCursorDrawable="@null"/>
 
-            <!-- Stock Name -->
-            <com.google.android.material.textfield.TextInputLayout
+        <!-- Stock Name -->
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <!--<com.money.manager.ex.view.RobotoTextView-->
-                <!--style="@style/Money.TextView.Header.Caption"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/name"/>-->
+            <!--style="@style/Money.TextView.Header.Caption"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/name"/>-->
             <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/nameEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/mmx_padding"
-                android:gravity="top|start"
-                android:hint="@string/asset_class_name"
-                android:inputType="text"
-                android:maxLength="1000"
-                android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:id="@+id/nameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/mmx_padding"
+                    android:gravity="top|start"
+                    android:hint="@string/asset_class_name"
+                    android:inputType="text"
+                    android:maxLength="1000"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Allocation -->
-            <com.money.manager.ex.view.RobotoTextView
+        <!-- Allocation -->
+        <com.money.manager.ex.view.RobotoTextView
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/allocation"/>
-            <!--<com.money.manager.ex.view.RobotoTextView-->
-                <!--android:id="@+id/allocationEdit"-->
-                <!--style="@style/Money.TextView.Widget.EditText"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--app:iconLeft="@xml/ic_hash_small"-->
-                <!--android:textStyle="bold"-->
-                <!--android:gravity="end" />-->
-            <com.money.manager.ex.view.RobotoTextView
+        <!--<com.money.manager.ex.view.RobotoTextView-->
+        <!--android:id="@+id/allocationEdit"-->
+        <!--style="@style/Money.TextView.Widget.EditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:iconLeft="@xml/ic_hash_small"-->
+        <!--android:textStyle="bold"-->
+        <!--android:gravity="end" />-->
+        <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/allocationEdit"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:gravity="end" />
+                android:gravity="end"/>
 
-            <!-- Allocation -->
-            <com.money.manager.ex.view.RobotoTextView
+        <!-- Allocation -->
+        <com.money.manager.ex.view.RobotoTextView
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sort_order"/>
-            <com.money.manager.ex.view.RobotoTextView
+        <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/sortOrderEdit"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:gravity="end" />
+                android:gravity="end"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
 
     <!--</ScrollView>-->

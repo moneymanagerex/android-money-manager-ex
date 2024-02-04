@@ -25,7 +25,7 @@ import org.parceler.Parcel;
  */
 @Parcel
 public class Category
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String CATEGID = "CATEGID";
     public static final String CATEGNAME = "CATEGNAME";
@@ -33,10 +33,9 @@ public class Category
     public static final String PARENTID = "PARENTID";
 
     public Category() {
-        super();
     }
 
-    public Category(ContentValues contentValues) {
+    public Category(final ContentValues contentValues) {
         super(contentValues);
     }
 
@@ -44,7 +43,7 @@ public class Category
         return getInt(CATEGID);
     }
 
-    public void setId(Integer value) {
+    public void setId(final Integer value) {
         setInt(CATEGID, value);
     }
 
@@ -52,7 +51,7 @@ public class Category
         return getInt(PARENTID);
     }
 
-    public void setParentId(Integer value) {
+    public void setParentId(final Integer value) {
         setInt(PARENTID, value);
     }
 
@@ -60,7 +59,7 @@ public class Category
         return getString(CATEGNAME);
     }
 
-    public void setName(String value) {
+    public void setName(final String value) {
         setString(CATEGNAME, value);
     }
 }

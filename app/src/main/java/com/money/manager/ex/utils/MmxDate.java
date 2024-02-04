@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
+
 import timber.log.Timber;
 
 /**
@@ -37,8 +38,63 @@ import timber.log.Timber;
  */
 public class MmxDate {
 
+    private Calendar mCalendar;
+
+    /**
+     * The default constructor uses the current time instance by default.
+     */
+    public MmxDate() {
+        mCalendar = Calendar.getInstance();
+    }
+
+    public MmxDate(Calendar calendar) {
+        mCalendar = calendar;
+    }
+
+    /*
+        Instance
+     */
+
+    public MmxDate(Date date) {
+        mCalendar = new GregorianCalendar();
+
+        if (date != null) {
+            mCalendar.setTime(date);
+        }
+    }
+
+    /**
+     * Creates a date/time object from an ISO date string.
+     *
+     * @param isoString ISO date string
+     */
+    public MmxDate(@NonNull String isoString) {
+        String pattern = Constants.ISO_DATE_FORMAT;
+        Date date = from(isoString, pattern);
+
+        mCalendar = new GregorianCalendar();
+        mCalendar.setTime(date);
+    }
+
+    public MmxDate(String dateString, String pattern) {
+        Date date = from(dateString, pattern);
+
+        mCalendar = new GregorianCalendar();
+        mCalendar.setTime(date);
+    }
+
+    public MmxDate(int year, int month, int day) {
+        mCalendar = new GregorianCalendar(year, month, day);
+    }
+
+    public MmxDate(long ticks) {
+        mCalendar = new GregorianCalendar();
+        mCalendar.setTimeInMillis(ticks);
+    }
+
     /**
      * The expected format is full ISO format: 2016-10-22T02:36:46.000+0200
+     *
      * @param dateString The date string in ISO format.
      * @return MmxDate instance.
      */
@@ -80,58 +136,9 @@ public class MmxDate {
         return result;
     }
 
-    /*
-        Instance
-     */
-
-    /**
-     * The default constructor uses the current time instance by default.
-     */
-    public MmxDate() {
-        mCalendar = Calendar.getInstance();
+    private static SimpleDateFormat getFormatterFor(String format) {
+        return new SimpleDateFormat(format, Locale.ENGLISH);
     }
-
-    public MmxDate(Calendar calendar) {
-        mCalendar = calendar;
-    }
-
-    public MmxDate(Date date) {
-        mCalendar = new GregorianCalendar();
-
-        if (date != null) {
-            mCalendar.setTime(date);
-        }
-    }
-
-    /**
-     * Creates a date/time object from an ISO date string.
-     * @param isoString ISO date string
-     */
-    public MmxDate(@NonNull String isoString) {
-        String pattern = Constants.ISO_DATE_FORMAT;
-        Date date = from(isoString, pattern);
-
-        mCalendar = new GregorianCalendar();
-        mCalendar.setTime(date);
-    }
-
-    public MmxDate(String dateString, String pattern) {
-        Date date = from(dateString, pattern);
-
-        mCalendar = new GregorianCalendar();
-        mCalendar.setTime(date);
-    }
-
-    public MmxDate(int year, int month, int day) {
-        mCalendar = new GregorianCalendar(year, month, day);
-    }
-
-    public MmxDate(long ticks) {
-        mCalendar = new GregorianCalendar();
-        mCalendar.setTimeInMillis(ticks);
-    }
-
-    private Calendar mCalendar;
 
     public MmxDate addDays(int value) {
         mCalendar.add(Calendar.DATE, value);
@@ -152,6 +159,7 @@ public class MmxDate {
     /**
      * Sets the calendar to the first day of the month to which the calendar points to.
      * I.e. if the calendar is 2015-08-20, this will return 2015-08-01 00:00:00.000
+     *
      * @return The first day of the month in which the Calendar is set.
      */
     public MmxDate firstDayOfMonth() {
@@ -168,6 +176,11 @@ public class MmxDate {
         return mCalendar;
     }
 
+    public MmxDate setCalendar(Calendar calendar) {
+        mCalendar = calendar;
+        return this;
+    }
+
     public int getDayOfMonth() {
         return mCalendar.get(Calendar.DAY_OF_MONTH);
     }
@@ -178,6 +191,11 @@ public class MmxDate {
 
     public int getHour() {
         return getHourOfDay();
+    }
+
+    public MmxDate setHour(int hour) {
+        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        return this;
     }
 
     public int getHourOfDay() {
@@ -192,14 +210,37 @@ public class MmxDate {
         return getMinuteOfHour();
     }
 
+    public MmxDate setMinute(int minute) {
+        mCalendar.set(Calendar.MINUTE, minute);
+        return this;
+    }
+
     public int getMinuteOfHour() {
         return mCalendar.get(Calendar.MINUTE);
     }
 
-    public int getYear() { return mCalendar.get(Calendar.YEAR); }
+    public int getYear() {
+        return mCalendar.get(Calendar.YEAR);
+    }
+
+    public MmxDate setYear(int year) {
+        mCalendar.set(Calendar.YEAR, year);
+        return this;
+    }
 
     public int getMonth() {
         return mCalendar.get(Calendar.MONTH);
+    }
+
+    /**
+     * Set the month for the current calendar.
+     *
+     * @param month Month value i.e. Calendar.January. NOT ordinal, i.e. November != 11.
+     * @return
+     */
+    public MmxDate setMonth(int month) {
+        mCalendar.set(Calendar.MONTH, month);
+        return this;
     }
 
     public int getMonthOfYear() {
@@ -208,6 +249,7 @@ public class MmxDate {
 
     /**
      * Converts the date/time value to the destination time zone.
+     *
      * @param timeZone The name of the time zone. I.e. "Europe/Berlin".
      * @return Date/Time value in the destination time zone.
      */
@@ -264,23 +306,8 @@ public class MmxDate {
         return addYear(value);
     }
 
-    public MmxDate setCalendar(Calendar calendar) {
-        mCalendar = calendar;
-        return this;
-    }
-
     public MmxDate setDate(int dayOfMonth) {
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        return this;
-    }
-
-    public MmxDate setHour(int hour) {
-        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
-        return this;
-    }
-
-    public MmxDate setMinute(int minute) {
-        mCalendar.set(Calendar.MINUTE, minute);
         return this;
     }
 
@@ -289,30 +316,15 @@ public class MmxDate {
         return this;
     }
 
-    /**
-     * Set the month for the current calendar.
-     * @param month Month value i.e. Calendar.January. NOT ordinal, i.e. November != 11.
-     * @return
-     */
-    public MmxDate setMonth(int month) {
-        mCalendar.set(Calendar.MONTH, month);
-        return this;
-    }
+//    public MmxDate setNow() {
+//        mCalendar = Calendar.getInstance();
+//        return this;
+//    }
 
     public MmxDate setSecond(int second) {
         mCalendar.set(Calendar.SECOND, second);
         return this;
     }
-
-    public MmxDate setYear(int year) {
-        mCalendar.set(Calendar.YEAR, year);
-        return this;
-    }
-
-//    public MmxDate setNow() {
-//        mCalendar = Calendar.getInstance();
-//        return this;
-//    }
 
     public MmxDate setTimeToBeginningOfDay() {
         setHour(0);
@@ -366,16 +378,12 @@ public class MmxDate {
         return format.format(toDate());
     }
 
-    public String toIsoDateShortTimeString() {
-        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
-        return format.format(toDate());
-    }
-
     /*
         Private
      */
 
-    private static SimpleDateFormat getFormatterFor(String format) {
-        return new SimpleDateFormat(format, Locale.ENGLISH);
+    public String toIsoDateShortTimeString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
     }
 }

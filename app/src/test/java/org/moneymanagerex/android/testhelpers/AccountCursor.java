@@ -19,7 +19,6 @@ package org.moneymanagerex.android.testhelpers;
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import org.robolectric.fakes.BaseCursor;
  * Fake cursor
  */
 public class AccountCursor
-    extends BaseCursor {
+        extends BaseCursor {
     @Override
     public int getCount() {
         return 0;
@@ -42,12 +41,12 @@ public class AccountCursor
     }
 
     @Override
-    public boolean move(int offset) {
+    public boolean move(final int offset) {
         return false;
     }
 
     @Override
-    public boolean moveToPosition(int position) {
+    public boolean moveToPosition(final int position) {
         return false;
     }
 
@@ -92,17 +91,17 @@ public class AccountCursor
     }
 
     @Override
-    public int getColumnIndex(String columnName) {
+    public int getColumnIndex(final String columnName) {
         return 0;
     }
 
     @Override
-    public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException {
+    public int getColumnIndexOrThrow(final String columnName) throws IllegalArgumentException {
         return 0;
     }
 
     @Override
-    public String getColumnName(int columnIndex) {
+    public String getColumnName(final int columnIndex) {
         return null;
     }
 
@@ -117,52 +116,52 @@ public class AccountCursor
     }
 
     @Override
-    public byte[] getBlob(int columnIndex) {
+    public byte[] getBlob(final int columnIndex) {
         return new byte[0];
     }
 
     @Override
-    public String getString(int columnIndex) {
+    public String getString(final int columnIndex) {
         return null;
     }
 
     @Override
-    public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer) {
+    public void copyStringToBuffer(final int columnIndex, final CharArrayBuffer buffer) {
 
     }
 
     @Override
-    public short getShort(int columnIndex) {
+    public short getShort(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public int getInt(int columnIndex) {
+    public int getInt(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public long getLong(int columnIndex) {
+    public long getLong(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public float getFloat(int columnIndex) {
+    public float getFloat(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public double getDouble(int columnIndex) {
+    public double getDouble(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public int getType(int columnIndex) {
+    public int getType(final int columnIndex) {
         return 0;
     }
 
     @Override
-    public boolean isNull(int columnIndex) {
+    public boolean isNull(final int columnIndex) {
         return false;
     }
 
@@ -187,27 +186,27 @@ public class AccountCursor
     }
 
     @Override
-    public void registerContentObserver(ContentObserver observer) {
+    public void registerContentObserver(final ContentObserver observer) {
 
     }
 
     @Override
-    public void unregisterContentObserver(ContentObserver observer) {
+    public void unregisterContentObserver(final ContentObserver observer) {
 
     }
 
     @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
+    public void registerDataSetObserver(final DataSetObserver observer) {
 
     }
 
     @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
+    public void unregisterDataSetObserver(final DataSetObserver observer) {
 
     }
 
     @Override
-    public void setNotificationUri(ContentResolver cr, Uri uri) {
+    public void setNotificationUri(final ContentResolver cr, final Uri uri) {
 
     }
 
@@ -222,17 +221,17 @@ public class AccountCursor
     }
 
     @Override
-    public void setExtras(Bundle extras) {
-
-    }
-
-    @Override
     public Bundle getExtras() {
         return null;
     }
 
     @Override
-    public Bundle respond(Bundle extras) {
+    public void setExtras(final Bundle extras) {
+
+    }
+
+    @Override
+    public Bundle respond(final Bundle extras) {
         return null;
     }
 }

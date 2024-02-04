@@ -28,31 +28,32 @@ import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Payee;
 
 /**
+ *
  */
 public class PayeeService
-    extends ServiceBase {
-
-    public PayeeService(Context context) {
-        super(context);
-
-        this.payeeRepository = new PayeeRepository(context);
-    }
+        extends ServiceBase {
 
     private final PayeeRepository payeeRepository;
 
-    public Payee loadByName(String name) {
-        Payee payee = null;
-        String selection = Payee.PAYEENAME + "='" + name + "'";
+    public PayeeService(final Context context) {
+        super(context);
 
-        Cursor cursor = getContext().getContentResolver().query(
-                this.payeeRepository.getUri(),
-                this.payeeRepository.getAllColumns(),
+        payeeRepository = new PayeeRepository(context);
+    }
+
+    public Payee loadByName(final String name) {
+        Payee payee = null;
+        final String selection = Payee.PAYEENAME + "='" + name + "'";
+
+        final Cursor cursor = getContext().getContentResolver().query(
+                payeeRepository.getUri(),
+                payeeRepository.getAllColumns(),
                 selection,
                 null,
                 null);
-        if (cursor == null) return null;
+        if (null == cursor) return null;
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             payee = new Payee();
             payee.loadFromCursor(cursor);
         }
@@ -62,22 +63,22 @@ public class PayeeService
         return payee;
     }
 
-    public int loadIdByName(String name) {
+    public int loadIdByName(final String name) {
         int result = Constants.NOT_SET;
 
-        if(TextUtils.isEmpty(name)) return result;
+        if (TextUtils.isEmpty(name)) return result;
 
-        String selection = Payee.PAYEENAME + "=?";
+        final String selection = Payee.PAYEENAME + "=?";
 
-        Cursor cursor = getContext().getContentResolver().query(
+        final Cursor cursor = getContext().getContentResolver().query(
                 payeeRepository.getUri(),
-                new String[]{ Payee.PAYEEID },
+                new String[]{Payee.PAYEEID},
                 selection,
-                new String[] { name },
+                new String[]{name},
                 null);
-        if (cursor == null) return Constants.NOT_SET;
+        if (null == cursor) return Constants.NOT_SET;
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             result = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
         }
 
@@ -91,11 +92,11 @@ public class PayeeService
 
         name = name.trim();
 
-        Payee payee = new Payee();
+        final Payee payee = new Payee();
         payee.setName(name);
         payee.setCategoryId(-1);
 
-        int id = this.payeeRepository.add(payee);
+        final int id = payeeRepository.add(payee);
 
         payee.setId(id);
 
@@ -105,22 +106,22 @@ public class PayeeService
     public boolean exists(String name) {
         name = name.trim();
 
-        Payee payee = loadByName(name);
-        return (payee != null);
+        final Payee payee = loadByName(name);
+        return (null != payee);
     }
 
-    public boolean isPayeeUsed(int payeeId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
-        return links > 0;
+    public boolean isPayeeUsed(final int payeeId) {
+        final AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        final int links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
+        return 0 < links;
     }
 
-    public int update(int id, String name) {
-        if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
+    public int update(final int id, String name) {
+        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(Payee.PAYEENAME, name);
 
         return getContext().getContentResolver().update(payeeRepository.getUri(),

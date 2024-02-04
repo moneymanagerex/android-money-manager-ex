@@ -43,14 +43,10 @@ public class Encryptor {
 
     private static final int KEY_SIZE = 32;
 
-    public String encrypt(String text) {
-        return "not implemented";
-    }
-
     /**
      * Method used to derive an <b>insecure</b> key by emulating the SHA1PRNG algorithm from the
      * deprecated Crypto provider.
-     *
+     * <p>
      * Do not use it to encrypt new data, just to decrypt encrypted data that would be unrecoverable
      * otherwise.
      */
@@ -66,59 +62,24 @@ public class Encryptor {
                 InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(passwordBytes, keySizeInBytes), "AES");
     }
 
-    /**
-     * Example use of a key derivation function, derivating a key securely from a password.
-     */
-    private SecretKey deriveKeySecurely(String password, int keySizeInBytes) {
-        // Use this to derive the key from the password:
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), retrieveSalt(),
-                100 /* iterationCount */,
-                keySizeInBytes * 8 /* key size in bits */);
+    private static byte[] encryptOrDecrypt(
+            byte[] data, SecretKey key, byte[] iv, boolean isEncrypt) {
         try {
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
-            return new SecretKeySpec(keyBytes, "AES");
-        } catch (Exception e) {
-            throw new RuntimeException("Deal with exceptions properly!", e);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7PADDING");
+            cipher.init(isEncrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key,
+                    new IvParameterSpec(iv));
+            return cipher.doFinal(data);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException("This is unconceivable!", e);
         }
     }
 
-    /**
-     * This is from the Android blog post.
-     * @param password
-     * @return
-     */
-    private SecretKey getKeyFor(String password) {
-        /* User types in their password: */
-//        String password = "password";
+    private static byte[] encryptData(byte[] data, byte[] iv, SecretKey key) {
+        return encryptOrDecrypt(data, key, iv, true);
+    }
 
-   /* Store these things on disk used to derive key later: */
-        int iterationCount = 1000;
-        int saltLength = 32; // bytes; should be the same size as the output (256 / 8 = 32)
-        int keyLength = 256; // 256-bits for AES-256, 128-bits for AES-128, etc
-        byte[] salt; // Should be of saltLength
-
-   /* When first creating the key, obtain a salt with this: */
-        SecureRandom random = new SecureRandom();
-//        byte[] salt = new byte[saltLength];
-        salt = new byte[saltLength];
-        random.nextBytes(salt);
-
-   /* Use this to derive the key from the password: */
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt,
-                iterationCount, keyLength);
-
-        byte[] keyBytes;
-        try {
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
-        } catch (Exception e) {
-            Timber.e(e, "generating key");
-            return null;
-        }
-        SecretKey key = new SecretKeySpec(keyBytes, "AES");
-
-        return key;
+    private static byte[] decryptData(byte[] data, byte[] iv, SecretKey key) {
+        return encryptOrDecrypt(data, key, iv, false);
     }
 
 //    /**
@@ -143,22 +104,64 @@ public class Encryptor {
 //        return decryptedString;
 //    }
 
-    private static byte[] encryptOrDecrypt(
-            byte[] data, SecretKey key, byte[] iv, boolean isEncrypt) {
+    public String encrypt(String text) {
+        return "not implemented";
+    }
+
+    /**
+     * Example use of a key derivation function, derivating a key securely from a password.
+     */
+    private SecretKey deriveKeySecurely(String password, int keySizeInBytes) {
+        // Use this to derive the key from the password:
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), retrieveSalt(),
+                100 /* iterationCount */,
+                keySizeInBytes * 8 /* key size in bits */);
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7PADDING");
-            cipher.init(isEncrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key,
-                    new IvParameterSpec(iv));
-            return cipher.doFinal(data);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException("This is unconceivable!", e);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+            return new SecretKeySpec(keyBytes, "AES");
+        } catch (Exception e) {
+            throw new RuntimeException("Deal with exceptions properly!", e);
         }
     }
-    private static byte[] encryptData(byte[] data, byte[] iv, SecretKey key) {
-        return encryptOrDecrypt(data, key, iv, true);
-    }
-    private static byte[] decryptData(byte[] data, byte[] iv, SecretKey key) {
-        return encryptOrDecrypt(data, key, iv, false);
+
+    /**
+     * This is from the Android blog post.
+     *
+     * @param password
+     * @return
+     */
+    private SecretKey getKeyFor(String password) {
+        /* User types in their password: */
+//        String password = "password";
+
+        /* Store these things on disk used to derive key later: */
+        int iterationCount = 1000;
+        int saltLength = 32; // bytes; should be the same size as the output (256 / 8 = 32)
+        int keyLength = 256; // 256-bits for AES-256, 128-bits for AES-128, etc
+        byte[] salt; // Should be of saltLength
+
+        /* When first creating the key, obtain a salt with this: */
+        SecureRandom random = new SecureRandom();
+//        byte[] salt = new byte[saltLength];
+        salt = new byte[saltLength];
+        random.nextBytes(salt);
+
+        /* Use this to derive the key from the password: */
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt,
+                iterationCount, keyLength);
+
+        byte[] keyBytes;
+        try {
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+        } catch (Exception e) {
+            Timber.e(e, "generating key");
+            return null;
+        }
+        SecretKey key = new SecretKeySpec(keyBytes, "AES");
+
+        return key;
     }
 
     private byte[] retrieveSalt() {

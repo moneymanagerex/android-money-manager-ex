@@ -39,7 +39,7 @@ public class QueryCategorySubCategory extends Dataset {
 
     // definizione del costruttore
     public QueryCategorySubCategory(Context context) {
-            super(MmxFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
     }
 
     @Override

@@ -16,45 +16,45 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_period"
-        android:icon="?attr/ic_action_calendar_day"
-        android:title="@string/time_frame"
-        app:showAsAction="ifRoom">
+            android:id="@+id/menu_period"
+            android:icon="?attr/ic_action_calendar_day"
+            android:title="@string/time_frame"
+            app:showAsAction="ifRoom">
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_today"
-                    android:title="@string/today" />
+                        android:id="@+id/menu_today"
+                        android:title="@string/today"/>
                 <item
-                    android:id="@+id/menu_last7days"
-                    android:title="@string/last7days" />
+                        android:id="@+id/menu_last7days"
+                        android:title="@string/last7days"/>
                 <item
-                    android:id="@+id/menu_last15days"
-                    android:title="@string/last15days" />
+                        android:id="@+id/menu_last15days"
+                        android:title="@string/last15days"/>
                 <item
-                    android:id="@+id/menu_current_month"
-                    android:title="@string/current_month"/>
+                        android:id="@+id/menu_current_month"
+                        android:title="@string/current_month"/>
                 <item
-                    android:id="@+id/menu_last30days"
-                    android:title="@string/last30days" />
+                        android:id="@+id/menu_last30days"
+                        android:title="@string/last30days"/>
                 <item
-                    android:id="@+id/menu_last3months"
-                    android:title="@string/last3months"/>
+                        android:id="@+id/menu_last3months"
+                        android:title="@string/last3months"/>
                 <item
-                    android:id="@+id/menu_last6months"
-                    android:title="@string/last6months"/>
+                        android:id="@+id/menu_last6months"
+                        android:title="@string/last6months"/>
                 <item
-                    android:id="@+id/menu_current_year"
-                    android:title="@string/current_year"/>
+                        android:id="@+id/menu_current_year"
+                        android:title="@string/current_year"/>
                 <item
-                    android:id="@+id/menu_future_transactions"
-                    android:title="@string/future_transactions" />
+                        android:id="@+id/menu_future_transactions"
+                        android:title="@string/future_transactions"/>
                 <item
-                    android:id="@+id/menu_all_time"
-                    android:title="@string/all_time"/>
+                        android:id="@+id/menu_all_time"
+                        android:title="@string/all_time"/>
                 <!--
                 <item
                     android:id="@+id/menu_custom_dates"

@@ -40,7 +40,7 @@ import timber.log.Timber;
  * Stock History
  */
 public class StockHistoryRepository
-    extends RepositoryBase<StockHistory> {
+        extends RepositoryBase<StockHistory> {
 
     private static final String TABLE_NAME = "stockhistory_v1";
 
@@ -52,19 +52,9 @@ public class StockHistoryRepository
 
     }
 
-    enum UpdateType {
-        Online(1),
-        Manual(2);
-
-        UpdateType(int i) {
-            this.type = i;
-        }
-        public int type;
-    }
-
     @Override
     public String[] getAllColumns() {
-        return new String[] { "HISTID AS _id",
+        return new String[]{"HISTID AS _id",
                 StockHistory.HISTID,
                 StockHistory.SYMBOL,
                 StockHistory.DATE,
@@ -136,7 +126,7 @@ public class StockHistoryRepository
         ContentValues values = getContentValues(symbol, price, date);
         String where = StockHistory.SYMBOL + "=?";
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
-        String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
+        String[] whereArgs = new String[]{symbol, values.getAsString(StockHistory.DATE)};
 
         int records = getContext().getContentResolver().update(getUri(),
                 values,
@@ -172,7 +162,7 @@ public class StockHistoryRepository
         Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 StockHistory.SYMBOL + "=?",
-                new String[]{ symbol },
+                new String[]{symbol},
                 StockHistory.DATE + " DESC");
         if (cursor == null) return null;
 
@@ -192,21 +182,33 @@ public class StockHistoryRepository
     public int deleteAutomaticPriceHistory() {
         // Delete all automatically downloaded prices.
         int deleted = getContext().getContentResolver().delete(getUri(),
-            StockHistory.UPDTYPE + "=?",
-            new String[] { "1" });
+                StockHistory.UPDTYPE + "=?",
+                new String[]{"1"});
 
         return deleted;
     }
 
     /**
      * deletes all automatic price history
+     *
      * @return number of deleted records
      */
     public int deleteAllPriceHistory() {
         int deleted = getContext().getContentResolver().delete(getUri(),
-            "1",
-            null);
+                "1",
+                null);
 
         return deleted;
+    }
+
+    enum UpdateType {
+        Online(1),
+        Manual(2);
+
+        public int type;
+
+        UpdateType(int i) {
+            this.type = i;
+        }
     }
 }

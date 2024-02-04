@@ -52,10 +52,12 @@ import timber.log.Timber;
  * Database preferences fragment.
  */
 public class DatabaseSettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
-    @Inject Lazy<MmxOpenHelper> openHelper;
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,8 +121,8 @@ public class DatabaseSettingsFragment
 
                 // notification
                 String message = success
-                    ? getString(R.string.cleared)
-                    : getString(R.string.error);
+                        ? getString(R.string.cleared)
+                        : getString(R.string.error);
                 new UIHelper(getActivity()).showToast(message);
                 return false;
             }

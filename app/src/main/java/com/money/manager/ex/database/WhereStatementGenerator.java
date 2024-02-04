@@ -26,16 +26,16 @@ import info.javaperformance.money.Money;
 
 /**
  * A new database query helper. Uses direct statements, not arguments.
- *
+ * <p>
  * Created by Alen Siljak on 08/09/2015.
  */
 public class WhereStatementGenerator {
 
+    private final ArrayList<String> statements;
+
     public WhereStatementGenerator() {
         this.statements = new ArrayList<>();
     }
-
-    private final ArrayList<String> statements;
 
     public void addStatement(String statement) {
         this.statements.add(statement);

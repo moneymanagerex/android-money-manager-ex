@@ -19,9 +19,6 @@ package com.money.manager.ex.log;
 
 import android.util.Log;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
 import timber.log.Timber;
 
 /**

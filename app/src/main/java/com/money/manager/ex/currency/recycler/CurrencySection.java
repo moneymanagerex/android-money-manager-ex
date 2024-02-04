@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
@@ -33,8 +34,10 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
  * Used Currencies section for the Currencies recycler view
  */
 public class CurrencySection
-    extends StatelessSection {
+        extends StatelessSection {
 
+    public List<Currency> currencies;
+    public String title;
     public CurrencySection(String title, List<Currency> data) {
         super(SectionParameters.builder()
                 .itemResourceId(R.layout.item_currency)
@@ -49,9 +52,6 @@ public class CurrencySection
             this.currencies = new ArrayList<>();
         }
     }
-
-    public List<Currency> currencies;
-    public String title;
 
     @Override
     public int getContentItemsTotal() {

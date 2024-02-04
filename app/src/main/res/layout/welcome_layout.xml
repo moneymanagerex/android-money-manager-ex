@@ -16,122 +16,122 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp" >
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
 
-            <com.money.manager.ex.view.RobotoTextView
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="@string/welcome_header"
-                android:textColor="@color/holo_blue_dark"
-                android:textSize="22sp"
-                app:typeface="roboto_light" />
+                android:orientation="vertical">
+
+            <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/welcome_header"
+                    android:textColor="@color/holo_blue_dark"
+                    android:textSize="22sp"
+                    app:typeface="roboto_light"/>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/divider_ice_cream_sandwich" />
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/divider_ice_cream_sandwich"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/welcome_body"
-                android:textSize="18sp"
-                app:typeface="roboto_light" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/welcome_body"
+                    android:textSize="18sp"
+                    app:typeface="roboto_light"/>
 
             <!-- create account -->
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonAddAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/create_new_account"
-                android:textSize="18sp"
-                app:typeface="roboto_light" />
+                    android:id="@+id/buttonAddAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/create_new_account"
+                    android:textSize="18sp"
+                    app:typeface="roboto_light"/>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/divider_ice_cream_sandwich" />
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/divider_ice_cream_sandwich"/>
 
             <!-- current database -->
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/current_database"
-                android:textSize="18sp"
-                app:typeface="roboto_light" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/current_database"
+                    android:textSize="18sp"
+                    app:typeface="roboto_light"/>
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/currentDatabaseTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/current_database"
-                android:textSize="14sp"
-                app:typeface="roboto_light" />
+                    android:id="@+id/currentDatabaseTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/current_database"
+                    android:textSize="14sp"
+                    app:typeface="roboto_light"/>
 
             <!-- basic settings -->
             <com.money.manager.ex.view.RobotoButton
-                android:id="@+id/buttonSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/action_settings"
-                android:textSize="18sp"
-                app:typeface="roboto_light" />
+                    android:id="@+id/buttonSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/action_settings"
+                    android:textSize="18sp"
+                    app:typeface="roboto_light"/>
 
             <!-- migration 1.4 to 2.0 -->
             <LinearLayout
-                android:id="@+id/panelMigration"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                    android:id="@+id/panelMigration"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                 <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textMigrateDatabase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/database_migrate_14_to_20_intro"
-                    android:textSize="18sp"
-                    app:typeface="roboto_light" />
+                        android:id="@+id/textMigrateDatabase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/database_migrate_14_to_20_intro"
+                        android:textSize="18sp"
+                        app:typeface="roboto_light"/>
 
                 <com.money.manager.ex.view.RobotoButton
-                    android:id="@+id/buttonMigrateDatabase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/database_migrate_14_to_20"
-                    android:textSize="18sp"
-                    app:typeface="roboto_light" />
+                        android:id="@+id/buttonMigrateDatabase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/database_migrate_14_to_20"
+                        android:textSize="18sp"
+                        app:typeface="roboto_light"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -17,7 +17,7 @@
 package com.money.manager.ex.database;
 
 public enum SQLTypeTransaction {
-	DELETE,
-	INSERT,
-	UPDATE
+    DELETE,
+    INSERT,
+    UPDATE
 }

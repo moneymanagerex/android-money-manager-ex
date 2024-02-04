@@ -34,7 +34,7 @@ import timber.log.Timber;
  *
  */
 public class AllAccountBillsViewFactory
-    implements RemoteViewsService.RemoteViewsFactory {
+        implements RemoteViewsService.RemoteViewsFactory {
 
     private final Context mContext;
     private final CurrencyService mCurrencyService;

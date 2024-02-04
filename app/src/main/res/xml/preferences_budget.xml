@@ -18,10 +18,10 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="false"
-        android:key="@string/pref_budget_show_simple_view"
-        android:summary="@string/summary_budget_show_simple_view"
-        android:title="@string/title_budget_show_simple_view" />
+            android:icon="@null"
+            android:defaultValue="false"
+            android:key="@string/pref_budget_show_simple_view"
+            android:summary="@string/summary_budget_show_simple_view"
+            android:title="@string/title_budget_show_simple_view"/>
 
 </PreferenceScreen>

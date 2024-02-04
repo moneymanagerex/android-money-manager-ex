@@ -27,7 +27,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * A repository for Categories.
  */
 public class CategoryRepository
-    extends RepositoryBase<Category>{
+        extends RepositoryBase<Category> {
 
     public static final String tableName = "category_v1";
 
@@ -37,10 +37,10 @@ public class CategoryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"CATEGID AS _id",
-            Category.CATEGID,
-            Category.CATEGNAME,
-            Category.PARENTID};
+        return new String[]{"CATEGID AS _id",
+                Category.CATEGID,
+                Category.CATEGNAME,
+                Category.PARENTID};
     }
 
     public Category load(int id) {
@@ -57,9 +57,9 @@ public class CategoryRepository
 
     public int loadIdByName(String name) {
         Category temp = first(Category.class,
-                new String[] { Category.CATEGID },
+                new String[]{Category.CATEGID},
                 Category.CATEGNAME + "=?",
-                new String[] { name },
+                new String[]{name},
                 null);
 
         if (temp == null) return Constants.NOT_SET;
@@ -69,9 +69,9 @@ public class CategoryRepository
 
     public int loadIdByName(String name, int parentId) {
         Category temp = first(Category.class,
-                new String[] { Category.CATEGID },
+                new String[]{Category.CATEGID},
                 Category.CATEGNAME + "=? AND" + Category.PARENTID + "=?",
-                new String[] { name, Integer.toString(parentId)},
+                new String[]{name, Integer.toString(parentId)},
                 null);
 
         if (temp == null) return Constants.NOT_SET;

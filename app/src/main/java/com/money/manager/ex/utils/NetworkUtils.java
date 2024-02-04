@@ -25,15 +25,15 @@ import android.net.NetworkInfo;
  */
 public class NetworkUtils {
 
-    public static boolean isOnline(Context context) {
-        return new NetworkUtils(context).isOnline();
-    }
+    private final Context mContext;
 
     public NetworkUtils(Context context) {
         mContext = context;
     }
 
-    private final Context mContext;
+    public static boolean isOnline(Context context) {
+        return new NetworkUtils(context).isOnline();
+    }
 
     public Context getContext() {
         return mContext;

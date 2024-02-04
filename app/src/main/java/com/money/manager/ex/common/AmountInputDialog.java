@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+
 import icepick.Icepick;
 import icepick.State;
 import info.javaperformance.money.Money;
@@ -51,13 +52,45 @@ import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
 public class AmountInputDialog
-    extends DialogFragment {
+        extends DialogFragment {
 
     private static final String KEY_REQUEST_ID = "AmountInputDialog:Id";
     private static final String KEY_AMOUNT = "AmountInputDialog:Amount";
     private static final String KEY_CURRENCY_ID = "AmountInputDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "AmountInputDialog:Expression";
     private static final String ARG_ROUNDING = "AmountInputDialog:Rounding";
+    private final int[] idButtonKeyNum = {
+            R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
+            R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
+            R.id.buttonKeyNum8, R.id.buttonKeyNum9,
+            R.id.buttonKeyNumDecimal,
+    };
+    private final int[] idOperatorKeys = {
+            R.id.buttonKeyAdd, R.id.buttonKeyDiv,
+            R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
+            R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
+    };
+    /**
+     * By default, round the number to the currency Scale. Set in the factory method.
+     */
+    public boolean roundToCurrencyDecimals;
+    @State(MoneyBundler.class)
+    Money mAmount;
+    private String mRequestId;
+    private Integer mCurrencyId;
+    private Integer mDefaultColor;
+    private TextView txtMain, txtTop;
+    private CurrencyService mCurrencyService;
+    /**
+     * used to restore expression from saved instance state.
+     */
+    private String mExpression;
+    /**
+     * Indicates that the user has already started typing. We should not replace the existing number
+     * with the typed value but append the typed value to the existing number.
+     */
+    private boolean mStartedTyping = false;
+    private FormatUtilities formatUtilities;
 
     public static AmountInputDialog getInstance(int requestId, Money amount) {
         String requestIdString = Integer.toString(requestId);
@@ -99,41 +132,6 @@ public class AmountInputDialog
 
         return dialog;
     }
-
-
-    /**
-     * By default, round the number to the currency Scale. Set in the factory method.
-     */
-    public boolean roundToCurrencyDecimals;
-
-    private final int[] idButtonKeyNum = {
-            R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
-            R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
-            R.id.buttonKeyNum8, R.id.buttonKeyNum9,
-            R.id.buttonKeyNumDecimal,
-    };
-    private final int[] idOperatorKeys = {
-            R.id.buttonKeyAdd, R.id.buttonKeyDiv,
-            R.id.buttonKeyLess, R.id.buttonKeyMultiplication,
-            R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
-    };
-
-    private String mRequestId;
-    @State(MoneyBundler.class) Money mAmount;
-    private Integer mCurrencyId;
-    private Integer mDefaultColor;
-    private TextView txtMain, txtTop;
-    private CurrencyService mCurrencyService;
-    /**
-     * used to restore expression from saved instance state.
-     */
-    private String mExpression;
-    /**
-     * Indicates that the user has already started typing. We should not replace the existing number
-     * with the typed value but append the typed value to the existing number.
-     */
-    private boolean mStartedTyping = false;
-    private FormatUtilities formatUtilities;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -251,27 +249,27 @@ public class AmountInputDialog
         // Dialog
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-            .customView(view, false)
-            .cancelable(false)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    if (!evalExpression()) return;
+                .customView(view, false)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (!evalExpression()) return;
 
-                    EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
+                        EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
 
-                    dialog.dismiss();
-                }
-            })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            })
-            .autoDismiss(false)
-            .negativeText(android.R.string.cancel)
-            .positiveText(android.R.string.ok);
+                        dialog.dismiss();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .autoDismiss(false)
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.ok);
 
         return builder.show();
     }
@@ -309,6 +307,7 @@ public class AmountInputDialog
 
     /**
      * Evaluate the entered expression and recalculate the resulting amount.
+     *
      * @return Boolean indicating whether the operation was successful or not.
      */
     public boolean evalExpression() {
@@ -345,6 +344,7 @@ public class AmountInputDialog
 
     /**
      * Get amount formatted in the formatting currency.
+     *
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
@@ -420,6 +420,7 @@ public class AmountInputDialog
 
     /**
      * Set the decimal separator to the base currency's separator.
+     *
      * @param view current view
      */
     private void setDecimalSeparator(View view) {
@@ -455,18 +456,18 @@ public class AmountInputDialog
         Currency displayCurrency = mCurrencyService.getCurrency(mCurrencyId);
 
         if (displayCurrency != null) {
-            if(getRoundToCurrencyDecimals()) {
+            if (getRoundToCurrencyDecimals()) {
                 // use decimals from the display currency.
                 // but decimal and group separators from the base currency.
                 result = formatUtilities.format(amount, displayCurrency.getScale(),
-                    formatUtilities.getDecimalSeparatorForAppLocale(),
-                    formatUtilities.getGroupingSeparatorForAppLocale());
+                        formatUtilities.getDecimalSeparatorForAppLocale(),
+                        formatUtilities.getGroupingSeparatorForAppLocale());
 
             } else {
                 // Use default precision and no currency markup.
                 result = formatUtilities.formatNumber(amount, Constants.DEFAULT_PRECISION,
-                    displayCurrency.getDecimalSeparator(), displayCurrency.getGroupSeparator(),
-                    null, null);
+                        displayCurrency.getDecimalSeparator(), displayCurrency.getGroupSeparator(),
+                        null, null);
             }
         } else {
             result = formatUtilities.formatWithLocale(amount);

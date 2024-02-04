@@ -17,90 +17,89 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/mmx_activity_side_padding"
-    android:orientation="vertical"
-    tools:context="com.money.manager.ex.account.FilterDialogFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/mmx_activity_side_padding"
+              android:orientation="vertical"
+              tools:context="com.money.manager.ex.account.FilterDialogFragment">
 
     <!-- todo: display balances -->
 
     <!-- edit / favourite -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <com.mikepenz.iconics.view.IconicsButton
-            android:id="@+id/editButton"
-            android:text="@string/edit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+                android:id="@+id/editButton"
+                android:text="@string/edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
         <com.mikepenz.iconics.view.IconicsButton
-            android:id="@+id/favouriteButton"
-            android:text="@string/favourite"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+                android:id="@+id/favouriteButton"
+                android:text="@string/favourite"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
     </LinearLayout>
 
     <!-- add setting for the default account -->
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<CheckBox-->
-            <!--android:id="@+id/defaultAccountCheckbox"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--android:id="@+id/defaultAccountText"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:text="@string/default_account"-->
-            <!--/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<CheckBox-->
+    <!--android:id="@+id/defaultAccountCheckbox"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--<com.money.manager.ex.view.RobotoTextView-->
+    <!--android:id="@+id/defaultAccountText"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="@string/default_account"-->
+    <!--/>-->
     <!--</LinearLayout>-->
 
     <!-- number of transactions -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/numberOfTransactionsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/number_transaction_found" />
+                android:id="@+id/numberOfTransactionsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_transaction_found"/>
 
     </LinearLayout>
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
 
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/time_frame"/>-->
+    <!--<com.money.manager.ex.view.RobotoTextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/time_frame"/>-->
 
-        <!--<Spinner-->
-            <!--android:id="@+id/timeFrameSpinner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+    <!--<Spinner-->
+    <!--android:id="@+id/timeFrameSpinner"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
 
     <!--</LinearLayout>-->
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
 
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/transaction_status"/>-->
+    <!--<com.money.manager.ex.view.RobotoTextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/transaction_status"/>-->
 
     <!--</LinearLayout>-->
 

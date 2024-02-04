@@ -19,11 +19,12 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.money.manager.ex.R;
 
@@ -31,17 +32,17 @@ import com.money.manager.ex.R;
  * Custom adapter for the account list in the transaction list toolbar.
  */
 public class ToolbarSpinnerAdapter
-    extends SimpleCursorAdapter {
+        extends SimpleCursorAdapter {
+    private final Context mContext;
+
     public ToolbarSpinnerAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
 
         mContext = context;
     }
 
-    private final Context mContext;
-
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent){
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View view = super.getDropDownView(position, convertView, parent);
 
         TextView textView = view.findViewById(android.R.id.text1);

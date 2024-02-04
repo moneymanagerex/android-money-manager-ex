@@ -18,125 +18,125 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:stretchColumns="2">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:stretchColumns="2">
 
         <TableRow>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/income"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/income"
 
-                android:textColor="@color/md_green" />
+                    android:textColor="@color/md_green"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewIncome"
-                android:layout_width="wrap_content"
-                android:minWidth="75dp"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:gravity="right"
-                android:singleLine="true"
-                android:textColor="@color/md_green" />
+                    android:id="@+id/textViewIncome"
+                    android:layout_width="wrap_content"
+                    android:minWidth="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:textColor="@color/md_green"/>
 
             <ProgressBar
-                android:id="@+id/progressBarIncome"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:indeterminate="false"
-                android:paddingTop="2dp"
-                android:progressDrawable="@drawable/progress_income" />
+                    android:id="@+id/progressBarIncome"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:indeterminate="false"
+                    android:paddingTop="2dp"
+                    android:progressDrawable="@drawable/progress_income"/>
         </TableRow>
 
         <TableRow>
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/expenses"
-                android:textColor="@color/md_red" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/expenses"
+                    android:textColor="@color/md_red"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewExpenses"
-                android:layout_width="match_parent"
-                android:minWidth="75dp"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:gravity="right"
-                android:singleLine="true"
-                android:textColor="@color/md_red" />
+                    android:id="@+id/textViewExpenses"
+                    android:layout_width="match_parent"
+                    android:minWidth="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:textColor="@color/md_red"/>
 
             <ProgressBar
-                android:id="@+id/progressBarExpenses"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:indeterminate="false"
-                android:paddingTop="2dp"
-                android:progressDrawable="@drawable/progress_expenses" />
+                    android:id="@+id/progressBarExpenses"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:indeterminate="false"
+                    android:paddingTop="2dp"
+                    android:progressDrawable="@drawable/progress_expenses"/>
         </TableRow>
 
         <TableRow>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="@string/difference" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/difference"/>
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDifference"
-                android:layout_width="match_parent"
-                android:minWidth="75dp"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:gravity="right"
-                android:singleLine="true" />
+                    android:id="@+id/textViewDifference"
+                    android:layout_width="match_parent"
+                    android:minWidth="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:gravity="right"
+                    android:singleLine="true"/>
 
             <ProgressBar
-                android:id="@+id/progressBarDifference"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:indeterminate="false"
-                android:paddingTop="2dp"
-                android:progressDrawable="@drawable/progress_expenses"
-                android:visibility="invisible" />
+                    android:id="@+id/progressBarDifference"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:indeterminate="false"
+                    android:paddingTop="2dp"
+                    android:progressDrawable="@drawable/progress_expenses"
+                    android:visibility="invisible"/>
         </TableRow>
     </TableLayout>
 

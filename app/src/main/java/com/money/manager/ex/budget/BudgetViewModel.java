@@ -27,7 +27,11 @@ import com.money.manager.ex.domainmodel.Budget;
  * An observable view model, used for data binding in Budget Edit.
  */
 public class BudgetViewModel
-    extends BaseObservable {
+        extends BaseObservable {
+
+    public String name;
+    public int year;
+    public int month;
 
     public static BudgetViewModel from(Budget budget) {
         if (budget == null) return null;
@@ -39,31 +43,9 @@ public class BudgetViewModel
         return model;
     }
 
-    public String name;
-    public int year;
-    public int month;
-
     @Bindable
     public String getName() {
         return name;
-    }
-
-    @Bindable
-    public String getYear() {
-        if (this.year == 0) {
-            return "";
-        }
-
-        return Integer.toString(this.year);
-    }
-
-    @Bindable
-    public String getMonth() {
-        if (this.month == 0) {
-            return "";
-        }
-
-        return Integer.toString(this.month);
     }
 
     public void setName(String value) {
@@ -76,6 +58,15 @@ public class BudgetViewModel
         notifyChange();
     }
 
+    @Bindable
+    public String getYear() {
+        if (this.year == 0) {
+            return "";
+        }
+
+        return Integer.toString(this.year);
+    }
+
     public void setYear(int value) {
         this.year = value;
         notifyPropertyChanged(BR.year);
@@ -83,6 +74,15 @@ public class BudgetViewModel
         BudgetNameParser parser = new BudgetNameParser();
         this.name = parser.getName(this.year, this.month);
         notifyPropertyChanged(BR.name);
+    }
+
+    @Bindable
+    public String getMonth() {
+        if (this.month == 0) {
+            return "";
+        }
+
+        return Integer.toString(this.month);
     }
 
     public void setMonth(int value) {

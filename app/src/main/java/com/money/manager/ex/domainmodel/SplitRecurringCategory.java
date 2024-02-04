@@ -39,26 +39,26 @@ public class SplitRecurringCategory
         extends EntityBase
         implements ISplitTransaction {
 
-    public static String TABLE_NAME = "budgetsplittransactions_v1";
-
     public static final String SPLITTRANSID = "SPLITTRANSID";
     public static final String TRANSID = "TRANSID";
     public static final String CATEGID = "CATEGID";
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
+    public static String TABLE_NAME = "budgetsplittransactions_v1";
+    TransactionTypes transactionType;
 
-    public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                                TransactionTypes parentTransactionType, Money amount, String notes) {
-        SplitRecurringCategory entity = new SplitRecurringCategory();
+    public static SplitRecurringCategory create(final int transactionId, final int categoryId, final int subcategoryId,
+                                                final TransactionTypes parentTransactionType, final Money amount, final String notes) {
+        final SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
         entity.setNotes(notes);
 
-        TransactionTypes splitType;
-        if (amount.isZero() || amount.compareTo(MoneyFactory.fromDouble(0)) == -1) {
+        final TransactionTypes splitType;
+        if (amount.isZero() || -1 == amount.compareTo(MoneyFactory.fromDouble(0))) {
             splitType = TransactionTypes.Withdrawal;
         } else {
             splitType = TransactionTypes.Deposit;
@@ -68,21 +68,19 @@ public class SplitRecurringCategory
         return entity;
     }
 
-    TransactionTypes transactionType;
-
     @Override
     public Integer getId() {
         return getInt(SPLITTRANSID);
     }
 
     @Override
-    public void setId(int value) {
+    public void setId(final int value) {
         setInt(SPLITTRANSID, value);
     }
 
     @Override
     public boolean hasId() {
-        return getId() != null && getId() != Constants.NOT_SET;
+        return null != getId() && Constants.NOT_SET != getId();
     }
 
     @Override
@@ -91,7 +89,7 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public void setAccountId(int value) {
+    public void setAccountId(final int value) {
         setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
@@ -101,31 +99,32 @@ public class SplitRecurringCategory
     }
 
     @Override
+    public void setCategoryId(final int categId) {
+        setInt(CATEGID, categId);
+    }
+
+    @Override
     public Money getAmount() {
         return getMoney(SPLITTRANSAMOUNT);
     }
 
     @Override
-    public void setCategoryId(int categId) {
-        setInt(CATEGID, categId);
-    }
-
-    @Override
-    public void setAmount(Money splitTransAmount) {
+    public void setAmount(final Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
     }
 
-	@Override
+    @Override
     public String getNotes() {
         return getString(NOTES);
     }
 
     @Override
-    public void setNotes(String value) {
+    public void setNotes(final String value) {
         setString(NOTES, value);
     }
+
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SPLITTRANSAMOUNT);
@@ -135,25 +134,25 @@ public class SplitRecurringCategory
         return getInt(TRANSID);
     }
 
-    public void setTransId(int value) {
+    public void setTransId(final int value) {
         setInt(TRANSID, value);
     }
 
-    public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {
-        if (transactionType == null) {
-            transactionType = CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
+    public TransactionTypes getTransactionType(final TransactionTypes parentTransactionType) {
+        if (null == transactionType) {
+            transactionType = CommonSplitCategoryLogic.getTransactionType(parentTransactionType, getAmount());
         }
         return transactionType;
     }
 
-    public void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType) {
-        TransactionTypes currentType = getTransactionType(parentTransactionType);
+    public void setTransactionType(final TransactionTypes value, final TransactionTypes parentTransactionType) {
+        final TransactionTypes currentType = getTransactionType(parentTransactionType);
 
-        this.transactionType = value;
+        transactionType = value;
 
         // If the type is being changed, just revert the sign.
         if (value != currentType) {
-            this.setAmount(this.getAmount().negate());
+            setAmount(getAmount().negate());
         }
     }
 }

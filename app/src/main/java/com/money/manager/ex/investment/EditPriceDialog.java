@@ -67,7 +67,7 @@ import info.javaperformance.money.MoneyFactory;
  * http://www.vogella.com/tutorials/AndroidDialogs/article.html
  */
 public class EditPriceDialog
-    extends DialogFragment {
+        extends DialogFragment {
 
     public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
 
@@ -75,19 +75,20 @@ public class EditPriceDialog
     public static final String ARG_SYMBOL = "EditPriceDialog:Symbol";
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
-    @State int mAccountId;
-    @State String mUserDateFormat;
-    @State(PriceDownloadedEventBundler.class) PriceDownloadedEvent mPrice;
-    @State int mCurrencyId = Constants.NOT_SET;
-
-    private EditPriceViewHolder viewHolder;
     private final Lazy<FormatUtilities> formatUtilitiesLazy;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @State
+    int mAccountId;
+    @State
+    String mUserDateFormat;
+    @State(PriceDownloadedEventBundler.class)
+    PriceDownloadedEvent mPrice;
+    @State
+    int mCurrencyId = Constants.NOT_SET;
+    private EditPriceViewHolder viewHolder;
 
     public EditPriceDialog() {
-        super();
         MmexApplication.getApp().iocComponent.inject(this);
 
         formatUtilitiesLazy = new Lazy<FormatUtilities>() {
@@ -100,8 +101,8 @@ public class EditPriceDialog
 
     @Override
     @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        if (null != savedInstanceState) {
             Icepick.restoreInstanceState(this, savedInstanceState);
         } else {
             createNewEntity();
@@ -109,13 +110,13 @@ public class EditPriceDialog
 
         // Create dialog.
 
-        UIHelper ui = new UIHelper(getContext());
+        final UIHelper ui = new UIHelper(getContext());
 
-        AlertDialogWrapper builder = new AlertDialogWrapper(getContext())
+        final AlertDialogWrapper builder = new AlertDialogWrapper(getContext())
                 .setTitle(mPrice.symbol)
                 .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_euro_symbol));
 
-        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stock_price, null);
+        final View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stock_price, null);
         builder.setView(viewDialog);
 
         viewHolder = new EditPriceViewHolder();
@@ -125,13 +126,13 @@ public class EditPriceDialog
         // actions
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, final int which) {
                 //update price
-                StockRepository repo = new StockRepository(getContext());
+                final StockRepository repo = new StockRepository(getContext());
                 repo.updateCurrentPrice(mPrice.symbol, mPrice.price);
 
-                StockHistoryRepository historyRepository = new StockHistoryRepository(getContext());
-                boolean result = historyRepository.addStockHistoryRecord(mPrice);
+                final StockHistoryRepository historyRepository = new StockHistoryRepository(getContext());
+                final boolean result = historyRepository.addStockHistoryRecord(mPrice);
                 if (!result) {
                     Toast.makeText(getContext(), getContext().getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
@@ -142,7 +143,7 @@ public class EditPriceDialog
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, final int which) {
                 dialog.cancel();
             }
         });
@@ -168,14 +169,14 @@ public class EditPriceDialog
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         Icepick.saveInstanceState(this, savedInstanceState);
     }
 
     @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
+    public void onEvent(final AmountEnteredEvent event) {
         mPrice.price = event.amount;
         showCurrentPrice();
     }
@@ -186,10 +187,10 @@ public class EditPriceDialog
 
     private void createNewEntity() {
         mAccountId = getArguments().getInt(ARG_ACCOUNT);
-        String symbol = getArguments().getString(ARG_SYMBOL);
-        Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
-        String dateString = getArguments().getString(ARG_DATE);
-        Date date = new MmxDate(dateString).toDate();
+        final String symbol = getArguments().getString(ARG_SYMBOL);
+        final Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
+        final String dateString = getArguments().getString(ARG_DATE);
+        final Date date = new MmxDate(dateString).toDate();
         mPrice = new PriceDownloadedEvent(symbol, price, date);
     }
 
@@ -203,17 +204,17 @@ public class EditPriceDialog
     private void initializeControls(final EditPriceViewHolder viewHolder) {
         // date picker
 
-        View.OnClickListener dateClickListener = new View.OnClickListener() {
+        final View.OnClickListener dateClickListener = new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                MmxDate priceDate = new MmxDate(mPrice.date);
+            public void onClick(final View v) {
+                final MmxDate priceDate = new MmxDate(mPrice.date);
 
                 final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
                     mPrice.date = new MmxDate(year, month, dayOfMonth).toDate();
                     showDate();
                 };
 
-                DatePickerDialog datePicker = new DatePickerDialog(
+                final DatePickerDialog datePicker = new DatePickerDialog(
                         getActivity(),
                         listener,
                         priceDate.getYear(),
@@ -223,7 +224,8 @@ public class EditPriceDialog
 
                 // Customize the DatePickerDialog if needed
                 datePicker.show();
-            };
+            }
+
         };
         viewHolder.dateTextView.setOnClickListener(dateClickListener);
 
@@ -232,14 +234,14 @@ public class EditPriceDialog
         // date prev/next
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 mPrice.date = new MmxDate(mPrice.date).minusDays(1).toDate();
                 showDate();
             }
         });
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 mPrice.date = new MmxDate(mPrice.date).plusDays(1).toDate();
                 showDate();
             }
@@ -247,16 +249,16 @@ public class EditPriceDialog
 
         // price
 
-        AccountRepository accountRepository = new AccountRepository(getContext());
-        Account account = accountRepository.load(mAccountId);
-        if (mCurrencyId == Constants.NOT_SET) {
+        final AccountRepository accountRepository = new AccountRepository(getContext());
+        final Account account = accountRepository.load(mAccountId);
+        if (Constants.NOT_SET == mCurrencyId) {
             mCurrencyId = account.getCurrencyId();
         }
 
-        View.OnClickListener onClickAmount = new View.OnClickListener() {
+        final View.OnClickListener onClickAmount = new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
+            public void onClick(final View v) {
+                final AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
                 dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
 //                Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
 //                getActivity().startActivityForResult(intent, RequestCodes.AMOUNT);
@@ -266,7 +268,7 @@ public class EditPriceDialog
     }
 
     private void showCurrentPrice() {
-        String priceFormatted = formatUtilitiesLazy.get().format(mPrice.price, Constants.PRICE_FORMAT);
+        final String priceFormatted = formatUtilitiesLazy.get().format(mPrice.price, Constants.PRICE_FORMAT);
         viewHolder.amountTextView.setText(priceFormatted);
     }
 

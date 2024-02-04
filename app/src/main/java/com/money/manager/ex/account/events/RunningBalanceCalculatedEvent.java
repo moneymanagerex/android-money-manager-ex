@@ -26,9 +26,9 @@ import info.javaperformance.money.Money;
  */
 public class RunningBalanceCalculatedEvent {
 
+    public HashMap<Integer, Money> balances;
+
     public RunningBalanceCalculatedEvent(HashMap<Integer, Money> balances) {
         this.balances = balances;
     }
-
-    public HashMap<Integer, Money> balances;
 }

@@ -21,12 +21,12 @@ import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.core.view.MenuItemCompat;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.R;
-
-import androidx.core.view.MenuItemCompat;
 
 /**
  * Helper methods to work with menus.
@@ -35,6 +35,9 @@ public class MenuHelper {
 
     public static final int edit = 1;
     public static final int save = 2;
+    private final Context mContext;
+    public UIHelper uiHelper;
+    public Menu menu;
 
     public MenuHelper(Context context, Menu menu) {
         mContext = context;
@@ -42,11 +45,6 @@ public class MenuHelper {
 
         uiHelper = new UIHelper(context);
     }
-
-    public UIHelper uiHelper;
-    public Menu menu;
-
-    private final Context mContext;
 
     public void addEditToContextMenu() {
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getContext().getString(R.string.edit));
@@ -89,8 +87,8 @@ public class MenuHelper {
         MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-            //.color(uiHelper.getPrimaryTextColor());
-            .color(uiHelper.getToolbarItemColor());
+                //.color(uiHelper.getPrimaryTextColor());
+                .color(uiHelper.getToolbarItemColor());
         item.setIcon(icon);
     }
 

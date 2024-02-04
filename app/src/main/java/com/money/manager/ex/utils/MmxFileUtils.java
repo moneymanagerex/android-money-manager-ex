@@ -35,6 +35,7 @@ import java.io.OutputStream;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import timber.log.Timber;
 
 /**
@@ -48,6 +49,11 @@ public class MmxFileUtils {
     private static final int BUFFER_DIMENSION = 128;
     // https://developer.android.com/reference/android/util/SparseArray.html
     private static final SparseArray<String> rawHashMap = new SparseArray<>();
+    private final Context context;
+
+    public MmxFileUtils(Context context) {
+        this.context = context;
+    }
 
     /**
      * Method that allows you to make a copy of file
@@ -69,6 +75,8 @@ public class MmxFileUtils {
         in.close();
         out.close();
     }
+
+    // Instance
 
     /**
      * @param context application
@@ -120,20 +128,13 @@ public class MmxFileUtils {
         return result;
     }
 
-    // Instance
-
-    public MmxFileUtils(Context context) {
-        this.context = context;
-    }
-
-    private final Context context;
-
     public Context getContext() {
         return this.context;
     }
 
     /**
      * Dangerous permissions have to be requested at runtime as of API 23 (Android M, 6).
+     *
      * @return boolean indicating whether the request permission binaryDialog is displayed and should be
      * handled asynchronously.
      */
@@ -159,7 +160,7 @@ public class MmxFileUtils {
 
         if (permissionResult != PackageManager.PERMISSION_GRANTED) {
             requesting = true;
-            ActivityCompat.requestPermissions(activity, new String[]{ permission }, requestId);
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
         }
 
         return requesting;

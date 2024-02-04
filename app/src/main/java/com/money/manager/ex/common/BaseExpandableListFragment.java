@@ -20,7 +20,9 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +42,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
+
 import timber.log.Timber;
 
 public abstract class BaseExpandableListFragment
@@ -47,13 +50,13 @@ public abstract class BaseExpandableListFragment
 
     // saved instance
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
+    FloatingActionButton mFloatingActionButton;
     // menu items
     private boolean mDisplayShowCustomEnabled = false;
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
-    FloatingActionButton mFloatingActionButton;
 
     public abstract String getSubTitle();
 
@@ -244,7 +247,6 @@ public abstract class BaseExpandableListFragment
     }
 
     /**
-     *
      * @param mShowMenuItemSearch the mShowMenuItemSearch to set
      */
     public void setShowMenuItemSearch(boolean mShowMenuItemSearch) {

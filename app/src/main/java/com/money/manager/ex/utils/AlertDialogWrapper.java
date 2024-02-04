@@ -32,11 +32,11 @@ import androidx.annotation.NonNull;
  */
 
 public class AlertDialogWrapper {
+    private final MaterialDialog.Builder builder;
+
     public AlertDialogWrapper(Context context) {
         builder = new MaterialDialog.Builder(context);
     }
-
-    private final MaterialDialog.Builder builder;
 
     public AlertDialogWrapper setCancelable(boolean cancelable) {
         builder.cancelable(cancelable);

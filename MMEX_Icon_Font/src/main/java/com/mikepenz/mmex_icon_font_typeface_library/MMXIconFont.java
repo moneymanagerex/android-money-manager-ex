@@ -27,19 +27,19 @@ import java.util.LinkedList;
 
 public class MMXIconFont implements ITypeface {
     private static final String TTF_FILE = "mmex.ttf";
-    private static Typeface typeface = null;
+    private static Typeface typeface;
     private static HashMap<String, Character> mChars;
 
     @Override
-    public IIcon getIcon(String key) {
+    public IIcon getIcon(final String key) {
         return Icon.valueOf(key);
     }
 
     @Override
     public HashMap<String, Character> getCharacters() {
-        if (mChars == null) {
-            HashMap<String, Character> aChars = new HashMap<String, Character>();
-            for (Icon v : Icon.values()) {
+        if (null == mChars) {
+            final HashMap<String, Character> aChars = new HashMap<>();
+            for (final Icon v : Icon.values()) {
                 aChars.put(v.name(), v.character);
             }
             mChars = aChars;
@@ -69,8 +69,8 @@ public class MMXIconFont implements ITypeface {
 
     @Override
     public Collection<String> getIcons() {
-        Collection<String> icons = new LinkedList<String>();
-        for (Icon value : Icon.values()) {
+        final Collection<String> icons = new LinkedList<String>();
+        for (final Icon value : Icon.values()) {
             icons.add(value.name());
         }
         return icons;
@@ -102,11 +102,11 @@ public class MMXIconFont implements ITypeface {
     }
 
     @Override
-    public Typeface getTypeface(Context context) {
-        if (typeface == null) {
+    public Typeface getTypeface(final Context context) {
+        if (null == typeface) {
             try {
                 typeface = Typeface.createFromAsset(context.getAssets(), "fonts/" + TTF_FILE);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return null;
             }
         }
@@ -118,40 +118,42 @@ public class MMXIconFont implements ITypeface {
      */
     public enum Icon implements IIcon {
         mmx_law('\u0061'),
-		mmx_briefcase('\u0067'),
-//		mmx_dropbox('\u0069'),
-		mmx_magnifier('\u006a'),
-		mmx_back_in_time('\u006b'),
-		mmx_reports('\u006d'),
-		mmx_temple('\u0070'),
-		mmx_tag_empty('\u0073'),
-		mmx_wallet('\u0074'),
-		mmx_calculator('\u007a'),
-		mmx_git_branch('\u0046'),
-		mmx_clipboard('\u0049'),
-		mmx_globe_outline('\u004b'),
-		mmx_dollar_bill('\u004c'),
-		mmx_hash('\u004d'),
-		mmx_floppy_disk('\u004e'),
-		mmx_calendar('\u004a'),
-		mmx_money_banknote('\u004f'),
-		mmx_share_square('\u0045'),
-		mmx_chart_pie('\u0050'),
-		mmx_filter('\u0052'),
-		mmx_credit_card('\u0053'),
-		mmx_report_page('\u0054'),
-		mmx_sort_amount_asc('\u0055'),
-		mmx_sort_amount_desc('\u0056'),
-		mmx_print('\u0059'),
-		mmx_check_5('\u0030'),
+        mmx_briefcase('\u0067'),
+        //		mmx_dropbox('\u0069'),
+        mmx_magnifier('\u006a'),
+        mmx_back_in_time('\u006b'),
+        mmx_reports('\u006d'),
+        mmx_temple('\u0070'),
+        mmx_tag_empty('\u0073'),
+        mmx_wallet('\u0074'),
+        mmx_calculator('\u007a'),
+        mmx_git_branch('\u0046'),
+        mmx_clipboard('\u0049'),
+        mmx_globe_outline('\u004b'),
+        mmx_dollar_bill('\u004c'),
+        mmx_hash('\u004d'),
+        mmx_floppy_disk('\u004e'),
+        mmx_calendar('\u004a'),
+        mmx_money_banknote('\u004f'),
+        mmx_share_square('\u0045'),
+        mmx_chart_pie('\u0050'),
+        mmx_filter('\u0052'),
+        mmx_credit_card('\u0053'),
+        mmx_report_page('\u0054'),
+        mmx_sort_amount_asc('\u0055'),
+        mmx_sort_amount_desc('\u0056'),
+        mmx_print('\u0059'),
+        mmx_check_5('\u0030'),
         mmx_arrow_down('\u0062'),
         mmx_arrow_left('\u0062'),
         mmx_arrow_right('\u0062'),
         mmx_arrow_up('\u0062');
 
+        // remember the typeface so we can use it later
+        private static ITypeface typeface;
         char character;
 
-        Icon(char character) {
+        Icon(final char character) {
             this.character = character;
         }
 
@@ -167,11 +169,8 @@ public class MMXIconFont implements ITypeface {
             return name();
         }
 
-        // remember the typeface so we can use it later
-        private static ITypeface typeface;
-
         public ITypeface getTypeface() {
-            if (typeface == null) {
+            if (null == typeface) {
                 typeface = new MMXIconFont();
             }
             return typeface;

@@ -19,6 +19,7 @@ package com.money.manager.ex.core.file;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.core.content.FileProvider;
 
 import java.io.BufferedWriter;
@@ -32,18 +33,18 @@ import timber.log.Timber;
  * Base for exporting any type of text files.
  */
 public class TextFileExport {
+    protected static final String ExportDirectory = "export";
+    protected final String LOGCAT = this.getClass().getSimpleName();
+    protected Context mContext;
     public TextFileExport(Context context) {
         mContext = context;
     }
 
-    protected static final String ExportDirectory = "export";
-    protected final String LOGCAT = this.getClass().getSimpleName();
-    protected Context mContext;
-
     /**
      * Export text contents as a file.
-     * @param fileName The name of the file only (i.e. name + extension).
-     * @param contents Text contents to update into the file.
+     *
+     * @param fileName    The name of the file only (i.e. name + extension).
+     * @param contents    Text contents to update into the file.
      * @param dialogTitle The title to use for the export binaryDialog.
      * @return Indicator whether the operation was successful.
      * @throws IOException
@@ -85,7 +86,7 @@ public class TextFileExport {
         File path = getExportDirectory();
         File[] files = path.listFiles();
 
-        for(File file : files) {
+        for (File file : files) {
             file.delete();
         }
     }
@@ -123,6 +124,7 @@ public class TextFileExport {
 
     /**
      * Generates the name of the export directory. Creates the directory if it does not exist.
+     *
      * @return A directory into which to temporarily export .qif file.
      * @throws IOException
      */
@@ -136,7 +138,7 @@ public class TextFileExport {
         // Create output directory if it does not exist.
         if (!path.exists()) {
             boolean directoryCreated = path.mkdir();
-            if(!directoryCreated) {
+            if (!directoryCreated) {
                 throw new IOException("Could not create export directory!");
             }
         }

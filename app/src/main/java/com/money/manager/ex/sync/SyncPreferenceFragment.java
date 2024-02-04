@@ -17,9 +17,16 @@
 
 package com.money.manager.ex.sync;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
@@ -42,37 +49,26 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import dagger.Lazy;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Synchronization preferences fragment.
  */
 public class SyncPreferenceFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     public static final int REQUEST_REMOTE_FILE = 1;
     public static final String EXTRA_REMOTE_FILE = "remote_file";
-
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
+    private SyncPreferencesViewHolder viewHolder;
+    private SyncManager mSyncManager;
     public SyncPreferenceFragment() {
         // Required empty public constructor
     }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-
-    private SyncPreferencesViewHolder viewHolder;
-    private SyncManager mSyncManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,22 +141,22 @@ public class SyncPreferenceFragment
         getSyncManager().startSyncServiceHeartbeat();
 
         ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-            new UIHelper(getActivity()).binaryDialog(R.string.download, R.string.confirm_download,
-                    android.R.string.yes, android.R.string.no)
-                    .filter(new Func1<Boolean, Boolean>() {
-                        @Override
-                        public Boolean call(Boolean aBoolean) {
-                            // proceed only if user accepts
-                            return aBoolean;
-                        }
-                    })
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean aBoolean) {
-                        // download db from the cloud storage
-                        checkIfLocalFileExistsAndDownload();
-                    }
-                })
+                new UIHelper(getActivity()).binaryDialog(R.string.download, R.string.confirm_download,
+                                android.R.string.yes, android.R.string.no)
+                        .filter(new Func1<Boolean, Boolean>() {
+                            @Override
+                            public Boolean call(Boolean aBoolean) {
+                                // proceed only if user accepts
+                                return aBoolean;
+                            }
+                        })
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                // download db from the cloud storage
+                                checkIfLocalFileExistsAndDownload();
+                            }
+                        })
         );
     }
 
@@ -297,21 +293,21 @@ public class SyncPreferenceFragment
         if (new File(local).exists()) {
             // prompt
             ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
-                new UIHelper(getActivity()).binaryDialog(R.string.file_exists, R.string.file_exists_long)
-                        .filter(new Func1<Boolean, Boolean>() {
-                            @Override
-                            public Boolean call(Boolean aBoolean) {
-                                // proceed only if user confirms
-                                return aBoolean;
-                            }
-                        })
-                        .subscribe(new Action1<Boolean>() {
-                            @Override
-                            public void call(Boolean aBoolean) {
-                                // finally download the file.
-                                forceDownload();
-                            }
-                        })
+                    new UIHelper(getActivity()).binaryDialog(R.string.file_exists, R.string.file_exists_long)
+                            .filter(new Func1<Boolean, Boolean>() {
+                                @Override
+                                public Boolean call(Boolean aBoolean) {
+                                    // proceed only if user confirms
+                                    return aBoolean;
+                                }
+                            })
+                            .subscribe(new Action1<Boolean>() {
+                                @Override
+                                public void call(Boolean aBoolean) {
+                                    // finally download the file.
+                                    forceDownload();
+                                }
+                            })
             );
         } else {
             forceDownload();
@@ -336,7 +332,6 @@ public class SyncPreferenceFragment
             Timber.e(e, "uploading database");
         }
     }
-
 
 
     private void saveDatabaseMetadata(String remoteFile) {

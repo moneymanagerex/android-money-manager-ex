@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 
 public class BehaviourSettingsActivity
-    extends BaseSettingsFragmentActivity {
+        extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -34,8 +34,7 @@ public class BehaviourSettingsActivity
 
     //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         final BehaviourSettings settings = new BehaviourSettings(this);
 
         if (requestCode == 1) {

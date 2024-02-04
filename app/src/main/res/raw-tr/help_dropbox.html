@@ -16,57 +16,144 @@
   -->
 <!DOCTYPE html>
 <html>
-<head>
-<title>Android için Money Manager Ex: MoneyManagerEx veritabanını Windows/Linux/Mac cihazlar ile eşitlemek için Dopbox hizmeti</title>
-<style type="text/css">
-body {
-	background:#f5f5f5;
-	font-size:small;
-	margin: 10px;
-}
+    <head>
+        <title>Android için Money Manager Ex: MoneyManagerEx veritabanını Windows/Linux/Mac cihazlar ile eşitlemek için Dopbox hizmeti</title>
+        <style type="text/css">
+            body {
+                background: #f5f5f5;
+                font-size: small;
+                margin: 10px;
+            }
 
-.lists {
-	margin: 0;
-	padding: 0px 0px 0px 13px;
-	list-style-type: disk;
-}
+            .lists {
+                margin: 0;
+                padding: 0px 0px 0px 13px;
+                list-style-type: disk;
+            }
 
 
-.warning {color:#FF0000;}
+            .warning {
+                color: #FF0000;
+            }
 
-h2 { font-size:120%; }
-h3 { font-size:105%; }
-</style>
-</head>
-	<body>
-    <h2><b>Android için Money Manager Ex</b></h2>
-    <h3>MoneyManagerEx veritabanını Windows/Linux/Mac cihazlar ile senkronize etmek için Dropbox hizmetini kullanın.</h3>
-    <p><b>Ön Koşul:</b> bir Dropbox hesabınız olmalı. Eğer henüz bir Dropbox hesabınız bulunmuyorsa www.dropbox.com sayfasını ziyaret edin ve bir hesap oluşturun.</p>
-    <ul>
-        <li>Android için Money Manager Ex'i Dropbox'a bağla. "Dropbox'a Bağla" seçeneği seçildiğinde eğer cihazınızda Dropbox uygulaması yüklü ise bağlantı otomatik olarak Dropbox uygulamasında açılacak ve Android için Money Manager Ex uygulaması Dropbox hesabınıza erişim için yetkilendirme izni isteyecektir. Eğer Dropbox uygulaması cihazınızda yüklü değil ise, bağlantı web tarayıcısında açılacak ve Dropbox giriş ekranı açılacaktır. Dropbox'a giriş yaptıktan sonra Android için Money Manager Ex uygulaması Dropbox hesabınıza erişim izni isteyecektir.</li>
-        <li>Android için Money Manager Ex uygulamasına Dropbox hesabınıza ilk defa erişim izni verdiğinizde Dropbox tarafından Dropbox alanınızda otomatik olarak <i><i>/Apps/MoneyManagerEx Mobile</i></i> isimli bir klasör oluşturulacak. Bu klasörü elle oluşturmanız mümkün değildir!</li>
-    </ul>
+            h2 {
+                font-size: 120%;
+            }
 
-    <ul>
-        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>Zaten masaüstümde veritabanı kullanıyorum</b></h3></a>
-        <li>Eğer halihazırda kullandığınız. mmb uzantılı bir MoneyManagerEx masaüstü uygulaması veritabanı varsa, bu veritabanını Dropbox hesabınızda oluşturulan <i>/Apps/MoneyManagerEx Mobile</i> klasörüne kopyalayın. (Bu işlemi bilgisayarınızdan gerçekleştirmenizi öneririz).</li>
-        <li>Android için MoneyManagerEx uygulamasının ayarlarından "Dropbox dosyası" bağlantısına dokunun. Uygulama yeni bir pencere açacak ve size <i>/Apps/MoneyManagerEx Mobile</i> klasörü içerisindeki tüm dosyaları gösterecektir. Kullanmak istediğiniz veritabanı dosyasını seçin ve uygulamaya geri dönün.</li>
-        <li>Dropbox dosya seçme ekranından ayrılıp Android için MoneyManagerEx uygulamasının ayarlar ekranına geri döndükten sonra 10 saniye içerisinde seçtiğiniz dosya indirilmeye başlanacak ve bunu cihazının bildirimler alanında görebileceksiniz. Dosya indirme işlemi tamamlandıktan sonra uygulama size dosyanın kullanıma hazır olduğunu bildirecek ve "Veritabanı Aç" seçeneğine tıklayarak Android için MoneyManagerEx uygulaması ile Dropbox bağlantısını sağlamış olacaksınız.</li>
+            h3 {
+                font-size: 105%;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            <b>Android için Money Manager Ex</b>
+        </h2>
+        <h3>MoneyManagerEx veritabanını Windows/Linux/Mac cihazlar ile senkronize etmek için Dropbox hizmetini kullanın.</h3>
+        <p>
+            <b>Ön Koşul:</b>
+            bir Dropbox hesabınız olmalı. Eğer henüz bir Dropbox hesabınız bulunmuyorsa www.dropbox.com sayfasını ziyaret edin ve bir hesap oluşturun.
+        </p>
+        <ul>
+            <li>Android için Money Manager Ex'i Dropbox'a bağla. "Dropbox'a Bağla" seçeneği seçildiğinde eğer cihazınızda Dropbox uygulaması yüklü ise bağlantı otomatik olarak
+                Dropbox uygulamasında açılacak ve Android için Money Manager Ex uygulaması Dropbox hesabınıza erişim için yetkilendirme izni isteyecektir. Eğer Dropbox uygulaması
+                cihazınızda yüklü değil ise, bağlantı web tarayıcısında açılacak ve Dropbox giriş ekranı açılacaktır. Dropbox'a giriş yaptıktan sonra Android için Money Manager Ex
+                uygulaması Dropbox hesabınıza erişim izni isteyecektir.
+            </li>
+            <li>Android için Money Manager Ex uygulamasına Dropbox hesabınıza ilk defa erişim izni verdiğinizde Dropbox tarafından Dropbox alanınızda otomatik olarak
+                <i>
+                    <i>/Apps/MoneyManagerEx Mobile</i>
+                </i>
+                isimli bir klasör oluşturulacak. Bu klasörü elle oluşturmanız mümkün değildir!
+            </li>
+        </ul>
 
-        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>Uygulamanın masaüstü sürümünü hiç kullanmadım ama cihazdaki veritabanını eşitlemek istiyorum</b></h3></a>
-        <li>If you do not already have a file of mmb MoneyManagerEx Desktop Version, you must click on "Upload to Dropbox database." After approximately 10 seconds the upload to Dropbox of the current database will start. At the end of the process there will be a notification for the completion of the upload, and in the <i>/Apps/MoneyManagerEx Mobile</i> you will find a file named data.mmb.</li>
+        <ul>
+            <a name="mmb_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Zaten masaüstümde veritabanı kullanıyorum</b>
+                </h3>
+            </a>
+            <li>Eğer halihazırda kullandığınız. mmb uzantılı bir MoneyManagerEx masaüstü uygulaması veritabanı varsa, bu veritabanını Dropbox hesabınızda oluşturulan
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                klasörüne kopyalayın. (Bu işlemi bilgisayarınızdan gerçekleştirmenizi öneririz).
+            </li>
+            <li>Android için MoneyManagerEx uygulamasının ayarlarından "Dropbox dosyası" bağlantısına dokunun. Uygulama yeni bir pencere açacak ve size
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                klasörü içerisindeki tüm dosyaları gösterecektir. Kullanmak istediğiniz veritabanı dosyasını seçin ve uygulamaya geri dönün.
+            </li>
+            <li>Dropbox dosya seçme ekranından ayrılıp Android için MoneyManagerEx uygulamasının ayarlar ekranına geri döndükten sonra 10 saniye içerisinde seçtiğiniz dosya
+                indirilmeye başlanacak ve bunu cihazının bildirimler alanında görebileceksiniz. Dosya indirme işlemi tamamlandıktan sonra uygulama size dosyanın kullanıma hazır
+                olduğunu bildirecek ve "Veritabanı Aç" seçeneğine tıklayarak Android için MoneyManagerEx uygulaması ile Dropbox bağlantısını sağlamış olacaksınız.
+            </li>
 
-        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>Diğer ayarlar</b></h3></a>
-        <li>Android için MoneyManagerEx ile Dropbox arasındaki bağlantıyı bir defa yaptıktan sonar ayarlar bölümünde "Eşitleme sıklığı" seçeneğinde belirtilen her dakikada veritabanı dosyası Dropbox ile otomatik olarak eşitlenir. Eğer otomatik eşitleme yapılmasını istemiyorsanız "Eşitleme sıklığı" seçeneğini 0 (sıfır) yapın.</li>
-        <li>"Değişiklik yapıldığında veritabanını yedekle" seçeneğini işaretlemeniz önemlidir. Bu seçenek Android için MoneyManagerEx uygulamasının siz her değişiklik yaptığınızda veritabını Dropbox ile eşitlemesini sağlar.</li>
-        <li>Yanlış işlemlerinizde veritabanı indirme veya yükleme işlemi yapmak için "Veritabanını Dropbox'dan indir" ve "Veritabanını Dropbox'a yükle" seçeneklerini kullanabilirsiniz.</li>
-        <li>Dropbox ile bağlantı kurduğunuzda ana ekranın üst kısmında eşitleme penceresi aktif olur.</li>
-        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>Sıkça Sorulan Sorular</b></h3></a>
-        <li><b>S. </b> Dropbox ile bağlantı kuramıyorum, veya MoneyManagerEx eşitleme yapmıyor?<br><b>A. </b> Bu durumda bize <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> adresine sorunu açıklayan bir e-posta göndermek yapmanız gereken ilk şey olacak. Diğer taraftan veritabanınızı Android için MoneyManagerEx ile eşitlemek istiyorsanız eşitleme işlemi içn <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> gibi uygulamaları kullanın ya da benzer uygulamalar için <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>'de arama yapın.
-        <li><b>S. </b> Android için MoneyManagerEx uygulamasını diğer bulut hizmetleri ile eşitlemek istiyorum (Drive, Box.net, Wuala vb. ...). Nasıl yapabilirim? <br><b>C. </b> Android için MoneyManagerEx uygulamasında kullanılabilen tek bulut depolama hizmet Dropbox'dır. Eğer veritabanınızı diğer hizmetler ile eşitlemek istiyorsanız bu durumda Google Play'de kullandığınız bulut servisi için dosya eşitleme uygulamaları bularak kullanabilirsiniz. Veritabanı cihazınızı harici depolama biriminde olacak ve Android için MoneyManagerEx ile bu veritabanını açabileceksiniz
-        <li><b>S. </b> Bir eşitleme sonrası artık verilerimi görünmüyor. Veritabanımdaki bütün verilerim kayıp mı oldu? <br><b>C. </b> Merak etmeyin, hiçbir şey kaybetmediniz! Nadiren de olsa, veritabanını eşitlediğinizde, dosya düzgün indirilememesi ve Android için MoneyManagerEx tarafından okunamaz hale gelmesi mümkün olabilmektedir. Bu gibi durumlarda, veritabanı Dropbox'dan indir bağlantısı ile indirme işlemini zorlamak gerekir. Eğer veritabanı indirmeye zorladıktan sonra hala okunamaz ise /com.money.manager.ex/dropbox/ klasörü içindeki herşeyi silin ve veritabanını Dropbox'dan indirmeyi tekrar zorlayın.
-        <li><b>S. </b> Veritabanını önceki bir sürümünü geri döndürebilir miyim? <br><b>C. </b> Elbette. Dropbox dosyalarınızın bütün sürümlerini tutar. <a href="https://www.dropbox.com/help/11/">Buradan dosyalarınızı nasıl geri getirebileceğinizi öğrenmek için Dropbox kılavuzuna erişebilirsiniz</a>
-        </li>
-    </ul>
+            <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Uygulamanın masaüstü sürümünü hiç kullanmadım ama cihazdaki veritabanını eşitlemek istiyorum</b>
+                </h3>
+            </a>
+            <li>If you do not already have a file of mmb MoneyManagerEx Desktop Version, you must click on "Upload to Dropbox database." After approximately 10 seconds the upload
+                to Dropbox of the current database will start. At the end of the process there will be a notification for the completion of the upload, and in the
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                you will find a file named data.mmb.
+            </li>
+
+            <a name="other_settings" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Diğer ayarlar</b>
+                </h3>
+            </a>
+            <li>Android için MoneyManagerEx ile Dropbox arasındaki bağlantıyı bir defa yaptıktan sonar ayarlar bölümünde "Eşitleme sıklığı" seçeneğinde belirtilen her dakikada
+                veritabanı dosyası Dropbox ile otomatik olarak eşitlenir. Eğer otomatik eşitleme yapılmasını istemiyorsanız "Eşitleme sıklığı" seçeneğini 0 (sıfır) yapın.
+            </li>
+            <li>"Değişiklik yapıldığında veritabanını yedekle" seçeneğini işaretlemeniz önemlidir. Bu seçenek Android için MoneyManagerEx uygulamasının siz her değişiklik
+                yaptığınızda veritabını Dropbox ile eşitlemesini sağlar.
+            </li>
+            <li>Yanlış işlemlerinizde veritabanı indirme veya yükleme işlemi yapmak için "Veritabanını Dropbox'dan indir" ve "Veritabanını Dropbox'a yükle" seçeneklerini
+                kullanabilirsiniz.
+            </li>
+            <li>Dropbox ile bağlantı kurduğunuzda ana ekranın üst kısmında eşitleme penceresi aktif olur.</li>
+            <a name="faq" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Sıkça Sorulan Sorular</b>
+                </h3>
+            </a>
+            <li>
+                <b>S.</b>
+                Dropbox ile bağlantı kuramıyorum, veya MoneyManagerEx eşitleme yapmıyor?
+                <br>
+                <b>A.</b>
+                Bu durumda bize
+                <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a>
+                adresine sorunu açıklayan bir e-posta göndermek yapmanız gereken ilk şey olacak. Diğer taraftan veritabanınızı Android için MoneyManagerEx ile eşitlemek
+                istiyorsanız eşitleme işlemi içn<a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>,
+                <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a>
+                gibi uygulamaları kullanın ya da benzer uygulamalar için<a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>'de
+                arama yapın.
+            <li>
+                <b>S.</b>
+                Android için MoneyManagerEx uygulamasını diğer bulut hizmetleri ile eşitlemek istiyorum (Drive, Box.net, Wuala vb. ...). Nasıl yapabilirim?
+                <br>
+                <b>C.</b>
+                Android için MoneyManagerEx uygulamasında kullanılabilen tek bulut depolama hizmet Dropbox'dır. Eğer veritabanınızı diğer hizmetler ile eşitlemek istiyorsanız bu
+                durumda Google Play'de kullandığınız bulut servisi için dosya eşitleme uygulamaları bularak kullanabilirsiniz. Veritabanı cihazınızı harici depolama biriminde
+                olacak ve Android için MoneyManagerEx ile bu veritabanını açabileceksiniz
+            <li>
+                <b>S.</b>
+                Bir eşitleme sonrası artık verilerimi görünmüyor. Veritabanımdaki bütün verilerim kayıp mı oldu?
+                <br>
+                <b>C.</b>
+                Merak etmeyin, hiçbir şey kaybetmediniz! Nadiren de olsa, veritabanını eşitlediğinizde, dosya düzgün indirilememesi ve Android için MoneyManagerEx tarafından
+                okunamaz hale gelmesi mümkün olabilmektedir. Bu gibi durumlarda, veritabanı Dropbox'dan indir bağlantısı ile indirme işlemini zorlamak gerekir. Eğer veritabanı
+                indirmeye zorladıktan sonra hala okunamaz ise /com.money.manager.ex/dropbox/ klasörü içindeki herşeyi silin ve veritabanını Dropbox'dan indirmeyi tekrar zorlayın.
+            <li>
+                <b>S.</b>
+                Veritabanını önceki bir sürümünü geri döndürebilir miyim?
+                <br>
+                <b>C.</b>
+                Elbette. Dropbox dosyalarınızın bütün sürümlerini tutar.
+                <a href="https://www.dropbox.com/help/11/">Buradan dosyalarınızı nasıl geri getirebileceğinizi öğrenmek için Dropbox kılavuzuna erişebilirsiniz</a>
+            </li>
+        </ul>
     </body>
 </html>

@@ -5,11 +5,12 @@
 Meanwhile install from f-droid or play store was restored, you can download file from github repo
 
 * Enable unknow source (required for Android 10+)
-  * Open the Settings app on your Android device.
-  * In the Settings menu, tap Apps (see picture 1) --> Special app access (see picture 2)
-  * choose Chrome (or Browser) and enable (Picture 3 and 4)
+    * Open the Settings app on your Android device.
+    * In the Settings menu, tap Apps (see picture 1) --> Special app access (see picture 2)
+    * choose Chrome (or Browser) and enable (Picture 3 and 4)
 * download latest version from (release)[https://github.com/moneymanagerex/android-money-manager-ex/releases], if not sure wich version, chose lastest ammx-yyyy.mm.dd-release.apk
-	* Release (ammx-2024.01.05-release.apk)[https://github.com/moneymanagerex/android-money-manager-ex/releases/download/2024.01.05.1010/ammx-2024.01.05-release.apk] (see picture 5) 
+    * Release (ammx-2024.01.05-release.apk)[https://github.com/moneymanagerex/android-money-manager-ex/releases/download/2024.01.05.1010/ammx-2024.01.05-release.apk] (see picture
+        5)
 * open downloaded apk from download history (see picture 6)
 * follow on screen instruction
 

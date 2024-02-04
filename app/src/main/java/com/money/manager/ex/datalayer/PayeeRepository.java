@@ -27,7 +27,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Payee repository
  */
 public class PayeeRepository
-    extends RepositoryBase{
+        extends RepositoryBase {
 
     public PayeeRepository(Context context) {
         super(context, "payee_v1", DatasetType.TABLE, "payee");
@@ -36,10 +36,10 @@ public class PayeeRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "PAYEEID AS _id",
-            Payee.PAYEEID,
-            Payee.PAYEENAME,
-            Payee.CATEGID
+        return new String[]{"PAYEEID AS _id",
+                Payee.PAYEEID,
+                Payee.PAYEENAME,
+                Payee.CATEGID
         };
     }
 

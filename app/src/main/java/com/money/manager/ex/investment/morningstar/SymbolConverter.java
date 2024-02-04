@@ -26,43 +26,43 @@ import com.google.common.collect.HashBiMap;
  */
 public class SymbolConverter {
 
+    BiMap<String, String> mMap;
+
     public SymbolConverter() {
         initializeMap();
     }
 
-    BiMap<String, String> mMap;
-
-    public String convert(String yahooSymbol) {
+    public String convert(final String yahooSymbol) {
         // The list can be stored elsewhere, editable, and loaded when conversion is needed.
 
-        String[] parts = yahooSymbol.split("\\.");
+        final String[] parts = yahooSymbol.split("\\.");
 
         // e US exchanges
-        if (parts.length <= 1) {
+        if (1 >= parts.length) {
             // U.S. Do not use an exchange prefix for now.
             return yahooSymbol;
         }
 
-        String symbol = parts[0];
-        String yahooExchange = parts[1].toUpperCase();
+        final String symbol = parts[0];
+        final String yahooExchange = parts[1].toUpperCase();
 
-        String morningstarExchange = mMap.get(yahooExchange);
+        final String morningstarExchange = mMap.get(yahooExchange);
 
-        String result = morningstarExchange + ":" + symbol;
+        final String result = morningstarExchange + ":" + symbol;
         return result;
     }
 
-    public String getYahooSymbol(String morningstarSymbol) {
-        String[] parts = morningstarSymbol.split("\\:");
+    public String getYahooSymbol(final String morningstarSymbol) {
+        final String[] parts = morningstarSymbol.split("\\:");
 
-        if (parts.length <= 1) {
+        if (1 >= parts.length) {
             return morningstarSymbol;
         }
 
-        String symbol = parts[1];
-        String morningstarExchange = parts[0];
+        final String symbol = parts[1];
+        final String morningstarExchange = parts[0];
 
-        String yahooExchange = mMap.inverse().get(morningstarExchange);
+        final String yahooExchange = mMap.inverse().get(morningstarExchange);
 
         return symbol + "." + yahooExchange;
     }

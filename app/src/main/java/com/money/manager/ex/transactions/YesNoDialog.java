@@ -21,25 +21,21 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-
 /**
+ *
  */
 public class YesNoDialog
-    extends DialogFragment {
+        extends DialogFragment {
 
     public static final String PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER = "delete-splits";
-
-    public YesNoDialog() {
-
-    }
-
     /**
      * Here we store the identifier in which context the binaryDialog is used.
      * Since this binaryDialog can be used for any binary outcome, there needs to be a way
@@ -50,34 +46,33 @@ public class YesNoDialog
      */
     private String mPurpose;
 
+    public YesNoDialog() {
+
+    }
+
     public String getPurpose() {
         return mPurpose;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
-        Bundle args = getArguments();
-        String title = args.getString("title", "");
-        String message = args.getString("message", "");
-        this.mPurpose = args.getString("purpose", "");
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        final Bundle args = getArguments();
+        final String title = args.getString("title", "");
+        final String message = args.getString("message", "");
+        mPurpose = args.getString("purpose", "");
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         EventBus.getDefault().post(new DialogPositiveClickedEvent());
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         EventBus.getDefault().post(new DialogNegativeClickedEvent());
                     }
                 })

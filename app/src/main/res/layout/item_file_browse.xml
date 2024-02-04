@@ -16,23 +16,23 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/itemfileimage"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:id="@+id/itemfileimage"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/itemfiletext"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" 
-        android:layout_marginLeft="5dp"
-        android:singleLine="true" 
-		android:textSize="24sp" />
+            android:id="@+id/itemfiletext"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:singleLine="true"
+            android:textSize="24sp"/>
 
 </LinearLayout>

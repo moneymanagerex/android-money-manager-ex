@@ -35,28 +35,26 @@ import info.javaperformance.money.Money;
  */
 
 public class PriceEditModel {
+    public int accountId;
+    public String symbol;
+    public Money price;
+    public MmxDate date;
+    public int currencyId = Constants.NOT_SET;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
     public PriceEditModel() {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    public int accountId;
-
-    public String symbol;
-    public Money price;
-    public MmxDate date;
-
-    public int currencyId = Constants.NOT_SET;
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
-    public void display(Context context, EditPriceViewHolder viewHolder) {
+    public void display(final Context context, final EditPriceViewHolder viewHolder) {
         viewHolder.symbolTextView.setText(symbol);
 
-        String dateDisplay = dateTimeUtilsLazy.get().getUserFormattedDate(context, this.date.toDate());
+        final String dateDisplay = dateTimeUtilsLazy.get().getUserFormattedDate(context, date.toDate());
         viewHolder.dateTextView.setText(dateDisplay);
 
-        String amount;
-        FormatUtilities format = new FormatUtilities(context);
+        final String amount;
+        final FormatUtilities format = new FormatUtilities(context);
 //        if (currencyId == Constants.NOT_SET) {
 //            // use base currency?
 //            amount = format.getValueFormattedInBaseCurrency(price);

@@ -17,241 +17,395 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-   <title>MoneyManagerEx for Android: Database synchronization with the MoneyManagerEx for Windows/Linux/Mac using the Dropbox service</title>
-   <style type="text/css">
-   body {
-      background:#f5f5f5;
-      font-size:small;
-      margin: 10px;
-   }
-   /* #lists {margin: 0;padding: 0; } */
-   #lists {margin: 0;padding: 0px 0px 0px 13px; }
-   #lists { list-style-type: disk}
-   /* #lists li:before { content:'\2713'; } */
-   .warning {color:#FF0000;}
-   /* a {color:#000;} */
-   h2 { font-size:120%; }
-   h3 { font-size:105%; }
-   </style>
-</head>
-<body>
-<h1><a name="MoneyManagerEx_for_Android"></a>MoneyManagerEx for Android</h1>
-<ul>
-<li><a href="#Introduction">Introduction</a></li>
-<li><a href="#Concepts">Concepts</a></li>
-<li><a href="#Database">Database</a></li>
-<ul>
-<li><a href="#Encrypted_Database">Encrypted Database on MoneyManagerEx for Android</a></li>
-</ul>
-<li><a href="#Dropbox">Synchronize with Dropbox</a></li>
-<li><a href="#Accounts">Accounts</a></li>
-<li><a href="#Transactions">Transactions</a></li>
-<ul>
-<li><a href="#Reconciling_and_Balancing_Transactions">Reconciling and Balancing Transactions</a></li>
-</ul>
-<li><a href="#Currencies">Currencies</a></li>
-<li><a href="#Payees">Payees</a></li>
-<li><a href="#Repeating_Transactions">Repeating Transactions</a></li>
-<li><a href="#Transaction_Filter">Transaction Filter</a></li>
-<li><a href="#Settings">Settings</a></li>
-<li><a href="#FAQ">FAQ</a></li>
-</ul>
-<h2><a name="Introduction"></a>Introduction</h2>
-MoneyManagerEx for Android is a port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of its sisters' Desktop applications, while adding mobility and synchronization.
-<p></p>
-The primary goal of MoneyManagerEx for Android and <strong>MoneyManagerEx for Android</strong> is to simplify the process of tracking financial information, in an easy to use program that can be used as regular as necessary, to help us keep track of where our money comes from and more importantly, where our money goes, in order to make better financial decisions for our future.
-<p></p>
-Think of MoneyManagerEx for Android and <strong>MoneyManagerEx for Android</strong> as a computer checkbook which enables you to balance your accounts, organize, manage and generate reports for your finances.
-<p></p>
-<strong>With MoneyManagerEx for Android, and synchronization via Dropbox, you can keep under control your finances, no matter where you will find.</strong>
-<p></p>
-<h2><a name="Concepts"></a>Concepts</h2>
-MoneyManagerEx is organizing the finance real through the concepts of operations.
-<p></p>
-<strong>Deposit</strong> (Income): when you receive money from someone, or a service we provide for the sale of a product.<br>
-<strong>Withdrawal</strong> (Expenses): when you spend money for a service that uses or to purchase a product.<br>
-<strong>Payees</strong>: are all those who give or receive money from us.<br>
-<strong>Accounts</strong>: are all places where we keep the money, such as banks, several institutions or even our pockets.<br>
-<strong>Transaction</strong>: when we spend or receive money.<br>
-<strong>Category</strong>: identifies the reason for the transaction income or expense.<br>
-<strong>Transfer</strong>: transfer money from one place to another.<br>
-<strong>Currency</strong>: used to perform the transactions.<br>
-<p></p>
-<h2><a name="Database"></a>Database</h2>
-The database that MoneyManagerEx for Android generates, known as the <strong>.mmb</strong> file, becomes an important file for you to maintain. Depending on circumstances, security features such as encryption can be employed, which is recognized as a <strong>.emb</strong> file. This is where we can attach a password to the database, and will require a password every time MoneyManagerEx for Android is opened.
-<strong><em>Unfortunately, the encryption features of the database </em></strong>.emb* is not yet available for the Android version_<strong></strong>
-<p></p>
-<h3><a name="Encrypted_Database"></a>Encrypted Database</h3>
-<strong>Important: <em>MoneyManagerEx for Android is not currently able to open the encrypted database (. Emb). Why? Android SQLite does not provide  encryption of databases, and unfortunately is not yet available a porting library wxSQLite on Android.</em></strong><br>
-MoneyManagerEx for Android, has a feature that allows you to enter a Passcode to protect the data on your device.
-<p></p>
-<h2><a name="Dropbox"></a>Dropbox</h2>
-<a href="DropboxSync">See the pages dedicated to sync with Dropbox</a>
-<p></p>
-<h2><a name="Accounts"></a>Accounts</h2>
-What is an Account in MoneyManagerEx? Account is all places where we keep the money, such as banks, several institutions or even our pockets.<br>
-<p></p>
-To create a new account, from the menu, Manage &rarr; Account &rarr; Add (+)
-<p></p>
-<strong>Name of the Account</strong>: This is a required field. The recommendation is to name your accounts uniquely and in relation to real world accounts. Example: With <a href="CitiBank">CitiBank</a>, we have a Savings account and a credit card Visa account. You could name your accounts as "<a href="CitiBank">CitiBank</a> Savings" and "Citibank Visa".<br>
-<p></p>
-<strong>Type of Account</strong>:
-<ol>
-<li><strong>"Checking" Account</strong>: This is the most common type of account such as checking accounts, savings accounts, and credit card accounts. It supports three types of operations: deposit, withdrawal and transfer.</li>
-<li><strong>"Term" Account</strong>: This kinds of accounts cover specialized accounts such as Cash Term Accounts, Bank Mortgage accounts, Loan accounts, or investment accounts with regular income or expenditure that you need to keep track of. <br></li>
-</ol>
-To keep track of more information on the accounts, you can insert the optional details of the account, such as account number, address, website, contact information and access. You can also enter additional notes on the account in the 'Notes'.
-For a correct management you must have the correct balance for the account you are entering, and this information must be entered in the "Initial Balance". Later to keep the account balance is sufficient to add the transactions that take place gradually over the date of the opening balance entered.
-<p></p>
-The <strong>Status</strong> of the account can be set to "Open" or "Closed". Closed accounts are those no longer active. The setting of this state is only one way to simplify the vision. When you start the application displays all the Accounts, but you can make it visible only open account by setting "View open accounts" (Manage &rarr; Settings &rarr; Display)
-<p></p>
-<strong>Currency</strong>: You can set the currency associated with the account and can be different to the base currency. The exchange rate of the currency can be changed using the menu: Manage &rarr; Currency
-<p></p>
-Once you have created an account, you can edit any of the account information fields using the menu: Manage &rarr; Account. A list of your accounts will appear, and holding on an account you can choose to edit or delete it.
-<p></p>
-<h2><a name="Transactions"></a>Transactions</h2>
-What is an Transaction in MoneyManagerEx? A transaction is any action of money movement, whether of a withdrawal or deposit.
-<p></p>
-To enter and view transactions from an account from the main screen select the desired account.
-Once in the account in which they wish to make of operations to create a new transaction, click the menu Add Transaction (+) to open the Add/Edit Transaction activity. Enter the details:
-<p></p>
-<ul>
-<li><strong>Date</strong>: This is generally the date of the transaction. Defaults to current day and can be changed.</li>
-<li><strong>Status</strong>:</li>
-<ul>
-<li><strong>None</strong>: When you enter a transaction, it initially is in the state of "None". Which means the transaction has not been reconciled with your bank/credit card company's balance.</li>
-<li><strong>Reconciled</strong>: Once the transaction is checked and verified with a credit card company's balance information, it can be marked as reconciled.</li>
-<li><strong>Void</strong>: If you entered a transaction that later became invalid or you canceled the transaction, instead of deleting the transaction you can also mark it as void so you have a record of the transaction.</li>
-<li><strong>Followup</strong>: This status marks transactions as needing more action. For example, you receive a balance statement from the financial institution and you notice that the transaction amount is different between what you recorded and what is in the statement. You can mark it as flag for follow up so that you can followup with the financial institution.</li>
-<li><strong>Duplicate</strong>: This status marks transactions as duplicate.    </li>
-</ul>
-<li><strong>Type</strong>:    </li>
-<ul>
-<li><strong>Withdrawal</strong>: is one where one makes a payment and is an expense.</li>
-<li><strong>Deposit</strong>: is one where money is received and is an income.</li>
-<li><strong>Transfer</strong>: is one where a withdrawal is made from one account and is deposited into another account. This type of transaction is not included in Income/Expense calculations.</li>
-</ul>
-<li><strong>Amount:</strong> Enter the amount for the transaction.</li>
-<li><strong>Payee</strong>: This is a subject (person, company or organization) to whom the money goes or comes from. Clicking the payee button opens up the Payee activity. You can select the payee from that list or create a new payee (+) for immediate use.</li>
-<li><strong>Category</strong>: Category specifies the kind of expense/income for the transaction. As for the payee by clicking the categories button, you can select a category or create a new one immediately.</li>
-<li><strong>Transaction Number</strong> and <strong>Note</strong>: is additional information that you can enter in the transaction</li>
-</ul>
-    
-Finally, press "Ok" button to save. If you want to abort the transaction, press the "Abort"
-<p></p>
-If you want to edit, delete or modify a transaction was a transaction hold over the desired transaction. Then it will open a context menu with the possible operations.
-<p></p>
-<h3><a name="Reconciling_and_Balancing_Transactions"></a>Reconciling and Balancing Transactions</h3>
-<ul>
-<li>Unreconciled Transactions: means that transactions have not been verified with the statement from the financial institution.</li>
-<li>Reconciled Transactions: A transaction can be considered reconciled when the details of the transaction match that from the financial institution.  </li>
-</ul>
-<h2><a name="Currencies"></a>Currencies</h2>
-MoneyManagerEx for Android can be used in all the nations of the world. The default application has taken into account the major world currencies. If the user's local currency is not present in the list of predefined currencies, the user can add one or more currencies or create your own custom list of currencies.
-<p></p>
-The currencies you can insert, edit, and delete from the Main Menu &rarr; Manage &rarr; Currency.
-<p></p>
-For the insertion of a currency must be set the following fields:
-<ul>
-<li>Name of Currency</li>
-<li>Currency symbol</li>
-<li>Scale and Base Rate Conversion</li>
-<li>Prefix and Suffix Symbol</li>
-<li>Separator for cents and Thousands</li>
-</ul>
-  
-When more than one currency is being used, the Conversion to Base Rate needs to be set. This will allow the value of the currency to properly reflect the value at the base rate.
-<p></p>
-<h2><a name="Categories"></a>Categories</h2>
-What is Category for MoneyManagerEx for Android The category indicates the reason why there has been an output or for which you have received an entry.
-<p></p>
-<em>Example: If you want to store the expense done for the repair of the car, you should select 'Auto' as a category and 'Maintenance' as Subcategory.</em>
-<p></p>
-For the management of categories from the main menu, Manage &rarr; Category.
-<p></p>
-<strong>To add a category</strong>: Menu &rarr; Add Category. Enter the description of the category. <br>
-<strong>To add a sub-category</strong>: Menu &rarr; Add <a href="SubCategory">SubCategory</a>. Select from the dropdown category of belonging, and insert the description of the <a href="SubCategory">SubCategory</a>.
-<p></p>
-To edit or delete a category hold on the desired category, it will open a context menu with the available actions.
-<p></p>
-<h2><a name="Payees"></a>Payees</h2>
-What is Payee for MoneyManagerEx for Android The payee is a subject (person, company or organization) to whom the money goes or comes from.
-<p></p>
-You can manage the Payees from main menu: Manage &rarr; Payee
-<p></p>
-To add a new Payee, click Add (+), and in the dialog, enter the name of the Payee.
-<p></p>
-To edit or delete a Payee hold on the desired Payee will open a context menu with the possible operations.
-<p></p>
-<h2><a name="Repeating_Transactions"></a>Repeating Transactions</h2>
-When you have operations that occur at expiration or at regular intervals, such as paying bills or the payment of salary, MoneyManagerEx for Android allows you to set operations such as Repeating.
-<p></p>
-These operations:  Will be displayed from 14 days before the deadline in the Home Page under "Upcoming Transactions."
-<p></p>
-You can access the Repeating Transaction from the Main Menu &rarr; Manage &rarr; Repeating Transaction.
-<p></p>
-To create a new Repeating Transaction click Menu &rarr; Add (+). To set the Repeating Transaction must set the data as described:
-<ul>
-<li>Select in the first <a href="DropDown">DropDown</a> the Account</li>
-<li>Set the first expire of the transaction</li>
-<li>Set the frequency of the Repeating Transaction (daily, weekly, monthly, etc ...)</li>
-<li>Enter the number of times that the operation must be repeated. If you leave the field empty, it means that the operation will be repeated indefinitely.</li>
-</ul>
-If you want to edit or delete a Repeating Transaction, you should hold on Repeating Transaction desired.
-<p></p>
-Upon the expiration of one or more Repeating Transactions, the device will display a single notification for all Repeating Transaction expired. Clicking on it will open the interface of Repeating Transaction, and expire operations will be highlighted by a warning. <br>
-You may decide to enter the transaction with the stated expire, or ignore it and go to the next expire.
-<p></p>
-<h2><a name="Transaction_Filter"></a>Transaction Filter</h2>
-MoneyManagerEx for Android allows you to search for transactions by setting the criteria, such as from date to date, all transactions of an account, transactions by state, by amount or notes.
-<p></p>
-<h2><a name="Settings"></a>Settings</h2>
-<ul>
-<li>General</li>
-<ul>
-<li>User Name: set the user name</li>
-<li>Date Format: Set the display format of the date</li>
-<li>Base Currency: Set the base currency</li>
-<li>Financial Year Start Day: Set the starting day (1-31) of the financial year</li>
-<li>Month Financial Year Start: Set the starting month of the financial year</li>
-<li>Schedule Check Repeating Transaction Overdue: Indicate what time of day the application should check if there are repeating transaction overdue (default 08:00)</li>
-</ul>
-<li>Display</li>
-<ul>
-<li>View open account: show only open accounts</li>
-<li>View favorite account: show only favorite accounts</li>
-<li>Show Transaction: Indicates the transaction to be displayed in the application. This allows to speed up the application in the reading of data.</li>
-<li>Shows the balance for each transaction: Shows the balance for each transaction. The display of balance could make the application slower</li>
-<li>Application Font: Select the font you want to give the application</li>
-<li>Application Font Size: Select the font size you want to give the application</li>
-<li>Theme: you can choose the theme of the application, including the Holo theme and the Light theme </li>
-</ul>
-<li>Security</li>
-<ul>
-<li>Active Passcode: you can activate passcode, with the introduction of the new passcode.</li>
-<li>Edit Passcode: you can edit an existing passcode.</li>
-<li>Disable Passcode: you can disable existing passcode, only whenever you enter your existing code.</li>
-</ul>
-<li>Database</li>
-<ul>
-<li>Path: path of the used database.</li>
-<li>SQLite Version: shows the version of SQLite installed in Android</li>
-<li>Move Database to External Storage: create a copy of used database into folder com.money.manager.ex of External Storage.</li>
-</ul>
-<li>Dropbox: <a href="DropboxSync">See the pages dedicated to sync with Dropbox</a></li>
-<li>Donate: if the application is to your liking, you can contribute by making a donation of € 1.50 to the development team.</li>
-<li>Info: show version number of MoneyManagerEx for Android.</li>
-</ul>
-  
-<h2><a name="FAQ"></a>FAQ</h2>
-<strong>Q. </strong>My local currency is not available in MoneyManagerEx for Android . How do I use it?<br>
-<strong>A. </strong>In MoneyManagerEx for Android the main world currencies have been inserted. However you can add a new currency at any time. <a href="#Currencies">See the instructions on currencies</a>
-<p></p>
-<strong>Q. </strong>Can I use the encrypted database in MoneyManagerEx for Android<br>
-<strong>A. </strong>It is still possible to use the encrypted database. <a href="#Encrypted_Database">See the motivations here</a>
-<p></p>
-<strong>Q. </strong>How can I help the development team to translate MoneyManagerEx for Android in my language?<br>
-<strong>A. </strong>You can help the development team by participating in the project MoneyManagerEx for Android on <a href="https://crowdin.net/project/android-money-manager-ex">Crowdin.net</a>, and translating the strings in your language.
-</body>
+    <head>
+        <title>MoneyManagerEx for Android: Database synchronization with the MoneyManagerEx for Windows/Linux/Mac using the Dropbox service</title>
+        <style type="text/css">
+            body {
+                background: #f5f5f5;
+                font-size: small;
+                margin: 10px;
+            }
+
+            /* #lists {margin: 0;padding: 0; } */
+            #lists {
+                margin: 0;
+                padding: 0px 0px 0px 13px;
+            }
+
+            #lists {
+                list-style-type: disk
+            }
+
+            /* #lists li:before { content:'\2713'; } */
+            .warning {
+                color: #FF0000;
+            }
+
+            /* a {color:#000;} */
+            h2 {
+                font-size: 120%;
+            }
+
+            h3 {
+                font-size: 105%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1><a name="MoneyManagerEx_for_Android"></a>MoneyManagerEx for Android
+        </h1>
+        <ul>
+            <li>
+                <a href="#Introduction">Introduction</a>
+            </li>
+            <li>
+                <a href="#Concepts">Concepts</a>
+            </li>
+            <li>
+                <a href="#Database">Database</a>
+            </li>
+            <ul>
+                <li>
+                    <a href="#Encrypted_Database">Encrypted Database on MoneyManagerEx for Android</a>
+                </li>
+            </ul>
+            <li>
+                <a href="#Dropbox">Synchronize with Dropbox</a>
+            </li>
+            <li>
+                <a href="#Accounts">Accounts</a>
+            </li>
+            <li>
+                <a href="#Transactions">Transactions</a>
+            </li>
+            <ul>
+                <li>
+                    <a href="#Reconciling_and_Balancing_Transactions">Reconciling and Balancing Transactions</a>
+                </li>
+            </ul>
+            <li>
+                <a href="#Currencies">Currencies</a>
+            </li>
+            <li>
+                <a href="#Payees">Payees</a>
+            </li>
+            <li>
+                <a href="#Repeating_Transactions">Repeating Transactions</a>
+            </li>
+            <li>
+                <a href="#Transaction_Filter">Transaction Filter</a>
+            </li>
+            <li>
+                <a href="#Settings">Settings</a>
+            </li>
+            <li>
+                <a href="#FAQ">FAQ</a>
+            </li>
+        </ul>
+        <h2><a name="Introduction"></a>Introduction
+        </h2>
+        MoneyManagerEx for Android is a port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of
+        its sisters' Desktop applications, while adding mobility and synchronization.
+        <p></p>
+        The primary goal of MoneyManagerEx for Android and
+        <strong>MoneyManagerEx for Android</strong>
+        is to simplify the process of tracking financial information, in an easy to use program that can be used as regular as necessary, to help us keep track of where our money
+        comes from and more importantly, where our money goes, in order to make better financial decisions for our future.
+        <p></p>
+        Think of MoneyManagerEx for Android and
+        <strong>MoneyManagerEx for Android</strong>
+        as a computer checkbook which enables you to balance your accounts, organize, manage and generate reports for your finances.
+        <p></p>
+        <strong>With MoneyManagerEx for Android, and synchronization via Dropbox, you can keep under control your finances, no matter where you will find.</strong>
+        <p></p>
+        <h2><a name="Concepts"></a>Concepts
+        </h2>
+        MoneyManagerEx is organizing the finance real through the concepts of operations.
+        <p></p>
+        <strong>Deposit</strong>
+        (Income): when you receive money from someone, or a service we provide for the sale of a product.
+        <br>
+        <strong>Withdrawal</strong>
+        (Expenses): when you spend money for a service that uses or to purchase a product.
+        <br>
+        <strong>Payees</strong>: are all those who give or receive money from us.
+        <br>
+        <strong>Accounts</strong>: are all places where we keep the money, such as banks, several institutions or even our pockets.
+        <br>
+        <strong>Transaction</strong>: when we spend or receive money.
+        <br>
+        <strong>Category</strong>: identifies the reason for the transaction income or expense.
+        <br>
+        <strong>Transfer</strong>: transfer money from one place to another.
+        <br>
+        <strong>Currency</strong>: used to perform the transactions.
+        <br>
+        <p></p>
+        <h2><a name="Database"></a>Database
+        </h2>
+        The database that MoneyManagerEx for Android generates, known as the
+        <strong>.mmb</strong>
+        file, becomes an important file for you to maintain. Depending on circumstances, security features such as encryption can be employed, which is recognized as a
+        <strong>.emb</strong>
+        file. This is where we can attach a password to the database, and will require a password every time MoneyManagerEx for Android is opened.
+        <strong>
+            <em>Unfortunately, the encryption features of the database</em>
+        </strong>
+        .emb* is not yet available for the Android version_
+        <strong></strong>
+        <p></p>
+        <h3><a name="Encrypted_Database"></a>Encrypted Database
+        </h3>
+        <strong>Important:
+            <em>MoneyManagerEx for Android is not currently able to open the encrypted database (. Emb). Why? Android SQLite does not provide encryption of databases, and
+                unfortunately is not yet available a porting library wxSQLite on Android.
+            </em>
+        </strong>
+        <br>
+        MoneyManagerEx for Android, has a feature that allows you to enter a Passcode to protect the data on your device.
+        <p></p>
+        <h2><a name="Dropbox"></a>Dropbox
+        </h2>
+        <a href="DropboxSync">See the pages dedicated to sync with Dropbox</a>
+        <p></p>
+        <h2><a name="Accounts"></a>Accounts
+        </h2>
+        What is an Account in MoneyManagerEx? Account is all places where we keep the money, such as banks, several institutions or even our pockets.
+        <br>
+        <p></p>
+        To create a new account, from the menu, Manage &rarr; Account &rarr; Add (+)
+        <p></p>
+        <strong>Name of the Account</strong>: This is a required field. The recommendation is to name your accounts uniquely and in relation to real world accounts. Example: With<a
+            href="CitiBank">CitiBank</a>, we have a Savings account and a credit card Visa account. You could name your accounts as "
+        <a href="CitiBank">CitiBank</a>
+        Savings" and "Citibank Visa".
+        <br>
+        <p></p>
+        <strong>Type of Account</strong>:
+        <ol>
+            <li><strong>"Checking" Account</strong>: This is the most common type of account such as checking accounts, savings accounts, and credit card accounts. It supports
+                three types of operations: deposit, withdrawal and transfer.
+            </li>
+            <li><strong>"Term" Account</strong>: This kinds of accounts cover specialized accounts such as Cash Term Accounts, Bank Mortgage accounts, Loan accounts, or investment
+                accounts with regular income or expenditure that you need to keep track of.
+                <br>
+            </li>
+        </ol>
+        To keep track of more information on the accounts, you can insert the optional details of the account, such as account number, address, website, contact information and
+        access. You can also enter additional notes on the account in the 'Notes'.
+        For a correct management you must have the correct balance for the account you are entering, and this information must be entered in the "Initial Balance". Later to keep
+        the account balance is sufficient to add the transactions that take place gradually over the date of the opening balance entered.
+        <p></p>
+        The
+        <strong>Status</strong>
+        of the account can be set to "Open" or "Closed". Closed accounts are those no longer active. The setting of this state is only one way to simplify the vision. When you
+        start the application displays all the Accounts, but you can make it visible only open account by setting "View open accounts" (Manage &rarr; Settings &rarr; Display)
+        <p></p>
+        <strong>Currency</strong>: You can set the currency associated with the account and can be different to the base currency. The exchange rate of the currency can be changed
+        using the menu: Manage &rarr; Currency
+        <p></p>
+        Once you have created an account, you can edit any of the account information fields using the menu: Manage &rarr; Account. A list of your accounts will appear, and holding
+        on an account you can choose to edit or delete it.
+        <p></p>
+        <h2><a name="Transactions"></a>Transactions
+        </h2>
+        What is an Transaction in MoneyManagerEx? A transaction is any action of money movement, whether of a withdrawal or deposit.
+        <p></p>
+        To enter and view transactions from an account from the main screen select the desired account.
+        Once in the account in which they wish to make of operations to create a new transaction, click the menu Add Transaction (+) to open the Add/Edit Transaction activity.
+        Enter the details:
+        <p></p>
+        <ul>
+            <li><strong>Date</strong>: This is generally the date of the transaction. Defaults to current day and can be changed.
+            </li>
+            <li><strong>Status</strong>:
+            </li>
+            <ul>
+                <li><strong>None</strong>: When you enter a transaction, it initially is in the state of "None". Which means the transaction has not been reconciled with your
+                    bank/credit card company's balance.
+                </li>
+                <li><strong>Reconciled</strong>: Once the transaction is checked and verified with a credit card company's balance information, it can be marked as reconciled.
+                </li>
+                <li><strong>Void</strong>: If you entered a transaction that later became invalid or you canceled the transaction, instead of deleting the transaction you can also
+                    mark it as void so you have a record of the transaction.
+                </li>
+                <li><strong>Followup</strong>: This status marks transactions as needing more action. For example, you receive a balance statement from the financial institution
+                    and you notice that the transaction amount is different between what you recorded and what is in the statement. You can mark it as flag for follow up so that
+                    you can followup with the financial institution.
+                </li>
+                <li><strong>Duplicate</strong>: This status marks transactions as duplicate.
+                </li>
+            </ul>
+            <li><strong>Type</strong>:
+            </li>
+            <ul>
+                <li><strong>Withdrawal</strong>: is one where one makes a payment and is an expense.
+                </li>
+                <li><strong>Deposit</strong>: is one where money is received and is an income.
+                </li>
+                <li><strong>Transfer</strong>: is one where a withdrawal is made from one account and is deposited into another account. This type of transaction is not included in
+                    Income/Expense calculations.
+                </li>
+            </ul>
+            <li>
+                <strong>Amount:</strong>
+                Enter the amount for the transaction.
+            </li>
+            <li><strong>Payee</strong>: This is a subject (person, company or organization) to whom the money goes or comes from. Clicking the payee button opens up the Payee
+                activity. You can select the payee from that list or create a new payee (+) for immediate use.
+            </li>
+            <li><strong>Category</strong>: Category specifies the kind of expense/income for the transaction. As for the payee by clicking the categories button, you can select a
+                category or create a new one immediately.
+            </li>
+            <li>
+                <strong>Transaction Number</strong>
+                and<strong>Note</strong>: is additional information that you can enter in the transaction
+            </li>
+        </ul>
+
+        Finally, press "Ok" button to save. If you want to abort the transaction, press the "Abort"
+        <p></p>
+        If you want to edit, delete or modify a transaction was a transaction hold over the desired transaction. Then it will open a context menu with the possible operations.
+        <p></p>
+        <h3><a name="Reconciling_and_Balancing_Transactions"></a>Reconciling and Balancing Transactions
+        </h3>
+        <ul>
+            <li>Unreconciled Transactions: means that transactions have not been verified with the statement from the financial institution.</li>
+            <li>Reconciled Transactions: A transaction can be considered reconciled when the details of the transaction match that from the financial institution.</li>
+        </ul>
+        <h2><a name="Currencies"></a>Currencies
+        </h2>
+        MoneyManagerEx for Android can be used in all the nations of the world. The default application has taken into account the major world currencies. If the user's local
+        currency is not present in the list of predefined currencies, the user can add one or more currencies or create your own custom list of currencies.
+        <p></p>
+        The currencies you can insert, edit, and delete from the Main Menu &rarr; Manage &rarr; Currency.
+        <p></p>
+        For the insertion of a currency must be set the following fields:
+        <ul>
+            <li>Name of Currency</li>
+            <li>Currency symbol</li>
+            <li>Scale and Base Rate Conversion</li>
+            <li>Prefix and Suffix Symbol</li>
+            <li>Separator for cents and Thousands</li>
+        </ul>
+
+        When more than one currency is being used, the Conversion to Base Rate needs to be set. This will allow the value of the currency to properly reflect the value at the base
+        rate.
+        <p></p>
+        <h2><a name="Categories"></a>Categories
+        </h2>
+        What is Category for MoneyManagerEx for Android The category indicates the reason why there has been an output or for which you have received an entry.
+        <p></p>
+        <em>Example: If you want to store the expense done for the repair of the car, you should select 'Auto' as a category and 'Maintenance' as Subcategory.</em>
+        <p></p>
+        For the management of categories from the main menu, Manage &rarr; Category.
+        <p></p>
+        <strong>To add a category</strong>: Menu &rarr; Add Category. Enter the description of the category.
+        <br>
+        <strong>To add a sub-category</strong>: Menu &rarr; Add<a href="SubCategory">SubCategory</a>. Select from the dropdown category of belonging, and insert the description of
+        the<a href="SubCategory">SubCategory</a>.
+        <p></p>
+        To edit or delete a category hold on the desired category, it will open a context menu with the available actions.
+        <p></p>
+        <h2><a name="Payees"></a>Payees
+        </h2>
+        What is Payee for MoneyManagerEx for Android The payee is a subject (person, company or organization) to whom the money goes or comes from.
+        <p></p>
+        You can manage the Payees from main menu: Manage &rarr; Payee
+        <p></p>
+        To add a new Payee, click Add (+), and in the dialog, enter the name of the Payee.
+        <p></p>
+        To edit or delete a Payee hold on the desired Payee will open a context menu with the possible operations.
+        <p></p>
+        <h2><a name="Repeating_Transactions"></a>Repeating Transactions
+        </h2>
+        When you have operations that occur at expiration or at regular intervals, such as paying bills or the payment of salary, MoneyManagerEx for Android allows you to set
+        operations such as Repeating.
+        <p></p>
+        These operations: Will be displayed from 14 days before the deadline in the Home Page under "Upcoming Transactions."
+        <p></p>
+        You can access the Repeating Transaction from the Main Menu &rarr; Manage &rarr; Repeating Transaction.
+        <p></p>
+        To create a new Repeating Transaction click Menu &rarr; Add (+). To set the Repeating Transaction must set the data as described:
+        <ul>
+            <li>Select in the first
+                <a href="DropDown">DropDown</a>
+                the Account
+            </li>
+            <li>Set the first expire of the transaction</li>
+            <li>Set the frequency of the Repeating Transaction (daily, weekly, monthly, etc ...)</li>
+            <li>Enter the number of times that the operation must be repeated. If you leave the field empty, it means that the operation will be repeated indefinitely.</li>
+        </ul>
+        If you want to edit or delete a Repeating Transaction, you should hold on Repeating Transaction desired.
+        <p></p>
+        Upon the expiration of one or more Repeating Transactions, the device will display a single notification for all Repeating Transaction expired. Clicking on it will open the
+        interface of Repeating Transaction, and expire operations will be highlighted by a warning.
+        <br>
+        You may decide to enter the transaction with the stated expire, or ignore it and go to the next expire.
+        <p></p>
+        <h2><a name="Transaction_Filter"></a>Transaction Filter
+        </h2>
+        MoneyManagerEx for Android allows you to search for transactions by setting the criteria, such as from date to date, all transactions of an account, transactions by state,
+        by amount or notes.
+        <p></p>
+        <h2><a name="Settings"></a>Settings
+        </h2>
+        <ul>
+            <li>General</li>
+            <ul>
+                <li>User Name: set the user name</li>
+                <li>Date Format: Set the display format of the date</li>
+                <li>Base Currency: Set the base currency</li>
+                <li>Financial Year Start Day: Set the starting day (1-31) of the financial year</li>
+                <li>Month Financial Year Start: Set the starting month of the financial year</li>
+                <li>Schedule Check Repeating Transaction Overdue: Indicate what time of day the application should check if there are repeating transaction overdue (default
+                    08:00)
+                </li>
+            </ul>
+            <li>Display</li>
+            <ul>
+                <li>View open account: show only open accounts</li>
+                <li>View favorite account: show only favorite accounts</li>
+                <li>Show Transaction: Indicates the transaction to be displayed in the application. This allows to speed up the application in the reading of data.</li>
+                <li>Shows the balance for each transaction: Shows the balance for each transaction. The display of balance could make the application slower</li>
+                <li>Application Font: Select the font you want to give the application</li>
+                <li>Application Font Size: Select the font size you want to give the application</li>
+                <li>Theme: you can choose the theme of the application, including the Holo theme and the Light theme</li>
+            </ul>
+            <li>Security</li>
+            <ul>
+                <li>Active Passcode: you can activate passcode, with the introduction of the new passcode.</li>
+                <li>Edit Passcode: you can edit an existing passcode.</li>
+                <li>Disable Passcode: you can disable existing passcode, only whenever you enter your existing code.</li>
+            </ul>
+            <li>Database</li>
+            <ul>
+                <li>Path: path of the used database.</li>
+                <li>SQLite Version: shows the version of SQLite installed in Android</li>
+                <li>Move Database to External Storage: create a copy of used database into folder com.money.manager.ex of External Storage.</li>
+            </ul>
+            <li>Dropbox:
+                <a href="DropboxSync">See the pages dedicated to sync with Dropbox</a>
+            </li>
+            <li>Donate: if the application is to your liking, you can contribute by making a donation of € 1.50 to the development team.</li>
+            <li>Info: show version number of MoneyManagerEx for Android.</li>
+        </ul>
+
+        <h2><a name="FAQ"></a>FAQ
+        </h2>
+        <strong>Q.</strong>My local currency is not available in MoneyManagerEx for Android . How do I use it?
+        <br>
+        <strong>A.</strong>In MoneyManagerEx for Android the main world currencies have been inserted. However you can add a new currency at any time.
+        <a href="#Currencies">See the instructions on currencies</a>
+        <p></p>
+        <strong>Q.</strong>Can I use the encrypted database in MoneyManagerEx for Android
+        <br>
+        <strong>A.</strong>It is still possible to use the encrypted database.
+        <a href="#Encrypted_Database">See the motivations here</a>
+        <p></p>
+        <strong>Q.</strong>How can I help the development team to translate MoneyManagerEx for Android in my language?
+        <br>
+        <strong>A.</strong>You can help the development team by participating in the project MoneyManagerEx for Android on<a
+            href="https://crowdin.net/project/android-money-manager-ex">Crowdin.net</a>, and translating the strings in your language.
+    </body>
 </html>

@@ -41,6 +41,7 @@ public class BudgetService
      * Copy budget. It will load the budget with entries and create a copy.
      * Need to get the budget destination period. The period can be only a year/month like the
      * original budget.
+     *
      * @param budgetId The budget to copy.
      */
     public void copy(int budgetId) {

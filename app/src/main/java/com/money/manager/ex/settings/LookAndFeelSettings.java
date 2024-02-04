@@ -19,7 +19,9 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -36,7 +38,7 @@ import timber.log.Timber;
  * Look & Feel preferences
  */
 public class LookAndFeelSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public LookAndFeelSettings(Context context) {
         super(context);

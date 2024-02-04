@@ -28,12 +28,12 @@ import com.money.manager.ex.utils.MmxFileUtils;
 import timber.log.Timber;
 
 public class HelpActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private WebView mWebView;
 
     @Override
-    protected void onCreate(Bundle savedInstance) {
+    protected void onCreate(final Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.webview_activity);
 
@@ -44,29 +44,29 @@ public class HelpActivity
         // enable javascript
         mWebView.getSettings().setJavaScriptEnabled(true);
 
-        if (getIntent() == null) return;
+        if (null == getIntent()) return;
 
         try {
             if ("android.resource".equals(getIntent().getData().getScheme())) {
-                int rawId = Integer.parseInt(getIntent().getData().getPathSegments()
+                final int rawId = Integer.parseInt(getIntent().getData().getPathSegments()
                         .get(getIntent().getData().getPathSegments().size() - 1));
 
-                WebSettings settings = mWebView.getSettings();
+                final WebSettings settings = mWebView.getSettings();
                 settings.setDefaultTextEncodingName("utf-8");
                 mWebView.loadData(MmxFileUtils.getRawAsString(getApplicationContext(), rawId),
                         "text/html; charset=utf-8", null);
             } else {
                 mWebView.loadUrl(getIntent().getData().toString());
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "setting content of web view");
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (KeyEvent.ACTION_DOWN == event.getAction()) {
+            if (KeyEvent.KEYCODE_BACK == keyCode && mWebView.canGoBack()) {
                 mWebView.goBack();
                 return true;
             }

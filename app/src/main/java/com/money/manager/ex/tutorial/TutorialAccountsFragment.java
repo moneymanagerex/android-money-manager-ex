@@ -29,7 +29,7 @@ import androidx.fragment.app.Fragment;
  * A simple {@link Fragment} subclass.
  */
 public class TutorialAccountsFragment
-    extends Fragment {
+        extends Fragment {
 
     public TutorialAccountsFragment() {
         // Required empty public constructor

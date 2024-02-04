@@ -43,7 +43,7 @@ import androidx.fragment.app.Fragment;
  * http://stackoverflow.com/questions/6051050/expandablelistfragment-with-loadermanager-for-compatibility-package
  * and then modified by Manfred Moser <manfred@simpligility.com> to get it to work with the v4 r4 compatibility
  * library. With inspirations from the library source.
- *
+ * <p>
  * All ASLv2 licensed.
  */
 public class ExpandableListFragment
@@ -55,21 +55,18 @@ public class ExpandableListFragment
     static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
 
     final private Handler mHandler = new Handler();
-
-    final private Runnable mRequestFocus = new Runnable() {
-        public void run() {
-            mList.focusableViewAvailable(mList);
-        }
-    };
-
     final private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             onListItemClick((ListView) parent, v, position, id);
         }
     };
-
     ExpandableListAdapter mAdapter;
     ExpandableListView mList;
+    final private Runnable mRequestFocus = new Runnable() {
+        public void run() {
+            mList.focusableViewAvailable(mList);
+        }
+    };
     View mEmptyView;
     ScrollView mEmptyViewScroll;
     TextView mStandardEmptyView;
@@ -136,7 +133,9 @@ public class ExpandableListFragment
         ensureList();
     }
 
-    /** Detach from list view. */
+    /**
+     * Detach from list view.
+     */
     @Override
     public void onDestroyView() {
         mHandler.removeCallbacks(mRequestFocus);
@@ -149,6 +148,7 @@ public class ExpandableListFragment
      * Subclasses should override. Subclasses can call
      * getListView().getItemAtPosition(position) if they need to access the
      * data associated with the selected item.
+     *
      * @param l        The ListView where the click happened
      * @param v        The view that was clicked within the ListView
      * @param position The position of the view in the list
@@ -157,7 +157,9 @@ public class ExpandableListFragment
     public void onListItemClick(ListView l, View v, int position, long id) {
     }
 
-    /** Provide the cursor for the list view. */
+    /**
+     * Provide the cursor for the list view.
+     */
     public void setListAdapter(ExpandableListAdapter adapter) {
         boolean hadAdapter = mAdapter != null;
         mAdapter = adapter;
@@ -227,6 +229,7 @@ public class ExpandableListFragment
      * showing it once an adapter is given with ListAdapter}.
      * If the list at that point had not been shown, when it does get shown
      * it will be do without the user ever seeing the hidden state.
+     *
      * @param shown If true, the list view is shown; if false, the progress
      *              indicator.  The initial value is true.
      */
@@ -246,6 +249,7 @@ public class ExpandableListFragment
      * Control whether the list is being displayed.  You can make it not
      * displayed if you are waiting for the initial data to show in it.  During
      * this time an indeterminant progress indicator will be shown instead.
+     *
      * @param shown   If true, the list view is shown; if false, the progress
      *                indicator.  The initial value is true.
      * @param animate If true, an animation will be used to transition to the
@@ -272,7 +276,9 @@ public class ExpandableListFragment
         }
     }
 
-    /** Get the ListAdapter associated with this activity's ListView. */
+    /**
+     * Get the ListAdapter associated with this activity's ListView.
+     */
     public ExpandableListAdapter getExpandableListAdapter() {
         return mAdapter;
     }

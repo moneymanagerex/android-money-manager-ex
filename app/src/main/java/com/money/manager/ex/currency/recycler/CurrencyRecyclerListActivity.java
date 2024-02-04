@@ -25,7 +25,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class CurrencyRecyclerListActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private static final String FRAGMENTTAG = CurrencyRecyclerListFragment.class.getSimpleName();
 

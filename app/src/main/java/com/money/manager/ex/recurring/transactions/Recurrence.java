@@ -23,29 +23,29 @@ import java.security.InvalidParameterException;
  * Types of recurrence
  */
 public enum Recurrence {
-    ONCE (0),
-    WEEKLY (1),
-    BIWEEKLY (2),
-    MONTHLY (3),
-    BIMONTHLY (4),
-    QUARTERLY (5),
-    SEMIANNUALLY (6),
-    ANNUALLY (7),
-    FOUR_MONTHS (8),
-    FOUR_WEEKS (9),
-    DAILY (10),
-    IN_X_DAYS (11),
-    IN_X_MONTHS (12),
-    EVERY_X_DAYS (13),
-    EVERY_X_MONTHS (14),
-    MONTHLY_LAST_DAY (15),
-    MONTHLY_LAST_BUSINESS_DAY (16);
+    ONCE(0),
+    WEEKLY(1),
+    BIWEEKLY(2),
+    MONTHLY(3),
+    BIMONTHLY(4),
+    QUARTERLY(5),
+    SEMIANNUALLY(6),
+    ANNUALLY(7),
+    FOUR_MONTHS(8),
+    FOUR_WEEKS(9),
+    DAILY(10),
+    IN_X_DAYS(11),
+    IN_X_MONTHS(12),
+    EVERY_X_DAYS(13),
+    EVERY_X_MONTHS(14),
+    MONTHLY_LAST_DAY(15),
+    MONTHLY_LAST_BUSINESS_DAY(16);
+
+    private final int mValue;
 
     Recurrence(int value) {
         mValue = value;
     }
-
-    private final int mValue;
 
     public static Recurrence valueOf(int value) {
         // set auto execute without user acknowledgement

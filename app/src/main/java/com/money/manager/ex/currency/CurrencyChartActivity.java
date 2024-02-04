@@ -29,7 +29,7 @@ import com.money.manager.ex.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 public class CurrencyChartActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String BASE_CURRENCY_SYMBOL = "CurrencyChartActivity::BaseCurrencySymbol";
 
@@ -42,7 +42,7 @@ public class CurrencyChartActivity
         String baseCurrencySymbol = null;
         // get the currency information from the intent.
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             currencySymbol = intent.getStringExtra(Currency.CURRENCY_SYMBOL);
             baseCurrencySymbol = intent.getStringExtra(BASE_CURRENCY_SYMBOL);
         }
@@ -76,7 +76,7 @@ public class CurrencyChartActivity
     private void loadCurrencyChart(String currencySymbol, String baseCurrencySymbol) {
         // do not try to load if no network.
         if (!NetworkUtils.isOnline(this)) return;
-        if(currencySymbol == null) return;
+        if (currencySymbol == null) return;
 
         // ref: http://stackoverflow.com/questions/4678296/yahoo-historical-currency-rates-api
         // Yahoo API reference:

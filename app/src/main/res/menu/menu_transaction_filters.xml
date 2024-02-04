@@ -17,13 +17,13 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuTransactionFilters"
-        app:showAsAction="ifRoom"
-        android:icon="?attr/ic_action_bank"
-        android:title="@string/filter_options_info">
+            android:id="@+id/menuTransactionFilters"
+            app:showAsAction="ifRoom"
+            android:icon="?attr/ic_action_bank"
+            android:title="@string/filter_options_info">
     </item>
 
 </menu>

@@ -31,8 +31,18 @@ import dagger.Lazy;
  * Expand with additional methods as needed.
  */
 public class AppSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
+    @Inject
+    Lazy<SharedPreferences> sharedPreferences;
+    private GeneralSettings mGeneral;
+
+    // setting groups
+    private LookAndFeelSettings mLookAndFeel;
+    private BehaviourSettings mBehaviour;
+    private InvestmentSettings mInvestment;
+    private BudgetSettings mBudget;
+    private DatabaseSettings mDatabase;
     @Inject
     public AppSettings(Context context) {
         super(context);
@@ -40,17 +50,6 @@ public class AppSettings
         // DI
         MmexApplication.getApp().iocComponent.inject(this);
     }
-
-    @Inject Lazy<SharedPreferences> sharedPreferences;
-
-    // setting groups
-
-    private GeneralSettings mGeneral;
-    private LookAndFeelSettings mLookAndFeel;
-    private BehaviourSettings mBehaviour;
-    private InvestmentSettings mInvestment;
-    private BudgetSettings mBudget;
-    private DatabaseSettings mDatabase;
 
     @Override
     protected SharedPreferences getPreferences() {

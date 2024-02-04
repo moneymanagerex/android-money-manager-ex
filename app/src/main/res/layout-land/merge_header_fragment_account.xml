@@ -17,65 +17,65 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal">
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <!-- Account Balance title -->
     <com.money.manager.ex.view.RobotoTextView
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="2dp"
-        android:gravity="right"
-        android:paddingLeft="6dp"
-        android:text="@string/account_balance"/>
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:gravity="right"
+            android:paddingLeft="6dp"
+            android:text="@string/account_balance"/>
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewAccountBalance"
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:textStyle="bold"/>
+            android:id="@+id/textViewAccountBalance"
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textStyle="bold"/>
 
     <!-- Reconciled Balance title -->
     <com.money.manager.ex.view.RobotoTextView
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="2dp"
-        android:text="@string/account_reconciled_balance"/>
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="2dp"
+            android:text="@string/account_reconciled_balance"/>
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewAccountReconciled"
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:textStyle="bold"/>
+            android:id="@+id/textViewAccountReconciled"
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textStyle="bold"/>
 
     <!-- Difference title -->
     <com.money.manager.ex.view.RobotoTextView
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_weight="1"
-        android:text="@string/difference"
-        android:textSize="@dimen/mmx_text_view_size_micro"
-        android:visibility="gone"/>
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:text="@string/difference"
+            android:textSize="@dimen/mmx_text_view_size_micro"
+            android:visibility="gone"/>
     <!--android:layout_column="0"-->
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewDifference"
-        style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_weight="1"
-        android:textSize="@dimen/mmx_text_view_size_micro"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+            android:id="@+id/textViewDifference"
+            style="@style/Money.TextView.Body2.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/mmx_text_view_size_micro"
+            android:textStyle="bold"
+            android:visibility="gone"/>
     <!--android:layout_column="1"-->
 
 </LinearLayout>

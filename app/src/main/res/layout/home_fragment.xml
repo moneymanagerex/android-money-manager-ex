@@ -25,120 +25,120 @@
               android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/linearLayoutHome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:id="@+id/linearLayoutHome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical"
-            android:visibility="visible">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:visibility="visible">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="@dimen/mmx_margin"
-                android:layout_weight="1"
-                android:animateLayoutChanges="true"
-                app:cardBackgroundColor="?attr/cardViewBackgroundColor"
-                android:orientation="vertical"
-                android:padding="@dimen/mmx_padding">
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/mmx_margin"
+                    android:layout_weight="1"
+                    android:animateLayoutChanges="true"
+                    app:cardBackgroundColor="?attr/cardViewBackgroundColor"
+                    android:orientation="vertical"
+                    android:padding="@dimen/mmx_padding">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                     <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/textViewItem"
-                        style="?attr/headerTextViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:text="@string/accounts"
-                        android:visibility="gone"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_horizontal"
-                        android:background="?attr/theme_background_color"/>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1">
-
-                        <ExpandableListView
-                            android:id="@+id/listViewAccountBills"
+                            android:id="@+id/textViewItem"
+                            style="?attr/headerTextViewStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:animateLayoutChanges="true"
-                            android:choiceMode="none"
-                            android:dividerHeight="1dp"
-                            android:groupIndicator="@null"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/accounts"
                             android:visibility="gone"/>
 
+                    <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="?attr/theme_background_color"/>
+
+                    <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1">
+
+                        <ExpandableListView
+                                android:id="@+id/listViewAccountBills"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:animateLayoutChanges="true"
+                                android:choiceMode="none"
+                                android:dividerHeight="1dp"
+                                android:groupIndicator="@null"
+                                android:visibility="gone"/>
+
                         <ProgressBar
-                            android:id="@+id/progressAccountBills"
-                            style="?android:attr/progressBarStyleLarge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="visible"/>
+                                android:id="@+id/progressAccountBills"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:visibility="visible"/>
                     </FrameLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                         <com.money.manager.ex.view.RobotoTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/summary"
-                            android:textStyle="bold"/>
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/summary"
+                                android:textStyle="bold"/>
 
                         <com.money.manager.ex.view.RobotoTextView
-                            android:id="@+id/textViewTotalAccounts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:textStyle="bold"/>
+                                android:id="@+id/textViewTotalAccounts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:textStyle="bold"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/mmx_margin"
-                app:cardBackgroundColor="?attr/cardViewBackgroundColor"
-                android:layout_marginLeft="@dimen/mmx_margin"
-                android:layout_marginRight="@dimen/mmx_margin"
-                android:padding="@dimen/mmx_padding"
-                android:onClick="onClickCardViewIncomesVsExpenses">
-
-            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="@dimen/mmx_margin"
+                    app:cardBackgroundColor="?attr/cardViewBackgroundColor"
+                    android:layout_marginLeft="@dimen/mmx_margin"
+                    android:layout_marginRight="@dimen/mmx_margin"
+                    android:padding="@dimen/mmx_padding"
+                    android:onClick="onClickCardViewIncomesVsExpenses">
 
-                    <com.money.manager.ex.view.RobotoTextView
-                        style="?attr/headerTextViewStyle"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginRight="2dp"
-                        android:text="@string/income_vs_expenses_current_month"
-                        android:maxLines="1" />
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical">
+
+                    <com.money.manager.ex.view.RobotoTextView
+                            style="?attr/headerTextViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:text="@string/income_vs_expenses_current_month"
+                            android:maxLines="1"/>
 
                     <include layout="@layout/merge_main_footer_income_expenses"/>
                 </LinearLayout>
@@ -146,34 +146,34 @@
         </LinearLayout>
 
         <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
-            android:src="@drawable/ic_action_add_dark"
-            app:fab_colorNormal="@color/md_accent"
-            app:fab_colorPressed="@color/md_primary_dark"/>
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
+                android:src="@drawable/ic_action_add_dark"
+                app:fab_colorNormal="@color/md_accent"
+                app:fab_colorPressed="@color/md_primary_dark"/>
 
         <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/fab"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|end"-->
-            <!--android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"-->
-            <!--android:layout_marginLeft="12dp"-->
-            <!--android:layout_marginRight="12dp"-->
-            <!--android:src="@drawable/ic_action_add_dark"-->
-            <!--app:elevation="4dp"-->
-            <!--app:borderWidth="0dp"-->
-            <!--/>-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"-->
+        <!--android:layout_marginLeft="12dp"-->
+        <!--android:layout_marginRight="12dp"-->
+        <!--android:src="@drawable/ic_action_add_dark"-->
+        <!--app:elevation="4dp"-->
+        <!--app:borderWidth="0dp"-->
+        <!--/>-->
     </FrameLayout>
 
     <include
-        android:id="@+id/linearLayoutWelcome"
-        layout="@layout/welcome_layout"
-        android:visibility="gone"/>
+            android:id="@+id/linearLayoutWelcome"
+            layout="@layout/welcome_layout"
+            android:visibility="gone"/>
 
 </LinearLayout>

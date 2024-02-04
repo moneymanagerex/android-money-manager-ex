@@ -25,18 +25,17 @@ import info.javaperformance.money.Money;
  */
 public class AmountEnteredEvent {
 
-    public AmountEnteredEvent(String requestId, Money amount) {
-        this.amount = amount;
-        this.requestId = requestId;
-    }
-
     /**
      * The entered amount.
      */
     public Money amount;
-
     /**
      * The id of the request, used to identify the caller in onEvent.
      */
     public String requestId;
+
+    public AmountEnteredEvent(String requestId, Money amount) {
+        this.amount = amount;
+        this.requestId = requestId;
+    }
 }

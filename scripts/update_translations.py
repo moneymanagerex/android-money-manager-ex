@@ -2,8 +2,8 @@
 Script for updating the translated string files in the source code from a compressed archive
 from Crowdin
 """
-import shutil
 import os
+import shutil
 from pathlib import Path
 
 home = str(Path.home())
@@ -11,6 +11,8 @@ home = str(Path.home())
 # Settings
 src_root = f"{home}/Downloads/android-money-manager-ex"
 dst_root = f"{home}/src/android-money-manager-ex/app/src/main/res"
+
+
 #
 
 def directory_exists(path: str):
@@ -20,10 +22,12 @@ def directory_exists(path: str):
     else:
         return None
 
+
 def source_directory_exists(name: str):
     """ Test if the directory exists """
     source_dir = f"{src_root}/{name}"
     return directory_exists(source_dir)
+
 
 def get_source_dir(locale: str, country: str):
     """ Discovers the source directory for language """
@@ -41,10 +45,12 @@ def get_source_dir(locale: str, country: str):
 
     return source_dir
 
+
 def destination_dir_exists(name: str):
     """ Checks if the destination directory exists """
     path = f"{dst_root}/{name}"
     return directory_exists(path)
+
 
 def get_destination_dir(locale: str, country: str):
     """ Determines the destination directory for the translations """
@@ -53,12 +59,13 @@ def get_destination_dir(locale: str, country: str):
     dst_dir = destination_dir_exists(name)
     if dst_dir:
         return dst_dir
-    
+
     # try the generic
     name = f"values-{locale}"
     dst_dir = destination_dir_exists(name)
     if dst_dir:
         return dst_dir
+
 
 def copy_translation(language):
     """ Copy one language/locale to the destination """
@@ -83,22 +90,23 @@ def copy_translation(language):
     print(f"Source: {source_dir}")
     # List all the source files
     files = os.listdir(source_dir)
-    #print(files)
+    # print(files)
 
     # Destination.
 
-    #destination_dir = get_destination_dir(locale, country)
+    # destination_dir = get_destination_dir(locale, country)
     destination_dir = get_destination_dir(dest_lang, country)
     print(f"destination: {destination_dir}")
 
     for filename in files:
         full_src_path = f"{source_dir}/{filename}"
         full_dst_path = f"{destination_dir}/{filename}"
-        
+
         print(f"copying: {filename}")
 
         shutil.copyfile(full_src_path, full_dst_path)
-        
+
+
 def update_translations():
     """ copy translated files into the correct locations """
     print("############################ Copying Translations ##############################")
@@ -108,30 +116,30 @@ def update_translations():
         ("zh", "CN"),
         ("zh", "TW"),
         ("cs", "CZ"),
-        ("da", "DK"), # Denmark
+        ("da", "DK"),  # Denmark
         ("nl", "NL"),
         ("fr", "FR"),
-        ("fil", "PH"), # Philipines
+        ("fil", "PH"),  # Philipines
         ("de", "DE"),
-        ("el", "GR"), # Greece
-        ("he", "IL", "iw"), # Hebrew, Israel
+        ("el", "GR"),  # Greece
+        ("he", "IL", "iw"),  # Hebrew, Israel
         ("hu", "HU"),
-        ("id", "ID", "in", "in"), # Indonesia
+        ("id", "ID", "in", "in"),  # Indonesia
         ("it", "IT"),
         ("ja", "JP"),
         ("pl", "PL"),
-        ("pt", "BR"), # Portugese, Brasil
-        ("pt", "PT"), # Portugese, Portugal
+        ("pt", "BR"),  # Portugese, Brasil
+        ("pt", "PT"),  # Portugese, Portugal
         ("ro", "RO"),
         ("ru", "RU"),
-        ("sk", "SK"), # Slovakia
-        ("sl", "SI"), # Slovenia
-        ("es", "ES"), # Spain
-        ("tr", "TR"), # Turkey
-        ("uk", "UA"), # Ukraine
-        ("ur", "IN"), # Urdu, India
-        ("ur", "PK"), # Urdu, Pakistan
-        ("vi", "VN") # Vietnam
+        ("sk", "SK"),  # Slovakia
+        ("sl", "SI"),  # Slovenia
+        ("es", "ES"),  # Spain
+        ("tr", "TR"),  # Turkey
+        ("uk", "UA"),  # Ukraine
+        ("ur", "IN"),  # Urdu, India
+        ("ur", "PK"),  # Urdu, Pakistan
+        ("vi", "VN")  # Vietnam
     ]
     for language in languages:
         copy_translation(language)
@@ -139,4 +147,3 @@ def update_translations():
 
 if __name__ == "__main__":
     update_translations()
-

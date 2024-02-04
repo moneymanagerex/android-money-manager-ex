@@ -21,6 +21,7 @@ import android.app.Dialog;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +46,7 @@ import org.parceler.Parcels;
  * create an instance of this fragment.
  */
 public class FilterDialogFragment
-    extends DialogFragment {
+        extends DialogFragment {
 
     private static final String ARG_TX_FILTER = "transactionFilter";
     private static final String ARG_ACCOUNT = "account";
@@ -111,17 +112,17 @@ public class FilterDialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 //        Dialog binaryDialog = super.onCreateDialog(savedInstanceState);
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-            .title(getActivity().getString(R.string.account))
-            .customView(R.layout.fragment_filter_dialog, true)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    // todo: notify parent, send the filter back?
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .build();
+                .title(getActivity().getString(R.string.account))
+                .customView(R.layout.fragment_filter_dialog, true)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // todo: notify parent, send the filter back?
+                    }
+                })
+                .negativeText(android.R.string.cancel)
+                .build();
 
         initializeControls(dialog.getCustomView());
         displayInfo(dialog.getCustomView());

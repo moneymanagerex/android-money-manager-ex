@@ -64,7 +64,7 @@ import info.javaperformance.money.MoneyFactory;
  * Edit investment transaction (stock purchase).
  */
 public class InvestmentTransactionEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
@@ -75,15 +75,16 @@ public class InvestmentTransactionEditActivity
     public static final int REQUEST_COMMISSION = 3;
     public static final int REQUEST_CURRENT_PRICE = 4;
 
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    private boolean mDirty = false;
+    private boolean mDirty;
     private Account mAccount;
     private Stock mStock;
     private InvestmentTransactionViewHolder mViewHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
 
@@ -93,21 +94,21 @@ public class InvestmentTransactionEditActivity
         setDisplayHomeAsUpEnabled(true);
 
         // load account & currency
-        Intent intent = getIntent();
-        if (intent != null) {
-            int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
-            if (accountId != Constants.NOT_SET) {
-                AccountRepository repository = new AccountRepository(this);
+        final Intent intent = getIntent();
+        if (null != intent) {
+            final int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
+            if (Constants.NOT_SET != accountId) {
+                final AccountRepository repository = new AccountRepository(this);
                 mAccount = repository.load(accountId);
             }
 
-            int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
-            if (stockId != Constants.NOT_SET) {
-                StockRepository repo = new StockRepository(this);
+            final int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
+            if (Constants.NOT_SET != stockId) {
+                final StockRepository repo = new StockRepository(this);
                 mStock = repo.load(stockId);
             } else {
                 mStock = Stock.create();
-                if (mAccount != null) {
+                if (null != mAccount) {
                     mStock.setHeldAt(mAccount.getId());
                 }
             }
@@ -117,12 +118,12 @@ public class InvestmentTransactionEditActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_CANCELED || data == null) return;
+        if (Activity.RESULT_CANCELED == resultCode || null == data) return;
 
-        Money amount = Calculator.getAmountFromResult(data);
+        final Money amount = Calculator.getAmountFromResult(data);
 
         switch (requestCode) {
             case REQUEST_NUM_SHARES:
@@ -158,7 +159,7 @@ public class InvestmentTransactionEditActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
 
         new MenuHelper(this, menu).addSaveToolbarIcon();
 
@@ -166,13 +167,13 @@ public class InvestmentTransactionEditActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
-        if (id == MenuHelper.save) {
+        if (MenuHelper.save == id) {
             return onActionDoneClick();
         }
 
@@ -204,13 +205,13 @@ public class InvestmentTransactionEditActivity
         }
     }
 
-    public void setDirty(boolean dirty) {
+    public void setDirty(final boolean dirty) {
         mDirty = dirty;
     }
 
     @OnClick(R.id.numSharesView)
     public void onNumSharesClick() {
-        Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
+        final Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
 
         Calculator.forActivity(this)
                 .amount(amount)
@@ -220,7 +221,7 @@ public class InvestmentTransactionEditActivity
 
     @OnClick(R.id.purchasePriceView)
     public void onPurchasePriceClick() {
-        if (mAccount == null) return;
+        if (null == mAccount) return;
 
         Calculator.forActivity(this)
                 .roundToCurrency(false)
@@ -250,28 +251,28 @@ public class InvestmentTransactionEditActivity
      */
 
     private void collectData() {
-        String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
+        final String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
         mStock.setName(stockName);
 
         // Symbols are always uppercase.
-        String symbol = mViewHolder.symbolEdit.getText().toString()
-            .trim().replace(" ", "").toUpperCase();
+        final String symbol = mViewHolder.symbolEdit.getText().toString()
+                .trim().replace(" ", "").toUpperCase();
         mStock.setSymbol(symbol);
 
         mStock.setNotes(mViewHolder.notesEdit.getText().toString());
     }
 
-    private void displayStock(Stock stock, InvestmentTransactionViewHolder viewHolder) {
-        if (mAccount == null) return;
+    private void displayStock(final Stock stock, final InvestmentTransactionViewHolder viewHolder) {
+        if (null == mAccount) return;
 
         // Date
-        String dateDisplay = new MmxDate(stock.getPurchaseDate()).toString(Constants.LONG_DATE_PATTERN);
+        final String dateDisplay = new MmxDate(stock.getPurchaseDate()).toString(Constants.LONG_DATE_PATTERN);
         viewHolder.dateView.setText(dateDisplay);
 
         // Account.
-        Cursor cursor = ((CursorAdapter) viewHolder.accountSpinner.getAdapter()).getCursor();
-        int accountIndex = SpinnerHelper.getPosition(mAccount.getName(), Account.ACCOUNTNAME, cursor);
-        if (accountIndex >= 0) {
+        final Cursor cursor = ((CursorAdapter) viewHolder.accountSpinner.getAdapter()).getCursor();
+        final int accountIndex = SpinnerHelper.getPosition(mAccount.getName(), Account.ACCOUNTNAME, cursor);
+        if (0 <= accountIndex) {
             viewHolder.accountSpinner.setSelection(accountIndex, true);
         }
 
@@ -287,7 +288,7 @@ public class InvestmentTransactionEditActivity
     }
 
     private void initializeForm() {
-        View rootView = this.findViewById(R.id.content);
+        final View rootView = findViewById(R.id.content);
         mViewHolder = new InvestmentTransactionViewHolder(rootView);
 
         initDateControl(mViewHolder);
@@ -296,7 +297,7 @@ public class InvestmentTransactionEditActivity
         displayStock(mStock, mViewHolder);
 
         // Icons
-        UIHelper ui = new UIHelper(this);
+        final UIHelper ui = new UIHelper(this);
         mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
         mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
         mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
@@ -306,11 +307,11 @@ public class InvestmentTransactionEditActivity
      * Initialize account selectors.
      */
     private void initAccountSelectors(final InvestmentTransactionViewHolder viewHolder) {
-        Context context = this;
+        final Context context = this;
 
         // Account list as the data source to populate the drop-downs.
 
-        AccountService accountService = new AccountService(context);
+        final AccountService accountService = new AccountService(context);
         accountService.loadInvestmentAccountsToSpinner(viewHolder.accountSpinner, false);
 
 //        AccountRepository accountRepository = new AccountRepository(context);
@@ -319,12 +320,12 @@ public class InvestmentTransactionEditActivity
 //            addMissingAccountToSelectors(accountRepository, accountId);
 //        }
 
-        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+        final AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SpinnerAdapter adapter = viewHolder.accountSpinner.getAdapter();
-                Cursor cursor = (Cursor) adapter.getItem(position);
-                Account account = Account.from(cursor);
+            public void onItemSelected(final AdapterView<?> parent, final View view, final int position, final long id) {
+                final SpinnerAdapter adapter = viewHolder.accountSpinner.getAdapter();
+                final Cursor cursor = (Cursor) adapter.getItem(position);
+                final Account account = Account.from(cursor);
 
                 if (!account.getId().equals(accountId)) {
                     setDirty(true);
@@ -333,7 +334,7 @@ public class InvestmentTransactionEditActivity
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(final AdapterView<?> parent) {
             }
         };
         viewHolder.accountSpinner.setOnItemSelectedListener(listener);
@@ -344,18 +345,18 @@ public class InvestmentTransactionEditActivity
 
         viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
+            public void onClick(final View v) {
+                final Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mStock.getPurchaseDate());
 
-                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
                     setDirty(true);
 
-                    MmxDate dateTime = new MmxDate(year, month, dayOfMonth);
+                    final MmxDate dateTime = new MmxDate(year, month, dayOfMonth);
                     viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 };
 
-                DatePickerDialog datePicker = new DatePickerDialog(
+                final DatePickerDialog datePicker = new DatePickerDialog(
                         InvestmentTransactionEditActivity.this,
                         listener,
                         calendar.get(Calendar.YEAR),
@@ -369,43 +370,43 @@ public class InvestmentTransactionEditActivity
         });
 
         // Icon
-        UIHelper ui = new UIHelper(this);
+        final UIHelper ui = new UIHelper(this);
         viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
 
         // prev/next day
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).minusDays(1);
+            public void onClick(final View view) {
+                final MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).minusDays(1);
                 setDate(dateTime.toDate());
             }
         });
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).plusDays(1);
+            public void onClick(final View view) {
+                final MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).plusDays(1);
                 setDate(dateTime.toDate());
             }
         });
     }
 
     private void showCommission() {
-        RobotoTextView view = this.findViewById(R.id.commissionView);
-        if (view == null) return;
+        final RobotoTextView view = findViewById(R.id.commissionView);
+        if (null == view) return;
 
         // todo: format the number of shares based on selected locale.
         view.setText(mStock.getCommission().toString());
     }
 
     private void showCurrentPrice() {
-        RobotoTextView view = this.findViewById(R.id.currentPriceView);
+        final RobotoTextView view = findViewById(R.id.currentPriceView);
         // todo: format the number of shares based on selected locale.
         view.setText(mStock.getCurrentPrice().toString());
     }
 
     private void showNumberOfShares() {
-        RobotoTextView view = this.findViewById(R.id.numSharesView);
-        if (view == null) return;
+        final RobotoTextView view = findViewById(R.id.numSharesView);
+        if (null == view) return;
 
         // todo: format the number of shares based on selected locale?
 
@@ -413,13 +414,13 @@ public class InvestmentTransactionEditActivity
     }
 
     private void showPurchasePrice() {
-        RobotoTextView view = this.findViewById(R.id.purchasePriceView);
+        final RobotoTextView view = findViewById(R.id.purchasePriceView);
         // todo: format the number of shares based on selected locale.
         view.setText(mStock.getPurchasePrice().toString());
     }
 
     private void showValue() {
-        RobotoTextView view = this.findViewById(R.id.valueView);
+        final RobotoTextView view = findViewById(R.id.valueView);
         //mViewHolder.
         view.setText(mStock.getValue().toString());
     }
@@ -430,8 +431,8 @@ public class InvestmentTransactionEditActivity
         if (!validate()) return false;
 
         // update
-        StockRepository repository = new StockRepository(getApplicationContext());
-        if (mStock.getId() != null) {
+        final StockRepository repository = new StockRepository(getApplicationContext());
+        if (null != mStock.getId()) {
             repository.save(mStock);
         } else {
             repository.insert(mStock);
@@ -440,16 +441,16 @@ public class InvestmentTransactionEditActivity
         return true;
     }
 
-    private void setDate(Date dateTime) {
-        setDirty(true);
+    private void setDate(final Date dateTime) {
+        mDirty = true;
 
         mStock.setPurchaseDate(dateTime);
 
         showDate(dateTime);
     }
 
-    private void showDate(Date date) {
-        String display = new MmxDate(date).toString(Constants.LONG_DATE_PATTERN);
+    private void showDate(final Date date) {
+        final String display = new MmxDate(date).toString(Constants.LONG_DATE_PATTERN);
         mViewHolder.dateView.setText(display);
     }
 

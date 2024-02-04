@@ -17,7 +17,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+           tools:ignore="MissingTranslation">
 
     <string name="view_user_size">user_size</string>
     <string name="application_copyright" translatable="false" formatted="true">© 2012–%1$d Android Money Manager Ex Project</string>

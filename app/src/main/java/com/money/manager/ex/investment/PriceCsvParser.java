@@ -39,7 +39,7 @@ public class PriceCsvParser {
 
     private final Context mContext;
 
-    public PriceCsvParser(Context context) {
+    public PriceCsvParser(final Context context) {
         mContext = context;
 
         //MoneyManagerApplication.getApp().iocComponent.inject(this);
@@ -51,6 +51,7 @@ public class PriceCsvParser {
 
     /**
      * Parses CSV content and fires an PriceDownloadedEvent.
+     *
      * @param content CSV content to parse into price information.
      */
     public PriceDownloadedEvent parse(String content) {
@@ -63,34 +64,34 @@ public class PriceCsvParser {
         }
 
         // parse CSV contents to get proper fields that can be saved to the database.
-        CSVParser csvParser = new CSVParser();
-        String[] values;
+        final CSVParser csvParser = new CSVParser();
+        final String[] values;
         try {
             values = csvParser.parseLineMulti(content);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Timber.e(e, "parsing downloaded CSV contents");
             return null;
         }
 
         // convert csv values to their original type.
 
-        String symbol = values[0];
+        final String symbol = values[0];
 
         // price
-        String priceString = values[1];
+        final String priceString = values[1];
         if (!NumericHelper.isNumeric(priceString)) return null;
         Money price = MoneyFactory.fromString(priceString);
         // LSE stocks are expressed in GBp (pence), not Pounds.
         // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-        String currency = values[3];
-        if (currency.equals("GBp")) {
+        final String currency = values[3];
+        if ("GBp".equals(currency)) {
             price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
         }
 
         // date
 //        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
 //        DateTime date = format.parseDateTime(values[2]);
-        Date date = new MmxDate(values[2], "MM/dd/yyyy").toDate();
+        final Date date = new MmxDate(values[2], "MM/dd/yyyy").toDate();
 
         // Note: For currencies, the symbol is i.e. AUDEUR=X
 

@@ -27,14 +27,13 @@ import java.util.HashMap;
  */
 public class DefinedDateRanges {
 
+    private final Context context;
+    HashMap<DefinedDateRangeName, DefinedDateRange> dateRanges;
     public DefinedDateRanges(Context context) {
         this.context = context;
         // todo: initialize the collection
         this.initialize();
     }
-
-    private final Context context;
-    HashMap<DefinedDateRangeName, DefinedDateRange> dateRanges;
 
     public DefinedDateRange get(DefinedDateRangeName name) {
         return this.dateRanges.get(name);
@@ -82,6 +81,7 @@ public class DefinedDateRanges {
 
     /**
      * Return the value.toString() for all the values.
+     *
      * @return String array of string values.
      */
     public String[] getValueNames() {
@@ -97,6 +97,7 @@ public class DefinedDateRanges {
 
     /**
      * Gets period names in app language.
+     *
      * @return String array of localized names of available periods.
      */
     public String[] getLocalizedNames() {

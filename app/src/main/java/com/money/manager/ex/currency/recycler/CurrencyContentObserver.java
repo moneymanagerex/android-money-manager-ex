@@ -26,7 +26,7 @@ import android.util.Log;
  * Content Observer for data changes in Currencies.
  */
 public class CurrencyContentObserver
-    extends ContentObserver {
+        extends ContentObserver {
     /**
      * Creates a content observer.
      *

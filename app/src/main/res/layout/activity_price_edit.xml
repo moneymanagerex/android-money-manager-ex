@@ -17,210 +17,210 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginStart="48dp"
-            app:expandedTitleMarginEnd="64dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="250dp"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <!-- collapsible part above the toolbar -->
 
             <com.mikepenz.iconics.view.IconicsImageView
-                android:layout_marginTop="8dp"
-                app:iiv_icon="gmd-trending-up"
-                app:iiv_color="?android:textColorSecondary"
-                app:iiv_size="120dp"
-                android:layout_width="wrap_content"
-                android:minWidth="50dp"
-                android:layout_height="wrap_content"
-                android:minHeight="50dp"
-                android:layout_marginLeft="@dimen/mmx_side_icon_margin"
-                android:layout_marginStart="@dimen/mmx_side_icon_margin"
-                android:layout_marginRight="@dimen/mmx_side_icon_margin"
-                android:layout_marginEnd="@dimen/mmx_side_icon_margin"
-                android:layout_gravity="center_vertical"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
+                    android:layout_marginTop="8dp"
+                    app:iiv_icon="gmd-trending-up"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="120dp"
+                    android:layout_width="wrap_content"
+                    android:minWidth="50dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp"
+                    android:layout_marginLeft="@dimen/mmx_side_icon_margin"
+                    android:layout_marginStart="@dimen/mmx_side_icon_margin"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"/>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="?attr/toolbarAppPopupTheme"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="?attr/toolbarAppPopupTheme"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/priceEditorScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:id="@+id/priceEditorScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/mmx_activity_side_padding"
+                android:paddingRight="@dimen/mmx_activity_side_padding">
 
             <!-- symbol -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mmx_list_two_line_item_height"
+                    android:orientation="horizontal">
                 <!-- icon -->
                 <com.mikepenz.iconics.view.IconicsImageView
-                    app:iiv_icon="gmd-work"
-                    app:iiv_color="?android:textColorSecondary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
-                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
-                    android:layout_gravity="center_vertical"/>
+                        app:iiv_icon="gmd-work"
+                        app:iiv_color="?android:textColorSecondary"
+                        app:iiv_size="@dimen/mmx_icon_size"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                        android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                        android:layout_gravity="center_vertical"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
                     <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/symbolTextView"
-                        style="@style/Money.TextView.Widget.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/amount" />
+                            android:id="@+id/symbolTextView"
+                            style="@style/Money.TextView.Widget.EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:hint="@string/amount"/>
 
                 </LinearLayout>
             </LinearLayout>
 
             <!-- price date -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mmx_list_two_line_item_height"
+                    android:orientation="horizontal">
                 <!-- icon -->
                 <com.mikepenz.iconics.view.IconicsImageView
-                    app:iiv_icon="gmd-today"
-                    app:iiv_color="?android:textColorSecondary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
-                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
-                    android:layout_gravity="center_vertical"/>
+                        app:iiv_icon="gmd-today"
+                        app:iiv_color="?android:textColorSecondary"
+                        app:iiv_size="@dimen/mmx_icon_size"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                        android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                        android:layout_gravity="center_vertical"/>
 
                 <!--<com.money.manager.ex.view.DateDisplay-->
-                    <!--android:id="@+id/dateControl"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="@dimen/mmx_list_two_line_item_height">-->
+                <!--android:id="@+id/dateControl"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="@dimen/mmx_list_two_line_item_height">-->
                 <!--</com.money.manager.ex.view.DateDisplay>-->
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:id="@+id/previousDayButton"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:iiv_icon="gmd-keyboard-arrow-left"
-                    app:iiv_color="?android:textColorPrimary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:background="?attr/selectableItemBackground" />
+                        android:id="@+id/previousDayButton"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:iiv_icon="gmd-keyboard-arrow-left"
+                        app:iiv_color="?android:textColorPrimary"
+                        app:iiv_size="@dimen/mmx_icon_size"
+                        android:background="?attr/selectableItemBackground"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                     <!-- date title -->
                     <com.money.manager.ex.view.RobotoTextView
-                        style="?attr/headerTextViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/price_date" />
+                            style="?attr/headerTextViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_date"/>
 
                     <!-- date editor -->
                     <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/dateTextView"
-                        style="@style/Money.TextView.Widget.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/price_date"
-                        android:textStyle="bold" />
+                            android:id="@+id/dateTextView"
+                            style="@style/Money.TextView.Widget.EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:hint="@string/price_date"
+                            android:textStyle="bold"/>
 
                 </LinearLayout>
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:id="@+id/nextDayButton"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:iiv_icon="gmd-keyboard-arrow-right"
-                    app:iiv_color="?android:textColorPrimary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:background="?attr/selectableItemBackground" />
+                        android:id="@+id/nextDayButton"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:iiv_icon="gmd-keyboard-arrow-right"
+                        app:iiv_color="?android:textColorPrimary"
+                        app:iiv_size="@dimen/mmx_icon_size"
+                        android:background="?attr/selectableItemBackground"/>
             </LinearLayout>
 
             <!-- amount -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mmx_list_two_line_item_height"
+                    android:orientation="horizontal">
                 <!-- icon -->
                 <com.mikepenz.iconics.view.IconicsImageView
-                    app:iiv_icon="gmd-edit"
-                    app:iiv_color="?android:textColorSecondary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
-                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
-                    android:layout_gravity="center_vertical"/>
+                        app:iiv_icon="gmd-edit"
+                        app:iiv_color="?android:textColorSecondary"
+                        app:iiv_size="@dimen/mmx_icon_size"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                        android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                        android:layout_gravity="center_vertical"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
                     <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/amountTextView"
-                        style="@style/Money.TextView.Widget.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="end"
-                        android:hint="@string/amount" />
+                            android:id="@+id/amountTextView"
+                            style="@style/Money.TextView.Widget.EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="end"
+                            android:hint="@string/amount"/>
 
                 </LinearLayout>
             </LinearLayout>

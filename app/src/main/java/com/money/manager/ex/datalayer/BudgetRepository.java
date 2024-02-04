@@ -29,7 +29,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Budget repository.
  */
 public class BudgetRepository
-    extends RepositoryBase<Budget> {
+        extends RepositoryBase<Budget> {
 
     public static final String TABLE_NAME = "budgetyear_v1";
 
@@ -39,7 +39,7 @@ public class BudgetRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
+        return new String[]{"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
     public boolean delete(int id) {

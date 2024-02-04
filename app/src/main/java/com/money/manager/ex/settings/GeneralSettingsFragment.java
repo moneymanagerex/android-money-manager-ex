@@ -33,7 +33,7 @@ import timber.log.Timber;
  * Fragment that contains the general preferences.
  */
 public class GeneralSettingsFragment
-    extends PreferenceFragmentCompat {
+        extends PreferenceFragmentCompat {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

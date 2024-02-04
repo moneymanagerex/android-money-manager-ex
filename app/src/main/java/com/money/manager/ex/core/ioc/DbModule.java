@@ -35,6 +35,7 @@ public final class DbModule {
 
     /**
      * Keeping the open helper reference in the application instance.
+     *
      * @param app Instance of application object (context).
      * @return Open Helper (Database) instance.
      */
@@ -46,15 +47,18 @@ public final class DbModule {
         return app.openHelperAtomicReference.get();
     }
 
-    @Provides SqlBrite provideSqlBrite() {
+    @Provides
+    SqlBrite provideSqlBrite() {
         return new SqlBrite.Builder().logger(new SqlBrite.Logger() {
-            @Override public void log(String message) {
+            @Override
+            public void log(String message) {
                 Timber.tag("Database").v(message);
             }
         }).build();
     }
 
-    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
+    @Provides
+    BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         db.setLoggingEnabled(true);
         return db;

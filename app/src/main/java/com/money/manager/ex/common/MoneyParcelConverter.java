@@ -28,7 +28,7 @@ import info.javaperformance.money.MoneyFactory;
  * Converts Money type to parcel for Parceler.
  */
 public class MoneyParcelConverter
-    implements ParcelConverter<Money> {
+        implements ParcelConverter<Money> {
 
     @Override
     public void toParcel(Money input, Parcel parcel) {

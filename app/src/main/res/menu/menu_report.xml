@@ -19,14 +19,14 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_chart"
-        android:title="@string/show_chart"
-        android:visible="false"
-        app:showAsAction="always"/>
+            android:id="@+id/menu_chart"
+            android:title="@string/show_chart"
+            android:visible="false"
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/menu_option1"
-        android:visible="false">
+            android:id="@+id/menu_option1"
+            android:visible="false">
         <menu>
         </menu>
     </item>

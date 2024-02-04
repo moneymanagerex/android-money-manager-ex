@@ -26,7 +26,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -40,8 +39,8 @@ import info.javaperformance.money.MoneyFactory;
  */
 @Parcel
 public class RecurringTransaction
-    extends EntityBase
-    implements ITransactionEntity {
+        extends EntityBase
+        implements ITransactionEntity {
 
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
@@ -54,17 +53,7 @@ public class RecurringTransaction
      */
     public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
 
-    public static RecurringTransaction createInstance() {
-        RecurringTransaction tx = new RecurringTransaction();
-
-        tx.setAmount(MoneyFactory.fromDouble(0));
-        tx.setAmountTo(MoneyFactory.fromDouble(0));
-
-        return tx;
-    }
-
     public RecurringTransaction() {
-        super();
 
         setPayeeId(Constants.NOT_SET);
         setCategoryId(Constants.NOT_SET);
@@ -72,32 +61,41 @@ public class RecurringTransaction
         setTransactionType(TransactionTypes.Withdrawal);
     }
 
+    public static RecurringTransaction createInstance() {
+        final RecurringTransaction tx = new RecurringTransaction();
+
+        tx.setAmount(MoneyFactory.fromDouble(0));
+        tx.setAmountTo(MoneyFactory.fromDouble(0));
+
+        return tx;
+    }
+
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TRANSAMOUNT);
-        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TOTRANSAMOUNT);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, ITransactionEntity.TRANSAMOUNT);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, ITransactionEntity.TOTRANSAMOUNT);
     }
 
     public Integer getId() {
         return getInt(BDID);
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         setInt(BDID, id);
     }
 
     public boolean hasId() {
-        return getId() != null && getId() != Constants.NOT_SET;
+        return null != getId() && Constants.NOT_SET != getId();
     }
 
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(Integer value) {
+    public void setAccountId(final Integer value) {
         setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
@@ -107,37 +105,37 @@ public class RecurringTransaction
     }
 
     @Override
-    public void setAccountToId(Integer value) {
+    public void setAccountToId(final Integer value) {
         setInt(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
-        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
+        return null != getAccountToId() && Constants.NOT_SET != getAccountToId();
     }
 
     public Money getAmount() {
         Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
-        if (amount == null) {
-            amount = 0D;
+        if (null == amount) {
+            amount = 0.0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
+        final Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
-    public void setAmount(Money value) {
+    public void setAmount(final Money value) {
         setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
     public Money getAmountTo() {
         Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
-        if (amount == null) {
-            amount = 0D;
+        if (null == amount) {
+            amount = 0.0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
+        final Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
-    public void setAmountTo(Money value) {
+    public void setAmountTo(final Money value) {
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
@@ -147,12 +145,12 @@ public class RecurringTransaction
     }
 
     @Override
-    public void setCategoryId(Integer value) {
+    public void setCategoryId(final Integer value) {
         setInt(ITransactionEntity.CATEGID, value);
     }
 
     public boolean hasCategory() {
-        return getCategoryId() != null && getCategoryId() != Constants.NOT_SET;
+        return null != getCategoryId() && Constants.NOT_SET != getCategoryId();
     }
 
     public String getDueDateString() {
@@ -160,7 +158,7 @@ public class RecurringTransaction
     }
 
     public Date getDueDate() {
-        String dateString = getDueDateString();
+        final String dateString = getDueDateString();
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
@@ -168,28 +166,30 @@ public class RecurringTransaction
         return new MmxDate(dateString).toDate();
     }
 
-    public void setDueDate(Date value) {
+    public void setDueDate(final Date value) {
         setDate(TRANSDATE, value);
     }
 
     /**
      * For recurring transaction, the date is Due Date.
+     *
      * @return Due date of the transaction.
      */
     public Date getDate() {
         return getDueDate();
     }
 
-    public String getDateString() {
-        return getDueDateString();
-    }
-
     /**
      * Due Date
+     *
      * @param value Date to set
      */
-    public void setDate(Date value) {
+    public void setDate(final Date value) {
         setDueDate(value);
+    }
+
+    public String getDateString() {
+        return getDueDateString();
     }
 
 //    public DateTime getPaymentDate() {
@@ -202,7 +202,7 @@ public class RecurringTransaction
 //    }
 
     public Date getPaymentDate() {
-        String dateString = getString(NEXTOCCURRENCEDATE);
+        final String dateString = getString(NEXTOCCURRENCEDATE);
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
@@ -210,23 +210,23 @@ public class RecurringTransaction
         return new MmxDate(dateString).toDate();
     }
 
-    public String getPaymentDateString() {
-        return getString(NEXTOCCURRENCEDATE);
-    }
-
-    public void setPaymentDate(String value) {
+    public void setPaymentDate(final String value) {
         setString(NEXTOCCURRENCEDATE, value);
     }
 
-    public void setPaymentDate(Date value){
+    public void setPaymentDate(final Date value) {
         setDate(NEXTOCCURRENCEDATE, value);
+    }
+
+    public String getPaymentDateString() {
+        return getString(NEXTOCCURRENCEDATE);
     }
 
     public String getNotes() {
         return getString(ITransactionEntity.NOTES);
     }
 
-    public void setNotes(String value) {
+    public void setNotes(final String value) {
         setString(ITransactionEntity.NOTES, value);
     }
 
@@ -234,7 +234,7 @@ public class RecurringTransaction
         return getInt(NUMOCCURRENCES);
     }
 
-    public void setPaymentsLeft(Integer value) {
+    public void setPaymentsLeft(final Integer value) {
         setInt(NUMOCCURRENCES, value);
     }
 
@@ -242,21 +242,22 @@ public class RecurringTransaction
         return getInt(ITransactionEntity.PAYEEID);
     }
 
-    public void setPayeeId(Integer value) {
+    public void setPayeeId(final Integer value) {
         setInt(ITransactionEntity.PAYEEID, value);
     }
 
     public boolean hasPayee() {
-        return getPayeeId() != null && getPayeeId() != Constants.NOT_SET;
+        return null != getPayeeId() && Constants.NOT_SET != getPayeeId();
     }
 
     /**
      * The recurrence type
+     *
      * @return the recurrence type
      */
     public Integer getRecurrenceInt() {
-        Integer result = getInt(REPEATS);
-        if (result == null) {
+        final Integer result = getInt(REPEATS);
+        if (null == result) {
             setRecurrence(Recurrence.ONCE);
             return Recurrence.ONCE.getValue();
         } else {
@@ -264,17 +265,17 @@ public class RecurringTransaction
         }
     }
 
-    public void setRecurrence(Integer value) {
-        setInt(REPEATS, value);
-    }
-
     public Recurrence getRecurrence() {
-        int recurrence = getRecurrenceInt();
+        final int recurrence = getRecurrenceInt();
         return Recurrence.valueOf(recurrence);
     }
 
-    public void setRecurrence(Recurrence value) {
-        int recurrence = value.getValue();
+    public void setRecurrence(final Integer value) {
+        setInt(REPEATS, value);
+    }
+
+    public void setRecurrence(final Recurrence value) {
+        final int recurrence = value.getValue();
         setRecurrence(recurrence);
     }
 
@@ -282,7 +283,7 @@ public class RecurringTransaction
         return getString(ITransactionEntity.STATUS);
     }
 
-    public void setStatus(String value) {
+    public void setStatus(final String value) {
         setString(ITransactionEntity.STATUS, value);
     }
 
@@ -298,16 +299,16 @@ public class RecurringTransaction
         return getString(ITransactionEntity.TRANSACTIONNUMBER);
     }
 
-    public void setTransactionNumber(String value) {
+    public void setTransactionNumber(final String value) {
         setString(ITransactionEntity.TRANSACTIONNUMBER, value);
     }
 
     public TransactionTypes getTransactionType() {
-        String code = getTransactionCode();
+        final String code = getTransactionCode();
         return TransactionTypes.valueOf(code);
     }
 
-    public void setTransactionType(TransactionTypes value) {
+    public void setTransactionType(final TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
     }
 

@@ -23,38 +23,38 @@
               android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageViewIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"/>
+                android:id="@+id/imageViewIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/textViewItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="16dp"
-            android:text="Test"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:typeface="roboto_black"
-            android:maxLines="1" />
+                android:id="@+id/textViewItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="16dp"
+                android:text="Test"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:typeface="roboto_black"
+                android:maxLines="1"/>
     </LinearLayout>
 
     <View
-        android:id="@+id/viewDivider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/listDivider"
-        android:visibility="gone"/>
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/listDivider"
+            android:visibility="gone"/>
 
 </LinearLayout>

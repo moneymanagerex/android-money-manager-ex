@@ -67,8 +67,8 @@ import info.javaperformance.money.MoneyFactory;
  * This fragment is not used (?).
  */
 public class DashboardFragment
-    extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // ID LOADER
     private static final int ID_LOADER_SCREEN1 = 0x000;
@@ -163,9 +163,9 @@ public class DashboardFragment
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query = new Select(report.getAllColumns())
-                    .where(IncomeVsExpenseReportEntity.Month + "=" + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                            " AND " +
-                            IncomeVsExpenseReportEntity.YEAR + "=" + Calendar.getInstance().get(Calendar.YEAR));
+                        .where(IncomeVsExpenseReportEntity.Month + "=" + (Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                                " AND " +
+                                IncomeVsExpenseReportEntity.YEAR + "=" + Calendar.getInstance().get(Calendar.YEAR));
 
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
@@ -180,8 +180,8 @@ public class DashboardFragment
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
                 query = new Select(billDeposits.getAllColumns())
-                    .where(QueryBillDeposits.DAYSLEFT + "<=10")
-                    .orderBy(QueryBillDeposits.DAYSLEFT);
+                        .where(QueryBillDeposits.DAYSLEFT + "<=10")
+                        .orderBy(QueryBillDeposits.DAYSLEFT);
 
                 return new MmxCursorLoader(getActivity(), billDeposits.getUri(), query);
         }

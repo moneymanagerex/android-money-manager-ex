@@ -17,89 +17,89 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_item"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:animateLayoutChanges="true" >
+              android:id="@+id/list_item"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/mmx_list_item_padding_side"
+              android:paddingRight="@dimen/mmx_list_item_padding_side"
+              android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mmx_list_item_height_dense"
-        android:layout_gravity="center_vertical">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mmx_list_item_height_dense"
+            android:layout_gravity="center_vertical">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/assetClassTextView"
-            android:text="@string/asset_allocation"
-            android:layout_width="0dp"
-            android:layout_weight="40"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/assetClassTextView"
+                android:text="@string/asset_allocation"
+                android:layout_width="0dp"
+                android:layout_weight="40"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/setAllocationTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="20"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/setAllocationTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/currentAllocationTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="20"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/currentAllocationTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/allocationDiffTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="20"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/allocationDiffTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/valuePanel"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mmx_list_item_height"
-        android:visibility="gone">
+            android:id="@+id/valuePanel"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mmx_list_item_height"
+            android:visibility="gone">
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/setValueTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="30"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/setValueTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/currentValueTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="30"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/currentValueTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/valueDiffTextView"
-            android:text="@string/asset_allocation"
-            android:gravity="end"
-            android:layout_width="0dp"
-            android:layout_weight="30"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+                android:id="@+id/valueDiffTextView"
+                android:text="@string/asset_allocation"
+                android:gravity="end"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -18,34 +18,34 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
-        android:icon="@null"
-        android:key="@string/pref_user_name"
-        android:summary="@string/username"
-        android:title="@string/user" />
+            android:icon="@null"
+            android:key="@string/pref_user_name"
+            android:summary="@string/username"
+            android:title="@string/user"/>
 
     <Preference
-        android:icon="@null"
-        android:key="@string/pref_base_currency"
-        android:title="@string/base_currency" />
+            android:icon="@null"
+            android:key="@string/pref_base_currency"
+            android:title="@string/base_currency"/>
 
     <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_default_account"
-        android:title="@string/default_account" />
+            android:icon="@null"
+            android:key="@string/pref_default_account"
+            android:title="@string/default_account"/>
 
     <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_date_format"
-        android:title="@string/date_format" />
+            android:icon="@null"
+            android:key="@string/pref_date_format"
+            android:title="@string/date_format"/>
 
     <EditTextPreference
-        android:icon="@null"
-        android:key="@string/pref_financial_year_startdate"
-        android:title="@string/financial_year_start_day" />
+            android:icon="@null"
+            android:key="@string/pref_financial_year_startdate"
+            android:title="@string/financial_year_start_day"/>
 
     <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_financial_year_startmonth"
-        android:title="@string/financial_year_start_month" />
+            android:icon="@null"
+            android:key="@string/pref_financial_year_startmonth"
+            android:title="@string/financial_year_start_month"/>
 
 </PreferenceScreen>

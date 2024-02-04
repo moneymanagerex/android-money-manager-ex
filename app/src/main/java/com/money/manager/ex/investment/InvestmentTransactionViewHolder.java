@@ -29,7 +29,16 @@ import com.shamanland.fonticon.FontIconView;
  * View Holder for Investment transaction editing.
  */
 public class InvestmentTransactionViewHolder {
-    public InvestmentTransactionViewHolder(View view) {
+    public Spinner accountSpinner;
+    public RobotoTextView dateView;
+    public RobotoTextView numSharesView;
+    public RobotoEditText stockNameEdit;
+    public RobotoEditText symbolEdit;
+    public RobotoEditText notesEdit;
+    public FontIconView previousDayButton;
+    public FontIconView nextDayButton;
+
+    public InvestmentTransactionViewHolder(final View view) {
         accountSpinner = view.findViewById(R.id.spinnerAccount);
         dateView = view.findViewById(R.id.textViewDate);
         numSharesView = view.findViewById(R.id.numSharesView);
@@ -39,13 +48,4 @@ public class InvestmentTransactionViewHolder {
         previousDayButton = view.findViewById(R.id.previousDayButton);
         nextDayButton = view.findViewById(R.id.nextDayButton);
     }
-
-    public Spinner accountSpinner;
-    public RobotoTextView dateView;
-    public RobotoTextView numSharesView;
-    public RobotoEditText stockNameEdit;
-    public RobotoEditText symbolEdit;
-    public RobotoEditText notesEdit;
-    public FontIconView previousDayButton;
-    public FontIconView nextDayButton;
 }

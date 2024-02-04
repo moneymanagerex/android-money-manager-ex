@@ -34,13 +34,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import androidx.cursoradapter.widget.CursorAdapter;
+
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter
  */
 public class IncomeVsExpensesAdapter
-    extends CursorAdapter {
+        extends CursorAdapter {
 
     private final LayoutInflater mInflater;
     private final Context mContext;
@@ -89,10 +90,10 @@ public class IncomeVsExpensesAdapter
         UIHelper uiHelper = new UIHelper(context);
         if (income - Math.abs(expenses) < 0) {
             txtDifference.setTextColor(context.getResources().getColor(
-                uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+                    uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
         } else {
             txtDifference.setTextColor(context.getResources().getColor(
-                uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+                    uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
         }
         //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
         // check if subtotal

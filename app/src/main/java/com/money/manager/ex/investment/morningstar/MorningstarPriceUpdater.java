@@ -24,10 +24,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.prices.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.prices.PriceUpdaterBase;
 import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -45,11 +45,9 @@ import info.javaperformance.money.MoneyFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -58,32 +56,34 @@ import timber.log.Timber;
  * Quote provider: Morningstar
  */
 public class MorningstarPriceUpdater
-    extends PriceUpdaterBase
-    implements ISecurityPriceUpdater {
+        extends PriceUpdaterBase
+        implements ISecurityPriceUpdater {
 
     @Inject
-    public MorningstarPriceUpdater(Context context) {
-        super(context);
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
-
+    Lazy<StockRepositorySql> stockRepository;
+    @Inject
+    Lazy<StockHistoryRepositorySql> stockHistoryRepository;
     /**
      * Tracks the number of records to update. Used to close progress binaryDialog when all done.
      */
     private int mCounter;
     private int mTotalRecords;
     private CompositeSubscription compositeSubscription;
-    @Inject Lazy<StockRepositorySql> stockRepository;
-    @Inject Lazy<StockHistoryRepositorySql> stockHistoryRepository;
     private SymbolConverter symbolConverter;
     private IMorningstarService service;
 
+    @Inject
+    public MorningstarPriceUpdater(final Context context) {
+        super(context);
+
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
+
     @Override
-    public void downloadPrices(List<String> symbols) {
-        if (symbols == null || symbols.isEmpty()) return;
+    public void downloadPrices(final List<String> symbols) {
+        if (null == symbols || symbols.isEmpty()) return;
         mTotalRecords = symbols.size();
-        if (mTotalRecords == 0) return;
+        if (0 == mTotalRecords) return;
 
         showProgressDialog(mTotalRecords);
 
@@ -177,44 +177,44 @@ public class MorningstarPriceUpdater
 //        );
 //    }
 
-    private void processInParallel(List<String> symbols) {
-        for(int i = 0; i < symbols.size(); i++) {
+    private void processInParallel(final List<String> symbols) {
+        for (int i = 0; i < symbols.size(); i++) {
             final String symbol = symbols.get(i);
             final String morningstarSymbol = symbolConverter.convert(symbol);
 
             compositeSubscription.add(
                     service.getPrice(morningstarSymbol)
-                        .subscribeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.io())
                             .doOnNext(new Action1<String>() {
                                 @Override
-                                public void call(String s) {
-                                    PriceDownloadedEvent event = parse(morningstarSymbol, s);
+                                public void call(final String s) {
+                                    final PriceDownloadedEvent event = parse(morningstarSymbol, s);
                                     savePrice(event);
                                 }
                             })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<String>() {
-                            @Override
-                            public void onCompleted() {
-                                finishIfAllDone();
-                            }
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<String>() {
+                                @Override
+                                public void onCompleted() {
+                                    finishIfAllDone();
+                                }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                mCounter++;
-                                setProgress(mCounter);
+                                @Override
+                                public void onError(final Throwable e) {
+                                    mCounter++;
+                                    setProgress(mCounter);
 
-                                Timber.e(e, "error downloading price %s", symbol);
+                                    Timber.e(e, "error downloading price %s", symbol);
 
-                                finishIfAllDone();
-                            }
+                                    finishIfAllDone();
+                                }
 
-                            @Override
-                            public void onNext(String s) {
-                                mCounter++;
-                                setProgress(mCounter);
-                            }
-                        })
+                                @Override
+                                public void onNext(final String s) {
+                                    mCounter++;
+                                    setProgress(mCounter);
+                                }
+                            })
             );
         }
         // unsubscribe if the user navigates away while downloading prices?
@@ -222,38 +222,39 @@ public class MorningstarPriceUpdater
 
     /**
      * Parse Morningstar response into price information.
+     *
      * @param symbol Morningstar symbol
-     * @param html Result
+     * @param html   Result
      * @return An object containing price details
      */
-    private PriceDownloadedEvent parse(String symbol, String html) {
-        Document doc = Jsoup.parse(html);
+    private PriceDownloadedEvent parse(final String symbol, final String html) {
+        final Document doc = Jsoup.parse(html);
 
         // symbol
-        String yahooSymbol = symbolConverter.getYahooSymbol(symbol);
+        final String yahooSymbol = symbolConverter.getYahooSymbol(symbol);
 
         // price
-        String priceString = doc.body().getElementById("last-price-value").text();
+        final String priceString = doc.body().getElementById("last-price-value").text();
         if (TextUtils.isEmpty(priceString)) {
             throw new RuntimeException("No price available for " + symbol);
         }
         Money price = MoneyFactory.fromString(priceString);
         // currency
-        String currency = doc.body().getElementById("curency").text();
-        if (currency.equals("GBX")) {
+        final String currency = doc.body().getElementById("curency").text();
+        if ("GBX".equals(currency)) {
             price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
         }
 
         // date
-        String dateString = doc.body().getElementById("asOfDate").text();
-        String dateFormat = "MM/dd/yyyy HH:mm:ss";
+        final String dateString = doc.body().getElementById("asOfDate").text();
+        final String dateFormat = "MM/dd/yyyy HH:mm:ss";
 //        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormat);
         // the time zone is EST
 //        DateTime date = formatter.withZone(DateTimeZone.forID("America/New_York"))
 //                .parseDateTime(dateString)
 //                .withZone(DateTimeZone.forID("Europe/Vienna"));
         // convert time zone
-        MmxDate dateTime = new MmxDate(dateString, dateFormat)
+        final MmxDate dateTime = new MmxDate(dateString, dateFormat)
                 .setTimeZone("America/New_York")
                 .inTimeZone("Europe/Vienna");
 
@@ -276,8 +277,8 @@ public class MorningstarPriceUpdater
         EventBus.getDefault().post(new AllPricesDownloadedEvent());
     }
 
-    private void savePrice(PriceDownloadedEvent event) {
-        BriteDatabase.Transaction tx = stockRepository.get().database.newTransaction();
+    private void savePrice(final PriceDownloadedEvent event) {
+        final BriteDatabase.Transaction tx = stockRepository.get().database.newTransaction();
 
         // update the current price of the stock.
         stockRepository.get().updateCurrentPrice(event.symbol, event.price);
@@ -291,9 +292,9 @@ public class MorningstarPriceUpdater
     }
 
     private IMorningstarService getMorningstarService() {
-        String BASE_URL = "http://quotes.morningstar.com";
+        final String BASE_URL = "http://quotes.morningstar.com";
 
-        Retrofit retrofit = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)

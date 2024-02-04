@@ -16,57 +16,130 @@
   -->
 <!DOCTYPE html>
 <html>
-<head>
-<title>MoneyManagerEx za Android: Sinhronizacija baze podataka s MoneyManagerEx za Windows/Linux/Mac koristeći Dropbox servis</title>
-<style type="text/css">
-body {
-	background:#f5f5f5;
-	font-size:small;
-	margin: 10px;
-}
+    <head>
+        <title>MoneyManagerEx za Android: Sinhronizacija baze podataka s MoneyManagerEx za Windows/Linux/Mac koristeći Dropbox servis</title>
+        <style type="text/css">
+            body {
+                background: #f5f5f5;
+                font-size: small;
+                margin: 10px;
+            }
 
-.lists {
-	margin: 0;
-	padding: 0px 0px 0px 13px;
-	list-style-type: disk;
-}
+            .lists {
+                margin: 0;
+                padding: 0px 0px 0px 13px;
+                list-style-type: disk;
+            }
 
 
-.warning {color:#FF0000;}
+            .warning {
+                color: #FF0000;
+            }
 
-h2 { font-size:120%; }
-h3 { font-size:105%; }
-</style>
-</head>
-	<body>
-    <h2><b>MoneyManagerEx za Android</b></h2>
-    <h3>Sinhronizacija baze podataka sa MoneyManagerEx za Windows/Linux/Mac koristeći Dropbox servis.</h3>
-    <p><b>Uslov:</b> imati dropbox nalog. Ako ga još uvijek nemate, otiđite na www.dropbox.com i otvorite novi nalog.</p>
-    <ul>
-        <li>Povežite MoneyManagerEx za Android s Dropbox-om. Odaberite "Link na Dropbox". Ako vaš uređaj ima instaliranu aplikaciju Dropbox, ona će se automatski otvoriti i tražiti da ovlastite MoneyManagerEx za Android za pristup Dropbox-u. Ako niste instalirali aplikaciju Dropbox na vašem uređaju, Android će otvoriti preglednik na stranicu za prijavu na Dropbox. Nakon prijave, upitaće vas da ovlastite MoneyManagerEx za Android za pristup vašem Dropbox-u.</li>
-        <li>Ako ovlastite MoneyManagerEx za Android, Dropbox će inicijalno automatski kreirati mapu <i><i>/Apps/MoneyManagerExMobile</i></i> unutar vašeg Dropbox prostora. Ovu mapu nikada ne kreirajte sami!</li>
-    </ul>
+            h2 {
+                font-size: 120%;
+            }
 
-    <ul>
-        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>Ja već koristim bazu podataka za desktop verziju</b></h3></a>
-        <li>Ako već imate bazu podataka (mmb) MoneyManagerEx Desktop verzije, morate kopirati ili premjestiti datoteku(e) unutar mape <i>/Apps/MoneyManagerEx Mobile</i> (preporučeno je korištenje računara za ovu operaciju).</li>
-        <li>U Dropbox podešavanjima MoneyManagerEx za Android, kliknite "Dropbox povezana datoteka". Program će se otvoriti novi prozor sa svim datotekama u mapi <i>/Apps/MoneyManagerEx Mobile</i>. Odaberite datoteku koju želite povezati i vratite se natrag.</li>
-        <li>Nakon što se vratite u Dropbox postavke MoneyManagerEx za Android, nakon 10-ak sekundi će početi preuzimanje odabrane datoteke i možete vidjeti obavijest koja će se prikazati na uređaju. Kada se preuzimanje završi, uređaj vas obavještava da je datoteka spremna za upotrebu i morate kliknuti na "Otvori bazu podataka" da završite povezivanje između MoneyManagerEx za Android i Dropbox-a.</li>
+            h3 {
+                font-size: 105%;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            <b>MoneyManagerEx za Android</b>
+        </h2>
+        <h3>Sinhronizacija baze podataka sa MoneyManagerEx za Windows/Linux/Mac koristeći Dropbox servis.</h3>
+        <p>
+            <b>Uslov:</b>
+            imati dropbox nalog. Ako ga još uvijek nemate, otiđite na www.dropbox.com i otvorite novi nalog.
+        </p>
+        <ul>
+            <li>Povežite MoneyManagerEx za Android s Dropbox-om. Odaberite "Link na Dropbox". Ako vaš uređaj ima instaliranu aplikaciju Dropbox, ona će se automatski otvoriti i
+                tražiti da ovlastite MoneyManagerEx za Android za pristup Dropbox-u. Ako niste instalirali aplikaciju Dropbox na vašem uređaju, Android će otvoriti preglednik na
+                stranicu za prijavu na Dropbox. Nakon prijave, upitaće vas da ovlastite MoneyManagerEx za Android za pristup vašem Dropbox-u.
+            </li>
+            <li>Ako ovlastite MoneyManagerEx za Android, Dropbox će inicijalno automatski kreirati mapu
+                <i>
+                    <i>/Apps/MoneyManagerExMobile</i>
+                </i>
+                unutar vašeg Dropbox prostora. Ovu mapu nikada ne kreirajte sami!
+            </li>
+        </ul>
 
-        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>Nikada nisam koristio desktop verziju i želim da sinhronizujem bazu podataka na uređaju</b></h3></a>
-        <li>Ako već nemate datoteku mmb MoneyManagerEx Desktop verzije, morate kliknuti na "Učitaj u Dropbox bazu podataka." Nakon približno 10 sekundi uploadati na Dropbox u trenutnoj bazi podataka će početi. Na kraju procesa bit ćete obaviješteni o završetku transfera, i u <i>/Apps/MoneyManagerEx Mobile</i> ćete pronaći datoteku pod nazivom data.mmb.</li>
+        <ul>
+            <a name="mmb_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Ja već koristim bazu podataka za desktop verziju</b>
+                </h3>
+            </a>
+            <li>Ako već imate bazu podataka (mmb) MoneyManagerEx Desktop verzije, morate kopirati ili premjestiti datoteku(e) unutar mape
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                (preporučeno je korištenje računara za ovu operaciju).
+            </li>
+            <li>U Dropbox podešavanjima MoneyManagerEx za Android, kliknite "Dropbox povezana datoteka". Program će se otvoriti novi prozor sa svim datotekama u mapi<i>
+                /Apps/MoneyManagerEx Mobile</i>. Odaberite datoteku koju želite povezati i vratite se natrag.
+            </li>
+            <li>Nakon što se vratite u Dropbox postavke MoneyManagerEx za Android, nakon 10-ak sekundi će početi preuzimanje odabrane datoteke i možete vidjeti obavijest koja će se
+                prikazati na uređaju. Kada se preuzimanje završi, uređaj vas obavještava da je datoteka spremna za upotrebu i morate kliknuti na "Otvori bazu podataka" da završite
+                povezivanje između MoneyManagerEx za Android i Dropbox-a.
+            </li>
 
-        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>Ostale postavke</b></h3></a>
-        <li>Kada ste povezali nalog i datoteku, MoneyManagerEx za Mobile automatski sinhronizuje sa Dropbox-om svakih x minuta, postavljenih u postavci "Interval sinhronizacije". Ako ne želite sinhronizovati automatski podesite "Interval sinkronizacije" na nulu.</li>
-        <li>Važno je postaviti "Uploaduj bazu podataka odmah nakon promjene". Ova postavka omogućava da MoneyManagerEx za Android pošalje bazu podataka na Dropbox odmah što napravite izmjene.</li>
-        <li>Koristite "Preuzmi bazu podataka sa Dropbox-a" ili "Pošalji bazu podataka na Dropbox" da biste prisiliti operaciju preuzimanja ili slanja baze podataka, u slučaju bilo kakvih problema.</li>
-        <li>Kada ste povezali vaš Dropbox nalog i datoteku u glavnom prozoru aktiviraće se funkcija sinkronizacije na gornjoj alatnoj traci.</li>
-        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>Često postavljana pitanja</b></h3></a>
-        <li><b>P. </b>Ne mogu povezati Dropbox, ili MoneyManagerEx ne sinhronizuje?<br><b>O. </b>Prva stvar koju trebate učiniti je poslati nam e-mail na <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> s opisom problema. U međuvremenu, ako želite koristiti MoneyManagerEx za Android možete koristiti druge aplikacije koje sinhronizuju sa Dropbox-om, kao <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> ili potražite slične aplikacije na <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>.
-        <li><b>P. </b>Želim sinhronizovati MoneyManagerEx za Android s drugim oblak uslugama  (Drive, Box.net, Wuala, itd. ..). Kako to mogu učiniti?<br><b>O. </b>U MoneyManagerEx za Android jedini servis za spremanje podataka je Dropbox. Ako želite koristiti bazu podataka sa drugih servisa za pohranu, pronađite na Google Play aplikaciju koja omogućava da sinhronizujete datoteke s tim servisom. Baza podataka će biti spremljena na vanjskoj memoriji uređaja, i onda otvorena s MoneyManagerEx za Android
-        <li><b>P. </b>Nakon sinhronizacije više ne vidim svoje podatke. Jesam li izgubio sve podatke u bazi podataka?<br><b>O. </b> Ne brinite, niste izgubili ništa! U rijetkim slučajevima je moguće da, kada sinkronizirate bazu podataka, datoteka ne bude ispravno downloadovana i nije ju moguće pročitati s MoneyManagerEx za Android. U tim slučajevima, morat ćete prisiliti preuzimanja baze podataka sa dropbox-a. Ako se baza podataka još uvijek ne otvara, preporučujemo brisanje datoteka u /com.money.manager.ex/dropbox/ i ponovni download datoteke sa Dropbox-a.
-        <li><b>P. </b>Mogu li vratiti prethodnu verziju baze podataka?<br><b>A. </b>Naravno. Dropbox čuva sve verzije vaših datoteka. <a href="https://www.dropbox.com/help/11/">Ovdje možete pronaći vodič za vraćanje datoteka</a>
-        </li>
-    </ul>
+            <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Nikada nisam koristio desktop verziju i želim da sinhronizujem bazu podataka na uređaju</b>
+                </h3>
+            </a>
+            <li>Ako već nemate datoteku mmb MoneyManagerEx Desktop verzije, morate kliknuti na "Učitaj u Dropbox bazu podataka." Nakon približno 10 sekundi uploadati na Dropbox u
+                trenutnoj bazi podataka će početi. Na kraju procesa bit ćete obaviješteni o završetku transfera, i u
+                <i>/Apps/MoneyManagerEx Mobile</i>
+                ćete pronaći datoteku pod nazivom data.mmb.
+            </li>
+
+            <a name="other_settings" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Ostale postavke</b>
+                </h3>
+            </a>
+            <li>Kada ste povezali nalog i datoteku, MoneyManagerEx za Mobile automatski sinhronizuje sa Dropbox-om svakih x minuta, postavljenih u postavci "Interval
+                sinhronizacije". Ako ne želite sinhronizovati automatski podesite "Interval sinkronizacije" na nulu.
+            </li>
+            <li>Važno je postaviti "Uploaduj bazu podataka odmah nakon promjene". Ova postavka omogućava da MoneyManagerEx za Android pošalje bazu podataka na Dropbox odmah što
+                napravite izmjene.
+            </li>
+            <li>Koristite "Preuzmi bazu podataka sa Dropbox-a" ili "Pošalji bazu podataka na Dropbox" da biste prisiliti operaciju preuzimanja ili slanja baze podataka, u slučaju
+                bilo kakvih problema.
+            </li>
+            <li>Kada ste povezali vaš Dropbox nalog i datoteku u glavnom prozoru aktiviraće se funkcija sinkronizacije na gornjoj alatnoj traci.</li>
+            <a name="faq" style="margin:0px 0px 0px 15px;">
+                <h3>
+                    <b>Često postavljana pitanja</b>
+                </h3>
+            </a>
+            <li><b>P.</b>Ne mogu povezati Dropbox, ili MoneyManagerEx ne sinhronizuje?
+                <br>
+                <b>O.</b>Prva stvar koju trebate učiniti je poslati nam e-mail na
+                <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a>
+                s opisom problema. U međuvremenu, ako želite koristiti MoneyManagerEx za Android možete koristiti druge aplikacije koje sinhronizuju sa Dropbox-om, kao<a
+                        href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>,
+                <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a>
+                ili potražite slične aplikacije na<a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>.
+            <li><b>P.</b>Želim sinhronizovati MoneyManagerEx za Android s drugim oblak uslugama (Drive, Box.net, Wuala, itd. ..). Kako to mogu učiniti?
+                <br>
+                <b>O.</b>U MoneyManagerEx za Android jedini servis za spremanje podataka je Dropbox. Ako želite koristiti bazu podataka sa drugih servisa za pohranu, pronađite na
+                Google Play aplikaciju koja omogućava da sinhronizujete datoteke s tim servisom. Baza podataka će biti spremljena na vanjskoj memoriji uređaja, i onda otvorena s
+                MoneyManagerEx za Android
+            <li><b>P.</b>Nakon sinhronizacije više ne vidim svoje podatke. Jesam li izgubio sve podatke u bazi podataka?
+                <br>
+                <b>O.</b>
+                Ne brinite, niste izgubili ništa! U rijetkim slučajevima je moguće da, kada sinkronizirate bazu podataka, datoteka ne bude ispravno downloadovana i nije ju moguće
+                pročitati s MoneyManagerEx za Android. U tim slučajevima, morat ćete prisiliti preuzimanja baze podataka sa dropbox-a. Ako se baza podataka još uvijek ne otvara,
+                preporučujemo brisanje datoteka u /com.money.manager.ex/dropbox/ i ponovni download datoteke sa Dropbox-a.
+            <li><b>P.</b>Mogu li vratiti prethodnu verziju baze podataka?
+                <br>
+                <b>A.</b>Naravno. Dropbox čuva sve verzije vaših datoteka.
+                <a href="https://www.dropbox.com/help/11/">Ovdje možete pronaći vodič za vraćanje datoteka</a>
+            </li>
+        </ul>
     </body>
 </html>

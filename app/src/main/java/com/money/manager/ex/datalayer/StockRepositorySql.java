@@ -32,7 +32,7 @@ import info.javaperformance.money.Money;
  */
 
 public class StockRepositorySql
-    extends SqlRepositoryBase<Stock> {
+        extends SqlRepositoryBase<Stock> {
 
     public static final String TABLE_NAME = "stock_v1";
 
@@ -55,14 +55,15 @@ public class StockRepositorySql
         return first(Stock.class,
                 null,
                 StockFields.STOCKID + "=?",
-                new String[] { Integer.toString(id) },
+                new String[]{Integer.toString(id)},
                 null);
     }
 
     /**
      * Update price for all the records with this symbol.
+     *
      * @param symbol Stock symbol
-     * @param price Stock price
+     * @param price  Stock price
      */
     public void updateCurrentPrice(String symbol, Money price) {
         int[] ids = findIdsBySymbol(symbol);
@@ -91,15 +92,16 @@ public class StockRepositorySql
 
     /**
      * Retrieves all record ids which refer the given symbol.
+     *
      * @return array of ids of records which contain the symbol.
      */
     private int[] findIdsBySymbol(String symbol) {
         int[] result;
 
         String sql = new Select(StockFields.STOCKID)
-            .from(tableName)
-            .where(StockFields.SYMBOL + "=?")
-            .toString();
+                .from(tableName)
+                .where(StockFields.SYMBOL + "=?")
+                .toString();
 
         Cursor cursor = database.query(sql, symbol);
         if (cursor == null) return null;

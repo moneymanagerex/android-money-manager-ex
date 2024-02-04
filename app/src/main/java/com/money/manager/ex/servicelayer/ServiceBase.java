@@ -24,12 +24,12 @@ import android.content.Context;
  */
 public abstract class ServiceBase {
 
-    public ServiceBase(Context context) {
+    private final Context mContext;
+
+    protected ServiceBase(final Context context) {
 //        mContext = context.getApplicationContext();
         mContext = context;
     }
-
-    private final Context mContext;
 
     public Context getContext() {
         return mContext;

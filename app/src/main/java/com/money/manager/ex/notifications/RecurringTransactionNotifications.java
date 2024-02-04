@@ -23,9 +23,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import androidx.core.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
+
+import androidx.core.app.NotificationCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
@@ -41,57 +42,55 @@ public class RecurringTransactionNotifications {
     // Notification channel definition will be move into NotificationUtils to centralize loghic
     // public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
+    private final Context mContext;
 
-    public RecurringTransactionNotifications(Context context) {
-        super();
+    public RecurringTransactionNotifications(final Context context) {
         mContext = context.getApplicationContext();
     }
-
-    private final Context mContext;
 
     public void notifyRepeatingTransaction() {
         try {
             notifyRepeatingTransaction_Internal();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Timber.e(ex, "showing notification about recurring transactions");
         }
     }
 
     private void notifyRepeatingTransaction_Internal() {
-        QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
+        final QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
 
         /*
           In this query, the 0 days diff parameter HAS to be set in the query. Adding it in
           the parameters will not work (for whatever reason).
         */
 
-        Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
+        final Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
                 null,
                 QueryBillDeposits.DAYSLEFT + "<=0",
                 null,
                 QueryBillDeposits.NEXTOCCURRENCEDATE);
-        if (cursor == null) return;
+        if (null == cursor) return;
 
-        if (cursor.getCount() > 0) {
-            SyncNotificationModel model = getNotificationContent(cursor);
+        if (0 < cursor.getCount()) {
+            final SyncNotificationModel model = getNotificationContent(cursor);
             showNotification(model);
         }
         cursor.close();
     }
 
-    private void showNotification(SyncNotificationModel model) {
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    private void showNotification(final SyncNotificationModel model) {
+        final NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.addLine(model.inboxLine);
 
-        NotificationManager notificationManager = (NotificationManager) getContext()
+        final NotificationManager notificationManager = (NotificationManager) mContext
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
         // create pending intent
-        Intent intent = new Intent(getContext(), RecurringTransactionListActivity.class);
+        final Intent intent = new Intent(mContext, RecurringTransactionListActivity.class);
         // set launch from notification // check pin code
         intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // todo: Actions
 //        Intent skipIntent = new Intent(intent);
@@ -102,9 +101,9 @@ public class RecurringTransactionNotifications {
 
         // create notification
         try {
-            NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_RECURRING);
+            NotificationUtils.createNotificationChannel(mContext, NotificationUtils.CHANNEL_ID_RECURRING);
 
-            Notification notification = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_RECURRING)
+            final Notification notification = new NotificationCompat.Builder(mContext, NotificationUtils.CHANNEL_ID_RECURRING)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(mContext.getString(R.string.application_name))
@@ -123,18 +122,18 @@ public class RecurringTransactionNotifications {
             // notify
             notificationManager.cancel(ID_NOTIFICATION);
             notificationManager.notify(ID_NOTIFICATION, notification);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e(e, "showing notification for recurring transaction");
         }
     }
 
     @SuppressLint("Range")
-    private SyncNotificationModel getNotificationContent(Cursor cursor) {
-        SyncNotificationModel result = new SyncNotificationModel();
+    private SyncNotificationModel getNotificationContent(final Cursor cursor) {
+        final SyncNotificationModel result = new SyncNotificationModel();
 
         result.number = cursor.getCount();
 
-        CurrencyService currencyService = new CurrencyService(mContext);
+        final CurrencyService currencyService = new CurrencyService(mContext);
 
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
@@ -142,7 +141,7 @@ public class RecurringTransactionNotifications {
             if (TextUtils.isEmpty(payeeName))
                 payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
             // compose text
-            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+            final String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
                     " " + payeeName +
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";

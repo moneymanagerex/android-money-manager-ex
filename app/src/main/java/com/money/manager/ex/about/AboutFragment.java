@@ -90,7 +90,7 @@ public class AboutFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ Constants.EMAIL });
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "MoneyManagerEx for Android: Feedback");
                 try {
                     startActivity(Intent.createChooser(intent, "Send mail..."));
@@ -200,6 +200,69 @@ public class AboutFragment extends Fragment {
         return view;
     }
 
+    private void sendLogcat() {
+        String logcat = "";
+        logcat = getLogcat();
+
+        //send file using email
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
+        // the attachment
+//        emailIntent .putExtra(Intent.EXTRA_STREAM, outputFile.getAbsolutePath());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, logcat);
+        // the mail subject
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        } catch (Exception e) {
+            Timber.e(e, "opening email with logcat");
+        }
+    }
+
+    /**
+     * @return References
+     * http://developer.android.com/tools/debugging/debugging-log.html
+     */
+    private String getLogcat() {
+//        File outputFile = new File(Environment.getDefaultDatabaseDirectory(), "logcat.txt");
+        Process p = null;
+        try {
+//            Runtime.getRuntime().exec(
+//                    "logcat -f " + outputFile.getAbsolutePath());
+            p = Runtime.getRuntime().exec("logcat -d");
+        } catch (IOException e) {
+            Timber.e(e, "executing logcat");
+        }
+        if (p == null) return "";
+
+        // Read text from the command output.
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        try {
+            while ((line = in.readLine()) != null) {
+                output.append(line);
+                output.append(System.getProperty("line.separator"));
+            }
+
+            in.close();
+        } catch (IOException e) {
+            Timber.e(e, "reading stdout");
+        }
+
+        return output.toString();
+    }
+
+    /**
+     * ProcessBuilder may be used to redirect stdout for a process. Need to try it out.
+     */
+    private void useProcessBuilder() {
+        ProcessBuilder pb = new ProcessBuilder("logcat -d");
+
+    }
+
     // implement a class to manage the opening of several url
     private class OnClickListenerUrl implements OnClickListener {
         private String mUrl;
@@ -224,71 +287,6 @@ public class AboutFragment extends Fragment {
         public void setUrl(String mUrl) {
             this.mUrl = mUrl;
         }
-
-    }
-
-    private void sendLogcat() {
-        String logcat = "";
-        logcat = getLogcat();
-
-        //send file using email
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("plain/text");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
-        // the attachment
-//        emailIntent .putExtra(Intent.EXTRA_STREAM, outputFile.getAbsolutePath());
-        emailIntent.putExtra(Intent.EXTRA_TEXT, logcat);
-        // the mail subject
-        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send email..."));
-        } catch (Exception e) {
-            Timber.e(e, "opening email with logcat");
-        }
-    }
-
-    /**
-     *
-     * @return
-     * References
-     * http://developer.android.com/tools/debugging/debugging-log.html
-     */
-    private String getLogcat() {
-//        File outputFile = new File(Environment.getDefaultDatabaseDirectory(), "logcat.txt");
-        Process p = null;
-        try {
-//            Runtime.getRuntime().exec(
-//                    "logcat -f " + outputFile.getAbsolutePath());
-            p = Runtime.getRuntime().exec("logcat -d");
-        } catch (IOException e) {
-            Timber.e(e, "executing logcat");
-        }
-        if (p == null) return "";
-
-        // Read text from the command output.
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()) );
-        StringBuilder output = new StringBuilder();
-        String line;
-        try {
-            while ((line = in.readLine()) != null) {
-                output.append(line);
-                output.append(System.getProperty("line.separator"));
-            }
-
-            in.close();
-        } catch (IOException e) {
-            Timber.e(e, "reading stdout");
-        }
-
-        return output.toString();
-    }
-
-    /**
-     * ProcessBuilder may be used to redirect stdout for a process. Need to try it out.
-     */
-    private void useProcessBuilder() {
-        ProcessBuilder pb = new ProcessBuilder("logcat -d");
 
     }
 }

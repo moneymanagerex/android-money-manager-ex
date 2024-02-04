@@ -29,15 +29,17 @@ import info.javaperformance.money.Money;
  * Various methods that help out working with numbers.
  */
 public class NumericHelper {
+    private final Context mContext;
     private CurrencyService mCurrencyService;
 
+    public NumericHelper(Context context) {
+        mContext = context;
+    }
+
     public static boolean isNumeric(String str) {
-        try
-        {
+        try {
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
@@ -50,6 +52,8 @@ public class NumericHelper {
             return null;
         }
     }
+
+    // Instance methods
 
     public static int toInt(String value) {
         return Integer.parseInt(value);
@@ -65,14 +69,6 @@ public class NumericHelper {
         return result;
     }
 
-    // Instance methods
-
-    public NumericHelper(Context context) {
-        mContext = context;
-    }
-
-    private final Context mContext;
-
     public int tryParse(String value) {
         int result;
         try {
@@ -86,6 +82,7 @@ public class NumericHelper {
 
     /**
      * Truncate the amount to the currency precision setting.
+     *
      * @return Amount truncated to the currency precision.
      */
     public Money truncateToCurrency(Money amount, Currency currency) {
@@ -97,6 +94,7 @@ public class NumericHelper {
 
     /**
      * Extracts the number of decimal places from scale/precision value.
+     *
      * @param scale Scale, usually from the currency entity.
      * @return Number of decimals to use (precision?).
      */
@@ -112,6 +110,7 @@ public class NumericHelper {
 
     /**
      * Clean up the number based on the locale preferences for grouping and decimal separators.
+     *
      * @param numberString Formatted string
      * @return (English) number string that can be used for expression.
      */

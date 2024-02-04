@@ -16,26 +16,26 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <TwoLineListItem xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?attr/listPreferredItemHeight"
-    android:mode="twoLine">
-    	
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:minHeight="?attr/listPreferredItemHeight"
+                 android:mode="twoLine">
+
     <CheckedTextView
-        android:id="@android:id/text1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dip"
-        android:layout_marginTop="6dip"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@android:id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginTop="6dip"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@android:id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@android:id/text1"
-        android:layout_below="@android:id/text1"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:id="@android:id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@android:id/text1"
+            android:layout_below="@android:id/text1"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 </TwoLineListItem>

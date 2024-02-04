@@ -23,9 +23,9 @@ package com.money.manager.ex.log;
  */
 
 public class ErrorRaisedEvent {
+    public String message;
+
     public ErrorRaisedEvent(String message) {
         this.message = message;
     }
-
-    public String message;
 }

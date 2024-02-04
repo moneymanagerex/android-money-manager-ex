@@ -25,18 +25,19 @@ import org.parceler.Parcel;
  */
 @Parcel
 public class Budget
-    extends EntityBase {
+        extends EntityBase {
 
     public static final String BUDGETYEARID = "BUDGETYEARID";
     public static final String BUDGETYEARNAME = "BUDGETYEARNAME";
 
-    public Budget() { }
+    public Budget() {
+    }
 
     public Integer getId() {
         return getInt(BUDGETYEARID);
     }
 
-    public void setId(Integer value) {
+    public void setId(final Integer value) {
         setInt(BUDGETYEARID, value);
     }
 
@@ -44,7 +45,7 @@ public class Budget
         return getString(BUDGETYEARNAME);
     }
 
-    public void setName(String value) {
+    public void setName(final String value) {
         setString(BUDGETYEARNAME, value);
     }
 }

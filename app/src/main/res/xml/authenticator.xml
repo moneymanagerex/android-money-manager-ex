@@ -18,9 +18,9 @@
 
 <!-- authenticator for sync framework -->
 <account-authenticator
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accountType="example.com"
-    android:icon="@mipmap/ic_launcher"
-    android:smallIcon="@mipmap/ic_launcher"
-    android:label="@string/app_name"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:accountType="example.com"
+        android:icon="@mipmap/ic_launcher"
+        android:smallIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"/>
 

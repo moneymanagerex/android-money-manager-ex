@@ -17,6 +17,11 @@
 
 package com.money.manager.ex.sync.adapter;
 
+import static android.content.Context.ACCOUNT_SERVICE;
+import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT;
+import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT_TYPE;
+import static com.money.manager.ex.sync.adapter.SyncAdapterService.AUTHORITY;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
@@ -25,18 +30,13 @@ import android.os.Bundle;
 
 import timber.log.Timber;
 
-import static android.content.Context.ACCOUNT_SERVICE;
-import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT;
-import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT_TYPE;
-import static com.money.manager.ex.sync.adapter.SyncAdapterService.AUTHORITY;
-
 /**
  * Here is the code that can be used to invoke the sync adapter synchronization from within the app.
- * 
- *         // todo enable for sync. Use perhaps on sync preferences.
- // create the sync account
- //        CreateSyncAccount(this);
- //        new SyncAdapterTrigger().runSync();
+ * <p>
+ * // todo enable for sync. Use perhaps on sync preferences.
+ * // create the sync account
+ * //        CreateSyncAccount(this);
+ * //        new SyncAdapterTrigger().runSync();
  */
 
 public class SyncAdapterTrigger {
@@ -78,9 +78,8 @@ public class SyncAdapterTrigger {
 //    public static final long SYNC_INTERVAL = SYNC_INTERVAL_IN_MINUTES * SECONDS_PER_MINUTE;
 
     /**
-     *
      * @param interval Interval in miliseconds to use between runs. Minutes * seconds;
-     * Ref: https://developer.android.com/reference/android/content/ContentResolver.html#addPeriodicSync(android.accounts.Account,%20java.lang.String,%20android.os.Bundle,%20long)
+     *                 Ref: https://developer.android.com/reference/android/content/ContentResolver.html#addPeriodicSync(android.accounts.Account,%20java.lang.String,%20android.os.Bundle,%20long)
      */
     public void schedulePeriodicSync(long interval) {
         Account account = new Account(ACCOUNT, ACCOUNT_TYPE);

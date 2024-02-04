@@ -31,8 +31,8 @@ import java.util.ArrayList;
  * Repository for Recurring Split Categories (TableBudgetSplitTransactions).
  */
 public class SplitRecurringCategoriesRepository
-    extends RepositoryBase
-    implements IRepository {
+        extends RepositoryBase
+        implements IRepository {
 
     public SplitRecurringCategoriesRepository(Context context) {
         super(context, SplitRecurringCategory.TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions");
@@ -40,25 +40,26 @@ public class SplitRecurringCategoriesRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"SPLITTRANSID AS _id",
-            SplitRecurringCategory.SPLITTRANSID,
-            SplitRecurringCategory.TRANSID,
-            SplitRecurringCategory.CATEGID,
-            SplitRecurringCategory.SUBCATEGID,
-            SplitRecurringCategory.SPLITTRANSAMOUNT,
-            SplitRecurringCategory.NOTES };
+        return new String[]{"SPLITTRANSID AS _id",
+                SplitRecurringCategory.SPLITTRANSID,
+                SplitRecurringCategory.TRANSID,
+                SplitRecurringCategory.CATEGID,
+                SplitRecurringCategory.SUBCATEGID,
+                SplitRecurringCategory.SPLITTRANSAMOUNT,
+                SplitRecurringCategory.NOTES};
     }
 
     /**
      * Loads split transactions for the given transaction id.
+     *
      * @param transId Id of the main transaction for which to load the splits.
      * @return list of split categories for the given transaction.
      */
     public ArrayList<ISplitTransaction> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitRecurringCategory.TRANSID + "=" + transId,
-            null,
-            SplitRecurringCategory.SPLITTRANSID);
+                SplitRecurringCategory.TRANSID + "=" + transId,
+                null,
+                SplitRecurringCategory.SPLITTRANSID);
         if (curSplit == null) return null;
 
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
@@ -91,9 +92,9 @@ public class SplitRecurringCategoriesRepository
         return update(entity, where.getWhere());
     }
 
-    public boolean delete (int id) {
+    public boolean delete(int id) {
         int deleted = super.delete(SplitRecurringCategory.SPLITTRANSID + "=?",
-                new String[]{ Integer.toString(id) });
+                new String[]{Integer.toString(id)});
 
         return deleted == 1;
     }

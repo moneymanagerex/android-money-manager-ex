@@ -20,20 +20,20 @@
 
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@android:color/transparent" />
+            <solid android:color="@android:color/transparent"/>
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
-                <solid android:color="@color/md_green" />
+                <solid android:color="@color/md_green"/>
             </shape>
         </clip>
     </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/md_green" />
+                <solid android:color="@color/md_green"/>
             </shape>
         </clip>
     </item>

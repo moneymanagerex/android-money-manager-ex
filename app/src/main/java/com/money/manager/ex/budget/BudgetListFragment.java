@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.budget;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,6 +24,12 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,21 +46,21 @@ import com.money.manager.ex.domainmodel.Budget;
 
 import org.greenrobot.eventbus.EventBus;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-
 /**
  * Use the {@link BudgetListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class BudgetListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int REQUEST_EDIT_BUDGET = 1;
+    private final int LOADER_BUDGETS = 1;
+    private MoneySimpleCursorAdapter mAdapter;
+
+    public BudgetListFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -62,19 +69,11 @@ public class BudgetListFragment
      * @return A new instance of fragment BudgetListFragment.
      */
     public static BudgetListFragment newInstance() {
-        BudgetListFragment fragment = new BudgetListFragment();
-        Bundle args = new Bundle();
+        final BudgetListFragment fragment = new BudgetListFragment();
+        final Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private final int LOADER_BUDGETS = 1;
-
-    private MoneySimpleCursorAdapter mAdapter;
-
-    public BudgetListFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -83,7 +82,7 @@ public class BudgetListFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         setFloatingActionButtonVisible(true);
@@ -93,7 +92,7 @@ public class BudgetListFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
@@ -106,18 +105,18 @@ public class BudgetListFragment
 //    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == AppCompatActivity.RESULT_CANCELED) return;
+        if (Activity.RESULT_CANCELED == resultCode) return;
 
-        if (requestCode == REQUEST_EDIT_BUDGET) {// refresh budget list
+        if (REQUEST_EDIT_BUDGET == requestCode) {// refresh budget list
             getLoaderManager().restartLoader(LOADER_BUDGETS, null, this);
         }
     }
 
     @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         displayBudgets();
@@ -126,12 +125,12 @@ public class BudgetListFragment
     // Loader events
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
         Loader<Cursor> result = null;
 
-        if (id == LOADER_BUDGETS) {
-            BudgetRepository repo = new BudgetRepository(getActivity());
-            Select query = new Select(repo.getAllColumns())
+        if (LOADER_BUDGETS == id) {
+            final BudgetRepository repo = new BudgetRepository(getActivity());
+            final Select query = new Select(repo.getAllColumns())
                     .orderBy(Budget.BUDGETYEARNAME);
 
             result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
@@ -140,8 +139,8 @@ public class BudgetListFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOADER_BUDGETS) {//                mAdapter.swapCursor(data);
+    public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
+        if (LOADER_BUDGETS == loader.getId()) {//                mAdapter.swapCursor(data);
             mAdapter.changeCursor(data);
 
             if (isResumed()) {
@@ -153,8 +152,8 @@ public class BudgetListFragment
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        if (loader.getId() == LOADER_BUDGETS) {//                mAdapter.swapCursor(null);
+    public void onLoaderReset(final Loader<Cursor> loader) {
+        if (LOADER_BUDGETS == loader.getId()) {//                mAdapter.swapCursor(null);
             mAdapter.changeCursor(null);
         }
     }
@@ -162,29 +161,29 @@ public class BudgetListFragment
     // Context Menu
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         // get selected item name
-        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-        Cursor cursor = (Cursor) adapter.getItem(info.position);
+        final SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        final Cursor cursor = (Cursor) adapter.getItem(info.position);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME)));
 
-        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        final MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
         menuHelper.addDeleteToContextMenu();
         //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int budgetId = (int) info.id;
-        int id = item.getItemId();
-        ContextMenuIds menuId = ContextMenuIds.get(id);
+    public boolean onContextItemSelected(final android.view.MenuItem item) {
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final int budgetId = (int) info.id;
+        final int id = item.getItemId();
+        final ContextMenuIds menuId = ContextMenuIds.get(id);
 
         switch (menuId) {
             case EDIT:
@@ -194,7 +193,7 @@ public class BudgetListFragment
                 confirmDelete(budgetId);
                 break;
             case COPY:
-                BudgetService service = new BudgetService(getActivity());
+                final BudgetService service = new BudgetService(getActivity());
                 service.copy(budgetId);
                 break;
             default:
@@ -206,12 +205,12 @@ public class BudgetListFragment
     // Other
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
         super.onListItemClick(l, v, position, id);
 
         // Notify the parent to show the budget details.
-        Cursor cursor = (Cursor) l.getItemAtPosition(position);
-        String budgetName = cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME));
+        final Cursor cursor = (Cursor) l.getItemAtPosition(position);
+        final String budgetName = cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME));
 
         EventBus.getDefault().post(new BudgetSelectedEvent(id, budgetName));
     }
@@ -227,8 +226,8 @@ public class BudgetListFragment
         mAdapter = new MoneySimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,
                 null,
-                new String[]{ Budget.BUDGETYEARNAME },
-                new int[]{ android.R.id.text1}, 0);
+                new String[]{Budget.BUDGETYEARNAME},
+                new int[]{android.R.id.text1}, 0);
 
         setListAdapter(mAdapter);
         setListShown(false);
@@ -236,8 +235,8 @@ public class BudgetListFragment
         getLoaderManager().initLoader(LOADER_BUDGETS, null, this);
     }
 
-    private void editBudget(int budgetId) {
-        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+    private void editBudget(final int budgetId) {
+        final Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.putExtra(BudgetEditActivity.KEY_BUDGET_ID, budgetId);
         intent.setAction(Intent.ACTION_EDIT);
         //startActivity(intent);
@@ -245,7 +244,7 @@ public class BudgetListFragment
     }
 
     private void createBudget() {
-        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+        final Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         startActivityForResult(intent, REQUEST_EDIT_BUDGET);
     }
@@ -257,8 +256,8 @@ public class BudgetListFragment
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        BudgetService service = new BudgetService(getActivity());
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull final DialogAction which) {
+                        final BudgetService service = new BudgetService(getActivity());
                         service.delete(budgetId);
                     }
                 })

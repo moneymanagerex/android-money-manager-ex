@@ -28,14 +28,13 @@ import com.money.manager.ex.view.RobotoTextView;
  * View Holder for the Category list group item (Category).
  */
 public class CategoryListItemViewHolderGroup {
+    public ImageView collapseImageView;
+    public RobotoTextView text1;
+    public LinearLayout selector;
     public CategoryListItemViewHolderGroup(View view) {
         collapseImageView = view.findViewById(R.id.expandable_list_indicator);
         text1 = view.findViewById(android.R.id.text1);
         selector = view.findViewById(R.id.selector);
 
     }
-
-    public ImageView collapseImageView;
-    public RobotoTextView text1;
-    public LinearLayout selector;
 }

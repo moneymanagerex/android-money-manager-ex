@@ -20,7 +20,7 @@ package com.money.manager.ex.settings;
 import android.os.Bundle;
 
 public class InvestmentSettingsActivity
-    extends BaseSettingsFragmentActivity {
+        extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {

@@ -17,113 +17,113 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:layout_gravity="center_horizontal"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="48dp"
+              android:layout_gravity="center_horizontal"
+              android:orientation="vertical">
 
     <!-- top row -->
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
         <!-- asset class name -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/assetClassTextView"
-            android:layout_width="0dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="@string/asset_class_name" />
+                android:id="@+id/assetClassTextView"
+                android:layout_width="0dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/asset_class_name"/>
 
         <!-- set allocation -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/allocationTextView"
-            android:minWidth="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|end"
-            android:gravity="center_vertical|end"
-            android:text="@string/allocation" />
+                android:id="@+id/allocationTextView"
+                android:minWidth="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
+                android:text="@string/allocation"/>
 
         <!-- current allocation -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/currentAllocationTextView"
-            android:minWidth="60dp"
-            android:layout_width="wrap_content"
-            android:paddingStart="1dp"
-            android:paddingLeft="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|end"
-            android:gravity="center_vertical|end"
-            android:text="@string/current_allocation" />
+                android:id="@+id/currentAllocationTextView"
+                android:minWidth="60dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="1dp"
+                android:paddingLeft="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
+                android:text="@string/current_allocation"/>
 
         <!-- difference percentage -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/differencePercentTextView"
-            android:minWidth="90dp"
-            android:layout_width="wrap_content"
-            android:paddingStart="1dp"
-            android:paddingLeft="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:gravity="center_vertical|end"
-            android:text="" />
+                android:id="@+id/differencePercentTextView"
+                android:minWidth="90dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="1dp"
+                android:paddingLeft="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center_vertical|end"
+                android:text=""/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     <!-- bottom row -->
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
         <!-- placeholder -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"></LinearLayout>
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"></LinearLayout>
 
         <!-- set value -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/valueTextView"
-            android:layout_width="wrap_content"
-            android:minWidth="65dp"
-            android:paddingStart="1dp"
-            android:paddingLeft="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:gravity="center_vertical|end"
-            android:text="@string/value" />
+                android:id="@+id/valueTextView"
+                android:layout_width="wrap_content"
+                android:minWidth="65dp"
+                android:paddingStart="1dp"
+                android:paddingLeft="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center_vertical|end"
+                android:text="@string/value"/>
 
         <!-- current value -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/currentValueTextView"
-            android:minWidth="65dp"
-            android:layout_width="wrap_content"
-            android:paddingStart="1dp"
-            android:paddingLeft="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|end"
-            android:gravity="center_vertical|end"
-            android:text="@string/current_value" />
+                android:id="@+id/currentValueTextView"
+                android:minWidth="65dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="1dp"
+                android:paddingLeft="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
+                android:text="@string/current_value"/>
 
         <!-- difference amount -->
         <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/differenceTextView"
-            android:minWidth="90dp"
-            android:layout_width="wrap_content"
-            android:paddingStart="1dp"
-            android:paddingLeft="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:gravity="center_vertical|end"
-            android:text="@string/difference" />
+                android:id="@+id/differenceTextView"
+                android:minWidth="90dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="1dp"
+                android:paddingLeft="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center_vertical|end"
+                android:text="@string/difference"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

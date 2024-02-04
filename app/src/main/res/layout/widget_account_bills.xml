@@ -16,74 +16,73 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/shape_widget_account_bills"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_widget_account_bills"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButtonLogoWidget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="2dp"
-            android:background="@android:color/transparent"
-            android:src="@mipmap/ic_launcher"
-            android:contentDescription="@string/logo" />
+                android:id="@+id/imageButtonLogoWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="2dp"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="@string/logo"/>
 
         <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewTotalAccounts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:textColor="@color/material_grey_200"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="@string/summary"/>
+                    android:id="@+id/textViewTotalAccounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:textColor="@color/material_grey_200"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="@string/summary"/>
 
             <TextView
-                android:id="@+id/textViewUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:textColor="@color/material_grey_300"
-                android:textSize="14sp"
-                android:text="@string/about"/>
+                    android:id="@+id/textViewUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:textColor="@color/material_grey_300"
+                    android:textSize="14sp"
+                    android:text="@string/about"/>
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imageButtonRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_menu_refresh"
-            android:contentDescription="@string/refresh" />
+                android:id="@+id/imageButtonRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_refresh"
+                android:contentDescription="@string/refresh"/>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listViewAccountBills"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp" />
+            android:id="@+id/listViewAccountBills"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp"/>
 
 </LinearLayout>

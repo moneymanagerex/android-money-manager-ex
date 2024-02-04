@@ -26,6 +26,12 @@ public enum TransactionStatuses {
     FOLLOWUP("F"),
     DUPLICATE("D");
 
+    private final String code;
+
+    TransactionStatuses(String code) {
+        this.code = code;
+    }
+
     public static TransactionStatuses from(String statusName) {
         for (TransactionStatuses status : TransactionStatuses.values()) {
             // clean-up dashes. Needed for "follow-up".
@@ -50,12 +56,6 @@ public enum TransactionStatuses {
         }
         throw new IllegalArgumentException("no transaction status found for " + code);
     }
-
-    TransactionStatuses(String code) {
-        this.code = code;
-    }
-
-    private final String code;
 
     public String getCode() {
         return this.code;

@@ -24,15 +24,15 @@
 
     <!-- Base Example -->
     <!--<view-->
-        <!--android:id="@+id/view"-->
-        <!--class="it.gmariotti.changelibs.library.view.ChangeLogListView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center" />-->
+    <!--android:id="@+id/view"-->
+    <!--class="it.gmariotti.changelibs.library.view.ChangeLogListView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center" />-->
     <it.gmariotti.changelibs.library.view.ChangeLogRecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
 </LinearLayout>

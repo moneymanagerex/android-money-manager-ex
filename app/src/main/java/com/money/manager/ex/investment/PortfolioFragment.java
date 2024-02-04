@@ -24,6 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -32,19 +36,20 @@ import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-
 /**
  * Use the {@link PortfolioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class PortfolioFragment
-    extends BaseListFragment {
+        extends BaseListFragment {
 
-    private static final String ARG_ACCOUNT_ID = "accountId";
     public static final int ID_LOADER = 1;
+    private static final String ARG_ACCOUNT_ID = "accountId";
+    private Integer mAccountId;
+
+    public PortfolioFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -53,19 +58,13 @@ public class PortfolioFragment
      * @param accountId Investment account Id
      * @return A new instance of fragment PortfolioFragment.
      */
-    public static PortfolioFragment newInstance(Integer accountId) {
-        PortfolioFragment fragment = new PortfolioFragment();
-        Bundle args = new Bundle();
+    public static PortfolioFragment newInstance(final Integer accountId) {
+        final PortfolioFragment fragment = new PortfolioFragment();
+        final Bundle args = new Bundle();
         args.putInt(ARG_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
         return fragment;
     }
-
-    public PortfolioFragment() {
-        // Required empty public constructor
-    }
-
-    private Integer mAccountId;
 
     @Override
     public String getSubTitle() {
@@ -73,10 +72,10 @@ public class PortfolioFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
+        if (null != savedInstanceState && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
             // get data from saved instance state
             mAccountId = savedInstanceState.getInt(ARG_ACCOUNT_ID);
         } else {
@@ -86,23 +85,23 @@ public class PortfolioFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) return null;
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        if (null == container) return null;
 
-        View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
+        final View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
 
         // create adapter
-        PortfolioCursorAdapter adapter = new PortfolioCursorAdapter(getActivity(), null);
+        final PortfolioCursorAdapter adapter = new PortfolioCursorAdapter(getActivity(), null);
 
         initializeList();
 
@@ -127,7 +126,7 @@ public class PortfolioFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle saveInstanceState) {
+    public void onSaveInstanceState(final Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
 
         saveInstanceState.putInt(ARG_ACCOUNT_ID, mAccountId);
@@ -139,13 +138,13 @@ public class PortfolioFragment
         // e list item click.
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 // Ignore the header row.
-                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
+                if (0 < getListView().getHeaderViewsCount() && 0 == position) return;
 
-                if (getListAdapter() != null && getListAdapter() instanceof PortfolioCursorAdapter) {
-                    Cursor cursor = (Cursor) getListAdapter().getItem(position);
-                    Stock stock = Stock.from(cursor);
+                if (null != getListAdapter() && getListAdapter() instanceof PortfolioCursorAdapter) {
+                    final Cursor cursor = (Cursor) getListAdapter().getItem(position);
+                    final Stock stock = Stock.from(cursor);
                     openEditInvestmentActivity(stock.getId());
                 }
             }
@@ -157,28 +156,28 @@ public class PortfolioFragment
         // initialize loader
         getLoaderManager().initLoader(ID_LOADER, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
                 //animation
                 setListShown(false);
 
-                StockRepository repo = new StockRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
-                    .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID))
-                    .orderBy(StockFields.SYMBOL);
+                final StockRepository repo = new StockRepository(getActivity());
+                final Select query = new Select(repo.getAllColumns())
+                        .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID))
+                        .orderBy(StockFields.SYMBOL);
                 //.orderBy(sort);
 
                 return new MmxCursorLoader(getActivity(), repo.getUri(), query);
             }
 
             @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                CursorAdapter adapter = (CursorAdapter) getListAdapter();
+            public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
+                final CursorAdapter adapter = (CursorAdapter) getListAdapter();
                 adapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);
 
-                    if (getFloatingActionButton() != null) {
+                    if (null != getFloatingActionButton()) {
                         getFloatingActionButton().show(true);
                     }
                 } else {
@@ -189,14 +188,14 @@ public class PortfolioFragment
             }
 
             @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
+            public void onLoaderReset(final Loader<Cursor> loader) {
                 ((CursorAdapter) getListAdapter()).changeCursor(null);
             }
         });
     }
 
-    private void openEditInvestmentActivity(Integer stockId) {
-        Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
+    private void openEditInvestmentActivity(final Integer stockId) {
+        final Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
         intent.setAction(Intent.ACTION_INSERT);

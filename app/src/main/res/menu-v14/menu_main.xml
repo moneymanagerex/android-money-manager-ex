@@ -20,130 +20,130 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_open_database"
-        android:icon="?attr/ic_action_folder_open"
-        android:orderInCategory="1000"
-        android:title="@string/menu_open_database"
-        android:visible="false"
-        app:showAsAction="always|withText"/>
+            android:id="@+id/menu_open_database"
+            android:icon="?attr/ic_action_folder_open"
+            android:orderInCategory="1000"
+            android:title="@string/menu_open_database"
+            android:visible="false"
+            app:showAsAction="always|withText"/>
     <item
-        android:id="@+id/menu_create_database"
-        android:icon="?attr/ic_action_folder_open"
-        android:orderInCategory="1012"
-        android:title="@string/menu_create_database"
-        android:visible="false"
-        app:showAsAction="always|withText"/>
+            android:id="@+id/menu_create_database"
+            android:icon="?attr/ic_action_folder_open"
+            android:orderInCategory="1012"
+            android:title="@string/menu_create_database"
+            android:visible="false"
+            app:showAsAction="always|withText"/>
     <item
-        android:id="@+id/menu_add_transaction_account"
-        android:icon="?attr/ic_action_add"
-        android:orderInCategory="1001"
-        android:title="@string/new_transaction"
-        android:visible="false"
-        app:showAsAction="ifRoom|withText"/>
+            android:id="@+id/menu_add_transaction_account"
+            android:icon="?attr/ic_action_add"
+            android:orderInCategory="1001"
+            android:title="@string/new_transaction"
+            android:visible="false"
+            app:showAsAction="ifRoom|withText"/>
     <item
-        android:id="@+id/menu_sync"
-        android:icon="@drawable/ic_action_dropbox_dark"
-        android:orderInCategory="1002"
-        android:title="@string/synchronize"
-        android:visible="false"
-        app:showAsAction="always|withText"/>
+            android:id="@+id/menu_sync"
+            android:icon="@drawable/ic_action_dropbox_dark"
+            android:orderInCategory="1002"
+            android:title="@string/synchronize"
+            android:visible="false"
+            app:showAsAction="always|withText"/>
     <item
-        android:id="@+id/menu_search_transaction"
-        android:icon="?attr/ic_action_search"
-        android:orderInCategory="1003"
-        android:title="@string/search"
-        android:visible="false"
-        app:showAsAction="always|withText"/>
+            android:id="@+id/menu_search_transaction"
+            android:icon="?attr/ic_action_search"
+            android:orderInCategory="1003"
+            android:title="@string/search"
+            android:visible="false"
+            app:showAsAction="always|withText"/>
     <item
-        android:id="@+id/menu_dashboard"
-        android:icon="?attr/ic_action_business"
-        android:orderInCategory="1004"
-        android:title="@string/dashboard"
-        android:visible="false"
-        app:showAsAction="ifRoom|withText"/>
+            android:id="@+id/menu_dashboard"
+            android:icon="?attr/ic_action_business"
+            android:orderInCategory="1004"
+            android:title="@string/dashboard"
+            android:visible="false"
+            app:showAsAction="ifRoom|withText"/>
     <item
-        android:id="@+id/menu_export_to_csv"
-        android:orderInCategory="1005"
-        android:title="@string/export_data_to_csv"
-        android:visible="false"/>
+            android:id="@+id/menu_export_to_csv"
+            android:orderInCategory="1005"
+            android:title="@string/export_data_to_csv"
+            android:visible="false"/>
 
     <group
-        android:id="@+id/menu_group_main"
-        android:orderInCategory="1006"
-        android:visible="false">
+            android:id="@+id/menu_group_main"
+            android:orderInCategory="1006"
+            android:visible="false">
         <item
-            android:id="@+id/menu_action_main"
-            android:title="@string/menu_manage">
+                android:id="@+id/menu_action_main"
+                android:title="@string/menu_manage">
             <menu>
                 <item
-                    android:id="@+id/menu_account"
-                    android:title="@string/accounts"/>
+                        android:id="@+id/menu_account"
+                        android:title="@string/accounts"/>
                 <item
-                    android:id="@+id/menu_category"
-                    android:title="@string/categories"/>
+                        android:id="@+id/menu_category"
+                        android:title="@string/categories"/>
                 <item
-                    android:id="@+id/menu_currency"
-                    android:title="@string/currencies"/>
+                        android:id="@+id/menu_currency"
+                        android:title="@string/currencies"/>
                 <item
-                    android:id="@+id/menu_payee"
-                    android:title="@string/payees"/>
+                        android:id="@+id/menu_payee"
+                        android:title="@string/payees"/>
                 <item
-                    android:id="@+id/menu_recurring_transaction"
-                    android:title="@string/recurring_transactions"/>
+                        android:id="@+id/menu_recurring_transaction"
+                        android:title="@string/recurring_transactions"/>
             </menu>
         </item>
     </group>
     <item
-        android:id="@+id/menu_budgets"
-        android:title="@string/budgets" />
+            android:id="@+id/menu_budgets"
+            android:title="@string/budgets"/>
     <item
-        android:id="@+id/menu_asset_allocation"
-        android:title="@string/asset_allocation" />
+            android:id="@+id/menu_asset_allocation"
+            android:title="@string/asset_allocation"/>
     <group
-        android:id="@+id/menu_group_reports"
-        android:orderInCategory="1007">
+            android:id="@+id/menu_group_reports"
+            android:orderInCategory="1007">
         <item
-            android:id="@+id/menu_reports"
-            android:title="@string/menu_reports">
+                android:id="@+id/menu_reports"
+                android:title="@string/menu_reports">
             <menu>
                 <item
-                    android:id="@+id/menu_report_where_money_goes"
-                    android:title="@string/menu_report_where_money_goes"/>
+                        android:id="@+id/menu_report_where_money_goes"
+                        android:title="@string/menu_report_where_money_goes"/>
                 <item
-                    android:id="@+id/menu_report_where_money_comes_from"
-                    android:title="@string/menu_report_where_money_comes_from"/>
+                        android:id="@+id/menu_report_where_money_comes_from"
+                        android:title="@string/menu_report_where_money_comes_from"/>
                 <item
-                    android:id="@+id/menu_report_categories"
-                    android:title="@string/category"/>
+                        android:id="@+id/menu_report_categories"
+                        android:title="@string/category"/>
                 <item
-                    android:id="@+id/menu_report_payees"
-                    android:title="@string/payee"/>
+                        android:id="@+id/menu_report_payees"
+                        android:title="@string/payee"/>
                 <item
-                    android:id="@+id/menu_report_income_vs_expenses"
-                    android:title="@string/menu_report_income_vs_expenses"/>
+                        android:id="@+id/menu_report_income_vs_expenses"
+                        android:title="@string/menu_report_income_vs_expenses"/>
             </menu>
         </item>
     </group>
 
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="1008"
-        android:title="@string/settings"/>
+            android:id="@+id/menu_settings"
+            android:orderInCategory="1008"
+            android:title="@string/settings"/>
     <item
-        android:id="@+id/menu_donate"
-        android:orderInCategory="1009"
-        android:title="@string/donate"/>
+            android:id="@+id/menu_donate"
+            android:orderInCategory="1009"
+            android:title="@string/donate"/>
     <item
-        android:id="@+id/menu_help"
-        android:orderInCategory="1010"
-        android:title="@string/help"/>
+            android:id="@+id/menu_help"
+            android:orderInCategory="1010"
+            android:title="@string/help"/>
     <item
-        android:id="@+id/menu_about"
-        android:orderInCategory="1011"
-        android:title="@string/about"/>
+            android:id="@+id/menu_about"
+            android:orderInCategory="1011"
+            android:title="@string/about"/>
     <item
-        android:id="@+id/menu_exit"
-        android:orderInCategory="1020"
-        android:title="@string/menu_exit"/>
+            android:id="@+id/menu_exit"
+            android:orderInCategory="1020"
+            android:title="@string/menu_exit"/>
 
 </menu>

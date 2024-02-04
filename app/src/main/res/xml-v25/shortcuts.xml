@@ -18,15 +18,15 @@
 
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="add"
-        android:enabled="true"
-        android:icon="@drawable/ic_shortcut_add"
-        android:shortcutShortLabel="@string/new_transaction"
-        android:shortcutLongLabel="@string/new_transaction">
+            android:shortcutId="add"
+            android:enabled="true"
+            android:icon="@drawable/ic_shortcut_add"
+            android:shortcutShortLabel="@string/new_transaction"
+            android:shortcutLongLabel="@string/new_transaction">
         <intent
-            android:action="android.intent.action.INSERT"
-            android:targetPackage="com.money.manager.ex"
-            android:targetClass="com.money.manager.ex.transactions.CheckingTransactionEditActivity" />
+                android:action="android.intent.action.INSERT"
+                android:targetPackage="com.money.manager.ex"
+                android:targetClass="com.money.manager.ex.transactions.CheckingTransactionEditActivity"/>
         <!--android:targetPackage="@string/application_id"-->
     </shortcut>
 </shortcuts>

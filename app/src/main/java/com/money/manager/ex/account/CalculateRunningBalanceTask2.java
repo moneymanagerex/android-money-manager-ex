@@ -48,12 +48,18 @@ import timber.log.Timber;
  * The problem is displaying the amounts once they are loaded.
  */
 public class CalculateRunningBalanceTask2
-    extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
+        extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
 
+    private final Context context;
+    private final int accountId;
+    private final Date startingDate;
+    private final Bundle selectionBundle;
+    private HashMap<Integer, Money> balances;
     /**
      * Create the task.
-     * @param context Context
-     * @param accountId Id of the account for which to load the balances.
+     *
+     * @param context      Context
+     * @param accountId    Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
      */
     public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
@@ -63,12 +69,6 @@ public class CalculateRunningBalanceTask2
         this.startingDate = startingDate;
         this.selectionBundle = selection;
     }
-
-    private final Context context;
-    private HashMap<Integer, Money> balances;
-    private final int accountId;
-    private final Date startingDate;
-    private final Bundle selectionBundle;
 
     /**
      * Override this method to perform a computation on a background thread. The

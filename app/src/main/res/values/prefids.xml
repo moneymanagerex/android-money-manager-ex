@@ -17,7 +17,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+           tools:ignore="MissingTranslation">
 
     <!-- preferences -->
     <string name="pref_general">prefgeneral</string>

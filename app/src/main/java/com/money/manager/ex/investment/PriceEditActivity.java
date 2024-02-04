@@ -50,18 +50,17 @@ import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
 public class PriceEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String ARG_CURRENCY_ID = "PriceEditActivity:CurrencyId";
-
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
     //@State
     protected PriceEditModel model;
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
     private EditPriceViewHolder viewHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
 
@@ -71,9 +70,9 @@ public class PriceEditActivity
 
         initializeToolbar();
 
-        if (savedInstanceState != null) {
+        if (null != savedInstanceState) {
             Icepick.restoreInstanceState(this, savedInstanceState);
-        }  else {
+        } else {
             initializeModel();
         }
 
@@ -84,14 +83,14 @@ public class PriceEditActivity
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
+        if ((Activity.RESULT_CANCELED == resultCode) || null == data) return;
 
-        String stringExtra;
+        final String stringExtra;
 
-        if (requestCode == RequestCodes.AMOUNT) {
+        if (RequestCodes.AMOUNT == requestCode) {
             stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
             model.price = MoneyFactory.fromString(stringExtra);
             model.display(this, viewHolder);
@@ -99,17 +98,17 @@ public class PriceEditActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuHelper menuHelper = new MenuHelper(this, menu);
+        final MenuHelper menuHelper = new MenuHelper(this, menu);
         menuHelper.addSaveToolbarIcon();
 
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // cancel clicked. Prompt to confirm?
@@ -126,7 +125,7 @@ public class PriceEditActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         Icepick.saveInstanceState(this, savedInstanceState);
@@ -135,22 +134,22 @@ public class PriceEditActivity
     @OnClick(R.id.amountTextView)
     protected void onPriceClick() {
         Calculator.forActivity(this)
-            .amount(model.price)
-            .roundToCurrency(false)
-            .show(RequestCodes.AMOUNT);
+                .amount(model.price)
+                .roundToCurrency(false)
+                .show(RequestCodes.AMOUNT);
     }
 
     @OnClick(R.id.dateTextView)
     protected void onDateClick() {
-        MmxDate priceDate = model.date;
+        final MmxDate priceDate = model.date;
 
-        DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+        final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
             model.date = new MmxDate(year, month, dayOfMonth);
-            model.display(PriceEditActivity.this, viewHolder);
+            model.display(this, viewHolder);
         };
 
-        DatePickerDialog datePicker = new DatePickerDialog(
-                PriceEditActivity.this,
+        final DatePickerDialog datePicker = new DatePickerDialog(
+                this,
                 listener,
                 priceDate.getYear(),
                 priceDate.getMonthOfYear(),
@@ -184,7 +183,7 @@ public class PriceEditActivity
 
     private void initializeToolbar() {
         // Title
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(getString(R.string.edit_price));
 
         // Back arrow / cancel.
@@ -192,16 +191,16 @@ public class PriceEditActivity
     }
 
     private void readParameters() {
-        Intent intent = getIntent();
-        if (intent == null) return;
+        final Intent intent = getIntent();
+        if (null == intent) return;
 
         model.accountId = intent.getIntExtra(EditPriceDialog.ARG_ACCOUNT, Constants.NOT_SET);
         model.symbol = intent.getStringExtra(EditPriceDialog.ARG_SYMBOL);
 
-        String priceString = intent.getStringExtra(EditPriceDialog.ARG_PRICE);
+        final String priceString = intent.getStringExtra(EditPriceDialog.ARG_PRICE);
         model.price = MoneyFactory.fromString(priceString);
 
-        String dateString = intent.getStringExtra(EditPriceDialog.ARG_DATE);
+        final String dateString = intent.getStringExtra(EditPriceDialog.ARG_DATE);
         model.date = new MmxDate(dateString);
 
         // currency!
@@ -210,11 +209,11 @@ public class PriceEditActivity
 
     private void save() {
         //update price
-        StockRepository repo = new StockRepository(this);
+        final StockRepository repo = new StockRepository(this);
         repo.updateCurrentPrice(model.symbol, model.price);
 
-        StockHistoryRepository historyRepository = new StockHistoryRepository(this);
-        boolean result = historyRepository.addStockHistoryRecord(model);
+        final StockHistoryRepository historyRepository = new StockHistoryRepository(this);
+        final boolean result = historyRepository.addStockHistoryRecord(model);
         if (!result) {
             Toast.makeText(this, getString(R.string.error_update_currency_exchange_rate),
                     Toast.LENGTH_SHORT).show();

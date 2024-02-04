@@ -18,6 +18,7 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
@@ -29,7 +30,7 @@ import info.javaperformance.money.MoneyFactory;
  * Settings in the General category.
  */
 public class BehaviourSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public BehaviourSettings(Context context) {
         super(context);
@@ -59,6 +60,7 @@ public class BehaviourSettings
 
     /**
      * The period to use for the income/expense summary footer on Home screen.
+     *
      * @return
      */
     public String getIncomeExpensePeriod() {
@@ -83,9 +85,10 @@ public class BehaviourSettings
         set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
     }
 
-    public boolean getAutoTransactionNumber(){
+    public boolean getAutoTransactionNumber() {
         return get(R.string.pref_auto_transaction_number, false);
     }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

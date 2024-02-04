@@ -19,7 +19,9 @@ package com.money.manager.ex.budget;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+
 import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -52,8 +55,14 @@ import timber.log.Timber;
  * Adapter for budgets.
  */
 public class BudgetAdapter
-    extends SimpleCursorAdapter {
+        extends SimpleCursorAdapter {
 
+    private final int mLayout;
+    @Inject
+    Lazy<BriteDatabase> databaseLazy;
+    private String mBudgetName;
+    private long mBudgetYearId;
+    private HashMap<String, BudgetEntry> mBudgetEntries;
     /**
      * Standard constructor.
      *
@@ -82,13 +91,6 @@ public class BudgetAdapter
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject Lazy<BriteDatabase> databaseLazy;
-
-    private final int mLayout;
-    private String mBudgetName;
-    private long mBudgetYearId;
-    private HashMap<String, BudgetEntry> mBudgetEntries;
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -107,7 +109,7 @@ public class BudgetAdapter
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 
-        int categoryId    = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+        int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
         int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
 
         // Frequency
@@ -133,8 +135,7 @@ public class BudgetAdapter
         // Estimated
         double estimated = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
-                : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
-        ;
+                : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
 
         // Actual
         TextView actualTextView = view.findViewById(R.id.actualTextView);
@@ -147,11 +148,11 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (estimated * 100)) {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -169,11 +170,11 @@ public class BudgetAdapter
             int amountAvailableInt = (int) (amountAvailable * 100);
             if (amountAvailableInt < 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailableInt > 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -189,6 +190,7 @@ public class BudgetAdapter
 
     /**
      * As a side effect of the setter the budget entry thread cache is populated.
+     *
      * @param budgetYearId
      */
     public void setBudgetYearId(long budgetYearId) {
@@ -215,6 +217,7 @@ public class BudgetAdapter
 
     /**
      * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
+     *
      * @param categoryId
      * @param subCategoryId
      * @return
@@ -228,6 +231,7 @@ public class BudgetAdapter
 
     /**
      * Returns the period of the budgeted amount or NONE if there isn't any.
+     *
      * @param categoryId
      * @param subCategoryId
      * @return
@@ -242,6 +246,7 @@ public class BudgetAdapter
     /**
      * Builds a thread cache from the database for every category and subcategory present in
      * this budget.
+     *
      * @return
      */
     private HashMap<String, BudgetEntry> populateThreadCache() {

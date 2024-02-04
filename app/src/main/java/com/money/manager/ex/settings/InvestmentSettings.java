@@ -37,7 +37,7 @@ import timber.log.Timber;
  * Investment preferences / preferences.
  */
 public class InvestmentSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public InvestmentSettings(Context context) {
         super(context);
@@ -54,6 +54,7 @@ public class InvestmentSettings
      * allocation will be painted. Green, if the current allocation is higher than the set allocation,
      * and red if it is smaller for the set percentage of the original value.
      * I.e. 20 represents 20% difference compared to the set asset allocation value.
+     *
      * @return A number that represents the percentage value.
      */
     public Money getAssetAllocationDifferenceThreshold() {

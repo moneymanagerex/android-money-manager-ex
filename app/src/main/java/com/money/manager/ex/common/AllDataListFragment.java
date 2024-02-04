@@ -26,6 +26,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -76,6 +77,7 @@ import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -84,11 +86,24 @@ import timber.log.Timber;
  * Fragment that displays the transactions.
  */
 public class AllDataListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
+    public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
+    public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
+    public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
+    public int AccountId = Constants.NOT_SET;
+    private LinearLayout footer;
+    private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
+    private boolean mAutoStarLoader = true;
+    private boolean mShowHeader = false;
+    private boolean mShowBalance = false;
+    private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
+    private View mListHeader = null;
+    private Bundle mArguments;
+    private boolean mShowFooter = false;
 
     public static AllDataListFragment newInstance(int accountId) {
         return newInstance(accountId, true);
@@ -110,22 +125,6 @@ public class AllDataListFragment
 
         return fragment;
     }
-
-    public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
-
-    public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
-    public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
-
-    public int AccountId = Constants.NOT_SET;
-    private LinearLayout footer;
-    private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
-    private boolean mAutoStarLoader = true;
-    private boolean mShowHeader = false;
-    private boolean mShowBalance = false;
-    private AllDataMultiChoiceModeListener mMultiChoiceModeListener;
-    private View mListHeader = null;
-    private Bundle mArguments;
-    private boolean mShowFooter = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -296,6 +295,7 @@ public class AllDataListFragment
     /**
      * Add options to the action bar of the host activity.
      * This is not called in ActionBar Activity, i.e. Search.
+     *
      * @param menu
      * @param inflater
      */
@@ -347,7 +347,7 @@ public class AllDataListFragment
             MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
             if (activity != null) {
                 ActionBar actionBar = activity.getSupportActionBar();
-                if(actionBar != null) {
+                if (actionBar != null) {
                     View customView = actionBar.getCustomView();
                     if (customView != null) {
                         actionBar.setCustomView(null);
@@ -455,7 +455,7 @@ public class AllDataListFragment
 
     public void displayRunningBalances(HashMap<Integer, Money> balances) {
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return;
+        if (adapter == null) return;
 
         adapter.setBalances(balances);
     }
@@ -514,6 +514,13 @@ public class AllDataListFragment
     }
 
     /**
+     * @param mShownHeader the mShowHeader to set
+     */
+    public void setShownHeader(boolean mShownHeader) {
+        this.mShowHeader = mShownHeader;
+    }
+
+    /**
      * Start loader into fragment
      */
     public void loadData() {
@@ -532,13 +539,6 @@ public class AllDataListFragment
         setLatestArguments(arguments);
         // reload data with the latest arguments.
         getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
-    }
-
-    /**
-     * @param mShownHeader the mShowHeader to set
-     */
-    public void setShownHeader(boolean mShownHeader) {
-        this.mShowHeader = mShownHeader;
     }
 
     public View getListHeader() {
@@ -598,7 +598,7 @@ public class AllDataListFragment
         String display;
 
         // number of records
-         display = data.getCount() + " " + getString(R.string.records) + ", ";
+        display = data.getCount() + " " + getString(R.string.records) + ", ";
 
         // sum
 
@@ -632,7 +632,7 @@ public class AllDataListFragment
 
         cursor.moveToPosition(Constants.NOT_SET);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             values.clear();
 
             // Read needed data.
@@ -706,10 +706,10 @@ public class AllDataListFragment
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert binaryDialog and set title and message
         MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_transaction)
-            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-            .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
-                    transactionIds.size(), transactionIds.size()));
+                .title(R.string.delete_transaction)
+                .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
+                .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+                        transactionIds.size(), transactionIds.size()));
 //        alert.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
@@ -821,7 +821,7 @@ public class AllDataListFragment
 
     private void selectAllRecords() {
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return;
+        if (adapter == null) return;
 
         // Clear selection first.
         adapter.clearPositionChecked();
@@ -834,11 +834,11 @@ public class AllDataListFragment
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<Integer> getTransactionIds(){
+    private ArrayList<Integer> getTransactionIds() {
         final ArrayList<Integer> transIds = new ArrayList<>();
 
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return transIds;
+        if (adapter == null) return transIds;
 
         Cursor cursor = adapter.getCursor();
         if (cursor != null) {
@@ -863,7 +863,7 @@ public class AllDataListFragment
         return transIds;
     }
 
-    private void changeTransactionStatus(final ArrayList<Integer> transIds){
+    private void changeTransactionStatus(final ArrayList<Integer> transIds) {
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
 //        final Core core = new Core(getActivity().getApplicationContext());
         final Boolean isDarkTheme = new UIHelper(getActivity()).isUsingDarkTheme();
@@ -937,7 +937,7 @@ public class AllDataListFragment
 
     // end multi-choice-mode listener callback handlers.
 
-    private void exportToQif(){
+    private void exportToQif() {
         AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
         QifExport qif = new QifExport(getActivity());
         qif.export(adapter);
@@ -956,6 +956,7 @@ public class AllDataListFragment
      * fragment was created, can not be altered.
      * But, when an account changes, we need to modify them. The new arguments are passed
      * through the call to loadData().
+     *
      * @return
      */
     private Bundle getLatestArguments() {

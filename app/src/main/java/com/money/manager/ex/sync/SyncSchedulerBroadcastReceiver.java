@@ -34,7 +34,7 @@ import timber.log.Timber;
  * Called from the preferences when the synchronization interval changes, and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
-    extends BroadcastReceiver {
+        extends BroadcastReceiver {
 
     public static final String ACTION_START = "com.money.manager.ex.intent.action.START_SYNC_SERVICE";
     public static final String ACTION_STOP = "com.money.manager.ex.intent.action.STOP_SYNC_SERVICE";
@@ -51,7 +51,7 @@ public class SyncSchedulerBroadcastReceiver
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_PERIODIC_SYNC,
-                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
         AlarmManager alarmManager = getAlarmManager(context);

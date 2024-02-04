@@ -29,7 +29,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 
 public class PasswordActivity
-    extends AppCompatActivity {
+        extends AppCompatActivity {
 
     public static final String EXTRA_PASSWORD = "password";
 

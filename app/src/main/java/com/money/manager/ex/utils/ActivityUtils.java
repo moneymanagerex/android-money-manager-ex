@@ -28,6 +28,7 @@ public class ActivityUtils {
 
     /**
      * Returns current device orientation.
+     *
      * @param activity Activity from which to get the current orientation information.
      * @return Code indicating the current device orientation.
      */
@@ -38,7 +39,7 @@ public class ActivityUtils {
 
             if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 if (activity.getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0 ||
-                    activity.getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_90) {
+                        activity.getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_90) {
                     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 } else {
                     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
@@ -54,7 +55,8 @@ public class ActivityUtils {
 
     /**
      * Sets the device orientation for the activity.
-     * @param activity Activity to which to apply the orientation.
+     *
+     * @param activity    Activity to which to apply the orientation.
      * @param orientation Code for orientation.
      */
     public static void restoreOrientation(AppCompatActivity activity, int orientation) {

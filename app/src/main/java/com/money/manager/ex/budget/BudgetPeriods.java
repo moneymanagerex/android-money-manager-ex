@@ -33,6 +33,7 @@ public class BudgetPeriods {
 
     /**
      * Returns proper enum for period name in the database
+     *
      * @param periodString
      * @return
      */
@@ -42,15 +43,15 @@ public class BudgetPeriods {
         }
 
         if (periodEnumLookup.size() == 0) {
-            periodEnumLookup.put("None"       , BudgetPeriodEnum.NONE);
-            periodEnumLookup.put("Weekly"     , BudgetPeriodEnum.WEEKLY);
-            periodEnumLookup.put("Bi-Weekly"  , BudgetPeriodEnum.BI_WEEKLY);
-            periodEnumLookup.put("Monthly"    , BudgetPeriodEnum.MONTHLY);
-            periodEnumLookup.put("Bi-Monthly" , BudgetPeriodEnum.BI_MONTHLY);
-            periodEnumLookup.put("Quarterly"  , BudgetPeriodEnum.QUARTERLY);
+            periodEnumLookup.put("None", BudgetPeriodEnum.NONE);
+            periodEnumLookup.put("Weekly", BudgetPeriodEnum.WEEKLY);
+            periodEnumLookup.put("Bi-Weekly", BudgetPeriodEnum.BI_WEEKLY);
+            periodEnumLookup.put("Monthly", BudgetPeriodEnum.MONTHLY);
+            periodEnumLookup.put("Bi-Monthly", BudgetPeriodEnum.BI_MONTHLY);
+            periodEnumLookup.put("Quarterly", BudgetPeriodEnum.QUARTERLY);
             periodEnumLookup.put("Half-Yearly", BudgetPeriodEnum.HALF_YEARLY);
-            periodEnumLookup.put("Yearly"     , BudgetPeriodEnum.YEARLY);
-            periodEnumLookup.put("Daily"      , BudgetPeriodEnum.DAILY);
+            periodEnumLookup.put("Yearly", BudgetPeriodEnum.YEARLY);
+            periodEnumLookup.put("Daily", BudgetPeriodEnum.DAILY);
         }
 
         return periodEnumLookup.containsKey(periodString) ? periodEnumLookup.get(periodString) : BudgetPeriodEnum.NONE;
@@ -58,6 +59,7 @@ public class BudgetPeriods {
 
     /**
      * Trampoline for translation by enum
+     *
      * @param context
      * @param periodString
      * @return
@@ -68,6 +70,7 @@ public class BudgetPeriods {
 
     /**
      * Helper function to translate the string literals of period in the database.
+     *
      * @param context
      * @param periodEnum string value from the database
      * @return translated string
@@ -99,26 +102,19 @@ public class BudgetPeriods {
         int ndays = 365;
         if (periodEnum == BudgetPeriodEnum.MONTHLY) {
             estimated = amount;
-        }
-        else if (periodEnum == BudgetPeriodEnum.YEARLY) {
+        } else if (periodEnum == BudgetPeriodEnum.YEARLY) {
             estimated = amount / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
+        } else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
             estimated = ((amount / 7) * ndays) / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
+        } else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
             estimated = ((amount / 14) * ndays) / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
+        } else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
             estimated = amount / 2;
-        }
-        else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
+        } else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
             estimated = amount / 3;
-        }
-        else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
+        } else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
             estimated = (amount / 6);
-        }
-        else if (periodEnum == BudgetPeriodEnum.DAILY) {
+        } else if (periodEnum == BudgetPeriodEnum.DAILY) {
             estimated = (amount * ndays) / 12;
         }
 
@@ -129,26 +125,19 @@ public class BudgetPeriods {
         double estimated = 0;
         if (periodEnum == BudgetPeriodEnum.MONTHLY) {
             estimated = amount * 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.YEARLY) {
+        } else if (periodEnum == BudgetPeriodEnum.YEARLY) {
             estimated = amount;
-        }
-        else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
+        } else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
             estimated = amount * 52;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
+        } else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
             estimated = amount * 26;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
+        } else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
             estimated = amount * 6;
-        }
-        else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
+        } else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
             estimated = amount * 4;
-        }
-        else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
+        } else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
             estimated = amount * 2;
-        }
-        else if (periodEnum == BudgetPeriodEnum.DAILY) {
+        } else if (periodEnum == BudgetPeriodEnum.DAILY) {
             estimated = amount * 365;
         }
 

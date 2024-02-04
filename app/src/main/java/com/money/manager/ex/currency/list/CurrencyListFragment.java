@@ -29,17 +29,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
@@ -61,21 +65,16 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-
 /**
- *  Currency list.
+ * Currency list.
  */
-public class CurrencyListFragment
-    extends BaseListFragment {
-
+public class CurrencyListFragment extends BaseListFragment {
     private static final int ID_LOADER_CURRENCY = 0;
 
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = Constants.NOT_SET;
 
-//    @Inject Lazy<CurrencyService> mCurrencyService;
+    //    @Inject Lazy<CurrencyService> mCurrencyService;
     private CurrencyService mCurrencyService;
 
     private String mAction = Intent.ACTION_EDIT;
@@ -84,7 +83,7 @@ public class CurrencyListFragment
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         MmexApplication.getApp().iocComponent.inject(this);
@@ -101,7 +100,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         // todo initializeSwipeToRefresh();
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -122,13 +121,13 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
-        AppSettings settings = new AppSettings(getActivity());
-        boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
+        final AppSettings settings = new AppSettings(getActivity());
+        final boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
@@ -136,10 +135,10 @@ public class CurrencyListFragment
         setHasOptionsMenu(true);
 
         // create and link the adapter
-        CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
+        final CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
         setListAdapter(adapter);
 
-        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
         setListShown(false);
         loadData();
@@ -151,18 +150,18 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         registerForContextMenu(getListView());
     }
 
     // Menu.
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
 
-        UIHelper ui = new UIHelper(getActivity());
+        final UIHelper ui = new UIHelper(getActivity());
 
         MenuItem item = menu.findItem(R.id.menu_update_exchange_rate);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_file_download));
@@ -173,16 +172,16 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
-        if (showOnlyUsed != null) {
+    public void onPrepareOptionsMenu(final Menu menu) {
+        final MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
+        if (null != showOnlyUsed) {
             showOnlyUsed.setChecked(mShowOnlyUsedCurrencies);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
         switch (item.getItemId()) {
             case R.id.menu_import_all_currencies:
@@ -213,33 +212,33 @@ public class CurrencyListFragment
     // Context menu
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         // take cursor and move into position
-        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+        final Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
         // set currency name
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
 
         // compose context menu
-        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
+        final String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
         }
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+    public boolean onContextItemSelected(final android.view.MenuItem item) {
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // take cursor and move to position
-        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+        final Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+        final int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
 
-        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+        final CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
         // check item selected
-        int selectedItem = item.getItemId();
+        final int selectedItem = item.getItemId();
         switch (selectedItem) {
             case 0: //EDIT
                 ui.startCurrencyEditActivity(currencyId);
@@ -247,14 +246,14 @@ public class CurrencyListFragment
 
             case 1: // Chart
                 // remember the device orientation and return to it after the chart.
-                this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+                mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
                 // add the currency information.
-                String symbol = cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL));
-                CurrencyService currencyService = this.getService();
-                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
+                final String symbol = cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL));
+                final CurrencyService currencyService = getService();
+                final String baseCurrencyCode = currencyService.getBaseCurrencyCode();
 
-                Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
+                final Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.putExtra(Currency.CURRENCY_SYMBOL, symbol);
                 intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
@@ -267,13 +266,13 @@ public class CurrencyListFragment
                 break;
 
             case 3: //DELETE
-                CurrencyService service = new CurrencyService(getActivity());
-                boolean used = service.isCurrencyUsed(currencyId);
+                final CurrencyService service = new CurrencyService(getActivity());
+                final boolean used = service.isCurrencyUsed(currencyId);
 
                 if (used) {
                     ui.notifyCurrencyCanNotBeDeleted();
                 } else {
-                    ContentValues contentValues = new ContentValues();
+                    final ContentValues contentValues = new ContentValues();
                     contentValues.put(Account.CURRENCYID, currencyId);
                     ui.showDialogDeleteCurrency(currencyId, info.position);
                 }
@@ -285,7 +284,7 @@ public class CurrencyListFragment
     // Search
 
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(final String newText) {
         // Called when the action bar search text has changed.  Update
         // the search filter, and restart the loader to do a new query
         // with this filter.
@@ -296,10 +295,10 @@ public class CurrencyListFragment
 
     @Override
     protected void setResult() {
-        Intent result;
+        final Intent result;
         if (Intent.ACTION_PICK.equals(mAction)) {
             // create intent
-            Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+            final Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
 
             for (int i = 0; i < getListView().getCount(); i++) {
                 if (getListView().isItemChecked(i)) {
@@ -317,17 +316,17 @@ public class CurrencyListFragment
                 }
             }
         }
-        getActivity().setResult(CurrencyListActivity.RESULT_CANCELED);
+        getActivity().setResult(Activity.RESULT_CANCELED);
     }
 
     @Override
     public void onFloatingActionButtonClicked() {
-        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+        final CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
         ui.startCurrencyEditActivity(null);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
         super.onListItemClick(l, v, position, id);
 
         // Show context menu only if we are displaying the list of currencies
@@ -342,36 +341,36 @@ public class CurrencyListFragment
 
     @Override
     public String getSubTitle() {
-        String result;
+        final String result;
 //        if (mShowOnlyUsedCurrencies) {
 //            result = getString(R.string.currencies_used);
 //        } else {
-            result = getString(R.string.currencies);
+        result = getString(R.string.currencies);
 //        }
         return result;
     }
 
     @Subscribe
-    public void onEvent(PriceDownloadedEvent event) {
-        CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
+    public void onEvent(final PriceDownloadedEvent event) {
+        final CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
         ui.onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
     @Subscribe
-    public void onEvent(ExchangeRateUpdateConfirmedEvent event) {
+    public void onEvent(final ExchangeRateUpdateConfirmedEvent event) {
         // proceed with rate update
         // todo: use event.updateAll parameter
 
         // Update only the visible currencies.
-        List<Currency> currencies = getVisibleCurrencies();
+        final List<Currency> currencies = getVisibleCurrencies();
 
         getService().updateExchangeRates(currencies);
     }
 
     @Subscribe
-    public void onEvent(CurrencyDeletionConfirmedEvent event) {
-        CurrencyRepository repo = new CurrencyRepository(getContext());
-        boolean success = repo.delete(event.currencyId);
+    public void onEvent(final CurrencyDeletionConfirmedEvent event) {
+        final CurrencyRepository repo = new CurrencyRepository(getContext());
+        final boolean success = repo.delete(event.currencyId);
         if (success) {
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
         }
@@ -382,17 +381,17 @@ public class CurrencyListFragment
     // Private methods.
 
     private List<Currency> getVisibleCurrencies() {
-        CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
-        if (adapter == null) return null;
+        final CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+        if (null == adapter) return null;
 
-        Cursor cursor = adapter.getCursor();
-        if (cursor == null) return null;
+        final Cursor cursor = adapter.getCursor();
+        if (null == cursor) return null;
 
         cursor.moveToPosition(Constants.NOT_SET);
-        List<Currency> currencies = new ArrayList<>();
+        final List<Currency> currencies = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            Currency currency = Currency.fromCursor(cursor);
+            final Currency currency = Currency.fromCursor(cursor);
             currencies.add(currency);
         }
 
@@ -402,36 +401,36 @@ public class CurrencyListFragment
     private CurrencyService getService() {
         // todo: redo the currency service to remove any UI interaction (dialog) and then use IoC.
 //        return mCurrencyService.get();
-        if (mCurrencyService == null) {
+        if (null == mCurrencyService) {
             mCurrencyService = new CurrencyService(getActivity());
         }
         return mCurrencyService;
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> initLoaderCallbacks() {
-        LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+        final LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                if (id == ID_LOADER_CURRENCY) {
+            public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
+                if (ID_LOADER_CURRENCY == id) {
                     String whereClause = "";
-                    ArrayList<String> arguments = new ArrayList<>();
+                    final ArrayList<String> arguments = new ArrayList<>();
 
                     // filter only used accounts?
                     if (mShowOnlyUsedCurrencies) {
                         // get the list of used currencies.
-                        CurrencyService currencyService = getService();
-                        List<Currency> usedCurrencies = currencyService.getUsedCurrencies();
-                        if (usedCurrencies != null && usedCurrencies.size() > 0) {
-                            ArrayList<String> symbols = new ArrayList<>();
-                            for (Currency currency : usedCurrencies) {
-                                if (currency == null) {
+                        final CurrencyService currencyService = getService();
+                        final List<Currency> usedCurrencies = currencyService.getUsedCurrencies();
+                        if (null != usedCurrencies && 0 < usedCurrencies.size()) {
+                            final ArrayList<String> symbols = new ArrayList<>();
+                            for (final Currency currency : usedCurrencies) {
+                                if (null == currency) {
                                     new UIHelper(getActivity()).showToast(R.string.currency_not_found);
                                 } else {
                                     symbols.add(currency.getCode());
                                 }
                             }
 
-                            MmxDatabaseUtils databaseUtils = new MmxDatabaseUtils(getActivity());
+                            final MmxDatabaseUtils databaseUtils = new MmxDatabaseUtils(getActivity());
                             whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
                                     databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                             arguments.addAll(symbols);
@@ -451,8 +450,8 @@ public class CurrencyListFragment
                     String[] selectionArgs = new String[arguments.size()];
                     selectionArgs = arguments.toArray(selectionArgs);
 
-                    CurrencyRepository repo = new CurrencyRepository(getActivity());
-                    Select query = new Select(repo.getAllColumns())
+                    final CurrencyRepository repo = new CurrencyRepository(getActivity());
+                    final Select query = new Select(repo.getAllColumns())
                             .where(whereClause, selectionArgs)
                             .orderBy("upper(" + Currency.CURRENCYNAME + ")");
 
@@ -463,24 +462,24 @@ public class CurrencyListFragment
             }
 
             @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                if (loader.getId() == ID_LOADER_CURRENCY) {
-                    CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+            public void onLoaderReset(final Loader<Cursor> loader) {
+                if (ID_LOADER_CURRENCY == loader.getId()) {
+                    final CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
 //                adapter.swapCursor(null);
                     adapter.changeCursor(null);
                 }
             }
 
             @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                if (loader.getId() == ID_LOADER_CURRENCY) {
-                    CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
+            public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
+                if (ID_LOADER_CURRENCY == loader.getId()) {
+                    final CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
 //                adapter.swapCursor(data);
                     adapter.changeCursor(data);
 
                     if (isResumed()) {
                         setListShown(true);
-                        if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
+                        if (null != data && 0 >= data.getCount() && null != getFloatingActionButton())
                             getFloatingActionButton().show(true);
                     } else {
                         setListShownNoAnimation(true);
@@ -496,10 +495,10 @@ public class CurrencyListFragment
     }
 
     private void loadData() {
-        getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, this.loaderCallbacks);
+        getLoaderManager().initLoader(ID_LOADER_CURRENCY, null, loaderCallbacks);
     }
 
     private void reloadData() {
-        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, this.loaderCallbacks);
+        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, loaderCallbacks);
     }
 }

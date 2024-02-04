@@ -31,6 +31,7 @@ public class DownloadWorker extends Worker {
     public DownloadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+
     @NonNull
     @Override
     public Result doWork() {

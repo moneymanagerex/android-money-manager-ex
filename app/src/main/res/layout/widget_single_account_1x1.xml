@@ -16,82 +16,81 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
     <!--android:weightSum="100"-->
 
     <ImageView
-        android:id="@+id/appLogoImage"
-        android:contentDescription="@string/logo"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="@dimen/mmx_activity_side_margin"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_logo_money_manager_ex"/>
+            android:id="@+id/appLogoImage"
+            android:contentDescription="@string/logo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="@dimen/mmx_activity_side_margin"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_logo_money_manager_ex"/>
     <!--android:scaleType="fitXY"-->
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/refreshDataPanel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/black20transparent"
-            android:gravity="center">
+                android:id="@+id/refreshDataPanel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/black20transparent"
+                android:gravity="center">
             <!--android:layout_weight="1"-->
             <!--android:layout_weight="60"-->
 
             <TextView
-                android:id="@+id/accountNameTextView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:gravity="center"
-                android:textColor="@color/material_grey_200"
-                android:textSize="14sp"
-                android:text="@string/account" />
+                    android:id="@+id/accountNameTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:gravity="center"
+                    android:textColor="@color/material_grey_200"
+                    android:textSize="14sp"
+                    android:text="@string/account"/>
             <!--textColorSecondary-->
 
             <TextView
-                android:id="@+id/balanceTextView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:textColor="@color/material_grey_300"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/amount"
-                android:layout_gravity="center"
-                android:gravity="center" />
+                    android:id="@+id/balanceTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:textColor="@color/material_grey_300"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/amount"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/newTransactionPanel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+                android:id="@+id/newTransactionPanel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal"
+                android:gravity="center">
             <!--android:layout_weight="40"-->
 
             <ImageButton
-                android:id="@+id/newTransactionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="4dp"
-                android:background="@null"
-                android:src="@drawable/ic_action_add_dark"
-                android:contentDescription="@string/new_transaction" />
+                    android:id="@+id/newTransactionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="4dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_action_add_dark"
+                    android:contentDescription="@string/new_transaction"/>
         </LinearLayout>
 
     </LinearLayout>

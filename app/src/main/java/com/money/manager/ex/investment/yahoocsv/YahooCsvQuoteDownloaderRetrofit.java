@@ -42,8 +42,8 @@ import timber.log.Timber;
  * Implementation of the Yahoo CSV quote provider using Retrofit.
  */
 public class YahooCsvQuoteDownloaderRetrofit
-    extends PriceUpdaterBase
-    implements ISecurityPriceUpdater {
+        extends PriceUpdaterBase
+        implements ISecurityPriceUpdater {
 
     /**
      * Tracks the number of records to update. Used to close progress binaryDialog when all done.

@@ -16,15 +16,14 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/buttonNewOperation"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:layout_gravity="center"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
+             android:id="@+id/buttonNewOperation"
+             android:layout_width="60dp"
+             android:layout_height="60dp"
+             android:layout_gravity="center"
+             android:layout_alignParentTop="true"
+             android:layout_alignParentRight="true"
 
-    android:src="@drawable/drawable_widget_add_transaction_flat"
-    android:background="#00000000"
-    android:scaleType="centerInside"
-    android:cropToPadding="false" />
+             android:src="@drawable/drawable_widget_add_transaction_flat"
+             android:background="#00000000"
+             android:scaleType="centerInside"
+             android:cropToPadding="false"/>

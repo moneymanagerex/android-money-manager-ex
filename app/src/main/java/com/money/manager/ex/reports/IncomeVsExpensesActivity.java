@@ -17,6 +17,7 @@
 package com.money.manager.ex.reports;
 
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,9 +27,8 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 public class IncomeVsExpensesActivity extends MmxBaseFragmentActivity {
 
     public static final int SUBTOTAL_MONTH = 99;
-
-    public boolean mIsDualPanel = false;
     private final IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
+    public boolean mIsDualPanel = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

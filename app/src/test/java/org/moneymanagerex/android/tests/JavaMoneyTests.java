@@ -16,10 +16,17 @@
  */
 package org.moneymanagerex.android.tests;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
 import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.domainmodel.Currency;
 
@@ -30,10 +37,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,9 +56,6 @@ import javax.money.format.MonetaryAmountFormat;
 import javax.money.format.MonetaryFormats;
 
 import timber.log.Timber;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 
 /**
  * Testing the new JavaMoney library and types. JSR 354
@@ -77,20 +79,20 @@ public class JavaMoneyTests {
     @Test
     public void createInstances() {
         // currency
-        CurrencyUnit euro = Monetary.getCurrency("EUR");
+        final CurrencyUnit euro = Monetary.getCurrency("EUR");
         assertThat(euro.getCurrencyCode(), equalTo("EUR"));
 
-        CurrencyUnit aussie = Monetary.getCurrency("AUD");
+        final CurrencyUnit aussie = Monetary.getCurrency("AUD");
 
         //MonetaryAmount amount = 20;
 
-        Money money = Money.of(150, euro);
+        final Money money = Money.of(150, euro);
         assertThat(money.getCurrency().getCurrencyCode(), equalTo("EUR"));
 
 //        Money division = money.divide(2.54);
 //        Log.d("test", division.toString());
 
-        FastMoney fast = FastMoney.of(250, euro);
+        final FastMoney fast = FastMoney.of(250, euro);
         assertThat(fast.getCurrency().getCurrencyCode(), equalTo("EUR"));
         assertThat(fast.getNumber().toString(), equalTo("250.00000"));
         assertThat(fast.getPrecision(), equalTo(2));
@@ -106,29 +108,29 @@ public class JavaMoneyTests {
 
     @Test
     public void simpleUse() {
-        CurrencyUnit euro = Monetary.getCurrency("EUR");
-        Money change = Money.of(2.54, euro);
+        final CurrencyUnit euro = Monetary.getCurrency("EUR");
+        final Money change = Money.of(2.54, euro);
         Money cash = Money.of(10, euro);
 
         cash = cash.add(change);
 
-        Money expected = Money.of(12.54, euro);
+        final Money expected = Money.of(12.54, euro);
         assertThat(cash, equalTo(expected));
     }
 
     @Test
     public void otherOperations() {
-        CurrencyUnit euro = Monetary.getCurrency("EUR");
+        final CurrencyUnit euro = Monetary.getCurrency("EUR");
 
-        MonetaryAmount amount = FastMoney.of(150, euro);
-        FastMoney money = FastMoney.of(150, "EUR");
+        final MonetaryAmount amount = FastMoney.of(150, euro);
+        final FastMoney money = FastMoney.of(150, "EUR");
         assertEquals(amount, money);
 
-        FastMoney third = money.divide(3);
+        final FastMoney third = money.divide(3);
         assertEquals(third, FastMoney.of(50, euro));
 
-        MonetaryOperator tenPercent = MonetaryOperators.percent(10);
-        FastMoney tenPercentValue = money.with(tenPercent);
+        final MonetaryOperator tenPercent = MonetaryOperators.percent(10);
+        final FastMoney tenPercentValue = money.with(tenPercent);
         assertEquals(tenPercentValue, FastMoney.of(15, "EUR"));
 
         // excellent comparison functions:
@@ -172,9 +174,9 @@ public class JavaMoneyTests {
 //        Log.d("test", "the end, debug manually");
 //    }
 
-//    @Test
+    //    @Test
     public void collections() {
-        List<MonetaryAmount> amounts = new ArrayList<>();
+        final List<MonetaryAmount> amounts = new ArrayList<>();
         amounts.add(Money.of(2, "EUR"));
         amounts.add(Money.of(42, "USD"));
         amounts.add(Money.of(7, "USD"));
@@ -209,17 +211,17 @@ public class JavaMoneyTests {
 //    }
 
     private void prepareCurrencies() {
-        Context context = UnitTestHelper.getContext();
-        CurrencyRepository repo = new CurrencyRepository(context);
+        final Context context = UnitTestHelper.getContext();
+        final CurrencyRepository repo = new CurrencyRepository(context);
 
         // set AUD rate to 2.0
-        Currency aud = repo.loadCurrency("AUD");
+        final Currency aud = repo.loadCurrency("AUD");
         aud.setConversionRate(2.0);
         boolean saved = repo.update(aud);
         assertThat(saved, is(true));
 
         // Set USD to 1.5
-        Currency usd = repo.loadCurrency("USD");
+        final Currency usd = repo.loadCurrency("USD");
         usd.setConversionRate(1.5);
         saved = repo.update(usd);
         assertThat(saved, is(true));
@@ -230,12 +232,12 @@ public class JavaMoneyTests {
     public void valueConversion() {
         // Given
 
-        MonetaryAmount money = FastMoney.of(235.243, "EUR");
+        final MonetaryAmount money = FastMoney.of(235.243, "EUR");
 
         // When
 
-        String text = money.toString();
-        MonetaryAmount newAmount = FastMoney.parse(text);
+        final String text = money.toString();
+        final MonetaryAmount newAmount = FastMoney.parse(text);
 
 //        double x = money.getNumber().doubleValueExact();  -> 235.243
 //        double y = money.getNumber().doubleValue();       -> 235.24300
@@ -250,12 +252,12 @@ public class JavaMoneyTests {
     public void formatting() {
         // Given
 
-        MonetaryAmount amount = FastMoney.of(3162.24523, "EUR");
-        MonetaryAmountFormat format = MonetaryFormats.getAmountFormat(Locale.GERMANY);
+        final MonetaryAmount amount = FastMoney.of(3162.24523, "EUR");
+        final MonetaryAmountFormat format = MonetaryFormats.getAmountFormat(Locale.GERMANY);
 
         // When
 
-        String actual = format.format(amount);
+        final String actual = format.format(amount);
 
         // Then
 
@@ -266,24 +268,24 @@ public class JavaMoneyTests {
     public void extremeValues() {
         // todo: These values have XXX as currency. Use this when needing numbers only.
 
-        CurrencyUnit xxx = Monetary.getCurrency("XXX");
+        final CurrencyUnit xxx = Monetary.getCurrency("XXX");
 
-        MonetaryAmount minimum = FastMoney.MIN_VALUE;
+        final MonetaryAmount minimum = FastMoney.MIN_VALUE;
 //        assertThat(minimum, FastMoney.of(-92233720368547.75808, xxx)); <- overflow
         assertEquals(minimum.toString(), "XXX -92233720368547.75808");
 
-        MonetaryAmount maximum = FastMoney.MAX_VALUE;
+        final MonetaryAmount maximum = FastMoney.MAX_VALUE;
         assertEquals(maximum.toString(), "XXX 92233720368547.75807");
 
-        MonetaryAmount zero = FastMoney.of(0, xxx);
+        final MonetaryAmount zero = FastMoney.of(0, xxx);
         assertThat(zero.isZero(), is(true));
 
-        MonetaryAmount random = FastMoney.of(358.46, xxx);
-        MonetaryAmount copy  = FastMoney.from(random);
+        final MonetaryAmount random = FastMoney.of(358.46, xxx);
+        final MonetaryAmount copy = FastMoney.from(random);
         assertEquals(copy, random);
 
         // change currency
-        MonetaryAmount euros = FastMoney.of(random.getNumber(), "EUR");
+        final MonetaryAmount euros = FastMoney.of(random.getNumber(), "EUR");
         assertThat(euros.getNumber().doubleValueExact(), equalTo(random.getNumber().doubleValueExact()));
         assertNotEquals(euros.getCurrency(), random.getCurrency());
 
@@ -295,18 +297,18 @@ public class JavaMoneyTests {
 
     @Test
     public void rounding() {
-        CurrencyUnit euro = Monetary.getCurrency("EUR");
+        final CurrencyUnit euro = Monetary.getCurrency("EUR");
 
         // Rounding to currency defaults.
 
-        MonetaryAmount amount = FastMoney.of(150.545, euro);
-        MonetaryRounding rounding = Monetary.getRounding(euro);
-        MonetaryAmount rounded = amount.divide(4.5).with(rounding);
+        final MonetaryAmount amount = FastMoney.of(150.545, euro);
+        final MonetaryRounding rounding = Monetary.getRounding(euro);
+        final MonetaryAmount rounded = amount.divide(4.5).with(rounding);
         assertThat(rounded.toString(), equalTo("EUR 33.45000"));
 
         // Custom. Arithmetic.
-        MonetaryRounding custom = Monetary.getRounding(RoundingQueryBuilder.of()
-            .setScale(2).set(RoundingMode.HALF_UP).build());
+        final MonetaryRounding custom = Monetary.getRounding(RoundingQueryBuilder.of()
+                .setScale(2).set(RoundingMode.HALF_UP).build());
         assertThat(amount.with(custom).toString(), equalTo("EUR 150.55000"));
 
         // Custom. Cash.
@@ -314,7 +316,7 @@ public class JavaMoneyTests {
 //            .set(RoundingType.CASH));
 
         // Default
-        MonetaryRounding defaultRounding = Monetary.getDefaultRounding();
+        final MonetaryRounding defaultRounding = Monetary.getDefaultRounding();
         assertThat(amount.with(defaultRounding).toString(), equalTo("EUR 150.54000"));
     }
 
@@ -340,7 +342,7 @@ public class JavaMoneyTests {
 
     @Test
     public void canUseJavaMoney() {
-        CurrencyUnit usd = Monetary.getCurrency("USD");
+        final CurrencyUnit usd = Monetary.getCurrency("USD");
 
         assertThat(usd, notNullValue());
         assertEquals(usd.getCurrencyCode(), "USD");
@@ -350,15 +352,15 @@ public class JavaMoneyTests {
 
     @Test
     public void conversionToString() {
-        CurrencyUnit euro = Monetary.getCurrency("EUR");
+        final CurrencyUnit euro = Monetary.getCurrency("EUR");
 
-        Money cash = Money.of(20, euro);
+        final Money cash = Money.of(20, euro);
 
-        String cashString = cash.toString(); // EUR 20
+        final String cashString = cash.toString(); // EUR 20
         // debug to inspect the value
 
-        Number cashNumber = cash.getNumber();
-        BigDecimal cashBig = cash.getNumberStripped();
+        final Number cashNumber = cash.getNumber();
+        final BigDecimal cashBig = cash.getNumberStripped();
 
         Timber.d("stop here to inspect values");
     }

@@ -64,7 +64,7 @@ import info.javaperformance.money.MoneyFactory;
  * Edit Account activity/form
  */
 public class AccountEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String KEY_ACCOUNT_ENTITY = "AccountEditActivity:AccountEntity";
     public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
@@ -75,21 +75,18 @@ public class AccountEditActivity
     // Constant
     private static final int PLUS = 0;
     private static final int MINUS = 1;
-
-    private Account mAccount;
-
     private final MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils();
-
+    // Activity members
+    @State
+    String mCurrencyName;
+    @State
+    boolean mIsDefault;
+    private Account mAccount;
     // Action type
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
-
-    // Activity members
-    @State String mCurrencyName;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
-
     private AccountEditViewHolder mViewHolder;
-    @State boolean mIsDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,8 +274,8 @@ public class AccountEditActivity
         mViewHolder.imageViewAccountFav.setTag(mAccount.getFavorite().toString());
 
         int imageResource = mAccount.getFavorite()
-            ? R.string.ic_star
-            : R.string.ic_star_outline;
+                ? R.string.ic_star
+                : R.string.ic_star_outline;
         mViewHolder.imageViewAccountFav.setText(imageResource);
     }
 
@@ -550,6 +547,7 @@ public class AccountEditActivity
 
     /**
      * update data into database
+     *
      * @return true if update data successful
      */
     private boolean saveAccount() {
@@ -569,6 +567,7 @@ public class AccountEditActivity
 
     /**
      * Select the account identified by accountId
+     *
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
      */
@@ -600,6 +599,7 @@ public class AccountEditActivity
 
     /**
      * Select info for current currency
+     *
      * @param currencyId Id of the currency to select
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */

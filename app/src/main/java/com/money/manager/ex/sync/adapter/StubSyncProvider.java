@@ -27,7 +27,7 @@ import android.net.Uri;
  * all methods
  */
 public class StubSyncProvider
-    extends ContentProvider {
+        extends ContentProvider {
 
     /*
      * Always return true, indicating that the
@@ -37,6 +37,7 @@ public class StubSyncProvider
     public boolean onCreate() {
         return true;
     }
+
     /*
      * Return no type for MIME type
      */
@@ -44,6 +45,7 @@ public class StubSyncProvider
     public String getType(Uri uri) {
         return null;
     }
+
     /*
      * query() always returns no results
      *
@@ -57,6 +59,7 @@ public class StubSyncProvider
             String sortOrder) {
         return null;
     }
+
     /*
      * insert() always returns null (no URI)
      */
@@ -64,6 +67,7 @@ public class StubSyncProvider
     public Uri insert(Uri uri, ContentValues values) {
         return null;
     }
+
     /*
      * delete() always returns "no rows affected" (0)
      */
@@ -71,6 +75,7 @@ public class StubSyncProvider
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0;
     }
+
     /*
      * update() always returns "no rows affected" (0)
      */

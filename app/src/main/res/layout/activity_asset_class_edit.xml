@@ -16,23 +16,23 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_marginLeft="@dimen/mmx_activity_side_margin"
-    android:layout_marginRight="@dimen/mmx_activity_side_margin"
-    android:orientation="vertical">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/mmx_activity_side_margin"
+        android:layout_marginRight="@dimen/mmx_activity_side_margin"
+        android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment"
-        android:name="com.money.manager.ex.assetallocation.AssetClassEditFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        tools:layout="@layout/fragment_asset_class_edit"
-        android:layout_weight="1" />
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/fragment"
+              android:name="com.money.manager.ex.assetallocation.AssetClassEditFragment"
+              android:layout_width="fill_parent"
+              android:layout_height="0dp"
+              tools:layout="@layout/fragment_asset_class_edit"
+              android:layout_weight="1"/>
 
     <!--<include layout="@layout/action_buttons" />-->
 

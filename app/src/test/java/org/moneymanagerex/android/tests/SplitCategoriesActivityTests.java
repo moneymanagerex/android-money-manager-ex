@@ -17,39 +17,37 @@
 
 package org.moneymanagerex.android.tests;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import android.content.Context;
 import android.content.Intent;
-import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
-import com.money.manager.ex.BuildConfig;
+import androidx.fragment.app.Fragment;
+
 import com.money.manager.ex.R;
-import com.money.manager.ex.transactions.SplitCategoriesActivity;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.transactions.SplitCategoriesActivity;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.parceler.Parcels;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 
 /**
@@ -72,17 +70,17 @@ public class SplitCategoriesActivityTests {
         UnitTestHelper.setupContentProvider();
         // todo: insert any data here, if needed.
 
-        this.controller = UnitTestHelper.getController(SplitCategoriesActivity.class);
+        controller = UnitTestHelper.getController(SplitCategoriesActivity.class);
     }
 
     @After
     public void tearDown() {
-        this.controller.destroy();
+        controller.destroy();
     }
 
     @Test
     public void activityRunsStandalone() {
-        SplitCategoriesActivity activity = UnitTestHelper.getActivity(this.controller);
+        final SplitCategoriesActivity activity = UnitTestHelper.getActivity(controller);
         assertThat(activity, notNullValue());
     }
 
@@ -94,12 +92,12 @@ public class SplitCategoriesActivityTests {
     public void displayCurrencyMatchesTheAccount() {
         // set up
 
-        Intent intent = createIntent();
-        Money enteredAmount = MoneyFactory.fromString("5.38");
+        final Intent intent = createIntent();
+        final Money enteredAmount = MoneyFactory.fromString("5.38");
 
         // run
 
-        SplitCategoriesActivity activity = Robolectric
+        final SplitCategoriesActivity activity = Robolectric
                 .buildActivity(SplitCategoriesActivity.class, intent)
                 .create().visible().start().get();
 
@@ -109,10 +107,10 @@ public class SplitCategoriesActivityTests {
 //                .isEqualTo(SplitCategory.class.getSimpleName());
 
         // enter number
-        Fragment fragment = activity.getSupportFragmentManager().getFragments().get(0);
+        final Fragment fragment = activity.getSupportFragmentManager().getFragments().get(0);
 //        assertThat(fragment).isNotNull();
         // get amount text box.
-        View view = fragment.getView().findViewById(R.id.editTextTotAmount);
+        final View view = fragment.getView().findViewById(R.id.editTextTotAmount);
 //        assertThat(view).isNotNull();
 
         // click to open input binaryDialog here
@@ -125,7 +123,7 @@ public class SplitCategoriesActivityTests {
         // view must be text view.
 //        assertThat(view.getClass()).isEqualTo(RobotoTextView.class);
 //        assertThat((String) view.getTag()).isEqualTo(enteredAmount.toString());
-        String actualAmountText = ((TextView) view).getText().toString();
+        final String actualAmountText = ((TextView) view).getText().toString();
 //        assertThat(actualAmountText).isNotEqualTo(enteredAmount.toString());
 //        assertThat(actualAmountText).isEqualTo("€ 5.38");
     }
@@ -134,17 +132,17 @@ public class SplitCategoriesActivityTests {
         // Recurring transactions
         // TableBudgetSplitTransactions.class.getSimpleName()
         // Account Transactions
-        String datasetName = SplitCategory.class.getSimpleName();
-        TransactionTypes transactionType = TransactionTypes.Withdrawal;
-        ArrayList<ITransactionEntity> mSplitTransactions = null;
-        ArrayList<ITransactionEntity> mSplitTransactionsDeleted = null;
-        int currencyId = 2;
+        final String datasetName = SplitCategory.class.getSimpleName();
+        final TransactionTypes transactionType = TransactionTypes.Withdrawal;
+        final ArrayList<ITransactionEntity> mSplitTransactions = null;
+        final ArrayList<ITransactionEntity> mSplitTransactionsDeleted = null;
+        final int currencyId = 2;
 
-        Context context = UnitTestHelper.getContext();
+        final Context context = UnitTestHelper.getContext();
 
         // this is a copy of production intent code
 
-        Intent intent = new Intent(context, SplitCategoriesActivity.class);
+        final Intent intent = new Intent(context, SplitCategoriesActivity.class);
         intent.putExtra(SplitCategoriesActivity.KEY_DATASET_TYPE, datasetName);
         intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));

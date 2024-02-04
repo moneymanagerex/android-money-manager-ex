@@ -39,17 +39,18 @@ import org.hamcrest.TypeSafeMatcher;
  * https://github.com/designatednerd/Wino/blob/master/app/src/androidTest/java/com/designatednerd/wino/ui/EspressoHelpers.java
  * Created by Alen Siljak on 24/09/2015.
  */
-public class EspressoHelpers {
+public enum EspressoHelpers {
+    ;
 
     /**************
      * TEXT ENTRY *
      **************/
 
-    public static void enterTextIntoViewWithHint(String aTextToEnter, @StringRes int aHintResID) {
+    public static void enterTextIntoViewWithHint(final String aTextToEnter, @StringRes final int aHintResID) {
         onView(withHint(aHintResID)).perform(typeText(aTextToEnter));
     }
 
-    public static void enterTextIntoViewWithID(String aTextToEnter, @IdRes int aViewID) {
+    public static void enterTextIntoViewWithID(final String aTextToEnter, @IdRes final int aViewID) {
         onView(withId(aViewID)).perform(typeText(aTextToEnter));
     }
 
@@ -57,7 +58,7 @@ public class EspressoHelpers {
      * SCROLLING *
      *************/
 
-    public static void scrollToViewWithID(@IdRes int aViewIDRes) {
+    public static void scrollToViewWithID(@IdRes final int aViewIDRes) {
         onView(withId(aViewIDRes)).perform(scrollTo());
     }
 
@@ -65,15 +66,15 @@ public class EspressoHelpers {
      * TAPPING *
      ***********/
 
-    public static void tapViewWithText(String aText) {
+    public static void tapViewWithText(final String aText) {
         onView(withText(aText)).perform(click());
     }
 
-    public static void tapViewWithText(@StringRes int aTextResID) {
+    public static void tapViewWithText(@StringRes final int aTextResID) {
         onView(withText(aTextResID)).perform(click());
     }
 
-    public static void tapViewWithID(@IdRes int aViewResID) {
+    public static void tapViewWithID(@IdRes final int aViewResID) {
         onView(withId(aViewResID)).perform(click());
     }
 
@@ -81,7 +82,7 @@ public class EspressoHelpers {
      * RECYCLERVIEW STUFF *
      **********************/
 
-    public static Matcher<View> withRecyclerView(@IdRes int viewId) {
+    public static Matcher<View> withRecyclerView(@IdRes final int viewId) {
         return allOf(isAssignableFrom(RecyclerView.class), withId(viewId));
     }
 
@@ -91,18 +92,19 @@ public class EspressoHelpers {
     /**
      * Allows performing actions on a RecyclerView item with a given title. Mostly useful for
      * situations where all titles are guaranteed to be unique
-     * @param aParentRecyclerViewID     The resource ID of the RecyclerView
-     * @param aRecyclerViewTextViewID   The resource ID of the text view where the title should be displayed
-     * @param title                     The title which should be displayed, as a string
+     *
+     * @param aParentRecyclerViewID   The resource ID of the RecyclerView
+     * @param aRecyclerViewTextViewID The resource ID of the text view where the title should be displayed
+     * @param title                   The title which should be displayed, as a string
      * @return A ViewInteraction where actions will be performed on a row matching the given parameters.
      */
-    public static ViewInteraction onRecyclerItemViewWithTitle(@IdRes int aParentRecyclerViewID,
-                                                              @IdRes int aRecyclerViewTextViewID,
-                                                              String title) {
+    public static ViewInteraction onRecyclerItemViewWithTitle(@IdRes final int aParentRecyclerViewID,
+                                                              @IdRes final int aRecyclerViewTextViewID,
+                                                              final String title) {
 
-        Matcher<View> hasRecyclerViewAsParent = withParent(withRecyclerView(aParentRecyclerViewID));
-        Matcher<View> hasChildWithTitleInTextView = withChild(allOf(withId(aRecyclerViewTextViewID), withText(title)));
-        Matcher<View> hasChildWithChildWithTitleInTextView = withChild(hasChildWithTitleInTextView);
+        final Matcher<View> hasRecyclerViewAsParent = withParent(withRecyclerView(aParentRecyclerViewID));
+        final Matcher<View> hasChildWithTitleInTextView = withChild(allOf(withId(aRecyclerViewTextViewID), withText(title)));
+        final Matcher<View> hasChildWithChildWithTitleInTextView = withChild(hasChildWithTitleInTextView);
 
         return onView(allOf(hasRecyclerViewAsParent,
                 hasChildWithChildWithTitleInTextView));
@@ -113,17 +115,17 @@ public class EspressoHelpers {
     private static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
         return new TypeSafeMatcher<View>() {
             @Override
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("with " + childPosition + " child view of type parentMatcher");
             }
 
             @Override
-            public boolean matchesSafely(View view) {
+            public boolean matchesSafely(final View view) {
                 if (!(view.getParent() instanceof ViewGroup)) {
                     return parentMatcher.matches(view.getParent());
                 }
 
-                ViewGroup group = (ViewGroup) view.getParent();
+                final ViewGroup group = (ViewGroup) view.getParent();
                 return parentMatcher.matches(view.getParent()) && group.getChildAt(childPosition).equals(view);
             }
         };
@@ -131,13 +133,14 @@ public class EspressoHelpers {
 
     /**
      * Creates a view interaction on a RecylerView's child at a given position.
+     *
      * @param aParentRecyclerViewID The resource ID of the parent recycler view
      * @param aPosition             The index of the subview you wish to examine (ie, the row)
      * @return A ViewInteraction where actions will be performed on the row's parent view at the
-     *         given index.
+     * given index.
      */
-    public static ViewInteraction onRecyclerItemViewAtPosition(@IdRes int aParentRecyclerViewID,
-                                                               int aPosition) {
+    public static ViewInteraction onRecyclerItemViewAtPosition(@IdRes final int aParentRecyclerViewID,
+                                                               final int aPosition) {
 
 
         return onView(nthChildOf(withRecyclerView(aParentRecyclerViewID), aPosition));

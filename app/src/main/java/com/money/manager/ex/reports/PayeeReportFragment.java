@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.Loader;
+
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -169,7 +170,7 @@ public class PayeeReportFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());
         //data to compose builder
-        String[] projectionIn = new String[]{ ViewMobileData.PAYEEID + " AS _id",
+        String[] projectionIn = new String[]{ViewMobileData.PAYEEID + " AS _id",
                 ViewMobileData.PAYEEID, ViewMobileData.Payee,
                 "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
         String selection = ViewMobileData.Status + "<>'V' AND " +

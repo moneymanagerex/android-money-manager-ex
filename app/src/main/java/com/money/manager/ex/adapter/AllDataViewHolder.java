@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
+ *
  */
 public class AllDataViewHolder {
     public LinearLayout linDate;

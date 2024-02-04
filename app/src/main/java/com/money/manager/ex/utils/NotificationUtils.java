@@ -64,17 +64,17 @@ public class NotificationUtils {
             resourceId = resourceField.getInt(resourceField);
             channelName = context.getString(resourceId);
         } catch (Exception e) {
-            Timber.e(e, "Unable to found resourceId: ["+channelId+"]");
+            Timber.e(e, "Unable to found resourceId: [" + channelId + "]");
             channelName = channelId;
         }
 
         try {
-            resourceField = R.string.class.getDeclaredField(channelId+"__description");
+            resourceField = R.string.class.getDeclaredField(channelId + "__description");
             resourceId = resourceField.getInt(resourceField);
             channelDesc = context.getString(resourceId);
 
         } catch (Exception e) {
-            Timber.e(e, "Unable to found resourceId: ["+channelId+"__description]");
+            Timber.e(e, "Unable to found resourceId: [" + channelId + "__description]");
             channelDesc = channelName;
         }
 

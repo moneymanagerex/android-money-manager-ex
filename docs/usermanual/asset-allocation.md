@@ -1,10 +1,11 @@
 **Obsolete. Asset management is removed from 2023 series**
 
-see https://github.com/moneymanagerex/android-money-manager-ex/commit/e64368d0f0588614fca268fee9e17c6c77312f5b 
+see https://github.com/moneymanagerex/android-money-manager-ex/commit/e64368d0f0588614fca268fee9e17c6c77312f5b
 
 # Asset Allocation
 
-Asset Allocation is an important concept in investment. To use the Asset Allocation module in MoneyManagerEx (MMEX), you should know the basics of asset allocation and rebalancing, and have experience setting up and maintaining an asset allocation model. For some good articles on the topic see [Related links](#related) section below.
+Asset Allocation is an important concept in investment. To use the Asset Allocation module in MoneyManagerEx (MMEX), you should know the basics of asset allocation and rebalancing,
+and have experience setting up and maintaining an asset allocation model. For some good articles on the topic see [Related links](#related) section below.
 
 The benefits of Asset Allocation module in MMEX is that it provides instantaneous feedback about your asset allocation based on the currency exchange rates and stock prices.
 
@@ -22,18 +23,19 @@ Rotating the device into landscape mode will display the full version of the Ass
 
 # Editing
 
-For the purpose of the manual, we will use a simple allocation of 
+For the purpose of the manual, we will use a simple allocation of
 
 - 60% stocks, of which
-  - 30% international stocks (50% of the parent allocation)
-  - 30% domestic stocks
+    - 30% international stocks (50% of the parent allocation)
+    - 30% domestic stocks
 - 37% bonds
 - 3% cash
 
 ## Sub-Allocations
 
-Each Asset Class can have sub-classes as shown for stocks in this case. 
-When an asset class has sub-classes, its allocation and value will be calculated by adding together its sub-classes. Manually entered allocation value will not be used in this case.
+Each Asset Class can have sub-classes as shown for stocks in this case.
+When an asset class has sub-classes, its allocation and value will be calculated by adding together its sub-classes. Manually entered allocation value will not be used in this
+case.
 
 ## Editing Allocations
 
@@ -45,7 +47,8 @@ An allocation record simply needs a name and the allocation amount. The allocati
 
 ## Cash
 
-Cash asset class will be created automatically and can be edited later to set the allocation amount. At the moment, Cash asset class will use the cash (starting) amounts from investment accounts, converted to the base currency.
+Cash asset class will be created automatically and can be edited later to set the allocation amount. At the moment, Cash asset class will use the cash (starting) amounts from
+investment accounts, converted to the base currency.
 
 ## Adding Stocks
 
@@ -63,6 +66,7 @@ Asset Allocation can be previewed either by tapping the report icon while in Ass
 
 The preview will recalculate the allocations, the current values of asset classes, and the differences to the set allocations.
 The parameters that affect the asset allocation are
+
 - stock prices
 - currency exchange values
 

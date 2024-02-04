@@ -26,24 +26,31 @@ import info.javaperformance.money.Money;
  * Common interface for split transactions and recurring splits.
  */
 public interface ISplitTransaction
-    extends IEntity {
+        extends IEntity {
 
     Integer getId();
+
     void setId(int splitTransId);
+
     boolean hasId();
 
     Integer getAccountId();
+
     void setAccountId(int value);
 
     Money getAmount();
+
     void setAmount(Money splitTransAmount);
 
     String getNotes();
+
     void setNotes(String value);
 
     Integer getCategoryId();
+
     void setCategoryId(int categoryId);
 
     TransactionTypes getTransactionType(TransactionTypes parentTransactionType);
+
     void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType);
 }

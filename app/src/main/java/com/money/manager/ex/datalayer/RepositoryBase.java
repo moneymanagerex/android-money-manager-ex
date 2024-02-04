@@ -42,15 +42,15 @@ import timber.log.Timber;
  * Contains common code for repositories.
  */
 public abstract class RepositoryBase<T extends EntityBase>
-    extends Dataset {
+        extends Dataset {
+
+    private final Context context;
 
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
         super(source, type, basePath);
 
         this.context = context.getApplicationContext();
     }
-
-    private final Context context;
 
     public int count(String selection, String[] args) {
         Cursor c = openCursor(null, selection, args);
@@ -73,10 +73,10 @@ public abstract class RepositoryBase<T extends EntityBase>
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
         try {
             Cursor cursor = getContext().getContentResolver().query(getUri(),
-                projection,
-                selection,
-                args,
-                sort);
+                    projection,
+                    selection,
+                    args,
+                    sort);
             return cursor;
         } catch (SQLiteDiskIOException ex) {
             Timber.e(ex, "querying database");
@@ -90,11 +90,12 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Fetch only the first result
+     *
      * @param resultType
      * @param projection
      * @param selection
      * @param args
-     * @param sort Sort order to apply to the query results from which the first will be returned.
+     * @param sort       Sort order to apply to the query results from which the first will be returned.
      * @return
      */
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
@@ -172,9 +173,10 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Generic update method.
-     * @param entity    Entity values to store.
-     * @param where     Condition for entity selection.
-     * @return  Boolean indicating whether the operation was successful.
+     *
+     * @param entity Entity values to store.
+     * @param where  Condition for entity selection.
+     * @return Boolean indicating whether the operation was successful.
      */
     protected boolean update(EntityBase entity, String where) {
         return update(entity, where, null);
@@ -199,7 +201,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             Timber.w("update failed, %s, values: %s", this.getUri(), entity.contentValues);
         }
 
-        return  result;
+        return result;
     }
 
     /**
@@ -207,6 +209,7 @@ public abstract class RepositoryBase<T extends EntityBase>
      * Ref:
      * http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
      * http://www.grokkingandroid.com/android-tutorial-using-content-providers/
+     *
      * @param entities array of entities to update in a transaction
      * @return results of the bulk update
      */
@@ -216,7 +219,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
-                .applyBatch(MmxContentProvider.getAuthority(), operations);
+                    .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             Timber.e(e, "bulk updating");
         }
@@ -225,8 +228,8 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     protected int delete(String where, String[] args) {
         int result = getContext().getContentResolver().delete(this.getUri(),
-            where,
-            args
+                where,
+                args
         );
         return result;
     }
@@ -237,7 +240,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
-                .applyBatch(MmxContentProvider.getAuthority(), operations);
+                    .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             Timber.e(e, "bulk updating");
         }

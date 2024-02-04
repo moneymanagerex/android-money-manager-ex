@@ -16,9 +16,9 @@ a {
     text-decoration: none;
 }
 
-    a:hover {
-        text-decoration: underline;
-    }
+a:hover {
+    text-decoration: underline;
+}
 
 .btn {
     display: inline-block;
@@ -32,16 +32,16 @@ a {
     transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
-    .btn + .btn {
-        margin-left: 1rem;
-    }
+.btn + .btn {
+    margin-left: 1rem;
+}
 
-    .btn:hover {
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.3);
-    }
+.btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
 
 @media screen and (min-width: 64em) {
     .btn {
@@ -64,10 +64,10 @@ a {
         font-size: 0.9rem;
     }
 
-        .btn + .btn {
-            margin-top: 1rem;
-            margin-left: 0;
-        }
+    .btn + .btn {
+        margin-top: 1rem;
+        margin-left: 0;
+    }
 }
 
 .page-header {
@@ -182,49 +182,49 @@ a {
     border-radius: 0.3rem;
 }
 
-    .main-content pre > code {
-        padding: 0;
-        margin: 0;
-        font-size: 0.9rem;
-        color: #567482;
-        word-break: normal;
-        white-space: pre;
-        background: transparent;
-        border: 0;
-    }
+.main-content pre > code {
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #567482;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+}
 
 .main-content .highlight {
     margin-bottom: 1rem;
 }
 
-    .main-content .highlight pre {
-        margin-bottom: 0;
-        word-break: normal;
-    }
+.main-content .highlight pre {
+    margin-bottom: 0;
+    word-break: normal;
+}
 
-    .main-content .highlight pre, .main-content pre {
-        padding: 0.8rem;
-        overflow: auto;
-        font-size: 0.9rem;
-        line-height: 1.45;
-        border-radius: 0.3rem;
-    }
+.main-content .highlight pre, .main-content pre {
+    padding: 0.8rem;
+    overflow: auto;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    border-radius: 0.3rem;
+}
 
-        .main-content pre code, .main-content pre tt {
-            display: inline;
-            max-width: initial;
-            padding: 0;
-            margin: 0;
-            overflow: initial;
-            line-height: inherit;
-            word-wrap: normal;
-            background-color: transparent;
-            border: 0;
-        }
+.main-content pre code, .main-content pre tt {
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+}
 
-            .main-content pre code:before, .main-content pre code:after, .main-content pre tt:before, .main-content pre tt:after {
-                content: normal;
-            }
+.main-content pre code:before, .main-content pre code:after, .main-content pre tt:before, .main-content pre tt:after {
+    content: normal;
+}
 
 .main-content ul, .main-content ol {
     margin-top: 0;
@@ -237,13 +237,13 @@ a {
     border-left: 0.3rem solid #dce6f0;
 }
 
-    .main-content blockquote > :first-child {
-        margin-top: 0;
-    }
+.main-content blockquote > :first-child {
+    margin-top: 0;
+}
 
-    .main-content blockquote > :last-child {
-        margin-bottom: 0;
-    }
+.main-content blockquote > :last-child {
+    margin-bottom: 0;
+}
 
 .main-content table {
     display: block;
@@ -253,30 +253,30 @@ a {
     word-break: keep-all;
 }
 
-    .main-content table th {
-        font-weight: bold;
-    }
+.main-content table th {
+    font-weight: bold;
+}
 
-    .main-content table th, .main-content table td {
-        padding: 0.5rem 1rem;
-        border: 1px solid #e9ebec;
-    }
+.main-content table th, .main-content table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e9ebec;
+}
 
 .main-content dl {
     padding: 0;
 }
 
-    .main-content dl dt {
-        padding: 0;
-        margin-top: 1rem;
-        font-size: 1rem;
-        font-weight: bold;
-    }
+.main-content dl dt {
+    padding: 0;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
 
-    .main-content dl dd {
-        padding: 0;
-        margin-bottom: 1rem;
-    }
+.main-content dl dd {
+    padding: 0;
+    margin-bottom: 1rem;
+}
 
 .main-content hr {
     height: 2px;

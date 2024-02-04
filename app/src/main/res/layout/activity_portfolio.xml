@@ -16,23 +16,23 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.money.manager.ex.investment.PortfolioActivity">
-
-    <include layout="@layout/toolbar" />
-
-    <LinearLayout
-        android:id="@+id/content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/mmx_activity_vertical_margin"
-        android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
-        android:paddingRight="@dimen/mmx_activity_horizontal_margin"
-        android:paddingTop="@dimen/mmx_activity_vertical_margin"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        tools:context="com.money.manager.ex.investment.PortfolioActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/mmx_activity_vertical_margin"
+            android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
+            android:paddingRight="@dimen/mmx_activity_horizontal_margin"
+            android:paddingTop="@dimen/mmx_activity_vertical_margin"
+            android:orientation="vertical"/>
 
 </LinearLayout>

@@ -20,15 +20,15 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_search_transaction"
-        android:icon="?attr/ic_action_search"
-        android:title="@string/search"
-        android:visible="false"
-        app:showAsAction="ifRoom|withText"/>
+            android:id="@+id/menu_search_transaction"
+            android:icon="?attr/ic_action_search"
+            android:title="@string/search"
+            android:visible="false"
+            app:showAsAction="ifRoom|withText"/>
 
     <item
-        android:id="@+id/menu_export_to_csv"
-        android:title="@string/export_data_to_csv"
-        android:visible="false"/>
+            android:id="@+id/menu_export_to_csv"
+            android:title="@string/export_data_to_csv"
+            android:visible="false"/>
 
 </menu>

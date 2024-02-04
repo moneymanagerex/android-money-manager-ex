@@ -24,7 +24,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.Date;
 
@@ -37,15 +36,15 @@ import info.javaperformance.money.Money;
  * Note: This data is readonly! Records can not be created or updated.
  */
 public class AccountTransactionDisplay
-    extends EntityBase {
+        extends EntityBase {
 
     @Override
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(final Cursor c) {
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.Amount, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.Amount, contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, contentValues);
     }
 
     public Integer getId() {
@@ -73,9 +72,9 @@ public class AccountTransactionDisplay
     }
 
     public Date getDate() {
-        String dateString = getDateString();
+        final String dateString = getDateString();
 
-        Date dateTime = new MmxDate(dateString).toDate();
+        final Date dateTime = new MmxDate(dateString).toDate();
 
         return dateTime;
     }
@@ -85,8 +84,8 @@ public class AccountTransactionDisplay
     }
 
     public boolean getIsSplit() {
-        int split = getInt(QueryAllData.SPLITTED);
-        return split > 0;
+        final int split = getInt(QueryAllData.SPLITTED);
+        return 0 < split;
     }
 
     public String getPayee() {
@@ -98,7 +97,7 @@ public class AccountTransactionDisplay
     }
 
     public TransactionStatuses getStatus() {
-        String code = getStatusCode();
+        final String code = getStatusCode();
         return TransactionStatuses.get(code);
     }
 
@@ -119,9 +118,9 @@ public class AccountTransactionDisplay
     }
 
     public TransactionTypes getTransactionType() {
-        String typeName = getTransactionTypeName();
+        final String typeName = getTransactionTypeName();
 
-        TransactionTypes transactionType = TransactionTypes.valueOf(typeName);
+        final TransactionTypes transactionType = TransactionTypes.valueOf(typeName);
         return transactionType;
     }
 }

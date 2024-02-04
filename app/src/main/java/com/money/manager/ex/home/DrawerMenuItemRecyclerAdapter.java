@@ -29,13 +29,13 @@ import java.util.ArrayList;
  * Used for the upgrade of the Material Dialogs library.
  */
 public class DrawerMenuItemRecyclerAdapter
-    extends RecyclerView.Adapter {
+        extends RecyclerView.Adapter {
+
+    private final ArrayList<DrawerMenuItem> items;
 
     public DrawerMenuItemRecyclerAdapter() {
         this.items = new ArrayList<>();
     }
-
-    private final ArrayList<DrawerMenuItem> items;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

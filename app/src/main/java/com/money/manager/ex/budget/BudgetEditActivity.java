@@ -41,7 +41,7 @@ import butterknife.OnClick;
 import timber.log.Timber;
 
 public class BudgetEditActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
