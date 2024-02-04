@@ -1301,7 +1301,7 @@ public class MainActivity
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new LinearInterpolator());
-        animation.setDuration(1200);
+        animation.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
 //        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
         animation.setRepeatCount(Animation.INFINITE);
 
