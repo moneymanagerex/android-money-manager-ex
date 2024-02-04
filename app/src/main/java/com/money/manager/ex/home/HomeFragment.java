@@ -327,13 +327,14 @@ public class HomeFragment
                     barExpenses.setMax((int) (Math.abs(income) + Math.abs(expenses)));
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+                        long longDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
                         ObjectAnimator animationIncome = ObjectAnimator.ofInt(barIncome, "progress", (int) Math.abs(income));
-                        animationIncome.setDuration(1000); // 0.5 second
+                        animationIncome.setDuration(longDuration);
                         animationIncome.setInterpolator(new DecelerateInterpolator());
                         animationIncome.start();
 
                         ObjectAnimator animationExpenses = ObjectAnimator.ofInt(barExpenses, "progress", (int) Math.abs(expenses));
-                        animationExpenses.setDuration(1000); // 0.5 second
+                        animationExpenses.setDuration(longDuration);
                         animationExpenses.setInterpolator(new DecelerateInterpolator());
                         animationExpenses.start();
                     } else {
