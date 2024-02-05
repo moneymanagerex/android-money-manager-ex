@@ -11,7 +11,8 @@ Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manag
 Money Manager Ex for Android is a mobile companion to PC/desktop personal finance applications currently available for Windows, Mac OSX and LINUX. It can be used with the same database used by MoneyManagerEx Desktop, or as an addition to GnuCash or other applications that import transactions via .qif files.
 
 #### Download
-[<img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="240">](https://f-droid.org/packages/com.money.manager.ex) [<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">]([https://github.com/zhanghai/MaterialFiles/releases/latest/download/app-release.ap](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)k)
+[<img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="240">](https://f-droid.org/packages/com.money.manager.ex)
+[<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
 
 
 #### Contributing
