@@ -96,6 +96,9 @@ public class BudgetEntryRepository
 
             int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
             Category category = categoryRepository.load(categoryId);
+            if (category == null) {
+                continue;
+            }
             if (category.getParentId() > 0) {
                 budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
             } else {
