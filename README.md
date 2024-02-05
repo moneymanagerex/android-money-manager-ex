@@ -26,7 +26,8 @@ There are several ways you can contribute to the project:
 
 #### Translate
 
-If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
+If you want to join our translation team: [MMEX4Android on Crowdin](https://crowdin.net/project/android-money-manager-ex)
+[![Crowdin](https://badges.crowdin.net/android-money-manager-ex/localized.svg)](https://crowdin.com/project/android-money-manager-ex)
 
 # Build
 
