@@ -1,0 +1,5 @@
+* Update Documentation for FDroid by @wolfsolver
+* Update readme with fdroid info by @wolfsolver
+* animations will automatically adapt to the user's preferences
+* unify Category in both Recurring Transaction and Transaction list
+* protection code for category
