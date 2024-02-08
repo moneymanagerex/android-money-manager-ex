@@ -273,7 +273,7 @@ public class SplitCategoriesActivity
     }
 
     private void onAmountEntered(int requestId, Money amount) {
-        if (amount.toDouble() <= 0) {
+        if (amount.toDouble() < 0) {
             showInvalidAmountDialog();
             return;
         }
