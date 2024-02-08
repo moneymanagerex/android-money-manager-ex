@@ -1117,14 +1117,14 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            if (this.transactionEntity.getAmountTo().toDouble() <= 0) {
+            if (this.transactionEntity.getAmountTo().toDouble() < 0) {
                 core.alert(R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        if (transactionEntity.getAmount().toDouble() <= 0) {
+        if (transactionEntity.getAmount().toDouble() < 0) {
             core.alert(R.string.error_amount_must_be_positive);
             return false;
         }
