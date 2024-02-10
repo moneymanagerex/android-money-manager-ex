@@ -200,6 +200,7 @@
     <string name="access_info">Access info</string>
     <string name="initial_balance">Initial balance</string>
     <string name="notes">Notes</string>
+    <string name="notes_hint">Insert a note</string>
     <string name="closed">Closed</string>
     <string name="theme_application">Theme</string>
     <string name="theme_holo">Material Dark</string>
