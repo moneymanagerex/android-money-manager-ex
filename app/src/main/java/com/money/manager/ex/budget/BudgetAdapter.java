@@ -203,12 +203,15 @@ public class BudgetAdapter
 
     private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
         double actual;
+        // wolfsolver since category can be neested we need to consider always category as master
+        // probabily until we don't handle third and other level actual value does not count correctlry
         if (!hasSubcategory) {
             int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
             actual = getAmountForCategory(categoryId);
         } else {
             int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
-            actual = getAmountForSubCategory(subCategoryId);
+            actual = getAmountForCategory(subCategoryId);
+//            actual = getAmountForSubCategory(subCategoryId);
         }
         return actual;
     }
@@ -270,6 +273,7 @@ public class BudgetAdapter
         }
 
         try {
+            // wolfsolver todo adapt query for nested category
             String query = prepareQuery(where);
             Cursor cursor = databaseLazy.get().query(query);
             if (cursor == null) return 0;

@@ -70,7 +70,14 @@ public class BudgetEntryRepository
      * @return
      */
     public static String getKeyForCategories(int categoryId, int subCategoryId) {
-        return categoryId + "_" + subCategoryId;
+        // Wolfsolver - adapt budget for category & sub category.
+        if (categoryId < 0 ) {
+            return "_"+subCategoryId;
+        }
+        if ( subCategoryId < 0 ) {
+            return "_" + categoryId;
+        }
+        return "_" + subCategoryId;
     }
 
     public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {
@@ -99,11 +106,16 @@ public class BudgetEntryRepository
             if (category == null) {
                 continue;
             }
-            if (category.getParentId() > 0) {
-                budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
-            } else {
-                budgetEntryHashMap.put(getKeyForCategories(categoryId, categoryId), budgetEntry);
-            }
+            // wolfsolver - GetKeyForCatgories has 2 parametrs:
+            //              (int categoryId, int subCategoryId)
+            //              it's wrong to user getParentId for subcategory, need to switch parameterd
+            //              also delegate to GetKeyForCategory logic for handle -1
+//            if (category.getParentId() > 0) {
+//                budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
+//            } else {
+//                budgetEntryHashMap.put(getKeyForCategories(categoryId, categoryId), budgetEntry);
+//            }
+            budgetEntryHashMap.put(getKeyForCategories(category.getParentId(), categoryId), budgetEntry);
         }
         cursor.close();
 
