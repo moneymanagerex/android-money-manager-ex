@@ -47,6 +47,7 @@ public class BudgetPeriods {
             periodEnumLookup.put("Bi-Weekly"  , BudgetPeriodEnum.BI_WEEKLY);
             periodEnumLookup.put("Monthly"    , BudgetPeriodEnum.MONTHLY);
             periodEnumLookup.put("Bi-Monthly" , BudgetPeriodEnum.BI_MONTHLY);
+            periodEnumLookup.put("Every 2 Months" , BudgetPeriodEnum.BI_MONTHLY); // wolfsolver adapt periods
             periodEnumLookup.put("Quarterly"  , BudgetPeriodEnum.QUARTERLY);
             periodEnumLookup.put("Half-Yearly", BudgetPeriodEnum.HALF_YEARLY);
             periodEnumLookup.put("Yearly"     , BudgetPeriodEnum.YEARLY);
