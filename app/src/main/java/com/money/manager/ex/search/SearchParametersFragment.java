@@ -474,7 +474,7 @@ public class SearchParametersFragment
         if (searchParameters.category != null) {
             // Issue 1532 need to check subcategory first
             int categId;
-            if  ( searchParameters.category.subCategId != 0 ) {
+            if  ( searchParameters.category.subCategId > 0 ) {
                 categId = searchParameters.category.subCategId;
             } else {
                 categId = searchParameters.category.categId;
