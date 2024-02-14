@@ -1,0 +1,7 @@
+* support zero amount transaction 
+* unify Category in both Recurring Transaction and Transaction list with neested category by @wolfsolver 
+* Compute correct budget with category by @wolfsolver
+* set better hint for insert a note by @wolfsolver
+* Correct drilldown from report (searchparameters) to trasnaction list by @wolfsolver
+* Refine sync default interval to 10m
+* Refine sync for some edge cases
