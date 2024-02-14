@@ -93,7 +93,7 @@ public class SyncService
                 ? intent.getAction()
                 : "null";
         Timber.d("Running sync service: %s", action);
-        sendStartEvent();
+//        sendStartEvent();
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
@@ -101,12 +101,11 @@ public class SyncService
         }
 
         // check if the device is online.
-        // check if the device is online.
         NetworkUtils network = new NetworkUtils(getApplicationContext());
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
             sendMessage(SyncServiceMessage.NOT_ON_WIFI);
-            sendStopEvent();
+//            sendStopEvent();
             return;
         }
 
@@ -116,7 +115,7 @@ public class SyncService
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) {
-            sendStopEvent();
+//            sendStopEvent();
             return;
         }
 
@@ -279,7 +278,7 @@ public class SyncService
         // possible outcomes:
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
-            sendStopEvent();
+//            sendStopEvent();
             MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
                 put("authority", uri.getAuthority());
                 put("result", "no change");
@@ -291,7 +290,7 @@ public class SyncService
             // if both changed, there is a conflict!
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(SyncServiceMessage.CONFLICT);
-            sendStopEvent();
+ //           sendStopEvent();
             MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
                 put("authority", uri.getAuthority());
                 put("result", "Conflict");
