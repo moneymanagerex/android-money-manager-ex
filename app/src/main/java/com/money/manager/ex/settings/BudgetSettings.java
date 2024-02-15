@@ -20,16 +20,8 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
-import android.text.TextUtils;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.DefinedDateRange;
-import com.money.manager.ex.core.DefinedDateRangeName;
-import com.money.manager.ex.core.DefinedDateRanges;
-import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.servicelayer.InfoService;
-
-import timber.log.Timber;
 
 /**
  * Budget preferences

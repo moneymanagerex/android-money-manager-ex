@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;

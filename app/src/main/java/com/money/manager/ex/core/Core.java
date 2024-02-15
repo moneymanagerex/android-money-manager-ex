@@ -42,17 +42,13 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxFileUtils;
 
-import java.io.File;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.inject.Inject;

@@ -26,9 +26,6 @@ import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Robotium tests for the Main Activity.

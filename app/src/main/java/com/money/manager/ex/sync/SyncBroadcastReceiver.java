@@ -16,13 +16,10 @@
  */
 package com.money.manager.ex.sync;
 
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.settings.SyncPreferences;
 

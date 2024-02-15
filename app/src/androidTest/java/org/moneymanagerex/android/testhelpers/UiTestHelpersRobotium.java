@@ -16,17 +16,11 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.content.Context;
-import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-import android.view.View;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.robotium.solo.Solo;
 
 import timber.log.Timber;

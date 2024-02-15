@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;

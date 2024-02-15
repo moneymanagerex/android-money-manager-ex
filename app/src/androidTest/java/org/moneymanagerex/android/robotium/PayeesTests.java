@@ -18,20 +18,14 @@ package org.moneymanagerex.android.robotium;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
 import android.widget.EditText;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Payees list

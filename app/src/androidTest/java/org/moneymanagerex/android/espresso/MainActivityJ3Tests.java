@@ -19,9 +19,6 @@ package org.moneymanagerex.android.espresso;
 import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;

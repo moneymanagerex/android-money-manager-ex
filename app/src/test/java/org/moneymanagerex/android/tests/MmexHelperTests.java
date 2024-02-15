@@ -20,17 +20,14 @@ package org.moneymanagerex.android.tests;
 import android.os.Environment;
 import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.database.MmxOpenHelper;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 /**
  * Tests related to database open helper.

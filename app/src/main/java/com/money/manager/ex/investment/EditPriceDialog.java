@@ -223,7 +223,7 @@ public class EditPriceDialog
 
                 // Customize the DatePickerDialog if needed
                 datePicker.show();
-            };
+            }
         };
         viewHolder.dateTextView.setOnClickListener(dateClickListener);
 

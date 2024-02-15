@@ -68,12 +68,10 @@ import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.QueryAllData;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
