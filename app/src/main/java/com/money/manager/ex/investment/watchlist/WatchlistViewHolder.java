@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.investment.watchlist;
 
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 

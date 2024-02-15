@@ -18,12 +18,9 @@
 package org.moneymanagerex.android.seleniumTests;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import io.selendroid.client.SelendroidDriver;

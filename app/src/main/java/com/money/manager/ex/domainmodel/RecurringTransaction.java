@@ -26,7 +26,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 

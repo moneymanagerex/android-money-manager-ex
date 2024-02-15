@@ -18,18 +18,12 @@ package com.money.manager.ex.passcode;
 
 import android.os.Build;
 
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import timber.log.Timber;
 
 /**
  * http://www.androidsnippets.com/encryptdecrypt-strings

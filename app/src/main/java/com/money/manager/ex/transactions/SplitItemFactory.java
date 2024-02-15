@@ -19,7 +19,6 @@ package com.money.manager.ex.transactions;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 

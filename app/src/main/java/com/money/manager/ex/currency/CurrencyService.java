@@ -35,7 +35,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.CurrencyRepositorySql;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.investment.prices.IExchangeRateUpdater;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.domainmodel.Account;

@@ -19,9 +19,6 @@ package org.moneymanagerex.android.robotium;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.search.SearchActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -29,8 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Various Search activity tests.

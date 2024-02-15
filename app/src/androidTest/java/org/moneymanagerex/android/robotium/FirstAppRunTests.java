@@ -19,19 +19,6 @@ package org.moneymanagerex.android.robotium;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.home.MainActivity;
-import com.robotium.solo.Solo;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Test the startup of the Main Activity for the very first time after installation.
  * The tests here require that the emulator is pre-set manually by:

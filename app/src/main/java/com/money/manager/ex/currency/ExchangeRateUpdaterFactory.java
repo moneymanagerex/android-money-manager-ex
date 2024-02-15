@@ -21,10 +21,7 @@ import android.content.Context;
 
 import com.money.manager.ex.investment.ExchangeRateProviders;
 import com.money.manager.ex.investment.prices.IExchangeRateUpdater;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.prices.FixerService;
-import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
-import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
 
 import java.util.Objects;

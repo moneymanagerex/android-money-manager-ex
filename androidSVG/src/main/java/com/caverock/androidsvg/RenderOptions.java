@@ -17,7 +17,6 @@
 package com.caverock.androidsvg;
 
 import android.graphics.Canvas;
-import android.graphics.RectF;
 
 /**
  * A fluent builder class that creates a render configuration object for the

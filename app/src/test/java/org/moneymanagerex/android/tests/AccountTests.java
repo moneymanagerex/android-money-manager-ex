@@ -18,7 +18,6 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -27,10 +26,8 @@ import com.money.manager.ex.domainmodel.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.*;
 

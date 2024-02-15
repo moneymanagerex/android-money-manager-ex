@@ -19,7 +19,6 @@ package com.money.manager.ex.passcode;
 
 import android.os.Build;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;

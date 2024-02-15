@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 

@@ -16,15 +16,9 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
 import android.test.ActivityInstrumentationTestCase2;
-
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.R;
-import com.money.manager.ex.settings.PreferenceConstants;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;

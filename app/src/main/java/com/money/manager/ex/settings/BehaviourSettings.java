@@ -22,9 +22,6 @@ import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
 
-import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
-
 /**
  * Settings in the General category.
  */

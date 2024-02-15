@@ -21,7 +21,6 @@ import android.app.backup.BackupAgentHelper;
 import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.database.DatabaseManager;
 
 /**

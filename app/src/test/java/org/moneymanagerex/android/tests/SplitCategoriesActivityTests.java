@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.SplitCategoriesActivity;
 import com.money.manager.ex.core.TransactionTypes;
@@ -35,13 +34,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.parceler.Parcels;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 

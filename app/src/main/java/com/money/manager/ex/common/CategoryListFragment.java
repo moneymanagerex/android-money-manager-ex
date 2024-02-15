@@ -66,8 +66,6 @@ import androidx.annotation.NonNull;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 /**
  * Categories list fragment. Used in Main Activity for editing of categories, and own activity
  * when selecting the category for a transaction.

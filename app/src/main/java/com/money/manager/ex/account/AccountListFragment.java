@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -48,8 +47,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
-
-import static androidx.core.content.ContextCompat.startActivity;
 
 /**
  * List of accounts.

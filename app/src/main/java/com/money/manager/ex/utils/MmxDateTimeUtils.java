@@ -21,22 +21,18 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.DatePicker;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 /**
  * Date/time utilities using Java standard Date classes.
