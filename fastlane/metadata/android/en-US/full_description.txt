@@ -9,8 +9,8 @@ an application we love to use on our Desktop Money Manager EX.
 * Management of single transactions
 * Account, payee, category, currency management
 * Cloud Storage based synchronization, incl
-** cloud storage service, e.g. googleDrive, oneDrive
-** sync service, e.g. Syncthing
+** cloud storage, e.g. googleDrive, oneDrive
+** sync service , e.g. Syncthing
 * Compatible with Desktop MMEX
 * Repeating transactions
 * Charts for reports
