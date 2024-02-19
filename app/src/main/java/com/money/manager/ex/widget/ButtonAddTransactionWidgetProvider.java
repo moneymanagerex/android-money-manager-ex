@@ -37,8 +37,8 @@ public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
 			// register on click in icon launch application
 			Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
 			intent.setAction(Intent.ACTION_INSERT);
-			intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvoder.java");
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+			intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvider.java");
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 			remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
 		    
 			// update widget

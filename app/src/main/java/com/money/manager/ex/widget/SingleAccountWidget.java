@@ -222,7 +222,7 @@ public class SingleAccountWidget
 
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         views.setOnClickPendingIntent(R.id.newTransactionPanel, pendingIntent);
         // for now, the button requires a separate setup. try to find a way to propagate click.
@@ -252,7 +252,7 @@ public class SingleAccountWidget
 
     private void initializeStartAppCommand(Context context, RemoteViews views) {
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         // Get the layout for the App Widget and attach an on-click listener to the button
 //        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.appwidget_provider_layout);
 
