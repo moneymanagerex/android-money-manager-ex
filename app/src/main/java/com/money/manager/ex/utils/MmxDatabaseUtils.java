@@ -218,7 +218,6 @@ public class MmxDatabaseUtils {
         // Switch database in the active data layer.
         MmexApplication.getApp().initDb(database.localPath);
 
-
         resetContentProvider();
 
         return true;
