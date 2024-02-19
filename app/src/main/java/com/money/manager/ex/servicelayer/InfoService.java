@@ -17,11 +17,15 @@
 
 package com.money.manager.ex.servicelayer;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
+
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
@@ -47,13 +51,13 @@ public class InfoService
     @Inject
     public InfoRepositorySql repository;
 
-    public long insertRaw(SQLiteDatabase db, String key, Integer value) {
+    public long insertRaw(SupportSQLiteDatabase db, String key, Integer value) {
         ContentValues values = new ContentValues();
 
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.insert(InfoRepositorySql.TABLE_NAME, null, values);
+        return db.insert(InfoRepositorySql.TABLE_NAME, CONFLICT_FAIL, values);
     }
 
     public long insertRaw(SQLiteDatabase db, String key, String value) {
@@ -73,24 +77,25 @@ public class InfoService
      * @param value     Info Value
      * @return the number of rows affected
      */
-    public long updateRaw(SQLiteDatabase db, int recordId, String key, Integer value) {
+    public long updateRaw(SupportSQLiteDatabase db, int recordId, String key, Integer value) {
         ContentValues values = new ContentValues();
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
         return db.update(InfoRepositorySql.TABLE_NAME,
+                CONFLICT_FAIL,
                 values,
             Info.INFOID + "=?",
                 new String[] { Integer.toString(recordId)}
         );
     }
 
-    public long updateRaw(SQLiteDatabase db, String key, String value) {
+    public long updateRaw(SupportSQLiteDatabase db, String key, String value) {
         ContentValues values = new ContentValues();
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.update(InfoRepositorySql.TABLE_NAME, values,
+        return db.update(InfoRepositorySql.TABLE_NAME, CONFLICT_FAIL, values,
             Info.INFONAME + "=?",
                 new String[] { key });
     }

@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,8 +25,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 //import net.sqlcipher.database.SQLiteQueryBuilder;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -61,6 +61,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -162,7 +164,7 @@ public class MmxContentProvider
                     initializeDependencies();
 
                     id = openHelper.get().getWritableDatabase()
-                            .insertOrThrow(dataset.getSource(), null, values);
+                            .insert(dataset.getSource(), CONFLICT_FAIL, values);
                     //database.setTransactionSuccessful();
                 } catch (Exception e) {
                     Timber.e(e, "inserting: %s", "insert");
@@ -191,7 +193,7 @@ public class MmxContentProvider
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getWritableDatabase();
+        SupportSQLiteDatabase database = openHelper.get().getWritableDatabase();
 
         int rowsUpdate = 0;
 
@@ -201,7 +203,7 @@ public class MmxContentProvider
                 logUpdate(dataset, values, whereClause, whereArgs);
 
                 try {
-                    rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
+                    rowsUpdate = database.update(dataset.getSource(), CONFLICT_FAIL, values, whereClause, whereArgs);
                 } catch (Exception ex) {
                     Timber.e(ex, "updating: %s", "update");
                 }
@@ -342,7 +344,7 @@ public class MmxContentProvider
 
     public void resetDatabase() {
         if (openHelper != null) {
-            openHelper.get().close();
+     //       openHelper.get().close();
         }
 
         openHelper = null;
@@ -377,7 +379,7 @@ public class MmxContentProvider
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase database = openHelper.get().getReadableDatabase();
         if (database == null) {
             Timber.e("Database could not be opened");
             return null;
@@ -388,22 +390,21 @@ public class MmxContentProvider
         // check type of instance data set
         if (sourceObject instanceof Dataset) {
             Dataset dataset = ((Dataset) sourceObject);
-
-//            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
+            String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
 
             switch (dataset.getType()) {
                 case QUERY:
-                    String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
-                    cursor = database.rawQuery(query, selectionArgs);
-                    break;
-                case SQL:
-                    cursor = database.rawQuery(selection, selectionArgs);
-                    break;
                 case TABLE:
                 case VIEW:
-                    SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-                    queryBuilder.setTables(dataset.getSource());
-                    cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
+                    if (selectionArgs == null) {
+                        cursor = database.query(query);
+                    }
+                    else {
+                        cursor = database.query(query, selectionArgs);
+                    }
+                    break;
+                case SQL:
+                    cursor = database.query(selection, selectionArgs);
                     break;
                 default:
                     throw new IllegalArgumentException("Type of dataset not defined");

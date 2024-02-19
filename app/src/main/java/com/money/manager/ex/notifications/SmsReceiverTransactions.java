@@ -39,6 +39,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
@@ -60,7 +64,7 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -81,7 +85,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     /// Db setup
     public static MmxOpenHelper MmxHelper;
-    public static SQLiteDatabase db;
+    public static SupportSQLiteDatabase db;
 
     static String[] fromAccountDetails;
     static String[] toAccountDetails;
@@ -451,19 +455,26 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String currencySymbl = "";
         String[] reqCurrFields = {"CURRENCYID", "DECIMAL_POINT", "GROUP_SEPARATOR",  "CURRENCY_SYMBOL"};
 
-        try
-        {
-            Cursor currencyCursor = db.query("CURRENCYFORMATS_V1", reqCurrFields, "CURRENCYID = ?",
-                    new String[] { String.valueOf(currencyID)}, null, null, null );
+        String tableName = "CURRENCYFORMATS_V1";
+        String[] columns = reqCurrFields;
+        String selection = "CURRENCYID = ?";
+        String[] selectionArgs = new String[]{String.valueOf(currencyID)};
+        String sortOrder = null;
 
-            if(currencyCursor.moveToFirst()) {
+        SupportSQLiteQueryBuilder queryBuilder = SupportSQLiteQueryBuilder.builder(tableName);
+        SupportSQLiteQuery query = queryBuilder.selection(selection, selectionArgs)
+                .columns(columns)
+                .orderBy(sortOrder)
+                .create();
+        try {
+            Cursor currencyCursor = db.query(query);
+
+            if (currencyCursor.moveToFirst()) {
                 currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndex("CURRENCY_SYMBOL"));
             }
 
             currencyCursor.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Timber.e(e, "getCurrencySymbl");
         }
 
@@ -811,7 +822,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
 
-                Cursor payeeCursor = db.rawQuery(sql, null);
+                Cursor payeeCursor = db.query(sql);
 
                 if(payeeCursor.moveToFirst())
                 {
@@ -849,7 +860,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "AND TRANSDATE ='" + transDate + "' " +
                                 "ORDER BY TRANSID LIMIT 1";
 
-                Cursor txnCursor = db.rawQuery(sql, null);
+                Cursor txnCursor = db.query(sql);
 
                 if(txnCursor.moveToFirst())
                 {
@@ -882,7 +893,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "WHERE s.SUBCATEGNAME = '" + searchName + "' " +
                                 "ORDER BY s.SUBCATEGID  LIMIT 1";
 
-                Cursor cCursor = db.rawQuery(sql, null);
+                Cursor cCursor = db.query(sql);
 
                 if(cCursor.moveToFirst())
                 {
@@ -898,7 +909,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     "WHERE c.CATEGNAME = '" + searchName + "' " +
                                     "ORDER BY c.CATEGID  LIMIT 1";
 
-                    cCursor = db.rawQuery(sql, null);
+                    cCursor = db.query(sql);
 
                     if(cCursor.moveToFirst())
                     {
@@ -941,7 +952,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     "ORDER BY A.ACCOUNTID " +
                                     "LIMIT 1";
 
-                    Cursor accountCursor = db.rawQuery(sql, null);
+                    Cursor accountCursor = db.query(sql);
 
                     if(accountCursor.moveToFirst())
                     {

@@ -37,7 +37,7 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.settings.AppSettings;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.HashMap;
 

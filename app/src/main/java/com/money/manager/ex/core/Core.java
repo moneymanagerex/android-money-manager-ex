@@ -144,7 +144,7 @@ public class Core {
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
-        Cursor cursor = openHelper.get().getReadableDatabase().rawQuery(sql, null);
+        Cursor cursor = openHelper.get().getReadableDatabase().query(sql);
 
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {

@@ -17,13 +17,15 @@
 
 package com.money.manager.ex.datalayer;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.sync.SyncManager;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import timber.log.Timber;
 
@@ -42,7 +44,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     public String tableName;
 
     public long insert(ContentValues values) {
-        return database.insert(tableName, values);
+        return database.insert(tableName, CONFLICT_FAIL, values);
     }
 
     public int delete(String where, String... whereArgs) {
@@ -106,6 +108,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         values.remove("_id");
 
         int updateResult = database.update(tableName,
+                CONFLICT_FAIL,
                 values,
                 where,
                 selectionArgs

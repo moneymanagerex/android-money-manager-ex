@@ -54,7 +54,7 @@ public class QueryReportIncomeVsExpenses
         // assemble the source statement by combining queries.
         String source = MmxFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
         source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileDataQuery);
-
+        source = "(" + source + ") xxxx";
         this.setSource(source);
     }
 }
