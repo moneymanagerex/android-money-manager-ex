@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.widget;
 
-import static android.app.PendingIntent.FLAG_IMMUTABLE;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -40,7 +38,7 @@ public class ButtonAddTransactionWidgetProvider extends AppWidgetProvider {
 			Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
 			intent.setAction(Intent.ACTION_INSERT);
 			intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ButtonAddTransactionWidgetProvider.java");
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 			remoteViews.setOnClickPendingIntent(R.id.buttonNewOperation, pendingIntent);
 		    
 			// update widget

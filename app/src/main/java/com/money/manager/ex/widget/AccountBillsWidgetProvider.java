@@ -53,7 +53,7 @@ public class AccountBillsWidgetProvider
 
             // register on click in icon launch application
             Intent intentApplication = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.imageButtonLogoWidget, pendingIntent);
 
             Intent intentRefresh = new Intent(context, AccountBillsWidgetProvider.class);
