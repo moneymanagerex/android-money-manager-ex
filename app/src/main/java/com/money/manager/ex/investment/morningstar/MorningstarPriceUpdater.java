@@ -29,7 +29,7 @@ import com.money.manager.ex.investment.prices.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;

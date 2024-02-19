@@ -57,7 +57,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;

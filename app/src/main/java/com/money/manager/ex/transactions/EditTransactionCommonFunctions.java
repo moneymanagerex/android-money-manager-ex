@@ -68,7 +68,7 @@ import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.parceler.Parcels;
 

@@ -21,7 +21,7 @@ import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.domainmodel.Stock;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
 

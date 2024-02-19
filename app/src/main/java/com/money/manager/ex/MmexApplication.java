@@ -230,7 +230,7 @@ public class MmexApplication
             openHelperAtomicReference = new AtomicReference<>(db);
         } else {
             // close existing db
-            openHelperAtomicReference.get().close();
+           // openHelperAtomicReference.get().close();
             openHelperAtomicReference.set(db);
         }
     }

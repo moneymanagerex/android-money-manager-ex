@@ -19,11 +19,14 @@ package com.money.manager.ex.currency;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -448,16 +451,23 @@ public class CurrencyService
      * @param currencySymbol Currency symbol to load.
      * @return Id of the currency with the given symbol.
      */
-    public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
+    public int loadCurrencyIdFromSymbolRaw(SupportSQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
 
         // Cannot use any other db source here as this happens on database creation!
+        String tableName = CurrencyRepositorySql.TABLE_NAME;
+        String[] projection = new String[]{Currency.CURRENCYID};
+        String selection = Currency.CURRENCY_SYMBOL + "=?";
+        String[] selectionArgs = new String[]{currencySymbol};
+        String sortOrder = null;
 
-        Cursor cursor = db.query(CurrencyRepositorySql.TABLE_NAME,
-                new String[]{ Currency.CURRENCYID },
-                Currency.CURRENCY_SYMBOL + "=?",
-                new String[]{ currencySymbol },
-                null, null, null);
+        SupportSQLiteQueryBuilder queryBuilder = SupportSQLiteQueryBuilder.builder(tableName);
+        SupportSQLiteQuery query = queryBuilder.selection(selection, selectionArgs)
+                .columns(projection)
+                .orderBy(sortOrder)
+                .create();
+
+        Cursor cursor = db.query(query);
 
         if (cursor == null) return result;
 

@@ -18,9 +18,13 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
+
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
@@ -44,13 +48,13 @@ import timber.log.Timber;
 /**
  * Actual helper class for accessing an SQLite database.
  */
-public class MmxOpenHelper
-    extends SQLiteOpenHelper {
+public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     /**
      * Database schema version.
      */
     private static final int databaseVersion = 19;
+    private String dbPath;
 
     // Dynamic
 
@@ -59,9 +63,9 @@ public class MmxOpenHelper
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
-        super(context, dbPath, null, databaseVersion);
+        super(databaseVersion);
         this.mContext = context;
-
+        this.dbPath = dbPath;
     }
 
     private final Context mContext;
@@ -71,6 +75,9 @@ public class MmxOpenHelper
         return this.mContext;
     }
 
+    public String getDbPath() {
+        return this.dbPath;
+    }
 //    @Override
 //    public void onConfigure(SQLiteDatabase db) {
 //        super.onConfigure(db);
@@ -81,8 +88,7 @@ public class MmxOpenHelper
      * Called when the database is being created.
      * @param db Database instance.
      */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SupportSQLiteDatabase db) {
         Timber.d("OpenHelper onCreate");
 
         try {
@@ -94,16 +100,14 @@ public class MmxOpenHelper
         }
     }
 
-    @Override
-    public void onOpen(SQLiteDatabase db) {
+    public void onOpen(SupportSQLiteDatabase db) {
         db.disableWriteAheadLogging();
-        super.onOpen(db);
+   //     super.onOpen(db);
 
 //        int version = db.getVersion();
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.d("Upgrading from %1$d  to %2$d", oldVersion, newVersion);
 
         try {
@@ -136,15 +140,16 @@ public class MmxOpenHelper
 //        mInstance = null;
 //    }
 
-    @Override
-    public SQLiteDatabase getReadableDatabase() {
-        SQLiteDatabase db = null;
-        try {
-            db = super.getReadableDatabase();
-        } catch (Exception ex) {
-            Timber.e(ex, "opening readable database");
-        }
-        return db;
+    public SupportSQLiteDatabase getReadableDatabase() {
+        // Custom logic to get a readable database
+        SupportSQLiteOpenHelper.Factory factory = new FrameworkSQLiteOpenHelperFactory();
+        SupportSQLiteOpenHelper.Configuration configuration =
+                SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                        .name(this.dbPath)
+                        .callback(this)
+                        .build();
+        SupportSQLiteDatabase sqLiteDatabase = factory.create(configuration).getReadableDatabase();
+        return sqLiteDatabase;
     }
 
 //    public SQLiteDatabase getReadableDatabase() {
@@ -161,15 +166,16 @@ public class MmxOpenHelper
 //        return db;
 //    }
 
-    @Override
-    public SQLiteDatabase getWritableDatabase() {
-        try {
-            //return getWritableDatabase_Internal();
-            return super.getWritableDatabase();
-        } catch (Exception ex) {
-            Timber.e(ex, "opening writable database");
-        }
-        return null;
+    public SupportSQLiteDatabase getWritableDatabase() {
+        // Custom logic to get a writable database
+        SupportSQLiteOpenHelper.Factory factory = new FrameworkSQLiteOpenHelperFactory();
+        SupportSQLiteOpenHelper.Configuration configuration =
+                SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                        .name(this.dbPath)
+                        .callback(this)
+                        .build();
+        SupportSQLiteDatabase sqLiteDatabase = factory.create(configuration).getWritableDatabase();
+        return sqLiteDatabase;
     }
 
 //    public SQLiteDatabase getWritableDatabase() {
@@ -210,7 +216,7 @@ public class MmxOpenHelper
      * @param db    SQLite database to execute raw SQL
      * @param rawId id raw resource
      */
-    private void executeRawSql(SQLiteDatabase db, int rawId) {
+    private void executeRawSql(SupportSQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
         String[] sqlStatement = sqlRaw.split(";");
 
@@ -240,7 +246,7 @@ public class MmxOpenHelper
         Cursor cursor = null;
         try {
             if (getReadableDatabase() != null) {
-                cursor = getReadableDatabase().rawQuery("select sqlite_version() AS sqlite_version", null);
+                cursor = getReadableDatabase().query("select sqlite_version() AS sqlite_version");
                 if (cursor != null && cursor.moveToFirst()) {
                     sqliteVersion = cursor.getString(0);
                 }
@@ -254,7 +260,7 @@ public class MmxOpenHelper
         return sqliteVersion;
     }
 
-    private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateDatabase(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             int resourceId = mContext.getResources()
@@ -266,7 +272,7 @@ public class MmxOpenHelper
         }
     }
 
-    private boolean initDatabase(SQLiteDatabase database) {
+    private boolean initDatabase(SupportSQLiteDatabase database) {
         try {
             initBaseCurrency(database);
         } catch (Exception e) {
@@ -284,7 +290,7 @@ public class MmxOpenHelper
      * Here we only update the record to the current system's date format.
      * @param database Database being initialized.
      */
-    private void initDateFormat(SQLiteDatabase database) {
+    private void initDateFormat(SupportSQLiteDatabase database) {
         try {
             Core core = new Core(getContext());
             String pattern = core.getDefaultSystemDateFormat();
@@ -297,7 +303,7 @@ public class MmxOpenHelper
         }
     }
 
-    private void initBaseCurrency(SQLiteDatabase db) {
+    private void initBaseCurrency(SupportSQLiteDatabase db) {
         // currencies
         CurrencyService currencyService = new CurrencyService(getContext());
         Currency systemCurrency = currencyService.getSystemDefaultCurrency();
@@ -312,7 +318,7 @@ public class MmxOpenHelper
 //                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)
 //                .toString();
 
-        Cursor currencyCursor = db.rawQuery(
+        Cursor currencyCursor = db.query(
             "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
             " WHERE " + Info.INFONAME + "=?",
             new String[]{ InfoKeys.BASECURRENCYID});

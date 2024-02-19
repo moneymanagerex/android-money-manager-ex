@@ -17,13 +17,15 @@
 
 package com.money.manager.ex.datalayer;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.Date;
 
@@ -55,7 +57,7 @@ public class StockHistoryRepositorySql
         // check whether to insert or update.
         if (!recordExists) {
             ContentValues values = getContentValues(symbol, price, date);
-            long id = database.insert(TABLE_NAME, values);
+            long id = database.insert(TABLE_NAME, CONFLICT_FAIL, values);
 
             if (id > 0) {
                 // success
@@ -114,7 +116,7 @@ public class StockHistoryRepositorySql
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = database.update(TABLE_NAME, values, where, whereArgs);
+        int records = database.update(TABLE_NAME, CONFLICT_FAIL, values, where, whereArgs);
 
         result = records > 0;
 

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
@@ -132,7 +133,7 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-        SQLiteDatabase db = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
         if (db != null) {
             int versionNumber = db.getVersion();
             version = Integer.toString(versionNumber);

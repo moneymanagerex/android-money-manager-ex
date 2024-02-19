@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.MmxContentProvider;
@@ -279,7 +280,7 @@ public class MmxDatabaseUtils {
         }
 
         // close connection
-        openHelper.get().close();
+    //    openHelper.get().close();
 
         // store as the current database in preferences
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(newFilePath);
@@ -336,9 +337,9 @@ public class MmxDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SQLiteDatabase db = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        Cursor c = db.query("SELECT name FROM sqlite_master WHERE type='table'");
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
         while (c.moveToNext()) {

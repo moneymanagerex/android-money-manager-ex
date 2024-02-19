@@ -18,7 +18,7 @@
 package com.money.manager.ex.datalayer;
 
 import com.money.manager.ex.domainmodel.Currency;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
 
