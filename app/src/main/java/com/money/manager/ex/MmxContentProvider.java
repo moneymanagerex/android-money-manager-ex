@@ -370,7 +370,7 @@ public class MmxContentProvider
     private Cursor query_internal(Uri uri, String[] projection, String selection,
                                   String[] selectionArgs, String sortOrder){
         if (selectionArgs == null)
-            selectionArgs = new String[0];
+            selectionArgs = new String[]{};
         Timber.v("Querying URI: %s", uri);
         Timber.v("Querying projection: %s", projection);
         Timber.v("Querying selection: %s", selection);
