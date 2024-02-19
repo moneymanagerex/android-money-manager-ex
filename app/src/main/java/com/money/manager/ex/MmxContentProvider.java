@@ -369,8 +369,6 @@ public class MmxContentProvider
 
     private Cursor query_internal(Uri uri, String[] projection, String selection,
                                   String[] selectionArgs, String sortOrder){
-        if (selectionArgs == null)
-            selectionArgs = new String[]{};
         Timber.v("Querying URI: %s", uri);
         Timber.v("Querying projection: %s", projection);
         Timber.v("Querying selection: %s", selection);
@@ -396,14 +394,17 @@ public class MmxContentProvider
 
             switch (dataset.getType()) {
                 case QUERY:
-                    cursor = database.query(query, selectionArgs);
+                case TABLE:
+                case VIEW:
+                    if (selectionArgs == null) {
+                        cursor = database.query(query);
+                    }
+                    else {
+                        cursor = database.query(query, selectionArgs);
+                    }
                     break;
                 case SQL:
                     cursor = database.query(selection, selectionArgs);
-                    break;
-                case TABLE:
-                case VIEW:
-                    cursor = database.query(query, selectionArgs);
                     break;
                 default:
                     throw new IllegalArgumentException("Type of dataset not defined");
