@@ -22,7 +22,6 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 
@@ -81,7 +80,7 @@ public class MmxDatabaseUtils {
 
         if (!dbFile.exists()) return false;
         // extension
-        if (!dbFile.getName().endsWith(".mmb")) return false;
+        if (!(dbFile.getName().endsWith(".mmb") || dbFile.getName().endsWith(".emb"))) return false;
         // also add .emb in the future.
 
         if (!dbFile.canRead()) return false;
@@ -218,6 +217,7 @@ public class MmxDatabaseUtils {
 
         // Switch database in the active data layer.
         MmexApplication.getApp().initDb(database.localPath);
+
 
         resetContentProvider();
 

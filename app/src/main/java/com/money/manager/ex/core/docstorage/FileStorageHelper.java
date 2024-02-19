@@ -209,7 +209,6 @@ public class FileStorageHelper {
             Toast.makeText(getContext(),"Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
             return;
         }
-        dbUtils.useDatabase(metadata);
         MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
                        put("authority", uri.getAuthority());
                         put("result", "pullDatabase");
