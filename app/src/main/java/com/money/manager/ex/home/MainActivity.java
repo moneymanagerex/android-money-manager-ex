@@ -583,6 +583,7 @@ public class MainActivity
             String key = item.getTag().toString();
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
+                // TODO request password 1/3
                 onOpenDatabaseClick(selectedDatabase);
             }
         }
@@ -602,10 +603,12 @@ public class MainActivity
             case R.id.menu_open_database:
                 FileStorageHelper helper = new FileStorageHelper(this);
                 helper.showStorageFilePicker();
+                // TODO request password 2/3
                 break;
 
             case R.id.menu_create_database:
                 (new FileStorageHelper(this)).showCreateFilePicker();
+                // TODO request password 3/3
                 break;
 
             case R.id.menu_account:
