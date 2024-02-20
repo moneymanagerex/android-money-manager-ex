@@ -256,19 +256,19 @@ public class MainActivity
         super.onStart();
 
         // check if has pass-code and authenticate
-        if (!isAuthenticated) {
-            Passcode passcode = new Passcode(getApplicationContext());
-            if (passcode.hasPasscode() && !isInAuthentication) {
-                Intent intent = new Intent(this, PasscodeActivity.class);
-                // set action and data
-                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
-                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
-                // start activity
-                startActivityForResult(intent, RequestCodes.PASSCODE);
-                // set in authentication
-                isInAuthentication = true;
-            }
-        }
+//        if (!isAuthenticated) {
+//            Passcode passcode = new Passcode(getApplicationContext());
+//            if (passcode.hasPasscode() && !isInAuthentication) {
+//                Intent intent = new Intent(this, PasscodeActivity.class);
+//                // set action and data
+//                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+//                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+//                // start activity
+//                startActivityForResult(intent, RequestCodes.PASSCODE);
+//                // set in authentication
+//                isInAuthentication = true;
+//            }
+//        }
 
         // todo: mark the active database file in the navigation panel.
         // mDrawer
@@ -532,7 +532,8 @@ public class MainActivity
         }
 
         try {
-            new MmxDatabaseUtils(this).useDatabase(database);
+            MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+            dbUtils.useDatabase(database);
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
                 Timber.w(e.getMessage());
@@ -582,6 +583,7 @@ public class MainActivity
             String key = item.getTag().toString();
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
+                // TODO request password 1/3
                 onOpenDatabaseClick(selectedDatabase);
             }
         }
@@ -601,10 +603,12 @@ public class MainActivity
             case R.id.menu_open_database:
                 FileStorageHelper helper = new FileStorageHelper(this);
                 helper.showStorageFilePicker();
+                // TODO request password 2/3
                 break;
 
             case R.id.menu_create_database:
                 (new FileStorageHelper(this)).showCreateFilePicker();
+                // TODO request password 3/3
                 break;
 
             case R.id.menu_account:

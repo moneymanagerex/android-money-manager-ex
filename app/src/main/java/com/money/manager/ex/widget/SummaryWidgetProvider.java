@@ -59,7 +59,7 @@ public class SummaryWidgetProvider
             Intent intentRefresh = new Intent(context, SummaryWidgetProvider.class);
             intentRefresh.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intentRefresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.imageButtonRefresh, pendingRefresh);
 
             // update widget

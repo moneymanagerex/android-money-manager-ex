@@ -17,18 +17,19 @@
 
 package com.money.manager.ex.core.ioc;
 
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.squareup.sqlbrite3.BriteDatabase;
 import com.squareup.sqlbrite3.SqlBrite;
 
+import net.sqlcipher.database.SupportFactory;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
 
 /**
  * Module for database access.
@@ -58,7 +59,7 @@ public final class DbModule {
     }
 
     @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
-        SupportSQLiteOpenHelper.Factory factory = new FrameworkSQLiteOpenHelperFactory();
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(helper.getPassword().getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(helper.getContext())
                         .name(helper.getDbPath())

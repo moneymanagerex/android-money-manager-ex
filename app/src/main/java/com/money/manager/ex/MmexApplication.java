@@ -75,6 +75,7 @@ public class MmexApplication
     private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
+    private String mPassword = "";
 
     public static MmexApplication getApp() {
         return appInstance;
@@ -85,6 +86,8 @@ public class MmexApplication
         return mAmplitude;
     }
 
+    public String getPassword () {return this.mPassword;}
+    public void setPassword(String password) { this.mPassword = password ;}
     public static float getTextSize() {
         return MmexApplication.mTextSize;
     }

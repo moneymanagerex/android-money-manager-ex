@@ -19,15 +19,14 @@ package com.money.manager.ex.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
-
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -38,6 +37,8 @@ import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
+
+import net.sqlcipher.database.SupportFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         super(databaseVersion);
         this.mContext = context;
         this.dbPath = dbPath;
+        this.mPassword = MmexApplication.getApp().getPassword();
     }
 
     private final Context mContext;
@@ -78,6 +80,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     public String getDbPath() {
         return this.dbPath;
     }
+
 //    @Override
 //    public void onConfigure(SQLiteDatabase db) {
 //        super.onConfigure(db);
@@ -127,22 +130,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         new SyncManager(getContext()).dataChanged();
     }
 
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // nothing to do for now.
-//        Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
-//    }
-
-//    @Override
-//    public synchronized void close() {
-//        super.close();
-//
-//        mInstance = null;
-//    }
-
     public SupportSQLiteDatabase getReadableDatabase() {
         // Custom logic to get a readable database
-        SupportSQLiteOpenHelper.Factory factory = new FrameworkSQLiteOpenHelperFactory();
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
@@ -152,23 +142,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         return sqLiteDatabase;
     }
 
-//    public SQLiteDatabase getReadableDatabase() {
-//        return this.getReadableDatabase(this.mPassword);
-//    }
-//    @Override
-//    public SQLiteDatabase getReadableDatabase(String password) {
-//        SQLiteDatabase db = null;
-//        try {
-//            db = super.getReadableDatabase(password);
-//        } catch (Exception ex) {
-//            Timber.e(ex, "opening readable database");
-//        }
-//        return db;
-//    }
-
     public SupportSQLiteDatabase getWritableDatabase() {
         // Custom logic to get a writable database
-        SupportSQLiteOpenHelper.Factory factory = new FrameworkSQLiteOpenHelperFactory();
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
@@ -178,39 +154,14 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         return sqLiteDatabase;
     }
 
-//    public SQLiteDatabase getWritableDatabase() {
-//        return getWritableDatabase(this.mPassword);
-//    }
-//    @Override
-//    public SQLiteDatabase getWritableDatabase(String password) {
-//        try {
-//            return getWritableDatabase_Internal(password);
-//        } catch (Exception ex) {
-//            Timber.e(ex, "opening writable database");
-//        }
-//        return null;
-//    }
-
     public void setPassword(String password) {
         this.mPassword = password;
     }
+    public String getPassword() { return this.mPassword;}
 
-//    public boolean hasPassword() {
-//        return !TextUtils.isEmpty(this.mPassword);
-//    }
-
-//    private SQLiteDatabase getWritableDatabase_Internal() {
-//        // String password
-////
-////        SQLiteDatabase db = super.getWritableDatabase(password);
-//        SQLiteDatabase db = super.getWritableDatabase();
-//
-//        if (db != null) {
-//            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-//        }
-//
-//        return db;
-//    }
+    public boolean hasPassword() {
+        return !TextUtils.isEmpty(this.mPassword);
+    }
 
     /**
      * @param db    SQLite database to execute raw SQL
@@ -222,6 +173,8 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
         // process all statements
         for (String aSqlStatment : sqlStatement) {
+            if (aSqlStatment.trim().isEmpty())
+                continue;
             Timber.d(aSqlStatment);
 
             try {
@@ -280,8 +233,6 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         }
 
         initDateFormat(database);
-    //    initCategories(database);
-
         return true;
     }
 
@@ -354,12 +305,6 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
                 Timber.e("error updating base currency on init");
             }
         }
-
-        // Can't use provider here as the database is not ready.
-//            int currencyId = currencyService.loadCurrencyIdFromSymbol(systemCurrency.getCurrencyCode());
-//            String baseCurrencyId = infoService.getInfoValue(InfoService.BASECURRENCYID);
-//            if (!StringUtils.isEmpty(baseCurrencyId)) return;
-//            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
     }
 
     @Override
