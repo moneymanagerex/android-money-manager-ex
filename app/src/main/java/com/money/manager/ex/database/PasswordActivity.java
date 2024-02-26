@@ -25,6 +25,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 
@@ -61,6 +62,7 @@ public class PasswordActivity
     private void returnPassword() {
         EditText txt = this.findViewById(R.id.txtPassword);
         String password = txt.getText().toString();
+        MmexApplication.getApp().setPassword(password);
 
         Intent result = new Intent();
         result.putExtra(EXTRA_PASSWORD, password);
