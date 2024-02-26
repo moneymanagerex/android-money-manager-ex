@@ -43,4 +43,5 @@ public class RequestCodes {
     public static final int SELECT_FILE = 6;
     public static final int SORT_ORDER = 13;
     public static final int SPLIT_TX = 14;
+    public static final int REQUEST_PASSWORD = 20;
 }

@@ -74,6 +74,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -310,6 +311,11 @@ public class MainActivity
         if (resultCode != RESULT_OK && requestCode != RequestCodes.PASSCODE) return;
 
         switch (requestCode) {
+            case RequestCodes.REQUEST_PASSWORD:
+                String path = data.getStringExtra(MainActivity.EXTRA_DATABASE_PATH);
+                DatabaseMetadata selectedDatabase = getDatabases().get(path);
+                onOpenDatabaseClick(selectedDatabase);
+                break;
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
@@ -534,12 +540,14 @@ public class MainActivity
         try {
             MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
             dbUtils.useDatabase(database);
+            dbUtils.checkIntegrity();
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
                 Timber.w(e.getMessage());
             } else {
                 Timber.e(e, "changing the database");
             }
+            showSelectDatabaseActivity();
             return;
         }
 
@@ -584,7 +592,12 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3
-                onOpenDatabaseClick(selectedDatabase);
+                intent = new Intent(MainActivity.this, PasswordActivity.class);
+                intent.putExtra(EXTRA_DATABASE_PATH, key);
+                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
+
+                // onOpenDatabaseClick(selectedDatabase);
+                return result;
             }
         }
         if (item.getId() == null) return false;
@@ -601,12 +614,16 @@ public class MainActivity
                 break;
 
             case R.id.menu_open_database:
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+
                 FileStorageHelper helper = new FileStorageHelper(this);
                 helper.showStorageFilePicker();
                 // TODO request password 2/3
                 break;
 
             case R.id.menu_create_database:
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+
                 (new FileStorageHelper(this)).showCreateFilePicker();
                 // TODO request password 3/3
                 break;
@@ -1168,6 +1185,7 @@ public class MainActivity
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
                 changeDatabase(db);
                 return;

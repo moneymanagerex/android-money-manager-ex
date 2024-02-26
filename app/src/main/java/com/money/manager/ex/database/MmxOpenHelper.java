@@ -96,7 +96,6 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
         try {
             executeRawSql(db, R.raw.tables_v1);
-            db.disableWriteAheadLogging();
             initDatabase(db);
         } catch (Exception e) {
             Timber.e(e, "initializing database");
