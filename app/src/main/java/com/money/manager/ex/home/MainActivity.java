@@ -1273,6 +1273,9 @@ public class MainActivity
         String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
         if (TextUtils.isEmpty(dbPath)) return false;
 
+        // force to re select the file and input password
+        if (dbPath.endsWith(".emb") && MmexApplication.getApp().getPassword().isEmpty()) return false;
+
         // Does the database file exist?
         File dbFile = new File(dbPath);
         return dbFile.exists();
