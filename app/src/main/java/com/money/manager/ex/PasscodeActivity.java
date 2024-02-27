@@ -91,6 +91,8 @@ public class PasscodeActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
 
+		findViewById(R.id.editTextPasscode1).requestFocus();
+
         ButterKnife.bind(this);
 
         // create a listener for button
