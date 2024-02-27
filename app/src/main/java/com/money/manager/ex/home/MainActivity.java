@@ -257,19 +257,19 @@ public class MainActivity
         super.onStart();
 
         // check if has pass-code and authenticate
-//        if (!isAuthenticated) {
-//            Passcode passcode = new Passcode(getApplicationContext());
-//            if (passcode.hasPasscode() && !isInAuthentication) {
-//                Intent intent = new Intent(this, PasscodeActivity.class);
-//                // set action and data
-//                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
-//                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
-//                // start activity
-//                startActivityForResult(intent, RequestCodes.PASSCODE);
-//                // set in authentication
-//                isInAuthentication = true;
-//            }
-//        }
+        if (!isAuthenticated) {
+            Passcode passcode = new Passcode(getApplicationContext());
+            if (passcode.hasPasscode() && !isInAuthentication) {
+                Intent intent = new Intent(this, PasscodeActivity.class);
+                // set action and data
+                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+                // start activity
+                startActivityForResult(intent, RequestCodes.PASSCODE);
+                // set in authentication
+                isInAuthentication = true;
+            }
+        }
 
         // todo: mark the active database file in the navigation panel.
         // mDrawer
