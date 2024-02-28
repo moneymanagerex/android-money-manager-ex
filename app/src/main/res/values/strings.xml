@@ -459,7 +459,7 @@
     <string name="locale_es" translatable="false">Español</string>
     <string name="locale_fr" translatable="false">Français</string>
     <string name="locale_he" translatable="false">עברית</string>
-    <string name="locale_hu" translatable="false">Magyar</string>
+    <string name="locale_hu" translatable="false">magyar</string>
     <string name="locale_id" translatable="false">bahasa Indonesia</string>
     <string name="locale_it" translatable="false">Italiano</string>
     <string name="locale_ja" translatable="false">日本語</string>
