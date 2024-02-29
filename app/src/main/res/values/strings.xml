@@ -98,7 +98,7 @@
     <string name="account_number">Account number</string>
     <string name="account_held_at">Held at</string>
     <string name="account_status">Account status</string>
-    <string name="favourite_account">Favourite account</string>
+    <string name="favourite_account">Favorite account</string>
     <string name="select_currency">Select currency</string>
     <string name="checking">Checking</string>
     <string name="investment">Investment</string>
@@ -647,7 +647,7 @@
     <string name="recurrence_type_not_set">Recurrence type not set</string>
     <string name="invalid_recurrence_type">Invalid recurrence type</string>
     <string name="account_not_found">Account not found</string>
-    <string name="favourite">Favourite</string>
+    <string name="favourite">Favorite</string>
     <string name="split_reset_notice">Please note that there are multiple split categories in this transaction. You need to remove them manually.</string>
 
     <!-- budgets -->
