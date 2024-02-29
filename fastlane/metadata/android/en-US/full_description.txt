@@ -1,6 +1,5 @@
-A simple and easy-to-use application to manage personal finances, bank accounts,
-family budget, and so on. Main goal is to add a mobile implementation for
-an application we love to use on our Desktop Money Manager EX.
+An easy-to-use personal finance application to manage personal finances, bank accounts, family budget, and so on.
+The main goal is to add a mobile implementation for the MMEX Desktop application.
 
 -------------------------------------------------
 <b>Features</b>
@@ -8,10 +7,10 @@ an application we love to use on our Desktop Money Manager EX.
 
 * Management of single transactions
 * Account, payee, category, currency management
-* Cloud Storage based synchronization, incl
-** cloud storage, e.g. googleDrive, nextCloud
-** sync service , e.g. Syncthing
-* Compatible with Desktop MMEX
-* Repeating transactions
+* Cloud Storage based synchronization, including
+** cloud storage, e.g. Google Drive, Nextcloud
+** sync service, e.g. Syncthing
+* Compatible with MMEX for Desktop
+* Scheduled transactions
 * Charts for reports
-* Supported languages: English, Italian, Portuguese, Spanish and Russian
+* Supported languages: Bosnian, Chinese, Croatian, Czech, Dutch, English, German, Greek, Hebrew, Hungarian, Indonesian, Italian, Japanese, Polish, Portuguese, Russian, Spanish, Tagalog, Turkish, Ukrainian, Urdu, Vietnamese
