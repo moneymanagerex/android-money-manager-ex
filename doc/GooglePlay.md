@@ -5,7 +5,7 @@ Money Manager Ex for Android
 Manage your income and expenses on a mobile device, synchronize via cloud
 
 [Full Description]
-<b>Money Manager Ex</b> is a free, Open Source, cross-platform, easy-to-use personal finance software. It primarily helps organize one's finances and keeps track of where, when and how the money flows. It is a great tool to get a bird's eye view of your financial worth.
+<b>Money Manager Ex</b> is a free, open-source, cross-platform, easy-to-use personal finance software. It primarily helps organize one's finances and keeps track of where, when and how the money flows. It is a great tool to get a bird's eye view of your financial worth.
 
 <b>Money Manager Ex</b> includes all the basic features that most users would want to see in a personal finance application. The design goals are focus on simplicity and user-friendliness - something one can use everyday.
 
@@ -20,7 +20,7 @@ Overview of all income and expenses: separate and highlight records with differe
 ☆ <b>PAYEES AND CATEGORIES</b>
 Categories indicate the reason an expenditure is made or an income is received. Payees are the people or the institutions that give money or who are paid for goods and services.
 
-☆ <b>RECURRING TRANSACTIONS</b>
+☆ <b>SCHEDULED TRANSACTIONS</b>
 Special transactions set up in order to have the transaction entered into the database at some future date. They generally occur at regular intervals based on a schedule.
 
 ☆ <b>STOCKS</b>
@@ -51,4 +51,4 @@ You can also try the latest version from https://play.google.com/store/apps/deta
 email: android@moneymanagerex.org
 Web: http://android.moneymanagerex.org/
 Forum: http://forum.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=PlayStore&utm_source=Website
-Twitter: https://twitter.com/MMEX4Android
+X: https://twitter.com/MMEX4Android
