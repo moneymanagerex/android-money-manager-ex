@@ -82,7 +82,7 @@
     <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transaction Status Notification</string>
     <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg or New Transaction screen</string>
-    <string name="notification_click_to_edit_transaction">Touch to edit the transaction&#8230;</string>
+    <string name="notification_click_to_edit_transaction">Tap to edit the transaction&#8230;</string>
     <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
 
@@ -267,7 +267,7 @@
     <string name="skip_next_occurrence">Skip Next Occurrence</string>
     <string name="skip_next_occurrence_confirmation">Do you want to skip the next occurrence?</string>
     <string name="notification_repeating_transaction_expired">There are expired scheduled transactions</string>
-    <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
+    <string name="notification_click_to_check_repeating_transaction">Tap to check the transaction overdue</string>
     <string name="num_repeating_transaction_expired">%1$d scheduled transaction overdue</string>
     <string name="skip">Skip</string>
     <string name="enter">Enter</string>
@@ -691,12 +691,12 @@
     <!-- deprecated / Dropbox -->
     <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
-    <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
-    <string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>
+    <string name="dropbox_open_database_downloaded">To use the database downloaded, tap Open Database</string>
+    <string name="click_to_select_file_dropbox">Tap to select the file to use from Dropbox</string>
     <string name="download_from_drobpox">Download from Dropbox</string>
-    <string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>
+    <string name="summary_download_from_drobpox">Tap to manually download the linked file from Dropbox folder</string>
     <string name="upload_to_drobpox">Upload to Dropbox</string>
-    <string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>
+    <string name="summary_upload_to_drobpox">Tap to manually upload the linked file to Dropbox folder</string>
     <string name="dropbox_how_it_works">How does Dropbox work for MMEX\?</string>
     <string name="dropbox_link">Link to Dropbox</string>
     <string name="dropbox_unlink">Unlink from Dropbox</string>
