@@ -59,7 +59,7 @@
 
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
-    <string name="view_accounts_favorites">View favourite accounts</string>
+    <string name="view_accounts_favorites">View favorite accounts</string>
     <string name="version">Version</string>
     <string name="build">Build</string>
     <string name="path">Database path</string>
@@ -748,7 +748,7 @@
     <string name="no_remote_file">Please select the remote file to use for synchronization.</string>
 
     <!-- Warnings -->
-    <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>
+    <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favorite.</string>
 
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>
