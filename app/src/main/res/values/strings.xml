@@ -231,7 +231,7 @@
     <string name="widget_all_accounts">All Accounts</string>
     <string name="widget_add_transaction">Add Transaction</string>
 
-    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <!-- Scheduled Transactions -->
     <string name="none">None</string>
     <string name="once">Once</string>
     <string name="weekly">Weekly</string>
