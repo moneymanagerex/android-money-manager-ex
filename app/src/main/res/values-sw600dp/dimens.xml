@@ -17,7 +17,6 @@
   -->
 
 <resources>
-    <dimen name="money_text_view_size">18sp</dimen>
     <dimen name="mmx_activity_side_padding">24dp</dimen>
 </resources>
 
