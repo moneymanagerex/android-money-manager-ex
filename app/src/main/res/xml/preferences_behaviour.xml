@@ -17,7 +17,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_repeating_transaction_notifications"
@@ -32,7 +32,7 @@
         android:summary="@string/summary_check_repeating_transaction"
         android:title="@string/title_check_repeating_transaction" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:key="@string/pref_behaviour_focus_filter"
         android:defaultValue="true"
@@ -47,20 +47,20 @@
         <!--android:title="@string/income_expense_period"-->
         <!--android:summary="@string/income_expense_period_summary" />-->
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_text_search_type"
         android:summary="@string/search_text_contain_summary"
         android:title="@string/search_text_contain_title" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="false"
         android:key="@string/pref_sms_auto_trans"
         android:summary="@string/summary_sms_auto_trans"
         android:title="@string/title_sms_auto_trans" />
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="false"
         android:key="@string/pref_sms_trans_status_notification"
@@ -68,13 +68,13 @@
         android:summary="@string/summary_sms_trans_status_notification"
         android:title="@string/title_sms_trans_status_notification" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="false"
         android:key="@string/pref_auto_transaction_number"
         android:title="@string/title_auto_transaction_number" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_show_tutorial"
