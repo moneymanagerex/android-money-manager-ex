@@ -16,7 +16,7 @@
  */
 package com.money.manager.ex;
 
-import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -164,7 +164,7 @@ public class MmxContentProvider
                     initializeDependencies();
 
                     id = openHelper.get().getWritableDatabase()
-                            .insert(dataset.getSource(), CONFLICT_FAIL, values);
+                            .insert(dataset.getSource(), CONFLICT_REPLACE, values);
                     //database.setTransactionSuccessful();
                 } catch (Exception e) {
                     Timber.e(e, "inserting: %s", "insert");
@@ -203,7 +203,7 @@ public class MmxContentProvider
                 logUpdate(dataset, values, whereClause, whereArgs);
 
                 try {
-                    rowsUpdate = database.update(dataset.getSource(), CONFLICT_FAIL, values, whereClause, whereArgs);
+                    rowsUpdate = database.update(dataset.getSource(), CONFLICT_REPLACE, values, whereClause, whereArgs);
                 } catch (Exception ex) {
                     Timber.e(ex, "updating: %s", "update");
                 }

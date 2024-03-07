@@ -177,7 +177,7 @@ public abstract class RepositoryBase<T extends EntityBase>
      * @return  Boolean indicating whether the operation was successful.
      */
     protected boolean update(EntityBase entity, String where) {
-        return update(entity, where, null);
+        return update(entity, where, new String[0]);
     }
 
     protected boolean update(EntityBase entity, String where, String[] selectionArgs) {
