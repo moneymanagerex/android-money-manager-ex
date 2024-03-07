@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.servicelayer;
 
-import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -57,7 +57,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.insert(InfoRepositorySql.TABLE_NAME, CONFLICT_FAIL, values);
+        return db.insert(InfoRepositorySql.TABLE_NAME, CONFLICT_REPLACE, values);
     }
 
     public long insertRaw(SQLiteDatabase db, String key, String value) {
@@ -83,7 +83,7 @@ public class InfoService
         values.put(Info.INFOVALUE, value);
 
         return db.update(InfoRepositorySql.TABLE_NAME,
-                CONFLICT_FAIL,
+                CONFLICT_REPLACE,
                 values,
             Info.INFOID + "=?",
                 new String[] { Integer.toString(recordId)}
@@ -95,7 +95,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.update(InfoRepositorySql.TABLE_NAME, CONFLICT_FAIL, values,
+        return db.update(InfoRepositorySql.TABLE_NAME, CONFLICT_REPLACE, values,
             Info.INFONAME + "=?",
                 new String[] { key });
     }
