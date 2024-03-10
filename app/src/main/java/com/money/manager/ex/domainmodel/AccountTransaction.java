@@ -41,6 +41,7 @@ public class AccountTransaction
     implements ITransactionEntity {
 
     public static final String TRANSID = "TRANSID";
+    public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
     /**
      * Creates default, empty transaction.
@@ -231,5 +232,9 @@ public class AccountTransaction
     @Override
     public void setTransactionType(TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
+    }
+
+    public void setLastUpdatedTime(String value) {
+        setString(LASTUPDATEDTIME, value);
     }
 }
