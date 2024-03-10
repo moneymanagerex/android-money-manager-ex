@@ -24,6 +24,7 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxDate;
 
 /**
  * Repository for Checking Account records.
@@ -68,6 +69,7 @@ public class AccountTransactionRepository
 
     public AccountTransaction insert(AccountTransaction entity) {
         entity.contentValues.remove(AccountTransaction.TRANSID);
+        entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());
 
         int id = insert(entity.contentValues);
 
@@ -79,6 +81,8 @@ public class AccountTransactionRepository
     public boolean update(AccountTransaction item) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
+
+        item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
 
         boolean saved = super.update(item, where.getWhere());
         return saved;

@@ -29,6 +29,7 @@ public class Constants {
     public static final String ISO_DATE_SHORT_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     //public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String IOS_8601_COMBINED = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String LONG_DATE_PATTERN = "EEEE, dd MMMM yyyy";
     public static final String LONG_DATE_MEDIUM_DAY_PATTERN = "EEE, dd MMMM yyyy";
 
