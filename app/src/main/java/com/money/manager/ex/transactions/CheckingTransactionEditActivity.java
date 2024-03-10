@@ -245,7 +245,7 @@ public class CheckingTransactionEditActivity
             SplitCategory newSplit = new SplitCategory();
             newSplit.setAmount(record.getAmount());
             newSplit.setCategoryId(record.getCategoryId());
-			newSplit.setNotes(record.getNotes());
+            newSplit.setNotes(record.getNotes());
 
             mCommon.mSplitTransactions.add(newSplit);
         }

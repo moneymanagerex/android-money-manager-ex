@@ -1129,6 +1129,13 @@ public class EditTransactionCommonFunctions {
             return false;
         }
 
+        // Payee is required if tx is not transfer
+        if (!transactionEntity.hasPayee() && !isTransfer)
+        {
+            core.alert(R.string.error_payee_not_selected);
+            return false;
+        }
+
         // Category is required if tx is not a split or transfer.
         boolean hasCategory = transactionEntity.hasCategory();
         if (!hasCategory && (!isSplitSelected()) && !isTransfer) {
