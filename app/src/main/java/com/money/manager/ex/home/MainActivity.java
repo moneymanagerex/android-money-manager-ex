@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.home;
 
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -663,9 +661,6 @@ public class MainActivity
             case R.id.menu_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
-            case R.id.menu_reports:
-                showReportsSelector(item.getText());
-                break;
             case R.id.menu_report_payees:
                 startActivity(new Intent(this, PayeesReportActivity.class));
                 break;
@@ -859,9 +854,6 @@ public class MainActivity
         childItems.add(null);
 
         // Synchronization
-//        if (new SyncManager(this).isActive()) {
-//            childItems.add(null);
-//        }
         childItems.add(null);
 
         // Entities
@@ -894,20 +886,39 @@ public class MainActivity
         // Budgets
         childItems.add(null);
 
-        // Asset Allocation
-        //if (BuildConfig.DEBUG) <- this was used to hide the menu item while testing.
-        childItems.add(null);
-
         // Search transaction
         childItems.add(null);
 
         // reports
-        childItems.add(null);
+        ArrayList<DrawerMenuItem> childReports = new ArrayList<>();
+        // payee
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
+                .withText(getString(R.string.payees))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money goes
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
+                .withText(getString(R.string.menu_report_where_money_goes))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money comes from
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
+                .withText(getString(R.string.menu_report_where_money_comes_from))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money comes from
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
+                .withText(getString(R.string.categories))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // income vs. expenses
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
+                .withText(getString(R.string.menu_report_income_vs_expenses))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor)));
+        childItems.add(childReports);
 
         // Settings
-        childItems.add(null);
-
-        // Donate
         childItems.add(null);
 
         // Help
@@ -1078,12 +1089,6 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
                         .color(iconColor)));
 
-        // Asset Allocation
-        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-        //        .withText(getString(R.string.asset_allocation))
-        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-        //                .color(iconColor)));
-
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
@@ -1093,8 +1098,8 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
-                        .color(iconColor))
-                .withDivider(true));
+                        .color(iconColor)));
+                // .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
@@ -1431,59 +1436,6 @@ public class MainActivity
 //        }
 
         return false;
-    }
-
-    private void showReportsSelector(String text) {
-        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        UIHelper uiHelper = new UIHelper(this);
-        int iconColor = uiHelper.getSecondaryTextColor();
-
-        // payee
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
-                .withText(getString(R.string.payees))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                    .color(iconColor)));
-
-        // where money goes
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
-                .withText(getString(R.string.menu_report_where_money_goes))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // where money comes from
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
-                .withText(getString(R.string.menu_report_where_money_comes_from))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // where money comes from
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
-                .withText(getString(R.string.categories))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // income vs. expenses
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
-                .withText(getString(R.string.menu_report_income_vs_expenses))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                        .color(iconColor)));
-
-        // Asset Allocation Overview
-        // adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
-        //        .withText(getString(R.string.asset_allocation))
-        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-        //                .color(iconColor)));
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(text)
-                .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
-                        dialog.dismiss();
-                    }
-                })
-                .show();
     }
 
     private void showSelectDatabaseActivity() {
