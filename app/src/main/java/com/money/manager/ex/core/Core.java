@@ -17,7 +17,9 @@
 
 package com.money.manager.ex.core;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -32,12 +34,9 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -85,14 +84,15 @@ public class Core {
             title = R.string.attention;
         }
 
-        new MaterialDialog.Builder(getContext())
-                .icon(new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                .title(title)
-                .content(text)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        UIHelper ui = new UIHelper(getContext());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                .setTitle(title)
+                .setMessage(text)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
@@ -319,19 +319,17 @@ public class Core {
         // create changelog layout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
 
-        // show changelog dialog
-        new MaterialDialog.Builder(getContext())
-            .cancelable(false)
-            .title(R.string.changelog)
-            .customView(view, true)
-            .neutralText(android.R.string.ok)
-            .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            })
-            .build().show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false)
+                .setTitle(R.string.changelog)
+                .setView(view)
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
 
         // mark as seen
         int currentVersionCode = getAppVersionCode();

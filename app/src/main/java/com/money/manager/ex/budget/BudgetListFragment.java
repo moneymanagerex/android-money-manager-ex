@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.budget;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,8 +26,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
@@ -38,12 +43,6 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 
 import org.greenrobot.eventbus.EventBus;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 /**
  * Use the {@link BudgetListFragment#newInstance} factory method to
@@ -251,18 +250,17 @@ public class BudgetListFragment
     }
 
     private void confirmDelete(final int budgetId) {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.delete)
-                .content(R.string.confirmDelete)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.delete)
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         BudgetService service = new BudgetService(getActivity());
                         service.delete(budgetId);
                     }
                 })
-                .neutralText(android.R.string.cancel)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 }

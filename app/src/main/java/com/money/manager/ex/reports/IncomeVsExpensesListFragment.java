@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.reports;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -31,7 +33,14 @@ import android.widget.AdapterView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
@@ -52,13 +61,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -265,41 +267,48 @@ public class IncomeVsExpensesListFragment
     // Other
 
     public void showDialogYears() {
-        ArrayList<String> years = new ArrayList<String>();
-        //Integer[] selected = new Integer[0];
+        // Assuming mYearsSelected is a SparseBooleanArray
+        ArrayList<String> years = new ArrayList<>();
         List<Integer> selected = new ArrayList<>();
 
         for (int i = 0; i < mYearsSelected.size(); i++) {
             years.add(String.valueOf(mYearsSelected.keyAt(i)));
 
             if (mYearsSelected.valueAt(i)) {
-                //selected = ArrayUtils.add(selected, i);
                 selected.add(i);
             }
         }
 
-        Integer[] selectedArray = selected.toArray(new Integer[0]);
+        // Convert years to CharSequence array
+        final CharSequence[] items = years.toArray(new CharSequence[years.size()]);
+        // Convert selected to boolean array
+        final boolean[] checkedItems = new boolean[items.length];
+        for (int i = 0; i < items.length; i++) {
+            checkedItems[i] = selected.contains(i);
+        }
 
-        new MaterialDialog.Builder(getActivity())
-                .items(years.toArray(new String[years.size()]))
-                .itemsCallbackMultiChoice(selectedArray, new MaterialDialog.ListCallbackMultiChoice() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers,
-                                               CharSequence[] charSequences) {
-                        // reset to false all years
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        checkedItems[which] = isChecked;
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Reset all years to false
                         for (int i = 0; i < mYearsSelected.size(); i++) {
                             mYearsSelected.put(mYearsSelected.keyAt(i), false);
                         }
-                        // set year select
-                        for (int index : integers) {
-                            mYearsSelected.put(mYearsSelected.keyAt(index), true);
+                        // Set selected years
+                        for (int i = 0; i < checkedItems.length; i++) {
+                            mYearsSelected.put(mYearsSelected.keyAt(i), checkedItems[i]);
                         }
                         startLoader();
-                        return true;
                     }
                 })
-                        //.alwaysCallMultiChoiceCallback()
-                .positiveText(android.R.string.ok)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 

@@ -18,12 +18,17 @@
 package com.money.manager.ex.settings;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+
 import com.google.common.primitives.Ints;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -41,10 +46,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import timber.log.Timber;
 
 /**
@@ -324,14 +325,18 @@ public class PerDatabaseFragment
     }
 
     private void showCurrencyChangeNotification() {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.base_currency_changed)
-                .content(R.string.base_currency_change_notification)
-                .positiveText(android.R.string.ok)
-                .neutralText(R.string.open_currencies)
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.base_currency_changed)
+                .setMessage(R.string.base_currency_change_notification)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Positive button click action (if needed)
+                    }
+                })
+                .setNeutralButton(R.string.open_currencies, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
                         intent.setAction(Intent.ACTION_EDIT);
                         startActivity(intent);
@@ -339,5 +344,4 @@ public class PerDatabaseFragment
                 })
                 .show();
     }
-
 }

@@ -17,15 +17,14 @@
 package com.money.manager.ex.common;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -36,44 +35,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.ActionBar;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
+import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.R;
-import com.money.manager.ex.servicelayer.qif.QifExport;
-import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
-import com.money.manager.ex.core.ExportToCsvFile;
-import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.servicelayer.qif.QifExport;
+import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -703,83 +703,78 @@ public class AllDataListFragment
      */
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert binaryDialog and set title and message
-        MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_transaction)
-            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-            .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
-                    transactionIds.size(), transactionIds.size()));
-//        alert.setIcon(R.drawable.ic_action_warning_light);
+        UIHelper ui = new UIHelper(getActivity());
 
-        // set listener button positive
-        alertDialog.positiveText(android.R.string.ok);
-        alertDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                SyncManager sync = new SyncManager(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.delete_transaction)
+                .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+                        transactionIds.size(), transactionIds.size()))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SyncManager sync = new SyncManager(getActivity());
 
-                // Pause sync notification while bulk processing.
-                sync.disableAutoUpload();
+                        // Pause sync notification while bulk processing.
+                        sync.disableAutoUpload();
 
-                for (int transactionId : transactionIds) {
-                    // First delete any splits. See if there are any split records.
-                    SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
-                    Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                            SplitCategory.TRANSID + "=" + transactionId,
-                            null, SplitCategory.SPLITTRANSID);
-                    int splitCount = curSplit.getCount();
-                    curSplit.close();
+                        for (int transactionId : transactionIds) {
+                            // First delete any splits. See if there are any split records.
+                            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
+                            Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                                    SplitCategory.TRANSID + "=" + transactionId,
+                                    null, SplitCategory.SPLITTRANSID);
+                            int splitCount = curSplit.getCount();
+                            curSplit.close();
 
-                    if (splitCount > 0) {
-                        int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                                SplitCategory.TRANSID + "=?",
-                                new String[]{Integer.toString(transactionId)});
-                        if (deleteResult != splitCount) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                            if (splitCount > 0) {
+                                int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                                        SplitCategory.TRANSID + "=?",
+                                        new String[]{Integer.toString(transactionId)});
+                                if (deleteResult != splitCount) {
+                                    Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
-                            // Now notify Dropbox about modifications.
-                            sync.enableAutoUpload();
-                            sync.dataChanged();
+                                    // Now notify Dropbox about modifications.
+                                    sync.enableAutoUpload();
+                                    sync.dataChanged();
 
-                            return;
+                                    return;
+                                }
+                            }
+
+                            // Delete the transaction.
+
+                            AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
+                            int deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                                    AccountTransaction.TRANSID + "=?",
+                                    new String[]{Integer.toString(transactionId)});
+                            if (deleteResult == 0) {
+                                Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                                // Now notify Dropbox about modifications.
+                                sync.enableAutoUpload();
+                                sync.dataChanged();
+
+                                return;
+                            }
                         }
-                    }
-
-                    // Delete the transaction.
-
-                    AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
-
-                    int deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
-                            AccountTransaction.TRANSID + "=?",
-                            new String[]{Integer.toString(transactionId)});
-                    if (deleteResult == 0) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                         // Now notify Dropbox about modifications.
                         sync.enableAutoUpload();
                         sync.dataChanged();
 
-                        return;
+                        // restart loader
+                        loadData();
                     }
-                }
-
-                // Now notify Dropbox about modifications.
-                sync.enableAutoUpload();
-                sync.dataChanged();
-
-                // restart loader
-                loadData();
-            }
-        });
-        // set listener negative button
-        alertDialog.negativeText(android.R.string.cancel);
-        alertDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.build().show();
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     /**
@@ -889,15 +884,13 @@ public class AllDataListFragment
                 .withShortcut("V"));
 
         // open binaryDialog
-        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.change_status))
-                .adapter(adapter, null)
-                .build();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.change_status));
 
-        ListView listView = dialog.getListView();
-        if (listView != null) listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Set the adapter
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(DialogInterface dialog, int position) {
                 DrawerMenuItem item = adapter.getItem(position);
                 switch (item.getId()) {
                     case R.id.menu_none:
@@ -914,7 +907,18 @@ public class AllDataListFragment
                 dialog.dismiss();
             }
         });
+
+        // Create and show the AlertDialog
+        final AlertDialog dialog = builder.create();
         dialog.show();
+
+        // Set an item click listener for the ListView inside the AlertDialog
+        dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Handle item click if needed
+            }
+        });
     }
 
     private void showDuplicateTransactionView(ArrayList<Integer> transIds) {

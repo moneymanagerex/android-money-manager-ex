@@ -16,7 +16,9 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,13 +33,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
@@ -783,20 +782,23 @@ public class EditTransactionCommonFunctions {
 
     public boolean onActionCancelClick() {
         if (getDirty()) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                .title(android.R.string.cancel)
-                .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.discard)
-                .negativeText(R.string.keep_editing)
-                .cancelable(false)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        cancelActivity();
-                    }
-                })
-                .build();
-            dialog.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(android.R.string.cancel)
+                    .setMessage(R.string.transaction_cancel_confirm)
+                    .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cancelActivity();
+                        }
+                    })
+                    .setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
         } else {
             // Just close activity
             cancelActivity();
@@ -1422,10 +1424,16 @@ public class EditTransactionCommonFunctions {
         if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
             if (mAccountIdList.size() == 0) {
                 // notify the user and exit.
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.warning)
-                        .content(R.string.no_accounts_available_for_selection)
-                        .positiveText(android.R.string.ok)
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.no_accounts_available_for_selection)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Handle positive button click if needed
+                                dialog.dismiss();
+                            }
+                        })
                         .show();
                 return;
             } else {
@@ -1479,10 +1487,16 @@ public class EditTransactionCommonFunctions {
      * that the records must be adjusted manually.
      */
     private void showSplitResetNotice() {
-        new MaterialDialog.Builder(getContext())
-                .title(R.string.split_transaction)
-                .content(R.string.split_reset_notice)
-                .positiveText(android.R.string.ok)
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.split_transaction)
+                .setMessage(R.string.split_reset_notice)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle positive button click if needed
+                        dialog.dismiss();
+                    }
+                })
                 .show();
     }
 

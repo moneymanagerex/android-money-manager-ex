@@ -16,22 +16,27 @@
  */
 package com.money.manager.ex.reports;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -40,9 +45,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import dagger.Lazy;
 
 public abstract class BaseReportFragment
@@ -265,40 +267,37 @@ public abstract class BaseReportFragment
     }
 
     private void showDialogCustomDates() {
-        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-            .customView(R.layout.dialog_choose_date_report, false)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                    View view = materialDialog.getCustomView();
-                    DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
-                    DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
+        // Assuming mDateFrom, mDateTo, and KEY_WHERE_CLAUSE are class variables
 
-                    mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
-                    mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
+        // Inflate the custom view
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_choose_date_report, null);
+        DatePicker fromDatePicker = dialogView.findViewById(R.id.datePickerFromDate);
+        DatePicker toDatePicker = dialogView.findViewById(R.id.datePickerToDate);
 
-                    String whereClause =
-                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
-                                "' AND " +
-                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
+                        mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
-                    Bundle args = new Bundle();
-                    args.putString(KEY_WHERE_CLAUSE, whereClause);
+                        String whereClause =
+                                ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                        "' AND " +
+                                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
-                    startLoader(args);
+                        Bundle args = new Bundle();
+                        args.putString(KEY_WHERE_CLAUSE, whereClause);
 
-                    //super.onPositive(binaryDialog);
-                }
-            })
-            .show();
+                        startLoader(args);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
         // set date if is null
         if (mDateFrom == null) mDateFrom = new MmxDate().today().toDate();
         if (mDateTo == null) mDateTo = new MmxDate().today().toDate();
-
-        View view = dialog.getCustomView();
-        DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
-        DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
 
         dateTimeUtilsLazy.get().setDatePicker(mDateFrom, fromDatePicker);
         dateTimeUtilsLazy.get().setDatePicker(mDateTo, toDatePicker);

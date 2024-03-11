@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.common;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,8 +28,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.fragment.app.DialogFragment;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
@@ -42,8 +44,6 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import icepick.Icepick;
 import icepick.State;
 import info.javaperformance.money.Money;
@@ -249,31 +249,30 @@ public class AmountInputDialog
         evalExpression();
 
         // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!evalExpression()) return;
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-            .customView(view, false)
-            .cancelable(false)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    if (!evalExpression()) return;
+                        EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
 
-                    EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
-                    dialog.dismiss();
-                }
-            })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            })
-            .autoDismiss(false)
-            .negativeText(android.R.string.cancel)
-            .positiveText(android.R.string.ok);
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
-        return builder.show();
+        return dialog;
     }
 
     @Override

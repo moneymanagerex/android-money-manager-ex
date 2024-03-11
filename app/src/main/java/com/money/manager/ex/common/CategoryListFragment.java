@@ -17,7 +17,9 @@
 package com.money.manager.ex.common;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -34,25 +36,26 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.database.QueryCategorySubCategory;
+import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.servicelayer.CategoryService;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.settings.AppSettings;
 
 import org.parceler.Parcels;
@@ -61,10 +64,6 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 /**
  * Categories list fragment. Used in Main Activity for editing of categories, and own activity
@@ -458,30 +457,32 @@ public class CategoryListFragment
             canDelete = !service.isCategoryUsed(categoryIds.categId);
         }
         if (!(canDelete)) {
-            new MaterialDialog.Builder(getContext())
-                .title(R.string.attention)
-                .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                .content(R.string.category_can_not_deleted)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .build().show();
+            UIHelper ui = new UIHelper(getActivity());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(R.string.attention)
+                    .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                    .setMessage(R.string.category_can_not_deleted)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
             return;
         }
 
         // Prompt for deletion.
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_category)
-            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-            .content(R.string.confirmDelete)
-            .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        UIHelper ui = new UIHelper(getActivity());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.delete_category)
+                .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         int rowsDelete = 0;
                         if (categoryIds.subCategId <= 0) {
                             CategoryRepository repo = new CategoryRepository(getActivity());
@@ -496,15 +497,13 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 })
-            .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                        dialog.dismiss();
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .show();
     }
 
     /**
@@ -528,14 +527,13 @@ public class CategoryListFragment
 
         UIHelper ui = new UIHelper(getActivity());
 
-        new MaterialDialog.Builder(getContext())
-            .customView(viewDialog, true)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
-            .title(titleId)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(viewDialog)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_tags))
+                .setTitle(titleId)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         // get category description
                         String name = edtCategName.getText().toString();
                         CategoryService service = new CategoryService(getActivity());
@@ -559,14 +557,13 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-        .build().show();
+                .show();
     }
 
     /**
@@ -610,14 +607,13 @@ public class CategoryListFragment
 
         UIHelper ui = new UIHelper(getActivity());
 
-        new MaterialDialog.Builder(getContext())
-            .customView(viewDialog, true)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_tags))
-            .title(titleId)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(viewDialog)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_tags))
+                .setTitle(titleId)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         // get category description
                         String name = edtSubCategName.getText().toString();
                         // check position
@@ -642,8 +638,7 @@ public class CategoryListFragment
                                 if (getActivity().getContentResolver().update(
                                         repo.getUri(),
                                         values,
-                                        Category.CATEGID + "="
-                                                + categoryId, null) == 0) {
+                                        Category.CATEGID + "=" + categoryId, null) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
@@ -652,14 +647,13 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-            .build().show();
+                .show();
     }
 
     private void addListClickHandlers() {
@@ -711,32 +705,29 @@ public class CategoryListFragment
      * Choose the item type: category / subcategory.
      */
     private void showTypeSelectorDialog() {
-        new MaterialDialog.Builder(getActivity())
-            .title(R.string.choose_type)
-            .items(R.array.category_type)
-            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    /**
-                     * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                     * returning false here won't allow the newly selected radio button to actually be selected.
-                     **/
-//                        showNameEntryDialog();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.choose_type)
+                .setSingleChoiceItems(R.array.category_type, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // todo: depending on the choice, show the edit dialog. 0-based
+                        if (which == 0) {
+                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                        } else {
+                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                        }
 
-                    // todo: depending on the choice, show the edit binaryDialog. 0-based
-                    if (which == 0) {
-                        showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
-                    } else {
-                        showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                        dialog.dismiss();
                     }
-
-                    return true;
-                }
-            })
-            .positiveText(android.R.string.ok)
-//                .negativeText(android.R.string.cancel)
-            .neutralText(android.R.string.cancel)
-            .show();
+                })
+                .setPositiveButton(android.R.string.ok, null) // null listener to prevent dialog from automatically dismissing
+                .setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void showSearchActivityFor(SearchParameters parameters) {
