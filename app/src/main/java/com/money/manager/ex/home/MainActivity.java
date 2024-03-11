@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.home;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -48,7 +50,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.amplitude.android.Amplitude;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -1473,16 +1474,15 @@ public class MainActivity
         //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
         //                .color(iconColor)));
 
-        new MaterialDialog.Builder(this)
-                .title(text)
-                .adapter(adapter, new MaterialDialog.ListCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text)
+                .setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    public void onClick(DialogInterface dialog, int which) {
                         onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
                         dialog.dismiss();
                     }
                 })
-                .build()
                 .show();
     }
 
