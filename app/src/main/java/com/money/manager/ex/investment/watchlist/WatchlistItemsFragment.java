@@ -16,7 +16,9 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -29,8 +31,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -62,12 +68,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -472,28 +472,26 @@ public class WatchlistItemsFragment
     private void showDeleteConfirmationDialog(final int id) {
         UIHelper ui = new UIHelper(getContext());
 
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.delete_transaction)
-                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-                .content(R.string.confirmDelete)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.delete_transaction)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
                             new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
                         }
 
-                        // restart loader
+                        // Restart loader
                         reloadData();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        // close binaryDialog
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close dialog
                         dialog.cancel();
                     }
                 })

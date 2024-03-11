@@ -17,7 +17,9 @@
 
 package com.money.manager.ex.core;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -85,14 +87,15 @@ public class Core {
             title = R.string.attention;
         }
 
-        new MaterialDialog.Builder(getContext())
-                .icon(new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                .title(title)
-                .content(text)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        UIHelper ui = new UIHelper(getContext());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                .setTitle(title)
+                .setMessage(text)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
