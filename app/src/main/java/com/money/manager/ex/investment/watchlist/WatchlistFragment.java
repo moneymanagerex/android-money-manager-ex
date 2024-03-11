@@ -34,14 +34,11 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -614,39 +611,37 @@ public class WatchlistFragment
     private void purgePriceHistory() {
         UIHelper ui = new UIHelper(getContext());
 
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.purge_history)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.purge_history_confirmation)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.purge_history)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setMessage(R.string.purge_history_confirmation)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         StockHistoryRepository history = new StockHistoryRepository(getActivity());
                         int deleted = history.deleteAllPriceHistory();
 
                         if (deleted > 0) {
                             new SyncManager(getActivity()).dataChanged();
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                                     .show();
                         } else {
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
                                     .show();
                         }
 
                         dialog.dismiss();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();                    }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
                 })
-            .build()
-            .show();
+                .show();
     }
 
     /**
