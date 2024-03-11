@@ -17,25 +17,26 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
@@ -314,10 +315,16 @@ public class SplitCategoriesActivity
     }
 
     private void showInvalidAmountDialog() {
-        new MaterialDialog.Builder(this)
-            .title(R.string.error)
-            .content(R.string.error_amount_must_be_positive)
-            .positiveText(android.R.string.ok)
-            .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error)
+                .setMessage(R.string.error_amount_must_be_positive)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle positive button click if needed
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }
