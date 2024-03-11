@@ -17,14 +17,11 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.loader.content.Loader;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.loader.app.LoaderManager;
-
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;
@@ -32,8 +29,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
@@ -132,18 +131,18 @@ public class AccountListFragment
             case DELETE:
                 AccountService service = new AccountService(getActivity());
                 if (service.isAccountUsed(accountId)) {
-                    new MaterialDialog.Builder(getContext())
-                            .title(R.string.attention)
-                            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                            .content(R.string.account_can_not_deleted)
-                            .positiveText(android.R.string.ok)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.attention)
+                            .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
+                            .setMessage(R.string.account_can_not_deleted)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             })
-                            .build().show();
+                            .create()
+                            .show();
                 } else {
                     showDeleteConfirmationDialog(accountId);
                 }
@@ -262,31 +261,30 @@ public class AccountListFragment
 
     private void showDeleteConfirmationDialog(final int accountId) {
         UIHelper ui = new UIHelper(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_account)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirmDelete)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    AccountRepository repo = new AccountRepository(getActivity());
-                    if (!repo.delete(accountId)) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+        builder.setTitle(R.string.delete_account)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AccountRepository repo = new AccountRepository(getActivity());
+                        if (!repo.delete(accountId)) {
+                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                        }
+                        // restart loader
+                        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
                     }
-                    // restart loader
-                    getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.cancel();
-                }
-            })
-            .build().show();
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 
     /**

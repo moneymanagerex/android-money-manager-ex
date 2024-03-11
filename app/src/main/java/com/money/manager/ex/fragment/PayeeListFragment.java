@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,8 +34,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.PayeeActivity;
@@ -52,13 +56,6 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.AlertDialogWrapper;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 /**
  * List of Payees. Used as a picker/selector also.
@@ -222,18 +219,13 @@ public class PayeeListFragment
                 if (!service.isPayeeUsed(payee.getId())) {
                     showDialogDeletePayee(payee.getId());
                 } else {
-                    new AlertDialogWrapper(getActivity())
+                    new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.attention)
                             .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
                             .setMessage(R.string.payee_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                        .create().show();
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .create()
+                            .show();
                 }
                 break;
 
@@ -340,32 +332,29 @@ public class PayeeListFragment
     }
 
     private void showDialogDeletePayee(final int payeeId) {
-        new AlertDialogWrapper(getContext())
-            .setTitle(R.string.delete_payee)
-            .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
-            .setMessage(R.string.confirmDelete)
-            .setPositiveButton(android.R.string.ok,
-                    new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_payee)
+                .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         PayeeRepository repo = new PayeeRepository(getActivity());
                         boolean success = repo.delete(payeeId);
                         if (success) {
                             Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                         }
-
                         restartLoader();
                     }
                 })
-            .setNegativeButton(android.R.string.cancel,
-                    new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.cancel();
-                        }
-                    })
-            .create().show();
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 
     private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {
@@ -378,21 +367,20 @@ public class PayeeListFragment
         }
 
         UIHelper ui = new UIHelper(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(viewDialog);
 
-        new AlertDialogWrapper(getContext())
-            .setView(viewDialog)
-            .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
-            .setTitle(R.string.edit_payeeName)
-        .setPositiveButton(android.R.string.ok,
-                new MaterialDialog.SingleButtonCallback() {
+        builder.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
+                .setTitle(R.string.edit_payeeName)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         // take payee name from the input field.
                         String name = edtPayeeName.getText().toString();
 
                         PayeeService service = new PayeeService(mContext);
 
-                        // check if action in update or insert
+                        // check if action is update or insert
                         switch (type) {
                             case INSERT:
                                 Payee payee = service.createNew(name);
@@ -423,13 +411,15 @@ public class PayeeListFragment
                         restartLoader();
                     }
                 })
-        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        })
-        .create().show();
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        // Create and show the AlertDialog
+        builder.create().show();
     }
 
     @Override
