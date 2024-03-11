@@ -114,4 +114,6 @@ section Adding margins to App Widgets
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="md_icon_max_size">32dp</dimen>
 </resources>
