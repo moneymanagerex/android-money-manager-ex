@@ -10,6 +10,9 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 [<img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="240">](https://f-droid.org/packages/com.money.manager.ex)
 [<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
 
+##### Nightly build 
+[![Build status](https://ci.appveyor.com/api/projects/status/bn231orqqh7bi6um?svg=true)](https://ci.appveyor.com/project/moneymanagerex/android-money-manager-ex)
+
 #### Documentation
 - [UserManual](docs/usermanual/index.md)
 - [neested category](doc/nestedcategory.md)
