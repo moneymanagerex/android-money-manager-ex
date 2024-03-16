@@ -1,0 +1,4 @@
+Make Payee as mandatory for non transfer tx
+Auto pop LASTUPDATEDTIME to comply with Desktop
+MaterialDialog deprecation (refactor)
+Re-org and unify reports
