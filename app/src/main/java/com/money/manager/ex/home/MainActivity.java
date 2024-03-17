@@ -608,8 +608,6 @@ public class MainActivity
             case R.id.menu_sync:
                 SyncManager sync = new SyncManager(this);
                 sync.triggerSynchronization();
-                // re-set the sync timer.
-                sync.startSyncServiceHeartbeat();
                 break;
 
             case R.id.menu_open_database:
