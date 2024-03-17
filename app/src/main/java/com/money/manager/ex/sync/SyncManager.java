@@ -83,7 +83,7 @@ public class SyncManager {
     private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
-        Timber.d("Aborting scheduled download");
+        Timber.d("Aborting scheduled sync");
 
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
@@ -121,19 +121,6 @@ public class SyncManager {
 
         return true;
     }
-
-//    public boolean isRemoteFileModified(CloudMetaData remoteFile) {
-//        String dateString = getDatabases().getCurrent().remoteLastChangedDate;
-//        if (TextUtils.isEmpty(dateString)) {
-//            // no remote file-change information found!
-//            throw new RuntimeException(getContext().getString(R.string.no_remote_change_date));
-//        }
-//
-//        Date cachedLastModified = MmxDate.fromIso8601(dateString).toDate();
-//        Date remoteLastModified = getModificationDateFrom(remoteFile);
-//
-//        return !remoteLastModified.equals(cachedLastModified);
-//    }
 
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;
