@@ -199,22 +199,6 @@ public class SyncManager {
         mAutoUploadDisabled = false;
     }
 
-    /**
-     * Assembles the path where the local synchronised file is expected to be found.
-     * @return The path of the local cached copy of the remote database.
-     */
-    public String getDefaultLocalPath() {
-        String remoteFile = getRemotePath();
-        // now get only the file name
-        String remoteFileName = new File(remoteFile).getName();
-
-        String localPath = getExternalStorageDirectoryForSync().getPath();
-        if (!localPath.endsWith(File.separator)) {
-            localPath += File.separator;
-        }
-        return localPath + remoteFileName;
-    }
-
 //    public Single<List<CloudMetaData>> getRemoteFolderContentsSingle(String folder) {
 //        return mStorageClient.getContents(folder);
 //    }
@@ -311,39 +295,15 @@ public class SyncManager {
     }
 
     /**
-     * Retrieves the remote metadata. Retries once on fail to work around #957.
-     * @return Remote file metadata.
-     */
-//    public CloudMetaData loadMetadata(String remotePath) {
-//        return mStorageClient.loadMetadata(remotePath);
-//    }
-
-//    public Single<Void> login() {
-//        return mStorageClient.login();
-//    }
-
-//    public Single<Void> logout() {
-//        return mStorageClient.logout();
-//    }
-
-    /**
      * Resets the synchronization preferences and cache.
      */
     void resetPreferences() {
         getPreferences().clear();
-
-        // reset provider cache
-//        mStorageClient.createProviders();
-//        mStorageClient.cacheCredentials();
     }
 
     public void setEnabled(boolean enabled) {
         getPreferences().setSyncEnabled(enabled);
     }
-
-//    public void setProvider(CloudStorageProviderEnum provider) {
-//        mStorageClient.setProvider(provider);
-//    }
 
     public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
@@ -439,70 +399,10 @@ public class SyncManager {
 
     public void triggerDownload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
-
-        //todo migrate
-//        int jobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_DOWNLOAD)
-//                .setExecutionWindow(50, 5000)
-//                .build()
-//                .schedule();
     }
 
     public void triggerUpload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
-    }
-
-    /**
-     * Upload the file to cloud storage.
-     * @param localPath The path to the file to upload.
-     * @param remoteFile The remote path.
-     */
-    public boolean upload(String localPath, String remoteFile) {
-        File localFile = new File(localPath);
-        if (!localFile.exists()) return false;
-
-        FileInputStream input;
-        try {
-            input = new FileInputStream(localFile);
-        } catch (FileNotFoundException e) {
-            Timber.e(e, "opening local file for upload");
-            return false;
-        }
-
-        // Transfer the file.
-        try {
-            long length = localFile.length();
-            // todo mStorageClient.upload(remoteFile, input, length, true);
-        } catch (Exception e) {
-            Timber.e(e, "uploading database file");
-            return false;
-        }
-
-        try {
-            input.close();
-        } catch (IOException e) {
-            Timber.e(e, "closing input stream after upload");
-        }
-
-        // set last modified date
-//        CloudMetaData remoteFileMetadata = loadMetadata(remoteFile);
-//        if (remoteFileMetadata == null) {
-//            Timber.w("Could not retrieve metadata after upload! Aborting.");
-//            return false;
-//        }
-//        todo saveRemoteLastModifiedDate(localPath, remoteFileMetadata);
-
-        // Reset local changes indicator. todo this must handle changes made during the upload!
-        resetLocalChanges();
-
-//        // set remote file, if not set (setLinkedRemoteFile)
-//        if (TextUtils.isEmpty(getRemotePath())) {
-//            setRemotePath(remoteFile);
-//        }
-
-        // update any renewed tokens
-//        mStorageClient.cacheCredentials();
-
-        return true;
     }
 
     /**
@@ -632,10 +532,6 @@ public class SyncManager {
 
         currentDbEntry.isLocalFileChanged = changed;
         getDatabases().save();
-    }
-
-    private void resetLocalChanges() {
-        markLocalFileChanged(false);
     }
 
     /**
