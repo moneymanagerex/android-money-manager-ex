@@ -18,7 +18,7 @@ SELECT     TX.TransID AS ID,
     cf.currency_symbol AS currency,
     TX.Status AS Status,
     TX.NOTES AS Notes,
-    ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
+    ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *
         ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 ) AS Amount,
     FROMACC.CurrencyID AS CurrencyID,
@@ -39,7 +39,7 @@ SELECT     TX.TransID AS ID,
     d.day AS Day,
     d.finyear AS finyear,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
-        * ifnull(cfTo.BaseConvRate, 1) As AmountBaseConvRate
+        * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
 --    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID

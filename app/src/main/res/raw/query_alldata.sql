@@ -14,7 +14,7 @@ SELECT     TX.TransID AS ID,
     NULL AS Subcategory,       -- Wolfsolver ignore subcategory
     TX.Status AS Status,
     TX.NOTES AS Notes,
-    ifnull(cfTo.BaseConvRate, cf.BaseConvRate) AS BaseConvRate,
+    ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
     ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount AS Amount,
     FromAcc.CurrencyID AS CurrencyID,
     cf.currency_symbol AS currency,
