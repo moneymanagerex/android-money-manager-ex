@@ -448,21 +448,7 @@ public class SyncManager {
     }
 
     public void triggerUpload() {
-        DatabaseMetadata db = getDatabases().getCurrent();
-        if (db == null) {
-            throw new RuntimeException("Cannot upload: local database not set.");
-        }
-        String localFile = db.localPath;
-        String remoteFile = db.remotePath;
-
-        // trigger upload
-        Intent intent = new Intent(getContext(), SyncService.class);
-        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
-        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
-
-        // start service
-        SyncService.enqueueWork(getContext(), intent);
+        invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
     }
 
     /**
