@@ -42,16 +42,6 @@ public class SyncBroadcastReceiver
         // check sync interval.
         if (new SyncPreferences(context).getSyncInterval() == 0) return;
 
-        // Trigger synchronization
-
-        Intent myIntent = new Intent(context, SyncService.class);
-        myIntent.setAction(SyncConstants.INTENT_ACTION_SYNC);
-
-        myIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE,
-                new DatabaseManager(context).getDatabasePath());
-        myIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
-
-        SyncService.enqueueWork(context, myIntent);
-        Timber.d("enqueuing a sync intent");
+        sync.triggerSynchronization();
     }
 }

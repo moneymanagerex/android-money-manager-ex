@@ -147,7 +147,7 @@ public class SyncManager {
         // Should we schedule an upload?
         SyncPreferences preferences = new SyncPreferences(getContext());
         if (preferences.getUploadImmediately()) {
-            scheduleDelayedUpload();
+        //    scheduleDelayedUpload();
         }
     }
 
@@ -217,7 +217,7 @@ public class SyncManager {
         SyncService.enqueueWork(getContext(), syncServiceIntent);
 
         // Reset any other scheduled uploads as the current operation will modify the files.
-        abortScheduledUpload();
+        // abortScheduledUpload();
 
         // The messages from the service are received via messenger.
     }
