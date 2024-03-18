@@ -223,10 +223,9 @@ public class MainActivity
             uid = "android_" + Instant.now()
                     .atZone(ZoneId.of("UTC"))
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+            infoService.setInfoValue(InfoKeys.UID, uid);
         }
         amplitude.setUserId(uid);
-
-        infoService.setInfoValue(InfoKeys.UID, uid);
 
         // fragments
         initHomeFragment();
@@ -310,6 +309,18 @@ public class MainActivity
         if (resultCode != RESULT_OK && requestCode != RequestCodes.PASSCODE) return;
 
         switch (requestCode) {
+            case RequestCodes.SELECT_FILE:
+                // Opening from intent.
+                if (resultCode != RESULT_OK) return;
+
+                String selectedPath = UIHelper.getSelectedFile(data);
+                if(TextUtils.isEmpty(selectedPath)) {
+                    new UIHelper(this).showToast(R.string.invalid_database);
+                    return;
+                }
+
+                changeDatabase(DatabaseMetadataFactory.getInstance(selectedPath));
+                break;
             case RequestCodes.REQUEST_PASSWORD:
                 String path = data.getStringExtra(MainActivity.EXTRA_DATABASE_PATH);
                 DatabaseMetadata selectedDatabase = getDatabases().get(path);
