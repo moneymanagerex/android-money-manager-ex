@@ -132,8 +132,9 @@ public class SyncService
                 sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
                 break;
             case SyncConstants.INTENT_ACTION_SYNC:
-            default:
                 triggerSync(outMessenger, localFile);
+                break;
+            default:
                 break;
         }
     }
@@ -171,8 +172,6 @@ public class SyncService
     }
 
     private void triggerSync(Messenger outMessenger, File localFile) {
-        SyncManager sync = new SyncManager(getApplicationContext());
-
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         boolean isLocalModified = storage.isLocalFileChanged(currentDb);
@@ -212,7 +211,7 @@ public class SyncService
             return;
         }
         if (isLocalModified) {
-            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
+            Timber.d("Local file %s changed. Triggering upload.", localFile.getPath());
             // upload file
             storage.pushDatabase(currentDb);
             sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
