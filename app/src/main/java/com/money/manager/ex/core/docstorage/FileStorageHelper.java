@@ -110,46 +110,6 @@ public class FileStorageHelper {
 
         return metadata;
     }
-    /**
-     * Synchronize local and remote database files.
-     * @param metadata Database file metadata.
-     */
-    public String synchronize(DatabaseMetadata metadata) {
-        // validation
-        // Make sure we have a valid storage-access-framework url.
-        if (!metadata.remotePath.startsWith("content://")) {
-            Timber.w("Invalid remote Uri. Please re-open the database.");
-            return "Invalid remote Uri";
-        }
-
-        // check if we have remote changes
-        boolean remoteChanged = isRemoteFileChanged(metadata);
-
-        // check if we have local changes
-        boolean localChanged = isLocalFileChanged(metadata);
-
-        // decide on the action
-        if (remoteChanged && localChanged) {
-            String message = "Conflict! Both files have been modified.";
-            //throw new RuntimeException();
-            Timber.e(message);
-            return "Conflict";
-        }
-        if (remoteChanged) {
-            // download
-            pullDatabase(metadata);
-            return "pullDatabase";
-        }
-        if (localChanged) {
-            // upload
-            pushDatabase(metadata);
-            return "pushDatabase";
-        }
-        if (!remoteChanged && !localChanged) {
-            Timber.i("Not synchronizing. Files have not been modified.");
-        }
-        return "no change";
-    }
 
     /*
         Private area
@@ -157,12 +117,11 @@ public class FileStorageHelper {
 
     public boolean isLocalFileChanged(DatabaseMetadata metadata) {
         MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
-        Date localLastModified = localLastModifiedMmxDate.toDate();
+        Date localModified = localLastModifiedMmxDate.toDate();
         // The timestamp when the local file was downloaded.
-        Date localDownloaded = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
+        Date localSnapshot = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
 
-        boolean result = localLastModified.after(localDownloaded);
-        return result;
+        return localModified.after(localSnapshot);
     }
 
     public boolean isRemoteFileChanged(DatabaseMetadata metadata) {
