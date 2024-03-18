@@ -302,12 +302,14 @@ public class SyncService
             Timber.d("Remote file %s changed. Triggering download.", currentDb.remotePath);
             // download file
             storage.pullDatabase(currentDb);
+            sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
             return;
         }
         if (isLocalModified) {
             Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
             // upload file
             storage.pushDatabase(currentDb);
+            sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
             return;
         }
     }

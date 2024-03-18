@@ -232,7 +232,7 @@ public class SyncManager {
             progressDialog.setCancelable(false);
             progressDialog.setMessage(getContext().getString(R.string.syncProgress));
             progressDialog.setIndeterminate(true);
-//            progressDialog.show();
+            progressDialog.show();
         }
 
         DatabaseMetadata current = mDatabases.get().getCurrent();
