@@ -151,97 +151,6 @@ public class SyncService
         enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
     }
 
-    /*
-        Private
-    */
-
-//    private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
-//        final SyncManager sync = new SyncManager(getApplicationContext());
-//
-//        Notification notification = new SyncNotificationFactory(getApplicationContext())
-//                .getNotificationForDownload();
-//
-//        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
-//                .getSystemService(Context.NOTIFICATION_SERVICE);
-//        final File tempFile = new File(localFile.toString() + "-download");
-//
-//        Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
-//
-//        if (notification != null && notificationManager != null) {
-//            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
-//        }
-//        sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
-//
-//        compositeSubscription.add(
-//                sync.downloadSingle(remoteFile, tempFile)
-//                        // do not run on another thread as then the service will be destroyed.
-////                    .subscribeOn(Schedulers.io())
-//                        .subscribe(new SingleSubscriber<Void>() {
-//                            @Override
-//                            public void onSuccess(Void value) {
-//                                //onDownloadHandler.onPostExecute(true);
-//                                afterDownload(notificationManager, tempFile, localFile,
-//                                        remoteFile, sync);
-//                                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
-//                                sendStopEvent();
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable error) {
-//                                Timber.e(error, "async download");
-//                                sendMessage(SyncServiceMessage.ERROR);
-//                                sendStopEvent();
-//                            }
-//                        })
-//        );
-//    }
-
-//    private void afterDownload(NotificationManager notificationManager, File tempFile, File localFile,
-//                               CloudMetaData remoteFile, SyncManager sync) {
-//        if (notificationManager == null) return;
-//
-//        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-//
-//        // copy file
-//        try {
-//            MmxFileUtils.copy(tempFile, localFile);
-//            tempFile.delete();
-//        } catch (IOException e) {
-//            Timber.e(e, "copying downloaded database file");
-//            return;
-//        }
-//
-//        sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
-//
-//        // Create the notification for opening of the downloaded file.
-//        // The Intent is passed to the notification and called if clicked on.
-//        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-//                RequestCodes.SELECT_FILE, intent, 0);
-//
-//        Notification completeNotification = new SyncNotificationFactory(getApplicationContext())
-//                .getNotificationDownloadComplete(pendingIntent);
-//
-//        // notify
-//        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, completeNotification);
-//    }
-
-//    private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
-//        Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
-//
-//        showNotificationUploading();
-//        sendMessage(SyncServiceMessage.STARTING_UPLOAD);
-//
-//        // upload
-//        SyncManager sync = new SyncManager(getApplicationContext());
-//        boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
-//
-//        // notification, upload complete
-//        showNotificationUploadComplete(result, localFile);
-//        sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
-//        sendStopEvent();
-//    }
-
     private void showNotificationUploadComplete(boolean result, File localFile) {
         if (mNotificationManager == null) return;
 
@@ -259,7 +168,6 @@ public class SyncService
                 .getNotificationUploadComplete(pendingIntent);
         // notify
         mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification);
-
     }
 
     private void triggerSync(Messenger outMessenger, File localFile) {
