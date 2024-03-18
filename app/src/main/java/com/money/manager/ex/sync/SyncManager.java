@@ -47,9 +47,6 @@ import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -125,34 +122,6 @@ public class SyncManager {
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;
     }
-
-//    /**
-//     * Download the remote file into the local path.
-//     * @param remoteFile The remote file metadata.
-//     * @param localFile Local file path. Normally a temp file.
-//     * @return RxJava Single
-//     */
-//    public Single<Void> downloadSingle(final CloudMetaData remoteFile, final File localFile) {
-//        return Single.fromCallable(new Callable<Void>() {
-//            @Override
-//            public Void call() throws Exception {
-//                // todo downloadFile(remoteFile, localFile);
-//                return null;
-//            }
-//        })
-//        .doOnSuccess(new Action1<Void>() {
-//            @Override
-//            public void call(Void aVoid) {
-//                // clear local changes
-//                resetLocalChanges();
-//
-//                // update any renewed tokens
-////                mStorageClient.cacheCredentials();
-//
-//                abortScheduledUpload();
-//            }
-//        });
-//    }
 
     /**
      * Called whenever the database has changed and should be uploaded.
