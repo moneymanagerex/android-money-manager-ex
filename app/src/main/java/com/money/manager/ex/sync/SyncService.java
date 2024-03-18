@@ -73,7 +73,6 @@ public class SyncService
     RecentDatabasesProvider recentDatabasesProvider;
 
     private CompositeSubscription compositeSubscription;
-    private Messenger mOutMessenger;
     private NotificationManager mNotificationManager;
 
     @Override
@@ -96,20 +95,19 @@ public class SyncService
 //        sendStartEvent();
 
         // Check if there is a messenger. Used to send the messages back.
+        Messenger outMessenger = null;
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
-            mOutMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
+            outMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
         }
 
         // check if the device is online.
         NetworkUtils network = new NetworkUtils(getApplicationContext());
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
-            sendMessage(SyncServiceMessage.NOT_ON_WIFI);
+            sendMessage(outMessenger, SyncServiceMessage.NOT_ON_WIFI);
 //            sendStopEvent();
             return;
         }
-
-        SyncManager sync = new SyncManager(getApplicationContext());
 
         String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
@@ -127,15 +125,15 @@ public class SyncService
         switch (action) {
             case SyncConstants.INTENT_ACTION_DOWNLOAD:
                 storage.pullDatabase(currentDb);
-                sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
                 break;
             case SyncConstants.INTENT_ACTION_UPLOAD:
                 storage.pushDatabase(currentDb);
-                sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
                 break;
             case SyncConstants.INTENT_ACTION_SYNC:
             default:
-                triggerSync(localFile);
+                triggerSync(outMessenger, localFile);
                 break;
         }
     }
@@ -264,7 +262,7 @@ public class SyncService
 
     }
 
-    private void triggerSync(File localFile) {
+    private void triggerSync(Messenger outMessenger, File localFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
 
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
@@ -277,7 +275,7 @@ public class SyncService
 
         // possible outcomes:
         if (!isLocalModified && !isRemoteModified) {
-            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+            sendMessage(outMessenger, SyncServiceMessage.FILE_NOT_CHANGED);
 //            sendStopEvent();
             MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
                 put("authority", uri.getAuthority());
@@ -289,7 +287,7 @@ public class SyncService
         if (isLocalModified && isRemoteModified) {
             // if both changed, there is a conflict!
             Timber.w(getString(R.string.both_files_modified));
-            sendMessage(SyncServiceMessage.CONFLICT);
+            sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
  //           sendStopEvent();
             MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
                 put("authority", uri.getAuthority());
@@ -302,26 +300,26 @@ public class SyncService
             Timber.d("Remote file %s changed. Triggering download.", currentDb.remotePath);
             // download file
             storage.pullDatabase(currentDb);
-            sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+            sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
             return;
         }
         if (isLocalModified) {
             Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
             // upload file
             storage.pushDatabase(currentDb);
-            sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+            sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
             return;
         }
     }
 
-    private boolean sendMessage(SyncServiceMessage message) {
-        if (mOutMessenger == null) return true;
+    private boolean sendMessage(Messenger outMessenger, SyncServiceMessage message) {
+        if (outMessenger == null) return true;
 
         Message msg = new Message();
         msg.what = message.code;
 
         try {
-            mOutMessenger.send(msg);
+            outMessenger.send(msg);
         } catch (Exception e) {
             Timber.e(e, "sending message from the sync service");
 
