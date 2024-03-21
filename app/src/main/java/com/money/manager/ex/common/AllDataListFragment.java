@@ -911,14 +911,6 @@ public class AllDataListFragment
         // Create and show the AlertDialog
         final AlertDialog dialog = builder.create();
         dialog.show();
-
-        // Set an item click listener for the ListView inside the AlertDialog
-        dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Handle item click if needed
-            }
-        });
     }
 
     private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
