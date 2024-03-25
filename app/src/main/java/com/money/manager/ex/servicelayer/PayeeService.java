@@ -125,7 +125,7 @@ public class PayeeService
 
         return getContext().getContentResolver().update(payeeRepository.getUri(),
                 values,
-                Payee.PAYEEID + "=" + id,
-                null);
+                Payee.PAYEEID + "=?",
+                new String[]{Integer.toString(id)});
     }
 }

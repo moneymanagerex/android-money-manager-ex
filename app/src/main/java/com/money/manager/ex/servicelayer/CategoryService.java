@@ -130,7 +130,7 @@ public class CategoryService
 
         int result = getContext().getContentResolver().update(repo.getUri(),
                 values,
-                Category.CATEGID + "=" + id, null);
+                Category.CATEGID + "=?", new String[]{Integer.toString(id)});
 
         return result;
     }
