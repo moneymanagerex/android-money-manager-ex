@@ -638,7 +638,7 @@ public class CategoryListFragment
                                 if (getActivity().getContentResolver().update(
                                         repo.getUri(),
                                         values,
-                                        Category.CATEGID + "=" + categoryId, null) == 0) {
+                                        Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
