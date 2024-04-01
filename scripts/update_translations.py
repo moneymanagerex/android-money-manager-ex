@@ -10,7 +10,7 @@ home = str(Path.home())
 
 # Settings
 src_root = f"{home}/Downloads/android-money-manager-ex"
-dst_root = f"{home}/src/android-money-manager-ex/app/src/main/res"
+dst_root = f"{home}/workspace/android-money-manager-ex/app/src/main/res"
 #
 
 def directory_exists(path: str):
@@ -98,7 +98,14 @@ def copy_translation(language):
         print(f"copying: {filename}")
 
         shutil.copyfile(full_src_path, full_dst_path)
+
+        # Read all lines from the file, replace 2 spaces with 4 spaces, and write back to the file
+        with open(full_src_path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
         
+        with open(full_dst_path, "w", encoding="utf-8") as file:
+            file.writelines(line.replace("    ", "  ") for line in lines)
+
 def update_translations():
     """ copy translated files into the correct locations """
     print("############################ Copying Translations ##############################")

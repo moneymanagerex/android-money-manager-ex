@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -58,6 +58,7 @@
   <string name="version">Version</string>
   <string name="build">Build</string>
   <string name="path">Datenbank-Pfad</string>
+  <string name="remote_path">Remote-Ordner</string>
   <string name="database_version">Datenbankversion</string>
   <string name="title_show_tutorial">Zeige Tutorial</string>
   <string name="summary_show_tutorial">Zeige Tutorial beim nächsten Programmaufruf?</string>
@@ -67,6 +68,17 @@
   <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
   <string name="sync_on_app_start">Synchronisiere beim Start</string>
   <string name="sync_on_start">Beim Start synchronisieren</string>
+  <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">Banktransaktions-SMS bearbeiten</string>
+  <string name="summary_sms_auto_trans">Lies die Banktransaktions-Update SMS und erstelle automatisch eine Transaktion</string>
+  <string name="deny_receive_sms_error">Sie haben die Berechtigung zum Empfang der SMS verweigert, daher wird Ihre Banktransaktions-SMS nicht verarbeitet</string>
+  <string name="granted_receive_sms_access">Berechtigung für RECEIVE_SMS bereits gewährt</string>
+  <string name="revoke_receive_sms_access">Gehen Sie zu den Einstellungen &gt;&gt; Apps &gt;&gt; Money Manager Ex &gt;&gt; Berechtigungen und verweigern Sie den Zugriff für SMS</string>
+  <string name="title_sms_trans_status_notification">SMS-Transaktionsstatus Benachrichtigung</string>
+  <string name="summary_sms_trans_status_notification">Aktivieren, um den Status des Banktransaktions-SMS-Prozesses im Benachrichtigungsbereich anzuzeigen, anstatt ihn als Toast msg oder Neue Transaktion anzuzeigen</string>
+  <string name="notification_click_to_edit_transaction">Tippen, um die Transaktion zu bearbeiten&#8230; </string>
+  <string name="notification_process_sms_transaction_status">Banktransaktions-SMS bearbeiten</string>
+  <string name="notification_process_sms_channel_description">AMMEX SMS-Benachrichtigungskanal</string>
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Kontenliste</string>
@@ -176,6 +188,7 @@
   <string name="access_info">Zugangsinformation</string>
   <string name="initial_balance">Anfangs-Kontostand</string>
   <string name="notes">Notizen</string>
+  <string name="notes_hint">Zitat einfügen</string>
   <string name="closed">Geschlossen</string>
   <string name="theme_application">Theme</string>
   <string name="theme_holo">Dunkles Design</string>
@@ -203,7 +216,7 @@
   <string name="widget_summary">Übersicht</string>
   <string name="widget_all_accounts">Alle Konten</string>
   <string name="widget_add_transaction">Transaktion hinzufügen</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Nichts</string>
   <string name="once">Einmalig</string>
   <string name="weekly">Wöchentlich</string>
@@ -220,12 +233,12 @@
   <string name="in_x_months">In (x) Monaten</string>
   <string name="every_x_days">Alle (x) Tage</string>
   <string name="every_x_months">Alle (x) Monate</string>
-  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
+  <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
   <string name="inactive">Inaktiv</string>
   <string name="activates">aktiviert</string>
   <string name="days_overdue">Tage überfällig!</string>
   <string name="days_remaining">Tage verbleibend</string>
-  <string name="new_edit_repeating_transaction">Wiederholte Transaktion hinzufügen/bearbeiten</string>
+  <string name="new_edit_repeating_transaction">Geplante Transaktion neu/bearbeiten</string>
   <string name="due_date">Fälligkeitsdatum</string>
   <string name="next_occurrence">Nächstes Vorkommen</string>
   <string name="payment_date">Tag der Zahlung</string>
@@ -238,9 +251,9 @@
   <string name="enter_next_occurrence">Gib das nächste Vorkommen ein</string>
   <string name="skip_next_occurrence">Überspringe das nächste Vorkommen</string>
   <string name="skip_next_occurrence_confirmation">Möchten Sie das nächste Vorkommen überspringen?</string>
-  <string name="notification_repeating_transaction_expired">Abgelaufene wiederholte Transaktionen vorhanden</string>
+  <string name="notification_repeating_transaction_expired">Es gibt abgelaufene geplante Transaktionen</string>
   <string name="notification_click_to_check_repeating_transaction">Berühren um die ausstehende Transation zu sehen</string>
-  <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
+  <string name="num_repeating_transaction_expired">%1$d geplante Transaktion überfällig</string>
   <string name="skip">Überspringen</string>
   <string name="enter">Eingeben</string>
   <string name="enter_amount">Betrag eingeben</string>
@@ -284,15 +297,12 @@
   <string name="date_format">Datumsformat</string>
   <string name="financial_year_start_day">Geschäftsjahr: Starttag</string>
   <string name="financial_year_start_month">Geschäftsjahr: Startmonat</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Datenbank exportieren</string>
   <string name="database_has_been_moved">Die Datenbank wurde verschoben: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Die Datenbank auf den externen Speicher zu kopieren ist fehlgeschlagen</string>
   <string name="path_database_using">Sie verwenden die Datenbank gespeichert in: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Geteilte Transaktion</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Aufteilen</string>
   <string name="error_split_transaction_empty">Mindestestens eine geteilte Transaktion ist erforderlich</string>
   <string name="swipe_to_dismiss">Wischen zum Entfernen.</string>
@@ -300,7 +310,6 @@
   <string name="export_data_in_progress">Exportieren von Daten. Bitte warten...</string>
   <string name="export_file_complete">Die Daten wurde erfolgreich in die Datei %1$s exportiert</string>
   <string name="export_file_failed">Export der Datei %1$s fehlgeschlagen</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEX für Android ist kostenlos. Wenn Ihnen die Anwendung gefällt, können Sie das Entwicklerteam mit einer Spende untersützen.</string>
   <string name="donate_in_app_title">Google Play In-App Käufe</string>
   <string name="donate_in_app_description">Spenden Sie via Google Play In-App Käufe.</string>
@@ -315,23 +324,16 @@
   <string name="donate_license">Aus lizenzrechtlichen Gründen von Google dürfen wir den Spendenlink nicht direkt in der App platzieren.</string>
   <string name="donate_button_text">Spenden</string>
   <string name="homepage_button">Homepage öffnen</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite-Version</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="sorting_month">Sortierung Monate</string>
-  <!-- 20130305 -->
   <string name="last_modified">Letzte Änderung</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Nicht mehr anzeigen</string>
   <string name="open_database">Datenbank öffnen</string>
   <string name="synchronization_interval">Synchronisierungsintervall</string>
   <string name="summary_synchronization_interval">Wie oft soll synchronisiert werden?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">From version 1.2.0 of Money Manager Ex for Android has changed the management of synchronization with Dropbox. For users who are already using the sync with Dropbox, you must redoing the configuration.\nThe configuration of sync with Dropbox and the selection of the database, is located in the settings.\nFrom version 1.2.0 of Money Manager Ex for Android can automatically synchronize the database with Dropbox</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Zeige den Saldo für jede Transaktion</string>
   <string name="summary_transaction_shown_balance">Zeige das Saldo für jede Transaktion. Die Darstellung des Saldos kann die Anwendung verlangsamen</string>
   <string name="menu_open_database">Datenbank öffnen</string>
@@ -346,38 +348,23 @@
   <string name="Default">Standard</string>
   <string name="medium">Mittel</string>
   <string name="large">Groß</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Wohin das Geld geht</string>
   <string name="menu_report_where_money_comes_from">Wo das Geld herkommt</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Erinnerungszeitpunkt</string>
-  <string name="summary_check_repeating_transaction">Zu welcher Zeit soll nach überfälligen wiederholte Transaktionen gesucht werden? (Standard: 08:00)</string>
-  <!-- 20130730 -->
+  <string name="summary_check_repeating_transaction">Zu welcher Zeit wollen Sie prüfen, ob geplante Transaktionen überfällig sind? (Standard 08:00)</string>
   <string name="credits">Credits</string>
   <string name="libraries">Bibliotheken</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Größte Abhebungen: Letzte 30 Tage</string>
   <string name="top_payees_last_30_days">Größter Zahlungsempfänger/Zahler: Letzte 30 Tage</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Anstehende Transaktionen</string>
   <string name="quantity">Menge</string>
   <string name="dashboard">Dashboard</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Letzte 3 Monate</string>
   <string name="last6months">Letzte 6 Monate</string>
-  <!-- 20130816 -->
   <string name="empty_category">Leere Kategorie</string>
   <string name="empty_payee">Zahlungsempfänger/Zahler leer</string>
-  <!-- 20130831 -->
   <string name="help">Hilfe</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Lösche wiederholte Transaktion</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
+  <string name="delete_repeating_transaction">Geplante Buchungen löschen</string>
   <string name="last">Letzter</string>
   <string name="accounts">Konten</string>
   <string name="to_account">Auf das Konto</string>
@@ -389,7 +376,7 @@
   <string name="delete_others_selected_transaction">Sind Sie sicher die %d ausgwählten Transaktionen löschen zu wollen?</string>
   <string name="categories">Kategorien</string>
   <string name="payees">Zahlungsempfänger/Zahler</string>
-  <string name="recurring_transactions">Wiederkehrende Transaktionen</string>
+  <string name="recurring_transactions">Geplante Buchungen</string>
   <string name="theme_holo_light">Holo hell</string>
   <string name="new_account">Neues Konto</string>
   <string name="create_new_account">Einen neues Konto erstellen</string>
@@ -399,8 +386,8 @@
   <string name="amount_to">Betrag zu</string>
   <string name="reset">Zurücksetzen</string>
   <string name="result_search">Ergebnis deiner Suche</string>
-  <string name="new_repeating_transaction">Neue wiederholte Transaktion</string>
-  <string name="edit_repeating_transaction">Wiederholte Transaktion bearbeiten</string>
+  <string name="new_repeating_transaction">Neue geplante Buchung</string>
+  <string name="edit_repeating_transaction">Geplante Buchung bearbeiten</string>
   <string name="path_database_not_exists">Datenbankpfad existiert nicht</string>
   <string name="database_can_not_open_write">Die Datenbank kann nicht zum Schreiben geöffnet werden</string>
   <string name="time_frame">Zeitrahmen</string>
@@ -410,7 +397,6 @@
   <string name="welcome_body">Alle Transaktionen in MoneyManagerEx sind mit Konten verknüpft.\n\nSie haben momentan keine sichtbaren Konten. Passen Sie entweder den Filter für sichtbare Konten in den Einstellungen an, oder wählen Sie eine der untenstehenden Optionen.</string>
   <string name="welcome_body_dropbox">Wenn Sie MoneyManagerEx bereits unter Windows, Linux oder Mac verwenden, können Sie einen Cloudspeicher-Anbieter hinzufügen, um Ihre Datenbank zu synchronisieren</string>
   <string name="configure_sync">Synchronisierungsoptionen</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Suche nach Textinhalten und nicht nach Text der mit anfängt</string>
   <string name="search_text_contain_summary">Suche nach Zahlungsempfänger/Zahler, Kategorien, Währungen usw...nach Inhalten und nicht nach Anfangsbuchstaben</string>
   <string name="rate_application">Bewerte die Anwendung</string>
@@ -421,8 +407,8 @@
   <string name="donate_in_app_already_donate">Sie haben schon die Entwicklung vonYou already MoneyManagerEx für Android mit einer Spende unterstützt!\n\nDanke das Entwicklerteam!</string>
   <string name="donate_in_app_retrieving_status">Rufe den Status Ihrer Spende von Google Play ab. Bitte warten&#8230;</string>
   <string name="donate_in_app_error">Der in-app Kauf kann nicht verwendet werden. Überprüfen Sie ob die neuste Version von Play Store installiert ist.</string>
-  <string name="title_notifications_repeating_transaction">Benachrichtigung Wiederholte Transaktion ist überfällig </string>
-  <string name="summary_notifications_repeating_transaction">Zeige Benachrichtigung für überfällige wiederholte Transaktionen</string>
+  <string name="title_notifications_repeating_transaction">Benachrichtigung: geplante Buchung überfällig </string>
+  <string name="summary_notifications_repeating_transaction">Benachrichtigung für überfällige geplante Buchungen anzeigen</string>
   <string name="tools">Werkzeuge</string>
   <string name="entities">Extras</string>
   <string name="loading">Wird geladen&#8230;</string>
@@ -461,7 +447,7 @@
   <string name="tutorial_global_1">Multiple Währungen und Sprachen. Open Source. Treten Sie unserer Übersetzungsmannschaft bei.</string>
   <string name="tutorial_sync_1">Unterstützung für unterschiedliche Plattformen, Synchronisation über unterschiedliche Cloud-Anbieter, Import und Export Ihrer Daten von und zu anderen Anwendungen.</string>
   <string name="transactions">Transaktionen</string>
-  <string name="tutorial_transactions_1">Depots, Abhebungen, Überträge, wiederkehrende Transaktionen mit Erinnerungen.</string>
+  <string name="tutorial_transactions_1">Einlagen, Auszahlungen, Überweisungen, geplante Buchungen mit Erinnerungen.</string>
   <string name="split_category">Splitkategorie</string>
   <string name="title_activity_currency_chart">Wechselkursdiagramm</string>
   <string name="sort_by_ascending">Nach Jahr und Monat aufsteigend ordnen</string>
@@ -538,7 +524,7 @@
   <string name="update_available">Update verfügbar</string>
   <string name="update_available_online">Es ist eine aktualisierte Datenbankdatei online vorhanden. Möchten Sie aktualisieren?</string>
   <string name="currency_not_found">Währung nicht gefunden</string>
-  <string name="homepage">Unsere Homepage ist http://android.moneymanagerex.org/</string>
+  <string name="homepage">Unsere Homepage ist https://moneymanagerex.org/</string>
   <string name="current_database">Aktuelle Datenbank</string>
   <string name="about_logcat_header">Sie können uns den Anwendungslog senden, indem Sie auf den Button unten drücken.</string>
   <string name="transaction_type_filter">Filtern nach Transaktionstyp</string>
@@ -546,6 +532,11 @@
   <string name="filter_options_info">Optionen und Informationen filtern</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Datenbankkennwort eingeben</string>
+  <string name="fingerprint_info">Fingerabdruck zum Entsperren verwenden</string>
+  <string name="fingerprint_no_hardware">Ihr Gerät unterstützt keine Fingerabdruck-Authentifizierung</string>
+  <string name="fingerprint_check_permission">Bitte aktivieren Sie die Fingerabdruck-Berechtigung</string>
+  <string name="fingerprint_has_enrolled">Kein Fingerabdruck konfiguriert. Bitte registrieren Sie mindestens einen Fingerabdruck in Ihren Geräteeinstellungen</string>
+  <string name="fingerprint_is_keyguard_secure">Bitte aktivieren Sie die Sperrbildschirm-Sicherheit in Ihren Geräteeinstellungen</string>
   <string name="income_expense_period">Ausgaben/Einnahmen Zeitraum</string>
   <string name="income_expense_period_summary">Der Zeitraum für die Einnahmen/Ausgaben-Übersicht ist am Seitenende des Home-Bildschirms.</string>
   <string name="appwidget_text">BEISPIEL</string>
@@ -639,7 +630,6 @@
   <string name="quote_provider">Angebotsanbieter</string>
   <string name="exchange_rate_provider">Wechselkurs-Anbieter</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Es gibt ein Update der Datenbank auf Dropbox</string>
   <string name="dropbox_file_ready_for_use">Deine Datenbank is heruntergeladen</string>
   <string name="dropbox_open_database_downloaded">Um die heruntergeladene Datenbank zu benutzen, auf Datenbank öffnen tippen</string>
@@ -707,7 +697,7 @@
   <string name="intro_text">Um Money Manager Ex verwenden zu können, müssen Sie eine Datenbank haben, um Ihre Daten zu speichern. Bitte wählen Sie eine der verfügbaren Optionen.</string>
   <string name="intro_create_db">Sie können eine neue Datei erstellen und die ersten Einstellungen vornehmen.</string>
   <string name="intro_open_db">Oder Sie können eine existierende Datei von Ihrem Gerät wählen.</string>
-  <string name="intro_sync">Alternativ können Sie die Synchronisierung mit einem Cloudspeicher aktivieren und Ihre Datenbank vom Cloudspeicher herunterladen.</string>
+  <string name="intro_sync">Um Cloud-Dienste nutzen zu können, öffnen Sie die Datei von einem bevorzugten Dokumentenanbieter.</string>
   <!-- Create Database screen -->
   <string name="select_language">Sprache wählen</string>
   <string name="run">Starte Money Manager Ex</string>
@@ -721,4 +711,23 @@
   <string name="loan">Darlehen</string>
   <string name="loan_account">Darlehenskonten</string>
   <string name="shares_accounts">Aktienkonto</string>
+  <string name="currency">Währung</string>
+  <string name="menu_create_database">Datenbank erstellen</string>
+  <string name="create_database">Datenbank erstellen</string>
+  <string name="pref_anonymous_usage">Anonyme Voranmeldung</string>
+  <string name="summary_anonymous_usage">Aktivieren Sie das Senden anonymer Daten über ihre MMEX Nutzung</string>
+  <string name="title_anonymous_usage">Anonyme Nutzungsdaten senden</string>
+  <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
+  <string name="title_auto_transaction_number">Transaktionsnummer automatisch ausfüllen</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
+  <string name="notification_channel_recurring">Benachrichtigung über geplante Transaktionen</string>
+  <string name="notification_channel_recurring__description">Überfällige geplante Transaktionsbenachrichtigung</string>
+  <string name="notification_channel_fileoperation_downloadin">MMEX herunterladen</string>
+  <string name="notification_channel_fileoperation_uploadin">MMEX hochladen</string>
+  <string name="notification_channel_fileoperation_complete">MMEX hinaufladen abgeschlossen</string>
+  <string name="notification_channel_fileoperation_conflict">MMEX Sync Konflikt</string>
 </resources>

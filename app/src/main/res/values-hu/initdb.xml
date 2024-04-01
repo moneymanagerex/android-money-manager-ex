@@ -32,7 +32,7 @@
   <string name="category_13">Bevételek</string>
   <string name="category_14">Egyéb bevétel</string>
   <string name="category_15">Egyéb kiadás</string>
-  <string name="category_16">Átvezetés</string>
+  <string name="category_16">Átutalás</string>
   <!-- default subcategory -->
   <string name="subcategory_1">Telefon</string>
   <string name="subcategory_2">Áram</string>

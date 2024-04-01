@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">管理個人財務、銀行帳戶、家庭預算等，簡單易用的應用程式。</string>
-  <string name="application_credits">MoneyManagerEx for Android 專案使用 ActionBarSherlock 程式庫</string>
   <string name="application_license">開放原始碼授權</string>
   <!-- database -->
   <string name="db_insert_failed">新增資料失敗</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">僅在 WiFi 連接時自動同步。</string>
   <string name="sync_on_app_start">在應用程式啟動時同步。</string>
   <string name="sync_on_start">開始時同步</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">帳戶</string>
   <string name="account_list">帳戶清單</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">摘要</string>
   <string name="widget_all_accounts">所有帳戶</string>
   <string name="widget_add_transaction">新增交易</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">無</string>
   <string name="once">僅此一次</string>
   <string name="weekly">每週</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">再 (x) 月</string>
   <string name="every_x_days">每 (x) 日</string>
   <string name="every_x_months">每 (x) 月</string>
-  <string name="repeating_empty_transaction">未發現任何循環交易，請點擊綠色加號按鈕新增。</string>
   <string name="inactive">未啟用</string>
   <string name="activates">啟動</string>
   <string name="days_overdue">日 - 過期</string>
   <string name="days_remaining">日 - 到期</string>
-  <string name="new_edit_repeating_transaction">新增/編輯定期交易</string>
   <string name="due_date">到期日期</string>
   <string name="next_occurrence">下次到期日</string>
   <string name="payment_date">付款日期</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">確認下次交易</string>
   <string name="skip_next_occurrence">跳過下次交易</string>
   <string name="skip_next_occurrence_confirmation">您想要跳過下次交易嗎?</string>
-  <string name="notification_repeating_transaction_expired">有過期的定期交易</string>
   <string name="notification_click_to_check_repeating_transaction">點擊以檢查逾期交易</string>
-  <string name="num_repeating_transaction_expired">%1$d 個定期交易過期</string>
   <string name="skip">略過</string>
   <string name="enter">輸入</string>
   <string name="enter_amount">輸入金額</string>
@@ -284,15 +280,12 @@
   <string name="date_format">日期格式</string>
   <string name="financial_year_start_day">會計年度：起日</string>
   <string name="financial_year_start_month">會計年度：起月</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">匯出資料庫</string>
   <string name="database_has_been_moved">資料庫已移動: %1$s</string>
   <string name="copy_database_on_external_storage_failed">複製資料庫到外部儲存空間失敗</string>
   <string name="path_database_using">您的資料庫儲存在: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">拆分交易</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">拆分</string>
   <string name="error_split_transaction_empty">需要至少一筆拆分交易</string>
   <string name="swipe_to_dismiss">滑動以刪除項目。</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">匯出資料中，請稍候...</string>
   <string name="export_file_complete">資料已成功匯出到 %1$s</string>
   <string name="export_file_failed">匯出檔案 %1$s 失敗</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx for Android 是免費軟體。如果您喜歡本程式，您可以捐款支援開發團隊。</string>
   <string name="donate_in_app_title">Google Play In-App Billing</string>
   <string name="donate_in_app_description">透過 Google Play In-App Billing 捐款</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">受 Google 授權所限，恕我們未能直接在應用程式內放置捐贈的連結。</string>
   <string name="donate_button_text">捐款</string>
   <string name="homepage_button">開啟首頁</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite 版本</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">順序</string>
   <string name="descending">反序</string>
   <string name="sorting_month">月排序</string>
-  <!-- 20130305 -->
   <string name="last_modified">上次異動</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">不要再顯示</string>
   <string name="open_database">開啟資料庫</string>
   <string name="synchronization_interval">同步時間間隔</string>
   <string name="summary_synchronization_interval">同步週期為何？</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Money Manager Ex for Android 1.2.0版修改了同步 Dropbox 的機制，已使用同步 Dropbox 的使用者必須重新設定。\nDropbox 與資料庫同步的設定，在設定選單中。\n自 Money Manager Ex for Android 1.2.0版開始能自動和 Dropbox 同步資料庫。</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">顯示每筆交易後的結餘</string>
   <string name="summary_transaction_shown_balance">顯示每筆交易後的結餘金額，這或會拖慢程式的顯示速度</string>
   <string name="menu_open_database">開啟資料庫</string>
@@ -346,38 +331,21 @@
   <string name="Default">預設</string>
   <string name="medium">中</string>
   <string name="large">大</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">支出</string>
   <string name="menu_report_where_money_comes_from">收入</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">通知時間</string>
-  <string name="summary_check_repeating_transaction">何時檢查是否有定期交易逾期？(預設 08:00)</string>
-  <!-- 20130730 -->
   <string name="credits">鳴謝</string>
   <string name="libraries">程式庫</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">支出最多之類型: 最近30天</string>
   <string name="top_payees_last_30_days">交易金額最多之受帳人: 最近30天</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">即將到來的交易項目</string>
   <string name="quantity">次數</string>
   <string name="dashboard">統計表板</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">最近3月</string>
   <string name="last6months">最近6月</string>
-  <!-- 20130816 -->
   <string name="empty_category">無類別</string>
   <string name="empty_payee">無受帳人</string>
-  <!-- 20130831 -->
   <string name="help">說明</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">刪除定期交易</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">上次輸入值</string>
   <string name="accounts">帳戶</string>
   <string name="to_account">到帳戶</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">您確定要刪除所選的 %d 筆交易紀錄？</string>
   <string name="categories">類別</string>
   <string name="payees">受帳人</string>
-  <string name="recurring_transactions">定期交易</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新增帳戶</string>
   <string name="create_new_account">建立新帳戶</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">最大金額</string>
   <string name="reset">重設</string>
   <string name="result_search">您搜尋的結果</string>
-  <string name="new_repeating_transaction">新增定期交易</string>
-  <string name="edit_repeating_transaction">編輯定期交易</string>
   <string name="path_database_not_exists">資料庫路徑不存在</string>
   <string name="database_can_not_open_write">該資料庫無法開啟以寫入</string>
   <string name="time_frame">時間框架</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">MoneyManagerEx 全部交易均是按帳戶記帳的。\n\n目前未有顯示的帳戶，請在設定中調整顯示帳戶的篩選條件，或選擇以下其一選項。</string>
   <string name="welcome_body_dropbox">如果已經在 Windows 、Linux 或 Mac 上使用 MoneyManagerEx，您可連結到雲端儲存空間以同步您的資料庫</string>
   <string name="configure_sync">配置同步</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">搜尋文字內容而非文字開首</string>
   <string name="search_text_contain_summary">由內容而非起始的文字搜尋受帳人、類型、貨幣等</string>
   <string name="rate_application">幫我們評分</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">您已經捐款支持 MoneyManagerEx for Android 的開發！ \n\n開發團隊感謝您！</string>
   <string name="donate_in_app_retrieving_status">正從 Google Play 查閱您的捐款，請稍候&#8230;</string>
   <string name="donate_in_app_error">無法透過應用程式支付。請檢查是否安裝了最新版本的 Google Play 商店。</string>
-  <string name="title_notifications_repeating_transaction">定期交易逾期通知</string>
-  <string name="summary_notifications_repeating_transaction">顯示定期交易逾期通知</string>
   <string name="tools">工具</string>
   <string name="entities">實體</string>
   <string name="loading">正在載入...</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">提供不同貨幣及語言。開放程式原始碼。歡迎加入翻譯團隊。</string>
   <string name="tutorial_sync_1">多平臺支援。資料輕鬆與雲端服務同步、匯入或匯出到其他應用程式。</string>
   <string name="transactions">交易紀錄</string>
-  <string name="tutorial_transactions_1">存款、取款、轉帳，清晰細分。定期交易，提醒放心。</string>
   <string name="split_category">-多類別-</string>
   <string name="title_activity_currency_chart">貨幣匯率表</string>
   <string name="sort_by_ascending">按年份和月份昇冪排序</string>
@@ -538,7 +499,6 @@
   <string name="update_available">有可用更新</string>
   <string name="update_available_online">線上有一個已更新的資料庫檔案。要更新嗎？</string>
   <string name="currency_not_found">無法找到該貨幣</string>
-  <string name="homepage">我們的網站首頁是 http://android.moneymanagerex.org/</string>
   <string name="current_database">當前資料庫</string>
   <string name="about_logcat_header">您可點擊下方按鈕將應用程式日誌傳送給我們。</string>
   <string name="transaction_type_filter">按交易種類篩選</string>
@@ -639,7 +599,6 @@
   <string name="quote_provider">報價供應商</string>
   <string name="exchange_rate_provider">匯率提供者</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Dropbox 裡的資料庫有更新</string>
   <string name="dropbox_file_ready_for_use">您的資料庫已被下載</string>
   <string name="dropbox_open_database_downloaded">若要使用資料庫下載，點擊開啟資料庫</string>
@@ -707,7 +666,6 @@
   <string name="intro_text">要開始使用 Money Manager Ex，您需要有一個資料庫檔案來儲存您的資料。請選擇以下一個可用選項。</string>
   <string name="intro_create_db">您可以開新檔案並設定初始喜好設定。</string>
   <string name="intro_open_db">又或選取裝置上現存的檔案。</string>
-  <string name="intro_sync">此外，您可以設定與雲端服務同步，從線上儲存空間下載資料庫檔案以開始使用。</string>
   <!-- Create Database screen -->
   <string name="select_language">選擇語言</string>
   <string name="run">啟動 Money Manager Ex</string>
@@ -721,4 +679,9 @@
   <string name="loan">貸款</string>
   <string name="loan_account">貸款帳戶</string>
   <string name="shares_accounts">股票帳戶</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

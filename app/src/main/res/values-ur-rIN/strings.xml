@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">مونیمنیجر</string>
   <string name="application_definition">ایک سادہ اور استعمال کے لیے آسان اپلیکیشن جس سے ہم زاتی مالیات، بینک خاتمے، فیملی بجٹ وغیرہ کا انتظام کر سکتے ہیں.</string>
-  <string name="application_credits">Android اس منصوبہ کے لیے مونییمانگر اکشنبآرشرلوک لائبریری استعمال کرتا ہے ۔</string>
   <string name="application_license">اوپن سورس لائسنس</string>
   <!-- database -->
   <string name="db_insert_failed">داخل کیے گیے ڈاٹا کی ناکامی</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">صرف واے فاے کنکشن پر سنکرانایز کرے.</string>
   <string name="sync_on_app_start">اپلیکیشن کے شروع میں سنکرانایز کریں.</string>
   <string name="sync_on_start">شروعےمیں سنک کریں</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">اکاونٹ</string>
   <string name="account_list">اکاونٹ لسٹ</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">خلاصہ</string>
   <string name="widget_all_accounts">تمام اکاؤنٹ</string>
   <string name="widget_add_transaction">لین دین کا ا ضافہ کریں</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">کوئی نہیں</string>
   <string name="once">ایک بار</string>
   <string name="weekly">ہفتہ وار</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">(x) ماہ میں</string>
   <string name="every_x_days">ہر) دس) دن</string>
   <string name="every_x_months">(Xہر) ماہ</string>
-  <string name="repeating_empty_transaction">کوئی بھی مکرر لین دین دریافت ہ نہیں وئی ہیں ۔ ایک بنانے کے لیے گرین پلس کے بٹن کو ٹیپ کریں ۔.</string>
   <string name="inactive">غیر فعال</string>
   <string name="activates">عملیں</string>
   <string name="days_overdue">موخر دن!</string>
   <string name="days_remaining">باقی دن</string>
-  <string name="new_edit_repeating_transaction">بار بار ہونے والی نئی/ترمیم کی لین دین</string>
   <string name="due_date">واجب تاریخ</string>
   <string name="next_occurrence">اگلا وقوعہ</string>
   <string name="payment_date">ادائیگی کی تاریخ</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">اگلا وقوعہ داخل کریں</string>
   <string name="skip_next_occurrence">اگلا وقوعہ نا کریں</string>
   <string name="skip_next_occurrence_confirmation">کیا آپ اگلا وقوع چھوڈ نا چاہتے ہیں?</string>
-  <string name="notification_repeating_transaction_expired">زائد المیعاد مکرر لین دین ہیں ۔</string>
   <string name="notification_click_to_check_repeating_transaction">موخر لین دین کی پڑتال کے لیے رابطہ کریں</string>
-  <string name="num_repeating_transaction_expired">%1$d مکرر ٹرانزیکشن موخر</string>
   <string name="skip">موخر</string>
   <string name="enter">داخل کریں</string>
   <string name="enter_amount">رقم داخل کریں</string>
@@ -284,15 +280,12 @@
   <string name="date_format">تاریخ وضع کریں</string>
   <string name="financial_year_start_day">مالی سال: دن شروع</string>
   <string name="financial_year_start_month">مالی سال: شروع مہینہ</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">کوائفیہ برآمد کریں</string>
   <string name="database_has_been_moved">کوائفیہ منتقل کیا گیا ہے: %1$s</string>
   <string name="copy_database_on_external_storage_failed">ڈاٹا بیس بیرونی سٹوریج پر نقل کرنے میں ناکام</string>
   <string name="path_database_using">آپ محفوظ ڈیٹا بیس کو استعمال کر رہے ہیں: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">لین دین الگ کریں</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">الگ کریں</string>
   <string name="error_split_transaction_empty">کم از کم ایک الگ لین دین کی ضرورت ہے</string>
   <string name="swipe_to_dismiss">اشیاء ہٹانے کے لیے swipe کریں.</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">کوائف برآمد کر رہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
   <string name="export_file_complete">کوائف کامیابی سے مسل %1$s کے لیے برآمد کیا گیا ہے</string>
   <string name="export_file_failed">برآمد کریں مسل %1$s ناکام</string>
-  <!-- 20130220 -->
   <string name="donate_header">مونییمانگر برائے Android مفت فراہم کی جاتی ہے ۔ اگر آپکو یہ اپلیکیشن پسند ہے، آپ ترقیاتی ٹیم کو ایک امداد یا عطیہ کے ساتھ مدد کر سکتے ہیں.</string>
   <string name="donate_in_app_title">Google Play میں اپلی کیشن بلنگ</string>
   <string name="donate_in_app_description">Google Play م اپلی کیشن بلنگ کے ذریعے عطیہ دیں.</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">گوگل کی اجازتی وجوہات کی بنا پر، ہمیں اپلیکیشن میں براہ راست امدادی لنکس فراہم کرنے کی اجازت نہیں ہے.</string>
   <string name="donate_button_text">عطیہ</string>
   <string name="homepage_button">بنیادی پیج کھولیں</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite ورژن</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">صعودی</string>
   <string name="descending">نزولی</string>
   <string name="sorting_month">ماہ چھانٹنا</string>
-  <!-- 20130305 -->
   <string name="last_modified">آخری بار ترمیم</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">دوبارہ مت دکھائیں</string>
   <string name="open_database">ڈاٹا بیس کھولیں</string>
   <string name="synchronization_interval">ہم وقت سازی وقفہ</string>
   <string name="summary_synchronization_interval">کتنی بار ہم وقت سازی کرنا چاہئے?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">فلحال مونییمانگر 2.0.1 ورژن نے ڈراپبکس ہم وقت سازی انجن تبدیل کیا ہے. وہ صارفین جو پہلے سے ڈراپبکس ہمءوقت سازی استعمال کر رہے ہیں انہیں کنفگریشن تازہ کرنے کی ضرورت ہے. ڈاٹا بیس کی توثیق کاری اور اسے منتخب کرنا سٹنگ میں موجود ہے. فلحال مونییمانگر 2.0.1 ورژن ڈاٹا بیس کو خود بخود سنکرانایز کرتا ہے.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">ہر لین دین کے لئے پقایاجات کو ظاہر کرتا ہے</string>
   <string name="summary_transaction_shown_balance">ہر ایک لین دین کا بقایات دکھاییں. بقایات کو دکھانا اپلیکیشن کی رفتار کم کر سکتا ہے</string>
   <string name="menu_open_database">ڈاٹا بیس کھولیں</string>
@@ -346,38 +331,21 @@
   <string name="Default">طے شدہ</string>
   <string name="medium">متوسط</string>
   <string name="large">بڑا</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">یہ رقم کہاں جاتی ہے</string>
   <string name="menu_report_where_money_comes_from">پیسہ کہاں سے آتا ہے</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">نوٹیفکیشن بار</string>
-  <string name="summary_check_repeating_transaction">آپ بار بار کی ہونے والی لین دین کو موخر کی پڈتا کے لیے کون سا وقت منتخب کریں گے (طے شدہ 8:00ہے</string>
-  <!-- 20130730 -->
   <string name="credits">کریڈٹ</string>
   <string name="libraries">لائبریری</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">سب سے اوپر واپسی: گزشتہ 30 ایام</string>
   <string name="top_payees_last_30_days">سب سے اوپر پییس: گزشتہ 30 ایام</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">آنے والے لین دین</string>
   <string name="quantity">مقدار</string>
   <string name="dashboard">ڈیش بورڈ</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">آخری 2 ماہ</string>
   <string name="last6months">گزشتہ 6 ماہ</string>
-  <!-- 20130816 -->
   <string name="empty_category">خالی زمرہ</string>
   <string name="empty_payee">خالی یابندہ</string>
-  <!-- 20130831 -->
   <string name="help">مدد</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">بار بار ہونے والی لین دین حذف کریں</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">آخری</string>
   <string name="accounts">اکاؤنٹ</string>
   <string name="to_account">اکاؤنٹ سے</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">اثبات کریں کہ آپ منتخب %d لین دین حذف کریں چاہتے ہیں?</string>
   <string name="categories">زمرہ جات</string>
   <string name="payees">ادا کنندہ</string>
-  <string name="recurring_transactions">بار بار ہونے والی لین دین</string>
   <string name="theme_holo_light">Holo روشنی</string>
   <string name="new_account">نیا اکاؤنٹ</string>
   <string name="create_new_account">نیا اکاؤنٹ بنائیں</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">رقم تک</string>
   <string name="reset">پھر سیٹ کریں</string>
   <string name="result_search">آپ کی تلاش کا نتیجہ</string>
-  <string name="new_repeating_transaction">نئی مکرر لین دین</string>
-  <string name="edit_repeating_transaction">بار بار ہونے والی لین دین کی تدوین کریں</string>
   <string name="path_database_not_exists">کوائفیہ راہ موجود نہیں ہے</string>
   <string name="database_can_not_open_write">کوائفیہ تحریر کے لئے نہیں کھولی جا سکتی</string>
   <string name="time_frame">وقت فریم</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">مونیمنیجر میں موجود تمام لین دین اکاونٹس سے تعلق رکھتا ہے..\n\n اس وقت آپکے پاس کوئی بھی کوشش ایسا اکاونٹ نہیں ہے جسے دیکھا جا سکے. یا آپ اکاونٹ کو دیکھنے کے لیے سیٹنگ میں فلٹر کریں یانیچے دیے گئے اختیارات میں سے ایک منتخب کریں.</string>
   <string name="welcome_body_dropbox">اگر آپنے مونییمانگر کو ونڈوز، لینکس یا. میک پر پہلے سے ہی استعمال کیا ہے، آپ ڈیٹا بیس کو سنکرانایز کرنے کے لیے ایک کلاوڈ سٹوریج فراہم کرنے والے کے ساتھ منسلک کر سکتے ہیں</string>
   <string name="configure_sync">ہم وقت سازی کی تشکیل کریں</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">مواد کو ٹیکسٹ کے ذریعے ڈھونڈنا بجائے انکے شروعاتی حروف سے</string>
   <string name="search_text_contain_summary">ادا کنندہ، زمرہ جات، کرنسی، وغیرہ.. مشمولات اور کریکٹر شروع نہیں کی طرف سے تلاش کریں</string>
   <string name="rate_application">شرح ایپلی کیشن</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">آپ نے پہلے ہی مونییمانگر کی Android ترقیاتی ٹیم کو بزریعہ عطیہ امداد کیا ہے. \n\n ترقیاتی ٹیم کی طرف سے آپکا شکریہ!</string>
   <string name="donate_in_app_retrieving_status">آپ کے عطیات کی حیثیت سے Google Play بازگیر کررہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
   <string name="donate_in_app_error">ان ایپ بلنگ استعمال نہیں کر سکتے ہیں. اس بات کی پڈتال کریں کہ گوگل پلے میں اپلیکیشن انسٹال ہے یا نہیں.</string>
-  <string name="title_notifications_repeating_transaction">اطلاع مکرر لین دین موخر </string>
-  <string name="summary_notifications_repeating_transaction">موخر کو بار بار ہونے والی لین دین کی اطلاع نمایش کریں</string>
   <string name="tools">آلات</string>
   <string name="entities">ہیں ۔</string>
   <string name="loading">لوڈ کر رہا ہے&#8230;</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">متعدد کرنسی اور زبانیں ۔ ماخذ کھولیں ۔ ہماری ترجمہ کرنے والی ٹیم میں شامل ہیں ۔.</string>
   <string name="tutorial_sync_1">متعدد پلیٹ فارمز کی حمایت کریں، کلاؤڈ سروسز کے ذریعے ہم وقت سازی ۔ درآمد اور برآمد کے دیگر ایپلی کیشنوں کے لیے کوائف ۔.</string>
   <string name="transactions">لین دین</string>
-  <string name="tutorial_transactions_1">ذخائر، واپسی، منتقلی ۔ یادداشت کے ساتھ بار بار ہونے والی لین دین ہے ۔.</string>
   <string name="split_category">-الگ زمرہ-</string>
   <string name="title_activity_currency_chart">کرنسی شرح تبادلہ چارٹ</string>
   <string name="sort_by_ascending">سال اور مہینے صعودی چھانٹیں</string>
@@ -538,8 +499,6 @@
   <string name="update_available">تازہ کاری دستیاب</string>
   <string name="update_available_online">وہاں ایک اپ ڈیٹ کی ڈیٹا بیس فائل دستیاب ہے کیا آپ آن لائن. تازہ کاری کرنا چاہتے ہیں?</string>
   <string name="currency_not_found">کرنسی نہیں ملی</string>
-  <string name="homepage">Http://android.moneymanagerex.org/
-ہمارا ہوم پیج ہے</string>
   <string name="current_database">حالیہ کوائفیہ</string>
   <string name="about_logcat_header">آپ ہمیں اطلاقاتی لاگ نیچے دیے گئے بٹن پر کلک کرکے بھیج سکتے ہیں ۔.</string>
   <string name="transaction_type_filter">لین دین کی قسم سے فلٹر کریں</string>
@@ -640,7 +599,6 @@
   <string name="quote_provider">اقتباس مہیا کار</string>
   <string name="exchange_rate_provider">زر مبادلہ کی شرح مہیا کار</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">ڈراپ باکس پر ڈیٹا بیس کی ایک اپ ڈیٹ ہے ۔</string>
   <string name="dropbox_file_ready_for_use">آپ کا ڈیٹا بیس ڈاؤن لوڈ کیا گیا ہے</string>
   <string name="dropbox_open_database_downloaded">ڈاون لوڈ کیے گئے ڈاٹا بیس کو استعمال کرنے کے لیے اوپن ڈاٹا بیس پر کلک کریں</string>
@@ -708,7 +666,6 @@
   <string name="intro_text">مونیمنیجر ایکس کا استعمال شروع کرنے کے لیے، آپکے پاس ڈاٹا سٹور کرنے کے لیے ڈاٹا بیس فائل ہونی چاہیے.</string>
   <string name="intro_create_db">آپ ایک نیی فایل بنا سکتے ہیں اور بنیادی ترجیحات سیٹ کر سکتے ہیں.</string>
   <string name="intro_open_db">یا آپ اپنی ڈیوایس میں موجود فائل کو بھی منتخب کر سکتے ہیں.</string>
-  <string name="intro_sync">متبادل طور پر، آپ ڈاٹا بیس کو آن لائن سٹوریج سے ڈاؤن لوڈ کرنے کے لیے کلاوڈ خدمات کے ساتھ ہم وقت سازی رکھ سکتے ہیں.</string>
   <!-- Create Database screen -->
   <string name="select_language">زبان منتخب کریں</string>
   <string name="run">مونیمنیجر کو چلائیں</string>
@@ -722,4 +679,9 @@
   <string name="loan">قرض</string>
   <string name="loan_account">قرض اکاؤنٹس</string>
   <string name="shares_accounts">حصص اکاؤنٹس</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

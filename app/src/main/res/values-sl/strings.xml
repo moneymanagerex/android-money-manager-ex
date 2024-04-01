@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Aplikacija enostavna za uporaba za upravljanje osebnih financ, bančnih računov, družinskega proračuna in tako naprej.</string>
-  <string name="application_credits">MoneyManagerEx za projekt Android uporablja programsko opremo ActionBarSherlock</string>
   <string name="application_license">Odprtokodna dovoljenja</string>
   <!-- database -->
   <string name="db_insert_failed">Vstavljanje podatkov ni uspelo</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">Samodejno sinhronizirajte samo, ko ste povezani s WiFi.</string>
   <string name="sync_on_app_start">Sinhronizacija ob zagonu aplikacije.</string>
   <string name="sync_on_start">Sinhronizacija ob zagonu</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Račun</string>
   <string name="account_list">Seznam računov</string>
@@ -201,7 +201,7 @@
   <string name="transaction_number">Številka transakcije</string>
   <string name="widget_summary">Povzetek</string>
   <string name="widget_all_accounts">Vsi računi</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Nobena</string>
   <string name="once">Enkrat</string>
   <string name="weekly">Tedensko</string>
@@ -218,12 +218,10 @@
   <string name="in_x_months">V (x) mesecev</string>
   <string name="every_x_days">Vsakih (x) dni</string>
   <string name="every_x_months">Vsakih (x) mesecev</string>
-  <string name="repeating_empty_transaction">Nobenih ponavljajočih se transakcij ni bilo mogoče najti. Če jo želite ustvariti, tapnite zeleni gumb plus.</string>
   <string name="inactive">Neaktiven</string>
   <string name="activates">Aktivira</string>
   <string name="days_overdue">dni zamuja!</string>
   <string name="days_remaining">ostanek dni</string>
-  <string name="new_edit_repeating_transaction">Novo/uredi ponavljajoče se transakcije</string>
   <string name="due_date">Datum zapadlosti</string>
   <string name="next_occurrence">Naslednji pojav</string>
   <string name="payment_date">Datum plačila</string>
@@ -231,7 +229,6 @@
   <string name="occurs">Pride do</string>
   <string name="payments_left">Ostala plačila</string>
   <string name="skip_next_occurrence_confirmation">Ali želite preskočiti naslednji pojav?</string>
-  <string name="num_repeating_transaction_expired">%1$d ponavljajoč transakcija</string>
   <string name="skip">Preskoči</string>
   <string name="enter">Vnos</string>
   <string name="enter_amount">Vnesite znesek</string>
@@ -275,15 +272,12 @@
   <string name="date_format">Oblika datuma</string>
   <string name="financial_year_start_day">Proračunsko leto: Začetek dneva</string>
   <string name="financial_year_start_month">Proračunsko leto: Začetek meseca</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Izvoz podatkovnih baz</string>
   <string name="database_has_been_moved">Zbrike podatkov so bile premaknjene: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopiranje baze podatkov na zunanji pomnilnik ni uspelo</string>
   <string name="path_database_using">Uporabljate bazo podatkov, shranjeno v: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Razdeli transakcijo</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Razdeli</string>
   <string name="error_split_transaction_empty">Vsaj ena razdeljena transakcija je potrebna</string>
   <string name="swipe_to_dismiss">Povlecite elemente, ki jih želite odstraniti.</string>
@@ -291,7 +285,6 @@
   <string name="export_data_in_progress">Izvoz podatkov. Prosim počakajte&#8230;</string>
   <string name="export_file_complete">Podatki so bili uspešno izvoženi v %1$s</string>
   <string name="export_file_failed">Izvoz datoteke %1$s ni uspel</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx za Android je brezplačen. Če vam je všeč prijava, lahko razvojno skupino podprete z donacijo.</string>
   <string name="donate_in_app_title">Google Play In-App Billing</string>
   <string name="donate_in_app_description">Donirajte preko Google Play In-App Billing.</string>
@@ -306,23 +299,16 @@
   <string name="donate_license">Zaradi Googlovih razlogov za izdajo dovoljenj nam ne dovolijo, da bi donacijske povezave dajali neposredno v aplikacijo.</string>
   <string name="donate_button_text">Donacija</string>
   <string name="homepage_button">Odpri domačo stran</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite različica</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Naraščajoče</string>
   <string name="descending">Padajoče</string>
   <string name="sorting_month">Razvrščanje mesecev</string>
-  <!-- 20130305 -->
   <string name="last_modified">Zadnje premembe</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Ne pokaži več</string>
   <string name="open_database">Odpri zbirko podatkov</string>
   <string name="synchronization_interval">Interval sihnronizacije</string>
   <string name="summary_synchronization_interval">Kako pogosto naj se sinhronizira?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Od različice 1.2.0 je Money Manager Ex za Android spremenil mehanizem za sinhronizacijo Dropbox. Uporabniki, ki že uporabljajo sinhronizacijo Dropbox, morajo posodobiti konfiguracijo.\nPreverjanje pristnosti in izbor baze podatkov se nahaja v nastavitvah.\nOd različice 1.2.0 lahko Money Manager Ex za Android samodejno sinhronizira bazo podatkov.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Prikazuje stanje za vsako transakcijo</string>
   <string name="summary_transaction_shown_balance">Prikazuje stanje za vsako transakcijo. Prikaz ravnovesja lahko aplikacijo upočasni</string>
   <string name="menu_open_database">Odprta zbirka podatkov</string>
@@ -337,38 +323,21 @@
   <string name="Default">Privzeto</string>
   <string name="medium">Srednje</string>
   <string name="large">Veliko</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Kam gre denar</string>
   <string name="menu_report_where_money_comes_from">Od kod prihaja denar</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Čas obvestil</string>
-  <string name="summary_check_repeating_transaction">V kakšnem času bi preverili, ali obstajajo ponavljajoče se transakcije? (privzeto 08:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Krediti</string>
   <string name="libraries">Knjižnice</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Najvišji dvig: Zadnjih 30 dni</string>
   <string name="top_payees_last_30_days">Najvišji prejenik plačila: Zadnjih 30 dni</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Prihajajoče transakcije</string>
   <string name="quantity">Količina</string>
   <string name="dashboard">Nadzorna plošča</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Zadnjih 3 mesecih</string>
   <string name="last6months">Zadnjih 6 mesecih</string>
-  <!-- 20130816 -->
   <string name="empty_category">Prazne kategorije</string>
   <string name="empty_payee">Prazni prejemnik plačila</string>
-  <!-- 20130831 -->
   <string name="help">Pomoč</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Izbriši ponavljajoče se transakcije</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Zadnji</string>
   <string name="accounts">Računi</string>
   <string name="to_account">Na račun</string>
@@ -380,7 +349,6 @@
   <string name="delete_others_selected_transaction">Ali ste prepričani da želite izbrisati %d izbranih transakcij?</string>
   <string name="categories">Kategorije</string>
   <string name="payees">Prejemniki plačila</string>
-  <string name="recurring_transactions">Ponavljajoče transakcije</string>
   <string name="theme_holo_light">Holo svetloba</string>
   <string name="create_new_account">Ustvari nov račun</string>
   <string name="amount_greater_or_equal">Znesek, večji ali enak</string>
@@ -389,19 +357,15 @@
   <string name="amount_to">Znesek do</string>
   <string name="reset">Ponastavi</string>
   <string name="result_search">Rezultat iskanja</string>
-  <string name="new_repeating_transaction">Nov ponavljajoč se posel</string>
-  <string name="edit_repeating_transaction">Urejanje ponavljajoče se transakcije</string>
   <string name="database_can_not_open_write">Podatkovne zbirke ni mogoče odpreti za pisanje</string>
   <string name="time_frame">Časovni okvir</string>
   <string name="welcome_body">Vsi posli v MoneyManagerEx pripadajo računom.\n\nTrenutno nimate vidnih računov. V nastavitvah prilagodite filter za vidne račune ali izberite eno od spodnjih možnosti.</string>
   <string name="welcome_body_dropbox">Če že uporabljate MoneyManagerEx v operacijskih sistemih Windows, Linux ali Mac, lahko sinhronizirate svojo bazo podatkov s ponudnikom shranjevanja v cloud</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Iskanje po vsebini besedila in ne po besedilu k se začne z</string>
   <string name="search_text_contain_summary">Iskanje, prejemnikov plačil, kategorij, itd&#8230; po vsebini in ne z zagonom znakov</string>
   <string name="donate_in_app_already_donate">Za razvoj razvojne MoneyManagerEx za Android ste že podpirali z donacijo!\n\n In zahvaljuje se vam razvojna ekipa!</string>
   <string name="donate_in_app_retrieving_status">Pridobivanje statusa vaših prispevkov v Googlu Play. Prosim počakajte&#8230;</string>
   <string name="donate_in_app_error">Zaračunavanja v aplikaciji ni mogoče uporabiti. Preverite, ali je nameščena najnovejša različica aplikacije Trgovina Play.</string>
-  <string name="title_notifications_repeating_transaction">Ponavljajoča se transakcija z obvestili je zastarela </string>
   <string name="tools">Orodja</string>
   <string name="entities">Subjekti</string>
   <string name="loading">Nalaganje&#8230;</string>
@@ -440,7 +404,6 @@
   <string name="tutorial_global_1">Več valut in jezikov. Odprtokodno. Pridružite se naši prevajalski skupini.</string>
   <string name="tutorial_sync_1">Podpora za več platform, sinhronizacija prek več storitev v cloud. Uvoz in izvoz podatkov v druge aplikacije.</string>
   <string name="transactions">Transakcije</string>
-  <string name="tutorial_transactions_1">Vloge, umiki, transferji. Ponavljajoče se transakcije s opomniki.</string>
   <string name="title_activity_currency_chart">Grafikon deviznega tečaja</string>
   <string name="sort_by_ascending">Razvrsti po letu in mesecu naraščajoče</string>
   <string name="sort_by_desceding">Razvrsti po letu in mesecu, ki se spušča</string>
@@ -486,7 +449,6 @@
   <string name="update_available">Posodobitev na voljo</string>
   <string name="update_available_online">Na voljo je posodobljena datoteka baze podatkov na spletu. Želite posodobiti?</string>
   <string name="currency_not_found">Valute ni bilo mogoče najti</string>
-  <string name="homepage">Naša stran je http://android.moneymanagerex.org/</string>
   <string name="current_database">Trenutna zbirka podatkov</string>
   <string name="about_logcat_header">Poročanje o aplikaciji nam lahko pošljete tako, da kliknete spodnji gumb.</string>
   <string name="transaction_type_filter">Filtriranje glede na vrsto transakcije</string>
@@ -512,7 +474,6 @@
   <string name="quote_provider">Ponudnik ponudb</string>
   <string name="exchange_rate_provider">Ponudnik menjalnega tečaja</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Obstaja posodobitev baze podatkov o Dropboxu</string>
   <string name="dropbox_file_ready_for_use">Vaša baza podatkov je bila prenesena</string>
   <string name="dropbox_open_database_downloaded">Če želite uporabiti preneseno bazo podatkov, se dotaknite možnosti odpri bazo podatkov</string>
@@ -529,4 +490,9 @@
   <!-- Create Database screen -->
   <!-- Settings -->
   <string name="per_database_settings">Zbirke podatkovnih baz</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

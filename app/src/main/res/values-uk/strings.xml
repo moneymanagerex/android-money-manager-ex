@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Простий і легкий у використанні додаток для управління особистими фінансами, банківськими рахунками, сімейним бюджетом і т. д.</string>
-  <string name="application_credits">Проект MoneyManagerEx для Android використовує бібліотеку ActionBarSherlock</string>
   <string name="application_license">Ліцензія з відкритим вихідним кодом</string>
   <!-- database -->
   <string name="db_insert_failed">Вставка даних не вдалась</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">Авто-синхронізуватися лише коли є Wi-Fi підключення.</string>
   <string name="sync_on_app_start">Синхронізувати при старті додатку.</string>
   <string name="sync_on_start">Синхронізувати при старті</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Рахунок</string>
   <string name="account_list">Список рахунків</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">Підсумок</string>
   <string name="widget_all_accounts">Всі рахунки</string>
   <string name="widget_add_transaction">Додати транзакцію</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Жодного</string>
   <string name="once">Один раз</string>
   <string name="weekly">Кожного тижня</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">В (x) місяців</string>
   <string name="every_x_days">Кожен (x) днів</string>
   <string name="every_x_months">Кожні (x) місяців</string>
-  <string name="repeating_empty_transaction">Немає повторюваних транзакцій. Для створення натисніть зелений плюс.</string>
   <string name="inactive">Неактивні</string>
   <string name="activates">Активувати</string>
   <string name="days_overdue">прострочено днів!</string>
   <string name="days_remaining">днів, що залишилися</string>
-  <string name="new_edit_repeating_transaction">Створити/редагувати повторювані транзакції</string>
   <string name="due_date">До дати</string>
   <string name="next_occurrence">Наступна подія</string>
   <string name="payment_date">Дата платежу</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">Введіть наступну подію</string>
   <string name="skip_next_occurrence">Пропустити наступну подію</string>
   <string name="skip_next_occurrence_confirmation">Ви хочете пропустити наступну подію?</string>
-  <string name="notification_repeating_transaction_expired">Існують простро́чені повторювані транзакції</string>
   <string name="notification_click_to_check_repeating_transaction">Натисніть для перевірки простро́чених транзакцій</string>
-  <string name="num_repeating_transaction_expired">Простро́чених повторюваних транзакцій: %1$d </string>
   <string name="skip">Пропустити</string>
   <string name="enter">Ввести</string>
   <string name="enter_amount">Введіть суму</string>
@@ -284,15 +280,12 @@
   <string name="date_format">Формат дати</string>
   <string name="financial_year_start_day">Фінансовий рік: День початку</string>
   <string name="financial_year_start_month">Фінансовий рік: Перший місяць</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Експорт бази даних</string>
   <string name="database_has_been_moved">Базу даних переміщено: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Помилка копіювання бази даних на зовнішній накопичувач</string>
   <string name="path_database_using">Використовується база даних, збережена у: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Розділення транзакції</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Розділити</string>
   <string name="error_split_transaction_empty">Необхідна принаймні одна з розділених транзакцій</string>
   <string name="swipe_to_dismiss">Змахніть елементи для видалення.</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">Експорт даних. Прошу чекати&#8230;</string>
   <string name="export_file_complete">Дані успішно експортовано до файлу %1$s</string>
   <string name="export_file_failed">Експорт файлу %1$s не вдався</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx для Android надається безкоштовно. Якщо тобі подобається додаток, ви можете підтримати команду розробників пожертвуванням.</string>
   <string name="donate_in_app_title">Оплата в Google Play-In-App</string>
   <string name="donate_in_app_description">Підтримати через Google Play-In-App.</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">З міркувань ліцензування Google нам не дозволяється розміщувати посилання пожертвування безпосередньо в програмі.</string>
   <string name="donate_button_text">Підтримати</string>
   <string name="homepage_button">Відкрити домашню сторінку</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">Версія SQLite</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="sorting_month">Сортування місяців</string>
-  <!-- 20130305 -->
   <string name="last_modified">Востаннє змінено</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Не показувати знову</string>
   <string name="open_database">Відкрити базу даних</string>
   <string name="synchronization_interval">Інтервал синхронізації</string>
   <string name="summary_synchronization_interval">Як часто слід виконувати синхронізацію?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Починаючи з версії 1.2.0 Money Manager Ex для Android змінився обробник синхронізації Dropbox. Користувачам, які вже використовують синхронізацію Dropbox потрібно оновити конфігурацію.\n Аутентифікація і вибір бази даних розташовані у налаштуваннях.\n Починаючи з версії 1.2.0 Money Manager Ex для Android можна автоматично синхронізувати базу даних.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Показувати баланс для кожної транзакції</string>
   <string name="summary_transaction_shown_balance">Показувати баланс для кожної транзакції. Відображення балансу може уповільнити роботу</string>
   <string name="menu_open_database">Відкрити базу даних</string>
@@ -346,38 +331,21 @@
   <string name="Default">За промовчанням</string>
   <string name="medium">Середній</string>
   <string name="large">Великий</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Куди витрачаються гроші</string>
   <string name="menu_report_where_money_comes_from">Звідки поступають гроші</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Час сповіщення</string>
-  <string name="summary_check_repeating_transaction">Вкажіть час перевірки наявності прострочених транзакцій? (по замовчуванню 08:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Подяки</string>
   <string name="libraries">Бібліотеки</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Найбільші виплати: За останні 30 днів</string>
   <string name="top_payees_last_30_days">Найбільші отримувачі: За останні 30 днів</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Майбутні транзакції</string>
   <string name="quantity">Кількість</string>
   <string name="dashboard">Панель управління</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Останній квартал</string>
   <string name="last6months">Останнє півріччя</string>
-  <!-- 20130816 -->
   <string name="empty_category">Порожня категорія</string>
   <string name="empty_payee">Порожній одержувач</string>
-  <!-- 20130831 -->
   <string name="help">Допомога</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Видалити повторювану транзакцію</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Останній</string>
   <string name="accounts">Рахунки</string>
   <string name="to_account">На рахунок</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">Ви дійсно бажаєте видалити %d вибраних транзакцій?</string>
   <string name="categories">Категорії</string>
   <string name="payees">Контрагенти</string>
-  <string name="recurring_transactions">Повторювані транзакції</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Новий рахунок</string>
   <string name="create_new_account">Створити новий рахунок</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">Сума до</string>
   <string name="reset">Очистити</string>
   <string name="result_search">Результати пошуку</string>
-  <string name="new_repeating_transaction">Створити повторювану транзакцію</string>
-  <string name="edit_repeating_transaction">Змінити транзакцію, яка повторюються</string>
   <string name="path_database_not_exists">Шлях до бази даних не існує</string>
   <string name="database_can_not_open_write">База даних не може бути відкрита для запису</string>
   <string name="time_frame">Часовий інтервал</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">Всі транзакції в MoneyManagerEx належить рахункам.\n\n У вас зараз немає видимих рахунків. Змініть фільтр у налаштуваннях для видимості рахунків або виберіть один із параметрів нижче.</string>
   <string name="welcome_body_dropbox">Якщо ви вже використовуєте MoneyManagerEx для Windows, Linux або Mac, ви можете під\'єднатися до хмарного зберігання даних для синхронізації своєї бази даних</string>
   <string name="configure_sync">Налаштування синхронізації</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Пошук за всім змістом тексту, а не тільки з його початком</string>
   <string name="search_text_contain_summary">Пошук контрагента, категорії, валюти, тощо..., за всім змістом, а не тільки з початкових символів</string>
   <string name="rate_application">Оцініть програму</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">Ви вже підтримали розробників MoneyManagerEx для Android пожертвою! \n\nПодяка вам від команди розробників!</string>
   <string name="donate_in_app_retrieving_status">Отримання статусу ваших пожертв із Google Play. Прошу чекати&#8230;</string>
   <string name="donate_in_app_error">Не можна використовувати оплату в програмі. Перевірте, чи інстальовано останню версію Play Store.</string>
-  <string name="title_notifications_repeating_transaction">Сповіщення про прострочену повторювану транзакцію </string>
-  <string name="summary_notifications_repeating_transaction">Показати сповіщення про прострочену повторювану транзакцію</string>
   <string name="tools">Інструменти</string>
   <string name="entities">Сутності</string>
   <string name="loading">Завантаження&#8230;</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">Різні валюти і мови. Відкритий вихідний код. Приєднатися до нашої команди перекладу.</string>
   <string name="tutorial_sync_1">Підтримка декількох платформах, синхронізація через кілька хмарних сервісів. Імпорт та експорт даних в інші програми.</string>
   <string name="transactions">Транзакції</string>
-  <string name="tutorial_transactions_1">Депозити, зняття, перекази. Повторювані транзакції з нагадуванням.</string>
   <string name="split_category">-Спліт-Категорія</string>
   <string name="title_activity_currency_chart">Діаграми обмінного курсу валют</string>
   <string name="sort_by_ascending">Сортувати за роком і місяцем за зростанням</string>
@@ -538,7 +499,6 @@
   <string name="update_available">Знайдено оновлення</string>
   <string name="update_available_online">Файл оновлений бази даних доступний онлайн. Бажаєте оновити?</string>
   <string name="currency_not_found">Валюти не знайдено</string>
-  <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Поточна база даних</string>
   <string name="about_logcat_header">Ви можете надіслати нам журнал програми, натиснувши на кнопку нижче.</string>
   <string name="transaction_type_filter">Фільтрувати за типом транзакції</string>
@@ -639,7 +599,6 @@
   <string name="quote_provider">Постачальник котувань</string>
   <string name="exchange_rate_provider">Постачальник курсів валют</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Є оновлення бази даних на Dropbox</string>
   <string name="dropbox_file_ready_for_use">База даних була завантажена</string>
   <string name="dropbox_open_database_downloaded">Для використання завантаженої бази даних потрібно натиснути \"Відкрити базу даних\"</string>
@@ -707,7 +666,6 @@
   <string name="intro_text">Щоб почати використовувати Money Manager Ex, вам потрібно мати файл бази даних для зберігання ваших даних. Будь ласка, виберіть один з доступних параметрів нижче.</string>
   <string name="intro_create_db">Ви можете створити новий файл і встановити початкові налаштування.</string>
   <string name="intro_open_db">Або ви можете вибрати існуючий файл з вашого пристрою.</string>
-  <string name="intro_sync">Крім того, ви можете налаштувати синхронізацію з хмарним сервісом і завантажити файл бази даних з онлайн-сховища для запуску.</string>
   <!-- Create Database screen -->
   <string name="select_language">Виберіть мову</string>
   <string name="run">Запустити Money Manager Ex</string>
@@ -721,4 +679,9 @@
   <string name="loan">Кредит</string>
   <string name="loan_account">Банківські Рахунки</string>
   <string name="shares_accounts">Рахунки Акцій</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Jednoduchá a ľahko použiteľná aplikácia na správu osobných financií, bankových účtov, rodinného rozpočtu a tak ďalej.</string>
-  <string name="application_credits">MoneyManagerEx pre Android projekt používa knižnice ActionBarSherlock</string>
   <string name="application_license">Open source licencia</string>
   <!-- database -->
   <string name="db_insert_failed">Vkladanie údajov zlyhalo</string>
@@ -66,6 +65,7 @@
   <string name="auto_sync_via_wifi_summary">Automaticky synchronizovať len cez WiFi pripojenie.</string>
   <string name="sync_on_app_start">Synchronizovať pri štarte.</string>
   <string name="sync_on_start">Synchronizovať pri spustení</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Účet</string>
   <string name="account_list">Zoznam účtov</string>
@@ -202,7 +202,7 @@
   <string name="widget_summary">Celkom</string>
   <string name="widget_all_accounts">Všetky účty</string>
   <string name="widget_add_transaction">Pridať transakciu</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Žiadny</string>
   <string name="once">Raz</string>
   <string name="weekly">Týždenne</string>
@@ -219,12 +219,10 @@
   <string name="in_x_months">(X) mesiacov</string>
   <string name="every_x_days">Každých (x) dní</string>
   <string name="every_x_months">Každých (x) mesiacov</string>
-  <string name="repeating_empty_transaction">Nebola nájdená žiadna opakujúca sa transakcia. Kliknite na zelené tlačidlo so symbolom plus pre jej vytvorenie.</string>
   <string name="inactive">Neaktívna</string>
   <string name="activates">Aktivuje</string>
   <string name="days_overdue">dní po splatnosti!</string>
   <string name="days_remaining">dní zostáva</string>
-  <string name="new_edit_repeating_transaction">Vložiť/Upraviť opakujúcu sa transakciu</string>
   <string name="due_date">Dátum splatnosti</string>
   <string name="next_occurrence">Ďalší výskyt</string>
   <string name="payment_date">Dátum platby</string>
@@ -237,9 +235,7 @@
   <string name="enter_next_occurrence">Zadať ďalší výskyt</string>
   <string name="skip_next_occurrence">Preskočiť ďalší výskyt</string>
   <string name="skip_next_occurrence_confirmation">Chcete preskočiť ďalší výskyt?</string>
-  <string name="notification_repeating_transaction_expired">Máte opakujúce sa transakcie po splatnosti</string>
   <string name="notification_click_to_check_repeating_transaction">Dotykom skontrolujte transakcie po splatnosti</string>
-  <string name="num_repeating_transaction_expired">Počet opakujúcich sa transakcií po splatnosti: %1$d</string>
   <string name="skip">Preskočiť</string>
   <string name="enter">Zadajte</string>
   <string name="enter_amount">Zadajte sumu</string>
@@ -283,15 +279,12 @@
   <string name="date_format">Formát dátumu</string>
   <string name="financial_year_start_day">Finančný rok: Prvý deň</string>
   <string name="financial_year_start_month">Finančný rok: Prvý mesiac</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Export databázy</string>
   <string name="database_has_been_moved">Databáza bola presunutá: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopírovanie databázy na externí úložisko zlyhalo</string>
   <string name="path_database_using">Používate databázu uloženú na: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Rozdeliť transakciu</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Rozdeliť</string>
   <string name="error_split_transaction_empty">Je vyžadovaná aspoň jedno rozdelenie transakcie</string>
   <string name="swipe_to_dismiss">Potiahnutím položky ju odstránite.</string>
@@ -299,7 +292,6 @@
   <string name="export_data_in_progress">Exportujem dáta. Čakajte prosím&#8230;</string>
   <string name="export_file_complete">Dáta boli úspešne exportované do súboru %1$s</string>
   <string name="export_file_failed">Export súboru %1$s zlyhal</string>
-  <!-- 20130220 -->
   <string name="donate_header">Aplikácia MoneyManagerEx pre Android je poskytovaná bezplatne. Ak sa vám aplikácia páči, môžete prispieť na jej vývoj a podporiť tak vývojový tým.</string>
   <string name="donate_in_app_title">Nákupy v aplikácií Google Play</string>
   <string name="donate_in_app_description">Prispieť cez Nákupy v aplikácii Google Play.</string>
@@ -314,23 +306,16 @@
   <string name="donate_license">Z licenčných dôvodov spoločnosti Google nemôžeme umiestniť odkazy na prispenie priamo do aplikácie.</string>
   <string name="donate_button_text">Prispieť</string>
   <string name="homepage_button">Otvoriť domácu stránku</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">Verzia SQLite</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Vzostupne</string>
   <string name="descending">Zostupne</string>
   <string name="sorting_month">Radenie mesiacov</string>
-  <!-- 20130305 -->
   <string name="last_modified">Naposledy zmenené</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Nabudúce nezobrazovať</string>
   <string name="open_database">Otvoriť databázu</string>
   <string name="synchronization_interval">Interval synchronizácie</string>
   <string name="summary_synchronization_interval">Ako často synchronizovať?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Od verzie 1.2.0 Money Manager Ex pre Android sa zmenila správa synchronizácie s Dropboxom. Užívatelia, ktorí už využívajú synchronizáciu s Dropboxom, musia zopakovať konfiguráciu. \nKonfigurácia synchronizácie s Dropboxom a výber databáze sa nachádza v nastavení. \nOd verzie 1.2.0 Money Manager Ex pre Android môže automaticky synchronizovať databázu s Dropboxom</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Zobraziť zostatok pre každú transakciu</string>
   <string name="summary_transaction_shown_balance">Zobraziť zostatok pre každú transakciu. Zobrazenie zostatku môže spomaliť aplikáciu</string>
   <string name="menu_open_database">Otvoriť databázu</string>
@@ -345,38 +330,21 @@
   <string name="Default">Predvolené</string>
   <string name="medium">Stredné</string>
   <string name="large">Veľké</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Odchádzajúce peniaze</string>
   <string name="menu_report_where_money_comes_from">Prichádzajúce peniaze</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Čas notifikácie</string>
-  <string name="summary_check_repeating_transaction">Kedy skontrolovať, či sú opakované transakcie po splatnosti? (predvolené 8:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Poďakovania</string>
   <string name="libraries">Knižnice</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Najväčšie výbery: Posledných 30 dní</string>
   <string name="top_payees_last_30_days">Najväčší príjemcovia: Posledných 30 dní</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Očakávané transakcie</string>
   <string name="quantity">Množstvo</string>
   <string name="dashboard">Prehľad</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Posledné 3 mesiace</string>
   <string name="last6months">Posledných 6 mesiacov</string>
-  <!-- 20130816 -->
   <string name="empty_category">Prázdna kategória</string>
   <string name="empty_payee">Bez príjemca</string>
-  <!-- 20130831 -->
   <string name="help">Pomocník</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Vymazať opakujúcu sa transakciu</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Posledný</string>
   <string name="accounts">Účty</string>
   <string name="to_account">Na účet</string>
@@ -388,7 +356,6 @@
   <string name="delete_others_selected_transaction">Ste si istý, že chcete vymazať %d vybratých transakcií?</string>
   <string name="categories">Kategórie</string>
   <string name="payees">Príjemcovia</string>
-  <string name="recurring_transactions">Opakujúce sa transakcie</string>
   <string name="theme_holo_light">Holo svetlé</string>
   <string name="new_account">Nový účet</string>
   <string name="create_new_account">Vytvoriť nový účet</string>
@@ -398,8 +365,6 @@
   <string name="amount_to">Čiastka do</string>
   <string name="reset">Vynulovať</string>
   <string name="result_search">Výsledok hľadania</string>
-  <string name="new_repeating_transaction">Nová opakujúca sa transakcia</string>
-  <string name="edit_repeating_transaction">Upraviť opakujúcu sa transakciu</string>
   <string name="path_database_not_exists">Cesta k databáze neexistuje</string>
   <string name="database_can_not_open_write">Databáza nemôže byť otvorená na zápis</string>
   <string name="time_frame">Časový úsek</string>
@@ -409,7 +374,6 @@
   <string name="welcome_body">Všetky transakcie v MoneyManagerEx spadajú pod účty.\n\nAktuálne nemáte žiadne viditeľné účty. Prosím upravte filter viditeľných účtov v Nastavení alebo\n\nvytvorte nový účet.</string>
   <string name="welcome_body_dropbox">Ak už používate aplikáciu MoneyManagerEx na Windows, Mac Os nebo Linuxe, môžete využiť vzájomnú synchronizáciu databáz prostredníctvom služby Dropbox</string>
   <string name="configure_sync">Konfigurovať synchronizáciu</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Hľadanie podľa obsahu nie podľa začiatku textu</string>
   <string name="search_text_contain_summary">Hľadanie príjemcov, kategórií, mien a pod. podľa obsahu a nie podľa začiatočných znakov</string>
   <string name="rate_application">Hodnotenie aplikácie</string>
@@ -420,8 +384,6 @@
   <string name="donate_in_app_already_donate">Už ste podporil rozvoj MoneyManagerEx pre Android darovaním! \n\nVývojový tým Vám ďakuje!</string>
   <string name="donate_in_app_retrieving_status">Načítanie stav vašich darov z Google Play. Počkajte prosím&#8230;</string>
   <string name="donate_in_app_error">Nie je možné použiť Nákupy v aplikácii. Skontrolujte, či je nainštalovaná najnovšia verzie aplikácie Play Store.</string>
-  <string name="title_notifications_repeating_transaction">Upozornenie na opakujúce sa transakcie po splatnosti </string>
-  <string name="summary_notifications_repeating_transaction">Zobraziť upozornenie na opakujúce sa transakcie po splatnosti</string>
   <string name="tools">Nástroje</string>
   <string name="entities">Entity</string>
   <string name="loading">Nahrávam&#8230;</string>
@@ -460,7 +422,6 @@
   <string name="tutorial_global_1">Niekoľko mien a jazykov. Open Source. Pripojte sa k nášmu týmu prekladateľov.</string>
   <string name="tutorial_sync_1">Podpora viacerých platforiem, synchronizácia prostredníctvom viacerých cloud služieb. Import a export vašichdát do iných aplikácií.</string>
   <string name="transactions">Transakcie</string>
-  <string name="tutorial_transactions_1">Vklady, výbery, prevody. Opakujúce sa transakcie s pripomienkami.</string>
   <string name="split_category">-Rozdeliť kategóriu-</string>
   <string name="title_activity_currency_chart">Graf výmenného kurzu meny</string>
   <string name="sort_by_ascending">Zoradiť vzostupne podľa roku a mesiaca</string>
@@ -535,7 +496,6 @@
   <string name="frequency">Frekvencia</string>
   <string name="update_available">Je k dispozícií aktualizácia</string>
   <string name="currency_not_found">Mena nebola nájdená</string>
-  <string name="homepage">Naša webová stránka je http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuálna databáza</string>
   <string name="about_logcat_header">Klepnutím na nižšie uvedené tlačítko nám môžete zaslať protokol aplikácie.</string>
   <string name="transaction_type_filter">Filtrovať podľa typu transakcie</string>
@@ -631,7 +591,6 @@
   <string name="change_provider">Zmeniť poskytovateľa</string>
   <string name="exchange_rate_provider">Poskytovateľ výmenného kurzu</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Na Dropboxe je aktualizácia databázy</string>
   <string name="dropbox_file_ready_for_use">Vaša databáza bola stiahnutá</string>
   <string name="dropbox_open_database_downloaded">Ak chcete použiť stiahnutú databázu, klepnite na Otvoriť databázu</string>
@@ -685,4 +644,9 @@
   <string name="save">Uložiť</string>
   <string name="title_budget_show_simple_view">Zobrazenie jednoduchého rozpočtu</string>
   <string name="loan">Pôžička</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>
