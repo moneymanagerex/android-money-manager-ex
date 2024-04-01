@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">個人の財政状況や銀行口座、家族の予算などを管理する、シンプルで使いやすいアプリケーションです。</string>
-  <string name="application_credits">MoneyManagerEx for Android プロジェクトは、ActionBarSherlock ライブラリーを使用しています。</string>
   <string name="application_license">オープン ソース ライセンス</string>
   <!-- database -->
   <string name="db_insert_failed">データの挿入に失敗しました</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
   <string name="sync_on_app_start">アプリ起動時に同期します。</string>
   <string name="sync_on_start">起動時に同期</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">口座</string>
   <string name="account_list">口座一覧</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">概要</string>
   <string name="widget_all_accounts">すべての口座</string>
   <string name="widget_add_transaction">取引を追加</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">なし</string>
   <string name="once">1 回</string>
   <string name="weekly">毎週</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">(X) ヶ月</string>
   <string name="every_x_days">(x) 日毎</string>
   <string name="every_x_months">(X) ヶ月毎</string>
-  <string name="repeating_empty_transaction">定期的な取引が見つかりません。 作成するには緑色のプラスボタンをタップしてください。</string>
   <string name="inactive">無効</string>
   <string name="activates">有効にする</string>
   <string name="days_overdue">日期限超過!</string>
   <string name="days_remaining">残り日数</string>
-  <string name="new_edit_repeating_transaction">定期的な取引を新しく作成/編集</string>
   <string name="due_date">期日</string>
   <string name="next_occurrence">次回発生</string>
   <string name="payment_date">支払日</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">次回発生を入力してください</string>
   <string name="skip_next_occurrence">次回発生をスキップ</string>
   <string name="skip_next_occurrence_confirmation">次回の発生をスキップしますか?</string>
-  <string name="notification_repeating_transaction_expired">期限切れの定期的な取引があります</string>
   <string name="notification_click_to_check_repeating_transaction">タッチして期限切れの取引を確認</string>
-  <string name="num_repeating_transaction_expired">%1$d の定期的な取引が期限切れ</string>
   <string name="skip">スキップ</string>
   <string name="enter">入力</string>
   <string name="enter_amount">金額を入力</string>
@@ -284,15 +280,12 @@
   <string name="date_format">日付の形式</string>
   <string name="financial_year_start_day">会計年度: 開始日</string>
   <string name="financial_year_start_month">会計年度: 開始月</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">データベースをエクスポート</string>
   <string name="database_has_been_moved">データベースは移動されました: %1$s</string>
   <string name="copy_database_on_external_storage_failed">データベースを外部ストレージにコピーできませんでした</string>
   <string name="path_database_using">以下に保存されたデータベースを使用しています: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">取引を分割</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">分割</string>
   <string name="error_split_transaction_empty">少なくとも1つの分割取引が必要です</string>
   <string name="swipe_to_dismiss">削除するアイテムをスワイプします。</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">データをエクスポートしています。しばらくお待ちください&#8230;</string>
   <string name="export_file_complete">データはファイル %1$s にエクスポートされました</string>
   <string name="export_file_failed">ファイル %1$s のエクスポートに失敗しました</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx for Android はフリーで提供しています。このアプリケーションを気に入っていただいた方は、寄付によって開発チームをサポートすることができます。</string>
   <string name="donate_in_app_title">Google Play アプリ内課金</string>
   <string name="donate_in_app_description">Google Play アプリ内課金で寄付します。</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">Google ライセンス上の理由から、私たちはアプリ内に直接寄付のリンクを配置することはできません。</string>
   <string name="donate_button_text">寄付</string>
   <string name="homepage_button">ホームページを開く</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite バージョン</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
   <string name="sorting_month">月で並べ替え</string>
-  <!-- 20130305 -->
   <string name="last_modified">最終更新</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">次回から表示しない</string>
   <string name="open_database">データベースを開く</string>
   <string name="synchronization_interval">同期間隔</string>
   <string name="summary_synchronization_interval">同期の頻度は?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Money Manager Ex for Android のバージョン 1.2.0 から Dropbox との同期の管理が変更されました。Dropbox で既に同期を使用しているユーザーは、構成をやり直す必要があります。\nDropbox との同期の構成とデータベースの選択は設定で行います\nMoney Manager Ex for Android のバージョン 1.2.0 から Dropbox とデータベースは自動的に同期することができます。</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">各取引の残高を表示</string>
   <string name="summary_transaction_shown_balance">各取引の残高を表示します。残高を表示するとアプリケーションの動作が遅くなります。</string>
   <string name="menu_open_database">データベースを開く</string>
@@ -346,38 +331,21 @@
   <string name="Default">デフォルト</string>
   <string name="medium">中</string>
   <string name="large">大</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">お金の行き先</string>
   <string name="menu_report_where_money_comes_from">お金の入り元</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">通知時間</string>
-  <string name="summary_check_repeating_transaction">期限切れの定期的な取引があるかの確認を、何時に行いますか? (デフォルト 8:00)</string>
-  <!-- 20130730 -->
   <string name="credits">クレジット</string>
   <string name="libraries">ライブラリー</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">上位の払戻: 過去 30 日間</string>
   <string name="top_payees_last_30_days">上位の支払先: 過去 30 日間</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">今後の取引</string>
   <string name="quantity">数量</string>
   <string name="dashboard">ダッシュボード</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">過去 3 ヶ月</string>
   <string name="last6months">過去 6 ヶ月</string>
-  <!-- 20130816 -->
   <string name="empty_category">空のカテゴリー</string>
   <string name="empty_payee">空の支払先</string>
-  <!-- 20130831 -->
   <string name="help">ヘルプ</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">定期的な取引を削除</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">最後</string>
   <string name="accounts">口座</string>
   <string name="to_account">宛先口座</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">%d の選択した取引を削除してもよろしいですか?</string>
   <string name="categories">カテゴリー</string>
   <string name="payees">支払先</string>
-  <string name="recurring_transactions">定期的な取引</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新規口座</string>
   <string name="create_new_account">新規口座を作成</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">金額 まで</string>
   <string name="reset">リセット</string>
   <string name="result_search">検索結果</string>
-  <string name="new_repeating_transaction">新しい定期的な取引</string>
-  <string name="edit_repeating_transaction">定期的な取引を編集</string>
   <string name="path_database_not_exists">データベースのパスが存在しません</string>
   <string name="database_can_not_open_write">データベースは書き込み用として開くことができません</string>
   <string name="time_frame">時間枠</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">MoneyManagerEx のすべての取引は口座に属します。\n\n現在、表示可能な口座がありません。設定で、表示する口座のフィルターを調整するか、次のオプションのいずれかを選択してください。</string>
   <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、クラウドストレージプロバイダーにリンクして、データベースを同期することができます</string>
   <string name="configure_sync">同期の構成</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
   <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等&#8230; を検索します</string>
   <string name="rate_application">アプリケーションの評価</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">既にあなたの寄付で MoneyManagerEx for Android の開発をサポートしていただいています!\n\n開発チームから、ありがとうございます!</string>
   <string name="donate_in_app_retrieving_status">Google Play から寄付の状態を取得しています。しばらくお待ちください&#8230;</string>
   <string name="donate_in_app_error">アプリ内課金を使用できません。Play ストア アプリケーションの最新バージョンがインストールされているかご確認ください。</string>
-  <string name="title_notifications_repeating_transaction">定期的な取引の期限切れ通知 </string>
-  <string name="summary_notifications_repeating_transaction">定期的な取引が期限切れの通知を表示します</string>
   <string name="tools">ツール</string>
   <string name="entities">エンティティ</string>
   <string name="loading">読み込んでいます&#8230;</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">複数の通貨および言語。オープン ソース。私たちの翻訳チームに参加してください。</string>
   <string name="tutorial_sync_1">マルチプラットフォームのサポート、複数のクラウドサービス経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
   <string name="transactions">取引</string>
-  <string name="tutorial_transactions_1">預金、払戻、振替。定期的な取引と通知。</string>
   <string name="split_category">-分割カテゴリー-</string>
   <string name="title_activity_currency_chart">通貨為替レート表</string>
   <string name="sort_by_ascending">年と月で昇順に並べ替え</string>
@@ -538,7 +499,6 @@
   <string name="update_available">利用可能な更新</string>
   <string name="update_available_online">オンラインで利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currency_not_found">通貨が見つかりません</string>
-  <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
   <string name="transaction_type_filter">取引の種類でフィルター</string>
@@ -639,7 +599,6 @@
   <string name="quote_provider">プロバイダーの引用</string>
   <string name="exchange_rate_provider">為替レート プロバイダー</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Dropbox にデータベースの更新があります</string>
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
   <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
@@ -707,7 +666,6 @@
   <string name="intro_text">Money Manager Ex を使用するには、データベース ファイルにデータを格納する必要があります。以下の利用可能なオプションのいずれかを選択してください。</string>
   <string name="intro_create_db">新しいファイルを作成し、初期設定を行うことができます。</string>
   <string name="intro_open_db">または、お使いのデバイスから既存のファイルを選択できます。</string>
-  <string name="intro_sync">また、クラウドサービスとの同期を設定し、オンラインストレージから、開始するデータベース ファイルをダウンロードすることができます。</string>
   <!-- Create Database screen -->
   <string name="select_language">言語を選択</string>
   <string name="run">Money Manager Ex を実行</string>
@@ -721,4 +679,9 @@
   <string name="loan">ローン</string>
   <string name="loan_account">ローン口座</string>
   <string name="shares_accounts">証券口座</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

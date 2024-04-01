@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Isang simple at madaling gamitin na application upang pamahalaan ang mga personal na pananalapi, mga bank account, badyet ng pamilya, at iba pa.</string>
-  <string name="application_credits">MoneyManagerEx para sa mga Android Project gumagamit ng ActionBarSherlock library</string>
   <string name="application_license">Mga lisinsya ng open source</string>
   <!-- database -->
   <string name="db_insert_failed">Pagpasok ng datos ay nabigo</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">Auto-synchronize lamang kapag sa WiFi connection.</string>
   <string name="sync_on_app_start">Synchronize sa pagsimula ng app.</string>
   <string name="sync_on_start">Mag-sync sa simula</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Account</string>
   <string name="account_list">Listahan ng account</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">Buod</string>
   <string name="widget_all_accounts">Lahat ng account</string>
   <string name="widget_add_transaction">Magdagdag ng Transaksyon</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Wala</string>
   <string name="once">Isang beses</string>
   <string name="weekly">Linggo-linggo</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">Sa (x) Buwan</string>
   <string name="every_x_days">Lahat (x) Araw</string>
   <string name="every_x_months">Lahat (x) Buwan</string>
-  <string name="repeating_empty_transaction">Walang nakikitang mga transaksyon ang natagpuan. Upang lumikha ng isa, i-tap ang pindutan ng berdeng plus.</string>
   <string name="inactive">Hindi aktibo</string>
   <string name="activates">Aktibo</string>
   <string name="days_overdue">ilang araw na overdue!</string>
   <string name="days_remaining">mga araw na natitira</string>
-  <string name="new_edit_repeating_transaction">Bago/I-edit ang umuulit na transaksyon</string>
   <string name="due_date">Takdang petsa</string>
   <string name="next_occurrence">Susunod na pangyayari</string>
   <string name="payment_date">Petsa ng pagbabayad</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">Ipasok ang Susunod na Pangyayari</string>
   <string name="skip_next_occurrence">Laktawan ang Susunod na Pangyayari</string>
   <string name="skip_next_occurrence_confirmation">Gusto mo bang laktawan ang susunod na pangyayari?</string>
-  <string name="notification_repeating_transaction_expired">May mga expired na transaksyon</string>
   <string name="notification_click_to_check_repeating_transaction">Hawakan upang suriin ang mga transaksyon na lagpas na</string>
-  <string name="num_repeating_transaction_expired">%1$d inuulit na transaksyon na lagpas na</string>
   <string name="skip">Laktawan</string>
   <string name="enter">Pumasok</string>
   <string name="enter_amount">Ilagay ang halaga</string>
@@ -284,15 +280,12 @@
   <string name="date_format">Pormat ng Petsa</string>
   <string name="financial_year_start_day">Financial Year: Start Day</string>
   <string name="financial_year_start_month">Financial Year: Start Month</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">I-export ang database</string>
   <string name="database_has_been_moved">Nailipat na ang database: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Nabigo ang pagkopya ng database sa external storage</string>
   <string name="path_database_using">Gumagamit ka ng database na naka-save sa: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Hiwalay na transaksyon</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Hiwalay</string>
   <string name="error_split_transaction_empty">Kinakailangang hindi bababa sa isa ang split ng transaksyon</string>
   <string name="swipe_to_dismiss">Mag-swipe ng mga item upang maalis.</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">Nage-export ng datos. Pakihintay&#8230;</string>
   <string name="export_file_complete">Ang datos ay matagumpay na nai-export sa file na %1$s</string>
   <string name="export_file_failed">I-export ang mga file na %1$s ay nabigo</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx para sa Android ay libreng binigay. Kung gusto mo yung aplikasyon, maaari kang mag-suporta sa development team na may donasyon.</string>
   <string name="donate_in_app_title">Google Play In-App Billing</string>
   <string name="donate_in_app_description">Magdonate ng donasyon via Google Play In-App Billing.</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">Para sa paglilisinsya ng Google, hindi kami pinapayagan na maglagay ng donasyon na link direkta sa loob ng app.</string>
   <string name="donate_button_text">Donasyon</string>
   <string name="homepage_button">Buksan ang homepage</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite Version</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Pataas</string>
   <string name="descending">Pababang</string>
   <string name="sorting_month">Pag-aayos ng mga buwan</string>
-  <!-- 20130305 -->
   <string name="last_modified">Huling pagbabago</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Huwag ng ipakita muli</string>
   <string name="open_database">Buksan ang Database</string>
   <string name="synchronization_interval">Pagitan ng singkronisasyon</string>
   <string name="summary_synchronization_interval">Gaano kadalas dapat magsingkronis?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Tulad ng bersyon 1.2.0, Ang Money Manager Ex para sa Android ay nagbago ng Dropbox synchronization engine. Ang mga gumagamit na ng Dropbox sync ay kailangang i-update ang configuration. \ N Ang pagpapatunay at ang pagpili ng database ay matatagpuan sa Mga Setting. \ N Ang bersyon 1.2.0, ang Money Manager Ex para sa Android ay maaaring awtomatikong i-synchronize ang database.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Nagpapakita ng balanse para sa bawat transaksyon</string>
   <string name="summary_transaction_shown_balance">Nagpapakita ng balanse para sa bawat na transaksyon. Ang pagpakita ng balanse ay maaaring nagpapabagal sa aplikasyon</string>
   <string name="menu_open_database">Buksan ang database</string>
@@ -346,38 +331,21 @@
   <string name="Default">Default</string>
   <string name="medium">Katamtaman</string>
   <string name="large">Malaki</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Saan napupunta ang pera</string>
   <string name="menu_report_where_money_comes_from">Saan galing ang pera</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Oras ng notipikasyon</string>
-  <string name="summary_check_repeating_transaction">Anong oras mong susuriin kung mayroong mga umuulit na transaksyon na overdue? (default 08:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Mga kredito</string>
   <string name="libraries">Mga Aklatan</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Nangungunang mga Withdrawals: Huling 30 araw</string>
   <string name="top_payees_last_30_days">Nangungunang mga Payee: Huling 30 araw</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Mga pararating na Transaksyon</string>
   <string name="quantity">Dami</string>
   <string name="dashboard">Dashboard</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Huling 3 na buwan</string>
   <string name="last6months">Huling 6 na buwan</string>
-  <!-- 20130816 -->
   <string name="empty_category">Walang laman na Kategorya</string>
   <string name="empty_payee">Walang laman ang binayaran</string>
-  <!-- 20130831 -->
   <string name="help">Tulong</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Tanggalin ang Nauulit na Transaksyon</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Huli</string>
   <string name="accounts">Mga Account</string>
   <string name="to_account">Sa Account</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">Sigurado ka bang gusto mong tanggalin ang %d na napiling mga transaksyon?</string>
   <string name="categories">Mga Kategorya</string>
   <string name="payees">Payees</string>
-  <string name="recurring_transactions">Nauulit na mga Transaksyon</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Bagong account</string>
   <string name="create_new_account">Lumikha ng Bagong Account</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">Halaga sa</string>
   <string name="reset">I-reset</string>
   <string name="result_search">Resulta ng iyong paghahanap</string>
-  <string name="new_repeating_transaction">Bagong Nauulit na Transaksyon</string>
-  <string name="edit_repeating_transaction">I-edit ang Nauulit na Transaksyon</string>
   <string name="path_database_not_exists">Ang path ng database ay hindi umiiral</string>
   <string name="database_can_not_open_write">Ang database ay hindi mabubuksan para sa pagsulat</string>
   <string name="time_frame">Time Frame</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">Lahat ng transaksyon sa MoneyManagerEx ay pag-aari ng mga account.\n\nKasalukuyan ay wala kang makikitang mga account. Alinman i-adjust ang filter para sa mga account na makikita sa Settings, o pumili ng isang opsyon sa ibaba.</string>
   <string name="welcome_body_dropbox">Kung nakagamit ka ng MoneyManagerEx sa Windows, Linux o Mac, maaari kang mga-link sa clout storage provider upang i-synchronize ang iyong database</string>
   <string name="configure_sync">I-configure ang Pag-synchronize</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Pagsasaliksik sa pamamagitan ng teksto ng mga nilalaman at hindi sa teksto na nagsimul sa</string>
   <string name="search_text_contain_summary">Paghahanap ng payee, kategorya, pera, atbp... sa pamamagitan ng mga nilalaman at hindi sa pamamagitan ng pagsisimula ng mga character</string>
   <string name="rate_application">Rate ang aplikasyon</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">Ikaw ay suportado na sa development ng MoneyManagerEx sa Android sa iyong donasyon!\n\nSalamat mula sa development team!</string>
   <string name="donate_in_app_retrieving_status">Pagkuha ng katayuan ng iyong mga donasyon mula sa Google Play. Mangyaring maghintay&#8230;</string>
   <string name="donate_in_app_error">Hindi maaring gamitin ang in-app billing. Lagyan ng tsek kung naka-install ang pinakabagong bersyon ng Play Store application.</string>
-  <string name="title_notifications_repeating_transaction">Notipikasyon sa umuulit na transaksyon na lagpas na </string>
-  <string name="summary_notifications_repeating_transaction">Magpakita ng notipikasyon sa mga inuulit na transaksyon na lagpas na</string>
   <string name="tools">Mga kagamitan</string>
   <string name="entities">Mga entity</string>
   <string name="loading">Naglo-load&#8230;</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">Maramihang pera at wika. Open Source. Sumali sa aming koponan sa pagsasalin.</string>
   <string name="tutorial_sync_1">Sumuporta para sa maramihang mga platform, pag-synchronize sa pamamagitan ng maramihang mga serbisyo ng ulap. I-import at i-export ang iyong data sa iba pang mga application.</string>
   <string name="transactions">Mga Transaksyon</string>
-  <string name="tutorial_transactions_1">Mga deposito, withdrawals, transfer. Mga nauulit na transaksyon sa mga paalala.</string>
   <string name="split_category">-Split Category-</string>
   <string name="title_activity_currency_chart">Chart ng Rate ng Palitan ng Pera</string>
   <string name="sort_by_ascending">Pagsunud-sunurin ayon sa taon at buwan na pataas</string>
@@ -538,7 +499,6 @@
   <string name="update_available">Ang update ay available</string>
   <string name="update_available_online">May isang na-update na database file na magagamit online. Gusto mo bang i-update?</string>
   <string name="currency_not_found">Hindi nahanap ang pera</string>
-  <string name="homepage">Ang aming homepage ay http://android.moneymanagerex.org/</string>
   <string name="current_database">Kasalukuyang database</string>
   <string name="about_logcat_header">Maaari mong ipadala sa amin ang log ng application sa pamamagitan ng pag-click sa pindutan sa ibaba.</string>
   <string name="transaction_type_filter">I-filter ayon sa Uri ng Transaksyon</string>
@@ -639,7 +599,6 @@
   <string name="quote_provider">Provider ng Quote</string>
   <string name="exchange_rate_provider">Provider ng rate ng palitan</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">May isang pag-update ng database sa Dropbox</string>
   <string name="dropbox_file_ready_for_use">Na-download ang iyong database</string>
   <string name="dropbox_open_database_downloaded">Upang gamitin ang database na na-download, pindutin ang Buksan ang Database</string>
@@ -707,7 +666,6 @@
   <string name="intro_text">Upang simulan ang paggamit ng Money Manager Ex, kailangan mong magkaroon ng database file upang iimbak ang iyong data. Mangyaring pumili ng isa sa mga magagamit na opsyon sa ibaba.</string>
   <string name="intro_create_db">Maaari kang lumikha ng isang bagong file at i-set up ang mga unang kagustuhan.</string>
   <string name="intro_open_db">O maaari kang pumili ng umiiral nang file mula sa iyong device.</string>
-  <string name="intro_sync">Bilang kahalili, maaari mong i-set up ang pag-synchronize gamit ang serbisyo ng ulap at i-download ang iyong database file mula sa online storage para sa pagsisimula.</string>
   <!-- Create Database screen -->
   <string name="select_language">Piliin ang wika</string>
   <string name="run">Patakbuhin ang Pera Manager Ex</string>
@@ -721,4 +679,9 @@
   <string name="loan">Pautang</string>
   <string name="loan_account">Mga Loan Account</string>
   <string name="shares_accounts">Mga Share Account</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

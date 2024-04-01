@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Jalankan Money Manager Ex</string>
   <string name="application_definition">Aplikasi sederhana dan mudah digunakan untuk mengelola keuangan pribadi, rekening bank, anggaran keluarga, dan sebagainya.</string>
-  <string name="application_credits">MoneyManagerEx untuk Android Project menggunakan pustaka ActionBarSherlock</string>
   <string name="application_license">Lisensi sumber terbuka</string>
   <!-- database -->
   <string name="db_insert_failed">Gagal memasukkan data</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">Auto-sinkronisasi hanya ketika pada koneksi WiFi.</string>
   <string name="sync_on_app_start">Sinkronisasi pada saat memulai aplikasi.</string>
   <string name="sync_on_start">Menyinkronisasi pada saat memulai</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Akun</string>
   <string name="account_list">Daftar Akun</string>
@@ -203,7 +203,7 @@
   <string name="widget_summary">Ringkasan</string>
   <string name="widget_all_accounts">Semua akun</string>
   <string name="widget_add_transaction">Tambahkan transaksi</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Tidak ada</string>
   <string name="once">Sekali</string>
   <string name="weekly">Mingguan</string>
@@ -220,12 +220,10 @@
   <string name="in_x_months">Dalam (x) bulan</string>
   <string name="every_x_days">Setiap hari (x)</string>
   <string name="every_x_months">Setiap (x) bulan</string>
-  <string name="repeating_empty_transaction">Tidak ditemuka transaksi berulang. Untuk membuat satu, ketuk tombol tambah berwarna hijau.</string>
   <string name="inactive">Tidak aktif</string>
   <string name="activates">Mengaktifkan</string>
   <string name="days_overdue">hari terlambat!</string>
   <string name="days_remaining">sisa hari</string>
-  <string name="new_edit_repeating_transaction">Transaksi Berkala Baru/Sunting</string>
   <string name="due_date">Tanggal Jatuh Tempo</string>
   <string name="next_occurrence">Kejadian Berikutnya</string>
   <string name="payment_date">Tanggal Pembayaran</string>
@@ -238,9 +236,7 @@
   <string name="enter_next_occurrence">Masukkan Kejadian Berikutnya</string>
   <string name="skip_next_occurrence">Lewati Kejadian Berikutnya</string>
   <string name="skip_next_occurrence_confirmation">Apakah Anda ingin melewatkan kejadian berikutnya?</string>
-  <string name="notification_repeating_transaction_expired">Ada transaksi berkala yang kedaluwarsa</string>
   <string name="notification_click_to_check_repeating_transaction">Sentuh untuk memeriksa transaksi yang terlambat</string>
-  <string name="num_repeating_transaction_expired">%1$d transaksi berkala terlambat</string>
   <string name="skip">Lewati</string>
   <string name="enter">Masuk</string>
   <string name="enter_amount">Masukkan jumlah</string>
@@ -284,15 +280,12 @@
   <string name="date_format">Format tanggal</string>
   <string name="financial_year_start_day">Tahun keuangan: Hari Mulai</string>
   <string name="financial_year_start_month">Tahun keuangan: Bulan Mulai</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Ekspor basis data</string>
   <string name="database_has_been_moved">Basis data telah dipindahkan: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Gagal menyalin basis data pada penyimpanan eksternal</string>
   <string name="path_database_using">Anda menggunakan basis data yang disimpan di: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Membagi Transaksi</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Bagi</string>
   <string name="error_split_transaction_empty">Setidaknya diperlukan salah satu dari transaksi yang terbagi</string>
   <string name="swipe_to_dismiss">Geser ihwal untuk menyingkirkan.</string>
@@ -300,7 +293,6 @@
   <string name="export_data_in_progress">Mengekspor data. Harap tunggu&#8230;</string>
   <string name="export_file_complete">Data telah berhasil diekspor ke file %1$s</string>
   <string name="export_file_failed">Ekspor file %1$s gagal</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx untuk Android disediakan secara gratis. Jika Anda menyukai aplikasi ini, Anda dapat mendukung tim pengembangan dengan sumbangan.</string>
   <string name="donate_in_app_title">Google Play penagihan In-App</string>
   <string name="donate_in_app_description">Menyumbang melalui Google Play Penagihan In-App.</string>
@@ -315,23 +307,16 @@
   <string name="donate_license">Atas Alasan lisensi Google, kami tidak diperbolehkan untuk menempatkan link donasi langsung dalam app.</string>
   <string name="donate_button_text">Donasi</string>
   <string name="homepage_button">Buka beranda</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">Versi SQLite</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Menaik</string>
   <string name="descending">Menurun</string>
   <string name="sorting_month">Penyortiran bulan</string>
-  <!-- 20130305 -->
   <string name="last_modified">Modifikasi terakhir</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Jangan tampilkan lagi</string>
   <string name="open_database">Buka Basis Data</string>
   <string name="synchronization_interval">Jangka waktu sinkronisasi</string>
   <string name="summary_synchronization_interval">Seberapa sering harus menyinkronkan?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Sejak versi 1.2.0, Money Manager Ex telah mengubah mesin sinkronisasi Dropbox. Pengguna yang sudah menggunakan Dropbox sync harus memperbarui konfigurasi. \nOtentikasi dan pemilihan basis data terletak di pengaturan. \nSejak versi 1.2.0, Money Manager Ex untuk Android dapat mensinkronkan basis data secara otomatis.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi</string>
   <string name="summary_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi. Tampilan saldo bisa membuat aplikasi lebih lambat</string>
   <string name="menu_open_database">Buka Basis Data</string>
@@ -346,38 +331,21 @@
   <string name="Default">Bawaan</string>
   <string name="medium">Sedang</string>
   <string name="large">Besar</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Kemana uang mengarah</string>
   <string name="menu_report_where_money_comes_from">Darimana uang datang</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Waktu Pemberitahuan</string>
-  <string name="summary_check_repeating_transaction">Pada waktu apa anda akan memeriksa jika ada transaksi berkala yang terlambat? (bawaan 08:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Kredit</string>
   <string name="libraries">Perpustakaan</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Penarikan teratas: 30 hari terakhir</string>
   <string name="top_payees_last_30_days">Penerima Teratas: 30 hari terakhir</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Transaksi yang akan Datang</string>
   <string name="quantity">Kuantitas</string>
   <string name="dashboard">Dasbor</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">3 bulan terakhir</string>
   <string name="last6months">6 bulan terakhir</string>
-  <!-- 20130816 -->
   <string name="empty_category">Kategori Kosong</string>
   <string name="empty_payee">Penerima Pembayaran Kosong</string>
-  <!-- 20130831 -->
   <string name="help">Membantu</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Hapus Transaksi Berulang</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Terakhir</string>
   <string name="accounts">Akun</string>
   <string name="to_account">Ke rekening</string>
@@ -389,7 +357,6 @@
   <string name="delete_others_selected_transaction">Apakah Anda yakin Anda ingin menghapus %d transaksi yang dipilih?</string>
   <string name="categories">Kategori</string>
   <string name="payees">Penerima Uang</string>
-  <string name="recurring_transactions">Transaksi Berkala</string>
   <string name="theme_holo_light">Cahaya Holo</string>
   <string name="new_account">Akun baru</string>
   <string name="create_new_account">Buat akun baru</string>
@@ -399,8 +366,6 @@
   <string name="amount_to">Jumlah dari</string>
   <string name="reset">Setel ulang</string>
   <string name="result_search">Hasil pencarian Anda</string>
-  <string name="new_repeating_transaction">Transaksi berkala baru</string>
-  <string name="edit_repeating_transaction">Mengubah transaksi berkala</string>
   <string name="path_database_not_exists">Jalur Database tidak ada</string>
   <string name="database_can_not_open_write">Database tidak bisa dibuka untuk menulis</string>
   <string name="time_frame">Jangka waktu</string>
@@ -410,7 +375,6 @@
   <string name="welcome_body">Semua transaksi di MoneyManagerEx milik accounts.\n\nAnda saat ini tidak punya account yang terlihat. Sesuaikan filter untuk akun terlihat dalam pengaturan atau pilih salah satu opsi di bawah.</string>
   <string name="welcome_body_dropbox">Jika Anda sudah menggunakan MoneyManagerEx pada Windows, Linux atau Mac, Anda dapat menyambungkan ke penyedia penyimpanan awan untuk mensinkronkan basis data anda</string>
   <string name="configure_sync">Mengkonfigurasi Sinkronisasi</string>
-  <!-- 20140115 -->
   <string name="search_text_contain_title">Pencarian oleh isi teks dan bukan oleh teks yang diawali dengan</string>
   <string name="search_text_contain_summary">Cari penerima uang, kategori, mata uang, dll... oleh isi dan bukan oleh huruf-huruf awal</string>
   <string name="rate_application">Nilai aplikasi</string>
@@ -421,8 +385,6 @@
   <string name="donate_in_app_already_donate">Anda sudah mendukung pengembangan dari MoneyManagerEx untuk Android dengan donasi! \n\nTerima kasih dari tim pengembangan!</string>
   <string name="donate_in_app_retrieving_status">Mengambil status donasi Anda dari Google Play. Harap tunggu&#8230;</string>
   <string name="donate_in_app_error">Tidak dapat menggunakan penagihan di app. Periksa apakah versi terbaru dari aplikasi Play Store telah diinstal.</string>
-  <string name="title_notifications_repeating_transaction">Pemberitahuan Transaksi Berkala yang terlambat </string>
-  <string name="summary_notifications_repeating_transaction">Tampilkan pemberitahuan untuk transaksi berkala yang terlambat</string>
   <string name="tools">Peralatan</string>
   <string name="entities">Entitas</string>
   <string name="loading">Memuat&#8230;</string>
@@ -461,7 +423,6 @@
   <string name="tutorial_global_1">Beberapa mata uang dan bahasa. Open Source. Bergabung dengan tim terjemahan kami.</string>
   <string name="tutorial_sync_1">Dukungan untuk beberapa platform, Sinkronisasi melalui beberapa layanan cloud. Impor dan ekspor data ke aplikasi lain.</string>
   <string name="transactions">Transaksi</string>
-  <string name="tutorial_transactions_1">Deposit, penarikan, transfer. Transaksi berkala dengan pengingat.</string>
   <string name="split_category">-Kategori Terpisah-</string>
   <string name="title_activity_currency_chart">Bagan Nilai Tukar Mata Uang</string>
   <string name="sort_by_ascending">Urutkan tahun dan bulan secara menaik</string>
@@ -538,7 +499,6 @@
   <string name="update_available">Pembaruan tersedia</string>
   <string name="update_available_online">Ada berkas basis data terbaru yang tersedia daring. Perbarui?</string>
   <string name="currency_not_found">Mata uang tidak ditemukan</string>
-  <string name="homepage">Homepage kami adalah http://android.moneymanagerex.org/</string>
   <string name="current_database">Basis data saat ini</string>
   <string name="about_logcat_header">Anda bisa mengirimkan log aplikasi dengan mengklik tombol di bawah ini.</string>
   <string name="transaction_type_filter">Filter menurut Jenis Transaksi</string>
@@ -639,7 +599,6 @@
   <string name="quote_provider">Penyedia pilihan</string>
   <string name="exchange_rate_provider">Penyedia nilai tukar</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Ada pembaruan basis data pada Dropbox</string>
   <string name="dropbox_file_ready_for_use">Basis data terunduh</string>
   <string name="dropbox_open_database_downloaded">Untuk menggunakan basis data yang terunduh, ketuk Buka Basis Data</string>
@@ -707,7 +666,6 @@
   <string name="intro_text">Untuk mulai menggunakan Ex Money Manager, Anda harus memiliki file database untuk menyimpan data Anda. Silahkan pilih salah satu pilihan yang tersedia di bawah ini.</string>
   <string name="intro_create_db">Anda dapat membuat file baru dan menyiapkan preferensi awal.</string>
   <string name="intro_open_db">Atau Anda dapat memilih file yang ada dari perangkat Anda.</string>
-  <string name="intro_sync">Sebagai alternatif, Anda dapat mengatur sinkronisasi dengan layanan awan dan mendownload file database Anda dari penyimpanan online untuk memulai.</string>
   <!-- Create Database screen -->
   <string name="select_language">Pilih bahasa</string>
   <string name="run">Jalankan Money Manager Ex</string>
@@ -721,4 +679,9 @@
   <string name="loan">Pinjaman</string>
   <string name="loan_account">Rekening pinjaman</string>
   <string name="shares_accounts">Rekening Saham</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>

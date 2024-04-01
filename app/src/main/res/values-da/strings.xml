@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Et simpelt og letanvendeligt program til at administrere privatøkonomi, bankkonti, familiebudget med mere.</string>
-  <string name="application_credits">MoneyManagerEx til Android bruger ActionBarSherlock biblioteket</string>
   <string name="application_license">Open-Source licenser</string>
   <!-- database -->
   <string name="db_insert_failed">Indsættelse af data mislykkedes</string>
@@ -67,6 +66,7 @@
   <string name="auto_sync_via_wifi_summary">Synkronisér kun når du har en WIFI-forbindelse.</string>
   <string name="sync_on_app_start">Synkronisér ved start af App.</string>
   <string name="sync_on_start">Synkroniser ved app start</string>
+  <!-- Receive SMS strings -->
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Kontoliste</string>
@@ -202,7 +202,7 @@
   <string name="widget_summary">Oversigt</string>
   <string name="widget_all_accounts">Alle konti</string>
   <string name="widget_add_transaction">Tilføj transaktion</string>
-  <!-- Recurring Transactions -->
+  <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Ingen</string>
   <string name="once">En gang</string>
   <string name="weekly">Ugentlig</string>
@@ -219,12 +219,10 @@
   <string name="in_x_months">Om (x) måneder</string>
   <string name="every_x_days">Hver (x) dag</string>
   <string name="every_x_months">Hver (x) måned</string>
-  <string name="repeating_empty_transaction">Ingen gentagende overførsler blev fundet. Klik på den grønne plus-knap for at lave en.</string>
   <string name="inactive">Inaktiv</string>
   <string name="activates">Aktiverer</string>
   <string name="days_overdue">dage over frist!</string>
   <string name="days_remaining">dage tilbage</string>
-  <string name="new_edit_repeating_transaction">Ny/rediger Gentagende Overførsel</string>
   <string name="due_date">Forfaldsdato</string>
   <string name="next_occurrence">Næste forekomst</string>
   <string name="payment_date">Betalingsdato</string>
@@ -237,8 +235,6 @@
   <string name="enter_next_occurrence">Indtast næste forekomst</string>
   <string name="skip_next_occurrence">Spring næste forekomst over</string>
   <string name="skip_next_occurrence_confirmation">Vil du springe den næste forekomst over?</string>
-  <string name="notification_repeating_transaction_expired">Der er udløbede gentagende overførsler</string>
-  <string name="num_repeating_transaction_expired">%1$d gentagende overførsler er gået over fristen</string>
   <string name="skip">Spring over</string>
   <string name="enter">Indtast</string>
   <string name="enter_amount">Indtast beløb</string>
@@ -282,14 +278,11 @@
   <string name="date_format">Datoformat</string>
   <string name="financial_year_start_day">Regnskabsårets første dag</string>
   <string name="financial_year_start_month">Regnskabsårets første måned</string>
-  <!--<string name="release_date">Release Date</string>-->
-  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Eksporter database</string>
   <string name="database_has_been_moved">Databasen er blevet flyttet: %1$s</string>
   <string name="path_database_using">Du bruger databasen gemt i: %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Opdel transaktionen</string>
-  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Opdel</string>
   <string name="error_split_transaction_empty">Mindst en opdelt transaktion er nødvendig</string>
   <string name="swipe_to_dismiss">Swipe genstand for at fjerne.</string>
@@ -297,7 +290,6 @@
   <string name="export_data_in_progress">Eksporterer data. Vent venligst&#8230;</string>
   <string name="export_file_complete">Det lykkedes at ekportere dataen til filen: %1$s</string>
   <string name="export_file_failed">Det mislykkedes at eksporere filen: %1$s</string>
-  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx til Android bliver tilbudt gratis. Hvis du kan lide programmet kan du støtte udviklingsholdet med en donation.</string>
   <string name="donate_in_app_title">Google Play In-App Fakturering</string>
   <string name="donate_in_app_description">Donér ved hjælp af Google Play In-App Fakturering.</string>
@@ -312,23 +304,16 @@
   <string name="donate_license">Af hensyn til Googles licansaftaler kan vi ikke placere donationslinks direkte i programmet.</string>
   <string name="donate_button_text">Donér</string>
   <string name="homepage_button">Åbn hjemmeside</string>
-  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite Version</string>
-  <!-- 20130301 -->
-  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Stigende</string>
   <string name="descending">Faldende</string>
   <string name="sorting_month">Sortingsmåned</string>
-  <!-- 20130305 -->
   <string name="last_modified">Sidst ændret</string>
-  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Vis ikke igen</string>
   <string name="open_database">Åbn database</string>
   <string name="synchronization_interval">Synkroniseringsinterval</string>
   <string name="summary_synchronization_interval">Hvor ofte skal der synkroniseres?</string>
-  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Siden version 1.2.0 har MoneyManagerEx til Android skiftet Dropbox synkroniseringsprogram. Brugere der allerede bruger Dropboxsynkronisering skal opdatere deres konfiguration.\nSikkerhedsgodkendelsen og databasevalget findes i Indstillinger.\nFra version 1.2.0 kan MoneyManagerEx til Android automatisk synkronisere databasen.</string>
-  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Viser balancen for efter hver overførsel</string>
   <string name="summary_transaction_shown_balance">Viser balancen for hver overførsel. Dette kan gøre programmet langsomere</string>
   <string name="menu_open_database">Åbn database</string>
@@ -343,38 +328,21 @@
   <string name="Default">Standard</string>
   <string name="medium">Mellem</string>
   <string name="large">Stor</string>
-  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Hvad Pengene Bruges på</string>
   <string name="menu_report_where_money_comes_from">Hvor Pengene Kommer fra</string>
-  <!-- 20130728 -->
   <string name="title_check_repeating_transaction">Notifikationstidspunkt</string>
-  <string name="summary_check_repeating_transaction">Hvad tid der tjekkes om gentagende overførsler har overskrevet deres frist. (Standard: 8:00)</string>
-  <!-- 20130730 -->
   <string name="credits">Tak til</string>
   <string name="libraries">Programbiblioteker</string>
-  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
-  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Største hævninger: Sidste 30 dage</string>
   <string name="top_payees_last_30_days">Største betalingsmodtagere: Sidste 30 dage</string>
-  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Kommende overførsler</string>
   <string name="quantity">Mængde</string>
   <string name="dashboard">Oversigtspanel</string>
-  <!-- 20130808 -->
-  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Sidste 3 måneder</string>
   <string name="last6months">Sidste 6 måneder</string>
-  <!-- 20130816 -->
   <string name="empty_category">Tom kategori</string>
   <string name="empty_payee">Ingen betalingsmodtager</string>
-  <!-- 20130831 -->
   <string name="help">Hjælp</string>
-  <!-- 20130927 -->
-  <string name="delete_repeating_transaction">Slet Gentagende Overførsler</string>
-  <!-- 20131007 -->
-  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
-  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
-  <!-- 20131104 -->
   <string name="last">Sidste</string>
   <string name="accounts">Konti</string>
   <string name="to_account">Til konto</string>
@@ -386,7 +354,6 @@
   <string name="delete_others_selected_transaction">Er du sikker på du vil slette de % valgte transaktioner?</string>
   <string name="categories">Kategorier</string>
   <string name="payees">Betalingsmodtagere</string>
-  <string name="recurring_transactions">Gentagende Overførsler</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Ny konto</string>
   <string name="create_new_account">Opret en ny konto</string>
@@ -396,8 +363,6 @@
   <string name="amount_to">Beløb til</string>
   <string name="reset">Nulstil</string>
   <string name="result_search">Resultat af din søgning</string>
-  <string name="new_repeating_transaction">Ny Gentagende Overførsel</string>
-  <string name="edit_repeating_transaction">Rediger Gentagende Overførsel</string>
   <string name="path_database_not_exists">Databasestien findes ikke</string>
   <string name="database_can_not_open_write">Databasen kan ikke åbnes for at blive redigeret</string>
   <string name="time_frame">Tidsramme</string>
@@ -406,7 +371,6 @@
   <string name="welcome_header">Velkommen til MoneyManagerEx!</string>
   <string name="welcome_body_dropbox">Hvis du allerede bruger MoneyManagerEx på Windows, Linux eller Mac kan du linke til et online lager for at synkronisere din database</string>
   <string name="configure_sync">Konfigurér synkronisering</string>
-  <!-- 20140115 -->
   <string name="montly_last_days">Månedligt (sidste dag)</string>
   <string name="montly_last_bussines_day">Månedligt (sidste hverdag)</string>
   <!-- languages -->
@@ -485,7 +449,6 @@
   <string name="update_available">Opdatering tilgængelig</string>
   <string name="update_available_online">Der er en opdateret databasefil tilgængelig online. Ønsker du at opdatere?</string>
   <string name="currency_not_found">Valuta ikke fundet</string>
-  <string name="homepage">Vores hjemmeside er http://android.moneymanagerex.org/</string>
   <string name="current_database">Nuværende database</string>
   <string name="about_logcat_header">Du kan sende os program loggen ved at klikke på knappen for neden.</string>
   <string name="transaction_type_filter">Filtrér efter transaktionstype</string>
@@ -553,7 +516,6 @@
   <!-- Investment -->
   <string name="portfolio">Portefølje</string>
   <!-- deprecated / Dropbox -->
-  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Der er en opdatering af databasen på Dropbox</string>
   <string name="dropbox_file_ready_for_use">Din database er blevet hentet</string>
   <string name="download_from_drobpox">Hent fra Dropbox</string>
@@ -613,4 +575,9 @@
   <string name="loan">Lån</string>
   <string name="loan_account">Lånkonti</string>
   <string name="shares_accounts">Andelskonti</string>
+  <!-- Notification Setting -->
+  <!-- Old string
+  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+  -->
 </resources>
