@@ -1,71 +1,82 @@
-# Money Manager Ex for Android
+# Money Manager Ex - Android User Manual
 
-- [Introduction](#Introduction)
-- [[Concepts]]
-- [[Database]]
-- [[Cloud Synchronization]]
-- Entities
-  - [Accounts](#Accounts)
-  - [Categories](Categories)
-  - [Currencies](Currencies)
-  - [Payees](#Payees)
-- [[Transactions]]
-  - [Account Transactions List](Account Transactions List)
-  - [Void transaction](Void-Transaction)
-  - [Delete transaction](Delete-Transaction)
-  - [Transfers](Transfers)
-  - [Transaction Status Filter](Transaction Status Filter)
-- [[Recurring Transactions]]
-- [Transaction Filter](#Transaction_Filter)
-- [Asset Allocation](asset-allocation)
-- [[Settings]]
-- [[FAQ]]
-- [[Search]]
+Welcome to the user manual for Money Manager Ex - Android, a free, open-source, cross-platform, and easy-to-use personal finance software.
 
-## <a name="Introduction"></a>Introduction
+## Table of Contents
 
-<a href="Home">MoneyManagerEx for Android</a> is a port of the PC/Desktop personal finance application, currently available for Windows, Mac OSX and LINUX. It maintains the best features of its sisters' Desktop applications, while adding mobility and synchronization.
-<p></p>
-The primary goal of MoneyManagerEx and <strong><a href="Home">MoneyManagerEx for Android</a></strong> is to simplify the process of tracking financial information, in an easy to use program that can be used as regular as necessary, to help us keep track of where our money comes from and more importantly, where our money goes, in order to make better financial decisions for our future.
-<p></p>
-Think of MoneyManagerEx and <strong><a href="Home">MoneyManagerEx for Android</a></strong> as a computer checkbook which enables you to balance your accounts, organize, manage and generate reports for your finances.
-<p></p>
-<strong>With <a href="Home">MoneyManagerEx for Android</a>, and synchronization via Dropbox, you can keep under control your finances, no matter where you will find.</strong>
-<p></p>
+1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+3. [Features](#features)
+    - [Expense Tracking](#expense-tracking)
+    - [Budget Management](#budget-management)
+    - [Account Management](#account-management)
+    - [Reports](#reports)
+    - [Data Sync](#data-sync)
+    - [Security](#security)
+4. [How to Use](#how-to-use)
+    - [Adding Transactions](#adding-transactions)
+    - [Creating Budgets](#creating-budgets)
+    - [Managing Accounts](#managing-accounts)
+5. [Troubleshooting](#troubleshooting)
+6. [Contributing](#contributing)
+7. [License](#license)
 
-## <a name="Accounts"></a>Accounts
+## Introduction
 
-What is an Account in <a href="Home">MoneyManagerEx for Android?</a> Account is all places where we keep the money, such as banks, several institutions or even our pockets.<br>
+Money Manager Ex - Android is a mobile version of the popular personal finance software Money Manager Ex. It allows you to manage your finances on the go, making it easy to track expenses, create budgets, and stay on top of your financial goals.
 
-To create a new account, from the menu, Manage → Account → Add (+)
+## Getting Started
 
-<strong>Name of the Account</strong>: This is a required field. The recommendation is to name your accounts uniquely and in relation to real world accounts. Example: With <a href="CitiBank">CitiBank</a>, we have a Savings account and a credit card Visa account. You could name your accounts as "<a href="CitiBank">CitiBank</a> Savings" and “Citibank Visa”.<br>
+To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store. Once installed, you can create an account and begin adding your financial information.
 
-<strong>Type of Account</strong>:
-<ol>
-<li><strong>“Checking” Account</strong>: This is the most common type of account such as checking accounts, savings accounts, and credit card accounts. It supports three types of operations: deposit, withdrawal and transfer.</li>
-<li><strong>"Term" Account</strong>: This kinds of accounts cover specialized accounts such as Cash Term Accounts, Bank Mortgage accounts, Loan accounts, or investment accounts with regular income or expenditure that you need to keep track of. <br></li>
-</ol>
-To keep track of more information on the accounts, you can insert the optional details of the account, such as account number, address, website, contact information and access. You can also enter additional notes on the account in the 'Notes'.
-For a correct management you must have the correct balance for the account you are entering, and this information must be entered in the "Initial Balance". Later to keep the account balance is sufficient to add the transactions that take place gradually over the date of the opening balance entered.
-<p></p>
-The <strong>Status</strong> of the account can be set to "Open" or "Closed". Closed accounts are those no longer active. The setting of this state is only one way to simplify the vision. When you start the application displays all the Accounts, but you can make it visible only open account by setting "View open accounts" (Manage → Settings → Display)
+## Features
 
-<strong>Currency</strong>: You can set the currency associated with the account and can be different to the base currency. The exchange rate of the currency can be changed using the menu: Manage → Currency
+### Expense Tracking
 
-Once you have created an account, you can edit any of the account information fields using the menu: Manage → Account. A list of your accounts will appear, and holding on an account you can choose to edit or delete it.
+Track your expenses on the go, categorize transactions, and view detailed reports to better understand your spending habits.
 
-## <a name="Payees"></a>Payees
+### Budget Management
 
-What is Payee for <a href="Home">MoneyManagerEx for Android</a>? The payee is a subject (person, company or organization) to whom the money goes or comes from.
-<p></p>
-You can manage the Payees from main menu: Manage → Payee
-<p></p>
-To add a new Payee, click Add (+), and in the dialog, enter the name of the Payee.
-<p></p>
-To edit or delete a Payee hold on the desired Payee will open a context menu with the possible operations.
+Set up budgets for different categories and track your progress over time. Receive notifications when you're nearing your budget limits.
 
-## <a name="Transaction_Filter"></a>Transaction Filter
+### Account Management
 
-<a href="Home">MoneyManagerEx for Android</a> allows you to search for transactions by setting the criteria, such as from date to date, all transactions of an account, transactions by state, by amount or notes.
- 
+Manage multiple accounts, including checking, savings, credit cards, and more. Keep track of balances and reconcile transactions with your bank statements.
+
+### Reports
+
+Generate customizable reports to gain insights into your financial health. Analyze spending patterns, income trends, and more.
+
+### Data Sync
+
+Sync your financial data across multiple devices using cloud synchronization. Ensure that your information is always up to date, no matter where you are.
+
+### Security
+
+Protect your financial information with advanced security features, including password protection and data encryption.
+
+## How to Use
+
+### Adding Transactions
+
+To add a new transaction, simply navigate to the transactions tab and click on the add button. Then, enter the details of the transaction, including the date, amount, category, and any additional notes.
+
+### Creating Budgets
+
+To create a new budget, go to the budgets tab and click on the add button. Then, enter the details of the budget, including the category, amount, and timeframe.
+
+### Managing Accounts
+
+To manage your accounts, navigate to the accounts tab and click on the add button. Then, enter the details of the account, including the account type, name, and starting balance.
+
+## Troubleshooting
+
+If you encounter any issues while using Money Manager Ex - Android, please refer to the troubleshooting section of the user manual for assistance.
+
+## Contributing
+
+Money Manager Ex - Android is an open-source project, and we welcome contributions from the community. If you'd like to get involved, please visit our GitHub repository and submit a pull request.
+
+## License
+
+Money Manager Ex - Android is licensed under the GNU General Public License version 2.0. For more information, please refer to the LICENSE file in the root of the project repository.
