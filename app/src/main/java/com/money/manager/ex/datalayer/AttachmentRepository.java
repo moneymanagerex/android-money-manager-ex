@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,11 +17,14 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import java.util.ArrayList;
 
 /**
  * Attachment repository
@@ -65,6 +68,26 @@ public class AttachmentRepository
                 null);
 
         return attachment;
+    }
+
+    public ArrayList<Attachment> loadSplitCategoriesFor(int refId, String refType) {
+        Cursor curAtt = getContext().getContentResolver().query(getUri(), null,
+                Attachment.REFID + "=? AND " + Attachment.REFTYPE +  "=?",
+                new String[] { Integer.toString(refId),  refType},
+                Attachment.ATTACHMENTID);
+        if (curAtt == null) return null;
+
+        ArrayList<Attachment> listAtts = new ArrayList<>();
+
+        while (curAtt.moveToNext()) {
+            Attachment attachment = new Attachment();
+            attachment.loadFromCursor(curAtt);
+
+            listAtts.add(attachment);
+        }
+        curAtt.close();
+
+        return listAtts;
     }
 
     public boolean save(Attachment attachment) {
