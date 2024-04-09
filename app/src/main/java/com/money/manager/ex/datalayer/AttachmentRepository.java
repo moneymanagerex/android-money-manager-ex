@@ -70,7 +70,7 @@ public class AttachmentRepository
         return attachment;
     }
 
-    public ArrayList<Attachment> loadSplitCategoriesFor(int refId, String refType) {
+    public ArrayList<Attachment> loadAttachmentsFor(int refId, String refType) {
         Cursor curAtt = getContext().getContentResolver().query(getUri(), null,
                 Attachment.REFID + "=? AND " + Attachment.REFTYPE +  "=?",
                 new String[] { Integer.toString(refId),  refType},

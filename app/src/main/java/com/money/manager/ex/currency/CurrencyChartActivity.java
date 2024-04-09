@@ -87,6 +87,6 @@ public class CurrencyChartActivity
 
         ImageView imageView = findViewById(R.id.imageChart);
 
-        Picasso.with(this).load(url).into(imageView);
+        Picasso.get().load(url).into(imageView);
     }
 }
