@@ -84,6 +84,7 @@ class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.ViewHolde
 
         private void openAttachmentWithSAF(Uri uri) {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // This is necessary if you're passing a content URI
             itemView.getContext().startActivity(intent);
         }
     }
