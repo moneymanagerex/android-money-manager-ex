@@ -16,10 +16,12 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +36,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.os.Process;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -730,12 +735,21 @@ public class EditTransactionCommonFunctions {
         File file = new File(mDatabases.get().getCurrent().localPath);
         String attachmentsFolder = String.format("MMEX_%s_Attachments", file.getName().substring(0, file.getName().lastIndexOf('.')));
 
-        Uri uri = Uri.parse(mDatabases.get().getCurrent().remotePath);
-        String baseUri = uri.toString().substring(0, uri.toString().lastIndexOf(file.getName()));
-
+        String remotePath = mDatabases.get().getCurrent().remotePath;
+        String baseUri = remotePath.substring(0, remotePath.lastIndexOf(file.getName()));
+        Timber.d(getContext().getContentResolver().getPersistedUriPermissions().toString());
         for (Attachment att : getAttachments()) {
-            attachmentList.add(baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename());
+            String uri = baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename();
+
+            if (getContext().checkUriPermission(Uri.parse(uri), Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+                getContext().getContentResolver().takePersistableUriPermission(Uri.parse(uri), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } else {
+                 getActivity().onPermissionGranted(Uri.parse(uri));
+                // getActivity().openDirectoryPicker(Uri.parse(uri));
+            }
+            attachmentList.add(uri);
         }
+        Timber.d(getContext().getContentResolver().getPersistedUriPermissions().toString());
 
         viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
         viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
