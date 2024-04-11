@@ -37,6 +37,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -378,6 +379,9 @@ public class CheckingTransactionEditActivity
         // Transaction Number
         mCommon.initTransactionNumberControls();
 
+        // Attachments
+        mCommon.initAttachmentControls();
+
         // notes
         mCommon.initNotesControls();
     }
@@ -393,6 +397,11 @@ public class CheckingTransactionEditActivity
         if (mCommon.mSplitTransactions == null) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
             mCommon.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
+        }
+        // Load Attachments
+        if (mCommon.mAttachments == null) {
+            AttachmentRepository attachmentRepository = new AttachmentRepository(this);
+            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, "Transaction");
         }
 
         AccountRepository accountRepository = new AccountRepository(this);

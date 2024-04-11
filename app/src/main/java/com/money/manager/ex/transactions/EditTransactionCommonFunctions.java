@@ -20,9 +20,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.Process;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -36,6 +39,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -59,8 +63,10 @@ import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
@@ -71,6 +77,7 @@ import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -89,7 +96,9 @@ import timber.log.Timber;
 public class EditTransactionCommonFunctions {
 
     private static final String DATEPICKER_TAG = "datepicker";
-
+    // to get database uri
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
     public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
                                           ITransactionEntity transactionEntity, BriteDatabase database) {
         super();
@@ -110,6 +119,8 @@ public class EditTransactionCommonFunctions {
     public String categoryName, subCategoryName;
     public ArrayList<ISplitTransaction> mSplitTransactions;
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
+
+    public ArrayList<Attachment> mAttachments;
 
     // Controls
     public EditTransactionViewHolder viewHolder;
@@ -244,6 +255,10 @@ public class EditTransactionCommonFunctions {
 
     public boolean hasSplitCategories() {
         return !getSplitTransactions().isEmpty();
+    }
+
+    public boolean hasAttachments() {
+        return !getAttachments().isEmpty();
     }
 
     /**
@@ -709,6 +724,29 @@ public class EditTransactionCommonFunctions {
         if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
             viewHolder.btnTransNumber.callOnClick();
         }
+    }
+
+    public void initAttachmentControls() {
+        List<String> attachmentList = new ArrayList<>();
+
+        File file = new File(mDatabases.get().getCurrent().localPath);
+        String attachmentsFolder = String.format("MMEX_%s_Attachments", file.getName().substring(0, file.getName().lastIndexOf('.')));
+
+        String remotePath = mDatabases.get().getCurrent().remotePath;
+        String baseUri = remotePath.substring(0, remotePath.lastIndexOf(file.getName()));
+        for (Attachment att : getAttachments()) {
+            String uri = baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename();
+
+            if (getContext().checkUriPermission(Uri.parse(uri), Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+                getContext().getContentResolver().takePersistableUriPermission(Uri.parse(uri), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } else {
+                // TODO
+            }
+            attachmentList.add(uri);
+        }
+
+        viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
+        viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
     public void initTransactionTypeSelector() {
@@ -1352,6 +1390,13 @@ public class EditTransactionCommonFunctions {
             mSplitTransactions = new ArrayList<>();
         }
         return mSplitTransactions;
+    }
+
+    private ArrayList<Attachment> getAttachments() {
+        if (mAttachments == null) {
+            mAttachments = new ArrayList<>();
+        }
+        return mAttachments;
     }
 
     private String getUserDateFormat() {

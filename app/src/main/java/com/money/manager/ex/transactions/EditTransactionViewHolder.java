@@ -31,6 +31,8 @@ import com.money.manager.ex.core.UIHelper;
 import com.shamanland.fonticon.FontIconView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -75,4 +77,5 @@ public class EditTransactionViewHolder {
     @BindView(R.id.buttonTransNumber) ImageButton btnTransNumber;
     @BindView(R.id.editTextTransNumber) public EditText edtTransNumber;
     @BindView(R.id.editTextNotes) public EditText edtNotes;
+    @BindView(R.id.recyclerViewAttachments) public RecyclerView recyclerAttachments;
 }

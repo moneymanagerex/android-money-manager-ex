@@ -136,7 +136,7 @@ public class SyncPreferenceFragment
         viewHolder.remoteFile.setSummary(remoteFile);
 
         // update recent db.
-        saveDatabaseMetadata(remoteFile);
+        // saveDatabaseMetadata(remoteFile);
 
         // start sync service
         getSyncManager().startSyncServiceHeartbeat();
@@ -333,8 +333,6 @@ public class SyncPreferenceFragment
             Timber.e(e, "uploading database");
         }
     }
-
-
 
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();

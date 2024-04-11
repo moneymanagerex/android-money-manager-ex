@@ -170,7 +170,6 @@ dependencies {
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
-            , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'androidx.work:work-runtime:2.8.1'
             , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
@@ -209,6 +208,8 @@ dependencies {
     // IcePick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
 
     testImplementation(
             // Robolectric
