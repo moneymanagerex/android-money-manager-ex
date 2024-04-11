@@ -22,12 +22,11 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 import com.money.manager.ex.R;
 
 import java.util.List;
@@ -62,28 +61,22 @@ class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.ViewHolde
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView imageView;
+        private final TextView textView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageViewAttachment);
+            textView = itemView.findViewById(R.id.textViewAttachment);
         }
 
         void bind(String uri) {
-            // Load and display attachment
-            Picasso.get()
-                    .load(uri)
-                    .placeholder(R.drawable.background_logo)
-                    .error(R.drawable.error_mmex)
-                    .fit()
-                    .into(imageView);
-
+            textView.setText(Uri.parse(uri).getLastPathSegment());
             // Set click listener to open attachment using SAF
             itemView.setOnClickListener(v -> openAttachmentWithSAF(Uri.parse(uri)));
         }
 
         private void openAttachmentWithSAF(Uri uri) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // This is necessary if you're passing a content URI
             itemView.getContext().startActivity(intent);
         }

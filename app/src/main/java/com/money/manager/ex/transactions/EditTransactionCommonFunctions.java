@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -26,6 +25,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.Process;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -36,10 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.os.Process;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -737,22 +734,19 @@ public class EditTransactionCommonFunctions {
 
         String remotePath = mDatabases.get().getCurrent().remotePath;
         String baseUri = remotePath.substring(0, remotePath.lastIndexOf(file.getName()));
-        Timber.d(getContext().getContentResolver().getPersistedUriPermissions().toString());
         for (Attachment att : getAttachments()) {
             String uri = baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename();
 
             if (getContext().checkUriPermission(Uri.parse(uri), Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
                 getContext().getContentResolver().takePersistableUriPermission(Uri.parse(uri), Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } else {
-                 getActivity().onPermissionGranted(Uri.parse(uri));
-                // getActivity().openDirectoryPicker(Uri.parse(uri));
+                // TODO
             }
             attachmentList.add(uri);
         }
-        Timber.d(getContext().getContentResolver().getPersistedUriPermissions().toString());
 
         viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
-        viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
     public void initTransactionTypeSelector() {
