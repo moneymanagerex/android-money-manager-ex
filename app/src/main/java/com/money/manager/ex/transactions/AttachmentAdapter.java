@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,16 +63,18 @@ class AttachmentAdapter extends RecyclerView.Adapter<AttachmentAdapter.ViewHolde
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textView;
+        private final Button buttonPreview;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textViewAttachment);
+            buttonPreview = itemView.findViewById(R.id.buttonAttachment);
         }
 
         void bind(String uri) {
             textView.setText(Uri.parse(uri).getLastPathSegment());
             // Set click listener to open attachment using SAF
-            itemView.setOnClickListener(v -> openAttachmentWithSAF(Uri.parse(uri)));
+            buttonPreview.setOnClickListener(v -> openAttachmentWithSAF(Uri.parse(uri)));
         }
 
         private void openAttachmentWithSAF(Uri uri) {
