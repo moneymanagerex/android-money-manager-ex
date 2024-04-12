@@ -90,6 +90,7 @@ public class SelectDatabaseActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // cancellation
         //if (permissions.length == 0) return;
         Timber.d("returning from permissions request"); // permissions
