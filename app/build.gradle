@@ -181,7 +181,7 @@ dependencies {
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView
     implementation supportDependencies.preference
-    implementation "androidx.annotation:annotation:1.6.0"
+    implementation supportDependencies.annotation
     implementation supportDependencies.gridLayout
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'            // Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
