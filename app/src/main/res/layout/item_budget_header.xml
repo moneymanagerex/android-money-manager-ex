@@ -30,7 +30,9 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:layout_weight="1"
-        android:text="@string/category" />
+        android:text="@string/category"
+        android:paddingEnd="1dp"
+        android:paddingStart="1dp" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/frequencyTextView"
@@ -49,7 +51,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="@string/amount" />
+        android:text="@string/amount"
+        android:paddingStart="1dp" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/actualTextView"
@@ -59,6 +62,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="@string/actual" />
+        android:text="@string/actual"
+        android:paddingStart="1dp" />
 
 </LinearLayout>

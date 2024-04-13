@@ -35,7 +35,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewItem"
@@ -47,7 +48,9 @@
             android:text="Test"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:typeface="roboto_black"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp" />
     </LinearLayout>
 
     <View

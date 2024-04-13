@@ -33,6 +33,7 @@
         android:layout_weight="1" 
         android:layout_marginLeft="5dp"
         android:singleLine="true" 
-		android:textSize="24sp" />
+		android:textSize="24sp"
+        android:layout_marginStart="5dp" />
 
 </LinearLayout>

@@ -31,7 +31,9 @@
         android:layout_weight="1"
         android:textColor="@android:color/primary_text_light"
         android:textSize="14sp"
-        android:typeface="normal" />
+        android:typeface="normal"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp" />
 
     <TextView
         android:id="@+id/textViewItemAccountTotal"
@@ -41,6 +43,8 @@
         android:layout_marginRight="5dp"
         android:textColor="@android:color/primary_text_light"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp" />
 
 </LinearLayout>

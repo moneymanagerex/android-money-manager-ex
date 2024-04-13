@@ -44,14 +44,18 @@
         android:layout_marginRight="@dimen/mmx_margin"
         android:layout_marginTop="@dimen/mmx_margin_bottom_top"
         android:background="?attr/shape_white_background_shadow"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/mmx_margin"
+        android:layout_marginEnd="@dimen/mmx_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/mmx_padding"
-            android:paddingRight="@dimen/mmx_padding" >
+            android:paddingRight="@dimen/mmx_padding"
+            android:paddingEnd="@dimen/mmx_padding"
+            android:paddingStart="@dimen/mmx_padding">
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewAccountName"
@@ -65,16 +69,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/mmx_margin_bottom_top" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
-                android:gravity="right"
+                android:gravity="end"
                 android:textColor="?attr/holo_red_color_theme"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/mmx_margin_bottom_top" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +88,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/mmx_padding"
-            android:paddingRight="@dimen/mmx_padding" >
+            android:paddingRight="@dimen/mmx_padding"
+            android:paddingEnd="@dimen/mmx_padding"
+            android:paddingStart="@dimen/mmx_padding">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -103,7 +111,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         app:srcCompat="@drawable/light_bulb"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:layout_marginEnd="10dp" />
 
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewPayee"
@@ -131,7 +140,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="10dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -148,7 +158,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/mmx_padding"
-            android:paddingRight="@dimen/mmx_padding" />
+            android:paddingRight="@dimen/mmx_padding"
+            android:paddingStart="@dimen/mmx_padding"
+            android:paddingEnd="@dimen/mmx_padding" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewNotes"
@@ -158,7 +170,9 @@
             android:paddingRight="@dimen/mmx_padding"
             android:singleLine="true"
             android:textStyle="italic"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:paddingEnd="@dimen/mmx_padding"
+            android:paddingStart="@dimen/mmx_padding" />
     </LinearLayout>
 
 </LinearLayout>

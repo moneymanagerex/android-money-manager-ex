@@ -24,7 +24,9 @@
     android:paddingTop="@dimen/mmx_activity_vertical_margin"
     android:paddingBottom="@dimen/mmx_activity_vertical_margin"
     tools:context="com.money.manager.ex.currency.CurrencyChartActivity"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/mmx_activity_horizontal_margin"
+    android:paddingEnd="@dimen/mmx_activity_horizontal_margin">
 
     <ImageView
         android:id="@+id/imageChart"

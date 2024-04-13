@@ -21,7 +21,9 @@
     android:layout_height="fill_parent"
     android:layout_marginLeft="@dimen/mmx_activity_side_margin"
     android:layout_marginRight="@dimen/mmx_activity_side_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin">
 
     <include layout="@layout/toolbar" />
 

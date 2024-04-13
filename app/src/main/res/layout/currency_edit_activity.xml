@@ -21,7 +21,9 @@
     android:layout_marginLeft="@dimen/mmx_activity_side_margin"
     android:layout_marginRight="@dimen/mmx_activity_side_margin"
     android:background="?attr/theme_background_color"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +36,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+            android:paddingRight="@dimen/mmx_activity_side_padding"
+            android:paddingEnd="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding">
 
             <!-- currency name -->
             <com.google.android.material.textfield.TextInputLayout

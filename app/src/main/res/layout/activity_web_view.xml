@@ -24,7 +24,9 @@
     android:paddingTop="@dimen/mmx_activity_vertical_margin"
     android:paddingBottom="@dimen/mmx_activity_vertical_margin"
     tools:context="com.money.manager.ex.common.WebViewActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/mmx_activity_horizontal_margin"
+    android:paddingStart="@dimen/mmx_activity_horizontal_margin">
 
 
     <WebView

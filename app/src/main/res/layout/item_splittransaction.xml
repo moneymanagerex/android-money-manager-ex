@@ -54,7 +54,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/category" />
+                    android:text="@string/category"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewCategory"
@@ -80,7 +82,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/amount" />
+                    android:text="@string/amount"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextTotAmount"
@@ -106,7 +110,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/notes" />
+                    android:text="@string/notes"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp" />
 
                 <!--<com.money.manager.ex.view.RobotoTextView-->
                 <!--android:id="@+id/editTextNotesSplit"-->

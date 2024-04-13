@@ -53,7 +53,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:paddingTop="20dp"
-                android:text="@string/application_copyright"/>
+                android:text="@string/application_copyright"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDonateHeader"
@@ -107,7 +109,9 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp" />
 
             </RelativeLayout>
 
@@ -134,7 +138,9 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
 
             </RelativeLayout>
 

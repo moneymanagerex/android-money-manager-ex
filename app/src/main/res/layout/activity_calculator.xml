@@ -42,9 +42,11 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:gravity="right"
+            android:gravity="end"
             android:textSize="14sp"
-            app:typeface="roboto_light"/>
+            app:typeface="roboto_light"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewMain"
@@ -54,10 +56,12 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:gravity="right"
+            android:gravity="end"
             android:text="€ 0.00"
             android:textSize="@dimen/input_dialog_text_size"
-            app:typeface="roboto_light"/>
+            app:typeface="roboto_light"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
     </LinearLayout>
 
