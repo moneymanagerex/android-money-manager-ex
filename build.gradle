@@ -36,8 +36,7 @@ ext {
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
     supportDependencies = [
-            core             : "androidx.legacy:legacy-support-core-utils:${supportLibrary}",
-            support          : "androidx.legacy:legacy-support-v4:${supportLibrary}",
+            core             : "androidx.core:core:1.1.1",
             cardView         : "androidx.cardview:cardview:${supportLibrary}",
             design           : "com.google.android.material:material:${supportLibrary}",
             preference       : "androidx.preference:preference:1.2.1",
