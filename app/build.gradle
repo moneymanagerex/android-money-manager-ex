@@ -177,7 +177,7 @@ dependencies {
 
     )
     implementation supportDependencies.core
-    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation supportDependencies.appcompat
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView
     implementation supportDependencies.preference
