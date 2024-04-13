@@ -35,7 +35,7 @@ public class QueryReportIncomeVsExpenses
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ROWID AS _id",
+        return new String[]{"0 AS _id",
             IncomeVsExpenseReportEntity.YEAR,
             IncomeVsExpenseReportEntity.Month,
             IncomeVsExpenseReportEntity.Income,
