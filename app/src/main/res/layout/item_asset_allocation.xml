@@ -39,7 +39,9 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/asset_class_name" />
+            android:text="@string/asset_class_name"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp" />
 
         <!-- set allocation -->
         <com.money.manager.ex.view.RobotoTextView

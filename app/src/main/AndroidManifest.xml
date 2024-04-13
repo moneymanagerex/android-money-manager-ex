@@ -58,7 +58,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Splash"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        android:supportsRtl="true">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />

@@ -38,7 +38,9 @@
                 android:singleLine="true"
                 android:text="@string/income"
 
-                android:textColor="@color/md_green" />
+                android:textColor="@color/md_green"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewIncome"
@@ -48,7 +50,9 @@
                 android:layout_marginRight="2dp"
                 android:singleLine="true"
 
-                android:textColor="@color/md_green" />
+                android:textColor="@color/md_green"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +70,9 @@
                 android:singleLine="true"
                 android:text="@string/expenses"
 
-                android:textColor="@color/md_red" />
+                android:textColor="@color/md_red"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewExpenses"
@@ -76,7 +82,9 @@
                 android:layout_marginRight="2dp"
                 android:singleLine="true"
 
-                android:textColor="@color/md_red" />
+                android:textColor="@color/md_red"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +100,9 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="@string/difference" />
+                android:text="@string/difference"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
@@ -100,7 +110,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
         </LinearLayout>
     </LinearLayout>
 

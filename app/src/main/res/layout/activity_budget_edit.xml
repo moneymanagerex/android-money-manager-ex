@@ -94,7 +94,9 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
             android:paddingRight="@dimen/mmx_activity_side_padding"
-            tools:context="com.money.manager.ex.budget.BudgetEditActivity">
+            tools:context="com.money.manager.ex.budget.BudgetEditActivity"
+            android:paddingEnd="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding">
             <!--android:layout_marginLeft="@dimen/mmx_activity_side_margin"-->
             <!--android:layout_marginRight="@dimen/mmx_activity_side_margin"-->
 

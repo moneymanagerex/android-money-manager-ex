@@ -33,7 +33,8 @@
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:textAlignment="viewStart"
         android:layout_gravity="start"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft" />
 
     <TextView
         android:id="@android:id/text2"
@@ -44,6 +45,7 @@
         android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textAlignment="viewStart"
         android:layout_gravity="start"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft" />
 
 </LinearLayout>

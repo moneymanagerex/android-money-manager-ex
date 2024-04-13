@@ -24,7 +24,9 @@
     android:background="?attr/theme_background_color"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin">
 
     <include layout="@layout/toolbar" />
 
@@ -40,7 +42,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+            android:paddingRight="@dimen/mmx_activity_side_padding"
+            android:paddingEnd="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding">
 
             <!-- Due Date -->
             <com.money.manager.ex.view.RobotoTextView
@@ -400,7 +404,8 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
                         android:gravity="end"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="?attr/ic_calculator" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -432,7 +437,8 @@
                         android:layout_weight="1"
                         android:drawableLeft="?attr/ic_users"
                         android:hint="@string/payee"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:drawableStart="?attr/ic_users" />
 
                     <ImageButton
                         android:id="@+id/removePayeeButton"
@@ -463,7 +469,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_label_outline"
-                    android:hint="@string/category" />
+                    android:hint="@string/category"
+                    android:drawableStart="?attr/ic_label_outline" />
 
                 <!-- Split button -->
                 <com.shamanland.fonticon.FontIconView

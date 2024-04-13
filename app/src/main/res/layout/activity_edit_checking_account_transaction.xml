@@ -24,7 +24,9 @@
     android:background="?attr/theme_background_color"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin">
 
     <include layout="@layout/toolbar" />
 
@@ -38,7 +40,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+            android:paddingRight="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding"
+            android:paddingEnd="@dimen/mmx_activity_side_padding">
 
             <!-- Transaction Type & Status headers -->
             <LinearLayout
