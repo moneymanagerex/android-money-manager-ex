@@ -1,0 +1,19 @@
+<p>Un'applicazione facile e intuitiva per gestire le finanze personali, i conti bancari, il bilancio familiare e molto altro ancora. L'obiettivo principale del progetto è quello di fornire delle implementazioni per dispositivi mobili di un'applicazione che amiamo utilizzare sul nostro desktop, Money Manager EX.</p>
+
+<h2>Funzionalità</h2>
+
+<ul>
+  <li>Gestione di singole transazioni</li>
+  <li>Gestione di conti, beneficiari, categorie e valute</li>
+  <li>Sincronizzazione basata su cloud storage, tra cui:
+    <ul>
+      <li>Archiviazione in cloud come Google Drive e Nextcloud</li>
+      <li>Servizi di sincronizzazione come Syncthing</li>
+    </ul>
+  </li>
+  <li>Supporto per la crittografia SQLCipher</li>
+  <li>Compatibilità con MMEX Desktop</li>
+  <li>Transazioni ricorrenti</li>
+  <li>Grafici per i resoconti</li>
+  <li>Lingue supportate: Inglese, italiano, portoghese, spagnolo e russo.</li>
+</ul>
