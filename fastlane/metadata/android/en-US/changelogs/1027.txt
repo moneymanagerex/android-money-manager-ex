@@ -1,0 +1,3 @@
+- Attachment display support (experimental feature and assume the attachment folder is along with database file)
+- Transaction: support zero sum split transactions
+- Right-To-Left(RTL) support
