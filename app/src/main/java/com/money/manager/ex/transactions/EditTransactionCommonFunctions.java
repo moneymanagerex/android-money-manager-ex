@@ -745,6 +745,7 @@ public class EditTransactionCommonFunctions {
             attachmentList.add(uri);
         }
 
+        viewHolder.textViewAttachments.setVisibility(attachmentList.isEmpty() ? View.GONE: View.VISIBLE);
         viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
         viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
