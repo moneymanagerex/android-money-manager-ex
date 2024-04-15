@@ -18,7 +18,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdk
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -36,7 +36,7 @@ android {
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 22 // Android 5.1
-        targetSdkVersion 31
+        targetSdk rootProject.ext.compileSdk
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
