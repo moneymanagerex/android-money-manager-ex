@@ -77,5 +77,6 @@ public class EditTransactionViewHolder {
     @BindView(R.id.buttonTransNumber) ImageButton btnTransNumber;
     @BindView(R.id.editTextTransNumber) public EditText edtTransNumber;
     @BindView(R.id.editTextNotes) public EditText edtNotes;
+    @BindView(R.id.textViewAttachments) public TextView textViewAttachments;
     @BindView(R.id.recyclerViewAttachments) public RecyclerView recyclerAttachments;
 }
