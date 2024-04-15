@@ -81,6 +81,6 @@ public class CommonSplitCategoryLogic {
             sum = sum.add(tx.getAmount());
         }
 
-        return sum.toDouble() > 0;
+        return sum.toDouble() >= 0;
     }
 }
