@@ -733,7 +733,7 @@ public class EditTransactionCommonFunctions {
         String attachmentsFolder = String.format("MMEX_%s_Attachments", file.getName().substring(0, file.getName().lastIndexOf('.')));
 
         String remotePath = mDatabases.get().getCurrent().remotePath;
-        String baseUri = remotePath.substring(0, remotePath.lastIndexOf(file.getName()));
+        String baseUri = remotePath.substring(0, remotePath.lastIndexOf("%2F") + 3);
         for (Attachment att : getAttachments()) {
             String uri = baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename();
 
