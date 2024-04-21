@@ -1,0 +1,1 @@
+- bugfix: crash for database file folder retrieval
