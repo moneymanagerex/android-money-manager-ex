@@ -221,7 +221,7 @@ public class DashboardFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category, ViewMobileData.SubcategID,
+        String[] projectionIn = new String[]{"ID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category, ViewMobileData.SubcategID,
                 ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
 
         String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal')"
@@ -246,7 +246,7 @@ public class DashboardFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id",
+        String[] projectionIn = new String[]{"ID AS _id",
                 ViewMobileData.PAYEEID, ViewMobileData.Payee,
                 "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
                 "COUNT(*) AS NUM"};

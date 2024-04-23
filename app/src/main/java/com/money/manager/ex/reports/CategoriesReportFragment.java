@@ -219,7 +219,7 @@ public class CategoriesReportFragment
 
         //data to compose builder
         String[] projectionIn = new String[]{
-            "ROWID AS _id", // this does not fetch anything, unfortunately.
+            "ID AS _id", // this does not fetch anything, unfortunately.
             ViewMobileData.CATEGID, ViewMobileData.Category,
             ViewMobileData.SubcategID, ViewMobileData.Subcategory,
             "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"

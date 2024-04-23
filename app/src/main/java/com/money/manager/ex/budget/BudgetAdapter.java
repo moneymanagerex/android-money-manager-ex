@@ -295,7 +295,7 @@ public class BudgetAdapter
 
         //data to compose builder
         String[] projectionIn = new String[]{
-                "ROWID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category,
+                "ID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category,
                 ViewMobileData.SubcategID, ViewMobileData.Subcategory,
                 "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
