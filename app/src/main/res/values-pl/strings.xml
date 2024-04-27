@@ -67,6 +67,7 @@
   <string name="sync_on_app_start">Synchronizuj podczas włączania aplikacji.</string>
   <string name="sync_on_start">Rozpocznij synchronizację</string>
   <!-- Receive SMS strings -->
+  <string name="notification_click_to_edit_transaction">Dotknij, aby edytować operację&#8230;</string>
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Lista kont</string>
@@ -176,6 +177,7 @@
   <string name="access_info">Informacje dostępowe</string>
   <string name="initial_balance">Saldo początkowe</string>
   <string name="notes">Notatki</string>
+  <string name="notes_hint">Dodaj notatkę</string>
   <string name="closed">Zamknięty</string>
   <string name="theme_application">Motyw</string>
   <string name="theme_holo">Material Dark</string>
@@ -224,6 +226,7 @@
   <string name="activates">Aktywuj</string>
   <string name="days_overdue">dni opóźnienia!</string>
   <string name="days_remaining">dni pozostało</string>
+  <string name="new_edit_repeating_transaction">Dodaj/edytuj Zaplanowaną operację</string>
   <string name="due_date">Termin zapłaty</string>
   <string name="next_occurrence">Najbliższe wystąpienie</string>
   <string name="payment_date">Data płatności</string>
@@ -346,6 +349,7 @@
   <string name="empty_category">Pusta kategoria</string>
   <string name="empty_payee">Pusty podmiot</string>
   <string name="help">Pomoc</string>
+  <string name="delete_repeating_transaction">Usuń Zaplanowaną operację</string>
   <string name="last">Ostatnie</string>
   <string name="accounts">Konta</string>
   <string name="to_account">Konto docelowe</string>
@@ -357,6 +361,7 @@
   <string name="delete_others_selected_transaction">Czy na pewno chcesz usunąć %d wybranych transakcji?</string>
   <string name="categories">Kategorie</string>
   <string name="payees">Podmioty</string>
+  <string name="recurring_transactions">Zaplanowane operacji</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Tworzenie konta</string>
   <string name="create_new_account">Utwórz nowe konto</string>
@@ -366,6 +371,8 @@
   <string name="amount_to">Kwota do</string>
   <string name="reset">Zresetuj</string>
   <string name="result_search">Rezultat wyszukiwania</string>
+  <string name="new_repeating_transaction">Utwórz Zaplanowaną operację</string>
+  <string name="edit_repeating_transaction">Zmień Zaplanowaną operację</string>
   <string name="path_database_not_exists">Ścieżka do bazy danych nie istnieje</string>
   <string name="database_can_not_open_write">Nie można otworzyć bazy danych do zapisu</string>
   <string name="time_frame">Przedział czasowy</string>
@@ -499,6 +506,7 @@
   <string name="update_available">Dostępna aktualizacja</string>
   <string name="update_available_online">Jest dostępna aktualizacja bazy danych online. Czy chcesz aktualizować?</string>
   <string name="currency_not_found">Nie znaleziono walut</string>
+  <string name="homepage">Nasza strona to http://android.moneymanagerex.org/</string>
   <string name="current_database">Bieżąca baza danych</string>
   <string name="about_logcat_header">Możesz wysłać nam dziennik aplikacji, klikając przycisk poniżej.</string>
   <string name="transaction_type_filter">Filtruj według typu transakcji</string>
@@ -506,6 +514,9 @@
   <string name="filter_options_info">Opcje filtra i informacje</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Wprowadź hasło bazy danych</string>
+  <string name="fingerprint_info">Zeskanuj odcisk palca, żeby odblokować</string>
+  <string name="fingerprint_no_hardware">Twoje urządzenie nie obsługuje uwierzytelniania odciskiem palca</string>
+  <string name="fingerprint_check_permission">Proszę włącz uprawnienia odcisku palca</string>
   <string name="income_expense_period">Okres przychodu/wydatku</string>
   <string name="income_expense_period_summary">Okres dla podglądu przychodów/wydatków w stopce ekranu głównego.</string>
   <string name="appwidget_text">PRZYKŁAD</string>
@@ -666,6 +677,7 @@
   <string name="intro_text">Aby zacząć używać Money Manager Ex musisz mieć plik bazy danych do przechowywania swoich danych. Wybierz jedną z dostępnych opcji poniżej.</string>
   <string name="intro_create_db">Możesz tworzyć nowy plik i ustawić wstępne ustawienia.</string>
   <string name="intro_open_db">Lub możesz wybrać istniejący plik z twojego urządzenia.</string>
+  <string name="intro_sync">Aby korzystać z usług w chmurze, otwórz plik od preferowanego dostawcy dokumentów.</string>
   <!-- Create Database screen -->
   <string name="select_language">Wybierz język</string>
   <string name="run">Włącz Money Manager Ex</string>
@@ -679,9 +691,19 @@
   <string name="loan">Pożyczki</string>
   <string name="loan_account">Konta pożyczek</string>
   <string name="shares_accounts">Udostępnianie kont</string>
+  <string name="currency">Waluta</string>
+  <string name="menu_create_database">Utwórz bazę danych</string>
+  <string name="create_database">Utwórz bazę danych</string>
+  <string name="summary_anonymous_usage">Włącz aby pomóc nam przesyłając anonimowe dane o używaniu MMEX.</string>
+  <string name="title_anonymous_usage">Wyślij anonimowe dane użytkowania</string>
+  <string name="title_auto_transaction_number">Automatyczne wypełnianie numeru transakcji</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="notification_channel_fileoperation_downloadin">Pobieranie Mmex</string>
+  <string name="notification_channel_fileoperation_uploadin">Przesyłanie Mmex</string>
+  <string name="notification_channel_fileoperation_complete">Przesyłanie Mmex zakończone</string>
+  <string name="notification_channel_fileoperation_conflict">Konflikt synchronizacji Mmex</string>
 </resources>

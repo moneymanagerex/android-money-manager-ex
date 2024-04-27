@@ -176,6 +176,7 @@
   <string name="access_info">Informazioni di accesso</string>
   <string name="initial_balance">Saldo iniziale</string>
   <string name="notes">Note</string>
+  <string name="notes_hint">Inserisci nota</string>
   <string name="closed">Chiuso</string>
   <string name="theme_application">Tema</string>
   <string name="theme_holo">Material Dark</string>
@@ -346,6 +347,7 @@
   <string name="empty_category">Categoria vuota</string>
   <string name="empty_payee">Beneficiario vuoto</string>
   <string name="help">Guida</string>
+  <string name="delete_repeating_transaction">Elimina Transazioni Pianificate</string>
   <string name="last">Ultimo</string>
   <string name="accounts">Conti</string>
   <string name="to_account">Al Conto</string>
@@ -357,6 +359,7 @@
   <string name="delete_others_selected_transaction">Sei sicuro di che volere cancellare le %d operazioni selezionate?</string>
   <string name="categories">Categorie</string>
   <string name="payees">Beneficiari</string>
+  <string name="recurring_transactions">Transazioni Pianificate</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Nuovo Conto</string>
   <string name="create_new_account">Crea un nuovo conto</string>
@@ -366,6 +369,8 @@
   <string name="amount_to">A importo</string>
   <string name="reset">Ripristina</string>
   <string name="result_search">Esito della ricerca</string>
+  <string name="new_repeating_transaction">Nuova Transazione Pianificata</string>
+  <string name="edit_repeating_transaction">Modifica Transazione Pianificata</string>
   <string name="path_database_not_exists">Percorso del database non esiste</string>
   <string name="database_can_not_open_write">Il database non può essere aperto in scrittura</string>
   <string name="time_frame">Periodo</string>
@@ -385,6 +390,8 @@
   <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx per Android con una donazione! \n\nGrazie mille dal team di sviluppo!</string>
   <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
+  <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
+  <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
@@ -666,6 +673,7 @@
   <string name="intro_text">Per iniziare a utilizzare Money Manager Ex, è necessario avere un file di database per memorizzare i dati. Si prega di selezionare una delle opzioni disponibili qui sotto.</string>
   <string name="intro_create_db">Puoi creare un nuovo file e impostare le preferenze iniziali.</string>
   <string name="intro_open_db">O puoi selezionare un file esistente dal tuo dispositivo.</string>
+  <string name="intro_sync">Per utilizzare i servizi cloud, apri il file da un provider preferito di documenti.</string>
   <!-- Create Database screen -->
   <string name="select_language">Seleziona lingua</string>
   <string name="run">Esegui Money Manager Ex</string>
@@ -679,6 +687,11 @@
   <string name="loan">Prestito</string>
   <string name="loan_account">Conti di prestito</string>
   <string name="shares_accounts">Conti di Azioni</string>
+  <string name="currency">Valuta</string>
+  <string name="menu_create_database">Crea Database</string>
+  <string name="create_database">Crea Database</string>
+  <string name="summary_anonymous_usage">Abilita per aiutarci a inviare dati anonimi sull\'utilizzo di MMEX</string>
+  <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
