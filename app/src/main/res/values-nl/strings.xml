@@ -176,6 +176,7 @@
   <string name="access_info">ToegangsInfo</string>
   <string name="initial_balance">Beginbalans</string>
   <string name="notes">Notities</string>
+  <string name="notes_hint">Notitie invoegen</string>
   <string name="closed">Afgesloten</string>
   <string name="theme_application">Thema</string>
   <string name="theme_holo">Donker materiaal</string>
@@ -220,6 +221,7 @@
   <string name="in_x_months">Over (x) maanden</string>
   <string name="every_x_days">Elke (x) dagen</string>
   <string name="every_x_months">Elke (x) maanden</string>
+  <string name="repeating_empty_transaction">Er zijn geen geplande transacties gevonden. Tik op de groene + knop om er een aan te maken.</string>
   <string name="inactive">Inactief</string>
   <string name="activates">Activeringen</string>
   <string name="days_overdue">aantal dagen te laat!</string>
@@ -357,6 +359,7 @@
   <string name="delete_others_selected_transaction">Weet je zeker dat je de %d geselecteerde transacties wilt verwijderen?</string>
   <string name="categories">Categorieën</string>
   <string name="payees">Ontvangers/betalers</string>
+  <string name="recurring_transactions">Geplande transacties</string>
   <string name="theme_holo_light">Licht</string>
   <string name="new_account">Nieuwe rekening</string>
   <string name="create_new_account">Maak nieuwe rekening aan</string>
@@ -366,6 +369,8 @@
   <string name="amount_to">Bedrag naar</string>
   <string name="reset">Herstel</string>
   <string name="result_search">Resultaat van uw zoekopdracht</string>
+  <string name="new_repeating_transaction">Nieuwe geplande transactie</string>
+  <string name="edit_repeating_transaction">Bewerk geplande transactie</string>
   <string name="path_database_not_exists">Pad naar databank bestaat niet</string>
   <string name="database_can_not_open_write">De databank kan niet worden geopend voor bewerkingen</string>
   <string name="time_frame">Tijdspanne</string>
@@ -679,6 +684,10 @@
   <string name="loan">Lening</string>
   <string name="loan_account">Leningen</string>
   <string name="shares_accounts">Aandelen</string>
+  <string name="currency">Geldeenheid</string>
+  <string name="menu_create_database">Maak Databank aan</string>
+  <string name="create_database">Maak Databank aan</string>
+  <string name="title_anonymous_usage">Verzend anonieme gebruiksgegevens</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>

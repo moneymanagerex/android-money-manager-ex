@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Una aplicación simple y fácil de utilizar para organizar las finanzas personales, las cuentas bancarias, el presupuesto familiar, etc.</string>
+  <string name="application_credits">MoneyManagerEx en su Proyecto Android usa librerías ActionBarSherlock</string>
   <string name="application_license">Licencias de fuente abierta</string>
   <!-- database -->
   <string name="db_insert_failed">Error al insertar datos</string>
@@ -52,11 +53,12 @@
   <string name="base_currency_changed">Moneda base cambiada</string>
   <string name="base_currency_change_notification">La moneda base ha cambiado. Por favor actualice las tipos de cambio para obtener los montos correctos en la nueva moneda base.</string>
   <string name="view_accounts_opened">Visualizar cuentas abiertas</string>
-  <string name="if_not_selected_willShowAllAccounts">Si no se selecciona visualizar todas las cuentas</string>
+  <string name="if_not_selected_willShowAllAccounts">Si no se selecciona, todas las cuentas serán visibles</string>
   <string name="view_accounts_favorites">Visualizar cuentas favoritas</string>
   <string name="version">Versión</string>
   <string name="build">Compilación</string>
   <string name="path">Ruta de la base de datos</string>
+  <string name="remote_path">Ruta de acceso remoto</string>
   <string name="database_version">Versión de la Base de datos</string>
   <string name="title_show_tutorial">Mostrar el tutorial</string>
   <string name="summary_show_tutorial">Mostrar el tutorial la próxima vez?</string>
@@ -67,9 +69,19 @@
   <string name="sync_on_app_start">Sincronizar al iniciar la aplicación.</string>
   <string name="sync_on_start">Sincronizar al inicio</string>
   <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">Procesar SMS de transacción bancaria</string>
+  <string name="summary_sms_auto_trans">Leer el SMS de actualización de la transacción bancaria y crear la transacción automáticamente</string>
+  <string name="deny_receive_sms_error">Has denegado el permiso para recibir el SMS, por lo que tu SMS de transacción bancaria no será procesado</string>
+  <string name="granted_receive_sms_access">Permiso ya concedido para RECEIVE_SMS</string>
+  <string name="revoke_receive_sms_access">Ir a Ajustes &gt;&gt; Aplicaciones &gt;&gt; MoneyManagerEx &gt;&gt; Permisos y negar el acceso para SMS</string>
+  <string name="title_sms_trans_status_notification">Notificación de estado de la transacción SMS</string>
+  <string name="summary_sms_trans_status_notification">Activar para mostrar el estado del proceso de transacción bancaria sms en el área de notificación en lugar de mostrarlos como un mensaje Toast o nueva pantalla de transacción</string>
+  <string name="notification_click_to_edit_transaction">Tocar para editar la transacción&#8230;</string>
+  <string name="notification_process_sms_transaction_status">Procesar estatus de SMS de transacción bancaria</string>
+  <string name="notification_process_sms_channel_description">Canal de notificación por SMS de AMMEX</string>
   <!-- account -->
   <string name="account">Cuenta</string>
-  <string name="account_list">Lista de las cuentas</string>
+  <string name="account_list">Listado de cuentas</string>
   <string name="account_empty_list">No se encontraron cuentas. Para crear una, pulsar el botón verde con el símbolo más.</string>
   <string name="account_balance">Balance</string>
   <string name="account_reconciled_balance">Balance reconciliado</string>
@@ -100,13 +112,13 @@
   <string name="delete_payee">Borrar beneficiario</string>
   <string name="payee">Beneficiario</string>
   <string name="select_payee">Seleccionar beneficiario</string>
-  <string name="payee_empty_list">No se encontró ningún beneficiario. Para crear uno, pulse el botón Más verde.</string>
+  <string name="payee_empty_list">No se encontró ningún beneficiario. Para crear uno, pulse el botón verde con el signo Más.</string>
   <string name="from">Desde</string>
   <string name="db_payee_update_failed">Error al actualizar beneficiario</string>
   <!-- category / subcategory -->
   <string name="category">Categoría</string>
   <string name="subcategory">Subcategoría</string>
-  <string name="category_empty_list">No se encontró ningún beneficiario. Para crear uno, pulse el botón Más verde.</string>
+  <string name="category_empty_list">No se encontró ningún beneficiario. Para crear uno, pulse el botón verde con el signo Más.</string>
   <string name="select_category">Seleccionar categoría</string>
   <string name="add_category">Agregar categoría</string>
   <string name="add_subcategory">Agregar Subcategoría</string>
@@ -176,6 +188,7 @@
   <string name="access_info">Información de acceso</string>
   <string name="initial_balance">Balance inicial</string>
   <string name="notes">Notas</string>
+  <string name="notes_hint">Insertar nota.</string>
   <string name="closed">Cerrado</string>
   <string name="theme_application">Tema</string>
   <string name="theme_holo">Material oscuro</string>
@@ -220,10 +233,12 @@
   <string name="in_x_months">En (x) Meses</string>
   <string name="every_x_days">Cada (x) Días</string>
   <string name="every_x_months">Cada (x) Meses</string>
+  <string name="repeating_empty_transaction">No se encontraron transacciones programadas. Para crear una, pulse el botón verde con el signo Más.</string>
   <string name="inactive">Inactiva</string>
   <string name="activates">Se Activa</string>
   <string name="days_overdue">días atrasados!</string>
   <string name="days_remaining">días restantes</string>
+  <string name="new_edit_repeating_transaction">Agregar/Editar Transacción Programada</string>
   <string name="due_date">Fecha de vencimiento</string>
   <string name="next_occurrence">Siguiente Ocurrencia</string>
   <string name="payment_date">Fecha de pago</string>
@@ -236,7 +251,9 @@
   <string name="enter_next_occurrence">Efectuar Siguiente Ocurrencia</string>
   <string name="skip_next_occurrence">Omitir Siguiente Ocurrencia</string>
   <string name="skip_next_occurrence_confirmation">¿Desea omitir la próxima ocurrencia?</string>
+  <string name="notification_repeating_transaction_expired">Existen transacciones programadas vencidas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para comprobar transacción atrasada</string>
+  <string name="num_repeating_transaction_expired">%1$d transacción programada vencida</string>
   <string name="skip">Ignorar</string>
   <string name="enter">Introducir</string>
   <string name="enter_amount">Ingrese el monto</string>
@@ -334,6 +351,7 @@
   <string name="menu_report_where_money_goes">¿A dónde va el dinero?</string>
   <string name="menu_report_where_money_comes_from">¿De dónde viene el dinero?</string>
   <string name="title_check_repeating_transaction">Tiempo de notificación</string>
+  <string name="summary_check_repeating_transaction">¿A que hora desea comprobar las transacciones programadas? (8:00 por defecto)</string>
   <string name="credits">Créditos</string>
   <string name="libraries">Librerías</string>
   <string name="top_withdrawals_last_30_days">Retiros superiores: Últimos 30 días</string>
@@ -350,7 +368,7 @@
   <string name="accounts">Cuentas</string>
   <string name="to_account">A Cuenta</string>
   <string name="from_account">Desde Cuenta</string>
-  <string name="default_status">Estado por defecto</string>
+  <string name="default_status">Estado de transacción por defecto</string>
   <string name="default_payee">Beneficiario por defecto</string>
   <string name="edit_transaction">Editar Transacción</string>
   <string name="delete_one_selected_transaction">¿Seguro que quieres borrar la transacción seleccionada?</string>

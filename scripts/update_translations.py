@@ -9,7 +9,7 @@ from pathlib import Path
 home = str(Path.home())
 
 # Settings
-src_root = f"{home}/Downloads/android-money-manager-ex"
+src_root = f"{home}/Downloads/MMEX4Android"
 dst_root = f"{home}/workspace/android-money-manager-ex/app/src/main/res"
 #
 
