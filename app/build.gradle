@@ -27,9 +27,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1029
+        versionCode 1030
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2024.04.21"
+        versionName "2024.04.29"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
