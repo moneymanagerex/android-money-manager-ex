@@ -36,7 +36,7 @@ android {
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 22 // Android 5.1
-        targetSdk rootProject.ext.compileSdk
+        targetSdk rootProject.ext.targetSdk
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

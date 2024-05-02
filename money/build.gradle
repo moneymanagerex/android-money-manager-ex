@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         minSdkVersion 22
-        targetSdk rootProject.ext.compileSdk
+        targetSdk rootProject.ext.targetSdk
     }
     buildTypes {
         debug {
