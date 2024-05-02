@@ -44,21 +44,6 @@ To build the project, the following settings are recommended:
 
 // TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
 
-# License
+## Star History
 
-    Copyright 2012-2018 The Android Money Manager Ex Project Team
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 3
-    of the License, or (at your option) any later version.
-
-    https://www.gnu.org/licenses/gpl-2.0.html
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+[![Star History Chart](https://api.star-history.com/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.com/#moneymanagerex/android-money-manager-ex&Date)
