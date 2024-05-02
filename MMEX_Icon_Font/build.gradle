@@ -23,7 +23,7 @@ android {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 22
-        targetSdk rootProject.ext.compileSdk
+        targetSdk rootProject.ext.targetSdk
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }

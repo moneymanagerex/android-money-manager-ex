@@ -27,16 +27,16 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1030
+        versionCode 1031
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "2024.04.29"
+        versionName "2024.05.02"
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 22 // Android 5.1
-        targetSdk rootProject.ext.compileSdk
+        targetSdk rootProject.ext.targetSdk
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
