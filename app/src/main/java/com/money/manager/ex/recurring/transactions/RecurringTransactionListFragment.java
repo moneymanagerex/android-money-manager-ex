@@ -189,23 +189,23 @@ public class RecurringTransactionListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         int menuItemId = item.getItemId();
-        int transactionId = (int) info.id;
+        int scheduledTransactionId = (int) info.id;
 
         switch (menuItemId) {
             case R.id.menu_enter_next_occurrence:
-                showCreateTransactionActivity(transactionId);
+                showCreateTransactionActivity(scheduledTransactionId);
                 break;
 
             case R.id.menu_skip_next_occurrence:
-                confirmSkip(transactionId);
+                confirmSkip(scheduledTransactionId);
                 break;
 
             case R.id.menu_edit:
-                startRecurringTransactionEditActivity(transactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
+                startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
                 break;
 
             case R.id.menu_delete:
-                confirmDelete(transactionId);
+                confirmDelete(scheduledTransactionId);
                 break;
         }
 
@@ -424,14 +424,14 @@ public class RecurringTransactionListFragment
         }
     }
 
-    private void showCreateTransactionActivity(int recurringTransactionId) {
+    private void showCreateTransactionActivity(int scheduledTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(getActivity());
-        RecurringTransaction tx = repo.load(recurringTransactionId);
+        RecurringTransaction tx = repo.load(scheduledTransactionId);
         if (tx == null) return;
 
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
-        intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, recurringTransactionId);
+        intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, scheduledTransactionId);
         intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
         // start for insert new transaction
         startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
