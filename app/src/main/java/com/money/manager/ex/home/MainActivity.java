@@ -155,7 +155,7 @@ public class MainActivity
     @State int deviceOrientation = Constants.NOT_SET;
 
     private boolean isInAuthentication = false;
-    private boolean isRecurringTransactionStarted = false;
+    private boolean isScheduledTransactionStarted = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
@@ -230,24 +230,11 @@ public class MainActivity
         // fragments
         initHomeFragment();
 
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
-        }
-
-        // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
-        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
-
         initializeDrawer();
 
         initializeSync();
+
+        populateScheduledTransactions();
     }
 
     @Override
@@ -428,7 +415,7 @@ public class MainActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
-        outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
+        outState.putBoolean(KEY_RECURRING_TRANSACTION, isScheduledTransactionStarted);
 
         super.onSaveInstanceState(outState);
     }
@@ -1234,6 +1221,25 @@ public class MainActivity
         }
     }
 
+    private void populateScheduledTransactions() {
+        // start notification for recurring transaction
+        if (!isScheduledTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
+                notifications.notifyRepeatingTransaction();
+                isScheduledTransactionStarted = true;
+            }
+        }
+
+        // notification send broadcast
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
+        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        // TODO persist
+    }
+
     private void initializeDrawer() {
         // navigation drawer
         mDrawer = findViewById(R.id.drawerLayout);
@@ -1329,7 +1335,7 @@ public class MainActivity
         if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
             isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
         if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
-            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+            isScheduledTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
         }
     }
 
