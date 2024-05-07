@@ -74,7 +74,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -1231,9 +1230,10 @@ public class MainActivity
 
     private void populateScheduledTransactions() {
         // start notification for recurring transaction
+        boolean showNotification = false;
         if (!isScheduledTransactionStarted) {
             AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
             if (showNotification) {
                 RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
                 notifications.notifyRepeatingTransaction();
@@ -1244,6 +1244,8 @@ public class MainActivity
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        if (!showNotification) return;
 
         QueryBillDeposits billDeposits = new QueryBillDeposits(getApplicationContext());
         RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(getApplicationContext());
