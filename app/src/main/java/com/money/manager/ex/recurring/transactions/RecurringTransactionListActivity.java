@@ -20,12 +20,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-
-import androidx.fragment.app.FragmentManager;
+import com.money.manager.ex.core.Passcode;
 
 /**
  * Not used.

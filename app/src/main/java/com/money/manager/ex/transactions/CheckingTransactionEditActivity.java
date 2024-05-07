@@ -82,7 +82,7 @@ public class CheckingTransactionEditActivity
     @State public String mIntentAction;
 
     // bill deposits
-    public int mRecurringTransactionId = Constants.NOT_SET;
+    public int mScheduledTransactionId = Constants.NOT_SET;
 
     @Inject
     BriteDatabase database;
@@ -175,7 +175,7 @@ public class CheckingTransactionEditActivity
                 Parcels.wrap(mCommon.mSplitTransactions));
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
                 Parcels.wrap(mCommon.mSplitTransactionsDeleted));
-        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
+        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mScheduledTransactionId);
 
 //        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
@@ -235,7 +235,7 @@ public class CheckingTransactionEditActivity
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
-        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
+        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mScheduledTransactionId, this);
         ArrayList<ISplitTransaction> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mCommon.mSplitTransactions == null) mCommon.mSplitTransactions = new ArrayList<>();
 
@@ -413,9 +413,9 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
-    private boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadScheduledTransaction(int scheduledTransactionId) {
         try {
-            return loadRecurringTransactionInternal(recurringTransactionId);
+            return loadScheduledTransactionInternal(scheduledTransactionId);
         } catch (RuntimeException ex) {
             Timber.e(ex, "loading recurring transaction");
             return false;
@@ -424,22 +424,19 @@ public class CheckingTransactionEditActivity
 
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
-     * @param recurringTransactionId Id of the recurring transaction.
+     * @param scheduledTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
+    private boolean loadScheduledTransactionInternal(int scheduledTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        RecurringTransaction recurringTx = repo.load(recurringTransactionId);
+        RecurringTransaction recurringTx = repo.load(scheduledTransactionId);
         if (recurringTx == null) return false;
 
         // Copy properties from recurring transaction
-
         mCommon.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
         mCommon.transactionEntity.setAccountToId(recurringTx.getToAccountId());
-
-        String transCode = recurringTx.getTransactionCode();
-        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
+        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(recurringTx.getTransactionCode()));
         mCommon.transactionEntity.setStatus(recurringTx.getStatus());
         mCommon.transactionEntity.setAmount(recurringTx.getAmount());
         mCommon.transactionEntity.setAmountTo(recurringTx.getAmountTo());
@@ -495,9 +492,9 @@ public class CheckingTransactionEditActivity
                         duplicateTransaction();
                         break;
                     case Intent.ACTION_INSERT:
-                        mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
-                        if (mRecurringTransactionId > Constants.NOT_SET) {
-                            loadRecurringTransaction(mRecurringTransactionId);
+                        mScheduledTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
+                        if (mScheduledTransactionId > Constants.NOT_SET) {
+                            loadScheduledTransaction(mScheduledTransactionId);
                         }
                 }
             }
@@ -660,7 +657,7 @@ public class CheckingTransactionEditActivity
         mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
                 EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
 
-        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
+        mScheduledTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
 
         // action
 //        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
@@ -699,8 +696,8 @@ public class CheckingTransactionEditActivity
         saveDefaultPayee(isTransfer);
 
         // Process recurring transaction.
-        if (mRecurringTransactionId != Constants.NOT_SET) {
-            RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
+        if (mScheduledTransactionId != Constants.NOT_SET) {
+            RecurringTransactionService service = new RecurringTransactionService(mScheduledTransactionId, this);
             service.moveNextOccurrence();
         }
 
