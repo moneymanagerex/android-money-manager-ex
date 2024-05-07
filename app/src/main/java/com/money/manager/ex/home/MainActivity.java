@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,7 +74,13 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -90,6 +97,7 @@ import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -1236,6 +1244,43 @@ public class MainActivity
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        QueryBillDeposits billDeposits = new QueryBillDeposits(getApplicationContext());
+        RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(getApplicationContext());
+        AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
+
+        Cursor cursor = getApplicationContext().getContentResolver().query(billDeposits.getUri(),
+                null,
+                QueryBillDeposits.DAYSLEFT + "<=0",
+                null,
+                QueryBillDeposits.NEXTOCCURRENCEDATE);
+        if (cursor == null) return;
+
+        while (cursor.moveToNext()) {
+            int scheduledTransactionId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID));
+
+            RecurringTransaction scheduledTrx = scheduledRepo.load(scheduledTransactionId); // copy
+            AccountTransaction accountTrx = AccountTransaction.create();
+
+            accountTrx.setDate(scheduledTrx.getPaymentDate());
+            accountTrx.setAccountId(scheduledTrx.getAccountId());
+            accountTrx.setAccountToId(scheduledTrx.getToAccountId());
+            accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
+            accountTrx.setStatus(scheduledTrx.getStatus());
+            accountTrx.setAmount(scheduledTrx.getAmount());
+            accountTrx.setAmountTo(scheduledTrx.getAmountTo());
+            accountTrx.setPayeeId(scheduledTrx.getPayeeId());
+            accountTrx.setCategoryId(scheduledTrx.getCategoryId());
+            accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
+            accountTrx.setNotes(scheduledTrx.getNotes());
+            accountTrx.setNotes("auto popu");
+
+            accountTransactionRepository.insert(accountTrx);
+
+            RecurringTransactionService service = new RecurringTransactionService(scheduledTransactionId, this);
+            service.moveNextOccurrence();
+        }
+        cursor.close();
 
         // TODO persist
     }
