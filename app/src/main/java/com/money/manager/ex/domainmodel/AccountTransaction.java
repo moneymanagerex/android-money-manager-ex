@@ -212,7 +212,7 @@ public class AccountTransaction
         setString(ITransactionEntity.STATUS, value);
     }
 
-    public String getTransCode() {
+    public String getTransactionCode() {
         return getString(ITransactionEntity.TRANSCODE);
     }
 
@@ -225,7 +225,7 @@ public class AccountTransaction
     }
 
     public TransactionTypes getTransactionType() {
-        String code = getTransCode();
+        String code = getTransactionCode();
         return TransactionTypes.valueOf(code);
     }
 

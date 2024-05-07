@@ -86,6 +86,7 @@ public interface ITransactionEntity {
     String getTransactionNumber();
     void setTransactionNumber(String value);
 
+    public String getTransactionCode();
     TransactionTypes getTransactionType();
     void setTransactionType(TransactionTypes value);
 }

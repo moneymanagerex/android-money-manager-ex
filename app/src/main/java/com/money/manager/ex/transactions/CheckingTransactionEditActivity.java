@@ -433,20 +433,7 @@ public class CheckingTransactionEditActivity
         if (recurringTx == null) return false;
 
         // Copy properties from recurring transaction
-
-        mCommon.transactionEntity.setDate(recurringTx.getPaymentDate());
-        mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
-        mCommon.transactionEntity.setAccountToId(recurringTx.getToAccountId());
-
-        String transCode = recurringTx.getTransactionCode();
-        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
-        mCommon.transactionEntity.setStatus(recurringTx.getStatus());
-        mCommon.transactionEntity.setAmount(recurringTx.getAmount());
-        mCommon.transactionEntity.setAmountTo(recurringTx.getAmountTo());
-        mCommon.transactionEntity.setPayeeId(recurringTx.getPayeeId());
-        mCommon.transactionEntity.setCategoryId(recurringTx.getCategoryId());
-        mCommon.transactionEntity.setTransactionNumber(recurringTx.getTransactionNumber());
-        mCommon.transactionEntity.setNotes(recurringTx.getNotes());
+        mCommon.transactionEntity = recurringTx;
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
