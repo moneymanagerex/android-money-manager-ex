@@ -1273,7 +1273,6 @@ public class MainActivity
             accountTrx.setCategoryId(scheduledTrx.getCategoryId());
             accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
             accountTrx.setNotes(scheduledTrx.getNotes());
-            accountTrx.setNotes("auto popu");
 
             accountTransactionRepository.insert(accountTrx);
 
