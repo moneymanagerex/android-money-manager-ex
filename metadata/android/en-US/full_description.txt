@@ -1,6 +1,6 @@
 <p>A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and more. The main goal is to provide a mobile implementation for an application we love to use on our desktop, Money Manager EX.</p>
 
-<h2>Features</h2>
+<b>Features</b>
 
 <ul>
   <li>Management of single transactions</li>

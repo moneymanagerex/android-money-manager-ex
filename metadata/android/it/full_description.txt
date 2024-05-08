@@ -1,6 +1,6 @@
 <p>Un'applicazione facile e intuitiva per gestire le finanze personali, i conti bancari, il bilancio familiare e molto altro ancora. L'obiettivo principale del progetto è quello di fornire delle implementazioni per dispositivi mobili di un'applicazione che amiamo utilizzare sul nostro desktop, Money Manager EX.</p>
 
-<h2>Funzionalità</h2>
+<b>Funzionalità</b>
 
 <ul>
   <li>Gestione di singole transazioni</li>
