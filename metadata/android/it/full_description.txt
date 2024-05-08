@@ -15,5 +15,4 @@
   <li>Compatibilità con MMEX Desktop</li>
   <li>Transazioni ricorrenti</li>
   <li>Grafici per i resoconti</li>
-  <li>Lingue supportate: Inglese, italiano, portoghese, spagnolo e russo.</li>
 </ul>
