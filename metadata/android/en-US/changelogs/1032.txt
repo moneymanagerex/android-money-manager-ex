@@ -1,1 +1,1 @@
-- scheduled transactions support auto commint along with notification.
+- scheduled transactions support auto commit along with notification.
