@@ -1,0 +1,1 @@
+- scheduled transactions support auto commint along with notification.
