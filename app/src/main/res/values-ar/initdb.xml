@@ -29,8 +29,8 @@
   <string name="category_10">ضرائب</string>
   <string name="category_11">متفرقات</string>
   <string name="category_12">هدايا</string>
-  <string name="category_13">دخل</string>
-  <string name="category_14">مصدر دخل آخر</string>
+  <string name="category_13">إيراد</string>
+  <string name="category_14">إيرادات اخري</string>
   <string name="category_15">أخرى</string>
   <string name="category_16">تحويل</string>
   <!-- default subcategory -->
