@@ -34,6 +34,7 @@ ext {
     targetSdk = 31
     buildToolsVersion = '30.0.2'
     supportLibrary = '1.0.0'
+    ext.kotlin_version = '1.9.0'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
     supportDependencies = [
