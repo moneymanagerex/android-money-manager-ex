@@ -55,7 +55,7 @@ public class SyncPreferences
     }
 
     public boolean isSyncEnabled() {
-        return get(R.string.pref_sync_enabled, false);
+        return get(R.string.pref_sync_enabled, true);
     }
 
     public int getSyncInterval() {
