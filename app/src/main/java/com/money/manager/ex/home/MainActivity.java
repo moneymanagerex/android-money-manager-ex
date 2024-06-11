@@ -1083,7 +1083,7 @@ public class MainActivity
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.recurring_transactions))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_schedule)
                         .color(iconColor)));
 
         // Budgets
