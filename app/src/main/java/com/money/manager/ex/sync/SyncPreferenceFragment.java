@@ -43,6 +43,7 @@ import java.io.File;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -204,22 +205,7 @@ public class SyncPreferenceFragment
             }
         });
 
-        // interval
-        if (BuildConfig.DEBUG) {
-            // Insert a 1-minute in debug mode.
-            CharSequence[] entries = viewHolder.syncInterval.getEntries();
-            String[] newEntries = new String[entries.length + 1];
-            newEntries[0] = "1-minute";
-            System.arraycopy(entries, 0, newEntries, 1, entries.length);
-            viewHolder.syncInterval.setEntries(newEntries);
-            // values
-            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
-            String[] newValues = new String[values.length + 1];
-            newValues[0] = "1";
-            System.arraycopy(values, 0, newValues, 1, values.length);
-            viewHolder.syncInterval.setEntryValues(newValues);
-        }
-
+        viewHolder.syncInterval.setSummary(viewHolder.syncInterval.getEntries()[viewHolder.syncInterval.findIndexOfValue(viewHolder.syncInterval.getValue())]);
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -228,6 +214,10 @@ public class SyncPreferenceFragment
                 int interval = Integer.parseInt(o.toString());
                 sync.setSyncInterval(interval);
                 Timber.d("sync interval set to %d", interval);
+
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(o.toString());
+                preference.setSummary(listPreference.getEntries()[prefIndex]);
 
                 sync.stopSyncServiceAlarm();
                 if (interval > 0) {
@@ -259,7 +249,6 @@ public class SyncPreferenceFragment
         });
 
         // reset preferences
-
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
