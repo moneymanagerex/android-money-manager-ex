@@ -278,7 +278,7 @@ public class FileStorageHelper {
             if (!cursor.isNull(lastModifiedIndex)) {
                 result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
             } else {
-                result.lastModified = null; // or set to a default value
+                result.lastModified = new MmxDate(0); // or set to a default value
             }
         } catch (Exception e) {
             Timber.e(e);
