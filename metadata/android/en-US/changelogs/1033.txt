@@ -1,0 +1,5 @@
+- Update i18n for Arabic 
+- Update scheduled transaction icon
+- Synchronization default as enabled
+- Fix database creation issue on Synology Drive
+- Minor bugfix and code cleanup
