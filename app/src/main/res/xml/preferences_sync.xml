@@ -35,24 +35,15 @@
         android:summary="@string/summary_synchronization_interval"
         android:title="@string/synchronization_interval" />
 
-    <!-- remote path -->
-    <Preference
-        android:icon="@null"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_remote_file"
-        android:title="@string/remote_file" />
-
     <!-- download -->
     <PreferenceScreen
         android:icon="@null"
-        android:dependency="@string/pref_remote_file"
         android:key="@string/pref_sync_download"
         android:summary="@string/cloud_download"
         android:title="@string/download" />
     <!-- upload -->
     <PreferenceScreen
         android:icon="@null"
-        android:dependency="@string/pref_remote_file"
         android:key="@string/pref_sync_upload"
         android:summary="@string/cloud_upload"
         android:title="@string/upload" />
