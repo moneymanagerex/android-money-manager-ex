@@ -42,6 +42,9 @@ public class BehaviourSettings
         return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS, true);
     }
 
+    public boolean getExecutionScheduledTransaction() {
+        return get(R.string.pref_scheduled_transaction_execution, true);
+    }
     public String getNotificationTime() {
         return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK, "08:00");
     }

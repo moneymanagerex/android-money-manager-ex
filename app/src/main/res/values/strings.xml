@@ -428,7 +428,9 @@
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
     <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+    <string name="title_execution_scheduled_transaction">Execution Scheduled Transaction overdue </string>
     <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+    <string name="summary_execution_scheduled_transaction">Auto execution for scheduled transaction overdue</string>
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>
     <string name="loading">Loading…</string>

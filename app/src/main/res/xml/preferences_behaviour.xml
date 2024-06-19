@@ -24,6 +24,13 @@
         android:summary="@string/summary_notifications_repeating_transaction"
         android:title="@string/title_notifications_repeating_transaction" />
 
+    <SwitchPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_scheduled_transaction_execution"
+        android:summary="@string/summary_execution_scheduled_transaction"
+        android:title="@string/title_execution_scheduled_transaction" />
+
     <Preference
         android:icon="@null"
         android:defaultValue="08:00"
