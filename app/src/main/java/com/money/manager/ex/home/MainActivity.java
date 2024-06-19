@@ -1229,11 +1229,13 @@ public class MainActivity
     }
 
     private void populateScheduledTransactions() {
-        // start notification for recurring transaction
+        // start notification & execution for scheduled transaction
         boolean showNotification = false;
+        boolean autoExecution = false;
         if (!isScheduledTransactionStarted) {
             AppSettings settings = new AppSettings(this);
             showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            autoExecution = settings.getBehaviourSettings().getExecutionScheduledTransaction();
             if (showNotification) {
                 RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
                 notifications.notifyRepeatingTransaction();
@@ -1245,7 +1247,7 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        if (!showNotification) return;
+        if (!autoExecution) return;
 
         QueryBillDeposits billDeposits = new QueryBillDeposits(getApplicationContext());
         RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(getApplicationContext());

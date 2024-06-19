@@ -52,7 +52,7 @@ public class PreferenceConstants {
 
     // others preference setting don't display
 
-    // check repeating transaction
+    // check scheduled transaction
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;
     public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
 
