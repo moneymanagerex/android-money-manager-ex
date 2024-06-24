@@ -19,7 +19,6 @@ package com.money.manager.ex.settings;
 
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -100,19 +99,16 @@ public class PerDatabaseFragment
         final Preference pUserName = findPreference(getString(R.string.pref_user_name));
         if (pUserName != null) {
             pUserName.setSummary(MmexApplication.getApp().getUserName());
-            pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MmexApplication.getApp().setUserName((String) newValue, true);
-                    pUserName.setSummary(MmexApplication.getApp().getUserName());
-                    return false;
-                }
+            pUserName.setOnPreferenceChangeListener((preference, newValue) -> {
+                MmexApplication.getApp().setUserName((String) newValue, true);
+                pUserName.setSummary(MmexApplication.getApp().getUserName());
+                return false;
             });
         }
 
         // Date format
 
-        final ListPreference lstDateFormat = (ListPreference) findPreference(getString(R.string.pref_date_format));
+        final ListPreference lstDateFormat = findPreference(getString(R.string.pref_date_format));
         if (lstDateFormat != null) {
             //set summary
             String value = infoService.getInfoValue(InfoKeys.DATEFORMAT);
@@ -120,16 +116,12 @@ public class PerDatabaseFragment
             lstDateFormat.setValue(value);
 
             //on change
-            lstDateFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (infoService.setInfoValue(InfoKeys.DATEFORMAT, (String) newValue)) {
-                        lstDateFormat.setSummary(getDateFormatFromMask((String) newValue));
-                    }
-                    // Do not update to preferences file.
-                    return false;
+            lstDateFormat.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (infoService.setInfoValue(InfoKeys.DATEFORMAT, (String) newValue)) {
+                    lstDateFormat.setSummary(getDateFormatFromMask((String) newValue));
                 }
+                // Do not update to preferences file.
+                return false;
             });
         }
 
@@ -146,30 +138,27 @@ public class PerDatabaseFragment
                 pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
             }
 
-            pFinancialDay.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int day;
-                    try {
-                        day = Integer.parseInt((String) newValue);
-                    } catch (NumberFormatException e) {
-                        new UIHelper(getActivity()).showToast(R.string.error_parsing_value);
-                        return false;
-                    }
-
-                    try {
-                        if (day < 1 || day > 31) {
-                            return false;
-                        }
-                        if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
-                            pFinancialDay.setSummary(Integer.toString(day));
-                        }
-//                        return true;
-                    } catch (Exception e) {
-                        Timber.e(e, "changing the start day of the financial year");
-                    }
+            pFinancialDay.setOnPreferenceChangeListener((preference, newValue) -> {
+                int day;
+                try {
+                    day = Integer.parseInt((String) newValue);
+                } catch (NumberFormatException e) {
+                    new UIHelper(getActivity()).showToast(R.string.error_parsing_value);
                     return false;
                 }
+
+                try {
+                    if (day < 1 || day > 31) {
+                        return false;
+                    }
+                    if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
+                        pFinancialDay.setSummary(Integer.toString(day));
+                    }
+//                        return true;
+                } catch (Exception e) {
+                    Timber.e(e, "changing the start day of the financial year");
+                }
+                return false;
             });
         }
 
@@ -177,7 +166,7 @@ public class PerDatabaseFragment
 
         // Financial year/month
 
-        final ListPreference lstFinancialMonth = (ListPreference) findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTMONTH));
+        final ListPreference lstFinancialMonth = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTMONTH));
         if (lstFinancialMonth != null) {
             lstFinancialMonth.setEntries(core.getListMonths());
             lstFinancialMonth.setEntryValues(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});
@@ -198,22 +187,18 @@ public class PerDatabaseFragment
             } catch (Exception e) {
                 Timber.e(e, "showing the month of the financial year");
             }
-            lstFinancialMonth.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    try {
-                        int value = Integer.parseInt(newValue.toString());
-                        if (value > -1 && value < lstFinancialMonth.getEntries().length) {
-                            if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
-                                lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
-                            }
+            lstFinancialMonth.setOnPreferenceChangeListener((preference, newValue) -> {
+                try {
+                    int value = Integer.parseInt(newValue.toString());
+                    if (value > -1 && value < lstFinancialMonth.getEntries().length) {
+                        if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+                            lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
                         }
-                    } catch (Exception e) {
-                        Timber.e(e, "changing the month of the financial year");
                     }
-                    return false;
+                } catch (Exception e) {
+                    Timber.e(e, "changing the month of the financial year");
                 }
+                return false;
             });
         }
 
@@ -233,19 +218,14 @@ public class PerDatabaseFragment
         // After the currency is selected in the Currencies screen, the change is handled
         // in onActivityResult
 
-        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                // show the currencies activity
-                Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
+        baseCurrency.setOnPreferenceClickListener(preference -> {
+            // show the currencies activity
+            Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(intent, REQUEST_PICK_CURRENCY);
 
-                return true;
-            }
-        };
-
-        baseCurrency.setOnPreferenceClickListener(clickListener);
+            return true;
+        });
     }
 
     private String getDateFormatFromMask(String mask) {
@@ -260,7 +240,7 @@ public class PerDatabaseFragment
     }
 
     private void initDefaultAccount() {
-        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_default_account));
+        ListPreference preference = findPreference(getString(R.string.pref_default_account));
         if (preference == null) return;
 
         AccountService accountService = new AccountService(getActivity());
@@ -292,20 +272,17 @@ public class PerDatabaseFragment
         }
         preference.setSummary(accountName);
 
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String accountName = entries[0];
-                int accountId = Integer.parseInt(newValue.toString());
-                if (accountId != Constants.NOT_SET) {
-                    accountName = repository.loadName(accountId);
-                }
-                preference.setSummary(accountName);
-
-                new GeneralSettings(getActivity()).setDefaultAccountId(accountId);
-
-                return true;
+        preference.setOnPreferenceChangeListener((preference1, newValue) -> {
+            String accountName1 = entries[0];
+            int accountId = Integer.parseInt(newValue.toString());
+            if (accountId != Constants.NOT_SET) {
+                accountName1 = repository.loadName(accountId);
             }
+            preference1.setSummary(accountName1);
+
+            new GeneralSettings(getActivity()).setDefaultAccountId(accountId);
+
+            return true;
         });
     }
 
@@ -326,19 +303,13 @@ public class PerDatabaseFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.base_currency_changed)
                 .setMessage(R.string.base_currency_change_notification)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Positive button click action (if needed)
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Positive button click action (if needed)
                 })
-                .setNeutralButton(R.string.open_currencies, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
-                        intent.setAction(Intent.ACTION_EDIT);
-                        startActivity(intent);
-                    }
+                .setNeutralButton(R.string.open_currencies, (dialog, which) -> {
+                    Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
+                    intent.setAction(Intent.ACTION_EDIT);
+                    startActivity(intent);
                 })
                 .show();
     }
