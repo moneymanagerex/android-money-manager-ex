@@ -114,8 +114,6 @@ public class PerDatabaseFragment
 
         final ListPreference lstDateFormat = (ListPreference) findPreference(getString(R.string.pref_date_format));
         if (lstDateFormat != null) {
-            lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
-            lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
             //set summary
             String value = infoService.getInfoValue(InfoKeys.DATEFORMAT);
             lstDateFormat.setSummary(getDateFormatFromMask(value));

@@ -35,6 +35,9 @@
 
     <ListPreference
         android:icon="@null"
+        android:defaultValue="%y-%m-%d"
+        android:entries="@array/date_format"
+        android:entryValues="@array/date_format_mask"
         android:key="@string/pref_date_format"
         android:title="@string/date_format" />
 
