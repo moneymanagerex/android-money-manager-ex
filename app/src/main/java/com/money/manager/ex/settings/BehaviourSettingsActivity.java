@@ -21,6 +21,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.R;
 
 public class BehaviourSettingsActivity
@@ -34,8 +36,8 @@ public class BehaviourSettingsActivity
 
     //Author:- velmuruganc - Added for Issue : #1144 - Add automatic bank transaction updates
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         final BehaviourSettings settings = new BehaviourSettings(this);
 
         if (requestCode == 1) {

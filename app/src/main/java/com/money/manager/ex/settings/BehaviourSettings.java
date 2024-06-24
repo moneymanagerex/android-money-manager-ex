@@ -59,7 +59,6 @@ public class BehaviourSettings
 
     /**
      * The period to use for the income/expense summary footer on Home screen.
-     * @return
      */
     public String getIncomeExpensePeriod() {
         return get(R.string.pref_income_expense_footer_period,

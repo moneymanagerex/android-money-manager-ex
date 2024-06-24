@@ -95,7 +95,7 @@ public class LookAndFeelSettings
 //        return get(R.string.pref_account_open_visible, true);
         InfoService infoService = new InfoService(getContext());
         String value = infoService.getInfoValue(InfoKeys.SHOW_OPEN_ACCOUNTS);
-        return Boolean.valueOf(value);
+        return Boolean.parseBoolean(value);
     }
 
     public void setViewOpenAccounts(Boolean value) {
@@ -107,7 +107,7 @@ public class LookAndFeelSettings
 //        return get(R.string.pref_account_fav_visible, true);
         InfoService infoService = new InfoService(getContext());
         String value = infoService.getInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS);
-        return Boolean.valueOf(value);
+        return Boolean.parseBoolean(value);
     }
 
     public void setViewFavouriteAccounts(Boolean value) {

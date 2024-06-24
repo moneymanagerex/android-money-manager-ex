@@ -45,8 +45,7 @@ public class GeneralSettings
     }
 
     public String getApplicationLanguage() {
-        String result = get(R.string.pref_locale, "");
-        return result;
+        return get(R.string.pref_locale, "");
     }
 
     /**
@@ -85,7 +84,7 @@ public class GeneralSettings
         return get(R.string.pref_theme, lightTheme);
     }
 
-    public Integer getBaseCurrencytId() {
+    public Integer getBaseCurrencyId() {
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.BASECURRENCYID);
 

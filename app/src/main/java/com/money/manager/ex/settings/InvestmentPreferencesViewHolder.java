@@ -29,8 +29,8 @@ import androidx.preference.PreferenceFragmentCompat;
 public class InvestmentPreferencesViewHolder {
     public InvestmentPreferencesViewHolder(PreferenceFragmentCompat container) {
         threshold = container.findPreference(container.getString(R.string.pref_asset_allocation_threshold));
-        quoteProvider = (ListPreference) container.findPreference(container.getString(R.string.pref_quote_provider));
-        exchangeRateProvider = (ListPreference) container.findPreference(container.getString(R.string.pref_exchange_rate_provider));
+        quoteProvider = container.findPreference(container.getString(R.string.pref_quote_provider));
+        exchangeRateProvider = container.findPreference(container.getString(R.string.pref_exchange_rate_provider));
     }
 
     public Preference threshold;

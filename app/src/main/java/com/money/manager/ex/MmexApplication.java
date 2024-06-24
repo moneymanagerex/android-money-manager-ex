@@ -134,7 +134,6 @@ public class MmexApplication
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         } else {
-            //Timber.plant(new CrashReportingTree());
             Timber.plant(new ScreenTree());
             Timber.plant(new SysLogTree());
         }

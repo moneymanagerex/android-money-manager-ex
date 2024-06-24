@@ -35,7 +35,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
@@ -203,7 +202,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
                             db = MmxHelper.getReadableDatabase();
 
-                            baseCurencyID = gen_settings.getBaseCurrencytId();
+                            baseCurencyID = gen_settings.getBaseCurrencyId();
                             baseAccountID = gen_settings.getDefaultAccountId();
                             baseAccountName = "";
                             fromAccountID = -1;
