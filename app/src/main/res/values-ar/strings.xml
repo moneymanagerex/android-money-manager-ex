@@ -70,6 +70,10 @@
   <string name="sync_on_start">مزامنة عند بدء التشغيل</string>
   <!-- Receive SMS strings -->
   <string name="title_sms_auto_trans">معالجة الرسائل القصيرة للمعاملات المصرفية</string>
+  <string name="summary_sms_auto_trans"></string>
+  <string name="deny_receive_sms_error">ماجد </string>
+  <string name="revoke_receive_sms_access"></string>
+  <string name="title_sms_trans_status_notification"></string>
   <!-- account -->
   <string name="account">الحساب</string>
   <string name="account_list">قائمة الحساب</string>
@@ -225,6 +229,7 @@
   <string name="every_x_days">كل (×) يوم</string>
   <string name="every_x_months">كل (×) شهر</string>
   <string name="inactive">غير نشط</string>
+  <string name="days_overdue">أيام متأخرة!</string>
   <string name="days_remaining">أيام متبقية</string>
   <string name="due_date">تاريخ الاستحقاق</string>
   <string name="next_occurrence">التكرار التالي</string>
@@ -341,6 +346,7 @@
   <string name="last6months">آخر 6 أشهر</string>
   <string name="empty_category">الفئة فارغة</string>
   <string name="help">المساعدة</string>
+  <string name="delete_repeating_transaction">حذف معاملة مجدولة</string>
   <string name="last">الاخير</string>
   <string name="accounts">الحسابات</string>
   <string name="to_account">إلى حساب</string>
@@ -400,6 +406,7 @@
   <string name="action_settings">إعدادات</string>
   <string name="close">إغلاق</string>
   <string name="tutorial_accounts_1">أنواع حسابات متعددة: جارِ، مدخرات، الائتمان، الأصول، والاستثمارات.</string>
+  <string name="tutorial_accounts_2">اسحب لليسار للمتابعة&#8230;</string>
   <string name="financial_overview">لمحة مالية عامة</string>
   <string name="tutorial_overview_1">لوحة إحصائيات سريعة, ميزانيات, تقارير مخصصة.</string>
   <string name="global">عالمي</string>
@@ -495,6 +502,7 @@
   <string name="remote_file">الملف البعيد</string>
   <string name="please_wait">يُرجى الانتظار</string>
   <string name="sync_notification_title">Money Manager Ex - Sync</string>
+  <string name="database_is_synchronized">قاعدة البيانات محدثة</string>
   <string name="every_5_minutes">كل 5 دقائق</string>
   <string name="every_10_minutes">كل 10 دقائق</string>
   <string name="every_15_minutes">كل 15 دقيقة</string>
@@ -511,7 +519,10 @@
   <!-- Errors -->
   <string name="remote_file_not_found">لم يتم العثور على الملف البعيد</string>
   <!-- Select database screen -->
-  <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
+  <string name="intro_text">لبدء استخدام Money Manager Ex، تحتاج إلى ملف قاعدة بيانات لتخزين بياناتك. الرجاء تحديد أحد الخيارات المتاحة أدناه.</string>
+  <string name="intro_create_db">يمكنك إنشاء ملف جديد وإعداد التفضيلات الأولية.</string>
+  <string name="intro_open_db">أو يمكنك تحديد ملف موجود من جهازك.</string>
+  <string name="intro_sync">لاستخدام الخدمات السحابية، افتح الملف من موفر المستندات المفضل.</string>
   <!-- Create Database screen -->
   <string name="select_language">اختر اللغة</string>
   <string name="run">Run Money Manager Ex</string>
