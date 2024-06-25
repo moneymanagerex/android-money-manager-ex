@@ -1,0 +1,4 @@
+- Separate scheduled transaction notification and execution
+- Simplify various settings, incl. Synchronization, PerDatabase
+- Update i18n on 2024-06-25 from Crowdin 
+- Continue code clean-up
