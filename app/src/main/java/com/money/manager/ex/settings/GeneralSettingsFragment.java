@@ -73,8 +73,11 @@ public class GeneralSettingsFragment
 
         final ListPreference lstTheme = findPreference(getString(R.string.pref_theme));
         if (lstTheme != null) {
+            String summary = settings.getGeneralSettings().getTheme();
+            lstTheme.setSummary(summary);
             lstTheme.setOnPreferenceChangeListener((preference, newValue) -> {
                 Timber.d("setting theme: %s", newValue.toString());
+                lstTheme.setSummary(newValue.toString());
 
                 restartActivity();
 

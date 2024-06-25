@@ -31,6 +31,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
+
 import timber.log.Timber;
 
 /**
@@ -118,7 +119,6 @@ public class LookFeelPreferenceFragment
         }
 
         // Font type
-
         final ListPreference lstFont = findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
         if (lstFont != null) {
             lstFont.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -134,11 +134,12 @@ public class LookFeelPreferenceFragment
         }
 
         // Font size
-
         final ListPreference lstFontSize = findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
         if (lstFontSize != null) {
+            lstFontSize.setSummary(lstFontSize.getValue());
             lstFontSize.setOnPreferenceChangeListener((preference, newValue) -> {
                 Timber.d("Preference set: font = %s", newValue.toString());
+                lstFontSize.setSummary(newValue.toString());
 
                 RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
                 return true;
