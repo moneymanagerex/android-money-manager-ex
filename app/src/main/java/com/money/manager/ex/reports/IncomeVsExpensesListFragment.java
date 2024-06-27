@@ -50,7 +50,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
@@ -140,8 +140,8 @@ public class IncomeVsExpensesListFragment
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_YEARS:
-                QueryAllData mobileData = new QueryAllData(getContext());
-                selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
+                ViewMobileData mobileData = new ViewMobileData(getContext());
+                selection = "SELECT DISTINCT Year as Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
                 query = new Select().where(selection);
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
@@ -198,12 +198,9 @@ public class IncomeVsExpensesListFragment
 
             case ID_LOADER_YEARS:
                 if (data != null && data.moveToFirst()) {
-                    // move to first record #1539
-// work moving issue #1546                    data.moveToPosition(-1);
-                    data.moveToFirst(); // issue #1546 set correct first record
 
                     while (!data.isAfterLast()) {
-                        int year = data.getInt(data.getColumnIndex("Year"));
+                        int year = data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
                         if (!mYearsSelected.get(year, false)) {
                             mYearsSelected.put(year, false);
                         }
