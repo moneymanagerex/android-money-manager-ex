@@ -36,7 +36,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -206,8 +206,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
-                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
+            whereClause = QueryAllData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
+                "' AND " + QueryAllData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
         }
 
         //check item
@@ -283,9 +283,9 @@ public abstract class BaseReportFragment
                         mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
                         String whereClause =
-                                ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                QueryAllData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
                                         "' AND " +
-                                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
+                                        QueryAllData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
                         Bundle args = new Bundle();
                         args.putString(KEY_WHERE_CLAUSE, whereClause);

@@ -142,7 +142,7 @@ public class RecurringTransactionNotifications {
             if (TextUtils.isEmpty(payeeName))
                 payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
             // compose text
-            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)) +
+            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";

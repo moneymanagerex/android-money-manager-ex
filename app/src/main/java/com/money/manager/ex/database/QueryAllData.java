@@ -30,7 +30,9 @@ public class QueryAllData
     public static final String ID = "ID";
     public static final String TransactionType = "TransactionType";
     public static final String Date = "Date";
-    public static final String UserDate = "UserDate";
+    public static final String Year = "Year";
+    public static final String Month = "Month";
+    public static final String Day = "Day";
     public static final String Category = "Category";
     public static final String Subcategory = "Subcategory";
     public static final String Amount = "Amount";
@@ -40,7 +42,7 @@ public class QueryAllData
     public static final String ACCOUNTID = "AccountID";
     public static final String SPLITTED = "SPLITTED";
     public static final String ParentCategID = "ParentCategID";
-    public static final String CategID = "CategID";
+    public static final String CATEGID = "CategID";
     public static final String SubcategID = "SubcategID";
     public static final String Payee = "Payee";
     public static final String PayeeID = "PayeeID";
@@ -55,13 +57,16 @@ public class QueryAllData
 
     public QueryAllData(Context context) {
         super(MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
+        this.mContext = context.getApplicationContext();
     }
+
+    private final Context mContext;
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ID AS _id", ID, TransactionType, Date,
+        return new String[]{"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
                 Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
-                SPLITTED, CategID, ParentCategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
+                SPLITTED, CATEGID, ParentCategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
                 ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
                 currency};
     }

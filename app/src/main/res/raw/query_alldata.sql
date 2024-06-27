@@ -31,7 +31,12 @@ SELECT
     -1 AS SubcategID,  -- Wolfsolver ignore subcategory (we use full category)
     ifnull( PAYEE.PayeeName, '') AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
-    TX.TRANSACTIONNUMBER AS TransactionNumber
+    TX.TRANSACTIONNUMBER AS TransactionNumber,
+
+    round( strftime( '%d', TX.transdate ) ) AS day,
+    round( strftime( '%m', TX.transdate ) ) AS month,
+    round( strftime( '%Y', TX.transdate ) ) AS year
+
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID

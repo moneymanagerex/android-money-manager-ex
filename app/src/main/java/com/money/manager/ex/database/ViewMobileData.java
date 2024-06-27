@@ -32,7 +32,6 @@ public class ViewMobileData
 	public static final String ID = "ID";
 	public static final String TransactionType = "TransactionType";
 	public static final String Date = "Date";
-	public static final String UserDate = "UserDate";
 	public static final String Year = "Year";
 	public static final String Month = "Month";
 	public static final String Day = "Day";
@@ -56,7 +55,6 @@ public class ViewMobileData
 	public static final String Status = "Status";
 	public static final String Notes = "Notes";
 	public static final String currency = "currency";
-	public static final String finyear = "finyear";
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	
 	public ViewMobileData(Context context) {
@@ -71,10 +69,10 @@ public class ViewMobileData
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"ID AS _id", ID, TransactionType, Date, UserDate, Year, Month, Day,
+		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
 				Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
-                SubcategID, Payee, PAYEEID, TransactionNumber, Status, Notes, currency, finyear,
+                SubcategID, Payee, PAYEEID, TransactionNumber, Status, Notes, currency,
                 AmountBaseConvRate};
 	}
 

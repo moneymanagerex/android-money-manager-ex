@@ -56,7 +56,6 @@ public class QueryBillDeposits
     public static String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
     public static String TRANSDATE = "TRANSDATE";
     public static String AMOUNT = "AMOUNT";
-    public static String USERNEXTOCCURRENCEDATE = "USERNEXTOCCURRENCEDATE";
 
     // get all columns
     @Override
@@ -65,6 +64,6 @@ public class QueryBillDeposits
                 ACCOUNTID, ACCOUNTNAME, CURRENCYID,
                 CATEGNAME, SUBCATEGNAME, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
-                TRANSACTIONNUMBER, TRANSDATE, AMOUNT, USERNEXTOCCURRENCEDATE};
+                TRANSACTIONNUMBER, TRANSDATE, AMOUNT};
     }
 }
