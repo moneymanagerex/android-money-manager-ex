@@ -11,7 +11,6 @@ WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcate
 SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
-    d.userdate AS UserDate,
     COALESCE( SCAT.categname, CAT.categname ) AS CategoryFullName,
     COALESCE( SCAT.parentcategname, SCAT.catshortname, CAT.parentcategname, CAT.catshortname ) AS Category,
     COALESCE( SCAT.catshortname, CAT.catshortname ) AS Subcategory,
@@ -34,10 +33,9 @@ SELECT     TX.TransID AS ID,
     ifnull( PAYEE.PayeeName, '') AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
-    d.year AS Year,
-    d.month AS Month,
-    d.day AS Day,
-    d.finyear AS finyear,
+    round( strftime( '%d', TX.transdate ) ) AS day,
+    round( strftime( '%m', TX.transdate ) ) AS month,
+    round( strftime( '%Y', TX.transdate ) ) AS year,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
@@ -52,16 +50,4 @@ FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN splittransactions_v1 st ON TX.transid = st.transid
     LEFT JOIN categories SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
     LEFT JOIN categories SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.CATEGID
-    LEFT JOIN  (
-        SELECT    transid AS id,
-            date( transdate ) AS transdate,
-            round( strftime( '%d', transdate ) ) AS day,
-            round( strftime( '%m', transdate ) ) AS month,
-            round( strftime( '%Y', transdate ) ) AS year,
-            round( strftime( '%Y', transdate, 'start of month', ( (CASE WHEN fd.infovalue <= round( strftime( '%d', transdate ) ) THEN 1 ELSE 0 END ) - fm.infovalue ) || ' month' ) ) AS finyear,
-            ifnull( ifnull( strftime( df.infovalue, TransDate ), ( strftime( REPLACE( df.infovalue, '%y', SubStr( strftime( '%Y', TransDate ), 3, 2 ) ), TransDate ) ) ), date( TransDate ) ) AS UserDate
-        FROM CHECKINGACCOUNT_V1 LEFT JOIN infotable_v1 df ON df.infoname = 'DATEFORMAT'
-            LEFT JOIN infotable_v1 fm ON fm.infoname = 'FINANCIAL_YEAR_START_MONTH'
-            LEFT JOIN infotable_v1 fd ON fd.infoname = 'FINANCIAL_YEAR_START_DAY'
-    ) d ON d.id = TX.TRANSID
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')

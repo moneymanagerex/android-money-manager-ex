@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryAllData;
 
 import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.MoneyFactory;
@@ -58,10 +58,10 @@ public class CategoriesReportAdapter
 
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
         String column1;
-        String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
+        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
         if (!TextUtils.isEmpty(category)) {
             column1 = "<b>" + category + "</b>";
-            String subCategory = cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+            String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
             if (!TextUtils.isEmpty(subCategory)) {
                 column1 += " : " + subCategory;
             }

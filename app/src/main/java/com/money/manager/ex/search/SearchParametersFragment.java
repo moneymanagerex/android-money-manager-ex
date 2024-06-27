@@ -481,8 +481,8 @@ public class SearchParametersFragment
             }
             // Category. Also check the splits.
             where.addStatement("(" +
-                    "(" + QueryAllData.CategID + "=" + categId + ") " +
-                    " OR (" + categId + " IN (select " + QueryAllData.CategID +
+                    "(" + QueryAllData.CATEGID + "=" + categId + ") " +
+                    " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
                     " FROM " + SplitCategory.TABLE_NAME +
                     " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
                     ")" +
