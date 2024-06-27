@@ -114,7 +114,7 @@ public class ExportToCsvFile
 			while (data.moveToNext()) {
 				String[] record = new String[7];
 				// compose a records
-				record[0] = data.getString(data.getColumnIndex(QueryAllData.UserDate));
+				record[0] = data.getString(data.getColumnIndex(QueryAllData.Date));
 				if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.Payee)))) {
 					record[1] = data.getString(data.getColumnIndex(QueryAllData.Payee));
 				} else {
