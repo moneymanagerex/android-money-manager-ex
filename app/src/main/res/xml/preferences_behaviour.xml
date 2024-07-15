@@ -26,7 +26,7 @@
 
     <SwitchPreference
         android:icon="@null"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="@string/pref_scheduled_transaction_execution"
         android:summary="@string/summary_execution_scheduled_transaction"
         android:title="@string/title_execution_scheduled_transaction" />
