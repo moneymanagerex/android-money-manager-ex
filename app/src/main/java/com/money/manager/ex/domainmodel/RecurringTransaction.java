@@ -318,19 +318,16 @@ public class RecurringTransaction
 
     // EP handle recurring mode
     public boolean isRecurringModeManual() {
-        if (this.getRecurrenceInt() < 100 ) return true;
-        return false;
+        return (this.getRecurrenceInt() < 100 );
     }
 
     public boolean isRecurringModePrompt() {
-        if (this.getRecurrenceInt() < 200 &&
-                this.getRecurrenceInt() >= 100 ) return true;
-        return false;
+        return (this.getRecurrenceInt() < 200 &&
+                this.getRecurrenceInt() >= 100 );
     }
 
     public boolean isRecurringModeAuto() {
-        if (this.getRecurrenceInt() >= 200 ) return true;
-        return false;
+        return (this.getRecurrenceInt() >= 200 );
     }
 
 }
