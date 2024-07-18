@@ -18,6 +18,7 @@
 package com.money.manager.ex.recurring.transactions;
 
 import java.security.InvalidParameterException;
+import java.security.PublicKey;
 
 /**
  * Types of recurrence
@@ -39,13 +40,30 @@ public enum Recurrence {
     EVERY_X_DAYS (13),
     EVERY_X_MONTHS (14),
     MONTHLY_LAST_DAY (15),
-    MONTHLY_LAST_BUSINESS_DAY (16);
+    MONTHLY_LAST_BUSINESS_DAY (16),
+
+    // EP Handle Recurring Mode
+    MODE_MANUAL (-1),
+    MODE_PROMPT (-100),
+    MODE_AUTO (-200);
 
     Recurrence(int value) {
         mValue = value;
     }
 
     private final int mValue;
+
+    // EP Handle Recurring Mode
+    public static Recurrence recurringMode(int value) {
+        if ( value >= 200 ) return Recurrence.MODE_AUTO;
+        if ( value >= 100 ) return Recurrence.MODE_PROMPT;
+        return Recurrence.MODE_MANUAL;
+    }
+    public static String recurringModeString(Recurrence mode) {
+        if (mode == Recurrence.MODE_AUTO) return "Auto";
+        if (mode == Recurrence.MODE_PROMPT) return "Prompt";
+        return "Manual";
+    }
 
     public static Recurrence valueOf(int value) {
         // set auto execute without user acknowledgement

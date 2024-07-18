@@ -277,6 +277,12 @@ public class RecurringTransaction
         setRecurrence(recurrence);
     }
 
+    public void setRecurrenceMode(int value) {
+        int rec = getRecurrenceInt();
+        while (rec >= 100 ) rec = rec - 100;
+        setInt(REPEATS,  rec + ( value * 100 ) );
+    }
+
     public String getStatus() {
         return getString(ITransactionEntity.STATUS);
     }
@@ -308,6 +314,23 @@ public class RecurringTransaction
 
     public void setTransactionType(TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
+    }
+
+    // EP handle recurring mode
+    public boolean isRecurringModeManual() {
+        if (this.getRecurrenceInt() < 100 ) return true;
+        return false;
+    }
+
+    public boolean isRecurringModePrompt() {
+        if (this.getRecurrenceInt() < 200 &&
+                this.getRecurrenceInt() >= 100 ) return true;
+        return false;
+    }
+
+    public boolean isRecurringModeAuto() {
+        if (this.getRecurrenceInt() >= 200 ) return true;
+        return false;
     }
 
 }

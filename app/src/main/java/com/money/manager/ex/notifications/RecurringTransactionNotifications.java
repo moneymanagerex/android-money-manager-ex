@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
@@ -138,6 +139,10 @@ public class RecurringTransactionNotifications {
 
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+
+            // EP get recurring mode
+            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getColumnIndex(QueryBillDeposits.REPEATS));
+
             // check if payee name is null, then put toAccountName
             if (TextUtils.isEmpty(payeeName))
                 payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
@@ -145,7 +150,8 @@ public class RecurringTransactionNotifications {
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
-                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
+                    " Mode" + Recurrence.recurringModeString( recurringMode ) + "</b>";
 
             result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
         }

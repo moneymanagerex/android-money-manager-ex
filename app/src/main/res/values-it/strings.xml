@@ -242,6 +242,10 @@
   <string name="enter">Inserisci</string>
   <string name="enter_amount">Inserire importo</string>
   <!-- 20121121 -->
+  <string name="recurringModeLabel">Modalità Transazione Automatiche</string>
+  <string name="manual">Inserimento Manuale</string>
+  <string name="prompt">Notifica Scadenza</string>
+  <string name="auto">Inserimento Automatico</string>
   <string name="send_feedback">Invia commenti</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
   <!-- 20121122 -->
@@ -513,7 +517,8 @@
   <string name="filter_options_info">Opzioni sui filtri ed Info</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Inserire la password del database</string>
-  <string name="income_expense_period">Entrate/Uscite periodo</string>
+    <string name="fingerprint_check_permission">Abilitare il i permessi per le impronte</string>
+    <string name="income_expense_period">Entrate/Uscite periodo</string>
   <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
   <string name="appwidget_text">ESEMPIO</string>
   <string name="configure">Configura</string>
@@ -692,6 +697,8 @@
   <string name="create_database">Crea Database</string>
   <string name="summary_anonymous_usage">Abilita per aiutarci a inviare dati anonimi sull\'utilizzo di MMEX</string>
   <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
+  <string name="notification_channel_recurring">Notifica per le transazioni schedulate</string>
+  <string name="notification_channel_recurring__description">Transazioni Schedulate Scadute</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>

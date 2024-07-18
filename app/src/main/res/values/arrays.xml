@@ -202,6 +202,14 @@
         <item>@string/montly_last_bussines_day</item>
     </string-array>
 
+    <!-- EP recurring mode -->
+    <string-array name="recurring_mode">
+        <item>@string/manual</item>
+        <item>@string/prompt</item>
+        <item>@string/auto</item>
+    </string-array>
+
+
     <!-- Define font entries and values -->
     <string-array name="application_font_entries">
         <item>Default</item>
