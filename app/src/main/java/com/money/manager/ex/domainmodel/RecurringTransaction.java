@@ -264,7 +264,7 @@ public class RecurringTransaction
     }
 
     public void setRecurrence(Integer value) {
-        setInt(REPEATS, value);
+        setInt(REPEATS, value + getRecurrenceMode() * 100);
     }
 
     public Recurrence getRecurrence() {
@@ -277,10 +277,18 @@ public class RecurringTransaction
         setRecurrence(recurrence);
     }
 
+    // EP get RecurringMode
     public void setRecurrenceMode(int value) {
         int rec = getRecurrenceInt();
-        while (rec >= 100 ) rec = rec - 100;
-        setInt(REPEATS,  rec + ( value * 100 ) );
+        rec = rec % 100;  // get base value
+        setInt(REPEATS,  rec + ( value * 100 ) ); // set recurrency mode
+    }
+    public Integer getRecurrenceMode() {
+        try {
+            return getInt(REPEATS) / 100;
+        } catch ( Exception e ) {
+            return 0;
+        }
     }
 
     public String getStatus() {

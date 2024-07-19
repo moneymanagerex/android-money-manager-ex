@@ -321,6 +321,10 @@ public class RecurringTransactionEditActivity
         RecurringTransaction tx = (RecurringTransaction) mCommon.transactionEntity;
         Integer recurrence = tx.getRecurrenceInt();
         int recurrenceMode = 0;
+
+        recurrenceMode = recurrence / 100;
+        recurrence = recurrence % 100;
+/*
         if (recurrence >= 200) {
             recurrence = recurrence - 200;
             recurrenceMode = 2;
@@ -329,6 +333,8 @@ public class RecurringTransactionEditActivity
             recurrence = recurrence - 100;
             recurrenceMode = 1;
         } // set auto execute on the next occurrence
+
+ */
         spinFrequencies.setSelection(recurrence, true);
         spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
