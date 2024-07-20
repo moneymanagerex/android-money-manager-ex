@@ -17,11 +17,14 @@
 
 package com.money.manager.ex.notifications;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * DTO for sync notification
  */
 
 public class SyncNotificationModel {
     public int number;
-    public String inboxLine;
+    public List<String> inboxLine = new ArrayList<String>();;
 }

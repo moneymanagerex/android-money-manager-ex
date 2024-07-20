@@ -82,7 +82,9 @@ public class RecurringTransactionNotifications {
 
     private void showNotification(SyncNotificationModel model) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        inboxStyle.addLine(model.inboxLine);
+        for ( String line: model.inboxLine ) {
+            inboxStyle.addLine(line);
+        }
 
         NotificationManager notificationManager = (NotificationManager) getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -141,7 +143,7 @@ public class RecurringTransactionNotifications {
             @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
 
             // EP get recurring mode
-            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getColumnIndex(QueryBillDeposits.REPEATS));
+            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getInt( cursor.getColumnIndex(QueryBillDeposits.REPEATS)));
 
             // check if payee name is null, then put toAccountName
             if (TextUtils.isEmpty(payeeName))
@@ -151,9 +153,9 @@ public class RecurringTransactionNotifications {
                     " " + payeeName +
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
-                    " Mode" + Recurrence.recurringModeString( recurringMode ) + "</b>";
+                    "</b> (" + Recurrence.recurringModeString( recurringMode ) + ")";
 
-            result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
+            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
         }
 
         return result;

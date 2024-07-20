@@ -60,9 +60,9 @@ public enum Recurrence {
         return Recurrence.MODE_MANUAL;
     }
     public static String recurringModeString(Recurrence mode) {
-        if (mode == Recurrence.MODE_AUTO) return "Auto";
-        if (mode == Recurrence.MODE_PROMPT) return "Prompt";
-        return "Manual";
+        if (mode == Recurrence.MODE_AUTO) return "A";
+        if (mode == Recurrence.MODE_PROMPT) return "P";
+        return "M";
     }
 
     public static Recurrence valueOf(int value) {
