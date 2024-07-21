@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
@@ -81,7 +82,9 @@ public class RecurringTransactionNotifications {
 
     private void showNotification(SyncNotificationModel model) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        inboxStyle.addLine(model.inboxLine);
+        for ( String line: model.inboxLine ) {
+            inboxStyle.addLine(line);
+        }
 
         NotificationManager notificationManager = (NotificationManager) getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -138,6 +141,10 @@ public class RecurringTransactionNotifications {
 
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+
+            // EP get recurring mode
+            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getInt( cursor.getColumnIndex(QueryBillDeposits.REPEATS)));
+
             // check if payee name is null, then put toAccountName
             if (TextUtils.isEmpty(payeeName))
                 payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
@@ -145,9 +152,10 @@ public class RecurringTransactionNotifications {
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
                     ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
-                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) + "</b>";
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
+                    "</b> (" + Recurrence.recurringModeString( recurringMode ) + ")";
 
-            result.inboxLine = Html.fromHtml("<small>" + line + "</small>").toString();
+            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
         }
 
         return result;

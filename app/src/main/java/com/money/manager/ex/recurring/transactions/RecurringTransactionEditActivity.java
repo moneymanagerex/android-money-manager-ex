@@ -316,15 +316,25 @@ public class RecurringTransactionEditActivity
         // Frequency
 
         Spinner spinFrequencies = findViewById(R.id.spinnerFrequencies);
+        Spinner spinRecurringMode = findViewById(R.id.recurringMode);
 
         RecurringTransaction tx = (RecurringTransaction) mCommon.transactionEntity;
         Integer recurrence = tx.getRecurrenceInt();
+        int recurrenceMode = 0;
+
+        recurrenceMode = recurrence / 100;
+        recurrence = recurrence % 100;
+/*
         if (recurrence >= 200) {
             recurrence = recurrence - 200;
+            recurrenceMode = 2;
         } // set auto execute without user acknowledgement
         if (recurrence >= 100) {
             recurrence = recurrence - 100;
+            recurrenceMode = 1;
         } // set auto execute on the next occurrence
+
+ */
         spinFrequencies.setSelection(recurrence, true);
         spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -341,6 +351,22 @@ public class RecurringTransactionEditActivity
                 showPaymentsLeft();
             }
         });
+        spinRecurringMode.setSelection(recurrenceMode, true);
+        spinRecurringMode.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCommon.setDirty(true);
+
+                getRecurringTransaction().setRecurrenceMode(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                getRecurringTransaction().setRecurrenceMode(0);
+            }
+
+                                                  }
+        );
     }
 
     private void initializePaymentDateSelector() {
@@ -494,14 +520,14 @@ public class RecurringTransactionEditActivity
     private void collectDataFromUI() {
         String value;
 
-        // Payment Date
+                // Payment Date
 
 //        DateTime dateTime = MmxJodaDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
 //        mRecurringTransaction.setPaymentDate(dateTime);
 
-        // Payments Left
+                // Payments Left
 
-        value = mViewHolder.paymentsLeftEditText.getText().toString();
+                value = mViewHolder.paymentsLeftEditText.getText().toString();
         if (NumericHelper.isNumeric(value)) {
             int paymentsLeft = NumericHelper.toInt(value);
             getRecurringTransaction().setPaymentsLeft(paymentsLeft);

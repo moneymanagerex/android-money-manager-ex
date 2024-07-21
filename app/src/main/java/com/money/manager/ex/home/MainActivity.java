@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.home;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -1261,27 +1262,30 @@ public class MainActivity
         if (cursor == null) return;
 
         while (cursor.moveToNext()) {
-            int scheduledTransactionId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID));
+            @SuppressLint("Range") int scheduledTransactionId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID));
 
             RecurringTransaction scheduledTrx = scheduledRepo.load(scheduledTransactionId); // copy
-            AccountTransaction accountTrx = AccountTransaction.create();
 
-            accountTrx.setDate(scheduledTrx.getPaymentDate());
-            accountTrx.setAccountId(scheduledTrx.getAccountId());
-            accountTrx.setAccountToId(scheduledTrx.getToAccountId());
-            accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
-            accountTrx.setStatus(scheduledTrx.getStatus());
-            accountTrx.setAmount(scheduledTrx.getAmount());
-            accountTrx.setAmountTo(scheduledTrx.getAmountTo());
-            accountTrx.setPayeeId(scheduledTrx.getPayeeId());
-            accountTrx.setCategoryId(scheduledTrx.getCategoryId());
-            accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
-            accountTrx.setNotes(scheduledTrx.getNotes());
+            // EP handle recurring transaction
+            if ( scheduledTrx.isRecurringModeAuto()) {
+                AccountTransaction accountTrx = AccountTransaction.create();
+                accountTrx.setDate(scheduledTrx.getPaymentDate());
+                accountTrx.setAccountId(scheduledTrx.getAccountId());
+                accountTrx.setAccountToId(scheduledTrx.getToAccountId());
+                accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
+                accountTrx.setStatus(scheduledTrx.getStatus());
+                accountTrx.setAmount(scheduledTrx.getAmount());
+                accountTrx.setAmountTo(scheduledTrx.getAmountTo());
+                accountTrx.setPayeeId(scheduledTrx.getPayeeId());
+                accountTrx.setCategoryId(scheduledTrx.getCategoryId());
+                accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
+                accountTrx.setNotes(scheduledTrx.getNotes());
 
-            accountTransactionRepository.insert(accountTrx);
+                accountTransactionRepository.insert(accountTrx);
 
-            RecurringTransactionService service = new RecurringTransactionService(scheduledTransactionId, this);
-            service.moveNextOccurrence();
+                RecurringTransactionService service = new RecurringTransactionService(scheduledTransactionId, this);
+                service.moveNextOccurrence();
+            }
         }
         cursor.close();
 

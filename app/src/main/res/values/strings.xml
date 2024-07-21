@@ -273,6 +273,12 @@
     <string name="enter">Enter</string>
     <string name="enter_amount">Enter Amount</string>
 
+    <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Auto Transaction</string>
+    <string name="manual">Manual entry</string>
+    <string name="prompt">Prompt for entry</string>
+    <string name="auto">Automatic entry</string>
+
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

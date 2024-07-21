@@ -236,6 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:prompt="@string/status" />
+
             </LinearLayout>
 
             <!-- repeats, headers -->
@@ -290,6 +291,41 @@
                     android:inputType="number"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <!-- EP Manual / Prompt / Auto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal">
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/recurringModeLabel"
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/recurringModeLabel" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/recurringMode"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/recurring_mode"
+                />
+
+        </LinearLayout>
+
 
             <!-- Account / from -->
             <LinearLayout

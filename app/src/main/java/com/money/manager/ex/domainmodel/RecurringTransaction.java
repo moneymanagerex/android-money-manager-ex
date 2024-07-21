@@ -264,7 +264,7 @@ public class RecurringTransaction
     }
 
     public void setRecurrence(Integer value) {
-        setInt(REPEATS, value);
+        setInt(REPEATS, value + getRecurrenceMode() * 100);
     }
 
     public Recurrence getRecurrence() {
@@ -275,6 +275,20 @@ public class RecurringTransaction
     public void setRecurrence(Recurrence value) {
         int recurrence = value.getValue();
         setRecurrence(recurrence);
+    }
+
+    // EP get RecurringMode
+    public void setRecurrenceMode(int value) {
+        int rec = getRecurrenceInt();
+        rec = rec % 100;  // get base value
+        setInt(REPEATS,  rec + ( value * 100 ) ); // set recurrency mode
+    }
+    public Integer getRecurrenceMode() {
+        try {
+            return getInt(REPEATS) / 100;
+        } catch ( Exception e ) {
+            return 0;
+        }
     }
 
     public String getStatus() {
@@ -308,6 +322,20 @@ public class RecurringTransaction
 
     public void setTransactionType(TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
+    }
+
+    // EP handle recurring mode
+    public boolean isRecurringModeManual() {
+        return (this.getRecurrenceInt() < 100 );
+    }
+
+    public boolean isRecurringModePrompt() {
+        return (this.getRecurrenceInt() < 200 &&
+                this.getRecurrenceInt() >= 100 );
+    }
+
+    public boolean isRecurringModeAuto() {
+        return (this.getRecurrenceInt() >= 200 );
     }
 
 }
