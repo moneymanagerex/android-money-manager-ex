@@ -375,7 +375,10 @@ public class RecurringTransactionEditActivity
         final MmxDateTimeUtils dateUtils = new MmxDateTimeUtils();
 
         Date paymentDate = getRecurringTransaction().getPaymentDate();
-        mViewHolder.paymentDateTextView.setText(dateUtils.format(paymentDate, Constants.LONG_DATE_PATTERN));
+
+
+        mViewHolder.paymentDateTextView.setText(dateUtils.format(paymentDate, "EEE, "+dateUtils.getUserDatePattern(this)));
+//        mViewHolder.paymentDateTextView.setText(dateUtils.format(paymentDate, Constants.LONG_DATE_PATTERN));
 //        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -392,7 +395,8 @@ public class RecurringTransactionEditActivity
                         RecurringTransactionEditActivity.this, // replace with the actual activity or context
                         listener,
                         dateTime.getYear(),
-                        dateTime.getMonthOfYear() - 1, // DatePickerDialog month is zero-based
+                        dateTime.getMonthOfYear() , // getMonth of year alresy return month -1
+//                        dateTime.getMonthOfYear() - 1, // DatePickerDialog month is zero-based
                         dateTime.getDayOfMonth()
                 );
 
@@ -660,7 +664,8 @@ public class RecurringTransactionEditActivity
 
         getRecurringTransaction().setPaymentDate(dateTime);
 
-        String display = dateUtils.format(dateTime, Constants.LONG_DATE_PATTERN);
+//        String display = dateUtils.format(dateTime, Constants.LONG_DATE_PATTERN);
+        String display = dateUtils.format(dateTime, "EEE, "+dateUtils.getUserDatePattern(this));
         mViewHolder.paymentDateTextView.setText(display);
     }
 }

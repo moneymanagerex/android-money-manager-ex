@@ -121,7 +121,8 @@
                     android:layout_weight="1"
                     android:drawablePadding="@dimen/mmx_padding"
                     android:hint="@string/date"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center" />
 
                 <com.shamanland.fonticon.FontIconView
                     android:id="@+id/paymentNextDayButton"
