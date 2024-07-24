@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -44,8 +46,13 @@ public class RecurringTransactionListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_toolbar_activity);
 
+        Integer trxid = 0;
+        String action = "";
+
         // check if launch from notification
-        if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
+        if (getIntent() != null ) { // && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
+            action = getIntent().getStringExtra("ACTION");
+            trxid = getIntent().getIntExtra("ID", 0);
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode()) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
@@ -55,6 +62,17 @@ public class RecurringTransactionListActivity
                 // start activity
                 startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
             }
+            if ( action.equals("SKIP") || action.equals("ENTER")) {
+                // ToDo Skip or enter Occurrence
+                NotificationManager notificationManager = (NotificationManager) getApplication().getApplicationContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                notificationManager.cancel(trxid);
+
+                return;
+
+            }
+
         }
         // set actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

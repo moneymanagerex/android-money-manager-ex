@@ -39,7 +39,7 @@ import timber.log.Timber;
 
 public class RecurringTransactionNotifications {
 
-    // Notification channel definition will be move into NotificationUtils to centralize loghic
+    // Notification channel definition will be move into NotificationUtils to centralize logic
     // public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
 
@@ -81,53 +81,71 @@ public class RecurringTransactionNotifications {
     }
 
     private void showNotification(SyncNotificationModel model) {
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        for ( String line: model.inboxLine ) {
-            inboxStyle.addLine(line);
-        }
+        for ( SyncNotificationModel.SyncNotificationModelSingle schedTrx: model.notifications ) {
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
-        NotificationManager notificationManager = (NotificationManager) getContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+            inboxStyle.addLine(schedTrx.inboxLine);
 
-        // create pending intent
-        Intent intent = new Intent(getContext(), RecurringTransactionListActivity.class);
-        // set launch from notification // check pin code
-        intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            NotificationManager notificationManager = (NotificationManager) getContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+/*            Intent showIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
+            // set launch from notification // check pin code
+//            intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            showIntent.setAction("SHOW/"+schedTrx.trxId);
+            showIntent.putExtra("ACTION", "SHOW");
+            showIntent.putExtra("ID", schedTrx.trxId);
+            PendingIntent showPending = PendingIntent.getActivity(getContext(), 0, showIntent, PendingIntent.FLAG_IMMUTABLE);
+*/
 
-        // todo: Actions
-//        Intent skipIntent = new Intent(intent);
+            // todo: Actions
+            Intent skipIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
+//            skipIntent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            skipIntent.setAction("SKIP/"+schedTrx.trxId);
+            skipIntent.putExtra( "ACTION", "SKIP");
+            skipIntent.putExtra("ID", schedTrx.trxId);
+            PendingIntent skipPending = PendingIntent.getActivity(getContext(), 0, skipIntent, PendingIntent.FLAG_IMMUTABLE);
+
+            Intent enterIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
+//            enterIntent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            enterIntent.setAction("ENTER/"+schedTrx.trxId);
+            enterIntent.putExtra( "ACTION", "ENTER");
+            enterIntent.putExtra("ID", schedTrx.trxId);
+            PendingIntent enterPending = PendingIntent.getActivity(getContext(), 0, enterIntent, PendingIntent.FLAG_IMMUTABLE);
+
+//          Intent skipIntent = new Intent(intent);
 //        //skipIntent.setAction(Intent.)
-//        PendingIntent skipPending = PendingIntent.getActivity(getContext(), 0, skipIntent, 0);
+//          PendingIntent skipPending = PendingIntent.getActivity(getContext(), 0, skipIntent, 0);
 //        Intent enterIntent = new Intent(getContext(), RecurringTransactionEditActivity.class);
 //        PendingIntent enterPending = PendingIntent.getActivity(getContext(), 0, enterIntent, 0);
 
-        // create notification
-        try {
-            NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_RECURRING);
+            // create notification
+            try {
+                NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_RECURRING);
 
-            Notification notification = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_RECURRING)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(mContext.getString(R.string.application_name))
-                    .setContentText(mContext.getString(R.string.notification_repeating_transaction_expired))
-                    .setSubText(mContext.getString(R.string.notification_click_to_check_repeating_transaction))
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .setTicker(mContext.getString(R.string.notification_repeating_transaction_expired))
-                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                    .setNumber(model.number)
-                    .setStyle(inboxStyle)
-                    .setColor(mContext.getResources().getColor(R.color.md_primary))
-//                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
-//                    .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
-                    .build();
+                Notification notification = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_RECURRING)
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                        .setContentIntent(pendingIntent)
+                        .setContentTitle(mContext.getString(R.string.application_name))
+                        .setContentText(mContext.getString(R.string.notification_repeating_transaction_expired))
+                        .setContentText(schedTrx.inboxLine)
+//                        .setSubText(mContext.getString(R.strisTE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+//                        .setNumber(model.number)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(schedTrx.inboxLine))
+                        .setColor(mContext.getResources().getColor(R.color.md_primary))
+                        .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
+                        .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
+//                        .addAction(R.drawable.ic_action_list_dark , getContext().getString(R.string.show ), showPending)
+                        .build();
 
-            // notify
-            notificationManager.cancel(ID_NOTIFICATION);
-            notificationManager.notify(ID_NOTIFICATION, notification);
-        } catch (Exception e) {
-            Timber.e(e, "showing notification for recurring transaction");
+                // notify
+                notificationManager.cancel(schedTrx.trxId);
+                notificationManager.notify(schedTrx.trxId, notification);
+            } catch (Exception e) {
+                Timber.e(e, "showing notification for recurring transaction");
+            }
         }
     }
 
@@ -151,11 +169,14 @@ public class RecurringTransactionNotifications {
             // compose text
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
-                    ": <b>" + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                    ": " + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
-                    "</b> (" + Recurrence.recurringModeString( recurringMode ) + ")";
+                    " (" + Recurrence.recurringModeString( recurringMode ) + ")";
 
-            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
+//            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
+            result.addNotification(  line ,
+                    Recurrence.recurringModeString( recurringMode ), cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID)));
+
         }
 
         return result;
