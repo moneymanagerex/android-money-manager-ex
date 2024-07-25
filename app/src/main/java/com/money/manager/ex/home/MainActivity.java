@@ -1248,6 +1248,7 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
+        /*   // EP Remove from start intent and set in notification management
         if (!autoExecution) return;
 
         QueryBillDeposits billDeposits = new QueryBillDeposits(getApplicationContext());
@@ -1288,7 +1289,7 @@ public class MainActivity
             }
         }
         cursor.close();
-
+        */
         // TODO persist
     }
 

@@ -28,6 +28,14 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
+import com.money.manager.ex.notifications.RecurringTransactionNotifications;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
+import com.money.manager.ex.settings.AppSettings;
 
 /**
  * Not used.
@@ -50,7 +58,7 @@ public class RecurringTransactionListActivity
         String action = "";
 
         // check if launch from notification
-        if (getIntent() != null ) { // && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
+        if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
             action = getIntent().getStringExtra("ACTION");
             trxid = getIntent().getIntExtra("ID", 0);
             Passcode passcode = new Passcode(getApplicationContext());
@@ -61,16 +69,6 @@ public class RecurringTransactionListActivity
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
                 // start activity
                 startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
-            }
-            if ( action.equals("SKIP") || action.equals("ENTER")) {
-                // ToDo Skip or enter Occurrence
-                NotificationManager notificationManager = (NotificationManager) getApplication().getApplicationContext()
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-
-                notificationManager.cancel(trxid);
-
-                return;
-
             }
 
         }
@@ -83,6 +81,36 @@ public class RecurringTransactionListActivity
         // attach fragment on activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
+        }
+
+        if ( action.equals("SKIP") || action.equals("ENTER")) {
+            // ToDo Skip or enter Occurrence
+            NotificationManager notificationManager = (NotificationManager) getApplication().getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(trxid);
+
+            if (action.equals("SKIP")) {
+                RecurringTransactionService recurringTransaction = new RecurringTransactionService(trxid, this);
+                recurringTransaction.moveNextOccurrence();
+            }
+
+            if (action.equals("ENTER")) {
+                // ToDo: autopost automtically, try to find a way to open directly edit
+                // showCreateTransactionActivity(trxid);
+
+//                boolean isAutoExecution = (new AppSettings(this)).getBehaviourSettings().getNotificationRecurringTransaction();
+//                if (!isAutoExecution) {  // TODO: set with dialog
+                    // showCreateTransactionActivity(trxid);
+//                } else {
+                    RecurringTransactionService service = new RecurringTransactionService(trxid, this);
+                    AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
+                    AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
+                    accountTransactionRepository.insert(accountTrx);
+                    service.moveNextOccurrence();
+
+//                }
+
+            }
         }
     }
 

@@ -21,12 +21,17 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
@@ -440,4 +445,27 @@ public class RecurringTransactionService
             tx.setDueDate(newDueDate);
         }
     }
+
+    public AccountTransaction getAccountTransactionFromRecurring () {
+        RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(this.getContext());
+        RecurringTransaction scheduledTrx = scheduledRepo.load(recurringTransactionId);
+        return (scheduledTrx == null) ? null : getAccountTransactionFromRecurring( scheduledTrx ) ;
+    }
+    public AccountTransaction getAccountTransactionFromRecurring (@NonNull RecurringTransaction scheduledTrx) {
+        AccountTransaction accountTrx = AccountTransaction.create();
+        accountTrx.setDate(scheduledTrx.getPaymentDate());
+        accountTrx.setAccountId(scheduledTrx.getAccountId());
+        accountTrx.setAccountToId(scheduledTrx.getToAccountId());
+        accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
+        accountTrx.setStatus(scheduledTrx.getStatus());
+        accountTrx.setAmount(scheduledTrx.getAmount());
+        accountTrx.setAmountTo(scheduledTrx.getAmountTo());
+        accountTrx.setPayeeId(scheduledTrx.getPayeeId());
+        accountTrx.setCategoryId(scheduledTrx.getCategoryId());
+        accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
+        accountTrx.setNotes(scheduledTrx.getNotes());
+
+        return  accountTrx;
+    }
+
 }
