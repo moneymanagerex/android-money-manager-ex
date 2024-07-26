@@ -13,6 +13,7 @@ Welcome to the user manual for Money Manager Ex - Android, a free, open-source, 
     - [Reports](#reports)
     - [Data Sync](#data-sync)
     - [Security](#security)
+    - [Recurring Transactions](#recurring-transactions)
 4. [How to Use](#how-to-use)
     - [Adding Transactions](#adding-transactions)
     - [Creating Budgets](#creating-budgets)
@@ -54,6 +55,10 @@ Sync your financial data across multiple devices using cloud synchronization. En
 ### Security
 
 Protect your financial information with advanced security features, including password protection and data encryption.
+
+### Recurring Transactions 
+
+Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch)
 
 ## How to Use
 
