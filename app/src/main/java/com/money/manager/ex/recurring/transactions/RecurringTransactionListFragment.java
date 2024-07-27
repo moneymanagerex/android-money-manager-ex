@@ -111,6 +111,7 @@ public class RecurringTransactionListFragment
         // show floating button.
         setFloatingActionButtonVisible(true);
         attachFloatingActionButtonToListView();
+
     }
 
     @Override
@@ -120,6 +121,7 @@ public class RecurringTransactionListFragment
         MmexApplication.getApp().iocComponent.inject(this);
 
         setHasOptionsMenu(true);
+        Intent i = getActivity().getParentActivityIntent();
     }
 
     @Override

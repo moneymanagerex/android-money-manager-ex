@@ -806,6 +806,7 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex Uploading</string>
     <string name="notification_channel_fileoperation_complete">Mmex Upload Complete</string>
     <string name="notification_channel_fileoperation_conflict">Mmex Sync Conflict</string>
+    <string name="show">Show</string>
 
 
 </resources>
