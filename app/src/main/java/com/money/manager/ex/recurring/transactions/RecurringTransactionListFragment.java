@@ -457,7 +457,6 @@ public class RecurringTransactionListFragment
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
-        //  startActivityForResult(intent, purposeCode);
-        startActivity(intent); // Close issue #1706
+        startActivityForResult(intent, purposeCode);
     }
 }
