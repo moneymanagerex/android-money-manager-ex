@@ -16,12 +16,15 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.money.manager.ex.PasscodeActivity;
@@ -36,6 +39,8 @@ import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.notifications.RecurringTransactionNotifications;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
 /**
  * Not used.
@@ -84,7 +89,7 @@ public class RecurringTransactionListActivity
         }
 
         if ( action.equals("SKIP") || action.equals("ENTER")) {
-            // ToDo Skip or enter Occurrence
+            // Skip or enter Occurrence
             NotificationManager notificationManager = (NotificationManager) getApplication().getApplicationContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(trxid);
@@ -103,10 +108,22 @@ public class RecurringTransactionListActivity
                     // showCreateTransactionActivity(trxid);
 //                } else {
                     RecurringTransactionService service = new RecurringTransactionService(trxid, this);
-                    AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
-                    AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
-                    accountTransactionRepository.insert(accountTrx);
-                    service.moveNextOccurrence();
+                    RecurringTransaction tx = service.load(trxid);
+                    if ( tx.isRecurringModeAuto()) {
+                        AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
+                        AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
+                        accountTransactionRepository.insert(accountTrx);
+                        service.moveNextOccurrence();
+                    } else {
+                        // showCreateTransactionActivity(trxid);
+                        Intent intent = new Intent(this, CheckingTransactionEditActivity.class);
+                        intent.setAction(Intent.ACTION_INSERT);
+                        intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, trxid);
+                        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
+                        // start for insert new transaction
+                        startActivity(intent, savedInstanceState);
+//                        startActivityForResult(intent, 1002); // TODO REQUEST_ADD_TRANSACTION
+                    }
 
 //                }
 
