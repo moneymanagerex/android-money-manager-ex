@@ -44,42 +44,23 @@ public class ScrollAwareFABBehavior
 //    private int toolbarHeight;
 
     @Override
-    public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout,
-                                       final FloatingActionButton child,
-                                       final View directTargetChild, final View target, final int nestedScrollAxes) {
+    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
+                                       FloatingActionButton child,
+                                       View directTargetChild, View target, int nestedScrollAxes, int type) {
         // Ensure we react to vertical scrolling
         boolean result = nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
-                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
+                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes, type);
         return result;
     }
 
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
-                               View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+                               View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, int[] consumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
-                dyUnconsumed);
+                dyUnconsumed, type, consumed);
 
-        if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
-            child.hide();
-        } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
+        if (child.getVisibility() == View.VISIBLE) {
             child.show();
         }
     }
-
-//    @Override
-//    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
-////        return dependency instanceof Snackbar.SnackbarLayout;
-//        return dependency instanceof AppBarLayout;
-//    }
-
-//    @Override
-//    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
-//        float translationY = getFabTranslationYForSnackbar(parent, child);
-//        float percentComplete = -translationY / dependency.getHeight();
-//        float scaleFactor = 1 - percentComplete;
-//
-//        child.setScaleX(scaleFactor);
-//        child.setScaleY(scaleFactor);
-//        return false;
-//    }
 }
