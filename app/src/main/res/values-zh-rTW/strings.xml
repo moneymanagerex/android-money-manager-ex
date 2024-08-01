@@ -240,6 +240,7 @@
   <string name="skip">略過</string>
   <string name="enter">輸入</string>
   <string name="enter_amount">輸入金額</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">傳送建議</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

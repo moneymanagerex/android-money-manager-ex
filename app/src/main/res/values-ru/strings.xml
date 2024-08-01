@@ -240,6 +240,7 @@
   <string name="skip">Пропустить</string>
   <string name="enter">Ввод</string>
   <string name="enter_amount">Введите сумму</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Отправить отзыв</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

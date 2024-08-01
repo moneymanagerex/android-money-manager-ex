@@ -241,6 +241,7 @@ Toque para marcar a transação como atrasada</string>
   <string name="skip">Saltar</string>
   <string name="enter">Entrar</string>
   <string name="enter_amount">Insira valor</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Comente</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

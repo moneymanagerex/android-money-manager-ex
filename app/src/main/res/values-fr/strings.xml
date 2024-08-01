@@ -243,6 +243,7 @@
   <string name="skip">Passer</string>
   <string name="enter">Saisir</string>
   <string name="enter_amount">Saisir le montant</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Envoyer un commentaire</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

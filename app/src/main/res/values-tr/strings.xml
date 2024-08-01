@@ -240,6 +240,7 @@
   <string name="skip">Atla</string>
   <string name="enter">Giriş</string>
   <string name="enter_amount">Tutar girin</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Geri bildirim yolla</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

@@ -257,6 +257,7 @@
   <string name="skip">Ignorar</string>
   <string name="enter">Introducir</string>
   <string name="enter_amount">Ingrese el monto</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Enviar comentarios</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

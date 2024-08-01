@@ -257,6 +257,7 @@
   <string name="skip">Spring over</string>
   <string name="enter">Indtast</string>
   <string name="enter_amount">Indtast beløb</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Send tilbagemelding</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
