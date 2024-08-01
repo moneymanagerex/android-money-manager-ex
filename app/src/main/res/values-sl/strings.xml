@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Aplikacija enostavna za uporaba za upravljanje osebnih financ, bančnih računov, družinskega proračuna in tako naprej.</string>
+  <string name="application_credits">MoneyManagerEx za projekt Android uporablja knjižnico ActionBarSherlock</string>
   <string name="application_license">Odprtokodna dovoljenja</string>
   <!-- database -->
   <string name="db_insert_failed">Vstavljanje podatkov ni uspelo</string>
@@ -57,6 +58,7 @@
   <string name="version">Različica</string>
   <string name="build">Gradnja</string>
   <string name="path">Pot zbrike podatkov</string>
+  <string name="remote_path">Oddaljena pot</string>
   <string name="database_version">Različica zbirke podatkov</string>
   <string name="title_show_tutorial">Pokaži vadnico</string>
   <string name="summary_show_tutorial">Pokaži vadnico ob naslednjem zagonu?</string>
@@ -67,6 +69,14 @@
   <string name="sync_on_app_start">Sinhronizacija ob zagonu aplikacije.</string>
   <string name="sync_on_start">Sinhronizacija ob zagonu</string>
   <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">Procesiraj SMS za bančne transakcije</string>
+  <string name="summary_sms_auto_trans">Preberi SMS izvedene bančne transakcije in samodejno ustvari transakcijo</string>
+  <string name="deny_receive_sms_error">Nisi dovolil prejemanja SMS zato SMS za tvojo bančno transakcijo ne bo procesiran.</string>
+  <string name="granted_receive_sms_access">Dovoljenje za RECEIVE_SMS je že bilo dano</string>
+  <string name="revoke_receive_sms_access"></string>
+  <string name="notification_click_to_edit_transaction">Tapni za urejanje transakcije</string>
+  <string name="notification_process_sms_transaction_status">Stanje procesiranja SMS za bančne transakcije</string>
+  <string name="notification_process_sms_channel_description"></string>
   <!-- account -->
   <string name="account">Račun</string>
   <string name="account_list">Seznam računov</string>
@@ -175,6 +185,7 @@
   <string name="access_info">Dostop do informacij</string>
   <string name="initial_balance">Začetne bilance</string>
   <string name="notes">Zapiski</string>
+  <string name="notes_hint">Vpiši opombo</string>
   <string name="closed">Zaprto</string>
   <string name="theme_application">Teme</string>
   <string name="theme_holo">Materialno temno</string>
@@ -201,6 +212,7 @@
   <string name="transaction_number">Številka transakcije</string>
   <string name="widget_summary">Povzetek</string>
   <string name="widget_all_accounts">Vsi računi</string>
+  <string name="widget_add_transaction">Dodaj transakcijo</string>
   <!-- Scheduled Transactions, formerly Recurring Transactions -->
   <string name="none">Nobena</string>
   <string name="once">Enkrat</string>
@@ -218,20 +230,30 @@
   <string name="in_x_months">V (x) mesecev</string>
   <string name="every_x_days">Vsakih (x) dni</string>
   <string name="every_x_months">Vsakih (x) mesecev</string>
+  <string name="repeating_empty_transaction">Nobenih ponavljajočih se transakcij ni bilo mogoče najti. Če jo želiš ustvariti, tapni zeleni gumb plus.</string>
   <string name="inactive">Neaktiven</string>
   <string name="activates">Aktivira</string>
   <string name="days_overdue">dni zamuja!</string>
   <string name="days_remaining">ostanek dni</string>
+  <string name="new_edit_repeating_transaction">Novo/uredi ponavljajoče se transakcije</string>
   <string name="due_date">Datum zapadlosti</string>
   <string name="next_occurrence">Naslednji pojav</string>
   <string name="payment_date">Datum plačila</string>
   <string name="repeats">Ponovitve</string>
   <string name="occurs">Pride do</string>
   <string name="payments_left">Ostala plačila</string>
+  <string name="due_date_required">Datum valute je obvezen</string>
+  <string name="error_next_occurrence_not_populate">Podatek o naslednji zapadlosti je obvezen</string>
+  <string name="enter_next_occurrence">Vpiši naslednjo zapadlost</string>
+  <string name="skip_next_occurrence">Preskoči naslednjo zapadlost</string>
   <string name="skip_next_occurrence_confirmation">Ali želite preskočiti naslednji pojav?</string>
+  <string name="notification_repeating_transaction_expired">Obstajajo zapadle ponavljajoče transakcije</string>
+  <string name="notification_click_to_check_repeating_transaction">Tapni, za preverjanje ponavljajoče transakcije</string>
+  <string name="num_repeating_transaction_expired">%1$d zapadlost ponavljajoče transakcije</string>
   <string name="skip">Preskoči</string>
   <string name="enter">Vnos</string>
   <string name="enter_amount">Vnesite znesek</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Pošlji povratne informacije</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -326,6 +348,7 @@
   <string name="menu_report_where_money_goes">Kam gre denar</string>
   <string name="menu_report_where_money_comes_from">Od kod prihaja denar</string>
   <string name="title_check_repeating_transaction">Čas obvestil</string>
+  <string name="summary_check_repeating_transaction">V kakšnem času bi preverili, ali obstajajo ponavljajoče se transakcije? (privzeto 08:00)</string>
   <string name="credits">Krediti</string>
   <string name="libraries">Knjižnice</string>
   <string name="top_withdrawals_last_30_days">Najvišji dvig: Zadnjih 30 dni</string>
@@ -338,6 +361,7 @@
   <string name="empty_category">Prazne kategorije</string>
   <string name="empty_payee">Prazni prejemnik plačila</string>
   <string name="help">Pomoč</string>
+  <string name="delete_repeating_transaction">Briši ponavljajočo se transakcijo</string>
   <string name="last">Zadnji</string>
   <string name="accounts">Računi</string>
   <string name="to_account">Na račun</string>
@@ -349,7 +373,9 @@
   <string name="delete_others_selected_transaction">Ali ste prepričani da želite izbrisati %d izbranih transakcij?</string>
   <string name="categories">Kategorije</string>
   <string name="payees">Prejemniki plačila</string>
+  <string name="recurring_transactions">Ponavljajoče se transakcije </string>
   <string name="theme_holo_light">Holo svetloba</string>
+  <string name="new_account">Nov račun</string>
   <string name="create_new_account">Ustvari nov račun</string>
   <string name="amount_greater_or_equal">Znesek, večji ali enak</string>
   <string name="amount_from">Znesek iz</string>
@@ -357,15 +383,28 @@
   <string name="amount_to">Znesek do</string>
   <string name="reset">Ponastavi</string>
   <string name="result_search">Rezultat iskanja</string>
+  <string name="new_repeating_transaction">Nova ponavljajoča se transakcija</string>
+  <string name="edit_repeating_transaction">Uredi ponavljajočo se transakcijo</string>
+  <string name="path_database_not_exists"></string>
   <string name="database_can_not_open_write">Podatkovne zbirke ni mogoče odpreti za pisanje</string>
   <string name="time_frame">Časovni okvir</string>
+  <string name="show_chart">Prikaži graf</string>
+  <string name="add_transaction">Dodaj transakcijo</string>
+  <string name="welcome_header">Dobrodošli v MoneyManagerEx</string>
   <string name="welcome_body">Vsi posli v MoneyManagerEx pripadajo računom.\n\nTrenutno nimate vidnih računov. V nastavitvah prilagodite filter za vidne račune ali izberite eno od spodnjih možnosti.</string>
   <string name="welcome_body_dropbox">Če že uporabljate MoneyManagerEx v operacijskih sistemih Windows, Linux ali Mac, lahko sinhronizirate svojo bazo podatkov s ponudnikom shranjevanja v cloud</string>
+  <string name="configure_sync">Nastavi sinhronizacijo</string>
   <string name="search_text_contain_title">Iskanje po vsebini besedila in ne po besedilu k se začne z</string>
   <string name="search_text_contain_summary">Iskanje, prejemnikov plačil, kategorij, itd&#8230; po vsebini in ne z zagonom znakov</string>
+  <string name="rate_application">Oceni aplikacijo</string>
+  <string name="withdrawal_from">Odliv iz %1$s</string>
+  <string name="deposit_to">Priliv v %1$s</string>
+  <string name="mmex_website">Spletno mesto MoneyManagerEx</string>
+  <string name="android_website">Spletno mesto MMEx za Android </string>
   <string name="donate_in_app_already_donate">Za razvoj razvojne MoneyManagerEx za Android ste že podpirali z donacijo!\n\n In zahvaljuje se vam razvojna ekipa!</string>
   <string name="donate_in_app_retrieving_status">Pridobivanje statusa vaših prispevkov v Googlu Play. Prosim počakajte&#8230;</string>
   <string name="donate_in_app_error">Zaračunavanja v aplikaciji ni mogoče uporabiti. Preverite, ali je nameščena najnovejša različica aplikacije Trgovina Play.</string>
+  <string name="title_notifications_repeating_transaction"></string>
   <string name="tools">Orodja</string>
   <string name="entities">Subjekti</string>
   <string name="loading">Nalaganje&#8230;</string>
@@ -404,6 +443,7 @@
   <string name="tutorial_global_1">Več valut in jezikov. Odprtokodno. Pridružite se naši prevajalski skupini.</string>
   <string name="tutorial_sync_1">Podpora za več platform, sinhronizacija prek več storitev v cloud. Uvoz in izvoz podatkov v druge aplikacije.</string>
   <string name="transactions">Transakcije</string>
+  <string name="split_category">-razdeljena kategorija-</string>
   <string name="title_activity_currency_chart">Grafikon deviznega tečaja</string>
   <string name="sort_by_ascending">Razvrsti po letu in mesecu naraščajoče</string>
   <string name="sort_by_desceding">Razvrsti po letu in mesecu, ki se spušča</string>
@@ -421,6 +461,10 @@
   <string name="qif_export">Qif izvoz</string>
   <string name="update_prices">Posodobi cene</string>
   <string name="update_price">Posodobi ceno</string>
+  <string name="edit_price">Uredi ceno</string>
+  <string name="price_updated">Cena posodobljena</string>
+  <string name="all_prices_updated">Vse cene posodobljene</string>
+  <string name="download_complete">Prenos dokončan</string>
   <string name="confirm_price_download">Ali želite spletnemu mestu posodobiti cene varovanja?</string>
   <string name="starting_price_update">Prenašanje cen, prosimo počakajte&#8230;</string>
   <string name="database_migrate_14_to_20">Selitev podatkovnih zbirk iz v1.4</string>
@@ -428,9 +472,17 @@
   <string name="database_migrate_14_to_20_failure">Migracija baze podatkov ni uspela. Obrnite se na podporo.</string>
   <string name="database_migrate_14_to_20_complete">Selitev je končana. Zaprite nastavitve, da začnete uporabljati to bazo podatkov.</string>
   <string name="database_migrate_14_to_20_intro">Na stari lokaciji je bila zaznana baza podatkov. Tapnite spodnji gumb, da se preselite na kartico SD in jo uporabite.</string>
+  <string name="export_prices">Izvozi cene</string>
   <string name="purge_history_confirmation">Ali želite izbrisati celotno zgodovino cen za vse račune?</string>
+  <string name="create_db">Kreiraj bazo podatkov</string>
+  <string name="create_db_summary">Kreiraj novo datoteko z bazo podatkov </string>
+  <string name="create_db_hint">Vpiši ime datoteke </string>
   <string name="db_check_integrity_success">Podatkovna baza je uspešno preverila integriteto.</string>
   <string name="db_check_integrity_error">Napaka: datoteka baze podatkov je poškodovana!</string>
+  <string name="select_all">Izberi vse</string>
+  <string name="choose_type">Izberi vrsto</string>
+  <string name="default_account">Privzet račun</string>
+  <string name="default_account_summary">Privzet račun pri vnosu nove transakcije. </string>
   <string name="default_account_not_set">Privzeti račun ni bil nastavljen.</string>
   <string name="balance_account">Bilančni račun</string>
   <string name="balance_adjustment">Popravek bilanc</string>
@@ -459,11 +511,30 @@
   <string name="appwidget_text">PRIMER</string>
   <string name="configure">Konfiguracija</string>
   <!-- edit investment transaction -->
+  <string name="purchase_date">Datum nabave</string>
+  <string name="current_price">Tekoča cena</string>
+  <string name="value">Vrednost </string>
+  <string name="view_transactions">Pregled transakcije</string>
+  <string name="other">Drugo </string>
+  <string name="delete_success">Izbrisan vnos</string>
   <!-- asset allocation -->
+  <string name="name">Ime</string>
   <string name="all_accounts">Vsi računi</string>
+  <string name="records">zapisi</string>
   <!-- db password entry -->
+  <string name="enter_password">Vpiši geslo </string>
+  <string name="overview">Povzetek</string>
+  <string name="favourite">Priljubljeno </string>
+  <string name="split_reset_notice">Prisotne so razdeljene kategorije v tej transakciji. Ročno jih je treba odstraniti. </string>
   <!-- budgets -->
+  <string name="add_budget">Dodaj proračun</string>
+  <string name="budget_name">Ime proračuna </string>
+  <string name="budget_month">Mesec proračuna </string>
+  <string name="copy">Kopiraj</string>
+  <string name="print">Natisni</string>
+  <string name="save_as_html">Shrani kot HTML</string>
   <!-- Currencies -->
+  <string name="currencies">Valute</string>
   <string name="active_currencies">Aktivne valute</string>
   <string name="inactive_currencies">Neaktivne valute</string>
   <string name="all_currencies">Vse valute</string>
@@ -484,12 +555,27 @@
   <string name="summary_upload_to_drobpox">Dotaknite se, da ročno naložite povezano datoteko v mapo Dropbox</string>
   <string name="dropbox_how_it_works">Kako dela Dropbox za Money Manager Ex\?</string>
   <!-- Synchronization -->
+  <string name="synchronization">Sinhronizacija</string>
+  <string name="sync_enabled">Aktivirana sinhronizacija </string>
+  <string name="please_wait">Počakaj</string>
+  <string name="every_5_minutes">Na 5 minut</string>
+  <string name="every_15_minutes">Na 15 minut</string>
+  <string name="every_30_minutes">Na 30 minut</string>
+  <string name="every_hour">Vsako uro</string>
+  <string name="every_2_hours">Vsaki 2 uri</string>
+  <string name="every_3_hours">Vsake 3 ure</string>
+  <string name="every_6_hours">Na 6 ur</string>
+  <string name="every_12_hours">Na 12 ur</string>
+  <string name="never">Nikoli</string>
   <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->
+  <string name="select_language">Izberi jezik</string>
   <!-- Settings -->
   <string name="per_database_settings">Zbirke podatkovnih baz</string>
+  <string name="save">Shrani</string>
+  <string name="title_budget_show_simple_view"></string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>

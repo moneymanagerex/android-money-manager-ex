@@ -192,10 +192,10 @@
   <string name="close_application">أغلق التطبيق</string>
   <string name="question_close_application">هل تريد إغلاق التطبيق ؟</string>
   <string name="error_intent_pick_file">لم يتم العثور على تشاط للتعامل مع الملف</string>
-  <string name="attention">إنتباه</string>
-  <string name="payee_can_not_deleted">لا يمكن حذف المستفيد المحدد لأنه مرجع</string>
-  <string name="account_can_not_deleted">لا يمكن حذف الحساب المحدد لأنه مرجع</string>
-  <string name="currency_can_not_deleted">لا يمكن حذف العملة المحددة لأنه مرجع</string>
+  <string name="attention">انتبه</string>
+  <string name="payee_can_not_deleted">لا يمكن حذف المستفيد المحدد  لأنه هُنالك مُعاملات مرتبطة بها</string>
+  <string name="account_can_not_deleted">لا يمكن حذف الحساب المحدد  لأنه هُنالك مُعاملات مرتبطة بها</string>
+  <string name="currency_can_not_deleted">لا يمكن حذف العملة المحددة  لأنه هُنالك مُعاملات مرتبطة بها</string>
   <string name="category_can_not_deleted">لا يمكن حذف الفئة المحددة لأنه هُنالك مُعاملات مرتبطة بها</string>
   <!-- transaction list periods -->
   <string name="all_transaction">كافة المعاملات</string>
@@ -203,7 +203,7 @@
   <string name="last7days">آخر 7 أيام</string>
   <string name="last15days">آخر أسبوعين</string>
   <string name="current_month">الشهر الحالي</string>
-  <string name="current_year">السنة الحالية</string>
+  <string name="current_year">العام الحالية</string>
   <string name="future_transactions">المعاملات المستقبلية</string>
   <string name="show_transaction">عرض المعاملة</string>
   <string name="changelog">سِجل التغييرات</string>
@@ -228,6 +228,7 @@
   <string name="in_x_months">خلال (×) شهر</string>
   <string name="every_x_days">كل (×) يوم</string>
   <string name="every_x_months">كل (×) شهر</string>
+  <string name="repeating_empty_transaction">لم يتم العثور على أي معاملات مجدولة. لإنشاء معاملة مجدولة، انقر على زر الزائد الأخضر.</string>
   <string name="inactive">غير نشط</string>
   <string name="days_overdue">أيام متأخرة!</string>
   <string name="days_remaining">أيام متبقية</string>
@@ -245,6 +246,7 @@
   <string name="skip">تخطي</string>
   <string name="enter">ادخال</string>
   <string name="enter_amount">أدخل القيمة</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">إرسال الملاحظات</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

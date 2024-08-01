@@ -240,6 +240,7 @@
   <string name="skip">Bỏ qua</string>
   <string name="enter">Nhập dữ liệu</string>
   <string name="enter_amount">Nhập số tiền</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Gửi phản hồi</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

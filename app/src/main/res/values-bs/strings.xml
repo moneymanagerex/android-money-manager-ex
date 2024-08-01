@@ -240,6 +240,7 @@
   <string name="skip">Preskoči</string>
   <string name="enter">Unesi</string>
   <string name="enter_amount">Unesite iznos</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Pošaljite povratne informacije</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

@@ -240,6 +240,7 @@
   <string name="skip">Παράλειψη</string>
   <string name="enter">Εισαγωγή</string>
   <string name="enter_amount">Εισάγετε Ποσό</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Αποστολή σχολίων</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

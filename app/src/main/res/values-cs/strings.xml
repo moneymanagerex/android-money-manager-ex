@@ -240,6 +240,7 @@
   <string name="skip">Přeskočit</string>
   <string name="enter">Vložit</string>
   <string name="enter_amount">Vložit částku</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Zašlete svůj názor</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

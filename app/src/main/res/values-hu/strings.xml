@@ -240,6 +240,7 @@
   <string name="skip">Átugor</string>
   <string name="enter">Belépés</string>
   <string name="enter_amount">Mennyiség Megadása</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Visszajelzés küldése</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

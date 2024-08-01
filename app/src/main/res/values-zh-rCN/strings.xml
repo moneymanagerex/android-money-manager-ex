@@ -240,6 +240,7 @@
   <string name="skip">跳过</string>
   <string name="enter">回车</string>
   <string name="enter_amount">输入金额</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">发送反馈和建议</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

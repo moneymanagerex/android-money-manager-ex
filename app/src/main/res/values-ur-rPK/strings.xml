@@ -240,6 +240,7 @@
   <string name="skip">موخر</string>
   <string name="enter">داخل کریں</string>
   <string name="enter_amount">رقم داخل کریں</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">جواب الجواب بھیجیں</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

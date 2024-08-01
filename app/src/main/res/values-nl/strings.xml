@@ -242,6 +242,7 @@
   <string name="skip">Overslaan</string>
   <string name="enter">Voer in</string>
   <string name="enter_amount">Vul bedrag in</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Feedback Versturen</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

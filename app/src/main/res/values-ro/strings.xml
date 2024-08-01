@@ -240,6 +240,7 @@
   <string name="skip">Omiteţi</string>
   <string name="enter">Introduceţi</string>
   <string name="enter_amount">Introduceți suma</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">Trimite Feedback</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

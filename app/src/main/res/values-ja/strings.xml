@@ -240,6 +240,7 @@
   <string name="skip">スキップ</string>
   <string name="enter">入力</string>
   <string name="enter_amount">金額を入力</string>
+  <!-- EP Recurring mode recurring_mode -->
   <!-- 20121121 -->
   <string name="send_feedback">フィードバックを送信</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
