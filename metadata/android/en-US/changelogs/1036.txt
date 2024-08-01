@@ -1,0 +1,4 @@
+- Scheduled transactions refine, incl. notification, default setting
+- Split transaction editing refinement
+- Update i18n on 2024-08-01 from Crowdin
+- Other minor bug fixes
