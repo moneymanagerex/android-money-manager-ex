@@ -13,7 +13,6 @@ import android.os.CancellationSignal;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
-import com.money.manager.ex.PasscodeActivity;
 
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
