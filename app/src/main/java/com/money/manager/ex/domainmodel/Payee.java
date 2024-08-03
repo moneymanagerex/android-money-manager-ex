@@ -29,6 +29,7 @@ public class Payee
     public static final String PAYEEID = "PAYEEID";
     public static final String PAYEENAME = "PAYEENAME";
     public static final String CATEGID = "CATEGID";
+    public static final String NUMBER = "NUMBER";
 
     public Payee() {
         super();

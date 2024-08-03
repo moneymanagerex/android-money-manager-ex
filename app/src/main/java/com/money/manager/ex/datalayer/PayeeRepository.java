@@ -37,9 +37,10 @@ public class PayeeRepository
     @Override
     public String[] getAllColumns() {
         return new String[] { "PAYEEID AS _id",
-            Payee.PAYEEID,
-            Payee.PAYEENAME,
-            Payee.CATEGID
+                Payee.PAYEEID,
+                Payee.PAYEENAME,
+                Payee.CATEGID,
+                Payee.NUMBER
         };
     }
 
@@ -67,6 +68,6 @@ public class PayeeRepository
 
     public boolean save(Payee payee) {
         int id = payee.getId();
-        return super.update(payee, Payee.PAYEEID + "=" + id);
+        return super.update(payee, Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 }
