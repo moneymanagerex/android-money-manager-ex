@@ -188,7 +188,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PayeeActivity"
+                android:name=".payee.PayeeActivity"
                 android:label="@string/payee" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -278,7 +278,7 @@
                 <data android:scheme="com.money.manager.ex" />
             </intent-filter>
         </activity>
-        <activity android:name=".PasscodeActivity" android:exported="true">
+        <activity android:name=".passcode.PasscodeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>

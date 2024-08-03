@@ -43,7 +43,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.Calculator;
