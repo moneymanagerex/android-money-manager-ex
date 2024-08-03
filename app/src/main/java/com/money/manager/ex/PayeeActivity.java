@@ -23,7 +23,7 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.fragment.PayeeListFragment;
+import com.money.manager.ex.payee.PayeeListFragment;
 
 import androidx.fragment.app.FragmentManager;
 
