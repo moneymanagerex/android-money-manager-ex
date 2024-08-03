@@ -130,7 +130,7 @@ public class MmxContentProvider
         // Cycle all data sets for the composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {
             // add URI
-            sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasepath(), i);
+            sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasePath(), i);
             // put map in the object being added in UriMatcher
             mapContent.put(i, objMoneyManager.get(i));
         }
@@ -171,7 +171,7 @@ public class MmxContentProvider
                 } catch (Exception e) {
                     Timber.e(e, "inserting: %s", "insert");
                 }
-                parse = dataset.getBasepath() + "/" + id;
+                parse = dataset.getBasePath() + "/" + id;
             } else {
                 throw new IllegalArgumentException("Type of dataset not supported for update");
             }
