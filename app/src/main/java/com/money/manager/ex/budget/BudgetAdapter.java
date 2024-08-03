@@ -225,7 +225,7 @@ public class BudgetAdapter
     private double getBudgetAmountFor(int categoryId, int subCategoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
         return mBudgetEntries.containsKey(key)
-                ? mBudgetEntries.get(key).getContentValues().getAsDouble(BudgetQuery.AMOUNT)
+                ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
                 : 0;
     }
 
@@ -238,7 +238,7 @@ public class BudgetAdapter
     private BudgetPeriodEnum getBudgetPeriodFor(int categoryId, int subCategoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
         return mBudgetEntries.containsKey(key)
-                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getContentValues().getAsString(BudgetQuery.PERIOD))
+                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
                 : BudgetPeriodEnum.NONE;
     }
 

@@ -33,17 +33,17 @@ public abstract class Dataset
 	 * 
 	 * @param source table/view/query
 	 * @param type of dataset
-	 * @param basepath for match uri
+	 * @param basePath for match uri
 	 */
-	public Dataset(String source, DatasetType type, String basepath) {
+	public Dataset(String source, DatasetType type, String basePath) {
 		this.source = source;
 		this.type = type;
-		this.basepath = basepath;
+		this.basePath = basePath;
 	}
 
 	private String source = "";
 	private final DatasetType type;
-	private String basepath = "";
+	private String basePath = "";
 
 	/**
 	 * All columns of the dataset.
@@ -54,8 +54,8 @@ public abstract class Dataset
 	/**
 	 * @return the basepath
 	 */
-	public String getBasepath() {
-		return basepath;
+	public String getBasePath() {
+		return basePath;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public abstract class Dataset
 	public Uri getUri() {
 		String baseUri = "content://" + MmxContentProvider.getAuthority() + "/";
 
-		if (!TextUtils.isEmpty(this.basepath)) {
+		if (!TextUtils.isEmpty(this.basePath)) {
 //			switch (this.type) {
 //                case TABLE:
 //                    // todo: inspect what was the intention here. The result of the operation is ignored.
@@ -92,7 +92,7 @@ public abstract class Dataset
 //                default:
 //                    break;
 //			}
-			String fullUri = baseUri.concat(this.basepath);
+			String fullUri = baseUri.concat(this.basePath);
 			return Uri.parse(fullUri);
 		} else {
 			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");

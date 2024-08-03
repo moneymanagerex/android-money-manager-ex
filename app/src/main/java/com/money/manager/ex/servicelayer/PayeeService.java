@@ -128,4 +128,13 @@ public class PayeeService
                 Payee.PAYEEID + "=?",
                 new String[]{Integer.toString(id)});
     }
+
+    /**
+     * Method, which returns the last payee used
+     * @return last payee used
+     */
+    public Payee getLastPayeeUsed() {
+        // TODO
+        return null;
+    }
 }

@@ -110,7 +110,7 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
-    protected String getString(String fieldName) {
+    public String getString(String fieldName) {
         return contentValues.getAsString(fieldName);
     }
 
@@ -118,7 +118,7 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
-    protected Double getDouble(String column) {
+    public Double getDouble(String column) {
         return contentValues.getAsDouble(column);
     }
 
