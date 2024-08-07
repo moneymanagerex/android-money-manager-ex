@@ -28,7 +28,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -407,7 +406,7 @@ public class RecurringTransactionEditActivity
 
         // Icon
         UIHelper ui = new UIHelper(this);
-        mViewHolder.paymentDateTextView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
+//        mViewHolder.paymentDateTextView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
 
         mViewHolder.paymentPreviousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override

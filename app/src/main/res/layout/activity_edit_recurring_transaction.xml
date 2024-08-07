@@ -104,14 +104,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/paymentPreviousDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackground"
-                    android:text="@string/ic_chevron_left"
-                    android:textSize="@dimen/fonticon_drawer" />
+                    app:iiv_icon="gmd-keyboard-arrow-left"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/paymentDateTextView"
@@ -124,14 +125,15 @@
                     android:textStyle="bold"
                     android:textAlignment="center" />
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/paymentNextDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackground"
-                    android:text="@string/ic_chevron_right"
-                    android:textSize="@dimen/fonticon_drawer" />
+                    app:iiv_icon="gmd-keyboard-arrow-right"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
 
                 <!--<com.mikepenz.iconics.view.IconicsImageView-->
                     <!--android:layout_width="72dp"-->
