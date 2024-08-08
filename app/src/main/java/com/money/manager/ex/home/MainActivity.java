@@ -1224,11 +1224,9 @@ public class MainActivity
     private void populateScheduledTransactions() {
         // start notification & execution for scheduled transaction
         boolean showNotification = false;
-        boolean autoExecution = false;
         if (!isScheduledTransactionStarted) {
             AppSettings settings = new AppSettings(this);
             showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            autoExecution = settings.getBehaviourSettings().getExecutionScheduledTransaction();
             if (showNotification) {
                 RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
                 notifications.notifyRepeatingTransaction();
@@ -1240,48 +1238,6 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        /*   // EP Remove from start intent and set in notification management
-        if (!autoExecution) return;
-
-        QueryBillDeposits billDeposits = new QueryBillDeposits(getApplicationContext());
-        RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(getApplicationContext());
-        AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
-
-        Cursor cursor = getApplicationContext().getContentResolver().query(billDeposits.getUri(),
-                null,
-                QueryBillDeposits.DAYSLEFT + "<=0",
-                null,
-                QueryBillDeposits.NEXTOCCURRENCEDATE);
-        if (cursor == null) return;
-
-        while (cursor.moveToNext()) {
-            @SuppressLint("Range") int scheduledTransactionId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID));
-
-            RecurringTransaction scheduledTrx = scheduledRepo.load(scheduledTransactionId); // copy
-
-            // EP handle recurring transaction
-            if ( scheduledTrx.isRecurringModeAuto()) {
-                AccountTransaction accountTrx = AccountTransaction.create();
-                accountTrx.setDate(scheduledTrx.getPaymentDate());
-                accountTrx.setAccountId(scheduledTrx.getAccountId());
-                accountTrx.setAccountToId(scheduledTrx.getToAccountId());
-                accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
-                accountTrx.setStatus(scheduledTrx.getStatus());
-                accountTrx.setAmount(scheduledTrx.getAmount());
-                accountTrx.setAmountTo(scheduledTrx.getAmountTo());
-                accountTrx.setPayeeId(scheduledTrx.getPayeeId());
-                accountTrx.setCategoryId(scheduledTrx.getCategoryId());
-                accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
-                accountTrx.setNotes(scheduledTrx.getNotes());
-
-                accountTransactionRepository.insert(accountTrx);
-
-                RecurringTransactionService service = new RecurringTransactionService(scheduledTransactionId, this);
-                service.moveNextOccurrence();
-            }
-        }
-        cursor.close();
-        */
         // TODO persist
     }
 

@@ -20,7 +20,7 @@ package com.money.manager.ex.recurring.transactions;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.shamanland.fonticon.FontIconView;
+import com.mikepenz.iconics.view.IconicsImageView;
 
 /**
  * View Holder pattern for Recurring Transaction editing
@@ -28,7 +28,9 @@ import com.shamanland.fonticon.FontIconView;
 public class RecurringTransactionViewHolder {
 //    public TextView dueDateTextView;
     public TextView paymentDateTextView;
-    public FontIconView paymentPreviousDayButton, paymentNextDayButton;
+
+    public IconicsImageView paymentPreviousDayButton;
+    public IconicsImageView paymentNextDayButton;
     public TextView recurrenceLabel;
     public TextView paymentsLeftTextView;
     public EditText paymentsLeftEditText;
