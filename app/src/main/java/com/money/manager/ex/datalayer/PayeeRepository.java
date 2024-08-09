@@ -40,7 +40,8 @@ public class PayeeRepository
                 Payee.PAYEEID,
                 Payee.PAYEENAME,
                 Payee.CATEGID,
-                Payee.NUMBER
+                Payee.NUMBER,
+                Payee.ACTIVE
         };
     }
 

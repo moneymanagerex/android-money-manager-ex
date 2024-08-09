@@ -30,9 +30,11 @@ public class Payee
     public static final String PAYEENAME = "PAYEENAME";
     public static final String CATEGID = "CATEGID";
     public static final String NUMBER = "NUMBER";
+    public static final String ACTIVE = "ACTIVE";
 
     public Payee() {
         super();
+        setInt(Payee.ACTIVE, 1);
     }
 
     public Payee(ContentValues contentValues) {
