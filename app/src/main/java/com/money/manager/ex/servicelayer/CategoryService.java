@@ -50,7 +50,7 @@ public class CategoryService
         return getRepository().loadIdByName(name, parentId);
     }
 
-    public int createNew(String name) {
+    public int createNew(String name, int parentId) {
         if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
@@ -58,26 +58,7 @@ public class CategoryService
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
         values.put(Category.ACTIVE, 1);
-        values.put(Category.PARENTID, -1);
-
-        CategoryRepository repo = new CategoryRepository(getContext());
-
-        Uri result = getContext().getContentResolver()
-                .insert(repo.getUri(), values);
-        long id = ContentUris.parseId(result);
-
-        return ((int) id);
-    }
-
-    public int createNewSubcategory(String name, int categoryId) {
-        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
-
-        name = name.trim();
-
-        ContentValues values = new ContentValues();
-        values.put(Category.CATEGNAME, name);
-        values.put(Category.ACTIVE, 1);
-        values.put(Category.PARENTID, categoryId);
+        values.put(Category.PARENTID, parentId);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
@@ -120,13 +101,14 @@ public class CategoryService
         return getRepository().query(Category.class, query);
     }
 
-    public int update(int id, String name) {
+    public int update(int id, String name, int parentId) {
         if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
+        values.put(Category.PARENTID, parentId);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 

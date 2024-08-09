@@ -333,7 +333,7 @@ public class CheckingTransactionEditActivity
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
                 CategoryService newCategory = new CategoryService(this);
-                mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
+                mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName, Constants.NOT_SET));
                 mCommon.categoryName = parameters.categoryName;
             } else {
                 // try to resolve the category from the payee
