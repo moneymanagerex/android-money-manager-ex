@@ -540,14 +540,14 @@ public class CategoryListFragment
 
                         switch (type) {
                             case INSERT:
-                                int insertResult = service.createNew(name);
+                                int insertResult = service.createNew(name, Constants.NOT_SET);
 
                                 if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(categoryId, name);
+                                int updateResult = service.update(categoryId, name, Constants.NOT_SET);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
@@ -619,26 +619,21 @@ public class CategoryListFragment
                         // check position
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
-                        // get category id
-                        int categId = categories.get(spnCategory.getSelectedItemPosition()).getId();
-                        ContentValues values = new ContentValues();
-                        values.put(Category.PARENTID, categId);
-                        values.put(Category.CATEGNAME, name);
+                        // get parent category id
+                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
+                        CategoryService service = new CategoryService(getActivity());
 
-                        CategoryRepository repo = new CategoryRepository(getActivity());
-
-                        // check type transaction is request
                         switch (type) {
                             case INSERT:
-                                if (getActivity().getContentResolver().insert(repo.getUri(), values) == null) {
+                                int insertResult = service.createNew(name, parentID);
+
+                                if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                if (getActivity().getContentResolver().update(
-                                        repo.getUri(),
-                                        values,
-                                        Category.CATEGID + "=?", new String[]{Integer.toString(subCategoryId)}) == 0) {
+                                int updateResult = service.update(categoryId, name, parentID);
+                                if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

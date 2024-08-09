@@ -38,9 +38,10 @@ public class CategoryRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {"CATEGID AS _id",
-            Category.CATEGID,
-            Category.CATEGNAME,
-            Category.PARENTID};
+                Category.CATEGID,
+                Category.CATEGNAME,
+                Category.ACTIVE,
+                Category.PARENTID};
     }
 
     public Category load(int id) {
