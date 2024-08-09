@@ -57,6 +57,7 @@ public class CategoryService
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
+        values.put(Category.ACTIVE, 1);
         values.put(Category.PARENTID, -1);
 
         CategoryRepository repo = new CategoryRepository(getContext());
@@ -75,6 +76,7 @@ public class CategoryService
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
+        values.put(Category.ACTIVE, 1);
         values.put(Category.PARENTID, categoryId);
 
         CategoryRepository repo = new CategoryRepository(getContext());

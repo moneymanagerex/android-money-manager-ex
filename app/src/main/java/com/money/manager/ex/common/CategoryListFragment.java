@@ -620,10 +620,12 @@ public class CategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get category id
-                        int categId = categories.get(spnCategory.getSelectedItemPosition()).getId();
+                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
+
                         ContentValues values = new ContentValues();
-                        values.put(Category.PARENTID, categId);
+                        values.put(Category.PARENTID, parentID);
                         values.put(Category.CATEGNAME, name);
+                        values.put(Category.ACTIVE, 1);
 
                         CategoryRepository repo = new CategoryRepository(getActivity());
 
