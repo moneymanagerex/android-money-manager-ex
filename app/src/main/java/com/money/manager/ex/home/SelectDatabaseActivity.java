@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -34,21 +35,20 @@ import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import timber.log.Timber;
 
 /**
  * Activity for selecting a database in the initial setup of the app.
  */
-public class SelectDatabaseActivity
-    extends MmxBaseFragmentActivity {
+public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
 
-    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    private Toolbar mToolbar;
+    private Button createDatabaseButton;
+    private Button openDatabaseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,20 @@ public class SelectDatabaseActivity
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        ButterKnife.bind(this);
+        // Initialize views using findViewById()
+        mToolbar = findViewById(R.id.toolbar);
+        createDatabaseButton = findViewById(R.id.createDatabaseButton);
+        openDatabaseButton = findViewById(R.id.openDatabaseButton);
 
         // Request external storage permissions for Android 6+.
         MmxFileUtils fileUtils = new MmxFileUtils(this);
         fileUtils.requestExternalStoragePermissions(this);
 
         setSupportActionBar(mToolbar);
+
+        // Set up click listeners for buttons
+        createDatabaseButton.setOnClickListener(v -> onCreateDatabaseClick());
+        openDatabaseButton.setOnClickListener(v -> onOpenDatabaseClick());
     }
 
     @Override
@@ -74,7 +81,8 @@ public class SelectDatabaseActivity
             Timber.w("The activity result is not OK");
             return;
         }
-        if (requestCode == RequestCodes.SELECT_DOCUMENT) {// file selected at a Storage Access Framework.
+        if (requestCode == RequestCodes.SELECT_DOCUMENT) {
+            // file selected at a Storage Access Framework.
             FileStorageHelper storageHelper = new FileStorageHelper(this);
             storageHelper.selectDatabase(data);
             onDatabaseSelected();
@@ -85,36 +93,24 @@ public class SelectDatabaseActivity
         }
     }
 
-    // Permissions
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // cancellation
-        //if (permissions.length == 0) return;
-        Timber.d("returning from permissions request"); // permissions
+        Timber.d("returning from permissions request");
     }
 
-    @OnClick(R.id.createDatabaseButton)
-    void onCreateDatabaseClick() {
+    private void onCreateDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
         helper.showCreateFilePicker();
     }
 
-    @OnClick(R.id.openDatabaseButton)
-    void onOpenDatabaseClick() {
+    private void onOpenDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
         helper.showStorageFilePicker();
     }
-
-//    @OnClick(R.id.setupSyncButton)
-//    void onSetupSyncClick() {
-//        Intent intent = new Intent(this, SyncPreferencesActivity.class);
-//        startActivity(intent);
-//    }
 
     private void onDatabaseSelected() {
         // open the main activity

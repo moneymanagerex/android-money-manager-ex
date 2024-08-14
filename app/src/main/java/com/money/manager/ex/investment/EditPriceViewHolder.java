@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,31 +25,33 @@ import com.money.manager.ex.view.RobotoTextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * View Holder pattern for edit price binaryDialog.
  */
 public class EditPriceViewHolder {
 
-    @BindView(R.id.symbolTextView) public RobotoTextView symbolTextView;
-    @BindView(R.id.amountTextView) public RobotoTextView amountTextView;
-    @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
-//    @BindView(R.id.dateControl) public DateDisplay dateDisplay;
-
-//    @BindView(R.id.previousDayButton) @Nullable public FontIconView previousDayButton;
-    @BindView(R.id.previousDayButton) @Nullable
-    public IconicsImageView previousDayButton;
-
-//    @BindView(R.id.nextDayButton) @Nullable public FontIconView nextDayButton;
-    @BindView(R.id.nextDayButton) @Nullable public IconicsImageView nextDayButton;
+    public RobotoTextView symbolTextView;
+    public RobotoTextView amountTextView;
+    public RobotoTextView dateTextView;
+    @Nullable public IconicsImageView previousDayButton;
+    @Nullable public IconicsImageView nextDayButton;
 
     public void bind(View view) {
-        ButterKnife.bind(this, view);
+        // Manually bind views
+        symbolTextView = view.findViewById(R.id.symbolTextView);
+        amountTextView = view.findViewById(R.id.amountTextView);
+        dateTextView = view.findViewById(R.id.dateTextView);
+        previousDayButton = view.findViewById(R.id.previousDayButton);
+        nextDayButton = view.findViewById(R.id.nextDayButton);
     }
 
     public void bind(AppCompatActivity activity) {
-        ButterKnife.bind(this, activity);
+        // Manually bind views
+        symbolTextView = activity.findViewById(R.id.symbolTextView);
+        amountTextView = activity.findViewById(R.id.amountTextView);
+        dateTextView = activity.findViewById(R.id.dateTextView);
+        previousDayButton = activity.findViewById(R.id.previousDayButton);
+        nextDayButton = activity.findViewById(R.id.nextDayButton);
     }
 }
