@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import info.javaperformance.money.Money;
@@ -71,8 +72,6 @@ public class FreeCurrencyExchangeRateAPIService extends PriceUpdaterBase impleme
         if (symbols == null || symbols.isEmpty()) return;
 
         showProgressDialog(symbols.size());
-
-        String symbolsString = String.join(",", symbols);
 
         service.getExchangeRates(baseCurrency).enqueue(new Callback<JsonObject>() {
             @Override
@@ -155,7 +154,7 @@ public class FreeCurrencyExchangeRateAPIService extends PriceUpdaterBase impleme
         priceModel.symbol = quote.getKey();
 
         JsonElement priceElement = quote.getValue();
-        if (priceElement == JsonNull.INSTANCE || !NumericHelper.isNumeric(priceElement.getAsString())) {
+        if (Objects.equals(priceElement, JsonNull.INSTANCE) || !NumericHelper.isNumeric(priceElement.getAsString())) {
             uiHelper.showToast(getContext().getString(R.string.error_no_price_found_for_symbol) + " " + priceModel.symbol);
             return null;
         }
