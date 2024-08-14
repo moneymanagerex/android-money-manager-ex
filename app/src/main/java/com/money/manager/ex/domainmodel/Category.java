@@ -31,6 +31,7 @@ public class Category
     public static final String CATEGNAME = "CATEGNAME";
     public static final String ACTIVE = "ACTIVE";
     public static final String PARENTID = "PARENTID";
+    public static final String BASENAME = "BASENAME";
 
     public Category() {
         super();
@@ -63,4 +64,10 @@ public class Category
     public void setName(String value) {
         setString(CATEGNAME, value);
     }
+
+    public String getBasename() { return getString(BASENAME);}
+    public void setBasename(String value) { setString(BASENAME, value);}
+
 }
+
+

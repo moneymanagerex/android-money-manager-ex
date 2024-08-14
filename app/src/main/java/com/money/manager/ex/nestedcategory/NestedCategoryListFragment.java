@@ -161,13 +161,10 @@ public class NestedCategoryListFragment
                 case EDIT:
                     if (category.getParentId() <= 0) {
                         showDialogEditCategoryName(SQLTypeTransaction.UPDATE,
-                                category.getId(),
-                                category.getBasename());
+                                category);
                     } else {
                         showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE,
-                                category.getParentId(),
-                                category.getId(),
-                                category.getBasename());
+                                category);
                     }
                     break;
 
@@ -403,16 +400,15 @@ public class NestedCategoryListFragment
         /**
          * Show alter binaryDialog, for create or edit new category
          */
-        private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
-        final CharSequence categoryName) {
+        private void showDialogEditCategoryName(final SQLTypeTransaction type, Category category) {
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
 
             final EditText edtCategName = viewDialog.findViewById(R.id.editTextCategName);
             // set category description
-            edtCategName.setText(categoryName);
-            if (!TextUtils.isEmpty(categoryName)) {
-                edtCategName.setSelection(categoryName.length());
+            edtCategName.setText(category.getBasename());
+            if (!TextUtils.isEmpty(category.getBasename())) {
+                edtCategName.setSelection(category.getBasename().length());
             }
 
             int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -441,7 +437,7 @@ public class NestedCategoryListFragment
                                     }
                                     break;
                                 case UPDATE:
-                                    int updateResult = service.update(categoryId, name, Constants.NOT_SET);
+                                    int updateResult = service.update(category.getId(), name, Constants.NOT_SET);
                                     if (updateResult <= 0) {
                                         Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                     }
@@ -463,8 +459,7 @@ public class NestedCategoryListFragment
         /**
          * Show alter binaryDialog, for create or edit new category
          */
-        private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
-        final int subCategoryId, final CharSequence subCategName) {
+        private void showDialogEditSubCategoryName(final SQLTypeTransaction type, Category category) {
 
             // inflate view
             View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
@@ -472,9 +467,9 @@ public class NestedCategoryListFragment
             final EditText edtSubCategName = viewDialog.findViewById(R.id.editTextCategName);
             final Spinner spnCategory = viewDialog.findViewById(R.id.spinnerCategory);
             // set category description
-            edtSubCategName.setText(subCategName);
-            if (!TextUtils.isEmpty(subCategName)) {
-                edtSubCategName.setSelection(subCategName.length());
+            edtSubCategName.setText(category.getBasename());
+            if (!TextUtils.isEmpty(category.getBasename())) {
+                edtSubCategName.setSelection(category.getBasename().length());
             }
 
             // Fill categories list.
@@ -483,16 +478,16 @@ public class NestedCategoryListFragment
 
             ArrayList<String> categoryNames = new ArrayList<>();
             ArrayList<Integer> categoryIds = new ArrayList<>();
-            for (Category category : categories) {
-                categoryIds.add(category.getId());
-                categoryNames.add(category.getName());
+            for (Category category1 : categories) {
+                categoryIds.add(category1.getId());
+                categoryNames.add(category1.getName());
             }
             ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
             adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnCategory.setAdapter(adapterCategory);
             //select category if present
-            if (categoryId > 0) {
-                spnCategory.setSelection(categoryIds.indexOf(categoryId), true);
+            if (category.getId() > 0) {
+                spnCategory.setSelection(categoryIds.indexOf(category.getId()), true);
             }
 
             int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -526,7 +521,7 @@ public class NestedCategoryListFragment
                                     }
                                     break;
                                 case UPDATE:
-                                    int updateResult = service.update(categoryId, name, parentID);
+                                    int updateResult = service.update(category.getId(), name, parentID);
                                     if (updateResult <= 0) {
                                         Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                     }
@@ -579,10 +574,11 @@ public class NestedCategoryListFragment
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // todo: depending on the choice, show the edit dialog. 0-based
+                            NestedCategoryEntity newCategory = new NestedCategoryEntity(-1, null, -1);
                             if (which == 0) {
-                                showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                                showDialogEditCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());
                             } else {
-                                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
+                                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());
                             }
 
                             dialog.dismiss();
