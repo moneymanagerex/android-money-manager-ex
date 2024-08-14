@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,23 +22,24 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * View Holder for Budget Edit screen.
  */
 
-class BudgetEditViewHolder {
-    BudgetEditViewHolder(AppCompatActivity activity) {
-        ButterKnife.bind(this, activity);
-    }
-
-    @BindView(R.id.budgetNameTextView) TextView budgetNameTextView;
-    @BindView(R.id.budgetYearTextView) TextView budgetYearTextView;
-    @BindView(R.id.budgetMonthTextView) TextView budgetMonthTextView;
+public class BudgetEditViewHolder {
+    private TextView budgetNameTextView;
+    private TextView budgetYearTextView;
+    private TextView budgetMonthTextView;
 
     private BudgetViewModel model;
+
+    BudgetEditViewHolder(AppCompatActivity activity) {
+        // Initialize views using findViewById()
+        budgetNameTextView = activity.findViewById(R.id.budgetNameTextView);
+        budgetYearTextView = activity.findViewById(R.id.budgetYearTextView);
+        budgetMonthTextView = activity.findViewById(R.id.budgetMonthTextView);
+    }
 
     public void bind(BudgetViewModel model) {
         this.model = model;
