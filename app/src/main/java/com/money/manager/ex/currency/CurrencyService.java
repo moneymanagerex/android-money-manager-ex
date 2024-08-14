@@ -18,7 +18,6 @@ package com.money.manager.ex.currency;
 
 import android.content.Context;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -517,7 +516,7 @@ public class CurrencyService
         }
 
         IExchangeRateUpdater updater = ExchangeRateUpdaterFactory.getUpdaterInstance(getContext());
-        updater.downloadPrices(baseCurrencySymbol, currencySymbols);
+        updater.downloadPrices(baseCurrencySymbol.trim().toLowerCase(), currencySymbols);
         // result received via event
     }
 
