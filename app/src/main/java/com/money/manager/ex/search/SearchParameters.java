@@ -64,6 +64,9 @@ public class SearchParameters {
 
     public CategorySub category;
 
+    // Todo
+//    public NestedCategoryEntity nestedCategory;
+
     public String transactionNumber;
     public String notes;
 }

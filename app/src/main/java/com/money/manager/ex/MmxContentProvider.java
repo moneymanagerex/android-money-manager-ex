@@ -52,6 +52,7 @@ import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.nestedcategory.QueryNestedCastegory;
 import com.money.manager.ex.sync.SyncManager;
 
 import java.util.Arrays;
@@ -124,10 +125,12 @@ public class MmxContentProvider
             new QueryReportIncomeVsExpenses(context),
             new BudgetQuery(context),
             new ViewMobileData(context),
-            new SQLDataSet()
+            new SQLDataSet(),
+                new QueryNestedCastegory(context)
         );
 
-        // Cycle all data sets for the composition of UriMatcher
+        // Cycle all data sets for th
+        // e composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {
             // add URI
             sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasePath(), i);

@@ -54,6 +54,8 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
+import com.money.manager.ex.nestedcategory.NestedCategoryTest;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
@@ -235,6 +237,11 @@ public class MainActivity
         initializeSync();
 
         populateScheduledTransactions();
+
+        // TODO EP Remove this line, only for test
+        if ( (new AppSettings(this).getBehaviourSettings().getUseNestedCategory())) {
+            (new NestedCategoryTest()).main(getApplicationContext());
+        }
     }
 
     @Override
@@ -628,7 +635,12 @@ public class MainActivity
                 break;
 
             case R.id.menu_category:
-                showFragment(CategoryListFragment.class);
+                boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
+                if (!useNestedCategory) {
+                    showFragment(CategoryListFragment.class);
+                } else {
+                    showFragment(NestedCategoryListFragment.class);
+                }
                 break;
 
             case R.id.menu_currency:

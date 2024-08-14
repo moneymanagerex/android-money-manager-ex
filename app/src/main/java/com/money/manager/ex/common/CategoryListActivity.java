@@ -23,6 +23,8 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
+import com.money.manager.ex.settings.AppSettings;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -41,6 +43,7 @@ public class CategoryListActivity
     public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
     CategoryListFragment listFragment = new CategoryListFragment();
+    NestedCategoryListFragment nestedListFragment = new NestedCategoryListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +63,21 @@ public class CategoryListActivity
             listFragment.requestId = requestId;
         }
 
+        boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
+
         // management fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
+            if (!useNestedCategory) {
             // todo: use replace?
             fm.beginTransaction()
                 .add(R.id.content, listFragment, FRAGMENTTAG)
                 .commit();
+            } else {
+                fm.beginTransaction()
+                        .add(R.id.content, nestedListFragment, FRAGMENTTAG)
+                        .commit();
+            }
         }
     }
 

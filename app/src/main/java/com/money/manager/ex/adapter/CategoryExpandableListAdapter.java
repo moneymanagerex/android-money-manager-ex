@@ -52,10 +52,12 @@ public class CategoryExpandableListAdapter
         mShowSelector = showSelector;
     }
 
+
 	private final Context mContext;
 	private final int mLayout;
 	
 	private final List<Category> mCategories;
+
 	private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 	
 	private int mIdGroupChecked = ListView.INVALID_POSITION;
@@ -99,7 +101,7 @@ public class CategoryExpandableListAdapter
         }
 		
 		QueryCategorySubCategory entity = (QueryCategorySubCategory) getChild(groupPosition, childPosition);
-		if (entity == null) return convertView;
+		if (entity == null) {return convertView;}
 
         holder.text1.setText(entity.getSubcategoryName());
 
@@ -137,17 +139,18 @@ public class CategoryExpandableListAdapter
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
+		if ( mSubCategories == null ) return 0;
 		return mSubCategories.get(mCategories.get(groupPosition)).size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return mCategories.get(groupPosition);
+			return mCategories.get(groupPosition);
 	}
 
 	@Override
 	public int getGroupCount() {
-		return mCategories.size();
+			return mCategories.size();
 	}
 
 	@Override
@@ -170,9 +173,9 @@ public class CategoryExpandableListAdapter
 		}
 
 		// prevent exceptions. todo: Find out how this happens in the first place.
-		if (mCategories.size() == 0) return convertView;
+		if (mCategories.isEmpty() ) { return convertView; }
 
-        Category category = mCategories.get(groupPosition);
+			Category category = mCategories.get(groupPosition);
 
         holder.text1.setText(category.getName());
 

@@ -87,6 +87,7 @@
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
     <string name="pref_sms_auto_trans">pref_sms_automatic_transactions</string>
     <string name="pref_sms_trans_status_notification">pref_sms_trans_status_notification</string>
+    <string name="pref_use_nested_category">prefusenestedcategory</string>
 
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
