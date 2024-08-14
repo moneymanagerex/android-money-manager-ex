@@ -114,5 +114,4 @@ public class InvestmentSettings
         InfoService service = new InfoService(getContext());
         service.setInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER, value.name());
     }
-
 }
