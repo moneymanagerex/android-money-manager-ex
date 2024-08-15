@@ -43,7 +43,7 @@ public class QueryNestedCastegory
 
 
     public Cursor getCursor() {
-        return getCursor(null,null,null, null);
+        return getCursor(null, null, null, null);
     }
 
     public Cursor getCursor(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -52,7 +52,7 @@ public class QueryNestedCastegory
 
     public NestedCategoryEntity getOneCategoryEntity(Integer categoryId) {
         NestedCategoryEntity entity = null;
-        Cursor cursor = getCursor(null, QueryNestedCastegory.CATEGID + " = "+categoryId.toString(), null, null);
+        Cursor cursor = getCursor(null, QueryNestedCastegory.CATEGID + " = " + categoryId.toString(), null, null);
         if (cursor.moveToFirst()) {
             entity = new NestedCategoryEntity();
             entity.loadFromCursor(cursor);

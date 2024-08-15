@@ -34,7 +34,7 @@ public enum ContextMenuIds {
     ADD_SUB(10);
 
     public static ContextMenuIds get(int id) {
-        for(ContextMenuIds itemId : ContextMenuIds.values()) {
+        for (ContextMenuIds itemId : ContextMenuIds.values()) {
             if (itemId.getId() == id) return itemId;
         }
         return null;
