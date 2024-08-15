@@ -72,8 +72,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -135,8 +133,6 @@ public class SearchParametersFragment
 
         View view = inflater.inflate(R.layout.search_parameters_fragment, container, false);
 
-        // bind events
-        ButterKnife.bind(this, view);
         // bind controls
         viewHolder = new SearchParametersViewHolder(view);
 
@@ -184,6 +180,12 @@ public class SearchParametersFragment
         ArrayAdapter<String> currencyAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mCurrencySymbolList);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCurrency.setAdapter(currencyAdapter);
+
+        //
+        viewHolder.txtDateFrom.setOnClickListener(v -> onDateFromClicked());
+        viewHolder.txtDateTo.setOnClickListener(v -> onDateToClicked());
+        viewHolder.txtAmountFrom.setOnClickListener(v -> onAmountFromClicked());
+        viewHolder.txtAmountTo.setOnClickListener(v -> onAmountToClicked());
 
         //Payee
         viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
@@ -341,8 +343,7 @@ public class SearchParametersFragment
         displaySearchCriteria();
     }
 
-    @OnClick(R.id.textViewFromDate)
-    void onDateFromClicked() {
+    private void onDateFromClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateFrom);
 
         DatePickerDialog datePicker = new DatePickerDialog(
@@ -368,8 +369,7 @@ public class SearchParametersFragment
         datePicker.show();
     }
 
-    @OnClick(R.id.textViewToDate)
-    void onDateToClicked() {
+    private void onDateToClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateTo);
 
         DatePickerDialog datePicker = new DatePickerDialog(
@@ -395,8 +395,7 @@ public class SearchParametersFragment
         datePicker.show();
     }
 
-    @OnClick(R.id.textViewFromAmount)
-    void onAmountFromClicked() {
+    private void onAmountFromClicked() {
         Money amount = getSearchParameters().amountFrom;
         if (amount == null) {
             amount = MoneyFactory.fromDouble(0);
@@ -405,8 +404,7 @@ public class SearchParametersFragment
         Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_FROM);
     }
 
-    @OnClick(R.id.textViewToAmount)
-    void onAmountToClicked() {
+    private void onAmountToClicked() {
         Money amount = getSearchParameters().amountTo;
         if (amount == null) {
             amount = MoneyFactory.fromDouble(0);

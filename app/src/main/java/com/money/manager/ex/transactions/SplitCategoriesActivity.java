@@ -48,9 +48,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -75,7 +72,7 @@ public class SplitCategoriesActivity
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
     private SplitCategoriesAdapter mAdapter;
-    @BindView(R.id.splitsRecyclerView) RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private final int amountRequestOffset = 1000; // used to offset the request number for Amounts.
 
     @Override
@@ -98,11 +95,14 @@ public class SplitCategoriesActivity
         }
 
         setContentView(R.layout.activity_split_categories);
-        ButterKnife.bind(this);
+
+        mRecyclerView = findViewById(R.id.splitsRecyclerView);
 
         setDisplayHomeAsUpEnabled(true);
 
         initRecyclerView();
+
+        findViewById(R.id.fab).setOnClickListener(view -> addSplitTransaction());
     }
 
     @Override
@@ -186,11 +186,6 @@ public class SplitCategoriesActivity
         if (mSplitDeleted != null) {
             outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitDeleted));
         }
-    }
-
-    @OnClick(R.id.fab)
-    protected void onFabClick() {
-        addSplitTransaction();
     }
 
     /*

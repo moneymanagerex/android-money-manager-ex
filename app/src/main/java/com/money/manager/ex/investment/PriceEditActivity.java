@@ -42,8 +42,6 @@ import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import icepick.Icepick;
 import info.javaperformance.money.MoneyFactory;
@@ -67,8 +65,6 @@ public class PriceEditActivity
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        ButterKnife.bind(this);
-
         initializeToolbar();
 
         if (savedInstanceState != null) {
@@ -79,6 +75,10 @@ public class PriceEditActivity
 
         viewHolder = new EditPriceViewHolder();
         viewHolder.bind(this);
+        viewHolder.amountTextView.setOnClickListener(view -> onPriceClick());
+        viewHolder.dateTextView.setOnClickListener(view -> onDateClick());
+        viewHolder.previousDayButton.setOnClickListener(view -> onPreviousDayClick());
+        viewHolder.nextDayButton.setOnClickListener(view -> onNextDayClick());
 
         model.display(this, viewHolder);
     }
@@ -132,16 +132,14 @@ public class PriceEditActivity
         Icepick.saveInstanceState(this, savedInstanceState);
     }
 
-    @OnClick(R.id.amountTextView)
-    protected void onPriceClick() {
+    private void onPriceClick() {
         Calculator.forActivity(this)
             .amount(model.price)
             .roundToCurrency(false)
             .show(RequestCodes.AMOUNT);
     }
 
-    @OnClick(R.id.dateTextView)
-    protected void onDateClick() {
+    private void onDateClick() {
         MmxDate priceDate = model.date;
 
         DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
@@ -161,15 +159,13 @@ public class PriceEditActivity
         datePicker.show();
     }
 
-    @OnClick(R.id.previousDayButton)
-    protected void onPreviousDayClick() {
+    private void onPreviousDayClick() {
         model.date = model.date.minusDays(1);
 
         model.display(this, viewHolder);
     }
 
-    @OnClick(R.id.nextDayButton)
-    protected void onNextDayClick() {
+    private void onNextDayClick() {
         model.date = model.date.plusDays(1);
 
         model.display(this, viewHolder);
