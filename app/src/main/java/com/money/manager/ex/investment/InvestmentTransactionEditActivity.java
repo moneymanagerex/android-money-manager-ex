@@ -54,8 +54,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -88,7 +86,6 @@ public class InvestmentTransactionEditActivity
         setContentView(R.layout.activity_investment_transaction_edit);
 
         MmexApplication.getApp().iocComponent.inject(this);
-        ButterKnife.bind(this);
 
         setDisplayHomeAsUpEnabled(true);
 
@@ -208,8 +205,8 @@ public class InvestmentTransactionEditActivity
         mDirty = dirty;
     }
 
-    @OnClick(R.id.numSharesView)
-    public void onNumSharesClick() {
+
+    private void onNumSharesClick() {
         Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
 
         Calculator.forActivity(this)
@@ -218,8 +215,7 @@ public class InvestmentTransactionEditActivity
                 .show(REQUEST_NUM_SHARES);
     }
 
-    @OnClick(R.id.purchasePriceView)
-    public void onPurchasePriceClick() {
+    private void onPurchasePriceClick() {
         if (mAccount == null) return;
 
         Calculator.forActivity(this)
@@ -229,16 +225,14 @@ public class InvestmentTransactionEditActivity
                 .show(REQUEST_PURCHASE_PRICE);
     }
 
-    @OnClick(R.id.commissionView)
-    public void onCommissionClick() {
+    private void onCommissionClick() {
         Calculator.forActivity(this)
                 .amount(mStock.getCommission())
                 .currency(mAccount.getCurrencyId())
                 .show(REQUEST_COMMISSION);
     }
 
-    @OnClick(R.id.currentPriceView)
-    public void onCurrentPriceClick() {
+    private void onCurrentPriceClick() {
         Calculator.forActivity(this)
                 .currency(mAccount.getCurrencyId())
                 .amount(mStock.getCurrentPrice())
@@ -300,6 +294,22 @@ public class InvestmentTransactionEditActivity
         mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
         mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
         mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
+
+        mViewHolder.numSharesView.setOnClickListener(view -> {
+            onNumSharesClick();
+        });
+
+        mViewHolder.purchasePriceView.setOnClickListener(view -> {
+            onPurchasePriceClick();
+        });
+
+        mViewHolder.commissionView.setOnClickListener(view -> {
+            onCommissionClick();
+        });
+
+        mViewHolder.currentPriceView.setOnClickListener(view -> {
+            onCurrentPriceClick();
+        });
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,50 +33,76 @@ import com.shamanland.fonticon.FontIconView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * View holder for transaction editing (checking & recurring).
  */
 public class EditTransactionViewHolder {
 
-    public EditTransactionViewHolder(AppCompatActivity view) {
-        ButterKnife.bind(this, view);
+    public TextView dateTextView;
+    public IconicsImageView previousDayButton;
+    public IconicsImageView nextDayButton;
 
-        // add custom icons
-        UIHelper uiHelper = new UIHelper(view);
+    public TextView categoryTextView;
+    public TextView txtSelectPayee;
+    public Spinner spinStatus;
+    public Spinner spinAccount;
+    public Spinner spinAccountTo;
+    public TextView txtAmountTo;
+    public TextView txtAmount;
+
+    public ViewGroup tableRowPayee;
+    public ViewGroup tableRowAmountTo;
+    public ViewGroup tableRowAccountTo;
+    public TextView accountFromLabel;
+    public TextView txtToAccount;
+    public TextView amountHeaderTextView;
+    public TextView amountToHeaderTextView;
+    public ImageButton removePayeeButton;
+    public FontIconView splitButton;
+    public RelativeLayout withdrawalButton;
+    public RelativeLayout depositButton;
+    public RelativeLayout transferButton;
+    public ImageButton btnTransNumber;
+    public EditText edtTransNumber;
+    public EditText edtNotes;
+    public TextView textViewAttachments;
+    public RecyclerView recyclerAttachments;
+
+    public EditTransactionViewHolder(AppCompatActivity activity) {
+        // Initialize views using findViewById
+        dateTextView = activity.findViewById(R.id.textViewDate);
+        previousDayButton = activity.findViewById(R.id.previousDayButton);
+        nextDayButton = activity.findViewById(R.id.nextDayButton);
+
+        categoryTextView = activity.findViewById(R.id.textViewCategory);
+        txtSelectPayee = activity.findViewById(R.id.textViewPayee);
+        spinStatus = activity.findViewById(R.id.spinnerStatus);
+        spinAccount = activity.findViewById(R.id.spinnerAccount);
+        spinAccountTo = activity.findViewById(R.id.spinnerToAccount);
+        txtAmountTo = activity.findViewById(R.id.textViewToAmount);
+        txtAmount = activity.findViewById(R.id.textViewAmount);
+
+        tableRowPayee = activity.findViewById(R.id.tableRowPayee);
+        tableRowAmountTo = activity.findViewById(R.id.tableRowAmountTo);
+        tableRowAccountTo = activity.findViewById(R.id.tableRowAccountTo);
+        accountFromLabel = activity.findViewById(R.id.accountFromLabel);
+        txtToAccount = activity.findViewById(R.id.textViewToAccount);
+        amountHeaderTextView = activity.findViewById(R.id.textViewHeaderAmount);
+        amountToHeaderTextView = activity.findViewById(R.id.textViewHeaderAmountTo);
+        removePayeeButton = activity.findViewById(R.id.removePayeeButton);
+        splitButton = activity.findViewById(R.id.splitButton);
+
+        withdrawalButton = activity.findViewById(R.id.withdrawalButton);
+        depositButton = activity.findViewById(R.id.depositButton);
+        transferButton = activity.findViewById(R.id.transferButton);
+        btnTransNumber = activity.findViewById(R.id.buttonTransNumber);
+        edtTransNumber = activity.findViewById(R.id.editTextTransNumber);
+        edtNotes = activity.findViewById(R.id.editTextNotes);
+        textViewAttachments = activity.findViewById(R.id.textViewAttachments);
+        recyclerAttachments = activity.findViewById(R.id.recyclerViewAttachments);
+
+        // Add custom icons
+        UIHelper uiHelper = new UIHelper(activity);
         removePayeeButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace));
     }
-
-    @BindView(R.id.textViewDate) public TextView dateTextView;
-    @BindView(R.id.previousDayButton) public IconicsImageView previousDayButton;
-    @BindView(R.id.nextDayButton) public IconicsImageView nextDayButton;
-
-    @BindView(R.id.textViewCategory) TextView categoryTextView;
-    @BindView(R.id.textViewPayee) TextView txtSelectPayee;
-    @BindView(R.id.spinnerStatus) Spinner spinStatus;
-    @BindView(R.id.spinnerAccount) Spinner spinAccount;
-    @BindView(R.id.spinnerToAccount) Spinner spinAccountTo;
-    @BindView(R.id.textViewToAmount) TextView txtAmountTo;
-    @BindView(R.id.textViewAmount) TextView txtAmount;
-
-    @BindView(R.id.tableRowPayee) ViewGroup tableRowPayee;
-    @BindView(R.id.tableRowAmountTo) ViewGroup tableRowAmountTo;
-    @BindView(R.id.tableRowAccountTo) ViewGroup tableRowAccountTo;
-    @BindView(R.id.accountFromLabel) TextView accountFromLabel;
-    @BindView(R.id.textViewToAccount) TextView txtToAccount;
-    @BindView(R.id.textViewHeaderAmount) TextView amountHeaderTextView;
-    @BindView(R.id.textViewHeaderAmountTo) TextView amountToHeaderTextView;
-    @BindView(R.id.removePayeeButton) ImageButton removePayeeButton;
-    @BindView(R.id.splitButton) FontIconView splitButton;
-    // Transaction types
-    @BindView(R.id.withdrawalButton) RelativeLayout withdrawalButton;
-    @BindView(R.id.depositButton) RelativeLayout depositButton;
-    @BindView(R.id.transferButton) RelativeLayout transferButton;
-    @BindView(R.id.buttonTransNumber) ImageButton btnTransNumber;
-    @BindView(R.id.editTextTransNumber) public EditText edtTransNumber;
-    @BindView(R.id.editTextNotes) public EditText edtNotes;
-    @BindView(R.id.textViewAttachments) public TextView textViewAttachments;
-    @BindView(R.id.recyclerViewAttachments) public RecyclerView recyclerAttachments;
 }
