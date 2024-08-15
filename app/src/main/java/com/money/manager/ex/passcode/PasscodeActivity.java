@@ -27,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -60,8 +59,6 @@ import com.money.manager.ex.log.ErrorRaisedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
 public class PasscodeActivity extends AppCompatActivity {
@@ -93,51 +90,45 @@ public class PasscodeActivity extends AppCompatActivity {
 
 		findViewById(R.id.editTextPasscode1).requestFocus();
 
-        ButterKnife.bind(this);
-
-        // create a listener for button
-		OnClickListener clickListener = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Button click = (Button) v;
-				if (getWindow().getCurrentFocus() != null && getWindow().getCurrentFocus() instanceof EditText) {
-					EditText getFocus = (EditText) getWindow().getCurrentFocus();
-					if (getFocus != null && click.getTag() != null) {
-						getFocus.setText(click.getTag().toString());
-						//quick-fix convert 'switch' to 'if-else'
-						if (getFocus.getId() == R.id.editTextPasscode1) {
-							findViewById(R.id.editTextPasscode2).requestFocus();
-						} else if (getFocus.getId() == R.id.editTextPasscode2) {
-							findViewById(R.id.editTextPasscode3).requestFocus();
-						} else if (getFocus.getId() == R.id.editTextPasscode3) {
-							findViewById(R.id.editTextPasscode4).requestFocus();
-						} else if (getFocus.getId() == R.id.editTextPasscode4) {
-							findViewById(R.id.editTextPasscode5).requestFocus();
-						} else if (getFocus.getId() == R.id.editTextPasscode5) {
-							Intent result = new Intent();
-							// set result
-							result.putExtra(INTENT_RESULT_PASSCODE, ((EditText) findViewById(R.id.editTextPasscode1)).getText().toString()
-									+ ((EditText) findViewById(R.id.editTextPasscode2)).getText().toString()
-									+ ((EditText) findViewById(R.id.editTextPasscode3)).getText().toString()
-									+ ((EditText) findViewById(R.id.editTextPasscode4)).getText().toString()
-									+ ((EditText) findViewById(R.id.editTextPasscode5)).getText().toString());
-							// return result
-							setResult(RESULT_OK, result);
-							finish();
-						}
-					}
-				}
-			}
-		};
+		//
+		findViewById(R.id.buttonPasscodeKeyBack).setOnClickListener(v -> onBackspaceClick());
 
 		// arrays of button id
 		int[] ids = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
-			R.id.buttonPasscode3,
-			R.id.buttonPasscode4, R.id.buttonPasscode5,
+			R.id.buttonPasscode3,R.id.buttonPasscode4, R.id.buttonPasscode5,
 			R.id.buttonPasscode6, R.id.buttonPasscode7, R.id.buttonPasscode8, R.id.buttonPasscode9 };
 		for (int i : ids) {
 			Button button = findViewById(i);
-			button.setOnClickListener(clickListener);
+			button.setOnClickListener(v -> {
+                Button click = (Button) v;
+                if (getWindow().getCurrentFocus() != null && getWindow().getCurrentFocus() instanceof EditText) {
+                    EditText getFocus = (EditText) getWindow().getCurrentFocus();
+                    if (getFocus != null && click.getTag() != null) {
+                        getFocus.setText(click.getTag().toString());
+                        //quick-fix convert 'switch' to 'if-else'
+                        if (getFocus.getId() == R.id.editTextPasscode1) {
+                            findViewById(R.id.editTextPasscode2).requestFocus();
+                        } else if (getFocus.getId() == R.id.editTextPasscode2) {
+                            findViewById(R.id.editTextPasscode3).requestFocus();
+                        } else if (getFocus.getId() == R.id.editTextPasscode3) {
+                            findViewById(R.id.editTextPasscode4).requestFocus();
+                        } else if (getFocus.getId() == R.id.editTextPasscode4) {
+                            findViewById(R.id.editTextPasscode5).requestFocus();
+                        } else if (getFocus.getId() == R.id.editTextPasscode5) {
+                            Intent result = new Intent();
+                            // set result
+                            result.putExtra(INTENT_RESULT_PASSCODE, ((EditText) findViewById(R.id.editTextPasscode1)).getText().toString()
+                                    + ((EditText) findViewById(R.id.editTextPasscode2)).getText().toString()
+                                    + ((EditText) findViewById(R.id.editTextPasscode3)).getText().toString()
+                                    + ((EditText) findViewById(R.id.editTextPasscode4)).getText().toString()
+                                    + ((EditText) findViewById(R.id.editTextPasscode5)).getText().toString());
+                            // return result
+                            setResult(RESULT_OK, result);
+                            finish();
+                        }
+                    }
+                }
+            });
 		}
 
 		// textview message
@@ -217,8 +208,7 @@ public class PasscodeActivity extends AppCompatActivity {
 		new UIHelper(this).showToast(event.message);
 	}
 
-	@OnClick(R.id.buttonPasscodeKeyBack)
-	public void onBackspaceClick() {
+	private void onBackspaceClick() {
 		EditText getFocus = (EditText) getWindow().getCurrentFocus();
 		if (getFocus != null) {
 			boolean nullRequestFocus = false;
