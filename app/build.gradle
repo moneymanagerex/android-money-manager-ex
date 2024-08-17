@@ -133,7 +133,6 @@ android {
 dependencies {
     // api ...
     implementation project(':MMEX_Icon_Font')
-    implementation project(':androidSVG')
     implementation project(path: ':money')
 
     implementation(
@@ -170,6 +169,7 @@ dependencies {
             , 'androidx.work:work-runtime:2.8.1'
             , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
             , 'androidx.fragment:fragment:1.5.6'
+            , 'com.caverock:androidsvg-aar:1.4'
 
     )
     implementation supportDependencies.core
