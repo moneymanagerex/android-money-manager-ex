@@ -17,6 +17,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace "com.mikepenz.mmex_icon_font_typeface_library"
     compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
