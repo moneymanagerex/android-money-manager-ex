@@ -15,8 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.javaperformance.money">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<application android:allowBackup="true" android:label="@string/app_name"-->
         <!--android:supportsRtl="true">-->

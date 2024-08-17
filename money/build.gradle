@@ -18,6 +18,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace "info.javaperformance.money"
     compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
