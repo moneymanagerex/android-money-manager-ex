@@ -31,6 +31,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +51,24 @@ public class CategoryExpandableListAdapter
         mCategories = categories;
         mSubCategories = subCategories;
         mShowSelector = showSelector;
+        mUseNestedCategory = false;
     }
 
+    public CategoryExpandableListAdapter(Context context, int layout,
+                                         List<Category> categories,
+                                         HashMap<Category,
+                                                 List<QueryCategorySubCategory>> subCategories,
+                                         boolean showSelector,
+                                         Boolean source) {
+        mContext = context;
+        mLayout = layout;
+        mCategories = categories;
+        mSubCategories = subCategories;
+        mShowSelector = showSelector;
+        mUseNestedCategory = source;
+    }
 
+    private final boolean mUseNestedCategory ;
     private final Context mContext;
     private final int mLayout;
 
@@ -141,7 +157,7 @@ public class CategoryExpandableListAdapter
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (mSubCategories == null) return 0;
+        if (mSubCategories == null) { return 0; }
         return mSubCategories.get(mCategories.get(groupPosition)).size();
     }
 
@@ -263,11 +279,20 @@ public class CategoryExpandableListAdapter
 
     private void closeFragment() {
         FragmentActivity activity = (FragmentActivity) getContext();
-        CategoryListFragment fragment =
-                (CategoryListFragment) activity
-                        .getSupportFragmentManager()
-                        .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-        fragment.setResultAndFinish();
+
+        if ( mUseNestedCategory ) {
+            NestedCategoryListFragment fragment =
+                    (NestedCategoryListFragment) activity
+                            .getSupportFragmentManager()
+                            .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+            fragment.setResultAndFinish();
+        } else {
+            CategoryListFragment fragment =
+                    (CategoryListFragment) activity
+                            .getSupportFragmentManager()
+                            .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+            fragment.setResultAndFinish();
+        }
     }
 
     private Context getContext() {

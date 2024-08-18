@@ -63,7 +63,7 @@ public class NestedCategoryListFragment
     // table or query
     private QueryNestedCastegory mQuery;
     private int mLayout;
-    private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
+//    private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
 
     private List<Category> mCategories;
     private String mCurFilter;
@@ -119,7 +119,7 @@ public class NestedCategoryListFragment
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_ID_GROUP)) {
-            mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
+//            mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
         }
         if (savedInstanceState.containsKey(KEY_CUR_FILTER)) {
             mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
@@ -130,7 +130,7 @@ public class NestedCategoryListFragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 
-        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
         int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
 
         menu.setHeaderTitle(mCategories.get(group).getName());
@@ -146,7 +146,7 @@ public class NestedCategoryListFragment
     public boolean onContextItemSelected(MenuItem item) {
         ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
 
-        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
         int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
 
         Category category = mCategories.get(group);
@@ -208,7 +208,7 @@ public class NestedCategoryListFragment
         if (id == ID_LOADER_CATEGORYSUB) {// update id selected
             if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
                 CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                mIdGroupChecked = adapter.getIdGroupChecked();
+//                mIdGroupChecked = adapter.getIdGroupChecked();
             }
             // clear arraylist and hashmap
             mCategories.clear();
@@ -269,7 +269,17 @@ public class NestedCategoryListFragment
                 int categId = adapter.getIdGroupChecked();
 
                 if (categId == ExpandableListView.INVALID_POSITION) return;
-
+                for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
+                    if (mCategories.get(groupIndex).getId() == categId) {
+                        result = new Intent();
+                        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
+                        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
+                                mCategories.get(groupIndex).getName());
+                        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, "");
+                        break;
+                    }
+                }
             }
 
             if (result != null) {
@@ -325,7 +335,7 @@ public class NestedCategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-                mLayout, mCategories, null, showSelector);
+                mLayout, mCategories, null, showSelector, true);
         return adapter;
     }
 
