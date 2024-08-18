@@ -49,12 +49,12 @@ public class AboutTabAdapter
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return AboutFragment.newInstance(position);
+                return AboutFragment.newInstance();
             case 1:
 //                    return AboutChangelogFragment.newInstance(position);
                 return WebChangelogFragment.newInstance();
             case 2:
-                return AboutCreditsFragment.newInstance(position);
+                return AboutCreditsFragment.newInstance();
             case 3:
                 return new LibsBuilder().supportFragment();
             default:

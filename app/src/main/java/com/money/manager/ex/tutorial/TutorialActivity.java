@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
@@ -31,9 +30,9 @@ import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
-import me.relex.circleindicator.CircleIndicator;
+import me.relex.circleindicator.CircleIndicator3;
 
 /**
  * Horizontal Swipe View
@@ -55,9 +54,9 @@ public class TutorialActivity extends FragmentActivity {
         // getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
 
-        CircleIndicator circleIndicator = findViewById(R.id.indicator_default);
-        ViewPager viewpager = findViewById(R.id.viewpager_default);
-        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
+        CircleIndicator3 circleIndicator = findViewById(R.id.indicator_default);
+        ViewPager2 viewpager = findViewById(R.id.viewpager_default);
+        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(this);
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 
