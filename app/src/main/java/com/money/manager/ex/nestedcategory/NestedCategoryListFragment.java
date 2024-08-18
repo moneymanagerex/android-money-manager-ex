@@ -157,6 +157,10 @@ public class NestedCategoryListFragment
         switch (menuId) {
             case ADD_SUB:
                 // todo
+                Category newCat = new Category();
+                newCat.setParentId(category.getId());
+                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT,
+                        newCat);
                 break;
             case EDIT:
                 if (category.getParentId() <= 0) {
