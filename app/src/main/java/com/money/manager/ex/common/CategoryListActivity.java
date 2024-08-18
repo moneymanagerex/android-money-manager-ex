@@ -23,6 +23,8 @@ import android.view.KeyEvent;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
+import com.money.manager.ex.settings.AppSettings;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -41,10 +43,12 @@ public class CategoryListActivity
     public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
     CategoryListFragment listFragment = new CategoryListFragment();
+    NestedCategoryListFragment nestedListFragment = new NestedCategoryListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
 
         setContentView(R.layout.base_toolbar_activity);
 
@@ -55,18 +59,26 @@ public class CategoryListActivity
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             listFragment.mAction = intent.getAction();
+            nestedListFragment.mAction = intent.getAction();
 
             int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET);
             listFragment.requestId = requestId;
+            nestedListFragment.requestId = requestId;
         }
 
         // management fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
+            if (!useNestedCategory) {
             // todo: use replace?
             fm.beginTransaction()
                 .add(R.id.content, listFragment, FRAGMENTTAG)
                 .commit();
+            } else {
+                fm.beginTransaction()
+                        .add(R.id.content, nestedListFragment, FRAGMENTTAG)
+                        .commit();
+            }
         }
     }
 

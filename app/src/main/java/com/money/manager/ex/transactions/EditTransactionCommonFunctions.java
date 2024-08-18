@@ -805,12 +805,12 @@ public class EditTransactionCommonFunctions {
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
-            // TODO parent category : category
-            if (category.getParentId() > 0)
+            // Done handled neested category
+            while (category != null && category.getParentId() > 0)
             {
-                Category parentCategory = categoryRepository.load(category.getParentId());
-                if (parentCategory != null)
-                    this.categoryName = parentCategory.getName() + " : " + category.getName();
+                category = categoryRepository.load(category.getParentId());
+                if (category != null)
+                    this.categoryName = category.getName() + ":" + this.categoryName;
             }
         } else {
             this.categoryName = null;
