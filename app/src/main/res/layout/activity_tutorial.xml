@@ -26,12 +26,12 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager_default"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <me.relex.circleindicator.CircleIndicator
+        <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator_default"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
