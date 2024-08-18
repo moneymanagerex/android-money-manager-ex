@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.util.ArrayList;
@@ -61,15 +62,28 @@ public class QueryNestedCastegory
         return entity;
     }
 
-    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter) {
+    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter, String sort) {
         List<NestedCategoryEntity> categories = new ArrayList<>();
-        Cursor cursor = getCursor(null, filter, null, null);
+        Cursor cursor = getCursor(null, filter, null, sort);
         if (cursor.moveToFirst()) {
             do {
                 NestedCategoryEntity entity = new NestedCategoryEntity();
                 entity.loadFromCursor(cursor);
                 categories.add(entity);
             } while (cursor.moveToNext());
+        }
+        return categories;
+    }
+
+    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter) {
+        return  getNestedCategoryEntities( filter, CATEGNAME);
+    }
+
+    public List<Category> getNestedCategoryEntitiesAsCategorey(String filter) {
+        List<NestedCategoryEntity> nestedCategories = getNestedCategoryEntities( filter );
+        List<Category> categories = new ArrayList<>();
+        for( NestedCategoryEntity nestedCategory : nestedCategories) {
+            categories.add(nestedCategory.asCategory());
         }
         return categories;
     }

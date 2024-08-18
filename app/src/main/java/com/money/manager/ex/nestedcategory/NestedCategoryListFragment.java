@@ -483,21 +483,23 @@ public class NestedCategoryListFragment
         }
 
         // Fill categories list.
-        CategoryService categoryService = new CategoryService(getActivity());
-        final List<Category> categories = categoryService.getList();
+        final List<NestedCategoryEntity> categories = mQuery.getNestedCategoryEntities(null);
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Integer> categoryIds = new ArrayList<>();
-        for (Category category1 : categories) {
-            categoryIds.add(category1.getId());
-            categoryNames.add(category1.getName());
+        for (NestedCategoryEntity category1 : categories) {
+            // do not include category itself and all children form parent list
+            if (!category1.getCategoryName().startsWith(category.getName())) {
+                categoryIds.add(category1.getCategoryId());
+                categoryNames.add(category1.getCategoryName() );
+            }
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategory.setAdapter(adapterCategory);
         //select category if present
-        if (category.getId() > 0) {
-            spnCategory.setSelection(categoryIds.indexOf(category.getId()), true);
+        if (category.getParentId() > 0) {
+            spnCategory.setSelection(categoryIds.indexOf(category.getParentId()), true);
         }
 
         int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -519,7 +521,7 @@ public class NestedCategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get parent category id
-                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
+                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
