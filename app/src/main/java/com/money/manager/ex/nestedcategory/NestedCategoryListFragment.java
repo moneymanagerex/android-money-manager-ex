@@ -39,6 +39,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -156,7 +157,6 @@ public class NestedCategoryListFragment
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
         switch (menuId) {
             case ADD_SUB:
-                // todo
                 Category newCat = new Category();
                 newCat.setParentId(category.getId());
                 showDialogEditSubCategoryName(SQLTypeTransaction.INSERT,
@@ -178,8 +178,10 @@ public class NestedCategoryListFragment
 
             case VIEW_TRANSACTIONS: // view transactions
                 SearchParameters parameters = new SearchParameters();
-// Todo sistremare ricerca
-//                    parameters.nestedCategory = (new NestedCategoryEntity(category));
+                CategorySub catSub = new CategorySub();
+                catSub.categId = category.getId();
+                catSub.categName = category.getName();
+                parameters.category = catSub;
 
                 showSearchActivityFor(parameters);
         }
@@ -589,7 +591,6 @@ public class NestedCategoryListFragment
                 .setSingleChoiceItems(R.array.category_type, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // todo: depending on the choice, show the edit dialog. 0-based
                         NestedCategoryEntity newCategory = new NestedCategoryEntity(-1, null, -1);
                         if (which == 0) {
                             showDialogEditCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());
