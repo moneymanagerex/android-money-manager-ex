@@ -133,7 +133,6 @@ android {
 dependencies {
     // api ...
     implementation project(':MMEX_Icon_Font')
-    implementation project(':androidSVG')
     implementation project(path: ':money')
 
     implementation(
@@ -147,56 +146,57 @@ dependencies {
             , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             , 'org.javamoney:moneta-bp:1.4.1'
-            , 'com.google.code.gson:gson:2.10.1'
+            , 'com.google.code.gson:gson:2.11.0'
             , 'net.zetetic:android-database-sqlcipher:4.5.4'   // database encryption
             , 'org.greenrobot:eventbus:3.3.1'
             , supportDependencies.recyclerView
             // For control over item selection of both touch and mouse driven selection
             , "androidx.recyclerview:recyclerview-selection:1.1.0"
-            , 'org.jsoup:jsoup:1.17.2'              // HTML parsing.
+            , 'org.jsoup:jsoup:1.18.1'              // HTML parsing.
             , 'androidx.multidex:multidex:2.0.1'  // multidex support
             , 'io.reactivex.rxjava2:rxandroid:2.1.1'
             , 'io.reactivex.rxjava2:rxjava:2.2.21'
             , 'com.squareup.sqlbrite3:sqlbrite:3.2.0' // use SqlDelight
-            , 'com.jakewharton.timber:timber:4.6.1'
+            , 'com.jakewharton.timber:timber:4.7.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:3.0.3@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:3.0.3@aar'
+            , 'com.mikepenz:iconics-core:3.2.5@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:3.2.5@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'androidx.work:work-runtime:2.8.1'
             , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
             , 'androidx.fragment:fragment:1.5.6'
+            , 'com.caverock:androidsvg-aar:1.4'
 
     )
-    implementation supportDependencies.core
+    implementation 'androidx.core:core:1.10.1'
     implementation supportDependencies.appcompat
     implementation supportDependencies.recyclerView
     implementation supportDependencies.cardView
     implementation supportDependencies.preference
-    implementation supportDependencies.annotation
+    implementation 'androidx.annotation:annotation:1.6.0'
     implementation supportDependencies.gridLayout
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'            // Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.11.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.11.0'
-    implementation supportDependencies.design
+    implementation 'com.google.android.material:material:1.10.0'
     implementation supportDependencies.sqlite
     implementation 'androidx.sqlite:sqlite-framework:2.3.1'
     api 'com.google.guava:guava:32.1.3-jre' // collection libraries
 
-    implementation('com.mikepenz:aboutlibraries:5.9.7@aar') {
+    implementation('com.mikepenz:aboutlibraries:6.2.3@aar') {
         transitive = true
     }
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.13'
     annotationProcessor 'org.parceler:parceler:1.1.13'
     // Dagger 2
-    implementation 'com.google.dagger:dagger:2.28.3'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+    implementation 'com.google.dagger:dagger:2.45'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.45'
     // IcePick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
@@ -206,10 +206,10 @@ dependencies {
     testImplementation(
             // Robolectric
             'junit:junit:4.13.2',
-            'org.assertj:assertj-core:3.25.3',
-            'org.robolectric:robolectric:4.12.1',
+            'org.assertj:assertj-core:3.26.3',
+            'org.robolectric:robolectric:4.13',
             // Matchers
-            'org.hamcrest:hamcrest-core:1.3',
+            'org.hamcrest:hamcrest-core:2.2',
             'org.hamcrest:hamcrest-library:2.2',
             'org.hamcrest:hamcrest-integration:1.3'
             , 'io.selendroid:selendroid-client:0.17.0'
@@ -228,14 +228,14 @@ dependencies {
             // Set this dependency to build and run Espresso tests
             'androidx.test.espresso:espresso-core:3.5.1',
             'androidx.test.espresso:espresso-contrib:3.5.1',
-            'org.hamcrest:hamcrest-core:1.3',
+            'org.hamcrest:hamcrest-core:2.2',
             'org.hamcrest:hamcrest-library:2.2',
             'com.squareup.assertj:assertj-android:1.2.0',
-            'org.assertj:assertj-core:3.25.3',
+            'org.assertj:assertj-core:3.26.3',
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    implementation 'com.amplitude:analytics-android:1.16.7'
+    implementation 'com.amplitude:analytics-android:1.17.3'
 }
 
 configurations {
