@@ -27,6 +27,8 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCastegory;
 
 import java.util.List;
 
@@ -127,6 +129,19 @@ public class CategoryService
     public boolean isCategoryUsed(int categoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
+        return links > 0;
+    }
+
+    public boolean isCategoryUsedWithChildren( int categoryId ) {
+        // First if list has more than 1 record category is used
+        QueryNestedCastegory query = new QueryNestedCastegory(getContext());
+        List<NestedCategoryEntity> ids = query.getChildrenNestedCategoryEntities(categoryId);
+        assert ids != null;
+        if (ids.size() > 1 ) {return true;}
+
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        int links = repo.count("( " + Category.CATEGID + "=?",
+                new String[]{Integer.toString(categoryId)});
         return links > 0;
     }
 

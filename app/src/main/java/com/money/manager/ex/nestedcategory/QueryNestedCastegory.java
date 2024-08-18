@@ -27,6 +27,7 @@ public class QueryNestedCastegory
     public static final String PARENTID = "PARENTID";
     public static final String PARENTNAME = "PARENTNAME";
     public static final String BASENAME = "BASENAME";
+    public static final String FULLCATID = "FULLCATID";
     public static final String ACTIVE = "ACTIVE";
     public static final String LEVEL = "LEVEL";
 
@@ -39,7 +40,7 @@ public class QueryNestedCastegory
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, ACTIVE, LEVEL};
+        return new String[]{CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL};
     }
 
 
@@ -79,12 +80,9 @@ public class QueryNestedCastegory
         return  getNestedCategoryEntities( filter, CATEGNAME);
     }
 
-    public List<Category> getNestedCategoryEntitiesAsCategorey(String filter) {
-        List<NestedCategoryEntity> nestedCategories = getNestedCategoryEntities( filter );
-        List<Category> categories = new ArrayList<>();
-        for( NestedCategoryEntity nestedCategory : nestedCategories) {
-            categories.add(nestedCategory.asCategory());
-        }
-        return categories;
+    public List<NestedCategoryEntity> getChildrenNestedCategoryEntities(Integer categoryId ){
+        return getNestedCategoryEntities( FULLCATID +
+                        " LIKE '%:"+Integer.toString(categoryId)+":%'");
     }
+
 }

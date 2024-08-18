@@ -363,7 +363,7 @@ public class NestedCategoryListFragment
         ContentValues values = new ContentValues();
 
         values.put(Category.CATEGID, category.getId());
-        canDelete = !service.isCategoryUsed(category.getId());
+        canDelete = !service.isCategoryUsedWithChildren(category.getId());
 
         if (!(canDelete)) {
             UIHelper ui = new UIHelper(getActivity());
