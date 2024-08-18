@@ -29,7 +29,7 @@ import androidx.fragment.app.Fragment;
 public class AboutChangelogFragment extends Fragment {
     private static Fragment mInstance;
 
-    public static Fragment newInstance(int page) {
+    public static Fragment newInstance() {
         if (mInstance == null) {
             mInstance = new AboutChangelogFragment();
         }
