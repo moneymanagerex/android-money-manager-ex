@@ -489,7 +489,7 @@ public class NestedCategoryListFragment
         ArrayList<Integer> categoryIds = new ArrayList<>();
         for (NestedCategoryEntity category1 : categories) {
             // do not include category itself and all children form parent list
-            if (!category1.getCategoryName().startsWith(category.getName())) {
+            if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
                 categoryIds.add(category1.getCategoryId());
                 categoryNames.add(category1.getCategoryName() );
             }
