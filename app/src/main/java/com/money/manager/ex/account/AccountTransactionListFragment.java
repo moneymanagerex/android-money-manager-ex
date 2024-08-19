@@ -510,6 +510,7 @@ public class AccountTransactionListFragment
         // take reference text view from layout
         this.viewHolder.txtAccountBalance = this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
         this.viewHolder.txtAccountReconciled = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtAccountReconciledTitle = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciledTitle);
         this.viewHolder.txtAccountDifference = this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
         // favorite icon
         this.viewHolder.imgAccountFav = this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
@@ -879,12 +880,21 @@ public class AccountTransactionListFragment
     }
 
     private void refreshSettings() {
-        mSortTransactionsByType = new AppSettings(getActivity()).getLookAndFeelSettings().getSortTransactionsByType();
+        LookAndFeelSettings mLookAndFeelSettings = new AppSettings(getActivity()).getLookAndFeelSettings();
+        mSortTransactionsByType = mLookAndFeelSettings.getSortTransactionsByType();
+        boolean mHideReconciled = mLookAndFeelSettings.getHideReconciledAmounts();
 
         updateFilterDateRange();
         updateAllDataListFragmentShowBalance();
 
         getActivity().invalidateOptionsMenu();
+
+        if (this.viewHolder.txtAccountReconciled != null) {
+            this.viewHolder.txtAccountReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
+        if (this.viewHolder.txtAccountReconciledTitle != null) {
+            this.viewHolder.txtAccountReconciledTitle.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void updateFilterDateRange() {
