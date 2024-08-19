@@ -157,7 +157,7 @@ dependencies {
             , 'io.reactivex.rxjava2:rxandroid:2.1.1'
             , 'io.reactivex.rxjava2:rxjava:2.2.21'
             , 'com.squareup.sqlbrite3:sqlbrite:3.2.0' // use SqlDelight
-            , 'com.jakewharton.timber:timber:4.7.1'
+            , 'com.jakewharton.timber:timber:5.0.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
@@ -167,7 +167,7 @@ dependencies {
             , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'androidx.work:work-runtime:2.8.1'
-            , 'com.github.luizgrp:sectionedrecyclerviewadapter:1.2.0' // TODO: Library is archived. Find alternative.
+            , 'com.github.luizgrp:sectionedrecyclerviewadapter:3.2.0' // TODO: Library is archived. Find alternative.
             , 'androidx.fragment:fragment:1.5.6'
             , 'com.caverock:androidsvg-aar:1.4'
 
