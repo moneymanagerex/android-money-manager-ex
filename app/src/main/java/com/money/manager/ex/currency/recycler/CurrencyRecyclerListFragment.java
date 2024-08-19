@@ -327,7 +327,7 @@ public class CurrencyRecyclerListFragment
     }
 
     private Currency getCurrencyAtPosition(int position) {
-        int sectionPosition = getAdapter().getSectionPosition(position);
+        int sectionPosition = getAdapter().getPositionInSection(position);
         CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
         //Currency currency = section.currencies.get(sectionPosition);
         Currency currency = section.getItemAtPosition(sectionPosition);
