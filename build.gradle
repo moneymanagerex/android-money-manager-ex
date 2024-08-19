@@ -55,7 +55,6 @@ allprojects {
     repositories {
         google()
         maven { url "https://clojars.org/repo/" }               // icepick
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
         mavenCentral()
         maven { url 'https://jitpack.io' }
         google()  // Google's Maven repository
