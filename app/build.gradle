@@ -164,7 +164,7 @@ dependencies {
             , 'com.mikepenz:iconics-core:3.2.5@aar' // also update in the icon module.
             , 'com.mikepenz:iconics-views:3.2.5@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
-            , 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
+            , 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'androidx.work:work-runtime:2.8.1'
             , 'com.github.luizgrp:sectionedrecyclerviewadapter:3.2.0' // TODO: Library is archived. Find alternative.
@@ -186,7 +186,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation supportDependencies.sqlite
     implementation 'androidx.sqlite:sqlite-framework:2.3.1'
-    api 'com.google.guava:guava:32.1.3-jre' // collection libraries
+    api 'com.google.guava:guava:33.3.0-jre' // collection libraries
 
     implementation('com.mikepenz:aboutlibraries:6.2.3@aar') {
         transitive = true

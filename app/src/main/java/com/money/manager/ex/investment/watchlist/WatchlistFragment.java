@@ -458,7 +458,7 @@ public class WatchlistFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.download)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirm_price_download)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -613,7 +613,7 @@ public class WatchlistFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.purge_history)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.purge_history_confirmation)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
