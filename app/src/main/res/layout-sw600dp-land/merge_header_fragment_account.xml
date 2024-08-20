@@ -47,6 +47,7 @@
         android:layout_marginStart="2dp" />
 
     <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewAccountReconciledTitle"
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
