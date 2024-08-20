@@ -376,9 +376,7 @@ public class MmxContentProvider
     private Cursor query_internal(Uri uri, String[] projection, String selection,
                                   String[] selectionArgs, String sortOrder) {
         Timber.v("Querying URI: %s", uri);
-        Timber.v("Querying projection: %s", projection);
         Timber.v("Querying selection: %s", selection);
-        Timber.v("Querying selectionArgs: %s", selectionArgs);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
