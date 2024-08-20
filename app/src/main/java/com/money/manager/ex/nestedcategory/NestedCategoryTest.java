@@ -8,8 +8,8 @@ import timber.log.Timber;
 public class NestedCategoryTest {
 
     public void main(Context c) {
-        QueryNestedCastegory queryNestedCastegory = new QueryNestedCastegory(c);
-        Cursor cursor = queryNestedCastegory.getCursor();
+        QueryNestedCategory queryNestedCategory = new QueryNestedCategory(c);
+        Cursor cursor = queryNestedCategory.getCursor();
         while (cursor.moveToNext()) {
             NestedCategoryEntity entity = new NestedCategoryEntity();
             entity.loadFromCursor(cursor);

@@ -28,59 +28,59 @@ public class NestedCategoryEntity
     }
 
     public int getCategoryId() {
-        return getInt(QueryNestedCastegory.CATEGID);
+        return getInt(QueryNestedCategory.CATEGID);
     }
 
     public void setCategoryId(int id) {
-        setInt(QueryNestedCastegory.CATEGID, id);
+        setInt(QueryNestedCategory.CATEGID, id);
     }
 
     public String getCategoryName() {
-        return getString(QueryNestedCastegory.CATEGNAME);
+        return getString(QueryNestedCategory.CATEGNAME);
     }
 
     public void setCategoryName(String name) {
-        setString(QueryNestedCastegory.CATEGNAME, name);
+        setString(QueryNestedCategory.CATEGNAME, name);
     }
 
     public int getParentId() {
-        return getInt(QueryNestedCastegory.PARENTID);
+        return getInt(QueryNestedCategory.PARENTID);
     }
 
     public void setParentId(int id) {
-        setInt(QueryNestedCastegory.PARENTID, id);
+        setInt(QueryNestedCategory.PARENTID, id);
     }
 
     public String getParentName() {
-        return getString(QueryNestedCastegory.PARENTNAME);
+        return getString(QueryNestedCategory.PARENTNAME);
     }
 
     public void setParentName(String name) {
-        setString(QueryNestedCastegory.PARENTNAME, name);
+        setString(QueryNestedCategory.PARENTNAME, name);
     }
 
     public String getBasename() {
-        return getString(QueryNestedCastegory.BASENAME);
+        return getString(QueryNestedCategory.BASENAME);
     }
 
     public void setBasename(String basename) {
-        setString(QueryNestedCastegory.BASENAME, basename);
+        setString(QueryNestedCategory.BASENAME, basename);
     }
 
     public int getActive() {
-        return getInt(QueryNestedCastegory.ACTIVE);
+        return getInt(QueryNestedCategory.ACTIVE);
     }
 
     public void setActive(int active) {
-        setInt(QueryNestedCastegory.ACTIVE, active);
+        setInt(QueryNestedCategory.ACTIVE, active);
     }
 
     public int getLevel() {
-        return getInt(QueryNestedCastegory.LEVEL);
+        return getInt(QueryNestedCategory.LEVEL);
     }
 
     public void setLevel(int level) {
-        setInt(QueryNestedCastegory.LEVEL, level);
+        setInt(QueryNestedCategory.LEVEL, level);
     }
 
     public void setMandatoryField(int categoryId, String categoryName, int parentId) {

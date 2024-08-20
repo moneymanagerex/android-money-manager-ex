@@ -28,7 +28,7 @@ import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
-import com.money.manager.ex.nestedcategory.QueryNestedCastegory;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
 import java.util.List;
 
@@ -134,7 +134,7 @@ public class CategoryService
 
     public boolean isCategoryUsedWithChildren( int categoryId ) {
         // First if list has more than 1 record category is used
-        QueryNestedCastegory query = new QueryNestedCastegory(getContext());
+        QueryNestedCategory query = new QueryNestedCategory(getContext());
         List<NestedCategoryEntity> ids = query.getChildrenNestedCategoryEntities(categoryId);
         assert ids != null;
         if (ids.size() > 1 ) {return true;}
