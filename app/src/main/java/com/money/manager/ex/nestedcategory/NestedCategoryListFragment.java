@@ -62,7 +62,7 @@ public class NestedCategoryListFragment
     private static final String KEY_ID_GROUP = "CategorySubCategory:idGroup";
     private static final String KEY_CUR_FILTER = "CategorySubCategory:curFilter";
     // table or query
-    private QueryNestedCastegory mQuery;
+    private static QueryNestedCategory mQuery;
     private int mLayout;
 //    private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
 
@@ -74,7 +74,7 @@ public class NestedCategoryListFragment
         super.onActivityCreated(savedInstanceState);
 
         // create category adapter
-        mQuery = new QueryNestedCastegory(getActivity());
+        mQuery = new QueryNestedCategory(getActivity());
 
         mCategories = new ArrayList<>();
 
@@ -223,12 +223,12 @@ public class NestedCategoryListFragment
             String whereClause = null;
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = QueryNestedCastegory.CATEGNAME + " LIKE ?";
-                selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
+                whereClause = QueryNestedCategory.CATEGNAME + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%"};
             }
             Select query = new Select(mQuery.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(QueryNestedCastegory.CATEGNAME);
+                    .orderBy(QueryNestedCategory.CATEGNAME);
 
             return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
         }
@@ -325,9 +325,9 @@ public class NestedCategoryListFragment
         }
 
         while (data.moveToNext()) {
-            if (key != data.getInt(data.getColumnIndex(QueryNestedCastegory.CATEGID))) {
+            if (key != data.getInt(data.getColumnIndex(QueryNestedCategory.CATEGID))) {
                 // update key
-                key = data.getInt(data.getColumnIndex(QueryNestedCastegory.CATEGID));
+                key = data.getInt(data.getColumnIndex(QueryNestedCategory.CATEGID));
                 // create instance category
                 NestedCategoryEntity category = new NestedCategoryEntity();
                 category.loadFromCursor(data);

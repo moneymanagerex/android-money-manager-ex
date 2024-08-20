@@ -6,7 +6,6 @@ import android.database.Cursor;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
  * Note: This data is readonly! Records can not be created or updated.
  */
 
-public class QueryNestedCastegory
+public class QueryNestedCategory
         extends Dataset {
     // CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME
     public static final String ID = "_id";
@@ -33,8 +32,8 @@ public class QueryNestedCastegory
 
     private Context mContext;
 
-    public QueryNestedCastegory(Context context) {
-        super(MmxFileUtils.getRawAsString(context, R.raw.query_onecategory), DatasetType.QUERY, QueryNestedCastegory.class.getSimpleName());
+    public QueryNestedCategory(Context context) {
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_onecategory), DatasetType.QUERY, QueryNestedCategory.class.getSimpleName());
         mContext = context;
     }
 
@@ -54,7 +53,7 @@ public class QueryNestedCastegory
 
     public NestedCategoryEntity getOneCategoryEntity(Integer categoryId) {
         NestedCategoryEntity entity = null;
-        Cursor cursor = getCursor(null, QueryNestedCastegory.CATEGID + " = " + categoryId.toString(), null, null);
+        Cursor cursor = getCursor(null, QueryNestedCategory.CATEGID + " = " + categoryId.toString(), null, null);
         if (cursor.moveToFirst()) {
             entity = new NestedCategoryEntity();
             entity.loadFromCursor(cursor);
