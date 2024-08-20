@@ -474,7 +474,7 @@ public class WatchlistItemsFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.delete_transaction)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

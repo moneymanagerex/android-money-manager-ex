@@ -72,13 +72,13 @@ public class AccountListFragment
 
         int layout = Intent.ACTION_PICK.equals(mAction)
                 ? android.R.layout.simple_list_item_multiple_choice
-                : android.R.layout.simple_list_item_1;
+                : android.R.layout.simple_list_item_2;
 
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null,
-                new String[]{ Account.ACCOUNTNAME },
-                new int[]{android.R.id.text1}, 0);
+                new String[]{ Account.ACCOUNTNAME, Account.ACCOUNTTYPE },
+                new int[]{android.R.id.text1, android.R.id.text2}, 0);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
@@ -264,7 +264,7 @@ public class AccountListFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.delete_account)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

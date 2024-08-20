@@ -115,7 +115,7 @@ public class CurrencyUIFeatures {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.delete_currency)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -138,7 +138,7 @@ public class CurrencyUIFeatures {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.attention)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.question_import_currencies)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -161,7 +161,7 @@ public class CurrencyUIFeatures {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.download)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.question_update_currency_exchange_rates)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
