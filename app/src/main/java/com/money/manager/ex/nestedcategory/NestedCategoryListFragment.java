@@ -39,6 +39,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -156,7 +157,10 @@ public class NestedCategoryListFragment
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
         switch (menuId) {
             case ADD_SUB:
-                // todo
+                Category newCat = new Category();
+                newCat.setParentId(category.getId());
+                showDialogEditSubCategoryName(SQLTypeTransaction.INSERT,
+                        newCat);
                 break;
             case EDIT:
                 if (category.getParentId() <= 0) {
@@ -174,8 +178,10 @@ public class NestedCategoryListFragment
 
             case VIEW_TRANSACTIONS: // view transactions
                 SearchParameters parameters = new SearchParameters();
-// Todo sistremare ricerca
-//                    parameters.nestedCategory = (new NestedCategoryEntity(category));
+                CategorySub catSub = new CategorySub();
+                catSub.categId = category.getId();
+                catSub.categName = category.getName();
+                parameters.category = catSub;
 
                 showSearchActivityFor(parameters);
         }
@@ -357,7 +363,7 @@ public class NestedCategoryListFragment
         ContentValues values = new ContentValues();
 
         values.put(Category.CATEGID, category.getId());
-        canDelete = !service.isCategoryUsed(category.getId());
+        canDelete = !service.isCategoryUsedWithChildren(category.getId());
 
         if (!(canDelete)) {
             UIHelper ui = new UIHelper(getActivity());
@@ -483,21 +489,23 @@ public class NestedCategoryListFragment
         }
 
         // Fill categories list.
-        CategoryService categoryService = new CategoryService(getActivity());
-        final List<Category> categories = categoryService.getList();
+        final List<NestedCategoryEntity> categories = mQuery.getNestedCategoryEntities(null);
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Integer> categoryIds = new ArrayList<>();
-        for (Category category1 : categories) {
-            categoryIds.add(category1.getId());
-            categoryNames.add(category1.getName());
+        for (NestedCategoryEntity category1 : categories) {
+            // do not include category itself and all children form parent list
+            if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
+                categoryIds.add(category1.getCategoryId());
+                categoryNames.add(category1.getCategoryName() );
+            }
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnCategory.setAdapter(adapterCategory);
         //select category if present
-        if (category.getId() > 0) {
-            spnCategory.setSelection(categoryIds.indexOf(category.getId()), true);
+        if (category.getParentId() > 0) {
+            spnCategory.setSelection(categoryIds.indexOf(category.getParentId()), true);
         }
 
         int titleId = type.equals(SQLTypeTransaction.INSERT)
@@ -519,7 +527,7 @@ public class NestedCategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get parent category id
-                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
+                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
@@ -583,7 +591,6 @@ public class NestedCategoryListFragment
                 .setSingleChoiceItems(R.array.category_type, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // todo: depending on the choice, show the edit dialog. 0-based
                         NestedCategoryEntity newCategory = new NestedCategoryEntity(-1, null, -1);
                         if (which == 0) {
                             showDialogEditCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class QueryNestedCastegory
     public static final String PARENTID = "PARENTID";
     public static final String PARENTNAME = "PARENTNAME";
     public static final String BASENAME = "BASENAME";
+    public static final String FULLCATID = "FULLCATID";
     public static final String ACTIVE = "ACTIVE";
     public static final String LEVEL = "LEVEL";
 
@@ -38,7 +40,7 @@ public class QueryNestedCastegory
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, ACTIVE, LEVEL};
+        return new String[]{CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL};
     }
 
 
@@ -61,9 +63,9 @@ public class QueryNestedCastegory
         return entity;
     }
 
-    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter) {
+    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter, String sort) {
         List<NestedCategoryEntity> categories = new ArrayList<>();
-        Cursor cursor = getCursor(null, filter, null, null);
+        Cursor cursor = getCursor(null, filter, null, sort);
         if (cursor.moveToFirst()) {
             do {
                 NestedCategoryEntity entity = new NestedCategoryEntity();
@@ -73,4 +75,14 @@ public class QueryNestedCastegory
         }
         return categories;
     }
+
+    public List<NestedCategoryEntity> getNestedCategoryEntities(String filter) {
+        return  getNestedCategoryEntities( filter, CATEGNAME);
+    }
+
+    public List<NestedCategoryEntity> getChildrenNestedCategoryEntities(Integer categoryId ){
+        return getNestedCategoryEntities( FULLCATID +
+                        " LIKE '%:"+Integer.toString(categoryId)+":%'");
+    }
+
 }
