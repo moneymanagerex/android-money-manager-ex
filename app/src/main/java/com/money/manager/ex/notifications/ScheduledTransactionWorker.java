@@ -39,7 +39,7 @@ public class ScheduledTransactionWorker
 		super(context, workerParams);
 	}
 
-	@NonNul
+	@NonNull
 	@Override
 	public Result doWork() {
 		RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(getApplicationContext());
