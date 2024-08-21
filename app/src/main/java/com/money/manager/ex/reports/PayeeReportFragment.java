@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -153,13 +152,7 @@ public class PayeeReportFragment
             // handler to show chart
             if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
                 Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        showChart();
-                    }
-                }, 1000);
+                handler.postDelayed(() -> showChart(), 1000);
             }
         }
     }
@@ -184,11 +177,7 @@ public class PayeeReportFragment
         //compose builder
         builder.setTables(mobileData.getSource());
         //return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
     @Override
