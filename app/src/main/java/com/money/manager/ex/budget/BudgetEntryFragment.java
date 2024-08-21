@@ -65,10 +65,6 @@ public class BudgetEntryFragment
         return fragment;
     }
 
-    public BudgetEntryFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public String getSubTitle() {
         return mBudgetName;
