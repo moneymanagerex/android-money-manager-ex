@@ -35,7 +35,7 @@ public class ValuePieEntry implements Parcelable {
     public ValuePieEntry(String text, double value, String valueFormatted) {
         setText(text);
         setValue(value);
-		setValueFormatted(valueFormatted);
+        setValueFormatted(valueFormatted);
 	}
 
 	/**
