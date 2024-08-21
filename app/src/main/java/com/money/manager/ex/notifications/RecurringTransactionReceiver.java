@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,8 +34,6 @@ public class RecurringTransactionReceiver
                 .getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true);
         if (!notify) return;
 
-		Intent myIntent = new Intent(context, RecurringTransactionIntentService.class);
-        RecurringTransactionIntentService.enqueueWork(context, myIntent);
+        ScheduledTransactionWorker.enqueueWork(context);
     }
-
 }
