@@ -55,7 +55,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
-import com.money.manager.ex.nestedcategory.NestedCategoryTest;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
@@ -490,14 +489,11 @@ public class MainActivity
      */
     @Subscribe
     public void onEvent(SyncStartingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        mIsSynchronizing = true;
-                        invalidateOptionsMenu();
-                        return null;
-                    }
-                })
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = true;
+            invalidateOptionsMenu();
+            return null;
+        })
                 .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -510,14 +506,11 @@ public class MainActivity
      */
     @Subscribe
     public void onEvent(SyncStoppingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        mIsSynchronizing = false;
-                        invalidateOptionsMenu();
-                        return null;
-                    }
-                })
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = false;
+            invalidateOptionsMenu();
+            return null;
+        })
                 .subscribeOn(AndroidSchedulers.mainThread())
 //            .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -592,7 +585,6 @@ public class MainActivity
      */
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
-        Intent intent;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {
@@ -600,7 +592,7 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3
-                intent = new Intent(MainActivity.this, PasswordActivity.class);
+                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
                 intent.putExtra(EXTRA_DATABASE_PATH, key);
                 startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
 
@@ -610,96 +602,69 @@ public class MainActivity
         }
         if (item.getId() == null) return false;
 
-        switch (item.getId()) {
-            case R.id.menu_home:
-                showFragment(HomeFragment.class);
-                break;
-            case R.id.menu_sync:
-                SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
-                break;
+        int itemId = item.getId();
 
-            case R.id.menu_open_database:
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-
-                FileStorageHelper helper = new FileStorageHelper(this);
-                helper.showStorageFilePicker();
-                // TODO request password 2/3
-                break;
-
-            case R.id.menu_create_database:
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-
-                (new FileStorageHelper(this)).showCreateFilePicker();
-                // TODO request password 3/3
-                break;
-
-            case R.id.menu_account:
-                showFragment(AccountListFragment.class);
-                break;
-
-            case R.id.menu_category:
-                boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
-                if (!useNestedCategory) {
-                    showFragment(CategoryListFragment.class);
-                } else {
-                    showFragment(NestedCategoryListFragment.class);
-                }
-                break;
-
-            case R.id.menu_currency:
-                // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-                break;
-            case R.id.menu_payee:
-                showFragment(PayeeListFragment.class);
-                break;
-            case R.id.menu_recurring_transaction:
-                showFragment(RecurringTransactionListFragment.class);
-                break;
-            case R.id.menu_budgets:
-                intent = new Intent(this, BudgetsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_search_transaction:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-            case R.id.menu_report_categories:
-                startActivity(new Intent(this, CategoriesReportActivity.class));
-                break;
-            case R.id.menu_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
-            case R.id.menu_report_payees:
-                startActivity(new Intent(this, PayeesReportActivity.class));
-                break;
-            case R.id.menu_report_where_money_goes:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_where_money_comes_from:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_income_vs_expenses:
-                startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_help:
-                startActivity(new Intent(MainActivity.this, HelpActivity.class));
-                break;
-            case R.id.menu_about:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            default:
-                // if no match, return false
-                result = false;
+        if (itemId == R.id.menu_home) {
+            showFragment(HomeFragment.class);
+        } else if (itemId == R.id.menu_sync) {
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization();
+        } else if (itemId == R.id.menu_open_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            FileStorageHelper helper = new FileStorageHelper(this);
+            helper.showStorageFilePicker();
+            // TODO request password 2/3
+        } else if (itemId == R.id.menu_create_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            (new FileStorageHelper(this)).showCreateFilePicker();
+            // TODO request password 3/3
+        } else if (itemId == R.id.menu_account) {
+            showFragment(AccountListFragment.class);
+        } else if (itemId == R.id.menu_category) {
+            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
+            if (!useNestedCategory) {
+                showFragment(CategoryListFragment.class);
+            } else {
+                showFragment(NestedCategoryListFragment.class);
+            }
+        } else if (itemId == R.id.menu_currency) {
+            Intent intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_payee) {
+            showFragment(PayeeListFragment.class);
+        } else if (itemId == R.id.menu_recurring_transaction) {
+            showFragment(RecurringTransactionListFragment.class);
+        } else if (itemId == R.id.menu_budgets) {
+            Intent intent = new Intent(this, BudgetsActivity.class);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_search_transaction) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        } else if (itemId == R.id.menu_report_categories) {
+            startActivity(new Intent(this, CategoriesReportActivity.class));
+        } else if (itemId == R.id.menu_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (itemId == R.id.menu_report_payees) {
+            startActivity(new Intent(this, PayeesReportActivity.class));
+        } else if (itemId == R.id.menu_report_where_money_goes) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_where_money_comes_from) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_income_vs_expenses) {
+            startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        } else if (itemId == R.id.menu_help) {
+            startActivity(new Intent(MainActivity.this, HelpActivity.class));
+        } else if (itemId == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        } else {
+            // if no match, return false
+            result = false;
         }
 
         return result;
@@ -942,55 +907,41 @@ public class MainActivity
         drawerList.setAdapter(adapter);
 
         // set listener on item click
-        drawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mDrawer == null) return false;
-                // if the group has child items, do not e.
-                ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
-                if (children != null) return false;
+        drawerList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (mDrawer == null) return false;
+            // if the group has child items, do not e.
+            ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
+            if (children != null) return false;
 
-                // Highlight the selected item, update the title, and close the drawer
-                drawerList.setItemChecked(groupPosition, true);
+            // Highlight the selected item, update the title, and close the drawer
+            drawerList.setItemChecked(groupPosition, true);
 
-                // You should reset item counter
-                mDrawer.closeDrawer(mDrawerLayout);
-                // check item selected
-                final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
-                        .getGroup(groupPosition);
-                if (item != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // execute operation
-                            onDrawerMenuAndOptionMenuSelected(item);
-                        }
-                    }, 200);
-                }
-                return true;
+            // You should reset item counter
+            mDrawer.closeDrawer(mDrawerLayout);
+            // check item selected
+            final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
+                    .getGroup(groupPosition);
+            if (item != null) {
+                new Handler().postDelayed(() -> {
+                    // execute operation
+                    onDrawerMenuAndOptionMenuSelected(item);
+                }, 200);
             }
+            return true;
         });
 
-        drawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (mDrawer == null) return false;
+        drawerList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (mDrawer == null) return false;
 
-                mDrawer.closeDrawer(mDrawerLayout);
+            mDrawer.closeDrawer(mDrawerLayout);
 
-                ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
-                final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
-                if (selectedItem != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onDrawerMenuAndOptionMenuSelected(selectedItem);
-                        }
-                    }, 200);
-                    return true;
-                } else {
-                    return false;
-                }
+            ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
+            final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
+            if (selectedItem != null) {
+                new Handler().postDelayed(() -> onDrawerMenuAndOptionMenuSelected(selectedItem), 200);
+                return true;
+            } else {
+                return false;
             }
         });
     }
