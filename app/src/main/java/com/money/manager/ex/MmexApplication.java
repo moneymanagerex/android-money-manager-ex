@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex;
 
+import static timber.log.Timber.plant;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -132,10 +134,10 @@ public class MmexApplication
 
         // Loggers
         if (BuildConfig.DEBUG) {
-            Timber.plant(new DebugTree());
+            plant(new DebugTree());
         } else {
-            Timber.plant(new ScreenTree());
-            Timber.plant(new SysLogTree());
+            plant(new ScreenTree());
+            plant(new SysLogTree());
         }
 
         initializeDependencyInjection();
