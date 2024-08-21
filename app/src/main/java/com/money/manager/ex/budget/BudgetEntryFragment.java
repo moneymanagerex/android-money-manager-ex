@@ -35,10 +35,10 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 /**
- * Use the {@link BudgetDetailFragment#newInstance} factory method to
+ * Use the {@link BudgetEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BudgetDetailFragment
+public class BudgetEntryFragment
     extends BaseListFragment {
 
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
@@ -53,10 +53,10 @@ public class BudgetDetailFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment BudgetDetailFragment.
+     * @return A new instance of fragment BudgetEntryFragment.
      */
-    public static BudgetDetailFragment newInstance(long budgetYearId, String budgetName) {
-        BudgetDetailFragment fragment = new BudgetDetailFragment();
+    public static BudgetEntryFragment newInstance(long budgetYearId, String budgetName) {
+        BudgetEntryFragment fragment = new BudgetEntryFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_BUDGET_YEAR_ID, budgetYearId);
         args.putString(ARG_BUDGET_NAME_ID, budgetName);
@@ -65,7 +65,7 @@ public class BudgetDetailFragment
         return fragment;
     }
 
-    public BudgetDetailFragment() {
+    public BudgetEntryFragment() {
         // Required empty public constructor
     }
 
@@ -128,8 +128,7 @@ public class BudgetDetailFragment
         setListShown(false);
 
         LoaderManager.LoaderCallbacks<Cursor> callbacks = setUpLoaderCallbacks();
-
-        getLoaderManager().initLoader(LOADER_BUDGET, null, callbacks);
+        LoaderManager.getInstance(this).initLoader(LOADER_BUDGET, null, callbacks);
     }
 
     private void setUpAdapter() {
