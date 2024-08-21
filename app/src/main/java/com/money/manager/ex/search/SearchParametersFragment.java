@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.search;
 
+import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ import androidx.fragment.app.Fragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
@@ -477,13 +480,41 @@ public class SearchParametersFragment
                 categId = searchParameters.category.categId;
             }
             // Category. Also check the splits.
-            where.addStatement("(" +
-                    "(" + QueryAllData.CATEGID + "=" + categId + ") " +
-                    " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
-                    " FROM " + SplitCategory.TABLE_NAME +
-                    " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
-                    ")" +
-                    ")");
+
+            // todo add search in sub category if flag is on
+            if (searchParameters.searchSubCategory) {
+                // build where also for sub category
+                String whereSubCategory = null;
+                QueryNestedCategory subQuery = new QueryNestedCategory(this.getActivity());
+                List<NestedCategoryEntity> subCat = subQuery.getChildrenNestedCategoryEntities(categId);
+                for( NestedCategoryEntity child : subCat) {
+                    if (whereSubCategory != null ) {
+                        whereSubCategory += ", ";
+                    } else {
+                        whereSubCategory = "";
+                    }
+                    whereSubCategory += Integer.toString(child.getCategoryId());
+                }
+                whereSubCategory = "(" + whereSubCategory + ")" ;
+
+                where.addStatement("(" +
+                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") " +
+                        " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
+                        " FROM " + SplitCategory.TABLE_NAME +
+                        " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
+                        ")" +
+                        ")");
+            } else {
+                where.addStatement("(" +
+                        "(" + QueryAllData.CATEGID + "=" + categId + ") " +
+                        " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
+                        " FROM " + SplitCategory.TABLE_NAME +
+                        " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
+                        ")" +
+                        ")");
+
+            }
+
         }
 
         // transaction number

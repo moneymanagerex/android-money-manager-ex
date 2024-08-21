@@ -141,6 +141,7 @@ public class NestedCategoryListFragment
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS_SUB.getId(), Menu.NONE, getString(R.string.view_transactions_sub));
     }
 
     @Override
@@ -177,11 +178,16 @@ public class NestedCategoryListFragment
                 break;
 
             case VIEW_TRANSACTIONS: // view transactions
+            case VIEW_TRANSACTIONS_SUB:
                 SearchParameters parameters = new SearchParameters();
                 CategorySub catSub = new CategorySub();
                 catSub.categId = category.getId();
                 catSub.categName = category.getName();
                 parameters.category = catSub;
+
+                if (menuId == ContextMenuIds.VIEW_TRANSACTIONS_SUB) {
+                    parameters.searchSubCategory = true;
+                }
 
                 showSearchActivityFor(parameters);
         }
