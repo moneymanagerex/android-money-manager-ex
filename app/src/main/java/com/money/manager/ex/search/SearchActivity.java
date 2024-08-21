@@ -35,7 +35,6 @@ import com.money.manager.ex.database.QueryAllData;
 
 import org.parceler.Parcels;
 
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 public class SearchActivity
@@ -96,7 +95,7 @@ public class SearchActivity
         // Add Search icon.
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.searchMenuItem);
-        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_search));
         // show this menu item last
 
