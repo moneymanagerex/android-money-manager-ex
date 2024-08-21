@@ -26,8 +26,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.R;
 
-import androidx.core.view.MenuItemCompat;
-
 /**
  * Helper methods to work with menus.
  */
@@ -86,7 +84,7 @@ public class MenuHelper {
 
     public void addSaveToolbarIcon() {
         MenuItem item = menu.add(Menu.NONE, save, Menu.NONE, R.string.save);
-        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
             //.color(uiHelper.getPrimaryTextColor());

@@ -71,7 +71,6 @@ import org.greenrobot.eventbus.Subscribe;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -261,20 +260,20 @@ public class AccountTransactionListFragment
             if (!activity.isDualPanel()) {
                 //hide sync toolbar
                 MenuItem itemSync = menu.findItem(R.id.menu_sync);
-                if (itemSync != null) MenuItemCompat.setShowAsAction(itemSync, MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                if (itemSync != null) itemSync.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    MenuItemCompat.setShowAsAction(itemOpenDatabase, !itemSync.isVisible()
+                    itemOpenDatabase.setShowAsAction(!itemSync.isVisible()
                         ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
                 MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
                 if (itemDashboard != null)
-                    MenuItemCompat.setShowAsAction(itemDashboard, MenuItem.SHOW_AS_ACTION_NEVER);
+                    itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             }
         }
 
