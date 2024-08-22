@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +31,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
@@ -183,8 +185,8 @@ public class AccountTransactionListFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // hide the title
         ActionBar actionBar = getActionBar();
@@ -369,7 +371,7 @@ public class AccountTransactionListFragment
             case AllDataListFragment.ID_LOADER_ALL_DATA_DETAIL:
                 // Notification received from AllDataListFragment.
                 // Once the transactions are loaded, load the summary data.
-                getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
+                LoaderManager.getInstance(this).restartLoader(ID_LOADER_SUMMARY, null, this);
                 // load/reset running balance
                 populateRunningBalance();
 
@@ -515,32 +517,27 @@ public class AccountTransactionListFragment
         this.viewHolder.imgAccountFav = this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
         // set listener click on favorite icon for change image
-        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // set status account
-                mAccount.setFavorite(!(mAccount.getFavorite()));
+        this.viewHolder.imgAccountFav.setOnClickListener(v -> {
+            // set status account
+            mAccount.setFavorite(!(mAccount.getFavorite()));
 
-                AccountRepository repo = new AccountRepository(getActivity());
-                boolean updated = repo.save(mAccount);
+            AccountRepository repo = new AccountRepository(getActivity());
+            boolean updated = repo.save(mAccount);
 
-                if (!updated) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
+            if (!updated) {
+                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+            } else {
+                setImageViewFavorite();
             }
         });
 
         // goto account
         this.viewHolder.imgGotoAccount = this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
-        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-            }
+        this.viewHolder.imgGotoAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
         });
     }
 
