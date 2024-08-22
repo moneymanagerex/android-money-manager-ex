@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@ import android.webkit.WebView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class AboutCreditsFragment extends Fragment {
@@ -47,10 +49,10 @@ public class AboutCreditsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        WebView webView = getActivity().findViewById(R.id.about_thirdsparty_credits);
+        WebView webView = view.findViewById(R.id.about_thirdsparty_credits);
 
 //        webView.loadData(MmxFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
 

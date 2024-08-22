@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,51 +20,48 @@ package com.money.manager.ex.about;
 
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 /**
  * Adapter for the tabs on the About page.
  */
 public class AboutTabAdapter
-    extends FragmentPagerAdapter {
+        extends FragmentStateAdapter {
 
     private static final int NUM_ITEMS = 4;
     private final String[] tabTitles;
 
-    public AboutTabAdapter(FragmentManager fragmentManager, String[] titles) {
-        super(fragmentManager);
+    public AboutTabAdapter(@NonNull FragmentActivity fragmentActivity, String[] titles) {
+        super(fragmentActivity);
         tabTitles = titles;
     }
 
-    // Returns total number of pages
+    @NonNull
     @Override
-    public int getCount() {
-        return NUM_ITEMS;
-    }
-
-    // Returns the fragment to display for that page
-    @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         switch (position) {
             case 0:
                 return AboutFragment.newInstance();
             case 1:
-//                    return AboutChangelogFragment.newInstance(position);
                 return WebChangelogFragment.newInstance();
             case 2:
                 return AboutCreditsFragment.newInstance();
             case 3:
                 return new LibsBuilder().supportFragment();
             default:
-                return null;
+                throw new IllegalArgumentException("Invalid position: " + position);
         }
     }
 
     @Override
+    public int getItemCount() {
+        return NUM_ITEMS;
+    }
+
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         return tabTitles[position];
     }
 }

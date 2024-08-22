@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,21 +19,24 @@ package com.money.manager.ex.about;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.viewpager2.widget.ViewPager2;
+
 import timber.log.Timber;
 
 /**
  * About the app
  */
 public class AboutActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +45,20 @@ public class AboutActivity
         setDisplayHomeAsUpEnabled(true);
 
         mViewPager = findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new AboutTabAdapter(getSupportFragmentManager(),
-            new String[]{
-                getString(R.string.about),
-                getString(R.string.changelog),
-                getString(R.string.credits),
-                getString(R.string.libraries)
-            }));
+        AboutTabAdapter adapter = new AboutTabAdapter(this,
+                new String[]{
+                        getString(R.string.about),
+                        getString(R.string.changelog),
+                        getString(R.string.credits),
+                        getString(R.string.libraries)
+                });
+        mViewPager.setAdapter(adapter);
 
         // Tab Layout
         TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        new TabLayoutMediator(tabLayout, mViewPager,
+                (tab, position) -> tab.setText(adapter.getPageTitle(position))
+        ).attach();
     }
 
     @Override
@@ -62,7 +68,7 @@ public class AboutActivity
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
     }
