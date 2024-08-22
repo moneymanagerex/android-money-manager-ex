@@ -18,7 +18,6 @@ package com.money.manager.ex.account;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -87,7 +86,7 @@ public class AccountListFragment
 
         setListShown(false);
         // start loader
-        getLoaderManager().initLoader(LOADER_ACCOUNT, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_ACCOUNT, null, this);
 
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
@@ -135,12 +134,7 @@ public class AccountListFragment
                             .setTitle(R.string.attention)
                             .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
                             .setMessage(R.string.account_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                             .create()
                             .show();
                 } else {
@@ -213,7 +207,7 @@ public class AccountListFragment
     @Override
     public boolean onQueryTextChange(String newText) {
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
+        LoaderManager.getInstance(this).restartLoader(LOADER_ACCOUNT, null, this);
         return true;
     }
 
@@ -266,23 +260,15 @@ public class AccountListFragment
         builder.setTitle(R.string.delete_account)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AccountRepository repo = new AccountRepository(getActivity());
-                        if (!repo.delete(accountId)) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-                        }
-                        // restart loader
-                        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    AccountRepository repo = new AccountRepository(getActivity());
+                    if (!repo.delete(accountId)) {
+                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
+                    // restart loader
+                    getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
