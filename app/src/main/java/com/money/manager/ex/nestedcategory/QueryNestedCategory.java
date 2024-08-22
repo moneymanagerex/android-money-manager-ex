@@ -3,6 +3,7 @@ package com.money.manager.ex.nestedcategory;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -48,7 +49,8 @@ public class QueryNestedCategory
     }
 
     public Cursor getCursor(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return mContext.getContentResolver().query(getUri(), projection, selection, selectionArgs, sortOrder);
+//        return mContext.getContentResolver().query(getUri(), projection, selection, selectionArgs, sortOrder);
+        return MmexApplication.getApp().getContentResolver().query(getUri(), projection, selection, selectionArgs, sortOrder);
     }
 
     public NestedCategoryEntity getOneCategoryEntity(Integer categoryId) {
