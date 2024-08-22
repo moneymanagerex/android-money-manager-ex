@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ public class BudgetPeriods {
             periodEnumLookup = new HashMap<>();
         }
 
-        if (periodEnumLookup.size() == 0) {
+        if (periodEnumLookup.isEmpty()) {
             periodEnumLookup.put("None"       , BudgetPeriodEnum.NONE);
             periodEnumLookup.put("Weekly"     , BudgetPeriodEnum.WEEKLY);
             periodEnumLookup.put("Bi-Weekly"  , BudgetPeriodEnum.BI_WEEKLY);
@@ -78,7 +78,7 @@ public class BudgetPeriods {
             periodTranslationLookup = new HashMap<>();
         }
 
-        if (periodTranslationLookup.size() == 0) {
+        if (periodTranslationLookup.isEmpty()) {
             periodTranslationLookup.put(BudgetPeriodEnum.NONE, context.getString(R.string.none));
             periodTranslationLookup.put(BudgetPeriodEnum.WEEKLY, context.getString(R.string.weekly));
             periodTranslationLookup.put(BudgetPeriodEnum.BI_WEEKLY, context.getString(R.string.bi_weekly));
