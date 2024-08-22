@@ -214,6 +214,7 @@ public class CategoriesReportFragment
             "ID AS _id", // this does not fetch anything, unfortunately.
             ViewMobileData.CATEGID, ViewMobileData.Category,
             ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+                ViewMobileData.CategoryFullName,
             "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
@@ -224,7 +225,8 @@ public class CategoriesReportFragment
         }
 
         String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
-                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory
+                + ',' + ViewMobileData.CategoryFullName;
 
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
@@ -236,7 +238,8 @@ public class CategoriesReportFragment
             }
         }
 
-        String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        // String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        String sortOrder = ViewMobileData.CategoryFullName;
 
         //compose builder
         builder.setTables(mobileData.getSource());
