@@ -118,7 +118,6 @@ public class CategoryListFragment
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
-
         /*
             Define the layout.
             Show category selector (arrow) when used as a picker.
@@ -135,7 +134,7 @@ public class CategoryListFragment
         addListClickHandlers();
 
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
+        LoaderManager.getInstance(this).initLoader(ID_LOADER_CATEGORYSUB, null, this);
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);

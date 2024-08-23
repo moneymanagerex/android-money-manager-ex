@@ -263,6 +263,18 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
             evalExpression();
         });
 
+        deleteButton.setOnClickListener( v -> {
+            mStartedTyping = true;
+
+            String currentNumber = txtMain.getText().toString();
+            currentNumber = deleteLastCharacterFrom(currentNumber);
+            txtMain.setText(currentNumber);
+
+            evalExpression();
+        });
+
+        findViewById(R.id.buttonKeyEqual).setOnClickListener(v -> returnResult());
+
         UIHelper uiHelper = new UIHelper(this);
         deleteButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace)
                 .sizeDp(40)
