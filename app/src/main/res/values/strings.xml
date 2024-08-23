@@ -133,6 +133,7 @@
     <string name="add_subcategory">Add Subcategory</string>
     <string name="edit_categoryName">Edit Category</string>
     <string name="delete_category">Delete Category</string>
+    <string name="search_sub_category">Include sub category</string>
 
     <!-- currency -->
     <string name="currency_name">Currency name</string>

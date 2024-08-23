@@ -95,6 +95,7 @@ public class SearchParametersFragment
     private EditText txtNotes;
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
+    private CheckBox cbxSearchSubCategory;
     // arrays list account name and account id
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
     private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
@@ -634,6 +635,7 @@ public class SearchParametersFragment
         // Category
         if (txtSelectCategory.getTag() != null) {
             searchParameters.category = (CategorySub) txtSelectCategory.getTag();
+            searchParameters.searchSubCategory = cbxSearchSubCategory.isChecked();
         }
         // Transaction number
         if (!TextUtils.isEmpty(viewHolder.txtTransNumber.getText())) {
@@ -724,6 +726,10 @@ public class SearchParametersFragment
         viewHolder.txtSelectPayee.setText(searchParameters.payeeName);
         // Category
         displayCategory(searchParameters.category);
+        boolean useNestedCategory = (new AppSettings(getContext()).getBehaviourSettings().getUseNestedCategory());
+        cbxSearchSubCategory.setEnabled(useNestedCategory);
+        cbxSearchSubCategory.setChecked(useNestedCategory);
+
         // Transaction number
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);
         // Notes
@@ -741,6 +747,7 @@ public class SearchParametersFragment
         cbxWithdrawal = view.findViewById(R.id.checkBoxWithdrawal);
 
         txtSelectCategory = view.findViewById(R.id.textViewSelectCategory);
+        cbxSearchSubCategory = view.findViewById(R.id.checkBoxSearchSubCategory);
 
         spinStatus = view.findViewById(R.id.spinnerStatus);
 
