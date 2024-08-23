@@ -243,7 +243,7 @@ public abstract class BaseReportFragment
      * @param args
      */
     protected void startLoader(Bundle args) {
-        getLoaderManager().restartLoader(ID_LOADER, args, this);
+        LoaderManager.getInstance(this).restartLoader(ID_LOADER, args, this);
     }
 
     protected String getWhereClause() {
