@@ -132,16 +132,25 @@ public class BudgetEntryFragment
     }
 
     private void setUpAdapter() {
-        BudgetAdapter adapter = new BudgetAdapter(getActivity(),
-                null,
-                new String[]{ BudgetQuery.CATEGNAME },
-                new int[]{ R.id.categoryTextView },
-                0);
-
+        BudgetAdapter adapter;
+        if (!useNestedCategory) {
+            adapter = new BudgetAdapter(getActivity(),
+                    null,
+                    new String[]{BudgetQuery.CATEGNAME},
+                    new int[]{R.id.categoryTextView},
+                    0);
+        } else {
+            adapter = new BudgetAdapter(getActivity(),
+                    null,
+                    new String[]{BudgetNestedQuery.CATEGNAME},
+                    new int[]{R.id.categoryTextView},
+                    0);
+        }
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
         setListAdapter(adapter);
+
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> setUpLoaderCallbacks() {

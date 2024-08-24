@@ -57,7 +57,7 @@ public class QueryNestedCategory
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL};
+        return new String[]{ID, CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL};
     }
 
 
