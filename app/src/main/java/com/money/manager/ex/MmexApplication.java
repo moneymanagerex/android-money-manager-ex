@@ -29,7 +29,7 @@ import androidx.preference.PreferenceManager;
 
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
-import com.amplitude.android.DefaultTrackingOptions;
+import com.amplitude.android.TrackingOptions;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -148,7 +148,7 @@ public class MmexApplication
         mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
                 , getApplicationContext()
                 , configuration -> {
-                    configuration.setDefaultTracking(DefaultTrackingOptions.ALL);
+                    configuration.setTrackingOptions(new TrackingOptions());
                     configuration.setOptOut(!new AppSettings(this).getGeneralSettings().getSendUsage());
                     return Unit.INSTANCE;
                 }
@@ -182,7 +182,7 @@ public class MmexApplication
         preferences.edit().putString("uuid", appUUID).apply();
 
         // Log the generated UUID for verification (you can remove this in production)
-        Timber.d("Generated UUID: " + appUUID);
+        Timber.d("Generated UUID: %s", appUUID);
 
         return appUUID;
     }
