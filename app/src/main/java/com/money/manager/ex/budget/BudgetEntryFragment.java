@@ -29,6 +29,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
 
 import androidx.loader.app.LoaderManager;
@@ -48,6 +49,8 @@ public class BudgetEntryFragment
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
     private View mHeader;
+    private boolean useNestedCategory = false;  // new NestedCateg
+
 
     /**
      * Use this factory method to create a new instance of
@@ -78,6 +81,7 @@ public class BudgetEntryFragment
             mBudgetYearId = getArguments().getLong(ARG_BUDGET_YEAR_ID);
             mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
+        useNestedCategory = (new AppSettings(getContext()).getBehaviourSettings().getUseNestedCategory());
     }
 
     @Override
@@ -147,11 +151,19 @@ public class BudgetEntryFragment
                 Loader<Cursor> result = null;
 
                 if (id == LOADER_BUDGET) {
-                    QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
-                    Select query = new Select(categories.getAllColumns())
-                            .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
+                    if (!useNestedCategory) {
+                        QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
+                        Select query = new Select(categories.getAllColumns())
+                                .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
 
-                    result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                    } else {
+                        // useNestedCategory
+                        QueryNestedCategory categories = new QueryNestedCategory(getActivity());
+                        Select query = new Select(categories.getAllColumns())
+                                .orderBy(QueryNestedCategory.CATEGNAME);
+                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                    }
                 }
                 return result;
             }

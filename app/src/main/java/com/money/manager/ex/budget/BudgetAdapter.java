@@ -80,6 +80,12 @@ public class BudgetAdapter
         mContext = context;
 
         MmexApplication.getApp().iocComponent.inject(this);
+
+        try {
+            useNestedCategory = (new AppSettings(context).getBehaviourSettings().getUseNestedCategory());
+        } catch (Exception e) {
+        }
+
     }
 
     @Inject Lazy<BriteDatabase> databaseLazy;
@@ -88,6 +94,9 @@ public class BudgetAdapter
     private String mBudgetName;
     private long mBudgetYearId;
     private HashMap<String, BudgetEntry> mBudgetEntries;
+
+    private boolean useNestedCategory = false;  // new NestedCateg
+
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -99,8 +108,12 @@ public class BudgetAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         // Category
 
-        boolean hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
-
+        boolean hasSubcategory;
+        if (!useNestedCategory) {
+            hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
+        } else {
+            hasSubcategory = false;
+        }
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
             int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
@@ -108,7 +121,12 @@ public class BudgetAdapter
         }
 
         int categoryId    = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
-        int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+        int subCategoryId;
+        if (!useNestedCategory) {
+            subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+        } else {
+            subCategoryId = -1;
+        }
 
         // Frequency
 
