@@ -63,6 +63,9 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
 
 ### Nested Category
 
+> [!IMPORTANT]
+> Need to be activate in setting --> beavhiour --> Use nested category
+
 From August 2024, nested category (means third level or more in category management) is available. since is beta release you can enable this feature in Setting->Behaviour->Enable Nested Category
 
 ## How to Use
