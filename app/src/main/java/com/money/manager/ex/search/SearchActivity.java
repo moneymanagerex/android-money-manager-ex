@@ -19,7 +19,6 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +35,8 @@ import com.money.manager.ex.database.QueryAllData;
 import org.parceler.Parcels;
 
 import androidx.fragment.app.FragmentTransaction;
+
+import timber.log.Timber;
 
 public class SearchActivity
     extends MmxBaseFragmentActivity {
@@ -156,7 +157,7 @@ public class SearchActivity
         SearchParameters searchParameters = Parcels.unwrap(searchParcel);
 
         if (searchParameters != null) {
-            Log.d("SearchActivity", "-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
+            Timber.d("-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
             getSearchFragment().setSearchParameters(searchParameters);
             performSearch();
         }
