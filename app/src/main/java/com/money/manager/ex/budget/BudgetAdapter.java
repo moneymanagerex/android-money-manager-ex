@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.budget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -80,6 +81,12 @@ public class BudgetAdapter
         mContext = context;
 
         MmexApplication.getApp().iocComponent.inject(this);
+
+        try {
+            useNestedCategory = (new AppSettings(context).getBehaviourSettings().getUseNestedCategory());
+        } catch (Exception e) {
+        }
+
     }
 
     @Inject Lazy<BriteDatabase> databaseLazy;
@@ -89,26 +96,43 @@ public class BudgetAdapter
     private long mBudgetYearId;
     private HashMap<String, BudgetEntry> mBudgetEntries;
 
+    private boolean useNestedCategory = false;  // new NestedCateg
+
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         return inflater.inflate(mLayout, parent, false);
     }
 
+    @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Category
 
-        boolean hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
-
+        boolean hasSubcategory;
+        if (!useNestedCategory) {
+            hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
+        } else {
+            hasSubcategory = false;
+        }
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
+            int categoryColumnIndex = cursor.getColumnIndex(
+                    (!useNestedCategory ) ? QueryCategorySubCategory.CATEGSUBNAME : QueryCategorySubCategory.CATEGNAME
+            );
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 
-        int categoryId    = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
-        int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+        int categoryId;
+        int subCategoryId;
+        if (!useNestedCategory) {
+            categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+            subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+        } else {
+            categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+            subCategoryId = -1;
+        }
 
         // Frequency
 
@@ -205,14 +229,20 @@ public class BudgetAdapter
         double actual;
         // wolfsolver since category can be neested we need to consider always category as master
         // probabily until we don't handle third and other level actual value does not count correctlry
-        if (!hasSubcategory) {
-            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
-            actual = getAmountForCategory(categoryId);
+        if (!useNestedCategory) {
+            if (!hasSubcategory) {
+                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+                actual = getAmountForCategory(categoryId);
+            } else {
+                int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+                actual = getAmountForCategory(subCategoryId);
+    //            actual = getAmountForSubCategory(subCategoryId);
+            }
         } else {
-            int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
-            actual = getAmountForCategory(subCategoryId);
-//            actual = getAmountForSubCategory(subCategoryId);
+            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+            actual = getAmountForCategory(categoryId);
         }
+
         return actual;
     }
 
