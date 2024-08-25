@@ -1,0 +1,4 @@
+- Nested Category support (beta phase, try it Settings -> Behavior)
+- Restore currency exchange rate update from a new vendor
+- Bug Fixes: consider hiding reconciled amount everywhere
+- Refactor: deprecated ButterKnife, upgraded dependencies
