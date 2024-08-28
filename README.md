@@ -16,7 +16,7 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 [![Build status](https://ci.appveyor.com/api/projects/status/bn231orqqh7bi6um?svg=true)](https://ci.appveyor.com/project/moneymanagerex/android-money-manager-ex)
 
 #### Documentation
-- [UserManual](docs/usermanual/index.md)x
+- [UserManual](docs/usermanual/index.md)
 - [neested category](doc/nestedcategory.md)
 
 
