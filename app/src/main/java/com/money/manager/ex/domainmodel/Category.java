@@ -33,8 +33,6 @@ public class Category
     public static final String PARENTID = "PARENTID";
     public static final String BASENAME = "BASENAME";
 
-    public static final String BASENAME = "BASENAME";
-
     public Category() {
         super();
     }
