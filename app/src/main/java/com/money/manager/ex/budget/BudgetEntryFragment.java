@@ -29,16 +29,17 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
 
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 /**
- * Use the {@link BudgetDetailFragment#newInstance} factory method to
+ * Use the {@link BudgetEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BudgetDetailFragment
+public class BudgetEntryFragment
     extends BaseListFragment {
 
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
@@ -48,25 +49,23 @@ public class BudgetDetailFragment
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
     private View mHeader;
+    private boolean useNestedCategory = false;  // new NestedCateg
+
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment BudgetDetailFragment.
+     * @return A new instance of fragment BudgetEntryFragment.
      */
-    public static BudgetDetailFragment newInstance(long budgetYearId, String budgetName) {
-        BudgetDetailFragment fragment = new BudgetDetailFragment();
+    public static BudgetEntryFragment newInstance(long budgetYearId, String budgetName) {
+        BudgetEntryFragment fragment = new BudgetEntryFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_BUDGET_YEAR_ID, budgetYearId);
         args.putString(ARG_BUDGET_NAME_ID, budgetName);
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-    public BudgetDetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -82,6 +81,7 @@ public class BudgetDetailFragment
             mBudgetYearId = getArguments().getLong(ARG_BUDGET_YEAR_ID);
             mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
+        useNestedCategory = (new AppSettings(getContext()).getBehaviourSettings().getUseNestedCategory());
     }
 
     @Override
@@ -128,21 +128,29 @@ public class BudgetDetailFragment
         setListShown(false);
 
         LoaderManager.LoaderCallbacks<Cursor> callbacks = setUpLoaderCallbacks();
-
-        getLoaderManager().initLoader(LOADER_BUDGET, null, callbacks);
+        LoaderManager.getInstance(this).initLoader(LOADER_BUDGET, null, callbacks);
     }
 
     private void setUpAdapter() {
-        BudgetAdapter adapter = new BudgetAdapter(getActivity(),
-                null,
-                new String[]{ BudgetQuery.CATEGNAME },
-                new int[]{ R.id.categoryTextView },
-                0);
-
+        BudgetAdapter adapter;
+        if (!useNestedCategory) {
+            adapter = new BudgetAdapter(getActivity(),
+                    null,
+                    new String[]{BudgetQuery.CATEGNAME},
+                    new int[]{R.id.categoryTextView},
+                    0);
+        } else {
+            adapter = new BudgetAdapter(getActivity(),
+                    null,
+                    new String[]{BudgetNestedQuery.CATEGNAME},
+                    new int[]{R.id.categoryTextView},
+                    0);
+        }
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
         setListAdapter(adapter);
+
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> setUpLoaderCallbacks() {
@@ -152,11 +160,19 @@ public class BudgetDetailFragment
                 Loader<Cursor> result = null;
 
                 if (id == LOADER_BUDGET) {
-                    QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
-                    Select query = new Select(categories.getAllColumns())
-                            .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
+                    if (!useNestedCategory) {
+                        QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
+                        Select query = new Select(categories.getAllColumns())
+                                .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
 
-                    result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                    } else {
+                        // useNestedCategory
+                        QueryNestedCategory categories = new QueryNestedCategory(getActivity());
+                        Select query = new Select(categories.getAllColumns())
+                                .orderBy(QueryNestedCategory.CATEGNAME);
+                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                    }
                 }
                 return result;
             }

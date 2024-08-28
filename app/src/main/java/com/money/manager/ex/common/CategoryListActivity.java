@@ -48,6 +48,7 @@ public class CategoryListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
 
         setContentView(R.layout.base_toolbar_activity);
 
@@ -58,12 +59,12 @@ public class CategoryListActivity
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             listFragment.mAction = intent.getAction();
+            nestedListFragment.mAction = intent.getAction();
 
             int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET);
             listFragment.requestId = requestId;
+            nestedListFragment.requestId = requestId;
         }
-
-        boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
 
         // management fragment
         FragmentManager fm = getSupportFragmentManager();

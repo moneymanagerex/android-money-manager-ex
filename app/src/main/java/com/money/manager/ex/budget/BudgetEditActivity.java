@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 package com.money.manager.ex.budget;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.money.manager.ex.Constants;
@@ -34,32 +34,42 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
-public class BudgetEditActivity
-    extends MmxBaseFragmentActivity {
+public class BudgetEditActivity extends MmxBaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
     private BudgetViewModel mModel;
     private BudgetEditViewHolder viewHolder;
 
+    private TextView budgetYearTextView;
+    private TextView budgetMonthTextView;
+
+    private boolean useNestedCategory = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_edit);
 
-        ButterKnife.bind(this);
+        // Initialize views using findViewById()
+        budgetYearTextView = findViewById(R.id.budgetYearTextView);
+        budgetMonthTextView = findViewById(R.id.budgetMonthTextView);
+
+        useNestedCategory = (new AppSettings(this.getBaseContext()).getBehaviourSettings().getUseNestedCategory());
 
         initializeToolbar();
 
         initializeModel();
         showModel();
+
+        // Set up click listeners for views
+        budgetYearTextView.setOnClickListener(this::onSelectYear);
+        budgetMonthTextView.setOnClickListener(this::onSelectMonth);
     }
 
     public boolean onActionDoneClick() {
@@ -86,7 +96,7 @@ public class BudgetEditActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // cancel clicked. Prompt to confirm?
+                // Cancel clicked. Prompt to confirm?
                 Timber.d("going back");
                 break;
             case MenuHelper.save:
@@ -95,15 +105,9 @@ public class BudgetEditActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.budgetYearTextView)
-    public void onSelectYear(View v) {
+    private void onSelectYear(View v) {
         int currentYear = new MmxDate().getYear();
-        int year;
-        if (mModel.year != 0) {
-            year = mModel.year;
-        } else {
-            year = currentYear;
-        }
+        int year = (mModel.year != 0) ? mModel.year : currentYear;
 
         NumberPicker numberPicker = new NumberPicker(this);
         numberPicker.setMinValue(currentYear - 10);
@@ -113,27 +117,18 @@ public class BudgetEditActivity
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.year))
                 .setView(numberPicker)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int selectedYear = numberPicker.getValue();
-                        mModel.setYear(selectedYear);
-                        viewHolder.refreshYear();
-                        viewHolder.refreshName();
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedYear = numberPicker.getValue();
+                    mModel.setYear(selectedYear);
+                    viewHolder.refreshYear();
+                    viewHolder.refreshName();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
-    @OnClick(R.id.budgetMonthTextView)
-    public void onSelectMonth(View v) {
-        int month;
-        if (mModel.month != 0) {
-            month = mModel.month;
-        } else {
-            month = new MmxDate().getMonthOfYear();
-        }
+    private void onSelectMonth(View v) {
+        int month = (mModel.month != 0) ? mModel.month : new MmxDate().getMonthOfYear();
 
         NumberPicker numberPicker = new NumberPicker(this);
         numberPicker.setMinValue(1);
@@ -143,14 +138,11 @@ public class BudgetEditActivity
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.month))
                 .setView(numberPicker)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int selectedMonth = numberPicker.getValue();
-                        mModel.setMonth(selectedMonth);
-                        viewHolder.refreshMonth();
-                        viewHolder.refreshName();
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedMonth = numberPicker.getValue();
+                    mModel.setMonth(selectedMonth);
+                    viewHolder.refreshMonth();
+                    viewHolder.refreshName();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -172,11 +164,10 @@ public class BudgetEditActivity
         if (TextUtils.isEmpty(action)) return;
 
         if (action.equals(Intent.ACTION_INSERT)) {
-            // new record
+            // New record
             budget = new Budget();
-        }
-        if (action.equals(Intent.ACTION_EDIT)) {
-            // existing record
+        } else if (action.equals(Intent.ACTION_EDIT)) {
+            // Existing record
             int budgetId = getBudgetId();
             BudgetRepository repo = new BudgetRepository(this);
             budget = repo.load(budgetId);

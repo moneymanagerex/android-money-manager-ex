@@ -298,15 +298,10 @@ public class AccountEditActivity
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         mViewHolder.spinSymbolInitialBalance.setAdapter(adapterSymbol);
 
-        mViewHolder.txtInitialBalance.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calculator.forActivity(AccountEditActivity.this)
-                        .currency(mAccount.getCurrencyId())
-                        .amount(mAccount.getInitialBalance())
-                        .show(RequestCodes.AMOUNT);
-            }
-        });
+        mViewHolder.txtInitialBalance.setOnClickListener(v -> Calculator.forActivity(AccountEditActivity.this)
+                .currency(mAccount.getCurrencyId())
+                .amount(mAccount.getInitialBalance())
+                .show(RequestCodes.AMOUNT));
 
         // Account Type adapters and values
 
@@ -387,13 +382,10 @@ public class AccountEditActivity
         // Favourite
         initializeFavouriteAccountControls();
 
-        mViewHolder.txtSelectCurrency.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.CURRENCY);
-            }
+        mViewHolder.txtSelectCurrency.setOnClickListener(v -> {
+            Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(intent, RequestCodes.CURRENCY);
         });
 
         //Date picker
@@ -420,22 +412,16 @@ public class AccountEditActivity
             }
         });
 
-        mViewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(mAccount.getInitialDate()).minusDays(1).toDate();
-                mAccount.setInitialDate(dateTime);
-                showDate(dateTime);
-            }
+        mViewHolder.previousDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(mAccount.getInitialDate()).minusDays(1).toDate();
+            mAccount.setInitialDate(dateTime);
+            showDate(dateTime);
         });
 
-        mViewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(mAccount.getInitialDate()).plusDays(1).toDate();
-                mAccount.setInitialDate(dateTime);
-                showDate(dateTime);
-            }
+        mViewHolder.nextDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(mAccount.getInitialDate()).plusDays(1).toDate();
+            mAccount.setInitialDate(dateTime);
+            showDate(dateTime);
         });
 
         // Notes
@@ -509,33 +495,23 @@ public class AccountEditActivity
     }
 
     private void initializeDefaultAccountControls() {
-        mViewHolder.defaultAccountCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mIsDefault = isChecked;
+        mViewHolder.defaultAccountCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mIsDefault = isChecked;
 
-                displayDefaultAccount();
-            }
+            displayDefaultAccount();
         });
 
-        mViewHolder.defaultAccountText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIsDefault = !mIsDefault;
+        mViewHolder.defaultAccountText.setOnClickListener(v -> {
+            mIsDefault = !mIsDefault;
 
-                displayDefaultAccount();
-            }
+            displayDefaultAccount();
         });
     }
 
     private void initializeFavouriteAccountControls() {
-        OnClickListener listener = new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                mAccount.setFavorite(!mAccount.getFavorite());
-                displayFavouriteStatus();
-            }
+        OnClickListener listener = v -> {
+            mAccount.setFavorite(!mAccount.getFavorite());
+            displayFavouriteStatus();
         };
         mViewHolder.imageViewAccountFav.setOnClickListener(listener);
         mViewHolder.favouriteAccountTextView.setOnClickListener(listener);

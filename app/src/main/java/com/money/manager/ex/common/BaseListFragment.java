@@ -37,7 +37,6 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 
 /**
  *
@@ -114,7 +113,7 @@ public abstract class BaseListFragment
         if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
-            MenuItemCompat.setShowAsAction(itemSearch, MenuItem.SHOW_AS_ACTION_ALWAYS);
+            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             SearchView searchView = new SearchView(getActivity());
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -130,7 +129,7 @@ public abstract class BaseListFragment
             });
 //            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
-            MenuItemCompat.setActionView(itemSearch, searchView);
+            itemSearch.setActionView(searchView);
 
             SearchViewFormatter formatter = new SearchViewFormatter();
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);

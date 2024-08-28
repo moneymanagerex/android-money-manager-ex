@@ -31,6 +31,7 @@ public class Category
     public static final String CATEGNAME = "CATEGNAME";
     public static final String ACTIVE = "ACTIVE";
     public static final String PARENTID = "PARENTID";
+    public static final String BASENAME = "BASENAME";
 
     public static final String BASENAME = "BASENAME";
 
@@ -70,3 +71,5 @@ public class Category
     public void setBasename(String value) { setString(BASENAME, value);}
 
 }
+
+

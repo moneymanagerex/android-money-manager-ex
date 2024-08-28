@@ -62,10 +62,11 @@ public class SearchParameters {
     public Integer payeeId = null;
     public String payeeName;
 
+    // TODO Remove CategorySub and replace with Category
+    //  and with a flag for search in subcategory.
+    //  flag must be driven also by the UI
     public CategorySub category;
-
-    // Todo
-//    public NestedCategoryEntity nestedCategory;
+    public boolean searchSubCategory = false;
 
     public String transactionNumber;
     public String notes;

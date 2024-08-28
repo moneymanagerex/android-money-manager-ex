@@ -52,7 +52,7 @@ import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.nestedcategory.QueryNestedCastegory;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.sync.SyncManager;
 
 import java.util.Arrays;
@@ -74,7 +74,7 @@ import timber.log.Timber;
  * application data
  */
 public class MmxContentProvider
-    extends ContentProvider {
+        extends ContentProvider {
 
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -86,7 +86,8 @@ public class MmxContentProvider
         super();
     }
 
-    @Inject Lazy<MmxOpenHelper> openHelper;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
 
     public static String getAuthority() {
         return mAuthority;
@@ -104,29 +105,29 @@ public class MmxContentProvider
         setAuthority(context.getApplicationContext().getPackageName() + ".provider");
 
         List<Dataset> objMoneyManager = Arrays.asList(
-            new AccountRepository(context),
-            new AccountTransactionRepository(context),
-            new BudgetEntryRepository(context),
-            new BudgetRepository(context),
-            new CategoryRepository(context),
-            new CurrencyRepository(context),
+                new AccountRepository(context),
+                new AccountTransactionRepository(context),
+                new BudgetEntryRepository(context),
+                new BudgetRepository(context),
+                new CategoryRepository(context),
+                new CurrencyRepository(context),
 //            new InfoRepositorySql(context),
-            new PayeeRepository(context),
-            new AttachmentRepository(context),
-            new RecurringTransactionRepository(context),
-            new SplitCategoriesRepository(context),
-            new SplitRecurringCategoriesRepository(context),
-            new StockRepository(context),
-            new StockHistoryRepository(context),
-            new QueryAccountBills(context),
-            new QueryCategorySubCategory(context),
-            new QueryAllData(context),
-            new QueryBillDeposits(context),
-            new QueryReportIncomeVsExpenses(context),
-            new BudgetQuery(context),
-            new ViewMobileData(context),
-            new SQLDataSet(),
-                new QueryNestedCastegory(context)
+                new PayeeRepository(context),
+                new AttachmentRepository(context),
+                new RecurringTransactionRepository(context),
+                new SplitCategoriesRepository(context),
+                new SplitRecurringCategoriesRepository(context),
+                new StockRepository(context),
+                new StockHistoryRepository(context),
+                new QueryAccountBills(context),
+                new QueryCategorySubCategory(context),
+                new QueryAllData(context),
+                new QueryBillDeposits(context),
+                new QueryReportIncomeVsExpenses(context),
+                new BudgetQuery(context),
+                new ViewMobileData(context),
+                new SQLDataSet(),
+                new QueryNestedCategory(context)
         );
 
         // Cycle all data sets for th
@@ -273,10 +274,10 @@ public class MmxContentProvider
     /**
      * Prepare statement SQL from data set object
      *
-     * @param query SQL query
+     * @param query      SQL query
      * @param projection ?
-     * @param selection ?
-     * @param sortOrder field name for sort order
+     * @param selection  ?
+     * @param sortOrder  field name for sort order
      * @return statement
      */
     public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
@@ -349,7 +350,7 @@ public class MmxContentProvider
 
     public void resetDatabase() {
         if (openHelper != null) {
-     //       openHelper.get().close();
+            //       openHelper.get().close();
         }
 
         openHelper = null;
@@ -373,11 +374,9 @@ public class MmxContentProvider
     }
 
     private Cursor query_internal(Uri uri, String[] projection, String selection,
-                                  String[] selectionArgs, String sortOrder){
+                                  String[] selectionArgs, String sortOrder) {
         Timber.v("Querying URI: %s", uri);
-        Timber.v("Querying projection: %s", projection);
         Timber.v("Querying selection: %s", selection);
-        Timber.v("Querying selectionArgs: %s", selectionArgs);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
@@ -403,8 +402,7 @@ public class MmxContentProvider
                 case VIEW:
                     if (selectionArgs == null) {
                         cursor = database.query(query);
-                    }
-                    else {
+                    } else {
                         cursor = database.query(query, selectionArgs);
                     }
                     break;

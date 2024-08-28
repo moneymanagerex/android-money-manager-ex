@@ -133,6 +133,7 @@
     <string name="add_subcategory">Add Subcategory</string>
     <string name="edit_categoryName">Edit Category</string>
     <string name="delete_category">Delete Category</string>
+    <string name="search_sub_category">Include sub category</string>
 
     <!-- currency -->
     <string name="currency_name">Currency name</string>
@@ -439,7 +440,7 @@
     <string name="summary_execution_scheduled_transaction">Auto execution for scheduled transaction overdue</string>
 
     <string name="title_use_nested_category">(BETA) Use new nested category model</string>
-    <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model. Use at own risc</string>
+    <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model (Beta, use at own risk)</string>
 
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>
@@ -616,6 +617,7 @@
     <string name="value">Value</string>
 
     <string name="view_transactions">View transactions</string>
+    <string name="view_transactions_sub">View transactions with subcategories</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="error_updating_rates">Error updating rates</string>
     <string name="error_no_price_found_for_symbol">No price found for symbol</string>

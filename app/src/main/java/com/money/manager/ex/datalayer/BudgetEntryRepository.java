@@ -25,6 +25,9 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.settings.AppSettings;
 
 import java.util.HashMap;
 
@@ -36,8 +39,15 @@ public class BudgetEntryRepository
 
     public static final String TABLE_NAME = "budgettable_v1";
 
+    private boolean useNestedCategory = false;  // new NestedCateg
+
     public BudgetEntryRepository(Context context) {
         super(context, TABLE_NAME, DatasetType.TABLE, "budgettable");
+        try {
+            useNestedCategory = (new AppSettings(context).getBehaviourSettings().getUseNestedCategory());
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -95,30 +105,38 @@ public class BudgetEntryRepository
 
         HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
 
-        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        if (!useNestedCategory) {
+            // use old way
+            CategoryRepository categoryRepository = new CategoryRepository(getContext());
 
-        while (cursor.moveToNext()) {
-            BudgetEntry budgetEntry = new BudgetEntry();
-            budgetEntry.loadFromCursor(cursor);
+            while (cursor.moveToNext()) {
+                BudgetEntry budgetEntry = new BudgetEntry();
+                budgetEntry.loadFromCursor(cursor);
 
-            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
-            Category category = categoryRepository.load(categoryId);
-            if (category == null) {
-                continue;
+                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
+                Category category = categoryRepository.load(categoryId);
+                if (category == null) {
+                    continue;
+                }
+                budgetEntryHashMap.put(getKeyForCategories(category.getParentId(), categoryId), budgetEntry);
             }
-            // wolfsolver - GetKeyForCatgories has 2 parametrs:
-            //              (int categoryId, int subCategoryId)
-            //              it's wrong to user getParentId for subcategory, need to switch parameterd
-            //              also delegate to GetKeyForCategory logic for handle -1
-//            if (category.getParentId() > 0) {
-//                budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
-//            } else {
-//                budgetEntryHashMap.put(getKeyForCategories(categoryId, categoryId), budgetEntry);
-//            }
-            budgetEntryHashMap.put(getKeyForCategories(category.getParentId(), categoryId), budgetEntry);
-        }
-        cursor.close();
+            cursor.close();
+        } else {
+            // use nested category
+            QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
+            while (cursor.moveToNext()) {
+                BudgetEntry budgetEntry = new BudgetEntry();
+                budgetEntry.loadFromCursor(cursor);
 
+                NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
+                if (nestedCategory == null) {
+                    continue;
+                }
+                budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getParentId(), nestedCategory.getCategoryId()), budgetEntry);
+            }
+            cursor.close();
+
+        }
         return budgetEntryHashMap;
     }
 

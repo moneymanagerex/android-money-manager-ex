@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,20 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.domainmodel;
+package com.money.manager.ex.investment.prices;
+
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
- * A Budget Entry, part of the budget.
+ * Free Currency Exchange Rates API
+ * https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json
  */
-public class BudgetEntry
-    extends EntityBase {
-
-    public static final String BUDGETENTRYID = "BUDGETENTRYID";
-    public static final String BUDGETYEARID = "BUDGETYEARID";
-    public static final String CATEGID = "CATEGID";
-    public static final String PERIOD = "PERIOD";
-
-    public Integer getCategId() {
-        return getInt(CATEGID);
-    }
+public interface IFreeCurrencyExchangeRateAPIService {
+    @GET("currency-api@latest/v1/currencies/{base}.json")
+    Call<JsonObject> getExchangeRates(@Path("base") String baseCurrency);
 }

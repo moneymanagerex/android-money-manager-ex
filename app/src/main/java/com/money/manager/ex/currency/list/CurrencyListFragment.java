@@ -41,7 +41,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
@@ -52,7 +51,6 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -245,28 +243,11 @@ public class CurrencyListFragment
                 ui.startCurrencyEditActivity(currencyId);
                 break;
 
-            case 1: // Chart
-                // remember the device orientation and return to it after the chart.
-                this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
-
-                // add the currency information.
-                String symbol = cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL));
-                CurrencyService currencyService = this.getService();
-                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
-
-                Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.putExtra(Currency.CURRENCY_SYMBOL, symbol);
-                intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
-
-                startActivity(intent);
-                break;
-
-            case 2: // Update exchange rate
+            case 1: // Update exchange rate
                 getService().updateExchangeRate(currencyId);
                 break;
 
-            case 3: //DELETE
+            case 2: //DELETE
                 CurrencyService service = new CurrencyService(getActivity());
                 boolean used = service.isCurrencyUsed(currencyId);
 

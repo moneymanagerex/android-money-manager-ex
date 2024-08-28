@@ -17,7 +17,6 @@
 package com.money.manager.ex.reports;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -155,53 +154,38 @@ public abstract class BaseReportFragment
 //        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
         MmxDate dateTime = MmxDate.newDate();
 
-        switch (item.getItemId()) {
-            case R.id.menu_current_month:
-                mDateFrom = dateTime.firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastDayOfMonth().toDate();
-                break;
+        int itemId = item.getItemId();
 
-            case R.id.menu_last_month:
-                mDateFrom = dateTime.minusMonths(1)
-                        .firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastDayOfMonth().toDate();
-                break;
-
-            case R.id.menu_last_30_days:
-                mDateTo = dateTime.toDate();
-                mDateFrom = dateTime.minusDays(30).toDate();
-                break;
-
-            case R.id.menu_current_year:
-                mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-                break;
-
-            case R.id.menu_last_year:
-                mDateFrom = dateTime.minusYears(1)
-                        .firstMonthOfYear()
-                        .firstDayOfMonth()
-                        .toDate();
-                mDateTo = dateTime
-                        .lastMonthOfYear()
-                        .lastDayOfMonth()
-                        .toDate();
-                break;
-
-            case R.id.menu_all_time:
-                mDateFrom = null;
-                mDateTo = null;
-                break;
-            case R.id.menu_custom_dates:
-                //check item
-                item.setChecked(true);
-                mItemSelected = item.getItemId();
-                //show binaryDialog
-                showDialogCustomDates();
-                return true;
-//                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (itemId == R.id.menu_current_month) {
+            mDateFrom = dateTime.firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_month) {
+            mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_30_days) {
+            mDateTo = dateTime.toDate();
+            mDateFrom = dateTime.minusDays(30).toDate();
+        } else if (itemId == R.id.menu_current_year) {
+            mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_year) {
+            mDateFrom = dateTime.minusYears(1)
+                    .firstMonthOfYear()
+                    .firstDayOfMonth()
+                    .toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+        } else if (itemId == R.id.menu_custom_dates) {
+            // Check item
+            item.setChecked(true);
+            mItemSelected = itemId;
+            // Show custom dates dialog
+            showDialogCustomDates();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
 
         String whereClause = null;
@@ -259,7 +243,7 @@ public abstract class BaseReportFragment
      * @param args
      */
     protected void startLoader(Bundle args) {
-        getLoaderManager().restartLoader(ID_LOADER, args, this);
+        LoaderManager.getInstance(this).restartLoader(ID_LOADER, args, this);
     }
 
     protected String getWhereClause() {
@@ -276,22 +260,19 @@ public abstract class BaseReportFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
-                        mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
+                    mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
-                        String whereClause =
-                                QueryAllData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
-                                        "' AND " +
-                                        QueryAllData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
+                    String whereClause =
+                            QueryAllData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                    "' AND " +
+                                    QueryAllData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
-                        Bundle args = new Bundle();
-                        args.putString(KEY_WHERE_CLAUSE, whereClause);
+                    Bundle args = new Bundle();
+                    args.putString(KEY_WHERE_CLAUSE, whereClause);
 
-                        startLoader(args);
-                    }
+                    startLoader(args);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();

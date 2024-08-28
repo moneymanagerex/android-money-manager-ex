@@ -57,6 +57,7 @@
   <string name="version">Versie</string>
   <string name="build">Sub-Versie</string>
   <string name="path">Databankpad</string>
+  <string name="remote_path">Extern pad</string>
   <string name="database_version">Databankversie</string>
   <string name="title_show_tutorial">Toon handleiding</string>
   <string name="summary_show_tutorial">Handleiding tonen bij volgend gebruik?</string>
@@ -67,6 +68,7 @@
   <string name="sync_on_app_start">Synchroniseer bij opstarten app.</string>
   <string name="sync_on_start">Synchroniseer bij starten</string>
   <!-- Receive SMS strings -->
+  <string name="notification_click_to_edit_transaction">Raak aan om de transactie te bewerken&#8230;</string>
   <!-- account -->
   <string name="account">Rekening</string>
   <string name="account_list">Rekeninglijst</string>
@@ -243,6 +245,10 @@
   <string name="enter">Voer in</string>
   <string name="enter_amount">Vul bedrag in</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">Automatische transactie</string>
+  <string name="manual">Handmatige invoer</string>
+  <string name="prompt">Vragen om invoer</string>
+  <string name="auto">Automatische invoer</string>
   <!-- 20121121 -->
   <string name="send_feedback">Feedback Versturen</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -349,6 +355,7 @@
   <string name="empty_category">Lege categorie</string>
   <string name="empty_payee">Lege begunstigde</string>
   <string name="help">Help</string>
+  <string name="delete_repeating_transaction">Verwijder geplande transactie</string>
   <string name="last">Laatste</string>
   <string name="accounts">Rekeningen</string>
   <string name="to_account">Naar rekening</string>
@@ -505,6 +512,7 @@
   <string name="update_available">Update beschikbaar</string>
   <string name="update_available_online">Er is een nieuwer databasebestand beschikbaar online. Wilt u updaten?</string>
   <string name="currency_not_found">Valuta niet gevonden</string>
+  <string name="homepage">Onze homepage is https://moneymanagerex.org/</string>
   <string name="current_database">Huidige databank</string>
   <string name="about_logcat_header">Je kunt het programmalog naar ons versturen via de knop hieronder.</string>
   <string name="transaction_type_filter">Filter op transactietype</string>
@@ -512,6 +520,8 @@
   <string name="filter_options_info">Filter opties en informatie</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Voer wachtwoord databank in</string>
+  <string name="fingerprint_info">Scan je vingerafdruk om te ontgrendelen</string>
+  <string name="fingerprint_has_enrolled">Geen vingerafdruk geconfigureerd. Registreer ten minste één vingerafdruk in uw apparaatinstellingen</string>
   <string name="income_expense_period">Inkomsten-/uitgaveperiode</string>
   <string name="income_expense_period_summary">Periode voor het inkomsten/uitgaven overzicht onderaan het hoofdscherm.</string>
   <string name="appwidget_text">VOORBEELD</string>
@@ -688,10 +698,16 @@
   <string name="currency">Geldeenheid</string>
   <string name="menu_create_database">Maak Databank aan</string>
   <string name="create_database">Maak Databank aan</string>
+  <string name="summary_anonymous_usage">Help ons met het versturen van anonieme gegevens over MMEX gebruik</string>
   <string name="title_anonymous_usage">Verzend anonieme gebruiksgegevens</string>
+  <string name="title_auto_transaction_number">Transactienummer automatisch vullen</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="notification_channel_fileoperation_downloadin">Mmex Downloaden</string>
+  <string name="notification_channel_fileoperation_uploadin">Mmex uploaden</string>
+  <string name="notification_channel_fileoperation_complete">Mmex upload voltooid</string>
+  <string name="show">Weergeven</string>
 </resources>

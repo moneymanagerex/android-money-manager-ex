@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +31,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
@@ -71,7 +73,6 @@ import org.greenrobot.eventbus.Subscribe;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -184,8 +185,8 @@ public class AccountTransactionListFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // hide the title
         ActionBar actionBar = getActionBar();
@@ -261,20 +262,20 @@ public class AccountTransactionListFragment
             if (!activity.isDualPanel()) {
                 //hide sync toolbar
                 MenuItem itemSync = menu.findItem(R.id.menu_sync);
-                if (itemSync != null) MenuItemCompat.setShowAsAction(itemSync, MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                if (itemSync != null) itemSync.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    MenuItemCompat.setShowAsAction(itemOpenDatabase, !itemSync.isVisible()
+                    itemOpenDatabase.setShowAsAction(!itemSync.isVisible()
                         ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
                 MenuItem itemDashboard = menu.findItem(R.id.menu_dashboard);
                 if (itemDashboard != null)
-                    MenuItemCompat.setShowAsAction(itemDashboard, MenuItem.SHOW_AS_ACTION_NEVER);
+                    itemDashboard.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             }
         }
 
@@ -370,7 +371,7 @@ public class AccountTransactionListFragment
             case AllDataListFragment.ID_LOADER_ALL_DATA_DETAIL:
                 // Notification received from AllDataListFragment.
                 // Once the transactions are loaded, load the summary data.
-                getLoaderManager().restartLoader(ID_LOADER_SUMMARY, null, this);
+                LoaderManager.getInstance(this).restartLoader(ID_LOADER_SUMMARY, null, this);
                 // load/reset running balance
                 populateRunningBalance();
 
@@ -510,37 +511,33 @@ public class AccountTransactionListFragment
         // take reference text view from layout
         this.viewHolder.txtAccountBalance = this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
         this.viewHolder.txtAccountReconciled = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtAccountReconciledTitle = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciledTitle);
         this.viewHolder.txtAccountDifference = this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
         // favorite icon
         this.viewHolder.imgAccountFav = this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
         // set listener click on favorite icon for change image
-        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // set status account
-                mAccount.setFavorite(!(mAccount.getFavorite()));
+        this.viewHolder.imgAccountFav.setOnClickListener(v -> {
+            // set status account
+            mAccount.setFavorite(!(mAccount.getFavorite()));
 
-                AccountRepository repo = new AccountRepository(getActivity());
-                boolean updated = repo.save(mAccount);
+            AccountRepository repo = new AccountRepository(getActivity());
+            boolean updated = repo.save(mAccount);
 
-                if (!updated) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
+            if (!updated) {
+                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+            } else {
+                setImageViewFavorite();
             }
         });
 
         // goto account
         this.viewHolder.imgGotoAccount = this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
-        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-            }
+        this.viewHolder.imgGotoAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
         });
     }
 
@@ -879,12 +876,21 @@ public class AccountTransactionListFragment
     }
 
     private void refreshSettings() {
-        mSortTransactionsByType = new AppSettings(getActivity()).getLookAndFeelSettings().getSortTransactionsByType();
+        LookAndFeelSettings mLookAndFeelSettings = new AppSettings(getActivity()).getLookAndFeelSettings();
+        mSortTransactionsByType = mLookAndFeelSettings.getSortTransactionsByType();
+        boolean mHideReconciled = mLookAndFeelSettings.getHideReconciledAmounts();
 
         updateFilterDateRange();
         updateAllDataListFragmentShowBalance();
 
         getActivity().invalidateOptionsMenu();
+
+        if (this.viewHolder.txtAccountReconciled != null) {
+            this.viewHolder.txtAccountReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
+        if (this.viewHolder.txtAccountReconciledTitle != null) {
+            this.viewHolder.txtAccountReconciledTitle.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void updateFilterDateRange() {

@@ -31,10 +31,11 @@ public enum ContextMenuIds {
     Print(7),
     SaveAsHtml(8),
     Portfolio(9),
-    ADD_SUB(10);
+    ADD_SUB(10),
+    VIEW_TRANSACTIONS_SUB(11);
 
     public static ContextMenuIds get(int id) {
-        for(ContextMenuIds itemId : ContextMenuIds.values()) {
+        for (ContextMenuIds itemId : ContextMenuIds.values()) {
             if (itemId.getId() == id) return itemId;
         }
         return null;

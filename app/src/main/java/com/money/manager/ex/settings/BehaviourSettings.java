@@ -18,6 +18,7 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
@@ -26,7 +27,7 @@ import com.money.manager.ex.R;
  * Settings in the General category.
  */
 public class BehaviourSettings
-    extends SettingsBase {
+        extends SettingsBase {
 
     public BehaviourSettings(Context context) {
         super(context);
@@ -49,6 +50,7 @@ public class BehaviourSettings
     public boolean getUseNestedCategory() {
         return get(R.string.pref_use_nested_category, false);
     }
+
     public void setUseNestedCategory(boolean status) {
         set(R.string.pref_use_nested_category, status);
     }
@@ -90,9 +92,10 @@ public class BehaviourSettings
         set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
     }
 
-    public boolean getAutoTransactionNumber(){
+    public boolean getAutoTransactionNumber() {
         return get(R.string.pref_auto_transaction_number, false);
     }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

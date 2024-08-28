@@ -55,7 +55,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
-import com.money.manager.ex.nestedcategory.NestedCategoryTest;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
@@ -126,10 +125,11 @@ import timber.log.Timber;
  * Main activity of the application.
  */
 public class MainActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
+
     /**
      * @return the mRestart
      */
@@ -149,12 +149,17 @@ public class MainActivity
     // state if restart activity
     private static boolean mRestartActivity = false;
 
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
 
-    @State boolean dbUpdateCheckDone = false;
-    @State boolean mIsSynchronizing = false;
-    @State boolean isAuthenticated = false;
-    @State int deviceOrientation = Constants.NOT_SET;
+    @State
+    boolean dbUpdateCheckDone = false;
+    @State
+    boolean mIsSynchronizing = false;
+    @State
+    boolean isAuthenticated = false;
+    @State
+    int deviceOrientation = Constants.NOT_SET;
 
     private boolean isInAuthentication = false;
     private boolean isScheduledTransactionStarted = false;
@@ -238,10 +243,6 @@ public class MainActivity
 
         populateScheduledTransactions();
 
-        // TODO EP Remove this line, only for test
-        if ( (new AppSettings(this).getBehaviourSettings().getUseNestedCategory())) {
-            (new NestedCategoryTest()).main(getApplicationContext());
-        }
     }
 
     @Override
@@ -308,7 +309,7 @@ public class MainActivity
                 if (resultCode != RESULT_OK) return;
 
                 String selectedPath = UIHelper.getSelectedFile(data);
-                if(TextUtils.isEmpty(selectedPath)) {
+                if (TextUtils.isEmpty(selectedPath)) {
                     new UIHelper(this).showToast(R.string.invalid_database);
                     return;
                 }
@@ -347,8 +348,7 @@ public class MainActivity
                                 Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                             }
                         }
-                    }
-                    else {
+                    } else {
                         isAuthenticated = true;
                     }
                 }
@@ -484,17 +484,15 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync started event.
      */
     @Subscribe
     public void onEvent(SyncStartingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = true;
-                invalidateOptionsMenu();
-                return null;
-            }
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = true;
+            invalidateOptionsMenu();
+            return null;
         })
                 .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -503,21 +501,19 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync stopped event.
      */
     @Subscribe
     public void onEvent(SyncStoppingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = false;
-                invalidateOptionsMenu();
-                return null;
-            }
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = false;
+            invalidateOptionsMenu();
+            return null;
         })
-            .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
 //            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe();
+                .subscribe();
     }
 
     /**
@@ -583,12 +579,12 @@ public class MainActivity
 
     /**
      * Handle the drawer item click. Invoked by the actual click handler.
+     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
-        Intent intent;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {
@@ -596,7 +592,7 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3
-                intent = new Intent(MainActivity.this, PasswordActivity.class);
+                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
                 intent.putExtra(EXTRA_DATABASE_PATH, key);
                 startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
 
@@ -606,96 +602,69 @@ public class MainActivity
         }
         if (item.getId() == null) return false;
 
-        switch (item.getId()) {
-            case R.id.menu_home:
-                showFragment(HomeFragment.class);
-                break;
-            case R.id.menu_sync:
-                SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
-                break;
+        int itemId = item.getId();
 
-            case R.id.menu_open_database:
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-
-                FileStorageHelper helper = new FileStorageHelper(this);
-                helper.showStorageFilePicker();
-                // TODO request password 2/3
-                break;
-
-            case R.id.menu_create_database:
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-
-                (new FileStorageHelper(this)).showCreateFilePicker();
-                // TODO request password 3/3
-                break;
-
-            case R.id.menu_account:
-                showFragment(AccountListFragment.class);
-                break;
-
-            case R.id.menu_category:
-                boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
-                if (!useNestedCategory) {
-                    showFragment(CategoryListFragment.class);
-                } else {
-                    showFragment(NestedCategoryListFragment.class);
-                }
-                break;
-
-            case R.id.menu_currency:
-                // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-                break;
-            case R.id.menu_payee:
-                showFragment(PayeeListFragment.class);
-                break;
-            case R.id.menu_recurring_transaction:
-                showFragment(RecurringTransactionListFragment.class);
-                break;
-            case R.id.menu_budgets:
-                intent = new Intent(this, BudgetsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_search_transaction:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-            case R.id.menu_report_categories:
-                startActivity(new Intent(this, CategoriesReportActivity.class));
-                break;
-            case R.id.menu_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
-            case R.id.menu_report_payees:
-                startActivity(new Intent(this, PayeesReportActivity.class));
-                break;
-            case R.id.menu_report_where_money_goes:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_where_money_comes_from:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_income_vs_expenses:
-                startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_help:
-                startActivity(new Intent(MainActivity.this, HelpActivity.class));
-                break;
-            case R.id.menu_about:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            default:
-                // if no match, return false
-                result = false;
+        if (itemId == R.id.menu_home) {
+            showFragment(HomeFragment.class);
+        } else if (itemId == R.id.menu_sync) {
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization();
+        } else if (itemId == R.id.menu_open_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            FileStorageHelper helper = new FileStorageHelper(this);
+            helper.showStorageFilePicker();
+            // TODO request password 2/3
+        } else if (itemId == R.id.menu_create_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            (new FileStorageHelper(this)).showCreateFilePicker();
+            // TODO request password 3/3
+        } else if (itemId == R.id.menu_account) {
+            showFragment(AccountListFragment.class);
+        } else if (itemId == R.id.menu_category) {
+            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
+            if (!useNestedCategory) {
+                showFragment(CategoryListFragment.class);
+            } else {
+                showFragment(NestedCategoryListFragment.class);
+            }
+        } else if (itemId == R.id.menu_currency) {
+            Intent intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_payee) {
+            showFragment(PayeeListFragment.class);
+        } else if (itemId == R.id.menu_recurring_transaction) {
+            showFragment(RecurringTransactionListFragment.class);
+        } else if (itemId == R.id.menu_budgets) {
+            Intent intent = new Intent(this, BudgetsActivity.class);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_search_transaction) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        } else if (itemId == R.id.menu_report_categories) {
+            startActivity(new Intent(this, CategoriesReportActivity.class));
+        } else if (itemId == R.id.menu_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (itemId == R.id.menu_report_payees) {
+            startActivity(new Intent(this, PayeesReportActivity.class));
+        } else if (itemId == R.id.menu_report_where_money_goes) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_where_money_comes_from) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_income_vs_expenses) {
+            startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        } else if (itemId == R.id.menu_help) {
+            startActivity(new Intent(MainActivity.this, HelpActivity.class));
+        } else if (itemId == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        } else {
+            // if no match, return false
+            result = false;
         }
 
         return result;
@@ -767,8 +736,8 @@ public class MainActivity
     /**
      * Displays the fragment and associate the tag
      *
-     * @param fragment    Fragment to display
-     * @param tag Tag/name to search for.
+     * @param fragment Fragment to display
+     * @param tag      Tag/name to search for.
      */
     public void showFragment(Fragment fragment, String tag) {
         try {
@@ -880,7 +849,7 @@ public class MainActivity
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)
-                    .color(iconColor)));
+                        .color(iconColor)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
@@ -938,55 +907,41 @@ public class MainActivity
         drawerList.setAdapter(adapter);
 
         // set listener on item click
-        drawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mDrawer == null) return false;
-                // if the group has child items, do not e.
-                ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
-                if (children != null) return false;
+        drawerList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (mDrawer == null) return false;
+            // if the group has child items, do not e.
+            ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
+            if (children != null) return false;
 
-                // Highlight the selected item, update the title, and close the drawer
-                drawerList.setItemChecked(groupPosition, true);
+            // Highlight the selected item, update the title, and close the drawer
+            drawerList.setItemChecked(groupPosition, true);
 
-                // You should reset item counter
-                mDrawer.closeDrawer(mDrawerLayout);
-                // check item selected
-                final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
-                        .getGroup(groupPosition);
-                if (item != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // execute operation
-                            onDrawerMenuAndOptionMenuSelected(item);
-                        }
-                    }, 200);
-                }
-                return true;
+            // You should reset item counter
+            mDrawer.closeDrawer(mDrawerLayout);
+            // check item selected
+            final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
+                    .getGroup(groupPosition);
+            if (item != null) {
+                new Handler().postDelayed(() -> {
+                    // execute operation
+                    onDrawerMenuAndOptionMenuSelected(item);
+                }, 200);
             }
+            return true;
         });
 
-        drawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (mDrawer == null) return false;
+        drawerList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (mDrawer == null) return false;
 
-                mDrawer.closeDrawer(mDrawerLayout);
+            mDrawer.closeDrawer(mDrawerLayout);
 
-                ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
-                final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
-                if (selectedItem != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onDrawerMenuAndOptionMenuSelected(selectedItem);
-                        }
-                    }, 200);
-                    return true;
-                } else {
-                    return false;
-                }
+            ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
+            final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
+            if (selectedItem != null) {
+                new Handler().postDelayed(() -> onDrawerMenuAndOptionMenuSelected(selectedItem), 200);
+                return true;
+            } else {
+                return false;
             }
         });
     }
@@ -998,29 +953,29 @@ public class MainActivity
 
         // We will use the sync button for uploading the database to the storage.
         //if (new SyncManager(this).isActive()) {
-            // add rotating icon
-            if (menu.findItem(id) == null) {
-                boolean hasAnimation = false;
+        // add rotating icon
+        if (menu.findItem(id) == null) {
+            boolean hasAnimation = false;
 
-                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
-                    hasAnimation = true;
-                    // There is a running animation. Clear it on the old reference.
-                    stopSyncIconRotation(mSyncMenuItem);
-                }
-
-                // create (new) menu item.
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_item_sync_progress, menu);
-                mSyncMenuItem = menu.findItem(id);
-                UIHelper ui = new UIHelper(this);
-                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
-                mSyncMenuItem.setIcon(syncIcon);
-
-                if (hasAnimation) {
-                    // continue animation.
-                    startSyncIconRotation(mSyncMenuItem);
-                }
+            if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
+                hasAnimation = true;
+                // There is a running animation. Clear it on the old reference.
+                stopSyncIconRotation(mSyncMenuItem);
             }
+
+            // create (new) menu item.
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_item_sync_progress, menu);
+            mSyncMenuItem = menu.findItem(id);
+            UIHelper ui = new UIHelper(this);
+            Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
+            mSyncMenuItem.setIcon(syncIcon);
+
+            if (hasAnimation) {
+                // continue animation.
+                startSyncIconRotation(mSyncMenuItem);
+            }
+        }
 //        } else {
 //            if (mSyncMenuItem != null) {
 //                stopSyncIconRotation(mSyncMenuItem);
@@ -1073,7 +1028,7 @@ public class MainActivity
 
         // Cloud synchronize
 //        if (new SyncManager(this).isActive()) {
-            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
                         .color(iconColor)));
@@ -1107,7 +1062,7 @@ public class MainActivity
                 .withText(getString(R.string.menu_reports))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
                         .color(iconColor)));
-                // .withDivider(true));
+        // .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
@@ -1123,8 +1078,8 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
 //                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)))
-            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
-                    .color(iconColor)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
+                        .color(iconColor)));
 
         return menuItems;
     }
@@ -1144,10 +1099,10 @@ public class MainActivity
 
                 if (entry.isSynchronised()) {
                     item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
-                        .color(iconColor));
+                            .color(iconColor));
                 } else {
                     item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
-                        .color(iconColor));
+                            .color(iconColor));
                 }
                 childDatabases.add(item);
             }
@@ -1157,7 +1112,7 @@ public class MainActivity
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
                 .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared)
-                    .color(iconColor))
+                        .color(iconColor))
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
@@ -1308,7 +1263,8 @@ public class MainActivity
         if (TextUtils.isEmpty(dbPath)) return false;
 
         // force to re select the file and input password
-        if (dbPath.endsWith(".emb") && MmexApplication.getApp().getPassword().isEmpty()) return false;
+        if (dbPath.endsWith(".emb") && MmexApplication.getApp().getPassword().isEmpty())
+            return false;
 
         // Does the database file exist?
         File dbFile = new File(dbPath);
@@ -1321,6 +1277,7 @@ public class MainActivity
 
     /**
      * called when quick-switching the recent databases from the navigation menu.
+     *
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
@@ -1367,7 +1324,7 @@ public class MainActivity
         ImageView imageView = new ImageView(this);
         UIHelper uiHelper = new UIHelper(this);
         imageView.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
-            .color(uiHelper.getToolbarItemColor()));
+                .color(uiHelper.getToolbarItemColor()));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
@@ -1387,6 +1344,7 @@ public class MainActivity
 
     /**
      * Shown database path with toast message
+     *
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
@@ -1401,9 +1359,9 @@ public class MainActivity
 //                    .commit();
             try {
                 Toast.makeText(context,
-                        Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
-                        Toast.LENGTH_LONG)
-                    .show();
+                                Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
+                                Toast.LENGTH_LONG)
+                        .show();
             } catch (Exception e) {
                 Timber.e(e, "showing the current database path");
             }
@@ -1439,6 +1397,7 @@ public class MainActivity
     /**
      * display any screens that need to be shown before the app actually runs.
      * This usually happens only on the first run of the app.
+     *
      * @return Indicator if another screen is showing. This means that this activity should close
      * and not proceed with initialisation.
      */

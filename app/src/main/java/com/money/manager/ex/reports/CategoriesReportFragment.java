@@ -22,7 +22,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -146,14 +145,7 @@ public class CategoriesReportFragment
 
             if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
                 Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        showChart();
-
-                    }
-                }, 1000);
+                handler.postDelayed(() -> showChart(), 1000);
             }
         }
     }
@@ -222,6 +214,7 @@ public class CategoriesReportFragment
             "ID AS _id", // this does not fetch anything, unfortunately.
             ViewMobileData.CATEGID, ViewMobileData.Category,
             ViewMobileData.SubcategID, ViewMobileData.Subcategory,
+                ViewMobileData.CategoryFullName,
             "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
@@ -232,7 +225,8 @@ public class CategoriesReportFragment
         }
 
         String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
-                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory
+                + ',' + ViewMobileData.CategoryFullName;
 
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
@@ -244,17 +238,14 @@ public class CategoriesReportFragment
             }
         }
 
-        String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        // String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        String sortOrder = ViewMobileData.CategoryFullName;
 
         //compose builder
         builder.setTables(mobileData.getSource());
 
         //return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, null);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, null);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, null);
     }
 
     @Override

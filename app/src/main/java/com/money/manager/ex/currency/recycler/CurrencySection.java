@@ -26,14 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
-import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 /**
  * Used Currencies section for the Currencies recycler view
  */
 public class CurrencySection
-    extends StatelessSection {
+    extends Section {
 
     public CurrencySection(String title, List<Currency> data) {
         super(SectionParameters.builder()

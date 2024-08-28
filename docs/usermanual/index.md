@@ -14,6 +14,7 @@ Welcome to the user manual for Money Manager Ex - Android, a free, open-source, 
     - [Data Sync](#data-sync)
     - [Security](#security)
     - [Recurring Transactions](#recurring-transactions)
+    - [Nested Category](#nested-category)
 4. [How to Use](#how-to-use)
     - [Adding Transactions](#adding-transactions)
     - [Creating Budgets](#creating-budgets)
@@ -28,7 +29,7 @@ Money Manager Ex - Android is a mobile version of the popular personal finance s
 
 ## Getting Started
 
-To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store. Once installed, you can create an account and begin adding your financial information.
+To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store or F-Droid. Once installed, you can create an account and begin adding your financial information.
 
 ## Features
 
@@ -59,6 +60,13 @@ Protect your financial information with advanced security features, including pa
 ### Recurring Transactions 
 
 Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch)
+
+### Nested Category
+
+> [!IMPORTANT]
+> Need to be activate in setting --> beavhiour --> Use nested category
+
+From August 2024, nested category (means third level or more in category management) is available. since is beta release you can enable this feature in Setting->Behaviour->Enable Nested Category
 
 ## How to Use
 

@@ -17,29 +17,27 @@
 
 package com.money.manager.ex.tutorial;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 /**
  * Adapter that returns the tutorial pages.
  */
 public class TutorialPagerAdapter
-    extends FragmentStatePagerAdapter {
+        extends FragmentStateAdapter {
 
-    public TutorialPagerAdapter(FragmentManager fm) {
-        super(fm);
-
+    public TutorialPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
     }
 
+    @NonNull
     @Override
-    public Fragment getItem(int i) {
+    public Fragment createFragment(int position) {
         Fragment pageFragment;
 
-        switch(i){
-            case 0:
-                pageFragment = new TutorialAccountsFragment();
-                break;
+        switch(position){
             case 1:
                 pageFragment = TutorialTransactionsFragment.newInstance();
                 break;
@@ -60,12 +58,7 @@ public class TutorialPagerAdapter
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return 5;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return "OBJECT " + (position + 1);
     }
 }

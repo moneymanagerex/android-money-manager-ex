@@ -306,7 +306,7 @@ public class RecurringTransactionListFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.delete_repeating_transaction)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -335,7 +335,7 @@ public class RecurringTransactionListFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.skip_next_occurrence)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.skip_next_occurrence_confirmation)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

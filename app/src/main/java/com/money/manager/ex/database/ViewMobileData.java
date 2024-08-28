@@ -37,6 +37,7 @@ public class ViewMobileData
 	public static final String Day = "Day";
 	public static final String Category = "Category";
 	public static final String Subcategory = "Subcategory";
+	public static final String CategoryFullName = "CategoryFullName";
 	public static final String Amount = "Amount";
 	public static final String BaseConvRate = "BaseConvRate";
 	public static final String CURRENCYID = "CurrencyID";
@@ -70,7 +71,7 @@ public class ViewMobileData
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
-				Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
+				Category, Subcategory, CategoryFullName, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
                 SubcategID, Payee, PAYEEID, TransactionNumber, Status, Notes, currency,
                 AmountBaseConvRate};
