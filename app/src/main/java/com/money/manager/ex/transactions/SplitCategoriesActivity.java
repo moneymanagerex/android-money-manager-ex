@@ -18,7 +18,6 @@ package com.money.manager.ex.transactions;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -256,12 +255,6 @@ public class SplitCategoriesActivity
         // layout manager - LinearLayoutManager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // item animator
-        // RecyclerView.ItemAnimator
-
-        // optimizations
-        mRecyclerView.setHasFixedSize(true);
-
         // Support for swipe-to-dismiss
         ItemTouchHelper.Callback swipeCallback = new SplitItemTouchCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
@@ -275,14 +268,12 @@ public class SplitCategoriesActivity
         }
         // The amount is always positive, ensured by the validation above.
 
-//        int position = Integer.parseInt(requestId);
-        int position = requestId;
-        ISplitTransaction split = mAdapter.splitTransactions.get(position);
+        ISplitTransaction split = mAdapter.splitTransactions.get(requestId);
 
         Money adjustedAmount = CommonSplitCategoryLogic.getStorageAmount(mAdapter.transactionType, amount, split);
         split.setAmount(adjustedAmount);
 
-        mAdapter.notifyItemChanged(position);
+        mAdapter.notifyItemChanged(requestId);
     }
 
     private void onRemoveItem(ISplitTransaction splitTransaction) {
@@ -313,12 +304,9 @@ public class SplitCategoriesActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.error)
                 .setMessage(R.string.error_amount_must_be_positive)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle positive button click if needed
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Handle positive button click if needed
+                    dialog.dismiss();
                 })
                 .show();
     }

@@ -18,7 +18,6 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -416,35 +415,29 @@ public class EditTransactionCommonFunctions {
 
         // amount
         displayAmountFrom();
-        viewHolder.txtAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currencyId = getSourceCurrencyId();
-                Money amount = transactionEntity.getAmount();
+        viewHolder.txtAmount.setOnClickListener(view -> {
+            int currencyId = getSourceCurrencyId();
+            Money amount = transactionEntity.getAmount();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
-                Calculator.forActivity(getActivity())
-                        .currency(currencyId)
-                        .amount(amount)
-                        .show(RequestCodes.AMOUNT);
-            }
+            Calculator.forActivity(getActivity())
+                    .currency(currencyId)
+                    .amount(amount)
+                    .show(RequestCodes.AMOUNT);
         });
 
         // amount to
         displayAmountTo();
-        viewHolder.txtAmountTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currencyId = getDestinationCurrencyId();
-                Money amount = transactionEntity.getAmountTo();
+        viewHolder.txtAmountTo.setOnClickListener(view -> {
+            int currencyId = getDestinationCurrencyId();
+            Money amount = transactionEntity.getAmountTo();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
-                Calculator.forActivity(getActivity())
-                        .amount(amount).currency(currencyId)
-                        .show(RequestCodes.AMOUNT_TO);
-            }
+            Calculator.forActivity(getActivity())
+                    .amount(amount).currency(currencyId)
+                    .show(RequestCodes.AMOUNT_TO);
         });
     }
 
@@ -456,21 +449,18 @@ public class EditTransactionCommonFunctions {
         // keep the dataset name for later.
         this.mSplitCategoryEntityName = datasetName;
 
-        this.viewHolder.categoryTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isSplitSelected()) {
-                    // select first category.
-                    Intent intent = new Intent(getActivity(), CategoryListActivity.class);
-                    intent.setAction(Intent.ACTION_PICK);
-                    getActivity().startActivityForResult(intent, RequestCodes.CATEGORY);
-                } else {
-                    // select split categories.
-                    showSplitCategoriesForm(mSplitCategoryEntityName);
-                }
-
-                // results are handled in onActivityResult.
+        this.viewHolder.categoryTextView.setOnClickListener(v -> {
+            if (!isSplitSelected()) {
+                // select first category.
+                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                getActivity().startActivityForResult(intent, RequestCodes.CATEGORY);
+            } else {
+                // select split categories.
+                showSplitCategoriesForm(mSplitCategoryEntityName);
             }
+
+            // results are handled in onActivityResult.
         });
     }
 
@@ -485,43 +475,34 @@ public class EditTransactionCommonFunctions {
         }
         showDate(date);
 
-        viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MmxDate dateTime = new MmxDate(transactionEntity.getDate());
+        viewHolder.dateTextView.setOnClickListener(v -> {
+            MmxDate dateTime = new MmxDate(transactionEntity.getDate());
 
-                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
-                    Date selectedDate = dateTimeUtilsLazy.get().from(year, month, dayOfMonth);
-                    setDate(selectedDate);
-                };
+            DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                Date selectedDate = dateTimeUtilsLazy.get().from(year, month, dayOfMonth);
+                setDate(selectedDate);
+            };
 
-                DatePickerDialog datePicker = new DatePickerDialog(
-                        getContext(),
-                        listener,
-                        dateTime.getYear(),
-                        dateTime.getMonthOfYear(),
-                        dateTime.getDayOfMonth()
-                );
+            DatePickerDialog datePicker = new DatePickerDialog(
+                    getContext(),
+                    listener,
+                    dateTime.getYear(),
+                    dateTime.getMonthOfYear(),
+                    dateTime.getDayOfMonth()
+            );
 
-                // Customize the DatePickerDialog if needed
-                datePicker.show();
-            }
+            // Customize the DatePickerDialog if needed
+            datePicker.show();
         });
 
-        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
-                setDate(dateTime);
-            }
+        viewHolder.previousDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
+            setDate(dateTime);
         });
 
-        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
-                setDate(dateTime);
-            }
+        viewHolder.nextDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
+            setDate(dateTime);
         });
     }
 
@@ -568,27 +549,21 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initPayeeControls() {
-        this.viewHolder.txtSelectPayee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                getActivity().startActivityForResult(intent, RequestCodes.PAYEE);
+        this.viewHolder.txtSelectPayee.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), PayeeActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            getActivity().startActivityForResult(intent, RequestCodes.PAYEE);
 
-                // the result is handled in onActivityResult
-            }
+            // the result is handled in onActivityResult
         });
 
-        viewHolder.removePayeeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDirty(true);
+        viewHolder.removePayeeButton.setOnClickListener(v -> {
+            setDirty(true);
 
-                transactionEntity.setPayeeId(Constants.NOT_SET);
-                payeeName = "";
+            transactionEntity.setPayeeId(Constants.NOT_SET);
+            payeeName = "";
 
-                showPayeeName();
-            }
+            showPayeeName();
         });
     }
 
@@ -596,28 +571,25 @@ public class EditTransactionCommonFunctions {
      * Initialize Split Categories button & controls.
      */
     public void initSplitCategories() {
-        viewHolder.splitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean splitting = !isSplitSelected();
+        viewHolder.splitButton.setOnClickListener(v -> {
+            boolean splitting = !isSplitSelected();
 
-                if (splitting) {
-                    showSplitCategoriesForm(mSplitCategoryEntityName);
-                } else {
-                    // User wants to remove split.
-                    int splitCount = getSplitTransactions().size();
-                    switch (splitCount) {
-                        case 0:
-                            // just remove split
-                            setSplit(false);
-                            break;
-                        case 1:
-                            convertOneSplitIntoRegularTransaction();
-                            break;
-                        default:
-                            showSplitResetNotice();
-                            break;
-                    }
+            if (splitting) {
+                showSplitCategoriesForm(mSplitCategoryEntityName);
+            } else {
+                // User wants to remove split.
+                int splitCount = getSplitTransactions().size();
+                switch (splitCount) {
+                    case 0:
+                        // just remove split
+                        setSplit(false);
+                        break;
+                    case 1:
+                        convertOneSplitIntoRegularTransaction();
+                        break;
+                    default:
+                        showSplitResetNotice();
+                        break;
                 }
             }
         });
@@ -688,37 +660,34 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        viewHolder.btnTransNumber.setOnClickListener(v -> {
+            AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-                String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                    repo.getSource() + " WHERE " +
-                    ITransactionEntity.ACCOUNTID + "=?";
+            String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                repo.getSource() + " WHERE " +
+                ITransactionEntity.ACCOUNTID + "=?";
 
-                String accountId = transactionEntity.getAccountId().toString();
-                Cursor cursor = mDatabase.query(sql, accountId);
-                if (cursor == null) return;
+            String accountId = transactionEntity.getAccountId().toString();
+            Cursor cursor = mDatabase.query(sql, accountId);
+            if (cursor == null) return;
 
-                if (cursor.moveToFirst()) {
-                    String transNumber = cursor.getString(0);
-                    if (TextUtils.isEmpty(transNumber)) {
-                        transNumber = "0";
-                    }
-                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        try {
-                            // Use Money type to support very large numbers.
-                            Money transactionNumber = MoneyFactory.fromString(transNumber);
-                            viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
-                                .toString());
-                        } catch (Exception e) {
-                            Timber.e(e, "increasing transaction number");
-                        }
+            if (cursor.moveToFirst()) {
+                String transNumber = cursor.getString(0);
+                if (TextUtils.isEmpty(transNumber)) {
+                    transNumber = "0";
+                }
+                if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+                    try {
+                        // Use Money type to support very large numbers.
+                        Money transactionNumber = MoneyFactory.fromString(transNumber);
+                        viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                            .toString());
+                    } catch (Exception e) {
+                        Timber.e(e, "increasing transaction number");
                     }
                 }
-                cursor.close();
             }
+            cursor.close();
         });
 
         if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
@@ -752,15 +721,12 @@ public class EditTransactionCommonFunctions {
 
     public void initTransactionTypeSelector() {
         // Handle click events.
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDirty(true);
+        View.OnClickListener onClickListener = v -> {
+            setDirty(true);
 
-                // find which transaction type this is.
-                TransactionTypes type = (TransactionTypes) v.getTag();
-                changeTransactionTypeTo(type);
-            }
+            // find which transaction type this is.
+            TransactionTypes type = (TransactionTypes) v.getTag();
+            changeTransactionTypeTo(type);
         };
 
         if (viewHolder.withdrawalButton != null) {
@@ -805,7 +771,7 @@ public class EditTransactionCommonFunctions {
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
-            // Done handled neested category
+            // Done handled nested category
             while (category != null && category.getParentId() > 0)
             {
                 category = categoryRepository.load(category.getParentId());
@@ -824,18 +790,8 @@ public class EditTransactionCommonFunctions {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(android.R.string.cancel)
                     .setMessage(R.string.transaction_cancel_confirm)
-                    .setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cancelActivity();
-                        }
-                    })
-                    .setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
+                    .setPositiveButton(R.string.discard, (dialog, which) -> cancelActivity())
+                    .setNegativeButton(R.string.keep_editing, (dialog, which) -> dialog.dismiss())
                     .setCancelable(false)
                     .show();
         } else {
@@ -849,8 +805,6 @@ public class EditTransactionCommonFunctions {
         if ((resultCode != AppCompatActivity.RESULT_OK) || (data == null)) return;
 
         setDirty(true);
-
-        String stringExtra;
 
         switch (requestCode) {
             case RequestCodes.PAYEE:
@@ -1468,17 +1422,14 @@ public class EditTransactionCommonFunctions {
 
         // Set the destination account, if not already.
         if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
-            if (mAccountIdList.size() == 0) {
+            if (mAccountIdList.isEmpty()) {
                 // notify the user and exit.
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle(R.string.warning)
                         .setMessage(R.string.no_accounts_available_for_selection)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Handle positive button click if needed
-                                dialog.dismiss();
-                            }
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            // Handle positive button click if needed
+                            dialog.dismiss();
                         })
                         .show();
                 return;
@@ -1536,12 +1487,9 @@ public class EditTransactionCommonFunctions {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.split_transaction)
                 .setMessage(R.string.split_reset_notice)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle positive button click if needed
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Handle positive button click if needed
+                    dialog.dismiss();
                 })
                 .show();
     }
