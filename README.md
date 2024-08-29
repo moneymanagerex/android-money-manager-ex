@@ -31,7 +31,7 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 
 #### Documentation
 - [UserManual](docs/usermanual/index.md)
-- [neested category](doc/nestedcategory.md)
+- [nested category](doc/nestedcategory.md)
 
 
 #### Contributing
