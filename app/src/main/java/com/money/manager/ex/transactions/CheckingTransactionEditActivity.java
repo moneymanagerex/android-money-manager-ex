@@ -67,7 +67,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import icepick.State;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -79,7 +78,7 @@ import static java.lang.Integer.parseInt;
 public class CheckingTransactionEditActivity
     extends MmxBaseFragmentActivity {
 
-    @State public String mIntentAction;
+    public String mIntentAction;
 
     // bill deposits
     public int mScheduledTransactionId = Constants.NOT_SET;

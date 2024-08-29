@@ -59,7 +59,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import icepick.State;
 import timber.log.Timber;
 
 /**
@@ -86,7 +85,7 @@ public class RecurringTransactionEditActivity
     @Inject BriteDatabase database;
     @Inject MmxDateTimeUtils dateUtils;
 
-    @State String mIntentAction;
+    String mIntentAction;
 
     private RecurringTransactionViewHolder mViewHolder;
     private EditTransactionCommonFunctions mCommon;

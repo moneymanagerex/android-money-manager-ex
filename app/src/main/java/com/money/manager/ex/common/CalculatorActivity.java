@@ -35,7 +35,6 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 
@@ -46,7 +45,6 @@ import javax.inject.Inject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import dagger.Lazy;
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -64,10 +62,10 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
     public static final String EXTRA_ROUND_TO_CURRENCY = "RoundToCurrencyDecimals";
     public static final String RESULT_AMOUNT = "AmountEntered";
 
-    @State boolean roundToCurrencyDecimals;
-    @State(MoneyBundler.class) Money mAmount;
-    @State Integer mCurrencyId;
-    @State String mExpression;
+    boolean roundToCurrencyDecimals;
+    Money mAmount;
+    Integer mCurrencyId;
+    String mExpression;
 
     // Views
     private ImageButton deleteButton;

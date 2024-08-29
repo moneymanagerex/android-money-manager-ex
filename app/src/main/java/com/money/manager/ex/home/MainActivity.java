@@ -116,7 +116,6 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import icepick.State;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -152,13 +151,9 @@ public class MainActivity
     @Inject
     Lazy<RecentDatabasesProvider> mDatabases;
 
-    @State
     boolean dbUpdateCheckDone = false;
-    @State
     boolean mIsSynchronizing = false;
-    @State
     boolean isAuthenticated = false;
-    @State
     int deviceOrientation = Constants.NOT_SET;
 
     private boolean isInAuthentication = false;

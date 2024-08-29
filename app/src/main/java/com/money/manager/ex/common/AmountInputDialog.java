@@ -35,7 +35,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
@@ -43,9 +42,8 @@ import com.shamanland.fonticon.FontIconView;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.greenrobot.eventbus.EventBus;
+import org.parceler.Parcels;
 
-import icepick.Icepick;
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -55,6 +53,7 @@ public class AmountInputDialog
 
     private static final String KEY_REQUEST_ID = "AmountInputDialog:Id";
     private static final String KEY_AMOUNT = "AmountInputDialog:Amount";
+    private static final String KEY_AMOUNT2 = "AmountInputDialog:Amount2";
     private static final String KEY_CURRENCY_ID = "AmountInputDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "AmountInputDialog:Expression";
     private static final String ARG_ROUNDING = "AmountInputDialog:Rounding";
@@ -119,7 +118,7 @@ public class AmountInputDialog
     };
 
     private String mRequestId;
-    @State(MoneyBundler.class) Money mAmount;
+    Money mAmount;
     private Integer mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
@@ -290,8 +289,7 @@ public class AmountInputDialog
 
         mExpression = txtMain.getText().toString();
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
-
-        Icepick.saveInstanceState(this, savedInstanceState);
+        savedInstanceState.putParcelable(KEY_AMOUNT2, Parcels.wrap(mAmount));
     }
 
     // methods
@@ -413,8 +411,7 @@ public class AmountInputDialog
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
-
-        Icepick.restoreInstanceState(this, savedInstanceState);
+        mAmount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_AMOUNT2));
     }
 
     /**

@@ -159,7 +159,6 @@ dependencies {
             , 'com.squareup.sqlbrite3:sqlbrite:3.2.0' // use SqlDelight
             , 'com.jakewharton.timber:timber:5.0.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
-            , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:3.2.5@aar' // also update in the icon module.
             , 'com.mikepenz:iconics-views:3.2.5@aar'
@@ -197,9 +196,6 @@ dependencies {
     // Dagger 2
     implementation 'com.google.dagger:dagger:2.47'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.47'
-    // IcePick
-    implementation 'frankiesardo:icepick:3.2.0'
-    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
     // picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 

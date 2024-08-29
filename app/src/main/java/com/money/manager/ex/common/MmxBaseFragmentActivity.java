@@ -40,7 +40,6 @@ import com.money.manager.ex.settings.AppSettings;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import icepick.Icepick;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -70,8 +69,6 @@ public abstract class MmxBaseFragmentActivity
 //        SQLiteDatabase.loadLibs(this);
 
         this.compositeSubscription = new CompositeSubscription();
-
-        Icepick.restoreInstanceState(this, savedInstanceState);
 
         super.onCreate(savedInstanceState);
         // Initialize the ActivityResultLauncher
@@ -151,8 +148,6 @@ public abstract class MmxBaseFragmentActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        Icepick.saveInstanceState(this, outState);
     }
 
     @Override
