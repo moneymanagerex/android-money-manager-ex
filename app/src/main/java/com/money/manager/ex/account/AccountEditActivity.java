@@ -28,7 +28,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -56,7 +55,6 @@ import org.parceler.Parcels;
 import java.util.Arrays;
 import java.util.Date;
 
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -84,12 +82,12 @@ public class AccountEditActivity
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
 
     // Activity members
-    @State String mCurrencyName;
+    String mCurrencyName;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
 
     private AccountEditViewHolder mViewHolder;
-    @State boolean mIsDefault;
+    boolean mIsDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,8 +201,8 @@ public class AccountEditActivity
 
         outState.putParcelable(KEY_ACCOUNT_ENTITY, Parcels.wrap(mAccount));
 
-//        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
-//        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
+        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
+        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
         outState.putString(KEY_ACTION, mIntentAction);
     }
 
@@ -569,8 +567,8 @@ public class AccountEditActivity
             }
         }
 
-//        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
-//        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
+        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
+        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 

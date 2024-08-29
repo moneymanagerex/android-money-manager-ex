@@ -95,8 +95,6 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import icepick.Icepick;
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import rx.Single;
@@ -141,7 +139,7 @@ public class HomeFragment
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
 
-    @State int accountBalancedId = Constants.NOT_SET;
+    int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
     @Override
@@ -159,8 +157,7 @@ public class HomeFragment
 
         // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
-//            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
         }
     }
 
@@ -481,8 +478,7 @@ public class HomeFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
-        Icepick.saveInstanceState(this, outState);
+        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
     }
 
     // Events

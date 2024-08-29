@@ -43,7 +43,6 @@ import com.money.manager.ex.utils.MmxDateTimeUtils;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import icepick.Icepick;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -54,7 +53,6 @@ public class PriceEditActivity
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    //@State
     protected PriceEditModel model;
     private EditPriceViewHolder viewHolder;
 
@@ -68,7 +66,7 @@ public class PriceEditActivity
         initializeToolbar();
 
         if (savedInstanceState != null) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            // TODO
         }  else {
             initializeModel();
         }
@@ -128,8 +126,7 @@ public class PriceEditActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
-        Icepick.saveInstanceState(this, savedInstanceState);
+        // TODO
     }
 
     private void onPriceClick() {
