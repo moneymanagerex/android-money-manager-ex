@@ -44,6 +44,12 @@
                     android:id="@+id/menu_last_year"
                     android:title="@string/last_year"/>
                 <item
+                    android:id="@+id/menu_current_fin_year"
+                    android:title="@string/current_fin_year"/>
+                <item
+                    android:id="@+id/menu_last_fin_year"
+                    android:title="@string/last_fin_year"/>
+                <item
                     android:id="@+id/menu_all_time"
                     android:title="@string/all_time"/>
             </group>

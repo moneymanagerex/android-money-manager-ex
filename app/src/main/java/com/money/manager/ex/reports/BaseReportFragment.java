@@ -34,9 +34,12 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -45,6 +48,7 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 public abstract class BaseReportFragment
     extends BaseListFragment
@@ -174,6 +178,26 @@ public abstract class BaseReportFragment
                     .firstDayOfMonth()
                     .toDate();
             mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+// issue #1790 - handling financial year
+        } else if (itemId == R.id.menu_current_fin_year ||
+                   itemId == R.id.menu_last_fin_year) {
+            InfoService infoService = new InfoService(getActivity());
+            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
+            MmxDate newDate = dateTime;
+            newDate.setDate(financialYearStartDay);
+            newDate.setMonth(financialYearStartMonth);
+            if (newDate.toDate().after(dateTime.toDate())) {
+                // today is not part of current financial year, so we need to go back on year
+                newDate.minusYears(1);
+            }
+            // right now newDAte is start of current fiscal year
+            if (itemId == R.id.menu_last_fin_year) {
+                newDate.minusYears(1);
+            }
+            mDateFrom = newDate.toDate();
+            mDateTo = newDate.addYear(1).minusDays(1).toDate();
+            Timber.v("FISCAL YEAR from: " + mDateFrom.toString() + " to: " + mDateTo.toString());
         } else if (itemId == R.id.menu_all_time) {
             mDateFrom = null;
             mDateTo = null;
