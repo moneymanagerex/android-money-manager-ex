@@ -313,6 +313,8 @@
     <string name="last_month">Previous Month</string>
     <string name="last30days">Last 30 Days</string>
     <string name="last_year">Previous Year</string>
+    <string name="current_fin_year">Current Financial Year</string>
+    <string name="last_fin_year">Previous Financial Year</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Number of transactions found: %1$d</string>
