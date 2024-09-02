@@ -20,7 +20,6 @@ package com.money.manager.ex.home;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -234,11 +233,7 @@ public class DashboardFragment
         // compose builder
         builder.setTables(mobileData.getSource());
         // return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
     @SuppressWarnings("deprecation")
@@ -261,11 +256,7 @@ public class DashboardFragment
         // compose builder
         builder.setTables(mobileData.getSource());
         // return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
     /*

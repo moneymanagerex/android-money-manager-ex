@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.passcode;
 
-import android.os.Build;
-
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -49,12 +47,8 @@ public class SimpleCrypto {
 	private static byte[] getRawKey(byte[] seed) throws Exception {
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 		SecureRandom sr;
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
-			sr = SecureRandom.getInstance("SHA1PRNG");
-		} else {
-			sr = SecureRandom.getInstance( "SHA1PRNG", "Crypto" );
-		}
-		sr.setSeed(seed);
+        sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+        sr.setSeed(seed);
 	    kgen.init(128, sr); // 192 and 256 bits may not be available
 	    SecretKey skey = kgen.generateKey();
 	    byte[] raw = skey.getEncoded();

@@ -18,7 +18,6 @@ package com.money.manager.ex.servicelayer.qif;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -47,11 +46,7 @@ public class QifHeader {
 
         // Line separator.
         String separator;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            separator = System.getProperty("line.separator");
-        } else {
-            separator = System.lineSeparator();
-        }
+        separator = System.lineSeparator();
 
         Account account = loadAccount(cursor);
 

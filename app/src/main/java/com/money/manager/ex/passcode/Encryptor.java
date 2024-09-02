@@ -17,8 +17,6 @@
 
 package com.money.manager.ex.passcode;
 
-import android.os.Build;
-
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -55,11 +53,7 @@ public class Encryptor {
      */
     public static SecretKey deriveKeyInsecurely(String password, int keySizeInBytes) {
         byte[] passwordBytes;
-        if (Build.VERSION.SDK_INT >= 19) {
-            passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
-        } else {
-            passwordBytes = password.getBytes(StandardCharsets.UTF_8);
-        }
+        passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
 
         return new SecretKeySpec(
                 InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(passwordBytes, keySizeInBytes), "AES");
