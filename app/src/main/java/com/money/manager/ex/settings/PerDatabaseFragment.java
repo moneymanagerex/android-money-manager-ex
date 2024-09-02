@@ -131,9 +131,9 @@ public class PerDatabaseFragment
 
         // financial year, day and month
 
-        final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTDATE));
+        final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_START_DATE));
         if (pFinancialDay != null) {
-            pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+            pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
             if (pFinancialDay.getSummary() != null) {
                 pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
             }
@@ -166,14 +166,14 @@ public class PerDatabaseFragment
 
         // Financial year/month
 
-        final ListPreference lstFinancialMonth = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTMONTH));
+        final ListPreference lstFinancialMonth = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_START_MONTH));
         if (lstFinancialMonth != null) {
             lstFinancialMonth.setEntries(core.getListMonths());
             lstFinancialMonth.setEntryValues(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"});
             lstFinancialMonth.setDefaultValue("0");
             // get current month
             try {
-                String currentMonth = infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH);
+                String currentMonth = infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1");
 
                 Integer month = Ints.tryParse(currentMonth);
                 if (month != null) {

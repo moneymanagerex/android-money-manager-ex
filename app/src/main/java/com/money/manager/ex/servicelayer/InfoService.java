@@ -126,6 +126,18 @@ public class InfoService
 
         return ret;
     }
+    /**
+     * Retrieve value of info key
+     * @param key to be retrieve
+     * @param value of default if fetch nothing
+     * @return value
+     */
+    public String getInfoValue(String key, String value) {
+        String ret = getInfoValue(key);
+        if (ret == null)
+            ret = value;
+        return ret;
+    }
 
     /**
      * Update value of info.
