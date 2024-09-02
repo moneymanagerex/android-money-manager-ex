@@ -18,8 +18,6 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
-import com.money.manager.ex.Constants;
-
 /**
  * Attachment model.
  */

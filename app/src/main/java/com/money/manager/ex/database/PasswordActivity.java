@@ -19,7 +19,6 @@ package com.money.manager.ex.database;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -50,12 +49,7 @@ public class PasswordActivity
     private void initializeOkButton() {
         Button okButton = this.findViewById(R.id.btnSubmit);
         if (okButton != null) {
-            okButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    returnPassword();
-                }
-            });
+            okButton.setOnClickListener(v -> returnPassword());
         }
     }
 
