@@ -147,6 +147,11 @@ public class DefinedDateRanges {
         range = create(DefinedDateRangeName.CURRENT_YEAR, R.string.current_year, R.id.menu_current_year);
         dateRanges.put(range.key, range);
 
+        // menu_current_fin_year
+        range = create(DefinedDateRangeName.CURRENT_FIN_YEAR, R.string.current_fin_year, R.id.menu_current_fin_year);
+        dateRanges.put(range.key, range);
+
+
         // FUTURE_TRANSACTIONS,
         range = create(DefinedDateRangeName.FUTURE_TRANSACTIONS, R.string.future_transactions,
                 R.id.menu_future_transactions);

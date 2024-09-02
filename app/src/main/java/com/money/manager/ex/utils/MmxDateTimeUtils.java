@@ -125,6 +125,22 @@ public class MmxDateTimeUtils {
                     .firstDayOfMonth();
             dateTo = dateTo.today().lastMonthOfYear()
                     .lastDayOfMonth();
+// Financial year issue #1790
+        } else if (period.equalsIgnoreCase(context.getString(R.string.current_fin_year))) {
+            InfoService infoService = new InfoService(context);
+            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
+            MmxDate toDay = new MmxDate();
+            dateFrom = dateFrom.setDate(financialYearStartDay);
+            dateTo = dateTo.setDate(financialYearStartDay);
+            dateFrom = dateFrom.setMonth(financialYearStartMonth);
+            dateTo = dateTo.setMonth(financialYearStartMonth);
+            if (dateFrom.toDate().after(toDay.toDate())) {
+                // today is not part of current financial year, so we need to go back on year
+                dateFrom = dateFrom.minusYears(1);
+                dateTo = dateTo.minusYears(1);
+            }
+            dateTo = dateTo.addYear(1).minusDays(1);
         } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
             // Future transactions
             dateFrom = dateFrom.today().plusDays(1);

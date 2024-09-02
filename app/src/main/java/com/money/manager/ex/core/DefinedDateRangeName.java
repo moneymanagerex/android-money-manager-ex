@@ -29,6 +29,7 @@ public enum DefinedDateRangeName {
     LAST_3_MONTHS,
     LAST_6_MONTHS,
     CURRENT_YEAR,
+    CURRENT_FIN_YEAR,
     FUTURE_TRANSACTIONS,
     ALL_TIME
 }
