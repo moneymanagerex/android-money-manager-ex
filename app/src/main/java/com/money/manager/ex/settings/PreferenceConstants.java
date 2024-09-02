@@ -32,8 +32,8 @@ public class PreferenceConstants {
     public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
 
     // General
-    public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
-    public static final Integer PREF_FINANCIAL_YEAR_STARTMONTH = R.string.pref_financial_year_startmonth;
+    public static final Integer PREF_FINANCIAL_YEAR_START_DATE = R.string.pref_financial_year_start_date;
+    public static final Integer PREF_FINANCIAL_YEAR_START_MONTH = R.string.pref_financial_year_start_month;
     public static final Integer PREF_BASE_CURRENCY = R.string.pref_base_currency;
 
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;

@@ -44,8 +44,8 @@
     <!-- -->
     <string name="pref_user_name">username</string>
     <string name="pref_date_format">dateformat</string>
-    <string name="pref_financial_year_startdate">financial_year_startday</string>
-    <string name="pref_financial_year_startmonth">financial_year_startmonth</string>
+    <string name="pref_financial_year_start_date">financial_year_startday</string>
+    <string name="pref_financial_year_start_month">financial_year_startmonth</string>
     <string name="pref_base_currency">basecurrency</string>
     <string name="pref_account_open_visible">accountsopenvisible</string>
     <string name="pref_account_fav_visible">accountsfavoritevisible</string>

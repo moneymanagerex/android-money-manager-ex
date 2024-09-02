@@ -182,8 +182,8 @@ public abstract class BaseReportFragment
         } else if (itemId == R.id.menu_current_fin_year ||
                    itemId == R.id.menu_last_fin_year) {
             InfoService infoService = new InfoService(getActivity());
-            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
-            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
+            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0"))-1;
             MmxDate newDate = dateTime;
             newDate.setDate(financialYearStartDay);
             newDate.setMonth(financialYearStartMonth);
