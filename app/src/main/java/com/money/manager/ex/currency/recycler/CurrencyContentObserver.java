@@ -20,7 +20,8 @@ package com.money.manager.ex.currency.recycler;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
+
+import timber.log.Timber;
 
 /**
  * Content Observer for data changes in Currencies.
@@ -46,6 +47,6 @@ public class CurrencyContentObserver
         // todo: reload data
         // depending on the handler you might be on the UI
         // thread, so be cautious!
-        Log.d("test", "test");
+        Timber.tag("test").d("test");
     }
 }

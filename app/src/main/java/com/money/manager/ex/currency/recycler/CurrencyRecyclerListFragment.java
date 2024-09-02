@@ -366,14 +366,11 @@ public class CurrencyRecyclerListFragment
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
         // Behaviours. List click listener.
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Currency currency = getCurrencyAtPosition(position);
-                int id = currency.getCurrencyId();
-                String name = currency.getName();
-                EventBus.getDefault().post(new ListItemClickedEvent(id, name, view));
-            }
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), (view, position) -> {
+            Currency currency = getCurrencyAtPosition(position);
+            int id = currency.getCurrencyId();
+            String name = currency.getName();
+            EventBus.getDefault().post(new ListItemClickedEvent(id, name, view));
         }));
     }
 

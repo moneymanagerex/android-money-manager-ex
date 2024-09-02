@@ -96,12 +96,10 @@ public class CurrencyRepository
         ContentValues contentValues = new ContentValues();
         contentValues.put(Currency.BASECONVRATE, exchangeRate.toString());
 
-        int result = getContext().getContentResolver().update(this.getUri(),
+        return getContext().getContentResolver().update(this.getUri(),
             contentValues,
             Currency.CURRENCYID + "=?",
             new String[] { Integer.toString(currencyId) });
-
-        return result;
     }
 
     // private methods

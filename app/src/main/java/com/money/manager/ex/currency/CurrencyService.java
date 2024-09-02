@@ -44,7 +44,6 @@ import com.money.manager.ex.servicelayer.ServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -154,12 +153,7 @@ public class CurrencyService
         }
 
         // order by name?
-        Collections.sort(currencies, new Comparator<Currency>() {
-            @Override
-            public int compare(Currency lhs, Currency rhs) {
-                return lhs.getName().compareTo(rhs.getName());
-            }
-        });
+        Collections.sort(currencies, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));
 
         return currencies;
     }

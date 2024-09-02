@@ -20,7 +20,6 @@ package com.money.manager.ex.currency;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -35,7 +34,6 @@ import com.money.manager.ex.utils.DialogUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
-import java.util.concurrent.Callable;
 
 import info.javaperformance.money.Money;
 import rx.Observable;
@@ -73,12 +71,7 @@ public class CurrencyUIFeatures {
         builder.setTitle(R.string.attention)
                 .setIcon(new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_warning))
                 .setMessage(R.string.currency_can_not_deleted)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .create()
                 .show();
     }
@@ -117,18 +110,8 @@ public class CurrencyUIFeatures {
         builder.setTitle(R.string.delete_currency)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EventBus.getDefault().post(new CurrencyDeletionConfirmedEvent(currencyId, itemPosition));
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> EventBus.getDefault().post(new CurrencyDeletionConfirmedEvent(currencyId, itemPosition)))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
@@ -140,18 +123,8 @@ public class CurrencyUIFeatures {
         builder.setTitle(R.string.attention)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.question_import_currencies)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        importCurrencies();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> importCurrencies())
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
@@ -163,18 +136,8 @@ public class CurrencyUIFeatures {
         builder.setTitle(R.string.download)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.question_update_currency_exchange_rates)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(true));
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(true)))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
@@ -192,19 +155,13 @@ public class CurrencyUIFeatures {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.update_menu_currency_exchange_rates)
-                .setSingleChoiceItems(options, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // send selection (all/active)
-                        EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(which == 1));
-                        dialog.dismiss();
-                    }
+                .setSingleChoiceItems(options, -1, (dialog, which) -> {
+                    // send selection (all/active)
+                    EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(which == 1));
+                    dialog.dismiss();
                 })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle positive button click if needed
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Handle positive button click if needed
                 })
                 .create()
                 .show();
@@ -230,12 +187,7 @@ public class CurrencyUIFeatures {
         final ProgressDialog progress = ProgressDialog.show(getContext(), null,
                 getContext().getString(R.string.import_currencies_in_progress));
 
-        Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return getService().importCurrenciesFromSystemLocales();
-            }
-        })
+        Observable.fromCallable(() -> getService().importCurrenciesFromSystemLocales())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Boolean>() {
