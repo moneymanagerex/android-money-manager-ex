@@ -17,7 +17,6 @@
 package com.money.manager.ex.common;
 
 import android.animation.LayoutTransition;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -70,9 +69,7 @@ public abstract class BaseListFragment
         super.onActivityCreated(savedInstanceState);
 
         // set animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getListView().setLayoutTransition(new LayoutTransition());
-        }
+        getListView().setLayoutTransition(new LayoutTransition());
         // saved instance
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
             isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);

@@ -20,7 +20,6 @@ package com.money.manager.ex.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
@@ -140,11 +139,9 @@ public class MmxFileUtils {
     public boolean requestExternalStoragePermissions(AppCompatActivity activity) {
         boolean requestingRead = false;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            // Read external storage available only as of API 16.
-            requestingRead = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    activity, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
-        }
+        // Read external storage available only as of API 16.
+        requestingRead = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                activity, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
 
         // Check write permission.
         boolean requestingWrite = requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,

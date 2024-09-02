@@ -18,7 +18,6 @@ package com.money.manager.ex.common;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -73,9 +72,7 @@ public abstract class BaseExpandableListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // set animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getExpandableListView().setLayoutTransition(new LayoutTransition());
-        }
+        getExpandableListView().setLayoutTransition(new LayoutTransition());
         // saved instance
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
@@ -164,8 +161,6 @@ public abstract class BaseExpandableListFragment
                 this.setResultAndFinish();
                 return true; // consumed here
             case R.id.menu_query_mode:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-                    onMenuItemSearchClick(item);
                 return true; // consumed here
             default:
                 return super.onOptionsItemSelected(item);

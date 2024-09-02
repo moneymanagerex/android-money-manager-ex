@@ -323,21 +323,16 @@ public class HomeFragment
                     barIncome.setMax((int) (Math.abs(income) + Math.abs(expenses)));
                     barExpenses.setMax((int) (Math.abs(income) + Math.abs(expenses)));
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                        long longDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
-                        ObjectAnimator animationIncome = ObjectAnimator.ofInt(barIncome, "progress", (int) Math.abs(income));
-                        animationIncome.setDuration(longDuration);
-                        animationIncome.setInterpolator(new DecelerateInterpolator());
-                        animationIncome.start();
+                    long longDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
+                    ObjectAnimator animationIncome = ObjectAnimator.ofInt(barIncome, "progress", (int) Math.abs(income));
+                    animationIncome.setDuration(longDuration);
+                    animationIncome.setInterpolator(new DecelerateInterpolator());
+                    animationIncome.start();
 
-                        ObjectAnimator animationExpenses = ObjectAnimator.ofInt(barExpenses, "progress", (int) Math.abs(expenses));
-                        animationExpenses.setDuration(longDuration);
-                        animationExpenses.setInterpolator(new DecelerateInterpolator());
-                        animationExpenses.start();
-                    } else {
-                        barIncome.setProgress((int) Math.abs(income));
-                        barExpenses.setProgress((int) Math.abs(expenses));
-                    }
+                    ObjectAnimator animationExpenses = ObjectAnimator.ofInt(barExpenses, "progress", (int) Math.abs(expenses));
+                    animationExpenses.setDuration(longDuration);
+                    animationExpenses.setInterpolator(new DecelerateInterpolator());
+                    animationExpenses.start();
                 }
                 break;
         }

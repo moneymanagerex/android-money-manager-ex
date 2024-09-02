@@ -17,7 +17,6 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,11 +83,7 @@ public class DrawerMenuGroupAdapter
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
             if (item.getIconDrawable() != null) {
-                if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    holder.imageViewIcon.setBackground(item.getIconDrawable());
-                } else {
-                    holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
-                }
+                holder.imageViewIcon.setBackground(item.getIconDrawable());
             }
         }
 
@@ -151,11 +146,7 @@ public class DrawerMenuGroupAdapter
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
             if (item.getIconDrawable() != null) {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    holder.imageViewIcon.setBackground(item.getIconDrawable());
-                } else {
-                    holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
-                }
+                holder.imageViewIcon.setBackground(item.getIconDrawable());
             }
         }
 

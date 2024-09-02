@@ -150,45 +150,44 @@ public class PasscodeActivity extends AppCompatActivity {
             .color(ui.getPrimaryTextColor()));
 
 		//Handle fingerprint
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-
-			keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-
-			if (!fingerprintManager.isHardwareDetected()) {
-				findViewById(R.id.fpImageView)
-						.setVisibility(View.GONE);
-				findViewById(R.id.fingerprintInfo)
-						.setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
 		}
-			else {
 
-				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-					Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
-				}
+		if (!fingerprintManager.isHardwareDetected()) {
+            findViewById(R.id.fpImageView)
+                    .setVisibility(View.GONE);
+            findViewById(R.id.fingerprintInfo)
+                    .setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
+}
+        else {
 
-				if (!fingerprintManager.hasEnrolledFingerprints()) {
-					Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
-				}
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
+            }
 
-				if (!keyguardManager.isKeyguardSecure()) {
-					Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
-				}
-				else {
-					try {
-						generateKey();
-					} catch (FingerprintException e) {
-						e.printStackTrace();
-					}
-					if (initCipher()) {
-						cryptoObject = new FingerprintManager.CryptoObject(cipher);
-						FingerprintHandler helper = new FingerprintHandler(this);
-						helper.startAuth(fingerprintManager, cryptoObject);
-					}
-				}
-			}
-		}
-	}
+            if (!fingerprintManager.hasEnrolledFingerprints()) {
+                Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
+            }
+
+            if (!keyguardManager.isKeyguardSecure()) {
+                Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
+            }
+            else {
+                try {
+                    generateKey();
+                } catch (FingerprintException e) {
+                    e.printStackTrace();
+                }
+                if (initCipher()) {
+                    cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                    FingerprintHandler helper = new FingerprintHandler(this);
+                    helper.startAuth(fingerprintManager, cryptoObject);
+                }
+            }
+        }
+    }
 
 	@Override
 	protected void onStart() {
@@ -246,18 +245,22 @@ public class PasscodeActivity extends AppCompatActivity {
 		try {
 
 			keyStore = KeyStore.getInstance("AndroidKeyStore");
-			keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+			}
 
 			keyStore.load(null);
-			keyGenerator.init(new
-					KeyGenParameterSpec.Builder(KEY_NAME,
-					KeyProperties.PURPOSE_ENCRYPT |
-							KeyProperties.PURPOSE_DECRYPT)
-					.setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-					.setUserAuthenticationRequired(true)
-					.setEncryptionPaddings(
-							KeyProperties.ENCRYPTION_PADDING_PKCS7)
-					.build());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				keyGenerator.init(new
+						KeyGenParameterSpec.Builder(KEY_NAME,
+						KeyProperties.PURPOSE_ENCRYPT |
+								KeyProperties.PURPOSE_DECRYPT)
+						.setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+						.setUserAuthenticationRequired(true)
+						.setEncryptionPaddings(
+								KeyProperties.ENCRYPTION_PADDING_PKCS7)
+						.build());
+			}
 
 			keyGenerator.generateKey();
 
@@ -275,10 +278,12 @@ public class PasscodeActivity extends AppCompatActivity {
 
 	public boolean initCipher() {
 		try {
-			cipher = Cipher.getInstance(
-					KeyProperties.KEY_ALGORITHM_AES + "/"
-							+ KeyProperties.BLOCK_MODE_CBC + "/"
-							+ KeyProperties.ENCRYPTION_PADDING_PKCS7);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				cipher = Cipher.getInstance(
+						KeyProperties.KEY_ALGORITHM_AES + "/"
+								+ KeyProperties.BLOCK_MODE_CBC + "/"
+								+ KeyProperties.ENCRYPTION_PADDING_PKCS7);
+			}
 		} catch (NoSuchAlgorithmException |
 				NoSuchPaddingException e) {
 			throw new RuntimeException("Failed to get Cipher", e);

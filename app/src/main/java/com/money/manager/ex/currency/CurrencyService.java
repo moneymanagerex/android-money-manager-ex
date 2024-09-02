@@ -18,7 +18,6 @@ package com.money.manager.ex.currency;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
@@ -347,11 +346,7 @@ public class CurrencyService
                 newCurrency = new Currency();
 
                 // Name
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    newCurrency.setName(localeCurrency.getDisplayName());
-                } else {
-                    newCurrency.setName(localeCurrency.getSymbol());
-                }
+                newCurrency.setName(localeCurrency.getDisplayName());
 
                 // Symbol
                 newCurrency.setCode(localeCurrency.getCurrencyCode());
