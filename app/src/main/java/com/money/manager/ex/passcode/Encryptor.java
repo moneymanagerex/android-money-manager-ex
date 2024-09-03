@@ -33,7 +33,7 @@ import timber.log.Timber;
 
 /**
  * Wrapper for the encryption class/library.
- * Ref: https://android.googlesource.com/platform/development/+/master/samples/BrokenKeyDerivation/src/com/example/android/brokenkeyderivation/BrokenKeyDerivationActivity.java
+ * Ref: <a href="https://android.googlesource.com/platform/development/+/master/samples/BrokenKeyDerivation/src/com/example/android/brokenkeyderivation/BrokenKeyDerivationActivity.java">...</a>
  */
 
 public class Encryptor {

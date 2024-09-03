@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.passcode;
 
+import android.os.Build;
+
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -24,8 +26,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * http://www.androidsnippets.com/encryptdecrypt-strings
- * http://android-developers.blogspot.co.at/2016/06/security-crypto-provider-deprecated-in.html
+ * <a href="http://www.androidsnippets.com/encryptdecrypt-strings">...</a>
+ * <a href="http://android-developers.blogspot.co.at/2016/06/security-crypto-provider-deprecated-in.html">...</a>
  * @author ferenc.hechler
  */
 public class SimpleCrypto {
@@ -47,29 +49,31 @@ public class SimpleCrypto {
 	private static byte[] getRawKey(byte[] seed) throws Exception {
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 		SecureRandom sr;
-        sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-        sr.setSeed(seed);
-	    kgen.init(128, sr); // 192 and 256 bits may not be available
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+			// Use the old "Crypto" provider for Android versions below P (9.0)
+			sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+		} else {
+			// Use the new approach for Android P (9.0) and above
+			sr = SecureRandom.getInstance("SHA1PRNG");
+		}
+		sr.setSeed(seed);
+		kgen.init(128, sr); // 192 and 256 bits may not be available
 	    SecretKey skey = kgen.generateKey();
-	    byte[] raw = skey.getEncoded();
-	    return raw;
+        return skey.getEncoded();
 	}
 
-	
 	private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
 	    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 	    cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-	    byte[] encrypted = cipher.doFinal(clear);
-		return encrypted;
+        return cipher.doFinal(clear);
 	}
 
 	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
 	    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 	    cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-	    byte[] decrypted = cipher.doFinal(encrypted);
-		return decrypted;
+        return cipher.doFinal(encrypted);
 	}
 
 	public static String toHex(String txt) {
