@@ -36,4 +36,5 @@ public class InfoKeys {
     public static final String EXCHANGE_RATE_PROVIDER = "EXCHANGE_RATE_PROVIDER";
     public static final String PASSCODE = "PASSCODEMOBILE";
     public static final String UID = "UID";
+    public static final String AUTO_EXECUTE_TRANSACTION = "android:auto_execute_transaction";
 }

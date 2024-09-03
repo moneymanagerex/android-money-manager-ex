@@ -26,11 +26,15 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.MmxDate;
 
 /**
@@ -56,6 +60,23 @@ public class BehaviourSettingsFragment
 
         initializeNotificationTime();
         initializeSmsAutomation();
+
+        PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final BehaviourSettings settings = new AppSettings(getActivity()).getBehaviourSettings();
+        final SwitchPreference autoExecTransactionCheckbox = findPreference(getString(R.string.pref_scheduled_transaction_execution));
+        if (autoExecTransactionCheckbox != null) {
+            // set initial value
+            boolean autoExecTransaction = settings.getExecutionScheduledTransaction();
+            autoExecTransactionCheckbox.setChecked(autoExecTransaction);
+
+            autoExecTransactionCheckbox.setOnPreferenceChangeListener((preference, newValue) -> {
+                settings.setExecutionScheduledTransaction((Boolean) newValue);
+//                MainActivity.setRestartActivity(true);
+                return true;
+            });
+        }
+
+
     }
 
     @Override

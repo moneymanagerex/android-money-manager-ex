@@ -22,6 +22,8 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.servicelayer.InfoService;
 
 /**
  * Settings in the General category.
@@ -44,7 +46,16 @@ public class BehaviourSettings
     }
 
     public boolean getExecutionScheduledTransaction() {
-        return get(R.string.pref_scheduled_transaction_execution, false);
+        InfoService infoService = new InfoService(getContext());
+        String value = infoService.getInfoValue(InfoKeys.AUTO_EXECUTE_TRANSACTION);
+        if (value == null ) {
+            return false;
+        }
+        return Boolean.parseBoolean(value);
+    }
+    public void setExecutionScheduledTransaction(Boolean value) {
+        InfoService infoService = new InfoService(getContext());
+        infoService.setInfoValue(InfoKeys.AUTO_EXECUTE_TRANSACTION, value.toString());
     }
 
     public boolean getUseNestedCategory() {
