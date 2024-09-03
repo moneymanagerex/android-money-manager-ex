@@ -166,7 +166,6 @@ dependencies {
             , 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
             , 'com.roomorama:caldroid:3.0.1'
             , 'androidx.work:work-runtime:2.8.1'
-            , 'com.github.luizgrp:sectionedrecyclerviewadapter:3.2.0' // TODO: Library is archived. Find alternative.
             , 'androidx.fragment:fragment:1.5.6'
             , 'com.caverock:androidsvg-aar:1.4'
 
