@@ -61,19 +61,26 @@ public class BehaviourSettingsFragment
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
         final BehaviourSettings settings = new AppSettings(getActivity()).getBehaviourSettings();
-        final SwitchPreference autoExecTransactionCheckbox = findPreference(getString(R.string.pref_scheduled_transaction_execution));
-        if (autoExecTransactionCheckbox != null) {
+        final SwitchPreference showNotificationSwitch = findPreference(getString(R.string.pref_repeating_transaction_notifications));
+        final SwitchPreference autoExecTransactionSwitch = findPreference(getString(R.string.pref_scheduled_transaction_execution));
+        if (showNotificationSwitch != null && autoExecTransactionSwitch != null) {
+            autoExecTransactionSwitch.setEnabled(showNotificationSwitch.isChecked());
+
+            showNotificationSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                autoExecTransactionSwitch.setEnabled((Boolean) newValue);
+                return true;
+            });
+
             // set initial value
             boolean autoExecTransaction = settings.getExecutionScheduledTransaction();
-            autoExecTransactionCheckbox.setChecked(autoExecTransaction);
+            autoExecTransactionSwitch.setChecked(autoExecTransaction);
 
-            autoExecTransactionCheckbox.setOnPreferenceChangeListener((preference, newValue) -> {
+            autoExecTransactionSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 settings.setExecutionScheduledTransaction((Boolean) newValue);
 //                MainActivity.setRestartActivity(true);
                 return true;
             });
         }
-
 
     }
 
