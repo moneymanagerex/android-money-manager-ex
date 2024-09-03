@@ -134,7 +134,7 @@
 
         <activity
                 android:name=".home.MainActivity"
-                android:label="@string/application_name" android:exported="true">
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -336,35 +336,17 @@
             android:name=".common.WebViewActivity"
             android:label="@string/donate" />
         <activity
-            android:name=".assetallocation.editor.AssetAllocationEditorActivity"
-            android:label="@string/asset_allocation" />
-        <activity
-            android:name=".assetallocation.AssetClassEditActivity"
-            android:label="@string/title_activity_asset_class_edit"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".assetallocation.SecurityListActivity"
-            android:label="@string/securities" />
-        <activity
             android:name=".database.PasswordActivity"
             android:label="@string/enter_password" />
         <activity
             android:name=".investment.PortfolioActivity"
             android:label="@string/portfolio" />
-        <activity
-            android:name=".assetallocation.AssetAllocationReportActivity"
-            android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
-        <activity android:name=".assetallocation.list.AssetClassListActivity" />
-        <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
-        <activity android:name=".assetallocation.overview.AssetAllocationOverviewActivity">
-
             <!-- android:parentActivityName=".home.MainActivity" -->
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value=".home.MainActivity" /> -->
-        </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity
             android:name=".common.CalculatorActivity"
@@ -396,51 +378,8 @@
         <!-- services -->
 
         <service
-            android:name=".notifications.ScheduledTransactionWorker"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-                android:name=".widget.SummaryDashExtension"
-                android:icon="@drawable/ic_stat_notification"
-                android:label="@string/widget_summary"
-                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-                tools:ignore="MissingClass" android:exported="true"> <!-- TODO: Add SummaryDashExtension Widget class -->
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
-            </intent-filter>
-
-            <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary" />
-        </service>
-        <service
-                android:name=".widget.AccountBillsDashExtension"
-                android:icon="@drawable/ic_stat_notification"
-                android:label="@string/widget_all_accounts"
-                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-                android:exported="true" tools:ignore="IntentFilterExportedReceiver"> <!-- TODO: Add AccountBillsDashExtension Widget class -->
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
-            </intent-filter>
-
-            <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary_all_account" />
-        </service>
         <service
             android:name=".sync.SyncService"
             android:exported="false"
