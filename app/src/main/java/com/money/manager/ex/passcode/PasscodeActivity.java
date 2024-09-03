@@ -71,11 +71,9 @@ public class PasscodeActivity extends AppCompatActivity {
 	private Cipher cipher;
 	private KeyStore keyStore;
 	private KeyGenerator keyGenerator;
-	private FingerprintManager.CryptoObject cryptoObject;
-	private FingerprintManager fingerprintManager;
-	private KeyguardManager keyguardManager;
+    private FingerprintManager fingerprintManager;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// set theme
 		try {
@@ -150,7 +148,7 @@ public class PasscodeActivity extends AppCompatActivity {
             .color(ui.getPrimaryTextColor()));
 
 		//Handle fingerprint
-        keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 		}
@@ -181,7 +179,7 @@ public class PasscodeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (initCipher()) {
-                    cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                    FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
                     FingerprintHandler helper = new FingerprintHandler(this);
                     helper.startAuth(fingerprintManager, cryptoObject);
                 }
