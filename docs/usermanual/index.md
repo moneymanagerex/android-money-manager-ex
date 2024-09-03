@@ -57,7 +57,7 @@ Sync your financial data across multiple devices using cloud synchronization. En
 
 Protect your financial information with advanced security features, including password protection and data encryption.
 
-### Recurring Transactions 
+### Recurring Transactions
 
 Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch)
 
@@ -92,4 +92,4 @@ Money Manager Ex - Android is an open-source project, and we welcome contributio
 
 ## License
 
-Money Manager Ex - Android is licensed under the GNU General Public License version 2.0. For more information, please refer to the LICENSE file in the root of the project repository.
+Money Manager Ex - Android is licensed under the GNU General Public License version 3.0. For more information, please refer to the [LICENSE](../../License) file in the root of the project repository.
