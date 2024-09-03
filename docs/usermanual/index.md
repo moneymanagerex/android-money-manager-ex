@@ -59,14 +59,32 @@ Protect your financial information with advanced security features, including pa
 
 ### Recurring Transactions
 
-Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch)
+Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch).
+> [!IMPORTANT]
+> Autopost require to be activate in setting --> beavhiour --> Execution Schedule Transaction Overdue
+
 
 ### Nested Category
 
 > [!IMPORTANT]
 > Need to be activate in setting --> beavhiour --> Use nested category
 
-From August 2024, nested category (means third level or more in category management) is available. since is beta release you can enable this feature in Setting->Behaviour->Enable Nested Category
+Money Manager Ex on Desktop can manage nested subcategory.
+From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
+This is a beta feature: you can enable this feature in Setting->Behaviour->Enable Nested Category
+
+#### Enable new Nested Category Management
+Nested Category need to be enabled in setting
+![image](https://github.com/user-attachments/assets/6f3e8719-426c-45c5-9014-07153b03a385)
+
+#### Avilability
+Nested category is used in:
+* Category list
+* Transaction edit / insert
+* Recurring Transaction edit / insert
+* Transaction list
+* Reporting
+
 
 ## How to Use
 
