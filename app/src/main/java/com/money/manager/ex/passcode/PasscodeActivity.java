@@ -21,7 +21,6 @@ import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,11 +148,9 @@ public class PasscodeActivity extends AppCompatActivity {
 
 		//Handle fingerprint
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-		}
+        fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-		if (!fingerprintManager.isHardwareDetected()) {
+        if (!fingerprintManager.isHardwareDetected()) {
             findViewById(R.id.fpImageView)
                     .setVisibility(View.GONE);
             findViewById(R.id.fingerprintInfo)
@@ -243,24 +240,20 @@ public class PasscodeActivity extends AppCompatActivity {
 		try {
 
 			keyStore = KeyStore.getInstance("AndroidKeyStore");
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-			}
+            keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
 
-			keyStore.load(null);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				keyGenerator.init(new
-						KeyGenParameterSpec.Builder(KEY_NAME,
-						KeyProperties.PURPOSE_ENCRYPT |
-								KeyProperties.PURPOSE_DECRYPT)
-						.setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-						.setUserAuthenticationRequired(true)
-						.setEncryptionPaddings(
-								KeyProperties.ENCRYPTION_PADDING_PKCS7)
-						.build());
-			}
+            keyStore.load(null);
+            keyGenerator.init(new
+                    KeyGenParameterSpec.Builder(KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT |
+                            KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setUserAuthenticationRequired(true)
+                    .setEncryptionPaddings(
+                            KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                    .build());
 
-			keyGenerator.generateKey();
+            keyGenerator.generateKey();
 
 		} catch (KeyStoreException
 				| NoSuchAlgorithmException
@@ -276,13 +269,11 @@ public class PasscodeActivity extends AppCompatActivity {
 
 	public boolean initCipher() {
 		try {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				cipher = Cipher.getInstance(
-						KeyProperties.KEY_ALGORITHM_AES + "/"
-								+ KeyProperties.BLOCK_MODE_CBC + "/"
-								+ KeyProperties.ENCRYPTION_PADDING_PKCS7);
-			}
-		} catch (NoSuchAlgorithmException |
+            cipher = Cipher.getInstance(
+                    KeyProperties.KEY_ALGORITHM_AES + "/"
+                            + KeyProperties.BLOCK_MODE_CBC + "/"
+                            + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+        } catch (NoSuchAlgorithmException |
 				NoSuchPaddingException e) {
 			throw new RuntimeException("Failed to get Cipher", e);
 		}
