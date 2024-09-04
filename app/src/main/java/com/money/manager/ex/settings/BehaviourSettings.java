@@ -46,6 +46,9 @@ public class BehaviourSettings
     public boolean getExecutionScheduledTransaction() {
         return get(R.string.pref_scheduled_transaction_execution, false);
     }
+    public void setExecutionScheduledTransaction(boolean status) {
+        set(R.string.pref_scheduled_transaction_execution, status);
+    }
 
     public boolean getUseNestedCategory() {
         return get(R.string.pref_use_nested_category, false);

@@ -28,6 +28,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -56,6 +58,34 @@ public class BehaviourSettingsFragment
 
         initializeNotificationTime();
         initializeSmsAutomation();
+
+        PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final BehaviourSettings settings = new AppSettings(getActivity()).getBehaviourSettings();
+        final SwitchPreference showNotificationSwitch = findPreference(getString(R.string.pref_repeating_transaction_notifications));
+        final SwitchPreference autoExecTransactionSwitch = findPreference(getString(R.string.pref_scheduled_transaction_execution));
+        if (showNotificationSwitch != null && autoExecTransactionSwitch != null) {
+            autoExecTransactionSwitch.setEnabled(showNotificationSwitch.isChecked());
+
+            showNotificationSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                autoExecTransactionSwitch.setEnabled((Boolean) newValue);
+                if (!autoExecTransactionSwitch.isEnabled()) {
+                    autoExecTransactionSwitch.setChecked(false);
+                    settings.setExecutionScheduledTransaction(false);
+                }
+                return true;
+            });
+
+//            // set initial value
+//            boolean autoExecTransaction = settings.getExecutionScheduledTransaction();
+//            autoExecTransactionSwitch.setChecked(autoExecTransaction);
+
+//            autoExecTransactionSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+//                settings.setExecutionScheduledTransaction((Boolean) newValue);
+//                MainActivity.setRestartActivity(true);
+//                return true;
+//            });
+        }
+
     }
 
     @Override
