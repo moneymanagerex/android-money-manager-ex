@@ -75,15 +75,6 @@ public class BehaviourSettingsFragment
                 return true;
             });
 
-//            // set initial value
-//            boolean autoExecTransaction = settings.getExecutionScheduledTransaction();
-//            autoExecTransactionSwitch.setChecked(autoExecTransaction);
-
-//            autoExecTransactionSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
-//                settings.setExecutionScheduledTransaction((Boolean) newValue);
-//                MainActivity.setRestartActivity(true);
-//                return true;
-//            });
         }
 
     }
