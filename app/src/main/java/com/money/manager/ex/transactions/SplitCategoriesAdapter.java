@@ -18,7 +18,6 @@
 package com.money.manager.ex.transactions;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.Editable;
 // not used
 // import android.text.TextUtils;
@@ -136,13 +135,8 @@ public class SplitCategoriesAdapter
         int green;
         int red;
         // 15
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            green = getContext().getColor(R.color.material_green_700);
-            red = getContext().getColor(R.color.material_red_700);
-        } else {
-            green = getContext().getResources().getColor(R.color.material_green_700);
-            red = getContext().getResources().getColor(R.color.material_red_700);
-        }
+        green = getContext().getColor(R.color.material_green_700);
+        red = getContext().getColor(R.color.material_red_700);
 
         if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
             // withdrawal

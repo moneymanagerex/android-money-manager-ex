@@ -35,7 +35,7 @@ android {
 
         // minSdkVersion rootProject.ext.minSdkVersion
         // targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 22 // Android 5.1
+        minSdkVersion 23 // Android 6.0
         targetSdk rootProject.ext.targetSdk
 
         multiDexEnabled true
