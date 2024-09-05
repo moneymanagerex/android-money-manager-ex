@@ -165,4 +165,8 @@ public class InfoService
 
         return result;
     }
+
+    public void delInfoValue(String key) {
+        repository.delete(Info.INFONAME + "=?", key);
+    }
 }
