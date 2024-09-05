@@ -53,7 +53,7 @@ public class PreferenceConstants {
     // others preference setting don't display
 
     // check scheduled transaction
-    public static final Integer PREF_REPEATING_TRANSACTION_PROCESS = R.string.pref_repeating_transaction_process;
+    public static final Integer PREF_REPEATING_TRANSACTION_PROCESS = R.string.pref_repeating_transaction_notifications;
     public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
 
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;
