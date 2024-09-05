@@ -391,8 +391,8 @@
   <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx per Android con una donazione! \n\nGrazie mille dal team di sviluppo!</string>
   <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
-  <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
-  <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
+  <string name="title_repeating_transaction_process">"Processa Transazione Pianificata scaduta "</string>
+  <string name="summary_repeating_transaction_process">Processa le transazioni scadute (Inserimento, Notifica, Manuale)</string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>

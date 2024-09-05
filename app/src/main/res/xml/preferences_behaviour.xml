@@ -28,15 +28,8 @@
         android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_repeating_transaction_notifications"
-        android:summary="@string/summary_notifications_repeating_transaction"
-        android:title="@string/title_notifications_repeating_transaction" />
-
-    <SwitchPreference
-        android:icon="@null"
-        android:defaultValue="false"
-        android:key="@string/pref_scheduled_transaction_execution"
-        android:summary="@string/summary_execution_scheduled_transaction"
-        android:title="@string/title_execution_scheduled_transaction" />
+        android:summary="@string/summary_repeating_transaction_process"
+        android:title="@string/title_repeating_transaction_process" />
 
     <Preference
         android:icon="@null"

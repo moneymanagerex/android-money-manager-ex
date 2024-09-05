@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import androidx.core.app.NotificationCompat;
-import android.text.Html;
+
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
@@ -41,28 +41,28 @@ import com.money.manager.ex.utils.NotificationUtils;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
-public class RecurringTransactionNotifications {
+public class RecurringTransactionProcess {
 
     // Notification channel definition will be move into NotificationUtils to centralize logic
     // public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
     private static final int ID_NOTIFICATION = 0x000A;
 
-    public RecurringTransactionNotifications(Context context) {
+    public RecurringTransactionProcess(Context context) {
         super();
         mContext = context.getApplicationContext();
     }
 
     private final Context mContext;
 
-    public void notifyRepeatingTransaction() {
+    public void processRepeatingTransaction() {
         try {
-            notifyRepeatingTransaction_Internal();
+            processRepeatingTransaction_Internal();
         } catch (Exception ex) {
             Timber.e(ex, "showing notification about recurring transactions");
         }
     }
 
-    private void notifyRepeatingTransaction_Internal() {
+    private void processRepeatingTransaction_Internal() {
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
 
         /*
@@ -86,13 +86,16 @@ public class RecurringTransactionNotifications {
 
     private void showNotification(SyncNotificationModel model) {
         AppSettings settings = new AppSettings(this.getContext());
-        boolean autoExecution = settings.getBehaviourSettings().getExecutionScheduledTransaction();
 
         for ( SyncNotificationModel.SyncNotificationModelSingle schedTrx: model.notifications ) {
 
-//            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            // if mode is manual, skip notification in according with transaction setting
+            if (schedTrx.mode.equals("M")) {
+                continue;
+            }
 
-            if (schedTrx.mode.equals("A") && autoExecution) {
+            // if auto enter transaction (and show info notification)
+            if (schedTrx.mode.equals("A")) {
                 schedTrx.inboxLine = schedTrx.inboxLine.concat(" (AutoExecuted)");
                 RecurringTransactionService service = new RecurringTransactionService(schedTrx.trxId, this.getContext());
                 AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository( this.getContext());
@@ -146,7 +149,7 @@ public class RecurringTransactionNotifications {
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(schedTrx.inboxLine))
                         .setColor(mContext.getResources().getColor(R.color.md_primary));
 
-                if (!(schedTrx.mode.equals("A") && autoExecution)) {
+                if (!(schedTrx.mode.equals("A"))) {
                     builder
                             .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
                             .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending);
