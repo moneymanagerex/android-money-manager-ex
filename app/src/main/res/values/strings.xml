@@ -436,10 +436,8 @@
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
-    <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-    <string name="title_execution_scheduled_transaction">Execution Scheduled Transaction overdue </string>
-    <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-    <string name="summary_execution_scheduled_transaction">Auto execution for scheduled transaction overdue</string>
+    <string name="title_repeating_transaction_process">Process Scheduled Transaction</string>
+    <string name="summary_repeating_transaction_process">Process scheduled transaction overdue (Post, Prompt, Manual)</string>
 
     <string name="title_use_nested_category">(BETA) Use new nested category model</string>
     <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model (Beta, use at own risk)</string>

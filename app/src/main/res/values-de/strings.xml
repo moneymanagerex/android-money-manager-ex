@@ -408,8 +408,6 @@
   <string name="donate_in_app_already_donate">Sie haben schon die Entwicklung vonYou already MoneyManagerEx für Android mit einer Spende unterstützt!\n\nDanke das Entwicklerteam!</string>
   <string name="donate_in_app_retrieving_status">Rufe den Status Ihrer Spende von Google Play ab. Bitte warten&#8230;</string>
   <string name="donate_in_app_error">Der in-app Kauf kann nicht verwendet werden. Überprüfen Sie ob die neuste Version von Play Store installiert ist.</string>
-  <string name="title_notifications_repeating_transaction">Benachrichtigung: geplante Buchung überfällig </string>
-  <string name="summary_notifications_repeating_transaction">Benachrichtigung für überfällige geplante Buchungen anzeigen</string>
   <string name="tools">Werkzeuge</string>
   <string name="entities">Extras</string>
   <string name="loading">Wird geladen&#8230;</string>

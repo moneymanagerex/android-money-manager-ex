@@ -42,8 +42,8 @@ public class ScheduledTransactionWorker
 	@NonNull
 	@Override
 	public Result doWork() {
-		RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(getApplicationContext());
-		notifications.notifyRepeatingTransaction();
+		RecurringTransactionProcess notifications = new RecurringTransactionProcess(getApplicationContext());
+		notifications.processRepeatingTransaction();
 		return Result.success();
 	}
 

@@ -39,15 +39,8 @@ public class BehaviourSettings
         return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
-    public boolean getNotificationRecurringTransaction() {
-        return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS, true);
-    }
-
-    public boolean getExecutionScheduledTransaction() {
-        return get(R.string.pref_scheduled_transaction_execution, false);
-    }
-    public void setExecutionScheduledTransaction(boolean status) {
-        set(R.string.pref_scheduled_transaction_execution, status);
+    public boolean getProcessRecurringTransaction() {
+        return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_PROCESS, true);
     }
 
     public boolean getUseNestedCategory() {
