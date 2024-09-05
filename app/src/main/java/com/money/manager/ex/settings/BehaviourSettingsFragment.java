@@ -19,7 +19,6 @@ package com.money.manager.ex.settings;
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.Toast;
@@ -143,32 +142,29 @@ public class BehaviourSettingsFragment
 
         Preference.OnPreferenceClickListener listener = preference1 -> {
 
-            if (Build.VERSION.SDK_INT >= 23)
-            {
-                //Check the permission exists, if not request the permission from the user
-                int result = ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.RECEIVE_SMS);
+            //Check the permission exists, if not request the permission from the user
+            int result = ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.RECEIVE_SMS);
 
-                if (settings.getBankSmsTrans())
+            if (settings.getBankSmsTrans())
+            {
+                if (result == PackageManager.PERMISSION_GRANTED)
                 {
-                    if (result == PackageManager.PERMISSION_GRANTED)
-                    {
-                        Toast.makeText(getActivity(), R.string.granted_receive_sms_access, Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        // request for the permission
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECEIVE_SMS}, 1);
-                    }
+                    Toast.makeText(getActivity(), R.string.granted_receive_sms_access, Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-                    // remove the permissions
-                    Toast.makeText(getActivity(), R.string.revoke_receive_sms_access, Toast.LENGTH_LONG).show();
-                    settings.setBankSmsTrans(false);
-                    settings.setSmsTransStatusNotification(false);
-
+                    // request for the permission
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECEIVE_SMS}, 1);
                 }
+            }
+            else
+            {
+                // remove the permissions
+                Toast.makeText(getActivity(), R.string.revoke_receive_sms_access, Toast.LENGTH_LONG).show();
+                settings.setBankSmsTrans(false);
+                settings.setSmsTransStatusNotification(false);
+
             }
 
             return true;
