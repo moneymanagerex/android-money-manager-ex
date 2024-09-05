@@ -92,27 +92,23 @@ public class LookAndFeelSettings
     }
 
     public boolean getViewOpenAccounts() {
-//        return get(R.string.pref_account_open_visible, true);
-        InfoService infoService = new InfoService(getContext());
-        String value = infoService.getInfoValue(InfoKeys.SHOW_OPEN_ACCOUNTS);
-        return Boolean.parseBoolean(value);
+        String key = getSettingsKey(R.string.pref_account_open_visible);
+        return getBooleanSetting(key, true);
     }
 
     public void setViewOpenAccounts(Boolean value) {
-        InfoService infoService = new InfoService(getContext());
-        infoService.setInfoValue(InfoKeys.SHOW_OPEN_ACCOUNTS, value.toString());
+        String key = getSettingsKey(R.string.pref_account_open_visible);
+        set(key, value);
     }
 
     public boolean getViewFavouriteAccounts() {
-//        return get(R.string.pref_account_fav_visible, true);
-        InfoService infoService = new InfoService(getContext());
-        String value = infoService.getInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS);
-        return Boolean.parseBoolean(value);
+        String key = getSettingsKey(R.string.pref_account_fav_visible);
+        return getBooleanSetting(key, false);
     }
 
     public void setViewFavouriteAccounts(Boolean value) {
-        InfoService infoService = new InfoService(getContext());
-        infoService.setInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS, value.toString());
+        String key = getSettingsKey(R.string.pref_account_fav_visible);
+        set(key, value);
     }
 
     public boolean getSortTransactionsByType() {
