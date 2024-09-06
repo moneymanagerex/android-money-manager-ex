@@ -92,8 +92,6 @@ import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.BehaviourSettings;
-import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.SyncPreferences;
@@ -185,8 +183,6 @@ public class MainActivity
         Amplitude amplitude = MmexApplication.getAmplitude();
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
-
-        migratePreference();
 
         // Reset the request for restart. If we are in onCreate, we are restarting already.
         setRestartActivity(false);
@@ -1451,29 +1447,4 @@ public class MainActivity
             }
         }
     }
-
-    private void migratePreference()  {
-        /**
-         * moving DB preference into sharedpreferences
-         * old key are:
-         *     "android:show_open_accounts" ==>
-         *     "android:show_fav_accounts" ==>
-         */
-        InfoService service = new InfoService(this);
-        LookAndFeelSettings settings = new AppSettings(this).getLookAndFeelSettings();
-        String oldShowOpenAccounts = service.getInfoValue("android:show_open_accounts");
-        if ( oldShowOpenAccounts != null ) {
-            settings.setViewOpenAccounts(Boolean.parseBoolean(oldShowOpenAccounts));
-            service.delInfoValue("android:show_open_accounts");
-        }
-
-        String oldShowFavAccounts = service.getInfoValue("android:show_fav_accounts");
-        if ( oldShowFavAccounts != null ) {
-            settings.setViewOpenAccounts(Boolean.parseBoolean(oldShowFavAccounts));
-            service.delInfoValue("android:show_fav_accounts");
-        }
-
-
-    }
-
 }
