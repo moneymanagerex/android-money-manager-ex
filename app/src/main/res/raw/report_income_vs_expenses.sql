@@ -13,7 +13,7 @@ FROM (
     ) SUB2
 GROUP BY SUB2.Year, SUB2.Month
 
-UNION
+UNION ALL
 -- 	 The total for the year
 SELECT SUB2.Year, 99 AS Month, SUM(SUB2.i) AS Income, SUM(SUB2.e) AS Expenses, SUM(SUB2.t) AS Transfers
 FROM (

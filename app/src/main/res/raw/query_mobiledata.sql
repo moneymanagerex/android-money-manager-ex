@@ -18,7 +18,7 @@ SELECT     TX.TransID AS ID,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
-    ROUND( ( CASE TX.TRANSCODE WHEN 'Withdrawal' THEN -1 ELSE 1 END ) *
+    ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
         ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 ) AS Amount,
     FROMACC.CurrencyID AS CurrencyID,
     FROMACC.AccountName AS AccountName,
