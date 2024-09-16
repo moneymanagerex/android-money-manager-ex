@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Process;
@@ -37,7 +38,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
@@ -69,6 +72,8 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
+import com.money.manager.ex.settings.PerDatabaseFragment;
+import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
@@ -88,6 +93,8 @@ import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+import android.content.SharedPreferences;
+
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -698,25 +705,64 @@ public class EditTransactionCommonFunctions {
     public void initAttachmentControls() {
         List<String> attachmentList = new ArrayList<>();
 
-        File file = new File(mDatabases.get().getCurrent().localPath);
-        String attachmentsFolder = String.format("MMEX_%s_Attachments", file.getName().substring(0, file.getName().lastIndexOf('.')));
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String baseUriString = preferences.getString("attachment_folder_uri", null);
 
-        String remotePath = mDatabases.get().getCurrent().remotePath;
-        String baseUri = remotePath.substring(0, remotePath.lastIndexOf("%2F") + 3);
-        for (Attachment att : getAttachments()) {
-            String uri = baseUri +  attachmentsFolder + "%2F" + att.getRefType() + "%2F" + att.getFilename();
-
-            if (getContext().checkUriPermission(Uri.parse(uri), Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
-                getContext().getContentResolver().takePersistableUriPermission(Uri.parse(uri), Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } else {
-                // TODO
-            }
-            attachmentList.add(uri);
+        if (baseUriString == null) {
+            // Automatically redirect the user to the settings page
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, PerDatabaseFragment.class.getSimpleName());
+            getActivity().startActivity(intent);
+            return; // Exit early if base URI is not set
         }
 
-        viewHolder.textViewAttachments.setVisibility(attachmentList.isEmpty() ? View.GONE: View.VISIBLE);
-        viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
-        viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        // Parse baseUri from stored preferences
+        Uri baseUri = Uri.parse(baseUriString);
+        DocumentFile baseFolder = DocumentFile.fromTreeUri(getContext(), baseUri);
+
+        if (baseFolder == null || !baseFolder.exists()) {
+            Timber.d("Base folder not found or invalid");
+            return; // Exit if the base folder is invalid or doesn't exist
+        }
+
+        // Access the 'Transaction' subfolder within the base folder
+        DocumentFile transactionFolder = baseFolder.findFile("Transaction");
+        if (transactionFolder == null || !transactionFolder.exists()) {
+            Timber.d("Transaction folder not found");
+            return; // Exit if the transaction folder is missing
+        }
+
+        // Loop through the list of attachments and check for their existence
+        for (Attachment att : getAttachments()) {
+            DocumentFile attFile = transactionFolder.findFile(att.getFilename());
+
+            if (attFile != null && attFile.exists()) {
+                Uri fileUri = attFile.getUri();
+
+                // Check if we have the necessary read permission for the file
+                if (getContext().checkUriPermission(fileUri, Binder.getCallingPid(), Binder.getCallingUid(),
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+                    // Add the full URI to the list
+                    attachmentList.add(fileUri.toString());
+                    Timber.d("File found and added to list: %s", fileUri.toString());
+                } else {
+                    // Handle missing permission (log, notify, or request permission)
+                    Timber.d("No read permission for file: %s", fileUri.toString());
+                }
+            } else {
+                // Handle the case where the file is not found
+                Timber.d("File not found: %s", att.getFilename());
+            }
+        }
+
+        // Update UI: show/hide attachments section based on the list size
+        if (attachmentList.isEmpty()) {
+            viewHolder.textViewAttachments.setVisibility(View.GONE);
+        } else {
+            viewHolder.textViewAttachments.setVisibility(View.VISIBLE);
+            viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
+            viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
     }
 
     public void initTransactionTypeSelector() {

@@ -20,6 +20,8 @@ package com.money.manager.ex.settings;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -27,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.common.primitives.Ints;
 import com.money.manager.ex.Constants;
@@ -54,6 +57,7 @@ public class PerDatabaseFragment
     extends PreferenceFragmentCompat {
 
     public static final int REQUEST_PICK_CURRENCY = 1;
+    public static final int REQUEST_PICK_ATTACHMENT_FOLDER = 2;
 
     public PerDatabaseFragment() {
         // Required empty public constructor
@@ -89,13 +93,33 @@ public class PerDatabaseFragment
                 showCurrencyChangeNotification();
             }
         }
+
+        if (requestCode == REQUEST_PICK_ATTACHMENT_FOLDER && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            Uri treeUri = data.getData();
+            if (treeUri != null) {
+                // Persist permissions for the selected folder
+                getContext().getContentResolver().takePersistableUriPermission(treeUri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                // Save the folder URI to SharedPreferences
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("attachment_folder_uri", treeUri.toString());
+                editor.apply();
+
+                // Update the summary with the selected folder
+                Preference pAttachmentFolder = findPreference(getString(R.string.pref_attachment_folder));
+                if (pAttachmentFolder != null) {
+                    pAttachmentFolder.setSummary(treeUri.toString());
+                }
+            }
+        }
     }
 
     private void initializeControls() {
         final InfoService infoService = new InfoService(getActivity());
 
         // Username
-
         final Preference pUserName = findPreference(getString(R.string.pref_user_name));
         if (pUserName != null) {
             pUserName.setSummary(MmexApplication.getApp().getUserName());
@@ -107,7 +131,6 @@ public class PerDatabaseFragment
         }
 
         // Date format
-
         final ListPreference lstDateFormat = findPreference(getString(R.string.pref_date_format));
         if (lstDateFormat != null) {
             //set summary
@@ -126,11 +149,8 @@ public class PerDatabaseFragment
         }
 
         // Base Currency
-
         initBaseCurrency();
-
         // financial year, day and month
-
         final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_START_DATE));
         if (pFinancialDay != null) {
             pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
@@ -203,6 +223,9 @@ public class PerDatabaseFragment
         }
 
         initDefaultAccount();
+
+        // Attachment Folder setup
+        initAttachmentFolder();
     }
 
     /**
@@ -239,6 +262,31 @@ public class PerDatabaseFragment
         return null;
     }
 
+    private void initAttachmentFolder() {
+        final Preference pAttachmentFolder = findPreference(getString(R.string.pref_attachment_folder));
+        if (pAttachmentFolder != null) {
+            pAttachmentFolder.setOnPreferenceClickListener(preference -> {
+                // Launch the folder picker with SAF (Storage Access Framework)
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | // Include write permission
+                        Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                startActivityForResult(intent, REQUEST_PICK_ATTACHMENT_FOLDER);
+                return true;
+            });
+
+            // Display the currently selected folder (if any)
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String folderUri = preferences.getString("attachment_folder_uri", null);
+            if (folderUri != null) {
+                pAttachmentFolder.setSummary("Selected Folder: " + folderUri);
+            } else {
+                pAttachmentFolder.setSummary("No folder selected");
+            }
+        } else {
+            Timber.d("pref_attachment_folder is empty");
+        }
+    }
     private void initDefaultAccount() {
         ListPreference preference = findPreference(getString(R.string.pref_default_account));
         if (preference == null) return;
