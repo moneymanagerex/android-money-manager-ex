@@ -167,6 +167,7 @@ dependencies {
             , 'com.roomorama:caldroid:3.0.1'
             , 'androidx.work:work-runtime:2.8.1'
             , 'androidx.fragment:fragment:1.5.6'
+            , 'androidx.biometric:biometric:1.1.0' // or the latest version
             , 'com.caverock:androidsvg-aar:1.4'
 
     )

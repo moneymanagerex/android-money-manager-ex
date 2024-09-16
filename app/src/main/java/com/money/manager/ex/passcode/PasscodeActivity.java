@@ -21,9 +21,12 @@ import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -69,8 +72,6 @@ public class PasscodeActivity extends AppCompatActivity {
 	private static final String KEY_NAME = "yourKey";
 	private Cipher cipher;
 	private KeyStore keyStore;
-	private KeyGenerator keyGenerator;
-    private FingerprintManager fingerprintManager;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -146,42 +147,12 @@ public class PasscodeActivity extends AppCompatActivity {
 		buttonKeyBack.setImageDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_backspace)
             .color(ui.getPrimaryTextColor()));
 
-		//Handle fingerprint
-        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-
-        if (!fingerprintManager.isHardwareDetected()) {
-            findViewById(R.id.fpImageView)
-                    .setVisibility(View.GONE);
-            findViewById(R.id.fingerprintInfo)
-                    .setVisibility(View.GONE); //.setText(R.string.fingerprint_no_hardware);
-}
-        else {
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
-            }
-
-            if (!fingerprintManager.hasEnrolledFingerprints()) {
-                Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
-            }
-
-            if (!keyguardManager.isKeyguardSecure()) {
-                Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
-            }
-            else {
-                try {
-                    generateKey();
-                } catch (FingerprintException e) {
-                    e.printStackTrace();
-                }
-                if (initCipher()) {
-                    FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
-                    FingerprintHandler helper = new FingerprintHandler(this);
-                    helper.startAuth(fingerprintManager, cryptoObject);
-                }
-            }
-        }
+		// Handle fingerprint authentication
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			// setupBiometricPrompt();
+		} else {
+			setupLegacyFingerprintAuth();
+		}
     }
 
 	@Override
@@ -235,12 +206,46 @@ public class PasscodeActivity extends AppCompatActivity {
 		}
 	}
 
+	private void setupLegacyFingerprintAuth() {
+		// Your existing fingerprint authentication setup code
+		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+
+		if (!fingerprintManager.isHardwareDetected()) {
+			findViewById(R.id.fpImageView).setVisibility(View.GONE);
+			findViewById(R.id.fingerprintInfo).setVisibility(View.GONE);
+		} else {
+			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+				Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
+			}
+
+			if (!fingerprintManager.hasEnrolledFingerprints()) {
+				Toast.makeText(this, R.string.fingerprint_has_enrolled, Toast.LENGTH_LONG).show();
+			}
+
+			if (!keyguardManager.isKeyguardSecure()) {
+				Toast.makeText(this, R.string.fingerprint_is_keyguard_secure, Toast.LENGTH_LONG).show();
+			} else {
+				try {
+					generateKey();
+				} catch (FingerprintException e) {
+					e.printStackTrace();
+				}
+				if (initCipher()) {
+					FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+					FingerprintHandler helper = new FingerprintHandler(this);
+					helper.startAuth(fingerprintManager, cryptoObject);
+				}
+			}
+		}
+	}
+
 	// Fingerprint methods
 	private void generateKey() throws FingerprintException {
 		try {
 
 			keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
 
             keyStore.load(null);
             keyGenerator.init(new
