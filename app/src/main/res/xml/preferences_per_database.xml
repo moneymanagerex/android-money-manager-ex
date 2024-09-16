@@ -51,4 +51,9 @@
         android:key="@string/pref_financial_year_start_month"
         android:title="@string/financial_year_start_month" />
 
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_attachment_folder"
+        android:title="@string/attachment_folder"
+        android:summary="@string/attachment_folder_summary" />
 </PreferenceScreen>
