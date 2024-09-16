@@ -69,8 +69,6 @@ public class PasscodeActivity extends AppCompatActivity {
 	private static final String KEY_NAME = "yourKey";
 	private Cipher cipher;
 	private KeyStore keyStore;
-	private KeyGenerator keyGenerator;
-    private FingerprintManager fingerprintManager;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +146,7 @@ public class PasscodeActivity extends AppCompatActivity {
 
 		//Handle fingerprint
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
         if (!fingerprintManager.isHardwareDetected()) {
             findViewById(R.id.fpImageView)
@@ -240,7 +238,7 @@ public class PasscodeActivity extends AppCompatActivity {
 		try {
 
 			keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
 
             keyStore.load(null);
             keyGenerator.init(new
