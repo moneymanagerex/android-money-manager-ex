@@ -646,7 +646,7 @@
     <string name="all_accounts">All Accounts</string>
     <string name="records">records</string>
     <!-- db password entry -->
-    <string name="enter_password">Enter password</string>
+    <string name="enter_password">Enter password (optional)\n Only required for .emb file</string>
 
     <string name="success">Operation successful</string>
     <string name="overview">Overview</string>
