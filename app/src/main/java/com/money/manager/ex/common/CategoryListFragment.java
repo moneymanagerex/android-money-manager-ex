@@ -631,7 +631,7 @@ public class CategoryListFragment
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(categoryId, name, parentID);
+                                int updateResult = service.update(subCategoryId, name, parentID);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
