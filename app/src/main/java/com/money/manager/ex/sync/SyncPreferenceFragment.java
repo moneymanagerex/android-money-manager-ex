@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -55,7 +54,6 @@ public class SyncPreferenceFragment
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
-    private SyncPreferencesViewHolder viewHolder;
     private SyncManager mSyncManager;
 
     @Override
@@ -115,76 +113,46 @@ public class SyncPreferenceFragment
     }
 
     private void initializePreferences() {
-        viewHolder = new SyncPreferencesViewHolder(this);
+        SyncPreferencesViewHolder viewHolder = new SyncPreferencesViewHolder(this);
 
         viewHolder.syncInterval.setSummary(viewHolder.syncInterval.getEntries()[viewHolder.syncInterval.findIndexOfValue(viewHolder.syncInterval.getValue())]);
-        viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                // reset timer.
-                SyncManager sync = getSyncManager();
-                int interval = Integer.parseInt(o.toString());
-                sync.setSyncInterval(interval);
-                Timber.d("sync interval set to %d", interval);
+        viewHolder.syncInterval.setOnPreferenceChangeListener((preference, o) -> {
+            // reset timer.
+            SyncManager sync = getSyncManager();
+            int interval = Integer.parseInt(o.toString());
+            sync.setSyncInterval(interval);
+            Timber.d("sync interval set to %d", interval);
 
-                ListPreference listPreference = (ListPreference) preference;
-                int prefIndex = listPreference.findIndexOfValue(o.toString());
-                preference.setSummary(listPreference.getEntries()[prefIndex]);
+            ListPreference listPreference = (ListPreference) preference;
+            int prefIndex = listPreference.findIndexOfValue(o.toString());
+            preference.setSummary(listPreference.getEntries()[prefIndex]);
 
-                sync.stopSyncServiceAlarm();
-                if (interval > 0) {
-                    // don't start sync service if the interval is set to 0.
-                    sync.startSyncServiceHeartbeat();
-                }
-                return true;
+            sync.stopSyncServiceAlarm();
+            if (interval > 0) {
+                // don't start sync service if the interval is set to 0.
+                sync.startSyncServiceHeartbeat();
             }
+            return true;
         });
 
         // Download.
 
-        viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                forceDownload();
-                return true;
-            }
+        viewHolder.download.setOnPreferenceClickListener(preference -> {
+            forceDownload();
+            return true;
         });
 
         // Upload.
 
-        viewHolder.upload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                forceUpload();
-                return false;
-            }
+        viewHolder.upload.setOnPreferenceClickListener(preference -> {
+            forceUpload();
+            return false;
         });
 
         // reset preferences
-        viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final SyncManager sync = getSyncManager();
-//                sync.logout()
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new SingleSubscriber<Void>() {
-//                        @Override
-//                        public void onSuccess(Void value) {
-//                            sync.resetPreferences();
-//                            sync.stopSyncServiceAlarm();
-//
-//                            new Core(getActivity()).alert(R.string.preferences_reset);
-//
-//                            getActivity().recreate();
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable error) {
-//                            Timber.e(error, "logging out the cloud provider");                        }
-//                    });
-                return false;
-            }
+        viewHolder.resetPreferences.setOnPreferenceClickListener(preference -> {
+            // TODO
+            return false;
         });
     }
 

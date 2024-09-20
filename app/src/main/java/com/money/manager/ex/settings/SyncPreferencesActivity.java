@@ -16,43 +16,17 @@
  */
 package com.money.manager.ex.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
-import java.util.Set;
-
-import timber.log.Timber;
-
 public class SyncPreferencesActivity
     extends BaseSettingsFragmentActivity {
-
-    private static final String BROWSABLE = "android.intent.category.BROWSABLE";
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
         setSettingFragment(new SyncPreferenceFragment());
-    }
-
-    /**
-     * Handle authentication redirect from an external browser. Handles Google authentication.
-     * Ref: https://documentation.cloudrail.com/android/android/Usage#external-authentication
-     * @param intent
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Set<String> categories = intent.getCategories();
-
-        if(categories != null && categories.contains(BROWSABLE)) {
-            // Here we pass the response to the SDK which will automatically
-            // complete the authentication process
-            Timber.d("setting OAuth authentication response from Google");
-//            CloudRail.setAuthenticationResponse(intent);
-        }
-
-        super.onNewIntent(intent);
     }
 }
