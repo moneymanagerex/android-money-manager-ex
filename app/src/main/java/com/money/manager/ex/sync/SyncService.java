@@ -54,9 +54,9 @@ import timber.log.Timber;
  * The background service that synchronizes the database file.
  * It is being invoked by the timer.
  * It displays the sync notification and invokes the cloud api.
- *
+ * <p>
  * Changed to JobIntentService as per
- * https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f
+ * <a href="https://android.jlelse.eu/keep-those-background-services-working-when-targeting-android-oreo-sdk-26-cbf6cc2bdb7f">...</a>
  * to make it compatible with Android 8 Oreo.
  */
 public class SyncService
@@ -163,7 +163,7 @@ public class SyncService
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setData(Uri.fromFile(localFile));
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), RequestCodes.SELECT_FILE, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), RequestCodes.SELECT_FILE, intent, PendingIntent.FLAG_IMMUTABLE);
         // notification
         Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationUploadComplete(pendingIntent);
@@ -176,8 +176,7 @@ public class SyncService
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         boolean isLocalModified = storage.isLocalFileChanged(currentDb);
         boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
-        Timber.d("local file has changes: %b", isLocalModified);
-        Timber.d("Remote file has changes: %b", isRemoteModified);
+        Timber.d("local file has changes: %b, Remote file has changes: %b", isLocalModified, isRemoteModified);
         Uri uri = Uri.parse(currentDb.remotePath);
 
         // possible outcomes:

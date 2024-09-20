@@ -309,7 +309,7 @@ public class FileStorageHelper {
             fileOutputStream.close();
             pfd.close();
 
-            Timber.i("Database stored successfully.");
+            Timber.d("Database stored successfully.");
         } catch (FileNotFoundException e) {
             Timber.e(e);
         } catch (IOException e) {

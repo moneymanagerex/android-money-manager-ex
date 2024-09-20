@@ -354,46 +354,6 @@ public class SyncManager {
         return mDatabases.get();
     }
 
-//    /**
-//     * Save the last modified datetime of the remote file into Settings for comparison during
-//     * the synchronization.
-//     * @param file file name
-//     */
-//    void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
-//        MmxDate date = new MmxDate(file.getModifiedAt());
-//
-//        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
-//
-//        DatabaseMetadata currentDb = getDatabases().get(localPath);
-//        String newChangedDate = date.toString(Constants.ISO_8601_FORMAT);
-//
-//        // Do not save if the date has not changed.
-//        if (!TextUtils.isEmpty(currentDb.remoteLastChangedDate) && currentDb.remoteLastChangedDate.equals(newChangedDate)) {
-//            return;
-//        }
-//
-//        // Save.
-//        currentDb.setRemoteLastChangedDate(date);
-//        getDatabases().save();
-//    }
-
-//    /**
-//     * Downloads the file from the storage service.
-//     * @param remoteFile Remote file entry
-//     * @param localFile Local file reference
-//     * @return Indicator whether the download was successful.
-//     */
-//    private void downloadFile(CloudMetaData remoteFile, File localFile) throws IOException {
-//        InputStream inputStream = mStorageClient.download(remoteFile.getPath());
-//        OutputStream outputStream = new FileOutputStream(localFile, false);
-//
-//        //IOUtils.copy(inputStream, outputStream);
-//        ByteStreams.copy(inputStream, outputStream);
-//
-//        inputStream.close();
-//        outputStream.close();
-//    }
-
     private File getExternalStorageDirectoryForSync() {
         // todo check this after refactoring the database utils.
         //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
