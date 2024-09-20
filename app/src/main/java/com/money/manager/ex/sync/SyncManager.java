@@ -97,7 +97,7 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
-        // check if enabled.
+        // check if online
         if (!isActive()) return false;
 
         // should we sync only on wifi?
@@ -179,25 +179,20 @@ public class SyncManager {
     }
 
     /**
-     * Indicates whether synchronization can be performed, meaning all of the criteria must be
-     * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online,
+     * Indicates whether synchronization service can be performed
      * remote file is set.
-     * @return A boolean indicating that sync can be performed.
+     * @return A boolean indicating that sync service can be performed.
      */
     public boolean isActive() {
         // network is online.
         NetworkUtils networkUtils = new NetworkUtils(getContext());
-        if (!networkUtils.isOnline()) return false;
-
-        // wifi preferences
-        if (getPreferences().shouldSyncOnlyOnWifi()) {
-            if (!networkUtils.isOnWiFi()) return false;
+        if (!networkUtils.isOnline()) {
+            Timber.i("Not online.");
+            return false;
         }
 
         // Remote file must be set.
         return !TextUtils.isEmpty(getRemotePath());
-
-        // check if a provider is selected? Default is Dropbox, so no need.
     }
 
     /**
@@ -276,7 +271,7 @@ public class SyncManager {
 //    }
 
     public void triggerSynchronization() {
-        if (!isActive())  return;
+        if (!canSync())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = new DatabaseManager(getContext()).getDatabasePath();

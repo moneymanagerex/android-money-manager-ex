@@ -1164,10 +1164,7 @@ public class MainActivity
 
     private void initializeSync() {
         SyncManager sync = new SyncManager(this);
-        if (!sync.isActive()) return;
-
         SyncPreferences preferences = new SyncPreferences(this);
-
         // Start the sync timer in case it was stopped for whatever reason.
         if (preferences.getSyncInterval() != 0) {
             sync.startSyncServiceHeartbeat();

@@ -81,7 +81,7 @@ public class SyncSchedulerBroadcastReceiver
         MmxDate now = new MmxDate();
         int secondsInMinute = 60;
 
-        Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toString(), minutes);
+        Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toIsoString(), minutes);
 
         // Schedule the alarm for synchronization. Run immediately and then in the given interval.
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
