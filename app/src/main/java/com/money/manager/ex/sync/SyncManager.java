@@ -18,13 +18,15 @@
 package com.money.manager.ex.sync;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Messenger;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,14 +151,19 @@ public class SyncManager {
 
         // Action
 
-        ProgressDialog progressDialog = null;
+        AlertDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
         if ((getContext() instanceof AppCompatActivity)) {
-            //progress dialog shown only when downloading an updated db file.
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-            progressDialog.setIndeterminate(true);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext()); // Replace with 'getContext()' if in fragment
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+
+            // Inflate the custom layout
+            View view = inflater.inflate(R.layout.progress_dialog, null);
+            builder.setView(view);
+            builder.setCancelable(false);  // Disable cancel if needed
+
+            progressDialog = builder.create();
+
             progressDialog.show();
         }
 
@@ -353,46 +360,6 @@ public class SyncManager {
     private RecentDatabasesProvider getDatabases() {
         return mDatabases.get();
     }
-
-//    /**
-//     * Save the last modified datetime of the remote file into Settings for comparison during
-//     * the synchronization.
-//     * @param file file name
-//     */
-//    void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
-//        MmxDate date = new MmxDate(file.getModifiedAt());
-//
-//        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
-//
-//        DatabaseMetadata currentDb = getDatabases().get(localPath);
-//        String newChangedDate = date.toString(Constants.ISO_8601_FORMAT);
-//
-//        // Do not save if the date has not changed.
-//        if (!TextUtils.isEmpty(currentDb.remoteLastChangedDate) && currentDb.remoteLastChangedDate.equals(newChangedDate)) {
-//            return;
-//        }
-//
-//        // Save.
-//        currentDb.setRemoteLastChangedDate(date);
-//        getDatabases().save();
-//    }
-
-//    /**
-//     * Downloads the file from the storage service.
-//     * @param remoteFile Remote file entry
-//     * @param localFile Local file reference
-//     * @return Indicator whether the download was successful.
-//     */
-//    private void downloadFile(CloudMetaData remoteFile, File localFile) throws IOException {
-//        InputStream inputStream = mStorageClient.download(remoteFile.getPath());
-//        OutputStream outputStream = new FileOutputStream(localFile, false);
-//
-//        //IOUtils.copy(inputStream, outputStream);
-//        ByteStreams.copy(inputStream, outputStream);
-//
-//        inputStream.close();
-//        outputStream.close();
-//    }
 
     private File getExternalStorageDirectoryForSync() {
         // todo check this after refactoring the database utils.

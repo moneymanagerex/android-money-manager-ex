@@ -20,9 +20,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.settings.SyncPreferences;
-
 import timber.log.Timber;
 
 /**

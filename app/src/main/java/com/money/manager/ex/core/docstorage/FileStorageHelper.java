@@ -309,7 +309,7 @@ public class FileStorageHelper {
             fileOutputStream.close();
             pfd.close();
 
-            Timber.i("Database stored successfully.");
+            Timber.d("Database stored successfully.");
         } catch (FileNotFoundException e) {
             Timber.e(e);
         } catch (IOException e) {
@@ -421,8 +421,7 @@ public class FileStorageHelper {
                     // got an update. store the latest metadata.
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
                     saveMetadata(metadata);
-                    Timber.i("The remote file updated at " +
-                            remote.lastModified.toIsoString());
+                    Timber.d("The remote file updated at %s", remote.lastModified.toIsoString());
                     // do not poll further.
                 }
             }
