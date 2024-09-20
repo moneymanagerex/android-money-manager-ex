@@ -17,18 +17,10 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:key="@string/pref_sync_enabled"
-        android:title="@string/sync_enabled"
-        android:defaultValue="true" />
-
     <!-- synchronization interval -->
     <ListPreference
         android:icon="@null"
         android:defaultValue="10"
-        android:dependency="@string/pref_sync_enabled"
         android:entries="@array/timeout_synchronize_items"
         android:entryValues="@array/timeout_synchronize_values"
         android:key="@string/pref_sync_interval"
@@ -54,14 +46,12 @@
         android:summary="@string/sync_on_app_start"
         android:key="@string/pref_sync_on_app_start"
         android:defaultValue="true"
-        android:dependency="@string/pref_sync_enabled"
         android:icon="@null" />
 
     <!-- sync only on wi-fi -->
     <SwitchPreferenceCompat
         android:icon="@null"
         android:defaultValue="false"
-        android:dependency="@string/pref_sync_enabled"
         android:key="@string/pref_sync_via_wifi"
         android:title="@string/auto_sync_via_wifi"
         android:summary="@string/auto_sync_via_wifi_summary" />

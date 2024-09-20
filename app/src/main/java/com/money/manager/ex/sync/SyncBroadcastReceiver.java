@@ -34,13 +34,10 @@ public class SyncBroadcastReceiver
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Timber.d("receiving a sync intent");
+        Timber.d("receiving a sync intent %s",intent);
 
         SyncManager sync = new SyncManager(context);
         if (!sync.canSync()) return;
-
-        // check sync interval.
-        if (new SyncPreferences(context).getSyncInterval() == 0) return;
 
         sync.triggerSynchronization();
     }

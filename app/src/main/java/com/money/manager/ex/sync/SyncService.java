@@ -91,7 +91,7 @@ public class SyncService
         String action = intent != null
                 ? intent.getAction()
                 : "null";
-        Timber.d("Running sync service: %s", action);
+        Timber.d("Running sync job: %s", action);
 //        sendStartEvent();
 
         // Check if there is a messenger. Used to send the messages back.

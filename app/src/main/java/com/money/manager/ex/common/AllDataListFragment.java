@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -67,7 +66,6 @@ import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.qif.QifExport;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
@@ -664,10 +662,6 @@ public class AllDataListFragment
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
-        SyncManager sync = new SyncManager(getActivity());
-        // Pause synchronization while bulk processing.
-        sync.disableAutoUpload();
-
         for (int id : transId) {
             // content value for updates
             ContentValues values = new ContentValues();
@@ -684,16 +678,9 @@ public class AllDataListFragment
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
 
-                sync.enableAutoUpload();
-                sync.dataChanged();
-
                 return false;
             }
         }
-
-        // Now notify Dropbox about modifications.
-        sync.enableAutoUpload();
-        sync.dataChanged();
 
         return true;
     }
@@ -713,10 +700,6 @@ public class AllDataListFragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SyncManager sync = new SyncManager(getActivity());
-
-                        // Pause sync notification while bulk processing.
-                        sync.disableAutoUpload();
 
                         for (int transactionId : transactionIds) {
                             // First delete any splits. See if there are any split records.
@@ -734,10 +717,6 @@ public class AllDataListFragment
                                 if (deleteResult != splitCount) {
                                     Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
-                                    // Now notify Dropbox about modifications.
-                                    sync.enableAutoUpload();
-                                    sync.dataChanged();
-
                                     return;
                                 }
                             }
@@ -752,17 +731,9 @@ public class AllDataListFragment
                             if (deleteResult == 0) {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
-                                // Now notify Dropbox about modifications.
-                                sync.enableAutoUpload();
-                                sync.dataChanged();
-
                                 return;
                             }
                         }
-
-                        // Now notify Dropbox about modifications.
-                        sync.enableAutoUpload();
-                        sync.dataChanged();
 
                         // restart loader
                         loadData();
