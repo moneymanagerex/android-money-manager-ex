@@ -41,7 +41,6 @@ import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -137,8 +136,6 @@ public class EditPriceDialog
                     Toast.makeText(getContext(), getContext().getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
                 }
-
-                new SyncManager(getContext()).dataChanged();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

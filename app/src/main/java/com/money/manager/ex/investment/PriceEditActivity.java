@@ -36,7 +36,6 @@ import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -212,7 +211,5 @@ public class PriceEditActivity
             Toast.makeText(this, getString(R.string.error_update_currency_exchange_rate),
                     Toast.LENGTH_SHORT).show();
         }
-
-        new SyncManager(this).dataChanged();
     }
 }

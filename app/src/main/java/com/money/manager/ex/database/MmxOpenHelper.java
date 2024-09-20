@@ -35,7 +35,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import net.sqlcipher.database.SupportFactory;
@@ -124,9 +123,6 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
         // update databases
         updateDatabase(db, oldVersion, newVersion);
-
-        // notify sync about the db update.
-        new SyncManager(getContext()).dataChanged();
     }
 
     public SupportSQLiteDatabase getReadableDatabase() {

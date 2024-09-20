@@ -23,8 +23,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -53,7 +51,6 @@ import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
-import com.money.manager.ex.sync.SyncManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -182,11 +179,6 @@ public class MmxContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
-
-        if (id > 0) {
-            notifyChange(uri);
-        }
-
         // return Uri with the primary key of the inserted record.
         return Uri.parse(parse);
     }
@@ -219,11 +211,6 @@ public class MmxContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
-
-        if (rowsUpdate > 0) {
-            notifyChange(uri);
-        }
-
         // return rows modified
         return rowsUpdate;
     }
@@ -265,8 +252,6 @@ public class MmxContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
-
-        if (rowsDelete > 0) notifyChange(uri);
 
         return rowsDelete;
     }
@@ -483,14 +468,5 @@ public class MmxContentProvider
         }
         // open transaction
         Timber.d(log);
-    }
-
-    private void notifyChange(Uri uri) {
-        if (getContext() == null) return;
-
-        // notify update. todo Do this also after changes via sqlite.
-        getContext().getContentResolver().notifyChange(uri, null);
-        // notify the sync that database has changed.
-        new SyncManager(getContext()).dataChanged();
     }
 }

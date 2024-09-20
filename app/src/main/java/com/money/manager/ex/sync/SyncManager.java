@@ -66,7 +66,6 @@ public class SyncManager {
     @Inject
     public SyncManager(Context context) {
         mContext = context;
-        //mStorageClient = new CloudStorageClient(context);
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
@@ -74,10 +73,7 @@ public class SyncManager {
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     private final Context mContext;
-    //CloudStorageClient mStorageClient;
     private SyncPreferences mPreferences;
-    // Used to temporarily disable auto-upload while performing batch updates.
-    private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
         Timber.d("Aborting scheduled sync");
@@ -118,44 +114,6 @@ public class SyncManager {
 
         return true;
     }
-
-    public void disableAutoUpload() {
-        mAutoUploadDisabled = true;
-    }
-
-    /**
-     * Called whenever the database has changed and should be uploaded.
-     * (Re-)Sets the timer for delayed sync of the database.
-     */
-    public void dataChanged() {
-        // Check if the current database is linked to a cloud service.
-        String remotePath = getRemotePath();
-        if (TextUtils.isEmpty(remotePath)) return;
-
-        // Mark local file as changed.
-        markLocalFileChanged(true);
-
-        // Should we upload automatically?
-        if (mAutoUploadDisabled) return;
-        if (!canSync()) {
-            Timber.i("No network connection. Not synchronizing.");
-            return;
-        }
-
-        // Should we schedule an upload?
-        SyncPreferences preferences = new SyncPreferences(getContext());
-        if (preferences.getUploadImmediately()) {
-        //    scheduleDelayedUpload();
-        }
-    }
-
-    public void enableAutoUpload() {
-        mAutoUploadDisabled = false;
-    }
-
-//    public Single<List<CloudMetaData>> getRemoteFolderContentsSingle(String folder) {
-//        return mStorageClient.getContents(folder);
-//    }
 
     /**
      * Gets last saved datetime of the remote file modification from the preferences.

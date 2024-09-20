@@ -22,9 +22,7 @@ import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.domainmodel.EntityBase;
-import com.money.manager.ex.sync.SyncManager;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import timber.log.Timber;
@@ -49,8 +47,6 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
 
     public int delete(String where, String... whereArgs) {
         int result = database.delete(tableName, where, whereArgs);
-
-        notifySync();
 
         return result;
     }
@@ -115,20 +111,11 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         );
 
         if (updateResult != 0) {
-            notifySync();
-
             result = true;
         } else {
             Timber.w("update failed, %s, values: %s", tableName, entity.contentValues);
         }
 
         return result;
-    }
-
-    /**
-     * Notify sync engine about the database update.
-     */
-    private void notifySync() {
-        new SyncManager(MmexApplication.getApp()).dataChanged();
     }
 }

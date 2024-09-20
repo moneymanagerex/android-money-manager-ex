@@ -61,7 +61,6 @@ import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.InvestmentSettings;
-import com.money.manager.ex.sync.SyncManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -406,9 +405,6 @@ public class WatchlistFragment
             public void run() {
                 // refresh the data.
                 mDataFragment.reloadData();
-
-                // notify about db file change.
-                new SyncManager(getActivity()).dataChanged();
             }
         });
     }
@@ -622,7 +618,6 @@ public class WatchlistFragment
                         int deleted = history.deleteAllPriceHistory();
 
                         if (deleted > 0) {
-                            new SyncManager(getActivity()).dataChanged();
                             Toast.makeText(getActivity(),
                                             getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                                     .show();
