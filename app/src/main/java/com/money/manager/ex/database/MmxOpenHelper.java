@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     /**
      * Database schema version.
      */
-    private static final int databaseVersion = 19;
+    private static final int DATABASE_VERSION = 19;
     private String dbPath;
 
     // Dynamic
@@ -63,7 +63,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
-        super(databaseVersion);
+        super(DATABASE_VERSION);
         this.mContext = context;
         this.dbPath = dbPath;
         this.mPassword = MmexApplication.getApp().getPassword();
@@ -109,7 +109,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     }
 
     public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
-        Timber.d("Upgrading from %1$d  to %2$d", oldVersion, newVersion);
+        Timber.d("Upgrading from version %d to %d", oldVersion, newVersion);
 
         try {
             String currentDbFile = db.getPath();
@@ -125,28 +125,25 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         updateDatabase(db, oldVersion, newVersion);
     }
 
-    public SupportSQLiteDatabase getReadableDatabase() {
-        // Custom logic to get a readable database
+    private SupportSQLiteDatabase getDatabase(boolean writable) {
         SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
                         .callback(this)
                         .build();
-        SupportSQLiteDatabase sqLiteDatabase = factory.create(configuration).getReadableDatabase();
+        SupportSQLiteDatabase sqLiteDatabase = writable
+                ? factory.create(configuration).getWritableDatabase()
+                : factory.create(configuration).getReadableDatabase();
         return sqLiteDatabase;
     }
 
+    public SupportSQLiteDatabase getReadableDatabase() {
+        return getDatabase(false);
+    }
+
     public SupportSQLiteDatabase getWritableDatabase() {
-        // Custom logic to get a writable database
-        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
-        SupportSQLiteOpenHelper.Configuration configuration =
-                SupportSQLiteOpenHelper.Configuration.builder(mContext)
-                        .name(this.dbPath)
-                        .callback(this)
-                        .build();
-        SupportSQLiteDatabase sqLiteDatabase = factory.create(configuration).getWritableDatabase();
-        return sqLiteDatabase;
+        return getDatabase(true);
     }
 
     public void setPassword(String password) {
@@ -167,19 +164,19 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         String[] sqlStatement = sqlRaw.split(";");
 
         // process all statements
-        for (String aSqlStatment : sqlStatement) {
-            if (aSqlStatment.trim().isEmpty())
+        for (String aSqlStatement : sqlStatement) {
+            if (aSqlStatement.trim().isEmpty())
                 continue;
-            Timber.d(aSqlStatment);
+            Timber.d(aSqlStatement);
 
             try {
-                db.execSQL(aSqlStatment);
+                db.execSQL(aSqlStatement);
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
                 if (e instanceof SQLiteException && errorMessage != null && errorMessage.contains("not an error (code 0)")) {
                     Timber.w(errorMessage);
                 } else {
-                    Timber.e(e, "executing raw sql: %s", aSqlStatment);
+                    Timber.e(e, "executing raw sql: %s", aSqlStatement);
                 }
             }
         }

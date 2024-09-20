@@ -300,25 +300,17 @@ public class FileStorageHelper {
         ContentResolver resolver = getContext().getContentResolver();
         Uri remote = Uri.parse(metadata.remotePath);
 
-        ParcelFileDescriptor pfd = null;
-        try {
-            pfd = resolver.openFileDescriptor(remote, "w");
+        try (ParcelFileDescriptor pfd = resolver.openFileDescriptor(remote, "w");
+             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor())) {
 
-            FileOutputStream fileOutputStream =
-                new FileOutputStream(pfd.getFileDescriptor());
-
-            // local file
             File localFile = new File(metadata.localPath);
             Files.copy(localFile, fileOutputStream);
 
-            fileOutputStream.close();
-            pfd.close();
-
             Timber.d("Database stored successfully.");
         } catch (FileNotFoundException e) {
-            Timber.e(e);
+            Timber.e(e, "File not found during upload");
         } catch (IOException e) {
-            Timber.e(e);
+            Timber.e(e, "IO error during upload");
         }
     }
 
