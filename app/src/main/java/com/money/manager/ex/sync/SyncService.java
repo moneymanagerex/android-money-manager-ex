@@ -176,7 +176,7 @@ public class SyncService
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         boolean isLocalModified = storage.isLocalFileChanged(currentDb);
         boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
-        Timber.d("local file has changes: %b, Remote file has changes: %b", isLocalModified, isRemoteModified);
+        Timber.d("Local file has changes: %b, Remote file has changes: %b", isLocalModified, isRemoteModified);
         Uri uri = Uri.parse(currentDb.remotePath);
 
         // possible outcomes:
