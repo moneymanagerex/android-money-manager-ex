@@ -74,10 +74,6 @@ public class SyncPreferences
         return getPreferences().getString(realKey, defaultValue);
     }
 
-    public void setSyncEnabled(boolean value) {
-        set(R.string.pref_sync_enabled, value);
-    }
-
     /**
      * Set synchronization period.
      * @param value Sync frequency in minutes.

@@ -207,10 +207,6 @@ public class SyncManager {
         getPreferences().clear();
     }
 
-    public void setEnabled(boolean enabled) {
-        getPreferences().setSyncEnabled(enabled);
-    }
-
     public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
     }
