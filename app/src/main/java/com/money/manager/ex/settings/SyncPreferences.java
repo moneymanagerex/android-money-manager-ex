@@ -54,10 +54,6 @@ public class SyncPreferences
         return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public boolean isSyncEnabled() {
-        return get(R.string.pref_sync_enabled, true);
-    }
-
     public int getSyncInterval() {
         int defaultSchedule = 30;   // time in minutes
         String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));

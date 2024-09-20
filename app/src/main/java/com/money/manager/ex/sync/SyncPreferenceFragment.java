@@ -117,22 +117,6 @@ public class SyncPreferenceFragment
     private void initializePreferences() {
         viewHolder = new SyncPreferencesViewHolder(this);
 
-        // enable/disable sync.
-        viewHolder.syncEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                // switch the sync heartbeat
-                Boolean enabled = (Boolean) o;
-                getSyncManager().setEnabled(enabled);
-                if (enabled) {
-                    getSyncManager().startSyncServiceHeartbeat();
-                } else {
-                    getSyncManager().stopSyncServiceAlarm();
-                }
-                return true;
-            }
-        });
-
         viewHolder.syncInterval.setSummary(viewHolder.syncInterval.getEntries()[viewHolder.syncInterval.findIndexOfValue(viewHolder.syncInterval.getValue())]);
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

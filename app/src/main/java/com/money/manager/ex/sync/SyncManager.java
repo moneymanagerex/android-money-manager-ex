@@ -128,8 +128,6 @@ public class SyncManager {
      * (Re-)Sets the timer for delayed sync of the database.
      */
     public void dataChanged() {
-        if (!isSyncEnabled()) return;
-
         // Check if the current database is linked to a cloud service.
         String remotePath = getRemotePath();
         if (TextUtils.isEmpty(remotePath)) return;
@@ -229,8 +227,6 @@ public class SyncManager {
      * @return A boolean indicating that sync can be performed.
      */
     public boolean isActive() {
-        if (!isSyncEnabled()) return false;
-
         // network is online.
         NetworkUtils networkUtils = new NetworkUtils(getContext());
         if (!networkUtils.isOnline()) return false;
@@ -244,10 +240,6 @@ public class SyncManager {
         return !TextUtils.isEmpty(getRemotePath());
 
         // check if a provider is selected? Default is Dropbox, so no need.
-    }
-
-    boolean isSyncEnabled() {
-        return getPreferences().isSyncEnabled();
     }
 
     /**
