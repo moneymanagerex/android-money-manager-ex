@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +46,7 @@ import timber.log.Timber;
 public class SyncServiceMessageHandler
     extends Handler {
 
-    public SyncServiceMessageHandler(Context context, ProgressDialog progressDialog) {
+    public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
         MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
@@ -55,7 +55,7 @@ public class SyncServiceMessageHandler
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
     private final Context context;
-    private final ProgressDialog progressDialog;
+    private final AlertDialog progressDialog;
 
     @Override
     public void handleMessage(Message msg) {
@@ -65,12 +65,12 @@ public class SyncServiceMessageHandler
         switch (message) {
             case NOT_ON_WIFI:
                 //showMessage();
-                closeDialog(progressDialog);
+                closeDialog();
                 break;
 
             case FILE_NOT_CHANGED:
                 // close binaryDialog
-                closeDialog(progressDialog);
+                closeDialog();
                 new UIHelper(getContext()).showToast(R.string.database_is_synchronized, Toast.LENGTH_LONG);
                 break;
 
@@ -84,32 +84,32 @@ public class SyncServiceMessageHandler
             case DOWNLOAD_COMPLETE:
 //                storeRecentDb(remoteFile);
                 // close binaryDialog
-                closeDialog(progressDialog);
+                closeDialog();
                 // Notify whoever is interested.
                 EventBus.getDefault().post(new DbFileDownloadedEvent());
                 break;
 
             case STARTING_UPLOAD:
                 // Do not block the user if uploading the changes.
-                closeDialog(progressDialog);
+                closeDialog();
                 new UIHelper(getContext()).showToast(R.string.sync_uploading, Toast.LENGTH_LONG);
                 break;
 
             case UPLOAD_COMPLETE:
                 // close binaryDialog
-                closeDialog(progressDialog);
+                closeDialog();
                 new UIHelper(getContext()).showToast(R.string.upload_file_complete, Toast.LENGTH_LONG);
                 break;
 
             case CONFLICT:
-                closeDialog(progressDialog);
+                closeDialog();
                 new UIHelper(getContext()).showToast(R.string.both_files_modified);
                 // todo Show the conflict notification.
 
                 break;
 
             case ERROR:
-                closeDialog(progressDialog);
+                closeDialog();
                 new UIHelper(getContext()).showToast(R.string.error, Toast.LENGTH_SHORT);
                 break;
 
@@ -122,7 +122,7 @@ public class SyncServiceMessageHandler
         return this.context;
     }
 
-    private void closeDialog(ProgressDialog progressDialog) {
+    private void closeDialog( ) {
         if (progressDialog != null && progressDialog.isShowing()) {
             DialogUtils.closeProgressDialog(progressDialog);
         }

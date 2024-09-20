@@ -18,13 +18,15 @@
 package com.money.manager.ex.sync;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Messenger;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,14 +151,19 @@ public class SyncManager {
 
         // Action
 
-        ProgressDialog progressDialog = null;
+        AlertDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
         if ((getContext() instanceof AppCompatActivity)) {
-            //progress dialog shown only when downloading an updated db file.
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-            progressDialog.setIndeterminate(true);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext()); // Replace with 'getContext()' if in fragment
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+
+            // Inflate the custom layout
+            View view = inflater.inflate(R.layout.progress_dialog, null);
+            builder.setView(view);
+            builder.setCancelable(false);  // Disable cancel if needed
+
+            progressDialog = builder.create();
+
             progressDialog.show();
         }
 
