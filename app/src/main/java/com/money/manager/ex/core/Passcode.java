@@ -17,7 +17,6 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.passcode.SimpleCrypto;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import javax.inject.Inject;
@@ -101,11 +99,7 @@ public class Passcode {
     private String decrypt(String s) {
         String ret = null;
         try {
-            if (Build.VERSION.SDK_INT <= 23) {
-                ret = SimpleCrypto.decrypt(KEY, s);
-            } else {
-                return s;
-            }
+            return s;
         } catch (Exception e) {
             Timber.e(e, "encrypting passcode");
         }
@@ -120,12 +114,8 @@ public class Passcode {
     private String encrypt(String s) {
         String ret = null;
         try {
-            if (Build.VERSION.SDK_INT <= 23) {
-                ret = SimpleCrypto.encrypt(KEY, s);
-            } else {
-                // todo Encryptor.enc
-                return s;
-            }
+            // todo Encryptor.enc
+            return s;
         } catch (Exception e) {
             Timber.e(e, "encrypting passcode");
         }

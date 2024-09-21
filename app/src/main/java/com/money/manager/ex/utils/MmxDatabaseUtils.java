@@ -23,7 +23,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -361,10 +360,6 @@ public class MmxDatabaseUtils {
         assert provider != null;
         provider.resetDatabase();
 
-        if (Build.VERSION.SDK_INT >= 24) {
-            client.close();
-        } else {
-            client.release();
-        }
+        client.close();
     }
 }
