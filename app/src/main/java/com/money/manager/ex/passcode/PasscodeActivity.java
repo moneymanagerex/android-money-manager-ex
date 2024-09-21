@@ -210,7 +210,10 @@ public class PasscodeActivity extends AppCompatActivity {
 		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-		if (!fingerprintManager.isHardwareDetected()) {
+		if (fingerprintManager.isHardwareDetected()) {
+			findViewById(R.id.fpImageView).setVisibility(View.VISIBLE);
+			findViewById(R.id.fingerprintInfo).setVisibility(View.VISIBLE);
+
 			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
 				Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
 			}
