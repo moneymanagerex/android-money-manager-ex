@@ -22,7 +22,7 @@ android {
     compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion 24 // Android 7.0
+        minSdkVersion 26 // Android 8.0
         targetSdk rootProject.ext.targetSdk
     }
     buildTypes {

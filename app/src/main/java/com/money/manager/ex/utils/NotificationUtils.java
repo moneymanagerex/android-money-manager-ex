@@ -42,9 +42,6 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_CONFLICT = "notification_channel_fileoperation_conflict";
 
     public static void createNotificationChannel(Context context, String channelId) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
-            return;
-        }
 
 //            CharSequence channelName = NOTIFICATION_CHANNEL_NAME;
         //int importance = NotificationManager.IMPORTANCE_LOW;
