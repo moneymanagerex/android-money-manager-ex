@@ -703,6 +703,8 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initAttachmentControls() {
+        if (!hasAttachments()) return;
+
         List<String> attachmentList = new ArrayList<>();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());

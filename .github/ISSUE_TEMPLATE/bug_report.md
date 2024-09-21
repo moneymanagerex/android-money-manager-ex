@@ -27,9 +27,10 @@ If applicable, add screenshots to help explain your problem.
  - Device: [e.g. LG G7 ThinQ]
  - OS: [e.g. Android 8.1]
  - Storage: [e.g. Phone storage + Syncthing]
- - Synchronization: [e.g. Enabled with 5min interval and Sync on Start]
- - Encrypted: [e.g. Yes]
- - App Version: [e.g. 2023.12.06]
+ - Synchronization: [e.g. 5min interval and Sync on Start]
+ - Encrypted: [e.g. Yes with password]
+ - Security: [e.g. Actived with passcode or fingerprint]
+ - App Version: [e.g. 2024.01.01]
 
 **Additional context**
 Add any other context about the problem here.
