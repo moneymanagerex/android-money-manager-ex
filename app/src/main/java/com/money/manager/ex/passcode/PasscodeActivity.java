@@ -148,11 +148,10 @@ public class PasscodeActivity extends AppCompatActivity {
             .color(ui.getPrimaryTextColor()));
 
 		// Handle fingerprint authentication
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-			// setupBiometricPrompt();
-		} else {
-			setupLegacyFingerprintAuth();
-		}
+		findViewById(R.id.fpImageView).setVisibility(View.GONE);
+		findViewById(R.id.fingerprintInfo).setVisibility(View.GONE);
+		setupLegacyFingerprintAuth();
+		// TODO setupBiometricPrompt();
     }
 
 	@Override
@@ -212,9 +211,6 @@ public class PasscodeActivity extends AppCompatActivity {
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
 		if (!fingerprintManager.isHardwareDetected()) {
-			findViewById(R.id.fpImageView).setVisibility(View.GONE);
-			findViewById(R.id.fingerprintInfo).setVisibility(View.GONE);
-		} else {
 			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
 				Toast.makeText(this, R.string.fingerprint_check_permission, Toast.LENGTH_LONG).show();
 			}
