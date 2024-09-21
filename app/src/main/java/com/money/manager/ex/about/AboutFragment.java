@@ -113,11 +113,7 @@ public class AboutFragment extends Fragment {
         TextView txtWebsite = view.findViewById(R.id.textViewWebSite);
         text = "<u>" + txtWebsite.getText() + "</u>";
         String htmlText;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
-        } else {
-            htmlText = Html.fromHtml(text).toString();
-        }
+        htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
         txtWebsite.setText(htmlText);
         txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
@@ -127,11 +123,7 @@ public class AboutFragment extends Fragment {
         // report set link
         TextView txtReport = view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
-        } else {
-            htmlText = Html.fromHtml(text).toString();
-        }
+        htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
         txtReport.setText(htmlText);
         txtReport.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();

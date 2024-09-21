@@ -34,7 +34,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -1075,15 +1074,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Create the NotificationChannel
-                NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
-                nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
+            // Create the NotificationChannel
+            NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
+            nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
 
-                // Register the channel with the system; you can't change the importance
-                // or other notification behaviors after this
-                notificationManager.createNotificationChannel(nChannel);
-            }
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager.createNotificationChannel(nChannel);
 
             Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                     .setAutoCancel(true)
