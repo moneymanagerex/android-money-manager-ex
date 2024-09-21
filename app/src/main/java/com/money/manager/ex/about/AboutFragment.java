@@ -84,7 +84,7 @@ public class AboutFragment extends Fragment {
         // Send Feedback
         TextView txtFeedback = view.findViewById(R.id.textViewLinkFeedback);
         text = "<u>" + txtFeedback.getText() + "</u>";
-        txtFeedback.setText(Html.fromHtml(text));
+        txtFeedback.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         txtFeedback.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("message/rfc822");
@@ -103,7 +103,7 @@ public class AboutFragment extends Fragment {
         // application issue tracker
         TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
         text = "<u>" + txtIssues.getText() + "</u>";
-        txtIssues.setText(Html.fromHtml(text));
+        txtIssues.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         txtIssues.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerIssuesTracker = new OnClickListenerUrl();
         clickListenerIssuesTracker.setUrl("https://github.com/moneymanagerex/android-money-manager-ex/issues/");
@@ -149,14 +149,14 @@ public class AboutFragment extends Fragment {
         // GPLv2 license
         TextView txtLicense = view.findViewById(R.id.textViewLicense);
         text = "<u>" + txtLicense.getText() + "</u>";
-        txtLicense.setText(Html.fromHtml(text));
+        txtLicense.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         OnClickListenerUrl clickListenerLicense = new OnClickListenerUrl();
         clickListenerLicense.setUrl("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html");
         txtLicense.setOnClickListener(clickListenerLicense);
         // logcat
         TextView txtLogcat = view.findViewById(R.id.textViewLogcat);
         text = "<u>" + txtLogcat.getText() + "</u>";
-        txtLogcat.setText(Html.fromHtml(text));
+        txtLogcat.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         txtLogcat.setOnClickListener(v -> {
             LynxConfig lynxConfig = new LynxConfig();
             lynxConfig.setMaxNumberOfTracesToShow(4000);
