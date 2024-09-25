@@ -36,6 +36,7 @@ public class Currency
     public static final String SCALE = "SCALE";
     public static final String BASECONVRATE = "BASECONVRATE";
     public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
+    public static final String CURRENCY_TYPE = "CURRENCY_TYPE";
 
     public static Currency fromCursor(Cursor c) {
         Currency currency = new Currency();
