@@ -230,6 +230,7 @@ public class CurrencyEditActivity
 
         BigDecimal rate = new BigDecimal(holder.edtConversion.getText().toString().trim());
         currency.contentValues.put(Currency.BASECONVRATE, rate.doubleValue());
+        currency.contentValues.put(Currency.CURRENCY_TYPE, "Crypto");
 //        currency.setConversionRate();
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
