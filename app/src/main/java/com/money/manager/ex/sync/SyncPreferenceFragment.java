@@ -19,6 +19,7 @@ package com.money.manager.ex.sync;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -30,12 +31,17 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
+import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -138,14 +144,47 @@ public class SyncPreferenceFragment
         // Download.
 
         viewHolder.download.setOnPreferenceClickListener(preference -> {
-            forceDownload();
-            return true;
+            DatabaseMetadata currentDb = getDatabases().getCurrent();
+            FileStorageHelper storage = new FileStorageHelper(getContext());
+
+            Date localSnapshot = MmxDate.fromIso8601(currentDb.localSnapshotTimestamp).toDate();
+            Date localModified = storage.getLocalFileModifiedDate(currentDb).toDate();
+
+            Date remoteSnapshot = MmxDate.fromIso8601(currentDb.remoteLastChangedDate).toDate();
+            Date remoteModified = storage.getRemoteFileModifiedDate(currentDb).toDate();
+
+            boolean isLocalModified = storage.isLocalFileChanged(currentDb);
+            boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+
+            String message = String.format(
+                    "Local file changes indicator: %s.\n" +
+                            "Downloading will overwrite your local version.\nDo you want to continue?"
+                    , isLocalModified);
+
+            showConfirmDialog("Download Warning", message, this::forceDownload);
+            return false;
         });
 
         // Upload.
 
         viewHolder.upload.setOnPreferenceClickListener(preference -> {
-            forceUpload();
+            DatabaseMetadata currentDb = getDatabases().getCurrent();
+            FileStorageHelper storage = new FileStorageHelper(getContext());
+
+            Date localSnapshot = MmxDate.fromIso8601(currentDb.localSnapshotTimestamp).toDate();
+            Date localModified = storage.getLocalFileModifiedDate(currentDb).toDate();
+
+            Date remoteSnapshot = MmxDate.fromIso8601(currentDb.remoteLastChangedDate).toDate();
+            Date remoteModified = storage.getRemoteFileModifiedDate(currentDb).toDate();
+
+            boolean isLocalModified = storage.isLocalFileChanged(currentDb);
+            boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+
+            String message = String.format(
+                    "Remote file changes indicator: %s.\n" +
+                            "Uploading will overwrite your remote version.\nDo you want to continue?"
+                    , isRemoteModified);
+            showConfirmDialog("Upload Warning",message,this::forceUpload);
             return false;
         });
 
@@ -173,5 +212,14 @@ public class SyncPreferenceFragment
         } catch (RuntimeException e) {
             Timber.e(e, "uploading database");
         }
+    }
+
+    private void showConfirmDialog(String title, String message, Runnable onConfirm) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Continue", (dialog, which) -> onConfirm.run())
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
