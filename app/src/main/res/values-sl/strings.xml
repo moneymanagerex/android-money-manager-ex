@@ -404,7 +404,7 @@
   <string name="donate_in_app_already_donate">Za razvoj razvojne MoneyManagerEx za Android ste že podpirali z donacijo!\n\n In zahvaljuje se vam razvojna ekipa!</string>
   <string name="donate_in_app_retrieving_status">Pridobivanje statusa vaših prispevkov v Googlu Play. Prosim počakajte&#8230;</string>
   <string name="donate_in_app_error">Zaračunavanja v aplikaciji ni mogoče uporabiti. Preverite, ali je nameščena najnovejša različica aplikacije Trgovina Play.</string>
-  <string name="title_repeating_transaction_process"></string>
+  <string name="title_notifications_repeating_transaction"></string>
   <string name="tools">Orodja</string>
   <string name="entities">Subjekti</string>
   <string name="loading">Nalaganje&#8230;</string>

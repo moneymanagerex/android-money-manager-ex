@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Um aplicativo fácil de usar para gerenciar suas finanças pessoais, contas bancárias, orçamentos familiares e muito mais.</string>
+  <string name="application_credits">Money Manager Ex para Android Project usa a biblioteca ActionBarSherlock</string>
   <string name="application_license">Licenças de código aberto</string>
   <!-- database -->
   <string name="db_insert_failed">A inserção dos dados falhou</string>
@@ -57,6 +58,7 @@
   <string name="version">Versão</string>
   <string name="build">Compilaçāo</string>
   <string name="path">Caminho do banco de dados</string>
+  <string name="remote_path">Caminho remoto</string>
   <string name="database_version">Versão do banco de dados</string>
   <string name="title_show_tutorial">Mostrar tutorial</string>
   <string name="summary_show_tutorial">Mostrar tutorial na próxima execução?</string>
@@ -67,6 +69,16 @@
   <string name="sync_on_app_start">Sincronizar ao iniciar app.</string>
   <string name="sync_on_start">Sincronização ao iniciar</string>
   <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">Processar SMS de transação bancária</string>
+  <string name="summary_sms_auto_trans">Leia o SMS de atualização da transação bancária e crie a transação automaticamente</string>
+  <string name="deny_receive_sms_error">Você negou a permissão para receber o SMS, portanto seu SMS de transação bancária não será processado</string>
+  <string name="granted_receive_sms_access">Permissão já concedida para RECEIVE_SMS</string>
+  <string name="revoke_receive_sms_access">Vá para Configurações &gt;&gt; Aplicativos &gt;&gt; Money Manager Ex &gt;&gt; Permissões e negue o acesso para SMS</string>
+  <string name="title_sms_trans_status_notification">Notificação de status de transação por SMS</string>
+  <string name="summary_sms_trans_status_notification">Habilite para mostrar o status do processo de sms de transação bancária na área de notificação em vez de mostrá-los como uma mensagem de brinde ou tela de nova transação</string>
+  <string name="notification_click_to_edit_transaction">Toque para editar a transação&#8230;</string>
+  <string name="notification_process_sms_transaction_status">Processar status de SMS de transação bancária</string>
+  <string name="notification_process_sms_channel_description">Canal de notificação por SMS AMMEX</string>
   <!-- account -->
   <string name="account">Conta</string>
   <string name="account_list">Lista de contas</string>
@@ -176,6 +188,7 @@
   <string name="access_info">Informação de acesso</string>
   <string name="initial_balance">Saldo inicial</string>
   <string name="notes">Notas</string>
+  <string name="notes_hint">Insira uma nota</string>
   <string name="closed">Fechada</string>
   <string name="theme_application">Tema</string>
   <string name="theme_holo">Material escuro</string>
@@ -220,10 +233,12 @@
   <string name="in_x_months">Em (x) meses</string>
   <string name="every_x_days">Cada (x) dias</string>
   <string name="every_x_months">Cada (x) meses</string>
+  <string name="repeating_empty_transaction">Nenhuma transação agendada foi encontrada. Para criar um, toque no botão verde de adição.</string>
   <string name="inactive">Inativo</string>
   <string name="activates">Ativa</string>
   <string name="days_overdue">dias de atraso!</string>
   <string name="days_remaining">dias restantes</string>
+  <string name="new_edit_repeating_transaction">Nova/Editar Transação Agendada</string>
   <string name="due_date">Data de vencimento</string>
   <string name="next_occurrence">Próxima ocorrência</string>
   <string name="payment_date">Data do pagamento</string>
@@ -236,11 +251,17 @@
   <string name="enter_next_occurrence">Insira próxima ocorrência</string>
   <string name="skip_next_occurrence">Pular próxima ocorrência</string>
   <string name="skip_next_occurrence_confirmation">Você deseja pular a próxima ocorrência?</string>
+  <string name="notification_repeating_transaction_expired">Existem transações programadas expiradas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para verificar a transação em atraso</string>
+  <string name="num_repeating_transaction_expired">%1$d transação programada vencida</string>
   <string name="skip">Pular</string>
   <string name="enter">Entrar</string>
   <string name="enter_amount">Digite a quantidade</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">Transação Automática</string>
+  <string name="manual">Entrada manual</string>
+  <string name="prompt">Solicitar entrada</string>
+  <string name="auto">Entrada automática</string>
   <!-- 20121121 -->
   <string name="send_feedback">Envie comentários</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -335,6 +356,7 @@
   <string name="menu_report_where_money_goes">Para onde vai o dinheiro</string>
   <string name="menu_report_where_money_comes_from">De onde vem o dinheiro</string>
   <string name="title_check_repeating_transaction">Tempo de notificação</string>
+  <string name="summary_check_repeating_transaction">A que horas você verificaria se há transações programadas atrasadas? (padrão 08:00)</string>
   <string name="credits">Créditos</string>
   <string name="libraries">Bibliotecas</string>
   <string name="top_withdrawals_last_30_days">Principais retiradas: Últimos 30 dias</string>
@@ -347,6 +369,7 @@
   <string name="empty_category">Categoria vazia</string>
   <string name="empty_payee">Favorecido vazio</string>
   <string name="help">Ajuda</string>
+  <string name="delete_repeating_transaction">Excluir Transação Agendada</string>
   <string name="last">Última</string>
   <string name="accounts">Contas</string>
   <string name="to_account">Para a Conta</string>
@@ -358,6 +381,7 @@
   <string name="delete_others_selected_transaction">Tem certeza que deseja excluir a %d transação selecionada?</string>
   <string name="categories">Categorias</string>
   <string name="payees">Favorecidos</string>
+  <string name="recurring_transactions">Transações Agendadas</string>
   <string name="theme_holo_light">Holo claro</string>
   <string name="new_account">Nova conta</string>
   <string name="create_new_account">Criar nova conta</string>
@@ -367,6 +391,8 @@
   <string name="amount_to">Valor até</string>
   <string name="reset">Redefinir</string>
   <string name="result_search">Resultado da pesquisa</string>
+  <string name="new_repeating_transaction">Nova Transação Agendada</string>
+  <string name="edit_repeating_transaction">Editar Transação Agendada</string>
   <string name="path_database_not_exists">Caminho do banco de dados não existe</string>
   <string name="database_can_not_open_write">O banco de dados não pode ser aberto para gravação</string>
   <string name="time_frame">Período de tempo</string>
@@ -386,6 +412,12 @@
   <string name="donate_in_app_already_donate">Você já apoiou o desenvolvimento do MoneyManagerEx para o Android com a sua doação! \n\nMuito obrigado da equipe de desenvolvimento!</string>
   <string name="donate_in_app_retrieving_status">Recuperando o status de suas doações do Google Play. Aguarde&#8230;</string>
   <string name="donate_in_app_error">Não é possível usar o faturamento no aplicativo. Verifique se a versão mais recente do aplicativo Play Store está instalada.</string>
+  <string name="title_notifications_repeating_transaction">Notificação de Transação Agendada vencida</string>
+  <string name="title_execution_scheduled_transaction">Execução de Transação Agendada vencida</string>
+  <string name="summary_notifications_repeating_transaction">Mostrar notificação de transação agendada vencida</string>
+  <string name="summary_execution_scheduled_transaction">Execução automática para transações agendadas vencidas</string>
+  <string name="title_use_nested_category">(BETA) Use novo modelo de categoria aninhada</string>
+  <string name="summary_use_nested_category">Use o novo modelo de categoria aninhada em vez do modelo categoria:subcategoria (Beta, use por sua própria conta e risco)</string>
   <string name="tools">Ferramentas</string>
   <string name="entities">Entidades</string>
   <string name="loading">Carregando...</string>
@@ -424,6 +456,7 @@
   <string name="tutorial_global_1">Várias moedas e idiomas. Código-fonte aberto. Junte-se à nossa equipe de tradução.</string>
   <string name="tutorial_sync_1">Suporte para múltiplas plataformas, sincronização através de vários serviços de nuvem. Importação e exportação dos seus dados para outros aplicativos.</string>
   <string name="transactions">Transações</string>
+  <string name="tutorial_transactions_1">Depósitos, saques, transferências. Transações Agendadas com lembretes.</string>
   <string name="split_category">-Categorias divididas-</string>
   <string name="title_activity_currency_chart">Gráfico de taxas de câmbio</string>
   <string name="sort_by_ascending">Classificar por ano e mês ascendente</string>
@@ -500,6 +533,7 @@
   <string name="update_available">Atualização disponível</string>
   <string name="update_available_online">Tem um banco de dados atualizado online. Você deseja atualizar?</string>
   <string name="currency_not_found">A moeda não foi encontrada</string>
+  <string name="homepage">Nossa página inicial é https://moneymanagerex.org/</string>
   <string name="current_database">Banco de dados atual</string>
   <string name="about_logcat_header">Você pode enviar-nos o registro da aplicação clicando no botão abaixo.</string>
   <string name="transaction_type_filter">Filtrar por tipo de transação</string>
@@ -507,6 +541,11 @@
   <string name="filter_options_info">Opções de filtros e informação</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Digite a senha do banco de dados</string>
+  <string name="fingerprint_info">Escaneie sua impressão digital para desbloquear</string>
+  <string name="fingerprint_no_hardware">Seu dispositivo não suporta autenticação de impressão digital</string>
+  <string name="fingerprint_check_permission">Ative a permissão de impressão digital</string>
+  <string name="fingerprint_has_enrolled">Nenhuma impressão digital configurada. Registre pelo menos uma impressão digital nas configurações do seu dispositivo</string>
+  <string name="fingerprint_is_keyguard_secure">Ative a segurança da tela de bloqueio nas configurações do seu dispositivo</string>
   <string name="income_expense_period">Período Receita/Despesa</string>
   <string name="income_expense_period_summary">O período para a visão geral de receitas/despesas está no rodapé da tela principal.</string>
   <string name="appwidget_text">EXEMPLO</string>
@@ -525,6 +564,7 @@
   <string name="commission">Comissão</string>
   <string name="value">Valor</string>
   <string name="view_transactions">Ver transações</string>
+  <string name="view_transactions_sub">Ver transações com subcategorias</string>
   <string name="error_downloading_symbol">Erro ao baixar o preço para o símbolo</string>
   <string name="error_updating_rates">Erro ao atualizar as taxas</string>
   <string name="error_no_price_found_for_symbol">Nenhum preço foi encontrado para o símbolo</string>
@@ -667,6 +707,7 @@
   <string name="intro_text">Para começar a utilizar o Money Manager Ex, você precisa ter um arquivo de banco de dados para armazenar seus dados. Por favor, selecione uma das opções disponíveis abaixo.</string>
   <string name="intro_create_db">Você pode criar um novo arquivo e configurar as preferências iniciais.</string>
   <string name="intro_open_db">Ou você pode selecionar um arquivo existente do seu dispositivo.</string>
+  <string name="intro_sync">Para usar serviços em nuvem, abra o arquivo de um provedor de documentos de sua preferência.</string>
   <!-- Create Database screen -->
   <string name="select_language">Selecione o Idioma</string>
   <string name="run">Executar o Money Manager Ex</string>
@@ -680,9 +721,17 @@
   <string name="loan">Empréstimo</string>
   <string name="loan_account">Contas de empréstimo</string>
   <string name="shares_accounts">Compartilhar Contas</string>
+  <string name="currency">Moeda</string>
+  <string name="menu_create_database">Criar Banco de Dados</string>
+  <string name="create_database">Criar Banco de Dados</string>
+  <string name="summary_anonymous_usage">Habilite para nos ajudar a enviar dados anônimos sobre o uso do MMEX</string>
+  <string name="title_anonymous_usage">Envia dados de uso anônimos</string>
+  <string name="title_auto_transaction_number">Preencher automaticamente o número da transação</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="notification_channel_recurring">Notificação de Transação Agendada</string>
+  <string name="notification_channel_recurring__description">Notificação de Transação Agendada vencida</string>
 </resources>

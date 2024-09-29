@@ -72,8 +72,13 @@
   <string name="title_sms_auto_trans">معالجة الرسائل القصيرة للمعاملات المصرفية</string>
   <string name="summary_sms_auto_trans"></string>
   <string name="deny_receive_sms_error">ماجد </string>
+  <string name="granted_receive_sms_access"></string>
   <string name="revoke_receive_sms_access"></string>
   <string name="title_sms_trans_status_notification"></string>
+  <string name="summary_sms_trans_status_notification"></string>
+  <string name="notification_click_to_edit_transaction"></string>
+  <string name="notification_process_sms_transaction_status"></string>
+  <string name="notification_process_sms_channel_description"></string>
   <!-- account -->
   <string name="account">الحساب</string>
   <string name="account_list">قائمة الحساب</string>
@@ -230,13 +235,16 @@
   <string name="every_x_months">كل (×) شهر</string>
   <string name="repeating_empty_transaction">لم يتم العثور على أي معاملات مجدولة. لإنشاء معاملة مجدولة، انقر على زر الزائد الأخضر.</string>
   <string name="inactive">غير نشط</string>
+  <string name="activates"></string>
   <string name="days_overdue">أيام متأخرة!</string>
   <string name="days_remaining">أيام متبقية</string>
+  <string name="new_edit_repeating_transaction"></string>
   <string name="due_date">تاريخ الاستحقاق</string>
   <string name="next_occurrence">التكرار التالي</string>
   <string name="payment_date">تاريخ الدفع</string>
   <string name="repeats">التكرار</string>
   <string name="occurs">معدل التكرار</string>
+  <string name="payments_left"></string>
   <string name="due_date_required">مطلوب تاريخ الاستحقاق</string>
   <string name="error_next_occurrence_not_populate">التواجد التالي مطلوب</string>
   <string name="enter_next_occurrence">أدخل التكرار التالي</string>
@@ -429,6 +437,8 @@
   <string name="edit_price">تعديل السعر</string>
   <string name="all_prices_updated">تم تحديث جميع أسعار الصنف.</string>
   <string name="download_complete">اكتمل التحميل.</string>
+  <string name="confirm_price_download"></string>
+  <string name="starting_price_update"></string>
   <string name="create_db">إنشاء قاعدة بيانات</string>
   <string name="create_db_summary">إنشاء قاعدة بيانات جديدة</string>
   <string name="create_db_hint">الرجاء إدخال إسم الملف</string>
