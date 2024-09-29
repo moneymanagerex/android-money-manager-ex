@@ -408,6 +408,8 @@
   <string name="donate_in_app_already_donate">Ви вже підтримали розробників MoneyManagerEx для Android пожертвою! \n\nПодяка вам від команди розробників!</string>
   <string name="donate_in_app_retrieving_status">Отримання статусу ваших пожертв із Google Play. Прошу чекати&#8230;</string>
   <string name="donate_in_app_error">Не можна використовувати оплату в програмі. Перевірте, чи інстальовано останню версію Play Store.</string>
+  <string name="title_notifications_repeating_transaction">Сповіщення про протерміновану заплановану операцію</string>
+  <string name="summary_notifications_repeating_transaction">Показати сповіщення про протерміновану заплановану операцію</string>
   <string name="tools">Інструменти</string>
   <string name="entities">Сутності</string>
   <string name="loading">Завантаження&#8230;</string>
