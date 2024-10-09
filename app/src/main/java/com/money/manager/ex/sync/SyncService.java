@@ -100,19 +100,19 @@ public class SyncService
             outMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
         }
 
-        // check if the device is online.
-        NetworkUtils network = new NetworkUtils(getApplicationContext());
-        if (!network.isOnline()) {
-            Timber.i("Can't sync. Device not online.");
-            sendMessage(outMessenger, SyncServiceMessage.NOT_ON_WIFI);
-//            sendStopEvent();
-            return;
-        }
-
         String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) {
+//            sendStopEvent();
+            return;
+        }
+
+        // check if the device is online.
+        NetworkUtils network = new NetworkUtils(getApplicationContext());
+        if (!network.isOnline() && !Uri.parse(remoteFilename).getAuthority().startsWith("com.android")) {
+            Timber.i("Can't sync. Device not online.");
+            sendMessage(outMessenger, SyncServiceMessage.NOT_ON_WIFI);
 //            sendStopEvent();
             return;
         }
