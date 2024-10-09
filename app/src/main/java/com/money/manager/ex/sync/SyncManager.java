@@ -146,10 +146,7 @@ public class SyncManager {
             return false;
         }
 
-        if (Uri.parse(remotePath).getAuthority().startsWith("com.android")) {
-            return true;
-        }
-        return false;
+        return Uri.parse(remotePath).getAuthority().startsWith("com.android");
     }
 
     public void invokeSyncService(String action) {
@@ -298,27 +295,6 @@ public class SyncManager {
         // Send info to not check for updates as it is redundant in this case.
         intent.putExtra(MainActivity.EXTRA_SKIP_REMOTE_CHECK, true);
         getContext().startActivity(intent);
-    }
-
-    /*
-        Private
-     */
-
-    /**
-     * Compares the local and remote db filenames. Use for safety check before synchronization.
-     * @return A boolean indicating if the filenames are the same.
-     */
-    private boolean areFileNamesSame(String localPath, String remotePath) {
-        if (TextUtils.isEmpty(localPath)) return false;
-        if (TextUtils.isEmpty(remotePath)) return false;
-
-        File localFile = new File(localPath);
-        String localName = localFile.getName();
-
-        File remoteFile = new File(remotePath);
-        String remoteName = remoteFile.getName();
-
-        return localName.equalsIgnoreCase(remoteName);
     }
 
     private RecentDatabasesProvider getDatabases() {
