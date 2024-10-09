@@ -133,10 +133,6 @@ public class SyncManager {
         return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
     }
 
-//    public Date getModificationDateFrom(CloudMetaData remoteFile) {
-//        return new MmxDate(remoteFile.getModifiedAt()).toDate();
-//    }
-
     public String getRemotePath() {
         DatabaseMetadata db = getDatabases().getCurrent();
         if (db == null) return null;
