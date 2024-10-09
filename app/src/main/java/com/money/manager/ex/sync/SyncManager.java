@@ -99,6 +99,8 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
+        //
+        if (isPhoneStorage()) return true;
         // check if online
         if (!isActive()) return false;
 
@@ -139,8 +141,19 @@ public class SyncManager {
         DatabaseMetadata db = getDatabases().getCurrent();
         if (db == null) return null;
 
-        String fileName = db.remotePath;
-        return fileName;
+        return db.remotePath;
+    }
+
+    private boolean isPhoneStorage() {
+        String remotePath = getRemotePath();
+        if (TextUtils.isEmpty(remotePath)) {
+            return false;
+        }
+
+        if (Uri.parse(remotePath).getAuthority().startsWith("com.android")) {
+            return true;
+        }
+        return false;
     }
 
     public void invokeSyncService(String action) {
@@ -184,7 +197,7 @@ public class SyncManager {
      * remote file is set.
      * @return A boolean indicating that sync service can be performed.
      */
-    public boolean isActive() {
+    private boolean isActive() {
         // network is online.
         NetworkUtils networkUtils = new NetworkUtils(getContext());
         if (!networkUtils.isOnline()) {
@@ -314,26 +327,6 @@ public class SyncManager {
 
     private RecentDatabasesProvider getDatabases() {
         return mDatabases.get();
-    }
-
-    private File getExternalStorageDirectoryForSync() {
-        // todo check this after refactoring the database utils.
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        File folder = new File(dbManager.getDefaultDatabaseDirectory());
-
-        // manage folder
-        if (folder.exists() && folder.isDirectory() && folder.canWrite()) {
-            // create a folder for remote files
-            File folderSync = new File(folder + "/sync");
-            // check if folder exists otherwise create
-            if (!folderSync.exists()) {
-                if (!folderSync.mkdirs()) return getContext().getFilesDir();
-            }
-            return folderSync;
-        } else {
-            return mContext.getFilesDir();
-        }
     }
 
     private SyncPreferences getPreferences() {
