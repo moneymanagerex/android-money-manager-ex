@@ -127,6 +127,10 @@ public class StatusFilter {
             result += "'";
             result += status;
             result += "'";
+
+            if (status == "") {
+                result += ", 'N'";
+            }
         }
         result += ")";
 
