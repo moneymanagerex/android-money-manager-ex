@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
+  <string name="application_credits">Money Manager Ex per Android utilizza la libreria ActionBarSherlock</string>
   <string name="application_license">Licenze open source</string>
   <!-- database -->
   <string name="db_insert_failed">Inserimento di dati fallito</string>
@@ -57,6 +58,7 @@
   <string name="version">Versione</string>
   <string name="build">Build</string>
   <string name="path">Percorso del database</string>
+  <string name="remote_path">Percorso di accesso remoto</string>
   <string name="database_version">Versione del database</string>
   <string name="title_show_tutorial">Visualizza tutorial</string>
   <string name="summary_show_tutorial">Visualizza tutorial al prossimo avvio?</string>
@@ -69,6 +71,10 @@
   <!-- Receive SMS strings -->
   <string name="title_sms_auto_trans">Processa Transazione Bancaria via SMS</string>
   <string name="summary_sms_auto_trans">Leggi l\'aggiornamento della transazione bancaria SMS e crea automaticamente la transazione</string>
+  <string name="deny_receive_sms_error">Hai negato l\'autorizzazione a ricevere l\'SMS, quindi il tuo SMS di transazione bancaria non verrà elaborato.</string>
+  <string name="granted_receive_sms_access">Autorizzazione già concessa per RECEIVE_SMS</string>
+  <string name="revoke_receive_sms_access">Vai in Impostazioni &gt;&gt; Applicazioni &gt;&gt; Money Manager Ex &gt;&gt; Autorizzazioni e nega l\'accesso per SMS</string>
+  <string name="notification_click_to_edit_transaction">Tocca per modificare la transazione&#8230;</string>
   <!-- account -->
   <string name="account">Conto</string>
   <string name="account_list">Elenco dei Conti</string>
@@ -244,6 +250,9 @@
   <string name="enter">Inserisci</string>
   <string name="enter_amount">Inserire importo</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">Transazione Automatica</string>
+  <string name="manual">Inserimento manuale</string>
+  <string name="auto">Inserimento automatico</string>
   <!-- 20121121 -->
   <string name="send_feedback">Invia commenti</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -511,6 +520,7 @@
   <string name="update_available">Aggiornamento disponibile</string>
   <string name="update_available_online">C\'è un file di database aggiornato disponibile online. Vuoi aggiornare?</string>
   <string name="currency_not_found">Valuta non trovata</string>
+  <string name="homepage">La nostra homepage è https://moneymanagerex.org/</string>
   <string name="current_database">Database corrente</string>
   <string name="about_logcat_header">Potete inviarci il registro dell\'applicazione cliccando sul pulsante qui sotto.</string>
   <string name="transaction_type_filter">Filtra per tipo di operazione</string>
@@ -518,6 +528,10 @@
   <string name="filter_options_info">Opzioni sui filtri ed Info</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Inserire la password del database</string>
+  <string name="fingerprint_info">Scansiona l\'impronta digitale per sbloccare</string>
+  <string name="fingerprint_no_hardware">Il dispositivo non supporta l\'autenticazione tramite impronta digitale</string>
+  <string name="fingerprint_check_permission">Attivare l\'autorizzazione per l\'impronta digitale</string>
+  <string name="fingerprint_has_enrolled">Nessuna impronta digitale configurata. Registrare almeno un\'impronta digitale nelle impostazioni del dispositivo.</string>
   <string name="income_expense_period">Entrate/Uscite periodo</string>
   <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
   <string name="appwidget_text">ESEMPIO</string>
@@ -536,6 +550,7 @@
   <string name="commission">Commissione</string>
   <string name="value">Valore</string>
   <string name="view_transactions">Visualizza operazioni</string>
+  <string name="view_transactions_sub">Visualizza transazioni con sottocategorie</string>
   <string name="error_downloading_symbol">Errore nell\'aggiornamento del prezzo per il simbolo</string>
   <string name="error_updating_rates">Errore nell\'aggiornamento dei tassi</string>
   <string name="error_no_price_found_for_symbol">Nessun prezzo trovato per il simbolo</string>
@@ -702,4 +717,5 @@
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="show">Mostra</string>
 </resources>
