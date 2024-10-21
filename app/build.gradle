@@ -85,7 +85,18 @@ android {
         enabled = true
     }
 
+    flavorDimensions "version"
     productFlavors {
+        standard {
+            dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+        }
+        gplay {
+            dimension "version"
+            applicationIdSuffix ".android"
+            versionNameSuffix "-android"
+        }
         // beta {
         //     applicationId "com.money.manager.ex.beta"
         //     versionName "latestBeta"
