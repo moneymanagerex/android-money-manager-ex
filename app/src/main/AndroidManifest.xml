@@ -24,7 +24,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- sync authenticator -->
     <!--<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />-->
@@ -33,16 +34,15 @@
     <!--<uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />-->
     <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />-->
 
-    <!-- SMS Interface -->
-    <!--<uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
-
     <!-- Fingerprint Interface -->
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <!-- for compatibility of Job Scheduler with Android versions prior to 8. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- new post notification management -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
