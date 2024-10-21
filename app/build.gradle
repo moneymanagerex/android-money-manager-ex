@@ -139,6 +139,7 @@ android {
             includeAndroidResources = true
         }
     }
+    namespace 'com.money.manager.ex'
 }
 
 dependencies {
