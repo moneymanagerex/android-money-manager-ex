@@ -85,15 +85,15 @@ android {
         enabled = true
     }
 
-    flavorDimensions "version"
+    flavorDimensions "distribution"
     productFlavors {
-        standard {
-            dimension "version"
+        fdroid {
+            dimension "distribution"
             applicationIdSuffix ""
             versionNameSuffix ""
         }
         gplay {
-            dimension "version"
+            dimension "distribution"
             applicationIdSuffix ".android"
             versionNameSuffix "-android"
         }
