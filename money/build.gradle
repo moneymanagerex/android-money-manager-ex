@@ -22,12 +22,12 @@ android {
     compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion 26 // Android 8.0
+        minSdkVersion rootProject.ext.minSdkVersion
         targetSdk rootProject.ext.targetSdk
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

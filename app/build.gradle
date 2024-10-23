@@ -33,9 +33,7 @@ android {
         // $applicationId
         setProperty("archivesBaseName", "ammx-$versionName")
 
-        // minSdkVersion rootProject.ext.minSdkVersion
-        // targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 26 // Android 8.0
+        minSdkVersion rootProject.ext.minSdkVersion
         targetSdk rootProject.ext.targetSdk
 
         multiDexEnabled true
