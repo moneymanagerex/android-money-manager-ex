@@ -801,10 +801,8 @@
     <string name="title_auto_transaction_number">Auto populate transaction number</string>
 
     <!-- Notification Setting -->
-    <!-- Old string
     <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
     <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-    -->
     <string name="notification_channel_recurring">Scheduled Transaction Notification</string>
     <string name="notification_channel_recurring__description">Overdue Scheduled Transaction Notification</string>
 
