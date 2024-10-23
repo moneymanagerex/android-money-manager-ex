@@ -138,6 +138,9 @@ android {
         }
     }
     namespace 'com.money.manager.ex'
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
