@@ -23,7 +23,7 @@ android {
     defaultConfig {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 26 // Android 8.0
+        minSdkVersion rootProject.ext.minSdkVersion
         targetSdk rootProject.ext.targetSdk
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
