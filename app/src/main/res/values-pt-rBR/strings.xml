@@ -413,9 +413,7 @@
   <string name="donate_in_app_retrieving_status">Recuperando o status de suas doações do Google Play. Aguarde&#8230;</string>
   <string name="donate_in_app_error">Não é possível usar o faturamento no aplicativo. Verifique se a versão mais recente do aplicativo Play Store está instalada.</string>
   <string name="title_notifications_repeating_transaction">Notificação de Transação Agendada vencida</string>
-  <string name="title_execution_scheduled_transaction">Execução de Transação Agendada vencida</string>
   <string name="summary_notifications_repeating_transaction">Mostrar notificação de transação agendada vencida</string>
-  <string name="summary_execution_scheduled_transaction">Execução automática para transações agendadas vencidas</string>
   <string name="title_use_nested_category">(BETA) Use novo modelo de categoria aninhada</string>
   <string name="summary_use_nested_category">Use o novo modelo de categoria aninhada em vez do modelo categoria:subcategoria (Beta, use por sua própria conta e risco)</string>
   <string name="tools">Ferramentas</string>
