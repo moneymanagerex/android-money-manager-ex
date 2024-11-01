@@ -57,6 +57,7 @@
   <string name="version">Verzió</string>
   <string name="build">Build</string>
   <string name="path">Adatbázis elérési út</string>
+  <string name="remote_path">Távoli elérési út</string>
   <string name="database_version">Adatbázis verzió</string>
   <string name="title_show_tutorial">Útmutató megjelenítése</string>
   <string name="summary_show_tutorial">Útmutató megjelenítése a következő indításkor?</string>
@@ -125,7 +126,7 @@
   <string name="scale">Skála</string>
   <string name="conversion_to_base_rate">Átváltás</string>
   <string name="currency_name_empty">Pénznem nevének megadása kötelező</string>
-  <string name="new_edit_currency">Új pénznem/szerkesztés</string>
+  <string name="new_edit_currency">Új pénznem/Pénznem szerkesztése</string>
   <!-- transaction -->
   <string name="amount">Összeg</string>
   <string name="total_amount">Teljes összeg</string>
@@ -176,6 +177,7 @@
   <string name="access_info">Hozzáférési információk</string>
   <string name="initial_balance">Kezdő egyenleg</string>
   <string name="notes">Jegyzetek</string>
+  <string name="notes_hint">Jegyzet beszúrása</string>
   <string name="closed">Zárt</string>
   <string name="theme_application">Téma</string>
   <string name="theme_holo">Material Dark</string>
@@ -224,6 +226,7 @@
   <string name="activates">Aktiválás</string>
   <string name="days_overdue">napja lejárt!</string>
   <string name="days_remaining">hátralévő nap</string>
+  <string name="new_edit_repeating_transaction">Új ütemezett ügylet/Ütemezett ügylet szerkesztése</string>
   <string name="due_date">Határidő</string>
   <string name="next_occurrence">Következő előfordulás</string>
   <string name="payment_date">Kifizetés dátuma</string>
@@ -241,6 +244,7 @@
   <string name="enter">Belépés</string>
   <string name="enter_amount">Mennyiség Megadása</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="manual">Kézi bevitel</string>
   <!-- 20121121 -->
   <string name="send_feedback">Visszajelzés küldése</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -347,6 +351,7 @@
   <string name="empty_category">Üres kategória</string>
   <string name="empty_payee">Üres partner</string>
   <string name="help">Segítség</string>
+  <string name="delete_repeating_transaction">Ütemezett ügylet törlése</string>
   <string name="last">Utolsó</string>
   <string name="accounts">Számlák</string>
   <string name="to_account">Számlára</string>
@@ -358,6 +363,7 @@
   <string name="delete_others_selected_transaction">Biztosan törölni szeretné a kijelölt %d ügyletet?</string>
   <string name="categories">Kategóriák</string>
   <string name="payees">Partnerek</string>
+  <string name="recurring_transactions">Ütemezett ügyletek</string>
   <string name="theme_holo_light">Holo világos</string>
   <string name="new_account">Új számla</string>
   <string name="create_new_account">Új számla felvitele</string>
@@ -367,6 +373,8 @@
   <string name="amount_to">Összeg ide</string>
   <string name="reset">Visszaállítás</string>
   <string name="result_search">A keresés eredménye</string>
+  <string name="new_repeating_transaction">Új ütemezett ügylet</string>
+  <string name="edit_repeating_transaction">Ütemezett ügylet szerkesztése</string>
   <string name="path_database_not_exists">Adatbázis elérési út nem létezik</string>
   <string name="database_can_not_open_write">Az adatbázis nem nyitható meg szerkesztésre</string>
   <string name="time_frame">Idő keret</string>
@@ -680,9 +688,16 @@
   <string name="loan">Hitel</string>
   <string name="loan_account">Hitel fiók</string>
   <string name="shares_accounts">Megosztott fiókok</string>
+  <string name="currency">Pénznem</string>
+  <string name="menu_create_database">Adatbázis létrehozása</string>
+  <string name="create_database">Adatbázis létrehozása</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="notification_channel_recurring">Ütemezett ügyletének értesítése</string>
+  <string name="notification_channel_fileoperation_complete">Mmex feltöltés kész</string>
+  <string name="notification_channel_fileoperation_conflict">MMEX összehangolási ütközés</string>
+  <string name="show">Megjelenítés</string>
 </resources>

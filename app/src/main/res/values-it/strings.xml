@@ -74,7 +74,11 @@
   <string name="deny_receive_sms_error">Hai negato l\'autorizzazione a ricevere l\'SMS, quindi il tuo SMS di transazione bancaria non verrà elaborato.</string>
   <string name="granted_receive_sms_access">Autorizzazione già concessa per RECEIVE_SMS</string>
   <string name="revoke_receive_sms_access">Vai in Impostazioni &gt;&gt; Applicazioni &gt;&gt; Money Manager Ex &gt;&gt; Autorizzazioni e nega l\'accesso per SMS</string>
+  <string name="title_sms_trans_status_notification">Notifica dello stato delle transazioni via SMS</string>
+  <string name="summary_sms_trans_status_notification">Consente di mostrare lo stato del processo di invio degli sms di transazione bancaria nell\'area di notifica invece di mostrarli come messaggio Toast o nella schermata Nuova transazione.</string>
   <string name="notification_click_to_edit_transaction">Tocca per modificare la transazione&#8230;</string>
+  <string name="notification_process_sms_transaction_status">Processa Stato Transazione Bancaria via SMS</string>
+  <string name="notification_process_sms_channel_description">Canale di notifica SMS AMMEX</string>
   <!-- account -->
   <string name="account">Conto</string>
   <string name="account_list">Elenco dei Conti</string>
@@ -229,10 +233,12 @@
   <string name="in_x_months">In (x) Mesi</string>
   <string name="every_x_days">Ogni (x) Giorni</string>
   <string name="every_x_months">Ogni (x) Mesi</string>
+  <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.</string>
   <string name="inactive">Inattivo</string>
   <string name="activates">Attiva</string>
   <string name="days_overdue">giorni scaduti!</string>
   <string name="days_remaining">giorni rimanenti</string>
+  <string name="new_edit_repeating_transaction">Aggiungi/Modifica Transazione Pianificata</string>
   <string name="due_date">Scadenza</string>
   <string name="next_occurrence">Prossima Scadenza</string>
   <string name="payment_date">Data di pagamento</string>
@@ -245,7 +251,9 @@
   <string name="enter_next_occurrence">Inserire la prossima scadenza</string>
   <string name="skip_next_occurrence">Salta prossima scadenza</string>
   <string name="skip_next_occurrence_confirmation">Si desidera saltare la prossima scadenza?</string>
+  <string name="notification_repeating_transaction_expired">Ci sono transazioni pianificate scadute</string>
   <string name="notification_click_to_check_repeating_transaction">Toccare per controllare le operazioni scadute</string>
+  <string name="num_repeating_transaction_expired">%1$d Transazioni Pianificate scadute</string>
   <string name="skip">Salta</string>
   <string name="enter">Inserisci</string>
   <string name="enter_amount">Inserire importo</string>
@@ -347,6 +355,7 @@
   <string name="menu_report_where_money_goes">Dove va il denaro</string>
   <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
   <string name="title_check_repeating_transaction">Ora di notifica</string>
+  <string name="summary_check_repeating_transaction">A che ora controllare se ci sono transazioni programmate in ritardo? ( predefinito 08:00)</string>
   <string name="credits">Ringraziamenti</string>
   <string name="libraries">Librerie</string>
   <string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>
@@ -403,7 +412,9 @@
   <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
   <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
+  <string name="title_execution_scheduled_transaction">Esecuzione Automatica della Transazione Pianificata scaduta </string>
   <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
+  <string name="summary_execution_scheduled_transaction">Esecuzione Automatica della Transazione Pianificata scaduta </string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
@@ -442,6 +453,7 @@
   <string name="tutorial_global_1">Svariate valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
   <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione con servizi Cloud. Importazione ed esportazione dei dati in altre applicazioni.</string>
   <string name="transactions">Operazioni</string>
+  <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni pianificate con promemoria.</string>
   <string name="split_category">-Categoria Suddivisa-</string>
   <string name="title_activity_currency_chart">Grafico del tasso di cambio valuta</string>
   <string name="sort_by_ascending">Ordina per anno e mese crescente</string>
@@ -530,6 +542,7 @@
   <string name="fingerprint_no_hardware">Il dispositivo non supporta l\'autenticazione tramite impronta digitale</string>
   <string name="fingerprint_check_permission">Attivare l\'autorizzazione per l\'impronta digitale</string>
   <string name="fingerprint_has_enrolled">Nessuna impronta digitale configurata. Registrare almeno un\'impronta digitale nelle impostazioni del dispositivo.</string>
+  <string name="fingerprint_is_keyguard_secure">Attiva la protezione della schermata di blocco nelle impostazioni del tuo dispositivo.</string>
   <string name="income_expense_period">Entrate/Uscite periodo</string>
   <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
   <string name="appwidget_text">ESEMPIO</string>
@@ -710,10 +723,16 @@
   <string name="create_database">Crea Database</string>
   <string name="summary_anonymous_usage">Abilita per aiutarci a inviare dati anonimi sull\'utilizzo di MMEX</string>
   <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
+  <string name="title_auto_transaction_number">Inserire automaticamente il numero di transazione</string>
   <!-- Notification Setting -->
   <!-- Old string
   <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
   <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
   -->
+  <string name="notification_channel_recurring">Notifica Transazione Pianificata</string>
+  <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
+  <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
+  <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
+  <string name="notification_channel_fileoperation_conflict">Conflitto Di Sincronizzazione Mmex</string>
   <string name="show">Mostra</string>
 </resources>
