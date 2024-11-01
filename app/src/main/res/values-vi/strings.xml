@@ -639,8 +639,4 @@
   <string name="loan_account">Tài khoản các khoản cho vay</string>
   <string name="shares_accounts">Tài khoản cổ phần</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
 </resources>

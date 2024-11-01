@@ -612,8 +612,4 @@
   <!-- Settings -->
   <string name="per_database_settings">Per-Baza de date</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
 </resources>

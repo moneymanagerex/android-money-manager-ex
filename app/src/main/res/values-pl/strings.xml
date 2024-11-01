@@ -699,10 +699,6 @@
   <string name="title_anonymous_usage">Wyślij anonimowe dane użytkowania</string>
   <string name="title_auto_transaction_number">Automatyczne wypełnianie numeru transakcji</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
   <string name="notification_channel_fileoperation_downloadin">Pobieranie Mmex</string>
   <string name="notification_channel_fileoperation_uploadin">Przesyłanie Mmex</string>
   <string name="notification_channel_fileoperation_complete">Przesyłanie Mmex zakończone</string>
