@@ -412,10 +412,6 @@
   <string name="donate_in_app_already_donate">Вы уже поддержали разработчиков MoneyManagerEx для Android внеся пожертвование!\n\nБольшое спасибо от группы разработчиков!</string>
   <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
   <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
-  <string name="title_notifications_repeating_transaction">Уведомление о просроченной транзакции </string>
-  <string name="title_execution_scheduled_transaction">Выполнение повторяющейся транзакции просрочено </string>
-  <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
-  <string name="summary_execution_scheduled_transaction">Автоматическое выполнение для просроченных повторяющихся транзакций</string>
   <string name="title_use_nested_category">(BETA) Использовать новую модель вложенных категорий</string>
   <string name="summary_use_nested_category">Использовать новую вложенную модель категорий вместо схемы \"категория:подкатегория\" (бета, использовать на свой риск)</string>
   <string name="tools">Инструменты</string>
@@ -730,10 +726,8 @@
   <string name="pref_auto_transaction_number">Автонумерация транзакций</string>
   <string name="title_auto_transaction_number">Автозаполнение номера транзакции</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
+  <string name="title_notifications_repeating_transaction">Уведомление о просроченной транзакции </string>
+  <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
   <string name="notification_channel_recurring">Уведомление о запланированной транзакции</string>
   <string name="notification_channel_recurring__description">Уведомление о повторяющейся транзакции</string>
   <string name="notification_channel_fileoperation_downloadin">Загрузка Mmex</string>

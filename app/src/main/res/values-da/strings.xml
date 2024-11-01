@@ -408,8 +408,6 @@
   <string name="donate_in_app_already_donate">Du har allerede støttet udviklingen af MoneyManagerEx til Android med din donation!\n\nTak fra udviklingsteamet!</string>
   <string name="donate_in_app_retrieving_status">Henter donationsstatus fra Google Play. Vent venligst&#8230;</string>
   <string name="donate_in_app_error">Kan ikke bruge in-app fakturering. Tjek, om den seneste version af Play Butik-appen er installeret.</string>
-  <string name="title_notifications_repeating_transaction">Forfalden planlagt transaktion-notifikation </string>
-  <string name="summary_notifications_repeating_transaction">Vis notifikation om forfalden planlagt transaktion</string>
   <string name="tools">Værktøjer</string>
   <string name="entities">Enheder</string>
   <string name="loading">Indlæser&#8230;</string>
@@ -721,10 +719,8 @@
   <string name="pref_auto_transaction_number">præf_autotransaktionsnummer</string>
   <string name="title_auto_transaction_number">Autoudfyld transaktionsnummer</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
+  <string name="title_notifications_repeating_transaction">Forfalden planlagt transaktion-notifikation </string>
+  <string name="summary_notifications_repeating_transaction">Vis notifikation om forfalden planlagt transaktion</string>
   <string name="notification_channel_recurring">Planlagt transaktion-notifikation</string>
   <string name="notification_channel_recurring__description">Forfalden planlagt transaktion-notifikation</string>
   <string name="notification_channel_fileoperation_downloadin">Mmex downloades</string>

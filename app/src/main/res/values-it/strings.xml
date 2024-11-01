@@ -411,10 +411,6 @@
   <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx per Android con una donazione! \n\nGrazie mille dal team di sviluppo!</string>
   <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
-  <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
-  <string name="title_execution_scheduled_transaction">Esecuzione Automatica della Transazione Pianificata scaduta </string>
-  <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
-  <string name="summary_execution_scheduled_transaction">Esecuzione Automatica della Transazione Pianificata scaduta </string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
@@ -725,10 +721,8 @@
   <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
   <string name="title_auto_transaction_number">Inserire automaticamente il numero di transazione</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
+  <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
+  <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
   <string name="notification_channel_recurring">Notifica Transazione Pianificata</string>
   <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
   <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>

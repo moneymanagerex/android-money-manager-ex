@@ -680,8 +680,4 @@
   <string name="loan_account">Δανειακοί Λογαριασμοί</string>
   <string name="shares_accounts">Μετοχικοί Λογαριασμοί</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
 </resources>

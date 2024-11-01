@@ -692,10 +692,6 @@
   <string name="menu_create_database">Adatbázis létrehozása</string>
   <string name="create_database">Adatbázis létrehozása</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
   <string name="notification_channel_recurring">Ütemezett ügyletének értesítése</string>
   <string name="notification_channel_fileoperation_complete">Mmex feltöltés kész</string>
   <string name="notification_channel_fileoperation_conflict">MMEX összehangolási ütközés</string>

@@ -681,8 +681,4 @@
   <string name="loan_account">贷款账户</string>
   <string name="shares_accounts">共享账户</string>
   <!-- Notification Setting -->
-  <!-- Old string
-  <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
-  <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
-  -->
 </resources>
