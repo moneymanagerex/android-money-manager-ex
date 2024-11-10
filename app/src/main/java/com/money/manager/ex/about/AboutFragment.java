@@ -130,12 +130,6 @@ public class AboutFragment extends Fragment {
         clickListenerFeedback.setUrl("http://www.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
         txtReport.setOnClickListener(clickListenerFeedback);
 
-        // image view google plus
-        OnClickListenerUrl clickListenerGooglePlus = new OnClickListenerUrl();
-        clickListenerGooglePlus.setUrl("http://goo.gl/R693Ih");
-        ImageView imageViewGooglePlus = view.findViewById(R.id.imageViewGooglePlus);
-        imageViewGooglePlus.setOnClickListener(clickListenerGooglePlus);
-
         // image view github
         OnClickListenerUrl clickListenerGithub = new OnClickListenerUrl();
         clickListenerGithub.setUrl("https://github.com/moneymanagerex/android-money-manager-ex");
