@@ -131,7 +131,8 @@ public class SyncManager {
             Timber.i("Remote Read got error: %s", e.getMessage());
         }
         if (!exist) {
-            Timber.i("Remote file does not exist. Not synchronizing.");
+            Toast.makeText(getContext(), "Remote file is no longer available.", Toast.LENGTH_SHORT).show();
+            Timber.i("Remote file is no longer available.");
             NotificationManager notificationManager = (NotificationManager) getContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -142,7 +143,7 @@ public class SyncManager {
                     .setSmallIcon(R.drawable.ic_stat_notification)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentTitle("Remote File is not Accessible")
-                    .setContentText(remotePath+" is not accessible... please reopen");
+                    .setContentText("Try to reopen: "+remotePath);
 
             Notification notification = builder.build();
             notificationManager.notify(1, notification);
