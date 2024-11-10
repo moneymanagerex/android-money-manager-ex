@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">一个简单易用的应用程序，它主要是用来管理个人财务、银行帐户以及家庭预算。</string>
+  <string name="application_credits">Android 平台上的 MoneyManagerEx 使用 ActionBarSherlock 库</string>
   <string name="application_license">开放源代码许可</string>
   <!-- database -->
   <string name="db_insert_failed">插入数据失败</string>
@@ -57,6 +58,7 @@
   <string name="version">版本</string>
   <string name="build">创建</string>
   <string name="path">数据库路径</string>
+  <string name="remote_path">云端路径</string>
   <string name="database_version">数据库版本</string>
   <string name="title_show_tutorial">显示教程</string>
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
@@ -67,6 +69,16 @@
   <string name="sync_on_app_start">在应用程序启动时自动同步</string>
   <string name="sync_on_start">应用启动时同步</string>
   <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">处理银行交易短信</string>
+  <string name="summary_sms_auto_trans">读取银行的账户变动短信并自动创建交易</string>
+  <string name="deny_receive_sms_error">您拒绝了短信接收权限，因此您的银行交易短信将不会被处理</string>
+  <string name="granted_receive_sms_access">已授予 RECEIVE_SMS 权限</string>
+  <string name="revoke_receive_sms_access">转到设置 &gt;&gt; 应用 &gt;&gt; Money Manager Ex &gt;&gt; 权限并拒绝短信访问权限</string>
+  <string name="title_sms_trans_status_notification">短信交易状态通知</string>
+  <string name="summary_sms_trans_status_notification">启用后将在通知区域显示银行交易短信处理的状态，而不显示浮窗提示或新交易界面。</string>
+  <string name="notification_click_to_edit_transaction">触摸以编辑记录&#8230;</string>
+  <string name="notification_process_sms_transaction_status">处理银行交易短信状态</string>
+  <string name="notification_process_sms_channel_description">AMMEX 短信通知频道</string>
   <!-- account -->
   <string name="account">账户</string>
   <string name="account_list">账户列表</string>
@@ -112,6 +124,7 @@
   <string name="add_subcategory">添加子类目</string>
   <string name="edit_categoryName">编辑类目</string>
   <string name="delete_category">删除类目</string>
+  <string name="search_sub_category">包含子类别</string>
   <!-- currency -->
   <string name="currency_name">货币名称</string>
   <string name="currency_symbol">货币符号</string>
@@ -176,6 +189,7 @@
   <string name="access_info">访问信息</string>
   <string name="initial_balance">初始余额</string>
   <string name="notes">备注</string>
+  <string name="notes_hint">插入备注</string>
   <string name="closed">已关闭</string>
   <string name="theme_application">主题</string>
   <string name="theme_holo">Material Dark</string>
@@ -220,10 +234,12 @@
   <string name="in_x_months">在 (x) 个月</string>
   <string name="every_x_days">每 (x) 天</string>
   <string name="every_x_months">每 (x) 个月</string>
+  <string name="repeating_empty_transaction">未找到可用的周期性交易。轻触绿色加号按钮可新建一个周期性交易。</string>
   <string name="inactive">未启用</string>
   <string name="activates">触发数值</string>
   <string name="days_overdue">天 - 到期</string>
   <string name="days_remaining">天后执行</string>
+  <string name="new_edit_repeating_transaction">添加/修改周期性交易</string>
   <string name="due_date">到期日期</string>
   <string name="next_occurrence">下个到期日</string>
   <string name="payment_date">付款日期</string>
@@ -236,11 +252,17 @@
   <string name="enter_next_occurrence">确认下次交易</string>
   <string name="skip_next_occurrence">跳过下次交易</string>
   <string name="skip_next_occurrence_confirmation">确定要跳过下一个周期？</string>
+  <string name="notification_repeating_transaction_expired">有过期的周期性交易</string>
   <string name="notification_click_to_check_repeating_transaction">轻触以检查到期的交易</string>
+  <string name="num_repeating_transaction_expired">%1$d 周期性交易到期</string>
   <string name="skip">跳过</string>
   <string name="enter">回车</string>
   <string name="enter_amount">输入金额</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">自动交易</string>
+  <string name="manual">手动输入</string>
+  <string name="prompt">提示输入</string>
+  <string name="auto">自动输入</string>
   <!-- 20121121 -->
   <string name="send_feedback">发送反馈和建议</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -274,6 +296,8 @@
   <string name="last_month">上个月</string>
   <string name="last30days">最近三十天</string>
   <string name="last_year">上一年度</string>
+  <string name="current_fin_year">本财年</string>
+  <string name="last_fin_year">上一财年</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">交易次数: %1$d</string>
@@ -335,6 +359,7 @@
   <string name="menu_report_where_money_goes">支出</string>
   <string name="menu_report_where_money_comes_from">收入</string>
   <string name="title_check_repeating_transaction">提醒时间</string>
+  <string name="summary_check_repeating_transaction">您要执行周期性交易检查的时间 (默认为 08:00)</string>
   <string name="credits">鸣谢</string>
   <string name="libraries">库</string>
   <string name="top_withdrawals_last_30_days">支出最多的类目：最近三十天</string>
@@ -347,6 +372,7 @@
   <string name="empty_category">空类目</string>
   <string name="empty_payee">无收款人</string>
   <string name="help">帮助</string>
+  <string name="delete_repeating_transaction">删除计划交易</string>
   <string name="last">上一次使用的</string>
   <string name="accounts">账户</string>
   <string name="to_account">转入账户</string>
@@ -358,6 +384,7 @@
   <string name="delete_others_selected_transaction">确定要删除所选的 %d 交易记录?</string>
   <string name="categories">类目</string>
   <string name="payees">收款人</string>
+  <string name="recurring_transactions">计划交易</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新建账户</string>
   <string name="create_new_account">创建新账户</string>
@@ -367,6 +394,8 @@
   <string name="amount_to">至金额</string>
   <string name="reset">重置</string>
   <string name="result_search">您搜索的结果</string>
+  <string name="new_repeating_transaction">新建计划交易</string>
+  <string name="edit_repeating_transaction">编辑周期性交易</string>
   <string name="path_database_not_exists">数据库路径不存在</string>
   <string name="database_can_not_open_write">该数据库不能读写</string>
   <string name="time_frame">时间范围</string>
@@ -386,6 +415,9 @@
   <string name="donate_in_app_already_donate">您已用您的捐款支持 MoneyManagerEx 安卓版的发展。 \n\n开发团队在此向您表示由衷的感谢!</string>
   <string name="donate_in_app_retrieving_status">正在从 Google Play 确认您的捐款状态 请稍候&#8230;</string>
   <string name="donate_in_app_error">无法使用内购功能。请确认您是否安装了最新的谷歌应用商店程序</string>
+  <string name="title_repeating_transaction_process">处理周期性交易</string>
+  <string name="title_use_nested_category">(BETA) 使用新嵌套类别结构</string>
+  <string name="summary_use_nested_category">使用新嵌套类别结构而不是类别:子类别结构 （Beta功能，自担风险）</string>
   <string name="tools">工具</string>
   <string name="entities">主体</string>
   <string name="loading">正在加载...</string>
@@ -500,6 +532,7 @@
   <string name="update_available">更新可用</string>
   <string name="update_available_online">云存储服务上存在一个更新的数据库文件可以使用。是否需要更新？</string>
   <string name="currency_not_found">未找到货币</string>
+  <string name="homepage">我们的主页是 https://moneymanagerex.org/</string>
   <string name="current_database">当前数据库</string>
   <string name="about_logcat_header">您可以通过单击下面的按钮向我们发送应用程序日志。</string>
   <string name="transaction_type_filter">按交易类别筛选</string>
@@ -507,6 +540,11 @@
   <string name="filter_options_info">筛选器选项和信息</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">请输入数据库密码</string>
+  <string name="fingerprint_info">指纹解锁</string>
+  <string name="fingerprint_no_hardware">您的设备不支持指纹身份验证</string>
+  <string name="fingerprint_check_permission">请启用指纹权限</string>
+  <string name="fingerprint_has_enrolled">未配置指纹。请在您的设备设置中至少注册一个指纹。</string>
+  <string name="fingerprint_is_keyguard_secure">请在您的设备设置中启用锁屏界面安全</string>
   <string name="income_expense_period">收入/支出时段</string>
   <string name="income_expense_period_summary">在主界面底部显示的收入/支出时段</string>
   <string name="appwidget_text">示例</string>
@@ -525,6 +563,7 @@
   <string name="commission">佣金</string>
   <string name="value">市值</string>
   <string name="view_transactions">查看交易记录</string>
+  <string name="view_transactions_sub">查看子类别的交易</string>
   <string name="error_downloading_symbol">下载汇率时发生错误</string>
   <string name="error_updating_rates">更新汇率时出错</string>
   <string name="error_no_price_found_for_symbol">无此币种汇价</string>
@@ -667,6 +706,7 @@
   <string name="intro_text">在开始使用 Money Manager Ex 之前，您需要有一个数据库来存放您的数据。请从下列选项中任选一个。</string>
   <string name="intro_create_db">您可以创建一个新文件，并使用默认设置。</string>
   <string name="intro_open_db">或者您也可以选择设备中已有的数据库。</string>
+  <string name="intro_sync">要使用云服务，请在打开数据库中选择所需的服务商并打开文件。</string>
   <!-- Create Database screen -->
   <string name="select_language">请选择语言</string>
   <string name="run">启动 Money Manager Ex</string>
@@ -680,5 +720,23 @@
   <string name="loan">贷款</string>
   <string name="loan_account">贷款账户</string>
   <string name="shares_accounts">共享账户</string>
+  <string name="currency">货币</string>
+  <string name="menu_create_database">创建数据库</string>
+  <string name="create_database">创建数据库</string>
+  <string name="summary_anonymous_usage">启用以匿名发送关于 MMEX 使用情况的数据。</string>
+  <string name="title_anonymous_usage">发送匿名使用数据</string>
+  <string name="title_auto_transaction_number">自动生成交易编号</string>
   <!-- Notification Setting -->
+  <string name="title_notifications_repeating_transaction">周期性交易到期通知 </string>
+  <string name="summary_notifications_repeating_transaction">显示周期性交易到期通知</string>
+  <string name="notification_channel_recurring">周期性交易通知</string>
+  <string name="notification_channel_recurring__description">到期的周期性交易通知</string>
+  <string name="notification_channel_fileoperation_downloadin">Mmex 正在下载</string>
+  <string name="notification_channel_fileoperation_uploadin">Mmex 正在上传</string>
+  <string name="notification_channel_fileoperation_complete">Mmex 上传完成</string>
+  <string name="notification_channel_fileoperation_conflict">Mmex 同步冲突</string>
+  <string name="show">显示</string>
+  <string name="attachment_folder">附件文件夹</string>
+  <string name="attachment_folder_summary">选择保存附件的文件夹</string>
+  <string name="pref_attachment_folder">附件文件夹</string>
 </resources>
