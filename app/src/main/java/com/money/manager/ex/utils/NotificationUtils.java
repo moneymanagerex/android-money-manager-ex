@@ -35,7 +35,7 @@ import timber.log.Timber;
 public class NotificationUtils {
 
     public static final String CHANNEL_ID_RECURRING = "notification_channel_recurring";
-
+    public static final String CHANNEL_ID_REMOTEFILE = "notification_channel_remotefile";
     public static final String CHANNEL_ID_DOWNLOADING = "notification_channel_fileoperation_downloadin";
     public static final String CHANNEL_ID_UPLOADING = "notification_channel_fileoperation_uploadin";
     public static final String CHANNEL_ID_UPLOAD_COMPLETE = "notification_channel_fileoperation_complete";
