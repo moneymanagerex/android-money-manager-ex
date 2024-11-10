@@ -806,6 +806,9 @@
     <string name="notification_channel_recurring">Scheduled Transaction Notification</string>
     <string name="notification_channel_recurring__description">Overdue Scheduled Transaction Notification</string>
 
+    <string name="notification_channel_remotefile">Remote File Operation</string>
+    <string name="notification_channel_remotefile__description">Remote File Operation Notification</string>
+
     <string name="notification_channel_fileoperation_downloadin">Mmex Downloading</string>
     <string name="notification_channel_fileoperation_uploadin">Mmex Uploading</string>
     <string name="notification_channel_fileoperation_complete">Mmex Upload Complete</string>

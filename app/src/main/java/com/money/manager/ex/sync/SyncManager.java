@@ -19,6 +19,8 @@ package com.money.manager.ex.sync;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +32,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -47,8 +50,9 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.money.manager.ex.utils.NotificationUtils;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -114,6 +118,36 @@ public class SyncManager {
                 Timber.i("Not on WiFi connection. Not synchronizing.");
                 return false;
             }
+        }
+
+        // check if remote file is accessible
+        boolean exist = false;
+        String remotePath = getRemotePath();
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(remotePath));
+            inputStream.close();
+            exist = true;
+        } catch (Exception e) {
+            Timber.i("Remote Read got error: %s", e.getMessage());
+        }
+        if (!exist) {
+            Timber.i("Remote file does not exist. Not synchronizing.");
+            NotificationManager notificationManager = (NotificationManager) getContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE)
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setContentTitle("Remote File is not Accessible")
+                    .setContentText(remotePath+" is not accessible... please reopen");
+
+            Notification notification = builder.build();
+            notificationManager.notify(1, notification);
+
+            return false;
         }
 
         return true;
