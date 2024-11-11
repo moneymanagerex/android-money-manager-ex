@@ -99,13 +99,6 @@
             android:layout_gravity="center_horizontal">
 
             <ImageView
-                android:id="@+id/imageViewGooglePlus"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_google_plus"/>
-
-            <ImageView
                 android:id="@+id/imageViewGithub"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
