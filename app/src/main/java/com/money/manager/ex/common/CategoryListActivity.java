@@ -86,10 +86,19 @@ public class CategoryListActivity
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result and terminate activity
-            CategoryListFragment fragment =
-                    (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.setResultAndFinish();
+            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
+            if (!useNestedCategory) {
+                CategoryListFragment fragment =
+                        (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+                if (fragment != null) {
+                    fragment.setResultAndFinish();
+                }
+            } else {
+                NestedCategoryListFragment fragment =
+                        (NestedCategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+                if (fragment != null) {
+                    fragment.setResultAndFinish();
+                }
             }
         }
         return super.onKeyUp(keyCode, event);
