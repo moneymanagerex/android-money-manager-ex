@@ -151,16 +151,12 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     long generateInstanceIdWithSuffix() {
-        // 获取当前时间戳（秒或分钟级别，而不是毫秒级别，以避免超出 long 范围）
-        long ticks =  (System.currentTimeMillis()); // 转换为秒级别，减小范围
+        long ticks =  (System.currentTimeMillis());
 
-        // 生成随机后缀，范围限制在几位数字内
-        long randomSuffix = (long) (Math.random() * 9000) + 1000; // 4 位随机数
+        long randomSuffix = (long) (Math.random() * 1000);
 
-        // 合并时间戳和随机后缀
-        long id = (ticks * 10_000) + randomSuffix;
+        long id = (ticks * 1_000) + randomSuffix;
 
-        // 检查是否溢出
         if (id < 0) {
             throw new IllegalArgumentException("Generated ID exceeds long range");
         }
