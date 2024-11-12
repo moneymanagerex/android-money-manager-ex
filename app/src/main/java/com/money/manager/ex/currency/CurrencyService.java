@@ -53,6 +53,8 @@ import javax.inject.Inject;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
+import timber.log.Timber;
+
 /**
  * This class implements all the methods of utility for the management of currencies.
  */
