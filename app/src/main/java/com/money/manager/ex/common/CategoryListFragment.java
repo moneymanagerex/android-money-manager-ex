@@ -684,7 +684,7 @@ public class CategoryListFragment
                         adapter.setIdGroupChecked(category.getId());
                         adapter.notifyDataSetChanged();
 
-                        long subCategoriesCount = mSubCategories.get(category).size();
+                        int subCategoriesCount = mSubCategories.get(category).size();
                         if (subCategoriesCount == 0) {
                             setResultAndFinish();
                         }
