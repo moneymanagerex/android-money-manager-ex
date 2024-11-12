@@ -38,6 +38,10 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
 
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
