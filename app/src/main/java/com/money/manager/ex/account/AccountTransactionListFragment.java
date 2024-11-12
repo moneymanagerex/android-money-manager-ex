@@ -790,7 +790,7 @@ public class AccountTransactionListFragment
 
         for (int i = 0; i < subMenu.size(); i++) {
             MenuItem subItem = subMenu.getItem(i);
-            long menuId = subItem.getItemId();
+            int menuId = subItem.getItemId();
 
             if (mFilter.transactionStatus.contains(menuId)) {
                 subItem.setChecked(true);
