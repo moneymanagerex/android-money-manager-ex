@@ -55,8 +55,8 @@ public class SingleAccountWidget
      * @param size Widget size in dp.
      * @return Size in number of cells.
      */
-    private static int getCellsForSize(int size) {
-        int n = 2;
+    private static long getCellsForSize(long size) {
+        long n = 2;
         while (70 * n - 30 < size) {
             ++n;
         }
@@ -68,7 +68,7 @@ public class SingleAccountWidget
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final int N = appWidgetIds.length;
+        final long N = appWidgetIds.length;
         for (int i = 0; i < N; i++) {
             updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
         }
@@ -77,7 +77,7 @@ public class SingleAccountWidget
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
-        final int N = appWidgetIds.length;
+        final long N = appWidgetIds.length;
         for (int i = 0; i < N; i++) {
             SingleAccountWidgetConfigureActivity.deleteTitlePref(context, appWidgetIds[i]);
         }
@@ -98,10 +98,10 @@ public class SingleAccountWidget
                                       AppWidgetManager appWidgetManager,
                                       int appWidgetId, Bundle newOptions) {
         // Here you can update your widget view
-        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-//        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-//        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        long minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+//        long maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+        long minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+//        long maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
         Timber.d("resized");
 
@@ -142,10 +142,10 @@ public class SingleAccountWidget
      * @param height current height
      * @return Remote views for the current widget.
      */
-    private RemoteViews getRemoteViews(Context context, int width, int height) {
+    private RemoteViews getRemoteViews(Context context, long width, long height) {
         // First find out rows and columns based on width provided.
-        //int rows = getCellsForSize(minHeight);
-        int columns = getCellsForSize(width);
+        //long rows = getCellsForSize(minHeight);
+        long columns = getCellsForSize(width);
 
         if (columns <= 2) {
             // Get 1 column widget remote view and return
@@ -164,10 +164,10 @@ public class SingleAccountWidget
 
         // todo: load the configured account id
         AppSettings settings = new AppSettings(context);
-        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
 //        if (StringUtils.isNotEmpty(defaultAccountId)) {
         if (defaultAccountId != null) {
-            String defaultAccountString = Integer.toString(defaultAccountId);
+            String defaultAccountString = Long.toString(defaultAccountId);
             displayAccountInfo(context, defaultAccountString, views);
         }
 
@@ -186,7 +186,7 @@ public class SingleAccountWidget
     }
 
     private void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
-        int accountId = Integer.parseInt(defaultAccountId);
+        long accountId = Integer.parseInt(defaultAccountId);
         Account account = loadAccount(context, accountId);
         if (account == null) return;
 
@@ -240,7 +240,7 @@ public class SingleAccountWidget
         return summary;
     }
 
-    private Account loadAccount(Context context, int accountId) {
+    private Account loadAccount(Context context, long accountId) {
         AccountRepository repository = new AccountRepository(context);
         return repository.load(accountId);
     }

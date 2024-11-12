@@ -45,18 +45,19 @@ public class PayeeRepository
         };
     }
 
-    public int add(Payee entity) {
+    public long add(Payee entity) {
+        entity.setId(generateInstanceIdWithSuffix());
         return insert(entity.contentValues);
     }
 
-    public boolean delete(int id) {
+    public boolean delete(long id) {
         if (id == Constants.NOT_SET) return false;
 
-        int result = delete(Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
+        long result = delete(Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
 
-    public Payee load(Integer id) {
+    public Payee load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
         Payee payee = (Payee) super.first(Payee.class,
@@ -68,7 +69,7 @@ public class PayeeRepository
     }
 
     public boolean save(Payee payee) {
-        int id = payee.getId();
+        long id = payee.getId();
         return super.update(payee, Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 }

@@ -21,9 +21,9 @@ package com.money.manager.ex.home.events;
  * Request that the Portfolio fragment is displayed for the given account id.
  */
 public class RequestPortfolioFragmentEvent {
-    public RequestPortfolioFragmentEvent(int accountId) {
+    public RequestPortfolioFragmentEvent(long accountId) {
         this.accountId = accountId;
     }
 
-    public int accountId;
+    public long accountId;
 }

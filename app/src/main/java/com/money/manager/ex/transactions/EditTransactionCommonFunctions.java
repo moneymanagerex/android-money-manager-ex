@@ -139,7 +139,7 @@ public class EditTransactionCommonFunctions {
 
     private List<Account> AccountList;
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
-    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<Long> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
@@ -185,11 +185,11 @@ public class EditTransactionCommonFunctions {
         this.viewHolder = new EditTransactionViewHolder(view);
     }
 
-    public Integer getAccountCurrencyId(int accountId) {
+    public Long getAccountCurrencyId(long accountId) {
         if (accountId == Constants.NOT_SET) return Constants.NOT_SET;
 
         AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(accountId);
+        Long currencyId = repo.loadCurrencyIdFor(accountId);
         if (currencyId == null) {
             new UIHelper(getContext()).showToast(R.string.error_loading_currency);
 
@@ -210,8 +210,8 @@ public class EditTransactionCommonFunctions {
         return getActivity().findViewById(R.id.depositButtonIcon);
     }
 
-    public Integer getDestinationCurrencyId() {
-        Integer accountId = this.transactionEntity.getAccountToId();
+    public Long getDestinationCurrencyId() {
+        Long accountId = this.transactionEntity.getAccountToId();
         // The destination account/currency is hidden by default and may be uninitialized.
         if (!transactionEntity.hasAccountTo() && !mAccountIdList.isEmpty()) {
             accountId = mAccountIdList.get(0);
@@ -234,8 +234,8 @@ public class EditTransactionCommonFunctions {
         return mDirty;
     }
 
-    public Integer getSourceCurrencyId() {
-        Integer accountId = this.transactionEntity.getAccountId();
+    public Long getSourceCurrencyId() {
+        Long accountId = this.transactionEntity.getAccountId();
 
         //if (!transactionEntity.has)
         if (accountId == null && !mAccountIdList.isEmpty()) {
@@ -287,13 +287,13 @@ public class EditTransactionCommonFunctions {
         }
 
         AccountRepository accountRepository = new AccountRepository(getContext());
-        Integer accountId = transactionEntity.getAccountId();
+        Long accountId = transactionEntity.getAccountId();
         if (accountId != null) {
             addMissingAccountToSelectors(accountRepository, accountId);
         }
         addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountToId());
         // add the default account, if any.
-        Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
         if ((accountId != null && accountId == Constants.NOT_SET) && (defaultAccount != null && defaultAccount != Constants.NOT_SET)) {
             accountId = defaultAccount;
@@ -324,10 +324,10 @@ public class EditTransactionCommonFunctions {
 
                 boolean isSource = parent == viewHolder.spinAccount;
                 boolean isTransfer = transactionEntity.getTransactionType() == TransactionTypes.Transfer;
-                Integer accountId = mAccountIdList.get(position);
+                Long accountId = mAccountIdList.get(position);
 
                 if (isSource) {
-                    int originalCurrencyId = getSourceCurrencyId();
+                    long originalCurrencyId = getSourceCurrencyId();
 
                     transactionEntity.setAccountId(accountId);
 
@@ -348,7 +348,7 @@ public class EditTransactionCommonFunctions {
                         displayAmountFrom();
                     }
                 } else {
-                    int originalCurrencyId = getDestinationCurrencyId();
+                    long originalCurrencyId = getDestinationCurrencyId();
 
                     transactionEntity.setAccountToId(accountId);
 
@@ -400,7 +400,7 @@ public class EditTransactionCommonFunctions {
 //            @Override
 //            public void onClick(View v) {
 //                // Get currency id from the account for which the amount has been modified.
-//                Integer currencyId;
+//                Long currencyId;
 //                Money amount;
 //
 //                if (v.equals(viewHolder.txtAmountTo)) {
@@ -423,7 +423,7 @@ public class EditTransactionCommonFunctions {
         // amount
         displayAmountFrom();
         viewHolder.txtAmount.setOnClickListener(view -> {
-            int currencyId = getSourceCurrencyId();
+            long currencyId = getSourceCurrencyId();
             Money amount = transactionEntity.getAmount();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
@@ -437,7 +437,7 @@ public class EditTransactionCommonFunctions {
         // amount to
         displayAmountTo();
         viewHolder.txtAmountTo.setOnClickListener(view -> {
-            int currencyId = getDestinationCurrencyId();
+            long currencyId = getDestinationCurrencyId();
             Money amount = transactionEntity.getAmountTo();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
@@ -856,7 +856,7 @@ public class EditTransactionCommonFunctions {
 
         switch (requestCode) {
             case RequestCodes.PAYEE:
-                this.transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                this.transactionEntity.setPayeeId(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
                 if (!isSplitSelected() && !this.transactionEntity.hasCategory() ) {
@@ -869,7 +869,7 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case RequestCodes.ACCOUNT:
-                transactionEntity.setAccountToId(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
+                transactionEntity.setAccountToId(data.getLongExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
@@ -882,7 +882,7 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case RequestCodes.CATEGORY:
-                this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
+                this.transactionEntity.setCategoryId(data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
                 // refresh UI category
                 displayCategoryName();
@@ -924,8 +924,8 @@ public class EditTransactionCommonFunctions {
 
         // Handle currency exchange on Transfers.
         if (isTransfer) {
-            Integer fromCurrencyId = getSourceCurrencyId();
-            Integer toCurrencyId = getDestinationCurrencyId();
+            Long fromCurrencyId = getSourceCurrencyId();
+            Long toCurrencyId = getDestinationCurrencyId();
             if (fromCurrencyId.equals(toCurrencyId)) {
                 // Same currency. Update both values if the transfer is in the same currency.
                 this.transactionEntity.setAmount(amount);
@@ -1060,7 +1060,7 @@ public class EditTransactionCommonFunctions {
      * @param payeeId id payee
      * @return true if the data selected
      */
-    public boolean loadPayeeName(int payeeId) {
+    public boolean loadPayeeName(long payeeId) {
         PayeeRepository repo = new PayeeRepository(getContext());
         Payee payee = repo.load(payeeId);
         if (payee != null) {
@@ -1077,7 +1077,7 @@ public class EditTransactionCommonFunctions {
      * @param payeeId Identify of payee
      * @return true if category set
      */
-    public boolean setCategoryFromPayee(int payeeId) {
+    public boolean setCategoryFromPayee(long payeeId) {
         if (payeeId == Constants.NOT_SET) return false;
 
         PayeeRepository repo = new PayeeRepository(getContext());
@@ -1100,7 +1100,7 @@ public class EditTransactionCommonFunctions {
 
     /**
      * Select, or change, the type of transaction (withdrawal, deposit, transfer).
-     * Entry point and the handler for the type selector input control.
+     * Entry polong and the handler for the type selector input control.
      * @param transactionType The type to set the transaction to.
      */
     public void changeTransactionTypeTo(TransactionTypes transactionType) {
@@ -1230,7 +1230,7 @@ public class EditTransactionCommonFunctions {
             // How do we get this?
             //if (split == null) continue;
 
-            int id = split.getId();
+            long id = split.getId();
             ArrayList<ISplitTransaction> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {
@@ -1279,7 +1279,7 @@ public class EditTransactionCommonFunctions {
         Private
     */
 
-    private void addMissingAccountToSelectors(AccountRepository accountRepository, Integer accountId) {
+    private void addMissingAccountToSelectors(AccountRepository accountRepository, Long accountId) {
         if (accountId == null || accountId <= 0) return;
 
         // #316. In case the account from recurring transaction is not in the visible list,
@@ -1368,7 +1368,7 @@ public class EditTransactionCommonFunctions {
         displayAmountFormatted(viewHolder.txtAmountTo, amount, getDestinationCurrencyId());
     }
 
-    private void displayAmountFormatted(TextView view, Money amount, Integer currencyId) {
+    private void displayAmountFormatted(TextView view, Money amount, Long currencyId) {
         if (amount == null) return;
         if (currencyId == null || currencyId == Constants.NOT_SET) return;
 
@@ -1521,7 +1521,7 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(splitsToShow));
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
-        Integer fromCurrencyId = getSourceCurrencyId();
+        Long fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         getActivity().startActivityForResult(intent, RequestCodes.SPLIT_TX);

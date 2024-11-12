@@ -56,7 +56,7 @@ public class SplitCategoriesAdapter
     }
 
     public List<ISplitTransaction> splitTransactions;
-    public int currencyId;
+    public long currencyId;
     /**
      * Transaction type for the main transaction that contains the splits.
      */
@@ -132,11 +132,9 @@ public class SplitCategoriesAdapter
 
 
     private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
-        int green;
-        int red;
         // 15
-        green = getContext().getColor(R.color.material_green_700);
-        red = getContext().getColor(R.color.material_red_700);
+        int green = getContext().getColor(R.color.material_green_700);
+        int red = getContext().getColor(R.color.material_red_700);
 
         if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
             // withdrawal
@@ -228,7 +226,7 @@ public class SplitCategoriesAdapter
      */
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
+    public void onItemMove(long fromPosition, long toPosition) {
 //        if (fromPosition < toPosition) {
 //            for (int i = fromPosition; i < toPosition; i++) {
 //                Collections.swap(mItems, i, i + 1);

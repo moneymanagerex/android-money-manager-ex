@@ -154,7 +154,7 @@ public class MainActivity
     boolean dbUpdateCheckDone = false;
     boolean mIsSynchronizing = false;
     boolean isAuthenticated = false;
-    int deviceOrientation = Constants.NOT_SET;
+    long deviceOrientation = Constants.NOT_SET;
 
     private boolean isInAuthentication = false;
     private boolean isScheduledTransactionStarted = false;
@@ -597,7 +597,7 @@ public class MainActivity
         }
         if (item.getId() == null) return false;
 
-        int itemId = item.getId();
+        long itemId = item.getId();
 
         if (itemId == R.id.menu_home) {
             showFragment(HomeFragment.class);
@@ -748,7 +748,7 @@ public class MainActivity
      *
      * @param accountId id of the account for which to show the transactions
      */
-    public void showAccountFragment(int accountId) {
+    public void showAccountFragment(long accountId) {
         String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + accountId;
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
@@ -757,7 +757,7 @@ public class MainActivity
         showFragment(fragment, tag);
     }
 
-    public void showPortfolioFragment(int accountId) {
+    public void showPortfolioFragment(long accountId) {
         String tag = PortfolioFragment.class.getSimpleName() + "_" + accountId;
         PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
@@ -766,7 +766,7 @@ public class MainActivity
         showFragment(fragment, tag);
     }
 
-    public void showWatchlistFragment(int accountId) {
+    public void showWatchlistFragment(long accountId) {
         String tag = WatchlistFragment.class.getSimpleName() + "_" + accountId;
         WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
@@ -1123,7 +1123,7 @@ public class MainActivity
 
     private void handleDeviceRotation() {
         // Remove items from back stack on device rotation.
-        int currentOrientation = getResources().getConfiguration().orientation;
+        long currentOrientation = getResources().getConfiguration().orientation;
         boolean isTablet = new Core(this).isTablet();
 
         if (isTablet && deviceOrientation != currentOrientation) {

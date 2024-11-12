@@ -141,7 +141,7 @@ public class QifRecord {
 
         // retrieve splits
         SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
-        int transactionId = transaction.getId();
+        long transactionId = transaction.getId();
         ArrayList<ISplitTransaction> splits = repo.loadSplitCategoriesFor(transactionId);
         if (splits == null) return Constants.EMPTY_STRING;
 

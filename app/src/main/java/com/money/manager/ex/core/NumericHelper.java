@@ -55,6 +55,10 @@ public class NumericHelper {
         return Integer.parseInt(value);
     }
 
+    public static long toLong(String value) {
+        return Long.parseLong(value);
+    }
+
     public static Integer toInteger(String value) {
         Integer result;
         if (!TextUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
@@ -79,7 +83,7 @@ public class NumericHelper {
             result = Integer.parseInt(value);
         } catch (Exception ex) {
             // nothing
-            result = Constants.NOT_SET;
+            result = Constants.NOT_SET_INT;
         }
         return result;
     }

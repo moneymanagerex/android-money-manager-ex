@@ -80,7 +80,7 @@ public class PriceCsvExport
         char separator = ',';
         StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
 
-        int itemCount = adapter.getCount();
+        long itemCount = adapter.getCount();
         Stock stock = new Stock();
 
         for(int i = 0; i < itemCount; i++) {

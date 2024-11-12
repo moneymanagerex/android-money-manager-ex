@@ -100,11 +100,11 @@ public class AccountTransactionListFragment
      * @param accountId Id of the Account to be displayed
      * @return initialized instance of Account Fragment.
      */
-    public static AccountTransactionListFragment newInstance(int accountId) {
+    public static AccountTransactionListFragment newInstance(long accountId) {
         AccountTransactionListFragment fragment = new AccountTransactionListFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putLong(ARG_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
         // set name of child fragment
@@ -115,7 +115,7 @@ public class AccountTransactionListFragment
     }
 
     private AllDataListFragment mAllDataListFragment;
-    private Integer mAccountId = null;
+    private Long mAccountId = null;
     private String mFragmentName;
     private Money mAccountBalance = MoneyFactory.fromDouble(0),
             mAccountReconciled = MoneyFactory.fromDouble(0);
@@ -138,7 +138,7 @@ public class AccountTransactionListFragment
         super.onCreate(savedInstanceState);
 
         // get account id from the arguments first.
-        mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+        mAccountId = getArguments().getLong(ARG_ACCOUNT_ID);
 
         // initialize filter(s)
         this.mFilter = new TransactionFilter();
@@ -155,7 +155,7 @@ public class AccountTransactionListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+            mAccountId = savedInstanceState.getLong(KEY_CONTENT);
         }
 
         if (container == null) return null;
@@ -337,7 +337,7 @@ public class AccountTransactionListFragment
         if (id == ID_LOADER_SUMMARY) {// Account summary (balances).
             Select query = new Select()
                     .where(QueryAccountBills.ACCOUNTID + "=?",
-                            Integer.toString(mAccountId));
+                            Long.toString(mAccountId));
 
             return new MmxCursorLoader(getActivity(),
                     new QueryAccountBills(getActivity()).getUri(),
@@ -386,7 +386,7 @@ public class AccountTransactionListFragment
         super.onSaveInstanceState(outState);
 
         if (mAccountId != null) {
-            outState.putInt(KEY_CONTENT, mAccountId);
+            outState.putLong(KEY_CONTENT, mAccountId);
         }
 
         outState.putStringArrayList(KEY_STATUS, mFilter.transactionStatus.filter);
@@ -416,13 +416,12 @@ public class AccountTransactionListFragment
     // Private
 
     private boolean datePeriodItemSelected(MenuItem item) {
-        int stringId;
-        int itemId = item.getItemId();
+        long itemId = item.getItemId();
 
         DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = dateRanges.getByMenuId(itemId);
         if (range == null) return false;
-        stringId = range.nameResourceId;
+        int stringId = range.nameResourceId;
 
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
         settings.setShowTransactions(range.key);
@@ -588,7 +587,7 @@ public class AccountTransactionListFragment
     }
 
     private boolean isFilterSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
 
         if (id == R.id.menuTransactionFilters) {
             // show binaryDialog
@@ -614,7 +613,7 @@ public class AccountTransactionListFragment
                 Account account = new Account();
                 account.loadFromCursor(cursor);
 
-                int accountId = account.getId();
+                long accountId = account.getId();
                 switchAccount(accountId);
 
                 // color the spinner text of the selected item.
@@ -698,7 +697,7 @@ public class AccountTransactionListFragment
     private void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) return;
 
-        mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        mAccountId = savedInstanceState.getLong(KEY_CONTENT);
 
         mFilter.transactionStatus.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
     }
@@ -746,12 +745,12 @@ public class AccountTransactionListFragment
         if (adapter == null) return;
 
         Cursor cursor = adapter.getCursor();
-        int position = Constants.NOT_SET;
+        int position = Constants.NOT_SET_INT;
 
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
-            int accountId = Integer.parseInt(accountIdString);
+            long accountId = Integer.parseInt(accountIdString);
             if (accountId == mAccountId) {
                 position = i;
                 break;
@@ -791,7 +790,7 @@ public class AccountTransactionListFragment
 
         for (int i = 0; i < subMenu.size(); i++) {
             MenuItem subItem = subMenu.getItem(i);
-            int menuId = subItem.getItemId();
+            long menuId = subItem.getItemId();
 
             if (mFilter.transactionStatus.contains(menuId)) {
                 subItem.setChecked(true);
@@ -799,7 +798,7 @@ public class AccountTransactionListFragment
         }
     }
 
-    private void switchAccount(int accountId) {
+    private void switchAccount(long accountId) {
         if (accountId == mAccountId) return;
 
         // switch account. Reload transactions.
@@ -853,7 +852,7 @@ public class AccountTransactionListFragment
      *
      * @param transId null set if you want to do a new transaction, or transaction id
      */
-    private void startCheckingAccountActivity(Integer transId) {
+    private void startCheckingAccountActivity(Long transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);

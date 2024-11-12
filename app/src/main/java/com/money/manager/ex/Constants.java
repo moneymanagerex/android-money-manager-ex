@@ -19,7 +19,8 @@ package com.money.manager.ex;
 public class Constants {
     // Java
     public static final String EMPTY_STRING = "";
-    public static final int NOT_SET = -1;
+    public static final long NOT_SET = -1;
+    public static final int NOT_SET_INT = -1;
 
     // The number of decimals used for parsing numbers in Money type.
     public static final int DEFAULT_PRECISION = 4;
@@ -51,6 +52,6 @@ public class Constants {
     public static final String PRICE_FORMAT = "0.00##";
 
     // UI
-    public static final int NotificationIconSize = 25;
-    public static final int NotificationBigIconSize = 48;
+    public static final long NotificationIconSize = 25;
+    public static final long NotificationBigIconSize = 48;
 }

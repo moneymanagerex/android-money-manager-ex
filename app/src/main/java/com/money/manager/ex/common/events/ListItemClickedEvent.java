@@ -23,13 +23,13 @@ import android.view.View;
  * Event for clicking the items in recycler view.
  */
 public class ListItemClickedEvent {
-    public ListItemClickedEvent(int id, String name, View view) {
+    public ListItemClickedEvent(long id, String name, View view) {
         this.id = id;
         this.name = name;
         this.view = view;
     }
 
-    public int id;
+    public long id;
     public String name;
     /**
      * Clicked view.

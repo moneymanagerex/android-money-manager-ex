@@ -41,20 +41,20 @@ public class Category
         super(contentValues);
     }
 
-    public int getId() {
-        return getInt(CATEGID);
+    public long getId() {
+        return getLong(CATEGID);
     }
 
-    public void setId(Integer value) {
-        setInt(CATEGID, value);
+    public void setId(Long value) {
+        setLong(CATEGID, value);
     }
 
-    public int getParentId() {
-        return getInt(PARENTID);
+    public long getParentId() {
+        return getLong(PARENTID);
     }
 
-    public void setParentId(Integer value) {
-        setInt(PARENTID, value);
+    public void setParentId(Long value) {
+        setLong(PARENTID, value);
     }
 
     public String getName() {

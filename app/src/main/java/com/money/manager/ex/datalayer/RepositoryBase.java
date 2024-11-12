@@ -52,11 +52,11 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     private final Context context;
 
-    public int count(String selection, String[] args) {
+    public long count(String selection, String[] args) {
         Cursor c = openCursor(null, selection, args);
         if (c == null) return Constants.NOT_SET;
 
-        int result = c.getCount();
+        long result = c.getCount();
         c.close();
 
         return result;
@@ -84,7 +84,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
     }
 
-    public int add(EntityBase entity) {
+    public long add(EntityBase entity) {
         return insert(entity.contentValues);
     }
 
@@ -146,14 +146,32 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     // Protected
 
-    protected int bulkInsert(ContentValues[] items) {
+    protected long bulkInsert(ContentValues[] items) {
         return getContext().getContentResolver().bulkInsert(this.getUri(), items);
+    }
+
+    long generateInstanceIdWithSuffix() {
+        // 获取当前时间戳（秒或分钟级别，而不是毫秒级别，以避免超出 long 范围）
+        long ticks =  (System.currentTimeMillis()); // 转换为秒级别，减小范围
+
+        // 生成随机后缀，范围限制在几位数字内
+        long randomSuffix = (long) (Math.random() * 9000) + 1000; // 4 位随机数
+
+        // 合并时间戳和随机后缀
+        long id = (ticks * 10_000) + randomSuffix;
+
+        // 检查是否溢出
+        if (id < 0) {
+            throw new IllegalArgumentException("Generated ID exceeds long range");
+        }
+
+        return id;
     }
 
     /**
      * Generic insert method.
      */
-    protected int insert(ContentValues values) {
+    protected long insert(ContentValues values) {
         // sanitize
         values.remove("_id");
 
@@ -187,7 +205,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         // remove "_id" from the values.
         values.remove("_id");
 
-        int updateResult = getContext().getContentResolver().update(this.getUri(),
+        long updateResult = getContext().getContentResolver().update(this.getUri(),
                 values,
                 where,
                 selectionArgs
@@ -223,8 +241,8 @@ public abstract class RepositoryBase<T extends EntityBase>
         return results;
     }
 
-    protected int delete(String where, String[] args) {
-        int result = getContext().getContentResolver().delete(this.getUri(),
+    protected long delete(String where, String[] args) {
+        long result = getContext().getContentResolver().delete(this.getUri(),
             where,
             args
         );

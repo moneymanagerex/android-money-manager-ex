@@ -206,7 +206,7 @@ public class UIHelper {
         if (getContext().getTheme().resolveAttribute(attr, tv, true))
             return tv.resourceId;
         else
-            return Constants.NOT_SET;
+            return Constants.NOT_SET_INT;
     }
 
     public void showToast(int messageId) {

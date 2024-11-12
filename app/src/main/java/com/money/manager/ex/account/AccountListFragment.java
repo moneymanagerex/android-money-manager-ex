@@ -117,7 +117,7 @@ public class AccountListFragment
         if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int accountId = (int) info.id;
+        long accountId = info.id;
         int itemId = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(itemId);
         if (menuId == null) return false;
@@ -253,7 +253,7 @@ public class AccountListFragment
         getActivity().openContextMenu(v);
     }
 
-    private void showDeleteConfirmationDialog(final int accountId) {
+    private void showDeleteConfirmationDialog(final long accountId) {
         UIHelper ui = new UIHelper(getContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -285,7 +285,7 @@ public class AccountListFragment
      *
      * @param accountId is null for a new account, not null for editing accountId account
      */
-    private void startAccountListEditActivity(Integer accountId) {
+    private void startAccountListEditActivity(Long accountId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), AccountEditActivity.class);
         // check accountId not null

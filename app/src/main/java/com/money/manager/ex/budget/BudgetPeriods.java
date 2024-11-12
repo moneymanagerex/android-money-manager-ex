@@ -97,7 +97,7 @@ public class BudgetPeriods {
 
     public static double getMonthlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
         double estimated = 0;
-        int ndays = 365;
+        long ndays = 365;
         if (periodEnum == BudgetPeriodEnum.MONTHLY) {
             estimated = amount;
         }

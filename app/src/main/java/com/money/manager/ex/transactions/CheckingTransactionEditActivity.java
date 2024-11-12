@@ -81,7 +81,7 @@ public class CheckingTransactionEditActivity
     public String mIntentAction;
 
     // bill deposits
-    public int mScheduledTransactionId = Constants.NOT_SET;
+    public long mScheduledTransactionId = Constants.NOT_SET;
 
     @Inject
     BriteDatabase database;
@@ -174,7 +174,7 @@ public class CheckingTransactionEditActivity
                 Parcels.wrap(mCommon.mSplitTransactions));
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
                 Parcels.wrap(mCommon.mSplitTransactionsDeleted));
-        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mScheduledTransactionId);
+        outState.putLong(EditTransactionActivityConstants.KEY_BDID_ID, mScheduledTransactionId);
 
 //        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
@@ -385,7 +385,7 @@ public class CheckingTransactionEditActivity
         mCommon.initNotesControls();
     }
 
-    private boolean loadTransaction(int transId) {
+    private boolean loadTransaction(long transId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = repo.load(transId);
         if (tx == null) return false;
@@ -412,7 +412,7 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
-    private boolean loadScheduledTransaction(int scheduledTransactionId) {
+    private boolean loadScheduledTransaction(long scheduledTransactionId) {
         try {
             return loadScheduledTransactionInternal(scheduledTransactionId);
         } catch (RuntimeException ex) {
@@ -426,7 +426,7 @@ public class CheckingTransactionEditActivity
      * @param scheduledTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    private boolean loadScheduledTransactionInternal(int scheduledTransactionId) {
+    private boolean loadScheduledTransactionInternal(long scheduledTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
         RecurringTransaction recurringTx = repo.load(scheduledTransactionId);
         if (recurringTx == null) return false;
@@ -471,7 +471,7 @@ public class CheckingTransactionEditActivity
         }
 
         if (savedInstanceState == null) {
-            int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
+            long accountId = intent.getLongExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
             if (accountId != Constants.NOT_SET) {
                 mCommon.transactionEntity.setAccountId(accountId);
             }
@@ -479,7 +479,7 @@ public class CheckingTransactionEditActivity
             // Edit transaction.
 
             if (mIntentAction != null) {
-                int transactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
+                long transactionId = intent.getLongExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
 
                 switch (mIntentAction) {
                     case Intent.ACTION_EDIT:
@@ -491,7 +491,7 @@ public class CheckingTransactionEditActivity
                         duplicateTransaction();
                         break;
                     case Intent.ACTION_INSERT:
-                        mScheduledTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
+                        mScheduledTransactionId = intent.getLongExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
                         if (mScheduledTransactionId > Constants.NOT_SET) {
                             loadScheduledTransaction(mScheduledTransactionId);
                         }
@@ -556,8 +556,8 @@ public class CheckingTransactionEditActivity
 
                         if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
                         {
-                            mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
-                            mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountToId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
                             //convert the to amount from the both currency details
                             CurrencyService currencyService = new CurrencyService(this);
@@ -592,7 +592,7 @@ public class CheckingTransactionEditActivity
                         }
                         else
                         {
-                            mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                            mCommon.transactionEntity.setPayeeId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
                             mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
                             mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
                         }
@@ -601,7 +601,7 @@ public class CheckingTransactionEditActivity
                         if(mCommon.payeeName.isEmpty())
                         {
                             String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
-                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
+                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(Long.parseLong(catID)); }
 
                             mCommon.loadCategoryName();
                         }
@@ -619,10 +619,10 @@ public class CheckingTransactionEditActivity
             }
 
             // Select the default account if none set.
-            Integer account = mCommon.transactionEntity.getAccountId();
+            Long account = mCommon.transactionEntity.getAccountId();
             if (account == null || account == Constants.NOT_SET) {
                 AppSettings settings = new AppSettings(this);
-                Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+                Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
                 if (defaultAccountId == null) {
                     // Show toast message.
                     new UIHelper(this).showToast(getString(R.string.default_account_not_set));
@@ -724,7 +724,7 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveSplitCategories() {
-        Integer transactionId = mCommon.transactionEntity.getId();
+        Long transactionId = mCommon.transactionEntity.getId();
         SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
         ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
 

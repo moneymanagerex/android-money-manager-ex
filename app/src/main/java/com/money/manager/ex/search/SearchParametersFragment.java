@@ -98,11 +98,11 @@ public class SearchParametersFragment
     private CheckBox cbxSearchSubCategory;
     // arrays list account name and account id
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
-    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<Long> mAccountIdList = new ArrayList<>();
     private List<Account> mAccountList;
     // currencies
     private ArrayList<String> mCurrencySymbolList = new ArrayList<>();
-    private final ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
+    private final ArrayList<Long> mCurrencyIdList = new ArrayList<>();
     private List<Currency> mCurrencies;
     // status item and values
     private final ArrayList<String> mStatusItems = new ArrayList<>();
@@ -155,7 +155,7 @@ public class SearchParametersFragment
                     mAccountIdList.add(mAccountList.get(i).getId());
                 } else {
                     mAccountNameList.add("");
-                    mAccountIdList.add(AdapterView.INVALID_POSITION);
+                    mAccountIdList.add(AdapterView.INVALID_ROW_ID);
                 }
             }
         }
@@ -245,15 +245,15 @@ public class SearchParametersFragment
 
         switch (requestCode) {
             case RequestCodes.PAYEE:
-                viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                viewHolder.txtSelectPayee.setTag(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
                 break;
             case RequestCodes.CATEGORY:
                 //create class for store data
                 CategorySub categorySub = new CategorySub();
-                categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                categorySub.categId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                categorySub.subCategId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                 categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 //update into button
                 displayCategory(categorySub);
@@ -474,7 +474,7 @@ public class SearchParametersFragment
 
         if (searchParameters.category != null) {
             // Issue 1532 need to check subcategory first
-            int categId;
+            long categId;
             if  ( searchParameters.category.subCategId > 0 ) {
                 categId = searchParameters.category.subCategId;
             } else {
@@ -494,7 +494,7 @@ public class SearchParametersFragment
                     } else {
                         whereSubCategory = "";
                     }
-                    whereSubCategory += Integer.toString(child.getCategoryId());
+                    whereSubCategory += Long.toString(child.getCategoryId());
                 }
                 whereSubCategory = "(" + whereSubCategory + ")" ;
 
@@ -579,7 +579,7 @@ public class SearchParametersFragment
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
             if (selectedAccountPosition != AdapterView.INVALID_POSITION) {
-                int selectedAccountId = mAccountIdList.get(selectedAccountPosition);
+                long selectedAccountId = mAccountIdList.get(selectedAccountPosition);
                 if (selectedAccountId != Constants.NOT_SET) {
                     searchParameters.accountId = selectedAccountId;
                 }
@@ -590,7 +590,7 @@ public class SearchParametersFragment
         if (this.spinCurrency != null) {
             int position = spinCurrency.getSelectedItemPosition();
             if (position != AdapterView.INVALID_POSITION) {
-                int currencyId = mCurrencyIdList.get(position);
+                long currencyId = mCurrencyIdList.get(position);
                 if (currencyId != Constants.NOT_SET) {
                     searchParameters.currencyId = currencyId;
                 }
@@ -629,7 +629,7 @@ public class SearchParametersFragment
 //        }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
-            searchParameters.payeeId = Integer.parseInt(viewHolder.txtSelectPayee.getTag().toString());
+            searchParameters.payeeId = Long.parseLong(viewHolder.txtSelectPayee.getTag().toString());
             searchParameters.payeeName = viewHolder.txtSelectPayee.getText().toString();
         }
         // Category

@@ -369,7 +369,7 @@ public class IncomeVsExpensesListFragment
                 // show the details for the selected month/year.
                 MmxDate dateTime = new MmxDate();
                 dateTime.setYear(entity.getYear());
-                int month = entity.getMonth();
+                long month = entity.getMonth();
                 if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     dateTime.setMonth(entity.getMonth() - 1);
                 } else {

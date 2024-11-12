@@ -24,13 +24,13 @@ public enum TransactionTypes {
     Deposit(1),
     Transfer(2);
 
-    TransactionTypes(int i) {
+    TransactionTypes(long i) {
         this.code = i;
     }
 
-    private final int code;
+    private final long code;
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

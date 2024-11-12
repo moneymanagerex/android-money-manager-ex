@@ -47,12 +47,12 @@ public class AccountTransactionDisplay
         DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
     }
 
-    public Integer getId() {
-        return getInt(QueryAllData.ID);
+    public Long getId() {
+        return getLong(QueryAllData.ID);
     }
 
-    public Integer getAccountId() {
-        return getInt(QueryAllData.ACCOUNTID);
+    public Long getAccountId() {
+        return getLong(QueryAllData.ACCOUNTID);
     }
 
     public String getAccountName() {
@@ -84,7 +84,7 @@ public class AccountTransactionDisplay
     }
 
     public boolean getIsSplit() {
-        int split = getInt(QueryAllData.SPLITTED);
+        long split = getLong(QueryAllData.SPLITTED);
         return split > 0;
     }
 
@@ -105,8 +105,8 @@ public class AccountTransactionDisplay
         return getString(QueryAllData.Subcategory);
     }
 
-    public int getToAccountId() {
-        return getInt(QueryAllData.TOACCOUNTID);
+    public long getToAccountId() {
+        return getLong(QueryAllData.TOACCOUNTID);
     }
 
     public Money getToAmount() {

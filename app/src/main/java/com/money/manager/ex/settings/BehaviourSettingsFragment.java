@@ -125,7 +125,7 @@ public class BehaviourSettingsFragment
         Preference.OnPreferenceClickListener listener = preference1 -> {
 
             //Check the permission exists, if not request the permission from the user
-            int result = ContextCompat.checkSelfPermission(getActivity(),
+            long result = ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.RECEIVE_SMS);
 
             if (settings.getBankSmsTrans())

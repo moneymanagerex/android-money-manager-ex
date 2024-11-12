@@ -86,7 +86,7 @@ public class AllDataListFragment
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
 
-    public static AllDataListFragment newInstance(int accountId) {
+    public static AllDataListFragment newInstance(long accountId) {
         return newInstance(accountId, true);
     }
 
@@ -96,11 +96,11 @@ public class AllDataListFragment
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataListFragment
      */
-    public static AllDataListFragment newInstance(int accountId, boolean showFloatingButton) {
+    public static AllDataListFragment newInstance(long accountId, boolean showFloatingButton) {
         AllDataListFragment fragment = new AllDataListFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putLong(ARG_ACCOUNT_ID, accountId);
         args.putBoolean(ARG_SHOW_FLOATING_BUTTON, showFloatingButton);
         fragment.setArguments(args);
 
@@ -112,7 +112,7 @@ public class AllDataListFragment
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    public int AccountId = Constants.NOT_SET;
+    public long AccountId = Constants.NOT_SET;
     private LinearLayout footer;
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
@@ -160,7 +160,7 @@ public class AllDataListFragment
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startEditAccountTransactionActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                     }
                 }
             }
@@ -357,7 +357,7 @@ public class AllDataListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
+        long itemId = item.getItemId();
 
         if (itemId == R.id.menu_export_to_csv) {
             exportDataToCSVFile();
@@ -449,7 +449,7 @@ public class AllDataListFragment
 
     // Methods
 
-    public void displayRunningBalances(HashMap<Integer, Money> balances) {
+    public void displayRunningBalances(HashMap<Long, Money> balances) {
         AllDataAdapter adapter = getAllDataAdapter();
         if(adapter == null) return;
 
@@ -617,16 +617,16 @@ public class AllDataListFragment
         int originalPosition = cursor.getPosition();
         AllDataAdapter adapter = getAllDataAdapter();
         CurrencyService currencyService = new CurrencyService(getContext());
-        int baseCurrencyId = currencyService.getBaseCurrencyId();
+        long baseCurrencyId = currencyService.getBaseCurrencyId();
         ContentValues values = new ContentValues();
 
-        int currencyId;
+        long currencyId;
         Money amount;
         Money converted;
         String transType;
         TransactionTypes transactionType;
 
-        cursor.moveToPosition(Constants.NOT_SET);
+        cursor.moveToPosition(Constants.NOT_SET_INT);
 
         while(cursor.moveToNext()) {
             values.clear();
@@ -642,10 +642,10 @@ public class AllDataListFragment
             transactionType = TransactionTypes.valueOf(transType);
 
             if (transactionType.equals(TransactionTypes.Transfer)) {
-                currencyId = values.getAsInteger(adapter.TOCURRENCYID);
+                currencyId = values.getAsLong(adapter.TOCURRENCYID);
                 amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
             } else {
-                currencyId = values.getAsInteger(adapter.CURRENCYID);
+                currencyId = values.getAsLong(adapter.CURRENCYID);
                 amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
             }
 
@@ -662,7 +662,7 @@ public class AllDataListFragment
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
-        for (int id : transId) {
+        for (long id : transId) {
             // content value for updates
             ContentValues values = new ContentValues();
             // set new state
@@ -671,10 +671,10 @@ public class AllDataListFragment
             AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
 
             // update
-            int updateResult = getActivity().getContentResolver().update(repo.getUri(),
+            long updateResult = getActivity().getContentResolver().update(repo.getUri(),
                     values,
                     AccountTransaction.TRANSID + "=?",
-                    new String[]{Integer.toString(id)});
+                    new String[]{Long.toString(id)});
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
 
@@ -701,19 +701,19 @@ public class AllDataListFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        for (int transactionId : transactionIds) {
+                        for (long transactionId : transactionIds) {
                             // First delete any splits. See if there are any split records.
                             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
                             Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
                                     SplitCategory.TRANSID + "=" + transactionId,
                                     null, SplitCategory.SPLITTRANSID);
-                            int splitCount = curSplit.getCount();
+                            long splitCount = curSplit.getCount();
                             curSplit.close();
 
                             if (splitCount > 0) {
-                                int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                                long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
                                         SplitCategory.TRANSID + "=?",
-                                        new String[]{Integer.toString(transactionId)});
+                                        new String[]{Long.toString(transactionId)});
                                 if (deleteResult != splitCount) {
                                     Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
@@ -725,9 +725,9 @@ public class AllDataListFragment
 
                             AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
 
-                            int deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                            long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
                                     AccountTransaction.TRANSID + "=?",
-                                    new String[]{Integer.toString(transactionId)});
+                                    new String[]{Long.toString(transactionId)});
                             if (deleteResult == 0) {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
@@ -753,7 +753,7 @@ public class AllDataListFragment
      *
      * @param transId null set if you want to do a new transaction, or transaction id
      */
-    private void startEditAccountTransactionActivity(Integer transId) {
+    private void startEditAccountTransactionActivity(Long transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
 
@@ -790,7 +790,7 @@ public class AllDataListFragment
         // Clear selection first.
         adapter.clearPositionChecked();
 
-        int numRecords = adapter.getCount();
+        long numRecords = adapter.getCount();
         for (int i = 0; i < numRecords; i++) {
             adapter.setPositionChecked(i, true);
         }
@@ -810,8 +810,8 @@ public class AllDataListFragment
             // List view only contains the one that was tapped, ignoring the Select All.
 //                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
             SparseBooleanArray positionChecked = adapter.getPositionsChecked();
-//                int checkedItemsCount = getListView().getCheckedItemCount();
-            int checkedItemsCount = positionChecked.size();
+//                long checkedItemsCount = getListView().getCheckedItemCount();
+            long checkedItemsCount = positionChecked.size();
 
             for (int i = 0; i < checkedItemsCount; i++) {
                 int position = positionChecked.keyAt(i);

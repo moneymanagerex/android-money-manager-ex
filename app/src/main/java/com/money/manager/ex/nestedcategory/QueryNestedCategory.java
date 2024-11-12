@@ -70,7 +70,7 @@ public class QueryNestedCategory
         return MmexApplication.getApp().getContentResolver().query(getUri(), projection, selection, selectionArgs, sortOrder);
     }
 
-    public NestedCategoryEntity getOneCategoryEntity(Integer categoryId) {
+    public NestedCategoryEntity getOneCategoryEntity(Long categoryId) {
         NestedCategoryEntity entity = null;
         Cursor cursor = getCursor(null, QueryNestedCategory.CATEGID + " = " + categoryId.toString(), null, null);
         if (cursor.moveToFirst()) {
@@ -98,9 +98,9 @@ public class QueryNestedCategory
         return  getNestedCategoryEntities( filter, CATEGNAME);
     }
 
-    public List<NestedCategoryEntity> getChildrenNestedCategoryEntities(Integer categoryId ){
+    public List<NestedCategoryEntity> getChildrenNestedCategoryEntities(Long categoryId ){
         return getNestedCategoryEntities( FULLCATID +
-                        " LIKE '%:"+Integer.toString(categoryId)+":%'");
+                        " LIKE '%:" + Long.toString(categoryId) + ":%'");
     }
 
 }

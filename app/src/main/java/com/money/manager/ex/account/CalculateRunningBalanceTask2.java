@@ -48,7 +48,7 @@ import timber.log.Timber;
  * The problem is displaying the amounts once they are loaded.
  */
 public class CalculateRunningBalanceTask2
-    extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
+    extends AsyncTask<Void, Void, HashMap<Long, Money>> {
 
     /**
      * Create the task.
@@ -56,7 +56,7 @@ public class CalculateRunningBalanceTask2
      * @param accountId Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
      */
-    public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
+    public CalculateRunningBalanceTask2(Context context, long accountId, Date startingDate,
                                         Bundle selection) {
         this.context = context.getApplicationContext();
         this.accountId = accountId;
@@ -65,8 +65,8 @@ public class CalculateRunningBalanceTask2
     }
 
     private final Context context;
-    private HashMap<Integer, Money> balances;
-    private final int accountId;
+    private HashMap<Long, Money> balances;
+    private final long accountId;
     private final Date startingDate;
     private final Bundle selectionBundle;
 
@@ -85,7 +85,7 @@ public class CalculateRunningBalanceTask2
      * @see #publishProgress
      */
     @Override
-    protected HashMap<Integer, Money> doInBackground(Void... params) {
+    protected HashMap<Long, Money> doInBackground(Void... params) {
         try {
             return runTask();
         } catch (Exception ex) {
@@ -95,15 +95,15 @@ public class CalculateRunningBalanceTask2
     }
 
     @Override
-    protected void onPostExecute(HashMap<Integer, Money> result) {
+    protected void onPostExecute(HashMap<Long, Money> result) {
         EventBus.getDefault().post(new RunningBalanceCalculatedEvent(result));
     }
 
-    private HashMap<Integer, Money> runTask() {
+    private HashMap<Long, Money> runTask() {
         // load data
         Cursor c = loadData();
         if (c == null) return null;
-        int records = c.getCount();
+        long records = c.getCount();
         if (balances != null && records == balances.size()) return null;
         if (c.getCount() <= 0) return null;
 
@@ -154,7 +154,7 @@ public class CalculateRunningBalanceTask2
                         amount = tx.getAmount();
                         break;
                     case Transfer:
-                        int accountId = tx.getAccountId();
+                        long accountId = tx.getAccountId();
                         if (accountId == this.accountId) {
                             amount = tx.getAmount();
                         } else {

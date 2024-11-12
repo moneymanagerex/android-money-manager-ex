@@ -44,7 +44,7 @@ public class CategoryRepository
                 Category.PARENTID};
     }
 
-    public Category load(int id) {
+    public Category load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         Category category = first(Category.class,
@@ -56,7 +56,7 @@ public class CategoryRepository
         return category;
     }
 
-    public int loadIdByName(String name) {
+    public long loadIdByName(String name) {
         Category temp = first(Category.class,
                 new String[] { Category.CATEGID },
                 Category.CATEGNAME + "=?",
@@ -68,11 +68,11 @@ public class CategoryRepository
         return temp.getId();
     }
 
-    public int loadIdByName(String name, int parentId) {
+    public long loadIdByName(String name, long parentId) {
         Category temp = first(Category.class,
                 new String[] { Category.CATEGID },
                 Category.CATEGNAME + "=? AND" + Category.PARENTID + "=?",
-                new String[] { name, Integer.toString(parentId)},
+                new String[] { name, Long.toString(parentId)},
                 null);
 
         if (temp == null) return Constants.NOT_SET;

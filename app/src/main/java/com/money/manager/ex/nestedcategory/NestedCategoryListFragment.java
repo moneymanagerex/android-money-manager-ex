@@ -72,7 +72,7 @@ public class NestedCategoryListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
-    public Integer requestId;
+    public Long requestId;
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
 
@@ -81,7 +81,7 @@ public class NestedCategoryListFragment
     // table or query
     private static QueryNestedCategory mQuery;
     private int mLayout;
-//    private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
+//    private long mIdGroupChecked = ExpandableListView.INVALID_POSITION;
 
     private List<Category> mCategories;
     private String mCurFilter;
@@ -225,7 +225,7 @@ public class NestedCategoryListFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-            outState.putInt(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
+            outState.putLong(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
             outState.putString(KEY_CUR_FILTER, mCurFilter);
         }
     }
@@ -295,7 +295,7 @@ public class NestedCategoryListFragment
 
             if (getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                 CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                int categId = adapter.getIdGroupChecked();
+                long categId = adapter.getIdGroupChecked();
 
                 if (categId == ExpandableListView.INVALID_POSITION) return;
                 for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
@@ -340,11 +340,11 @@ public class NestedCategoryListFragment
         Core core = new Core(getActivity().getApplicationContext());
         String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
 
-        int key = -1;
+        long key = -1;
 
         // reset cursor if getting back on the fragment.
         if (data.getPosition() > 0) {
-            data.moveToPosition(Constants.NOT_SET);
+            data.moveToPosition(Constants.NOT_SET_INT);
         }
 
         while (data.moveToNext()) {
@@ -415,7 +415,7 @@ public class NestedCategoryListFragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int rowsDelete = 0;
+                        long rowsDelete = 0;
                         CategoryRepository repo = new CategoryRepository(getActivity());
                         rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
                                 Category.CATEGID + "=" + category.getId(),
@@ -469,14 +469,14 @@ public class NestedCategoryListFragment
 
                         switch (type) {
                             case INSERT:
-                                int insertResult = service.createNew(name, Constants.NOT_SET);
+                                long insertResult = service.createNew(name, Constants.NOT_SET);
 
                                 if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(category.getId(), name, Constants.NOT_SET);
+                                long updateResult = service.update(category.getId(), name, Constants.NOT_SET);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
@@ -515,7 +515,7 @@ public class NestedCategoryListFragment
         final List<NestedCategoryEntity> categories = mQuery.getNestedCategoryEntities(null);
 
         ArrayList<String> categoryNames = new ArrayList<>();
-        ArrayList<Integer> categoryIds = new ArrayList<>();
+        ArrayList<Long> categoryIds = new ArrayList<>();
         for (NestedCategoryEntity category1 : categories) {
             // do not include category itself and all children form parent list
             if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
@@ -550,19 +550,19 @@ public class NestedCategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get parent category id
-                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
+                        long parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
                             case INSERT:
-                                int insertResult = service.createNew(name, parentID);
+                                long insertResult = service.createNew(name, parentID);
 
                                 if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(category.getId(), name, parentID);
+                                long updateResult = service.update(category.getId(), name, parentID);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }

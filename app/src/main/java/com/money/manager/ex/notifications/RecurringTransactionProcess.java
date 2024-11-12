@@ -45,7 +45,7 @@ public class RecurringTransactionProcess {
 
     // Notification channel definition will be move into NotificationUtils to centralize logic
     // public static String CHANNEL_ID = "RecurringTransaction_NotificationChannel";
-    private static final int ID_NOTIFICATION = 0x000A;
+    private static final long ID_NOTIFICATION = 0x000A;
 
     public RecurringTransactionProcess(Context context) {
         super();
@@ -176,8 +176,8 @@ public class RecurringTransactionProcess {
 */
 
                 // notify
-                notificationManager.cancel(schedTrx.trxId);
-                notificationManager.notify(schedTrx.trxId, notification);
+                notificationManager.cancel((int)schedTrx.trxId);
+                notificationManager.notify((int)schedTrx.trxId, notification);
             } catch (Exception e) {
                 Timber.e(e, "showing notification for recurring transaction");
             }
@@ -204,13 +204,13 @@ public class RecurringTransactionProcess {
             // compose text
             String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
-                    ": " + currencyService.getCurrencyFormatted(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
+                    ": " + currencyService.getCurrencyFormatted(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                     MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
                     " (" + Recurrence.recurringModeString( recurringMode ) + ")";
 
 //            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
             result.addNotification(  line ,
-                    Recurrence.recurringModeString( recurringMode ), cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.BDID)));
+                    Recurrence.recurringModeString( recurringMode ), cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
 
         }
 

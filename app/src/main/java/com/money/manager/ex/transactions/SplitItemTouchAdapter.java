@@ -24,7 +24,7 @@ package com.money.manager.ex.transactions;
  * https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf#.mu58y13q0
  */
 public interface SplitItemTouchAdapter {
-    void onItemMove(int fromPosition, int toPosition);
+    void onItemMove(long fromPosition, long toPosition);
 
     void onItemDismiss(int position);
 }

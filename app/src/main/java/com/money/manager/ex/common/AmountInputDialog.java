@@ -58,8 +58,8 @@ public class AmountInputDialog
     private static final String KEY_EXPRESSION = "AmountInputDialog:Expression";
     private static final String ARG_ROUNDING = "AmountInputDialog:Rounding";
 
-    public static AmountInputDialog getInstance(int requestId, Money amount) {
-        String requestIdString = Integer.toString(requestId);
+    public static AmountInputDialog getInstance(long requestId, Money amount) {
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, null, false);
     }
 
@@ -67,22 +67,22 @@ public class AmountInputDialog
         return getInstance(requestId, amount, null, false);
     }
 
-    public static AmountInputDialog getInstance(int requestId, Money amount, int currencyId) {
-        String requestIdString = Integer.toString(requestId);
+    public static AmountInputDialog getInstance(long requestId, Money amount, long currencyId) {
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, true);
     }
 
-    public static AmountInputDialog getInstance(String requestId, Money amount, int currencyId) {
+    public static AmountInputDialog getInstance(String requestId, Money amount, long currencyId) {
         return getInstance(requestId, amount, currencyId, true);
     }
 
-    public static AmountInputDialog getInstance(int requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(long requestId, Money amount, Long currencyId,
                                                 boolean roundToCurrencyDecimals) {
-        String requestIdString = Integer.toString(requestId);
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, roundToCurrencyDecimals);
     }
 
-    public static AmountInputDialog getInstance(String requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(String requestId, Money amount, Long currencyId,
                                                 boolean roundToCurrencyDecimals) {
         Bundle args = new Bundle();
         args.putString(KEY_REQUEST_ID, requestId);
@@ -90,7 +90,7 @@ public class AmountInputDialog
         args.putString(KEY_AMOUNT, amountString);
 
         if (currencyId == null) currencyId = Constants.NOT_SET;
-        args.putInt(KEY_CURRENCY_ID, currencyId);
+        args.putLong(KEY_CURRENCY_ID, currencyId);
         args.putBoolean(ARG_ROUNDING, roundToCurrencyDecimals);
 
         AmountInputDialog dialog = new AmountInputDialog();
@@ -119,7 +119,7 @@ public class AmountInputDialog
 
     private String mRequestId;
     Money mAmount;
-    private Integer mCurrencyId;
+    private Long mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
     private CurrencyService mCurrencyService;
@@ -284,7 +284,7 @@ public class AmountInputDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
+        if (mCurrencyId != null) savedInstanceState.putLong(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putString(KEY_REQUEST_ID, mRequestId);
 
         mExpression = txtMain.getText().toString();
@@ -406,7 +406,7 @@ public class AmountInputDialog
 //            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
 //        }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID)) {
-            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+            mCurrencyId = savedInstanceState.getLong(KEY_CURRENCY_ID);
         }
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
@@ -495,7 +495,7 @@ public class AmountInputDialog
         Bundle args = getArguments();
 
         this.mRequestId = args.getString(KEY_REQUEST_ID);
-        this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
+        this.mCurrencyId = args.getLong(KEY_CURRENCY_ID);
         this.roundToCurrencyDecimals = args.getBoolean(ARG_ROUNDING);
     }
 

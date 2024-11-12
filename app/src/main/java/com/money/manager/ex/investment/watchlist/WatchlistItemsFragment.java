@@ -92,7 +92,7 @@ public class WatchlistItemsFragment
 
     // non-static
 
-    public Integer accountId;
+    public Long accountId;
 
     private Account mAccount;
     private boolean mAutoStarLoader = true;
@@ -108,9 +108,9 @@ public class WatchlistItemsFragment
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
             // get data from saved instance state
-            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+            this.accountId = savedInstanceState.getLong(KEY_ACCOUNT_ID);
         } else {
-            this.accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+            this.accountId = getArguments().getLong(KEY_ACCOUNT_ID);
         }
     }
 
@@ -220,7 +220,7 @@ public class WatchlistItemsFragment
 //        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) ;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-//        long packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
+//        int packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
@@ -239,7 +239,7 @@ public class WatchlistItemsFragment
 
             case EditPrice:
                 // Edit price
-                int accountId = stock.getHeldAt();
+                long accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
                 Intent intent = IntentFactory.getPriceEditIntent(getActivity());
@@ -349,7 +349,7 @@ public class WatchlistItemsFragment
     public void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
 
-        saveInstanceState.putInt(KEY_ACCOUNT_ID, this.accountId);
+        saveInstanceState.putLong(KEY_ACCOUNT_ID, this.accountId);
     }
 
     @Override
@@ -469,7 +469,7 @@ public class WatchlistItemsFragment
         startActivity(intent);
     }
 
-    private void showDeleteConfirmationDialog(final int id) {
+    private void showDeleteConfirmationDialog(final long id) {
         UIHelper ui = new UIHelper(getContext());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -42,7 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SingleAccountWidgetConfigureActivity
         extends AppCompatActivity {
 
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    long mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
     private static final String PREFS_NAME = "com.money.manager.ex.widget.SingleAccountWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
@@ -104,7 +104,7 @@ public class SingleAccountWidgetConfigureActivity
     };
 
     // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
+    static void saveTitlePref(Context context, long appWidgetId, String text) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
         prefs.commit();
@@ -112,7 +112,7 @@ public class SingleAccountWidgetConfigureActivity
 
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
+    static String loadTitlePref(Context context, long appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
         if (titleValue != null) {
@@ -122,7 +122,7 @@ public class SingleAccountWidgetConfigureActivity
         }
     }
 
-    static void deleteTitlePref(Context context, int appWidgetId) {
+    static void deleteTitlePref(Context context, long appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId);
         prefs.commit();

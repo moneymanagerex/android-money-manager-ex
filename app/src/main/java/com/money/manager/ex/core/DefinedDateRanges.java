@@ -40,14 +40,14 @@ public class DefinedDateRanges {
         return this.dateRanges.get(name);
     }
 
-    public DefinedDateRange getByMenuId(int menuResourceId) {
+    public DefinedDateRange getByMenuId(long menuResourceId) {
         for (DefinedDateRange range : this.dateRanges.values()) {
             if (range.menuResourceId == menuResourceId) return range;
         }
         return null;
     }
 
-    public DefinedDateRange getByNameId(int nameResourceId) {
+    public DefinedDateRange getByNameId(long nameResourceId) {
         for (DefinedDateRange range : this.dateRanges.values()) {
             if (range.nameResourceId == nameResourceId) return range;
         }

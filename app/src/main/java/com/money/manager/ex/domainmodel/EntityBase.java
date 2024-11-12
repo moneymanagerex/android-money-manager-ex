@@ -110,6 +110,14 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
+    protected Long getLong(String column) {
+        return contentValues.getAsLong(column);
+    }
+
+    protected void setLong(String fieldName, Long value) {
+        contentValues.put(fieldName, value);
+    }
+
     public String getString(String fieldName) {
         return contentValues.getAsString(fieldName);
     }

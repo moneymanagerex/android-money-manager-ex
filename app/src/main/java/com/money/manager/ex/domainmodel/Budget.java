@@ -32,12 +32,12 @@ public class Budget
 
     public Budget() { }
 
-    public Integer getId() {
-        return getInt(BUDGETYEARID);
+    public Long getId() {
+        return getLong(BUDGETYEARID);
     }
 
-    public void setId(Integer value) {
-        setInt(BUDGETYEARID, value);
+    public void setId(Long value) {
+        setLong(BUDGETYEARID, value);
     }
 
     public String getName() {

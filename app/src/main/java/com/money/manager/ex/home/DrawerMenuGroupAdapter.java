@@ -59,7 +59,7 @@ public class DrawerMenuGroupAdapter
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
+    public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         DrawerMenuItem item = (DrawerMenuItem) getChild(groupPosition, childPosition);
 

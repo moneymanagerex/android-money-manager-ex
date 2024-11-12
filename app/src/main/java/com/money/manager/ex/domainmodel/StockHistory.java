@@ -51,8 +51,8 @@ public class StockHistory
         contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
-    public int getHistId() {
-        return getInt(HISTID);
+    public long getHistId() {
+        return getLong(HISTID);
     }
 
     public Date getDate() {

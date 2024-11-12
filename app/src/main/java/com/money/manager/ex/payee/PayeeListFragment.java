@@ -66,7 +66,7 @@ public class PayeeListFragment
     public static String mAction = Intent.ACTION_EDIT;
 
     // add menu ite,
-//    private static final int MENU_ITEM_ADD = 1;
+//    private static final long MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
 
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
@@ -309,7 +309,7 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            int payeeId = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
+            long payeeId = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
             String payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
 
             sendResultToActivity(payeeId, payeeName);
@@ -320,7 +320,7 @@ public class PayeeListFragment
         getActivity().setResult(PayeeActivity.RESULT_CANCELED);
     }
 
-    private void sendResultToActivity(int payeeId, String payeeName) {
+    private void sendResultToActivity(long payeeId, String payeeName) {
         Intent result = new Intent();
         result.putExtra(PayeeActivity.INTENT_RESULT_PAYEEID, payeeId);
         result.putExtra(PayeeActivity.INTENT_RESULT_PAYEENAME, payeeName);
@@ -330,7 +330,7 @@ public class PayeeListFragment
         getActivity().finish();
     }
 
-    private void showDialogDeletePayee(final int payeeId) {
+    private void showDialogDeletePayee(final long payeeId) {
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_payee)
                 .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
@@ -356,7 +356,7 @@ public class PayeeListFragment
                 .show();
     }
 
-    private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {
+    private void showDialogEditPayeeName(final SQLTypeTransaction type, final long payeeId, final String payeeName) {
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_payee, null);
         final EditText edtPayeeName = viewDialog.findViewById(R.id.editTextPayeeName);
 
@@ -396,7 +396,7 @@ public class PayeeListFragment
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(payeeId, name);
+                                long updateResult = service.update(payeeId, name);
                                 if (updateResult <= 0) {
                                     Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }

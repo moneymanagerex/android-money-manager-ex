@@ -82,7 +82,7 @@ public final class Calculator {
         }
     }
 
-    public Calculator currency(int currencyId) {
+    public Calculator currency(long currencyId) {
         intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
         return this;
     }

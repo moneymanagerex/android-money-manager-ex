@@ -52,11 +52,11 @@ public class IncomeVsExpenseReportEntity
     }
 
     public int getYear() {
-        return getInt(YEAR);
+        return getLong(YEAR).intValue();
     }
 
     public int getMonth() {
-        return getInt(Month);
+        return getLong(Month).intValue();
     }
 
     public Money getIncome() {

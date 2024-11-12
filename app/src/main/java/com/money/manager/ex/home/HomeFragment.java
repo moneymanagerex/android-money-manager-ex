@@ -110,7 +110,7 @@ public class HomeFragment
     extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
-//    private static final int LOADER_USER_NAME = 1;
+//    private static final long LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
     private static final int LOADER_INCOME_EXPENSES = 4;
 
@@ -139,7 +139,7 @@ public class HomeFragment
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
 
-    int accountBalancedId = Constants.NOT_SET;
+    long accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
     @Override
@@ -446,7 +446,7 @@ public class HomeFragment
         QueryAccountBills account = getSelectedAccount(item);
         if (account == null) return false;
 
-        int accountId = account.getAccountId();
+        long accountId = account.getAccountId();
 
         // get the action
         String menuItemTitle = item.getTitle().toString();
@@ -473,7 +473,7 @@ public class HomeFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
+        outState.putLong(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
     }
 
     // Events
@@ -531,7 +531,7 @@ public class HomeFragment
         setAccountBeingBalanced(account);
 
         // get the amount via input binaryDialog.
-        int currencyId = account.getCurrencyId();
+        long currencyId = account.getCurrencyId();
 
         AmountInputDialog dialog = AmountInputDialog.getInstance(REQUEST_BALANCE_ACCOUNT,
                 MoneyFactory.fromString("0"), currencyId, true);
@@ -682,7 +682,7 @@ public class HomeFragment
                         .get(childPosition);
                 if (selectedAccount == null) return false;
 
-                int accountId = selectedAccount.getAccountId();
+                long accountId = selectedAccount.getAccountId();
                 String accountType = mAccountTypes.get(groupPosition);
 
                 Object event;

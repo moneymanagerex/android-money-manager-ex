@@ -65,7 +65,7 @@ import timber.log.Timber;
  */
 public class SyncManager {
 
-    public static int scheduledJobId = Constants.NOT_SET;
+    public static long scheduledJobId = Constants.NOT_SET;
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 

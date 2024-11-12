@@ -50,7 +50,7 @@ public class DataHelpers {
         // Bahraini dinar
         Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
                 true, 17);
-        int accountId = accountRepository.add(account);
+        long accountId = accountRepository.add(account);
         account.setId(accountId);
 //        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
 
@@ -60,7 +60,7 @@ public class DataHelpers {
         for (int i = 0; i < 3; i++) {
             Payee payee = new Payee();
             payee.setName("payee" + i);
-            int payeeId = repo.add(payee);
+            long payeeId = repo.add(payee);
 //            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
         }
 
@@ -72,13 +72,13 @@ public class DataHelpers {
         }
     }
 
-    public static void createTransaction(int accountId, int payeeId, TransactionTypes type,
-                                         int categoryId, Money amount) {
+    public static void createTransaction(long accountId, long payeeId, TransactionTypes type,
+                                         long categoryId, Money amount) {
         AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
 
         AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
                 categoryId, amount);
-        int txId = txRepo.add(tx);
+        long txId = txRepo.add(tx);
 //        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
 
     }

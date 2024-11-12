@@ -124,8 +124,8 @@ public class BudgetAdapter
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 
-        int categoryId;
-        int subCategoryId;
+        long categoryId;
+        long subCategoryId;
         if (!useNestedCategory) {
             categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
             subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
@@ -190,12 +190,12 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            int amountAvailableInt = (int) (amountAvailable * 100);
-            if (amountAvailableInt < 0) {
+            long amountAvailablelong = (int) (amountAvailable * 100);
+            if (amountAvailablelong < 0) {
                 amountAvailableTextView.setTextColor(
                     ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
-            } else if (amountAvailableInt > 0) {
+            } else if (amountAvailablelong > 0) {
                 amountAvailableTextView.setTextColor(
                     ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
@@ -231,15 +231,15 @@ public class BudgetAdapter
         // probabily until we don't handle third and other level actual value does not count correctlry
         if (!useNestedCategory) {
             if (!hasSubcategory) {
-                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+                long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
                 actual = getAmountForCategory(categoryId);
             } else {
-                int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+                long subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
                 actual = getAmountForCategory(subCategoryId);
     //            actual = getAmountForSubCategory(subCategoryId);
             }
         } else {
-            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+            long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
             actual = getAmountForCategory(categoryId);
         }
 
@@ -252,7 +252,7 @@ public class BudgetAdapter
      * @param subCategoryId
      * @return
      */
-    private double getBudgetAmountFor(int categoryId, int subCategoryId) {
+    private double getBudgetAmountFor(long categoryId, long subCategoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
         return mBudgetEntries.containsKey(key)
                 ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
@@ -265,7 +265,7 @@ public class BudgetAdapter
      * @param subCategoryId
      * @return
      */
-    private BudgetPeriodEnum getBudgetPeriodFor(int categoryId, int subCategoryId) {
+    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId, long subCategoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
         return mBudgetEntries.containsKey(key)
                 ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
@@ -282,12 +282,12 @@ public class BudgetAdapter
         return repo.loadForYear(mBudgetYearId);
     }
 
-    private double getAmountForCategory(int categoryId) {
+    private double getAmountForCategory(long categoryId) {
         double total = loadTotalFor(ViewMobileData.CATEGID + "=" + categoryId);
         return total;
     }
 
-    private double getAmountForSubCategory(int subCategoryId) {
+    private double getAmountForSubCategory(long subCategoryId) {
         double total = loadTotalFor(ViewMobileData.SubcategID + "=" + subCategoryId);
         return total;
     }
@@ -295,9 +295,9 @@ public class BudgetAdapter
     private double loadTotalFor(String where) {
         double total = 0;
 
-        int year = getYearFromBudgetName(mBudgetName);
+        long year = getYearFromBudgetName(mBudgetName);
         where += " AND " + ViewMobileData.Year + "=" + year;
-        int month = getMonthFromBudgetName(mBudgetName);
+        long month = getMonthFromBudgetName(mBudgetName);
         if (month != Constants.NOT_SET) {
             where += " AND " + ViewMobileData.Month + "=" + month;
         }
@@ -357,9 +357,9 @@ public class BudgetAdapter
         return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
-    private int getYearFromBudgetName(String budgetName) {
+    private long getYearFromBudgetName(String budgetName) {
         String yearString = budgetName.substring(0, 4);
-        int year = Integer.parseInt(yearString);
+        long year = Integer.parseInt(yearString);
         return year;
     }
 
@@ -367,8 +367,8 @@ public class BudgetAdapter
         return budgetName.contains("-");
     }
 
-    private int getMonthFromBudgetName(String budgetName) {
-        int result = Constants.NOT_SET;
+    private long getMonthFromBudgetName(String budgetName) {
+        long result = Constants.NOT_SET;
 
         if (!isMonthlyBudget(budgetName)) return result;
 

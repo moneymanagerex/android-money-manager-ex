@@ -39,13 +39,13 @@ public class PriceEditModel {
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
-    public int accountId;
+    public long accountId;
 
     public String symbol;
     public Money price;
     public MmxDate date;
 
-    public int currencyId = Constants.NOT_SET;
+    public long currencyId = Constants.NOT_SET;
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 

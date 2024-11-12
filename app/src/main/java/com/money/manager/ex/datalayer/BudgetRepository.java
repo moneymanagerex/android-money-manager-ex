@@ -42,12 +42,12 @@ public class BudgetRepository
         return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
-    public boolean delete(int id) {
-        int deleted = super.delete(Budget.BUDGETYEARID + "=?", MmxDatabaseUtils.getArgsForId(id));
+    public boolean delete(long id) {
+        long deleted = super.delete(Budget.BUDGETYEARID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return deleted > 0;
     }
 
-    public Budget load(int id) {
+    public Budget load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -69,7 +69,7 @@ public class BudgetRepository
             entity.contentValues.remove(Budget.BUDGETYEARID);
 
             // new record
-            int id = super.insert(entity.contentValues);
+            long id = super.insert(entity.contentValues);
             result = id != 0;
         } else {
             result = super.update(entity, Budget.BUDGETYEARID + "=?",

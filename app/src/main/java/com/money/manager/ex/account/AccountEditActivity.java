@@ -105,7 +105,7 @@ public class AccountEditActivity
         if (getIntent() != null && savedInstanceState == null) {
             mIntentAction = getIntent().getAction();
             if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                int accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
+                long accountId = getIntent().getLongExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
                 if (accountId != Constants.NOT_SET) {
                     // Load account or exit if one not found
                     if (!loadAccount(accountId)) {
@@ -129,7 +129,7 @@ public class AccountEditActivity
 
         // Default account
         AppSettings settings = new AppSettings(this);
-        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
         mIsDefault = mAccount.getId().equals(defaultAccountId);
 
         // Compose layout
@@ -150,7 +150,7 @@ public class AccountEditActivity
         switch (requestCode) {
             case RequestCodes.CURRENCY:
                 if (data == null) return;
-                int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
+                long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
                 mAccount.setCurrencyId(currencyId);
 
                 mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
@@ -181,7 +181,7 @@ public class AccountEditActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
 
         if (id == MenuHelper.save) {
             return onActionDoneClick();
@@ -546,7 +546,7 @@ public class AccountEditActivity
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
      */
-    private boolean loadAccount(int accountId) {
+    private boolean loadAccount(long accountId) {
         AccountRepository repository = new AccountRepository(getApplicationContext());
         mAccount = repository.load(accountId);
         if (mAccount == null) return false;
@@ -577,7 +577,7 @@ public class AccountEditActivity
      * @param currencyId Id of the currency to select
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */
-    private boolean selectCurrencyName(int currencyId) {
+    private boolean selectCurrencyName(long currencyId) {
         boolean result;
         CurrencyRepository repository = new CurrencyRepository(getApplicationContext());
         Currency currency = repository.loadCurrency(currencyId);
@@ -600,7 +600,7 @@ public class AccountEditActivity
             settings.getGeneralSettings().setDefaultAccountId(mAccount.getId());
         } else {
             // Check if this was the default account and is now being unset.
-            Integer currentDefaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+            Long currentDefaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
             if (currentDefaultAccountId != null && currentDefaultAccountId.equals(mAccount.getId())) {
                 // Reset default account.
                 settings.getGeneralSettings().setDefaultAccountId(null);

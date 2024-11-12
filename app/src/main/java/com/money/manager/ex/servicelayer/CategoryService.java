@@ -44,15 +44,15 @@ public class CategoryService
 
     private CategoryRepository mRepository;
 
-    public int loadIdByName(String name) {
+    public long loadIdByName(String name) {
         return getRepository().loadIdByName(name);
     }
 
-    public int loadIdByName(String name, int parentId) {
+    public long loadIdByName(String name, long parentId) {
         return getRepository().loadIdByName(name, parentId);
     }
 
-    public int createNew(String name, int parentId) {
+    public long createNew(String name, long parentId) {
         if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
@@ -71,7 +71,7 @@ public class CategoryService
         return ((int) id);
     }
 
-    public String getCategorySubcategoryName(int categoryId) {
+    public String getCategorySubcategoryName(long categoryId) {
         String categoryName = "";
 
         if (categoryId != Constants.NOT_SET) {
@@ -103,7 +103,7 @@ public class CategoryService
         return getRepository().query(Category.class, query);
     }
 
-    public int update(int id, String name, int parentId) {
+    public long update(long id, String name, long parentId) {
         if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
@@ -114,9 +114,9 @@ public class CategoryService
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
-        int result = getContext().getContentResolver().update(repo.getUri(),
+        long result = getContext().getContentResolver().update(repo.getUri(),
                 values,
-                Category.CATEGID + "=?", new String[]{Integer.toString(id)});
+                Category.CATEGID + "=?", new String[]{Long.toString(id)});
 
         return result;
     }
@@ -126,13 +126,13 @@ public class CategoryService
      * @param categoryId Id of the category for which to check.
      * @return A boolean indicating if the category is in use.
      */
-    public boolean isCategoryUsed(int categoryId) {
+    public boolean isCategoryUsed(long categoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
+        long links = repo.count(Category.CATEGID + "=?", new String[]{Long.toString(categoryId)});
         return links > 0;
     }
 
-    public boolean isCategoryUsedWithChildren( int categoryId ) {
+    public boolean isCategoryUsedWithChildren( long categoryId ) {
         // First if list has more than 1 record category is used
         QueryNestedCategory query = new QueryNestedCategory(getContext());
         List<NestedCategoryEntity> ids = query.getChildrenNestedCategoryEntities(categoryId);
@@ -140,8 +140,8 @@ public class CategoryService
         if (ids.size() > 1 ) {return true;}
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count("( " + Category.CATEGID + "=?",
-                new String[]{Integer.toString(categoryId)});
+        long links = repo.count("( " + Category.CATEGID + "=?",
+                new String[]{Long.toString(categoryId)});
         return links > 0;
     }
 

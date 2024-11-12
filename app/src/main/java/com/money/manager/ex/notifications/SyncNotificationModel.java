@@ -25,23 +25,23 @@ import java.util.List;
  */
 
 public class SyncNotificationModel {
-    public int number;
+    public long number;
     // public List<String> inboxLine = new ArrayList<String>();;
     public List<SyncNotificationModelSingle> notifications = new ArrayList<SyncNotificationModelSingle>();;
 
     public static class SyncNotificationModelSingle  {
         String inboxLine ;
         String mode;
-        int trxId;
+        long trxId;
 
-        public SyncNotificationModelSingle (String inboxLine, String mode, int trxId) {
+        public SyncNotificationModelSingle (String inboxLine, String mode, long trxId) {
             this.inboxLine = inboxLine;
             this.mode = mode;
             this.trxId = trxId;
         }
     }
 
-    public void addNotification(String inboxLine, String mode, Integer trxId) {
+    public void addNotification(String inboxLine, String mode, Long trxId) {
         notifications.add(new SyncNotificationModelSingle(inboxLine, mode, trxId));
     }
 

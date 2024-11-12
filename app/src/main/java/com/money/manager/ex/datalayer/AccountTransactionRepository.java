@@ -55,7 +55,7 @@ public class AccountTransactionRepository
                 ITransactionEntity.TOTRANSAMOUNT};
     }
 
-    public AccountTransaction load(int id) {
+    public AccountTransaction load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         AccountTransaction tx = (AccountTransaction) first(AccountTransaction.class,
@@ -71,7 +71,7 @@ public class AccountTransactionRepository
         entity.contentValues.remove(AccountTransaction.TRANSID);
         entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());
 
-        int id = insert(entity.contentValues);
+        long id = insert(entity.contentValues);
 
         entity.setId(id);
 

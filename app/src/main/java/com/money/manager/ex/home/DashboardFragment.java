@@ -334,7 +334,7 @@ public class DashboardFragment
                 category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
             }
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -366,7 +366,7 @@ public class DashboardFragment
             // load values
             String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getInt(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -398,7 +398,7 @@ public class DashboardFragment
             String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
             double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
             int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
-            int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
+            long currencyId = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
             String daysLeftText = "";
             daysLeftText = Math.abs(daysLeft) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",

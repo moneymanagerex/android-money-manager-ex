@@ -26,6 +26,6 @@ public interface IRepository {
 
     //<T extends EntityBase> boolean insert(Class<T> entity);
 //    boolean insert(EntityBase entity);
-//    int insert(T entity);
+//    long insert(T entity);
     boolean delete(IEntity entity);
 }

@@ -128,9 +128,9 @@ public class SplitCategoriesActivity
         if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
         if (requestCode == REQUEST_PICK_CATEGORY) {
-            int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-            int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-            int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
+            long categoryId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+            long subcategoryId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+            int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET_INT);
 
             ISplitTransaction split = mAdapter.splitTransactions.get(location);
             split.setCategoryId(categoryId);
@@ -236,7 +236,7 @@ public class SplitCategoriesActivity
         int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
         mAdapter.transactionType = TransactionTypes.values()[transactionType];
 
-        mAdapter.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+        mAdapter.currencyId = intent.getLongExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
         List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
         if (splits != null) {
@@ -290,7 +290,7 @@ public class SplitCategoriesActivity
         }
     }
 
-    private void showCategorySelector(int requestId) {
+    private void showCategorySelector(long requestId) {
         Intent intent = new Intent(this, CategoryListActivity.class);
         intent.setAction(Intent.ACTION_PICK);
 

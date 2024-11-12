@@ -48,7 +48,7 @@ public class AccountRepository
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
     }
 
-    public Account load(int id) {
+    public Account load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -57,8 +57,8 @@ public class AccountRepository
         return first(where.getWhere());
     }
 
-    public boolean delete(int id) {
-        int result = super.delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(id)});
+    public boolean delete(long id) {
+        long result = super.delete(Account.ACCOUNTID + "=?", new String[] { Long.toString(id)});
         return result > 0;
     }
 
@@ -67,7 +67,7 @@ public class AccountRepository
      * @param id Id of the account to load.
      * @return QueryAccountBills entity.
      */
-    public QueryAccountBills loadAccountBills(int id) {
+    public QueryAccountBills loadAccountBills(long id) {
         QueryAccountBills result = new QueryAccountBills(getContext());
 
         String selection = QueryAccountBills.ACCOUNTID + "=?";
@@ -76,7 +76,7 @@ public class AccountRepository
                 result.getUri(),
                 result.getAllColumns(),
                 selection,
-                new String[] { Integer.toString(id) },
+                new String[] { Long.toString(id) },
                 null);
         if (cursor == null) return null;
 
@@ -89,8 +89,8 @@ public class AccountRepository
         return result;
     }
 
-    public int loadIdByName(String name) {
-        int result = -1;
+    public long loadIdByName(String name) {
+        long result = -1;
 
         if(TextUtils.isEmpty(name)) { return result; }
 
@@ -113,7 +113,7 @@ public class AccountRepository
         return result;
     }
 
-    public Integer loadCurrencyIdFor(int id) {
+    public Long loadCurrencyIdFor(long id) {
         Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
@@ -128,14 +128,14 @@ public class AccountRepository
         return account.getCurrencyId();
     }
 
-    public String loadName(Integer id) {
+    public String loadName(Long id) {
         if (id == null) return null;
 
         String name = null;
 
         Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},
             Account.ACCOUNTID + "=?",
-            new String[]{Integer.toString(id)}
+            new String[]{Long.toString(id)}
         );
         if (cursor == null) return null;
 
@@ -157,7 +157,7 @@ public class AccountRepository
      * @return  Boolean indicating whether the update was successful.
      */
     public boolean save(Account value) {
-        Integer id = value.getId();
+        Long id = value.getId();
 
         if (id == null || id == Constants.NOT_SET) {
             this.insert(value);
@@ -185,8 +185,8 @@ public class AccountRepository
         return c;
     }
 
-    public boolean anyAccountsUsingCurrency(int currencyId) {
-        int links = count(Account.CURRENCYID + "=?",
+    public boolean anyAccountsUsingCurrency(long currencyId) {
+        long links = count(Account.CURRENCYID + "=?",
                 MmxDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
     }
@@ -196,7 +196,7 @@ public class AccountRepository
     private Account insert(Account entity) {
         entity.contentValues.remove(Account.ACCOUNTID);
 
-        Integer id = insert(entity.contentValues);
+        Long id = insert(entity.contentValues);
 
         entity.setId(id);
 

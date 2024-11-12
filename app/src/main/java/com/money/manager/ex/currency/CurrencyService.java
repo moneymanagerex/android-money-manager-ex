@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.LongSparseArray;
 import android.util.SparseArray;
 
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -65,26 +66,26 @@ public class CurrencyService
         super(context);
 
         mCurrencyCodes = new HashMap<>();
-        mCurrencies = new SparseArray<>();
+        mCurrencies = new LongSparseArray<>();
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject CurrencyRepositorySql mRepository;
 
-    private Integer mBaseCurrencyId = null;
+    private Long mBaseCurrencyId = null;
     // hash map of all currencies
-    private final SparseArray<Currency> mCurrencies;
+    private final LongSparseArray<Currency> mCurrencies;
     /**
      * a fast lookup for symbol -> id. i.e. EUR->2.
      */
-    private final HashMap<String, Integer> mCurrencyCodes;
+    private final HashMap<String, Long> mCurrencyCodes;
 
     /**
      * @param currencyId of the currency to be get
      * @return a Currency. Null if fail
      */
-    public Currency getCurrency(Integer currencyId) {
+    public Currency getCurrency(Long currencyId) {
         if (currencyId == null || currencyId == Constants.NOT_SET) return null;
 
         if (mCurrencies.indexOfKey(currencyId) >= 0) {
@@ -100,13 +101,13 @@ public class CurrencyService
     }
 
     public Currency getCurrency(String currencyCode) {
-        int id = getIdForCode(currencyCode);
+        long id = getIdForCode(currencyCode);
         return getCurrency(id);
     }
 
     public String getBaseCurrencyCode() {
         // get base currency
-        int baseCurrencyId = this.getBaseCurrencyId();
+        long baseCurrencyId = this.getBaseCurrencyId();
 
         Currency currency = this.getCurrency(baseCurrencyId);
         if (currency == null) {
@@ -117,12 +118,12 @@ public class CurrencyService
         return currency.getCode();
     }
 
-    public String getSymbolFor(int id) {
+    public String getSymbolFor(long id) {
         Currency currency = getCurrency(id);
         return currency.getCode();
     }
 
-    public Integer getIdForCode(String code) {
+    public Long getIdForCode(String code) {
         if (mCurrencyCodes.containsKey(code)) {
             return mCurrencyCodes.get(code);
         }
@@ -132,7 +133,7 @@ public class CurrencyService
 
         mCurrencyCodes.put(code, currency.getCurrencyId());
 
-        Integer result = currency.getCurrencyId();
+        Long result = currency.getCurrencyId();
 
         return result;
     }
@@ -175,7 +176,7 @@ public class CurrencyService
         return getRepository().query(Currency.class, query);
     }
 
-    public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {
+    public Money doCurrencyExchange(Long toCurrencyId, Money amount, Long fromCurrencyId) {
         if (toCurrencyId == null || fromCurrencyId == null) return amount;
         if (toCurrencyId == Constants.NOT_SET || fromCurrencyId == Constants.NOT_SET) return amount;
 
@@ -210,12 +211,12 @@ public class CurrencyService
      *
      * @return Id of base currency
      */
-    public int getBaseCurrencyId() {
+    public long getBaseCurrencyId() {
         if (mBaseCurrencyId != null) return mBaseCurrencyId;
 
-        int result;
+        long result;
 
-        Integer baseCurrencyId = loadBaseCurrencyId();
+        Long baseCurrencyId = loadBaseCurrencyId();
 
         if (baseCurrencyId != null) {
             result = baseCurrencyId;
@@ -247,18 +248,18 @@ public class CurrencyService
         return result;
     }
 
-    public void setBaseCurrencyId(int baseCurrencyId) {
+    public void setBaseCurrencyId(long baseCurrencyId) {
         mBaseCurrencyId = baseCurrencyId;
 
         InfoService service = new InfoService(getContext());
-        boolean saved = service.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(baseCurrencyId));
+        boolean saved = service.setInfoValue(InfoKeys.BASECURRENCYID, Long.toString(baseCurrencyId));
         if (!saved) {
             new UIHelper(getContext()).showToast(R.string.error_saving_default_currency);
         }
     }
 
     public Currency getBaseCurrency() {
-        int baseCurrencyId = getBaseCurrencyId();
+        long baseCurrencyId = getBaseCurrencyId();
         return getCurrency(baseCurrencyId);
     }
 
@@ -268,7 +269,7 @@ public class CurrencyService
      * @return formatted value
      */
     public String getBaseCurrencyFormatted(Money value) {
-        int baseCurrencyId = getBaseCurrencyId();
+        long baseCurrencyId = getBaseCurrencyId();
         return this.getCurrencyFormatted(baseCurrencyId, value);
     }
 
@@ -279,7 +280,7 @@ public class CurrencyService
      * @param value      value to format
      * @return formatted value
      */
-    public String getCurrencyFormatted(Integer currencyId, Money value) {
+    public String getCurrencyFormatted(Long currencyId, Money value) {
         String result;
 
         // check if value is null
@@ -373,7 +374,7 @@ public class CurrencyService
      * @param currencyId Id of the currency to check.
      * @return A boolean indicating if the currency is in use.
      */
-    public boolean isCurrencyUsed(int currencyId) {
+    public boolean isCurrencyUsed(long currencyId) {
         AccountRepository accountRepository = new AccountRepository(getContext());
         return accountRepository.anyAccountsUsingCurrency(currencyId);
     }
@@ -383,13 +384,13 @@ public class CurrencyService
      *
      * @return Id base currency
      */
-    protected Integer loadBaseCurrencyId() {
+    protected Long loadBaseCurrencyId() {
         InfoService infoService = new InfoService(getContext());
         String currencyString = infoService.getInfoValue(InfoKeys.BASECURRENCYID);
-        Integer currencyId = null;
+        Long currencyId = null;
 
         if (!TextUtils.isEmpty(currencyString)) {
-            currencyId = Integer.parseInt(currencyString);
+            currencyId = Long.parseLong(currencyString);
         }
 
         return currencyId;
@@ -439,8 +440,8 @@ public class CurrencyService
      * @param currencySymbol Currency symbol to load.
      * @return Id of the currency with the given symbol.
      */
-    public int loadCurrencyIdFromSymbolRaw(SupportSQLiteDatabase db, String currencySymbol) {
-        int result = Constants.NOT_SET;
+    public long loadCurrencyIdFromSymbolRaw(SupportSQLiteDatabase db, String currencySymbol) {
+        long result = Constants.NOT_SET;
 
         // Cannot use any other db source here as this happens on database creation!
         String tableName = CurrencyRepositorySql.TABLE_NAME;
@@ -472,15 +473,15 @@ public class CurrencyService
         CurrencyRepository repo = getRepository();
 
         Currency currency = repo.loadCurrency(symbol);
-        int currencyId = currency.getCurrencyId();
+        long currencyId = currency.getCurrencyId();
 
         // update value on database
-        int updateResult = repo.saveExchangeRate(currencyId, rate);
+        long updateResult = repo.saveExchangeRate(currencyId, rate);
 
         return updateResult > 0;
     }
 
-    public void updateExchangeRate(int currencyId) {
+    public void updateExchangeRate(long currencyId) {
         List<Currency> currencies = new ArrayList<>();
         currencies.add(getCurrency(currencyId));
 

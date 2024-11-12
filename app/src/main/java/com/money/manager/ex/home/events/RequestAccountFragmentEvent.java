@@ -21,9 +21,9 @@ package com.money.manager.ex.home.events;
  * Request for the display of Account fragment (in Main Activity).
  */
 public class RequestAccountFragmentEvent {
-    public RequestAccountFragmentEvent(int accountId) {
+    public RequestAccountFragmentEvent(long accountId) {
         this.accountId = accountId;
     }
 
-    public int accountId;
+    public long accountId;
 }

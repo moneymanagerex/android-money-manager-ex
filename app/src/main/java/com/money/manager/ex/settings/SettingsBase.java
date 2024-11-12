@@ -51,7 +51,7 @@ abstract class SettingsBase {
      */
     protected abstract SharedPreferences getPreferences();
 
-    protected String getSettingsKey(Integer settingKeyConstant) {
+    protected String getSettingsKey(int settingKeyConstant) {
         try {
             return getContext().getString(settingKeyConstant, "");
         } catch (Exception e) {
@@ -62,7 +62,7 @@ abstract class SettingsBase {
 
     // String
 
-    public String get(Integer settingKey, String defaultValue) {
+    public String get(int settingKey, String defaultValue) {
         String key = getSettingsKey(settingKey);
         return get(key, defaultValue);
     }

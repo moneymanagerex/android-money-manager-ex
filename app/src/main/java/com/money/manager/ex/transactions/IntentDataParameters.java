@@ -46,16 +46,16 @@ public class IntentDataParameters {
     public static final String PARAM_SILENT_MODE = "silent";
 
     public TransactionTypes transactionType;
-    public int accountId;
-    public int accountToId;
+    public long accountId;
+    public long accountToId;
     public String accountName;
-    public int payeeId;
+    public long payeeId;
     public String payeeName;
     public Money amount;
     public Money amountTo;
-    public int categoryId;
+    public long categoryId;
     public String categoryName;
-    public int subcategoryId;
+    public long subcategoryId;
     public String subcategoryName;
     public String notes;
     public boolean isSilentMode;
@@ -72,20 +72,20 @@ public class IntentDataParameters {
         String accountName = data.getQueryParameter(PARAM_ACCOUNT);
         if (accountName != null) {
             AccountRepository account = new AccountRepository(context);
-            int accountId = account.loadIdByName(accountName);
+            long accountId = account.loadIdByName(accountName);
             parameters.accountId = accountId;
         }
         String accountToName = data.getQueryParameter(PARAM_ACCOUNT_TO);
         if (accountToName != null) {
             AccountRepository accountTo = new AccountRepository(context);
-            int accountToId = accountTo.loadIdByName(accountToName);
+            long accountToId = accountTo.loadIdByName(accountToName);
             parameters.accountToId = accountToId;
         }
 
         parameters.payeeName = data.getQueryParameter(PARAM_PAYEE);
         if (parameters.payeeName != null) {
             PayeeService payee = new PayeeService(context);
-            int payeeId = payee.loadIdByName(parameters.payeeName);
+            long payeeId = payee.loadIdByName(parameters.payeeName);
             parameters.payeeId = payeeId;
         }
 
@@ -101,14 +101,14 @@ public class IntentDataParameters {
         parameters.categoryName = data.getQueryParameter(PARAM_CATEGORY);
         if (parameters.categoryName != null) {
             CategoryService category = new CategoryService(context);
-            int categoryId = category.loadIdByName(parameters.categoryName);
+            long categoryId = category.loadIdByName(parameters.categoryName);
             parameters.categoryId = categoryId;
         }
 
         parameters.subcategoryName = data.getQueryParameter(PARAM_SUBCATEGORY);
         if (parameters.subcategoryName != null) {
             CategoryService category = new CategoryService(context);
-            int subcategoryId = category.loadIdByName(parameters.subcategoryName, parameters.categoryId);
+            long subcategoryId = category.loadIdByName(parameters.subcategoryName, parameters.categoryId);
             parameters.subcategoryId = subcategoryId;
         }
 

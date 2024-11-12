@@ -56,11 +56,11 @@ public class RecurringTransactionRepository
                 RecurringTransaction.NUMOCCURRENCES};
     }
 
-    public int delete(int id) {
-        return super.delete(RecurringTransaction.BDID + "=?", new String[] { Integer.toString(id)});
+    public long delete(long id) {
+        return super.delete(RecurringTransaction.BDID + "=?", new String[] { Long.toString(id)});
     }
 
-    public RecurringTransaction load(int id) {
+    public RecurringTransaction load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -91,7 +91,7 @@ public class RecurringTransactionRepository
     public RecurringTransaction insert(RecurringTransaction entity) {
         entity.contentValues.remove(RecurringTransaction.BDID);
 
-        int id = insert(entity.contentValues);
+        long id = insert(entity.contentValues);
 
         entity.setId(id);
 
@@ -99,7 +99,7 @@ public class RecurringTransactionRepository
     }
 
     public boolean update(RecurringTransaction value) {
-        int id = value.getId();
+        long id = value.getId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(RecurringTransaction.BDID, "=", id);

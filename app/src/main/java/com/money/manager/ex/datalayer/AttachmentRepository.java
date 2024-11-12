@@ -48,18 +48,18 @@ public class AttachmentRepository
         };
     }
 
-    public int add(Attachment entity) {
+    public long add(Attachment entity) {
         return insert(entity.contentValues);
     }
 
-    public boolean delete(int id) {
+    public boolean delete(long id) {
         if (id == Constants.NOT_SET) return false;
 
-        int result = delete(Attachment.ATTACHMENTID + "=?", MmxDatabaseUtils.getArgsForId(id));
+        long result = delete(Attachment.ATTACHMENTID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
 
-    public Attachment load(Integer id) {
+    public Attachment load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
         Attachment attachment = (Attachment) super.first(Attachment.class,
@@ -70,10 +70,10 @@ public class AttachmentRepository
         return attachment;
     }
 
-    public ArrayList<Attachment> loadAttachmentsFor(int refId, String refType) {
+    public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
         Cursor curAtt = getContext().getContentResolver().query(getUri(), null,
                 Attachment.REFID + "=? AND " + Attachment.REFTYPE +  "=?",
-                new String[] { Integer.toString(refId),  refType},
+                new String[] { Long.toString(refId),  refType},
                 Attachment.ATTACHMENTID);
         if (curAtt == null) return null;
 
@@ -91,7 +91,7 @@ public class AttachmentRepository
     }
 
     public boolean save(Attachment attachment) {
-        int id = attachment.getId();
+        long id = attachment.getId();
         return super.update(attachment, Attachment.ATTACHMENTID + "=" + id);
     }
 }

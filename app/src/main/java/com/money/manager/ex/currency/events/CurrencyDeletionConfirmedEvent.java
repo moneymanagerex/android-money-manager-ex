@@ -21,11 +21,11 @@ package com.money.manager.ex.currency.events;
  * A user confirmed deletion of the currency. Proceed.
  */
 public class CurrencyDeletionConfirmedEvent {
-    public CurrencyDeletionConfirmedEvent(int currencyId, int itemPosition) {
+    public CurrencyDeletionConfirmedEvent(long currencyId, long itemPosition) {
         this.currencyId = currencyId;
         this.itemPosition = itemPosition;
     }
 
-    public int currencyId;
-    public int itemPosition;
+    public long currencyId;
+    public long itemPosition;
 }

@@ -103,7 +103,7 @@ public class CurrencyUIFeatures {
         return success;
     }
 
-    public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {
+    public void showDialogDeleteCurrency(final long currencyId, final long itemPosition) {
         UIHelper ui = new UIHelper(getContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -167,7 +167,7 @@ public class CurrencyUIFeatures {
                 .show();
     }
 
-    public void startCurrencyEditActivity(Integer currencyId) {
+    public void startCurrencyEditActivity(Long currencyId) {
         // create intent, set Account ID
         Intent intent = new Intent(getContext(), CurrencyEditActivity.class);
         // check transId not null

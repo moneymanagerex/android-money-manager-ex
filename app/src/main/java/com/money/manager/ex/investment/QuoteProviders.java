@@ -45,6 +45,6 @@ public enum QuoteProviders {
         for (int i = 0; i < count; i++) {
             if (providers[i] == value) return i;
         }
-        return Constants.NOT_SET;
+        return Constants.NOT_SET_INT;
     }
 }

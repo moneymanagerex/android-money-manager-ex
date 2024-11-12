@@ -64,7 +64,7 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
 
     boolean roundToCurrencyDecimals;
     Money mAmount;
-    Integer mCurrencyId;
+    Long mCurrencyId;
     String mExpression;
 
     // Views
@@ -192,7 +192,7 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
         if (currency == null) return Constants.DEFAULT_PRECISION;
 
         NumericHelper helper = new NumericHelper(this);
-        return helper.getNumberOfDecimals(currency.getScale());
+        return helper.getNumberOfDecimals((int)currency.getScale());
     }
 
     private String deleteLastCharacterFrom(String number) {
@@ -208,7 +208,7 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
         Intent intent = getIntent();
         if (intent == null) return;
 
-        mCurrencyId = intent.getIntExtra(EXTRA_CURRENCY_ID, Constants.NOT_SET);
+        mCurrencyId = intent.getLongExtra(EXTRA_CURRENCY_ID, Constants.NOT_SET);
         roundToCurrencyDecimals = intent.getBooleanExtra(EXTRA_ROUND_TO_CURRENCY, true);
 
         String value = intent.getStringExtra(EXTRA_AMOUNT);

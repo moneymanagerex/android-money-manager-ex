@@ -51,7 +51,7 @@ public class InfoService
     @Inject
     public InfoRepositorySql repository;
 
-    public long insertRaw(SupportSQLiteDatabase db, String key, Integer value) {
+    public long insertRaw(SupportSQLiteDatabase db, String key, Long value) {
         ContentValues values = new ContentValues();
 
         values.put(Info.INFONAME, key);
@@ -77,7 +77,7 @@ public class InfoService
      * @param value     Info Value
      * @return the number of rows affected
      */
-    public long updateRaw(SupportSQLiteDatabase db, int recordId, String key, Integer value) {
+    public long updateRaw(SupportSQLiteDatabase db, long recordId, String key, Long value) {
         ContentValues values = new ContentValues();
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
@@ -86,7 +86,7 @@ public class InfoService
                 CONFLICT_REPLACE,
                 values,
             Info.INFOID + "=?",
-                new String[] { Integer.toString(recordId)}
+                new String[] { Long.toString(recordId)}
         );
     }
 

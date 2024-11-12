@@ -38,10 +38,10 @@ public class SearchParameters {
     }
 
     // Account
-    public Integer accountId;
+    public Long accountId;
 
     // Currency
-    public Integer currencyId;
+    public Long currencyId;
 
     // Transaction Type
     public boolean deposit;
@@ -59,7 +59,7 @@ public class SearchParameters {
     public Date dateFrom;
     public Date dateTo;
 
-    public Integer payeeId = null;
+    public Long payeeId = null;
     public String payeeName;
 
     // TODO Remove CategorySub and replace with Category

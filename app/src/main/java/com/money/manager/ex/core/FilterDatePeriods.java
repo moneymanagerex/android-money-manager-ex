@@ -25,9 +25,9 @@ public enum FilterDatePeriods {
     ALLTIME(R.string.all_time),
 ;
 
-    public static FilterDatePeriods get(int code) {
+    public static FilterDatePeriods get(long code) {
         for (FilterDatePeriods value : FilterDatePeriods.values()) {
-            int currentCode = value.getCode();
+            long currentCode = value.getCode();
             if (currentCode == code) {
                 return value;
             }
@@ -36,13 +36,13 @@ public enum FilterDatePeriods {
 //        return null;
     }
 
-    FilterDatePeriods(int code) {
+    FilterDatePeriods(long code) {
         this.code = code;
     }
 
-    private final int code;
+    private final long code;
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

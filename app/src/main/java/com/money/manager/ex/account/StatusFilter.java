@@ -88,7 +88,7 @@ public class StatusFilter {
      * @param menuId Id of the menu item that represents the status.
      * @return Whether the status is selected.
      */
-    public boolean contains(int menuId) {
+    public boolean contains(long menuId) {
         // get menu ids for all the statuses included.
         List<Integer> menuIds = new ArrayList<>();
         for(String statusCode : this.filter) {
@@ -146,7 +146,7 @@ public class StatusFilter {
     }
 
 //    @Override
-//    public int describeContents() {
+//    public long describeContents() {
 //        return 0;
 //    }
 //

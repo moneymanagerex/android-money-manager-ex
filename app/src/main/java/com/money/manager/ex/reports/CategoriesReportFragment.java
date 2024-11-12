@@ -360,9 +360,9 @@ public class CategoriesReportFragment
         DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Subcategory, values);
 
         CategorySub result = new CategorySub();
-        result.categId = values.getAsInteger(ViewMobileData.CATEGID);
+        result.categId = values.getAsLong(ViewMobileData.CATEGID);
         result.categName = values.getAsString(ViewMobileData.Category);
-        result.subCategId = values.getAsInteger(ViewMobileData.SubcategID);
+        result.subCategId = values.getAsLong(ViewMobileData.SubcategID);
         result.subCategName = values.getAsString(ViewMobileData.Subcategory);
         return result;
     }
