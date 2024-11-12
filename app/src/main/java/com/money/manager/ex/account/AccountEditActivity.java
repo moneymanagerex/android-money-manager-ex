@@ -181,7 +181,7 @@ public class AccountEditActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        long id = item.getItemId();
+        int id = item.getItemId();
 
         if (id == MenuHelper.save) {
             return onActionDoneClick();
