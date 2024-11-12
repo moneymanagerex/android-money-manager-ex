@@ -40,7 +40,7 @@ public class RecentDatabaseEntryComparator
      *
      * @param lhs an {@code Object}.
      * @param rhs a second {@code Object} to compare with {@code lhs}.
-     * @return an integer < 0 if {@code lhs} is less than {@code rhs}, 0 if they are
+     * @return an Long < 0 if {@code lhs} is less than {@code rhs}, 0 if they are
      * equal, and > 0 if {@code lhs} is greater than {@code rhs}.
      * @throws ClassCastException if objects are not of the correct type.
      */

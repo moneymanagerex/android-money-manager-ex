@@ -89,10 +89,10 @@ public class WatchlistFragment
      * @param accountId ID Account to be display
      * @return instance of Watchlist fragment with transactions for the given account.
      */
-    public static WatchlistFragment newInstance(int accountId) {
+    public static WatchlistFragment newInstance(long accountId) {
         WatchlistFragment fragment = new WatchlistFragment();
         Bundle args = new Bundle();
-        args.putInt(KEY_ACCOUNT_ID, accountId);
+        args.putLong(KEY_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
         fragment.setFragmentName(WatchlistFragment.class.getSimpleName() + "_" + accountId);
@@ -106,8 +106,8 @@ public class WatchlistFragment
     private Account mAccount;
 
     // price update counter. Used to know when all the prices are done downloading.
-    private int mUpdateCounter;
-    private int mToUpdateTotal;
+    private long mUpdateCounter;
+    private long mToUpdateTotal;
     private WatchlistViewHolder viewHolder;
 
     @Override
@@ -160,7 +160,7 @@ public class WatchlistFragment
         mDataFragment = WatchlistItemsFragment.newInstance();
         // set arguments and preferences of fragment
         Bundle arguments = new Bundle();
-        arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
+        arguments.putLong(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
         mDataFragment.setArguments(arguments);
 
         mDataFragment.setListHeader(this.viewHolder.mListHeader);
@@ -480,7 +480,7 @@ public class WatchlistFragment
                 .show();
     }
 
-    private int getAccountId() {
+    private long getAccountId() {
         if (mAccount == null) {
             return Constants.NOT_SET;
         }
@@ -530,7 +530,7 @@ public class WatchlistFragment
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
                 Account account = Account.from(cursor);
 
-                int accountId = account.getId();
+                long accountId = account.getId();
                 switchAccount(accountId);
             }
 
@@ -600,7 +600,7 @@ public class WatchlistFragment
         if (args == null) return;
         if (!args.containsKey(KEY_ACCOUNT_ID)) return;
 
-        int accountId = args.getInt(KEY_ACCOUNT_ID);
+        long accountId = args.getInt(KEY_ACCOUNT_ID);
         this.mAccount = new AccountRepository(getActivity()).load(accountId);
     }
 
@@ -615,7 +615,7 @@ public class WatchlistFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         StockHistoryRepository history = new StockHistoryRepository(getActivity());
-                        int deleted = history.deleteAllPriceHistory();
+                        long deleted = history.deleteAllPriceHistory();
 
                         if (deleted > 0) {
                             Toast.makeText(getActivity(),
@@ -651,12 +651,12 @@ public class WatchlistFragment
         if (adapter == null) return;
 
         Cursor cursor = adapter.getCursor();
-        int position = Constants.NOT_SET;
+        int position = Constants.NOT_SET_INT;
 
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
-            int accountId = Integer.parseInt(accountIdString);
+            long accountId = Integer.parseInt(accountIdString);
             if (accountId == getAccountId()) {
                 position = i;
                 break;
@@ -666,7 +666,7 @@ public class WatchlistFragment
         spinner.setSelection(position);
     }
 
-    private void switchAccount(int accountId) {
+    private void switchAccount(long accountId) {
         if (accountId == getAccountId()) return;
 
         // switch account. Reload transactions.

@@ -149,7 +149,7 @@ public class FilterDialogFragment
         // Default Account
 //        CheckBox defaultAccountCheckbox = (CheckBox) view.findViewById(R.id.defaultAccountCheckbox);
 //        AppSettings preferences = new AppSettings(getActivity());
-//        Integer defaultAccountId = preferences.getGeneralSettings().getDefaultAccountId();
+//        Long defaultAccountId = preferences.getGeneralSettings().getDefaultAccountId();
 //        defaultAccountCheckbox.setChecked(mAccount.getId().equals(defaultAccountId));
 
         // Number of records

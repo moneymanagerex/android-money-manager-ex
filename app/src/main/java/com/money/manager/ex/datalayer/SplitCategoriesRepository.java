@@ -53,7 +53,7 @@ public class SplitCategoriesRepository
      * @param transId Id of the main transaction for which to load the splits.
      * @return list of split categories for the given transaction.
      */
-    public ArrayList<ISplitTransaction> loadSplitCategoriesFor(int transId) {
+    public ArrayList<ISplitTransaction> loadSplitCategoriesFor(long transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
             SplitCategory.TRANSID + "=" + transId,
             null,
@@ -77,7 +77,7 @@ public class SplitCategoriesRepository
         // Remove any existing id value.
         item.contentValues.remove(SplitCategory.SPLITTRANSID);
 
-        int id = this.insert(item.contentValues);
+        long id = this.insert(item.contentValues);
         item.setId(id);
 
         return id > 0;
@@ -91,8 +91,8 @@ public class SplitCategoriesRepository
     }
 
     public boolean delete(ISplitTransaction entity) {
-        int deleted = super.delete(SplitCategory.SPLITTRANSID + "=?",
-                new String[]{ Integer.toString(entity.getId()) });
+        long deleted = super.delete(SplitCategory.SPLITTRANSID + "=?",
+                new String[]{ Long.toString(entity.getId()) });
         return deleted == 1;
     }
 

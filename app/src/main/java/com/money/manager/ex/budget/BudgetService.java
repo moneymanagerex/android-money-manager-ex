@@ -32,7 +32,7 @@ public class BudgetService
         super(context);
     }
 
-    public boolean delete(int budgetId) {
+    public boolean delete(long budgetId) {
         BudgetRepository repo = new BudgetRepository(getContext());
         return repo.delete(budgetId);
     }
@@ -43,7 +43,7 @@ public class BudgetService
      * original budget.
      * @param budgetId The budget to copy.
      */
-    public void copy(int budgetId) {
+    public void copy(long budgetId) {
         //todo complete
     }
 }

@@ -53,10 +53,10 @@ public class PortfolioFragment
      * @param accountId Investment account Id
      * @return A new instance of fragment PortfolioFragment.
      */
-    public static PortfolioFragment newInstance(Integer accountId) {
+    public static PortfolioFragment newInstance(Long accountId) {
         PortfolioFragment fragment = new PortfolioFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putLong(ARG_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +65,7 @@ public class PortfolioFragment
         // Required empty public constructor
     }
 
-    private Integer mAccountId;
+    private Long mAccountId;
 
     @Override
     public String getSubTitle() {
@@ -78,10 +78,10 @@ public class PortfolioFragment
 
         if (savedInstanceState != null && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
             // get data from saved instance state
-            mAccountId = savedInstanceState.getInt(ARG_ACCOUNT_ID);
+            mAccountId = savedInstanceState.getLong(ARG_ACCOUNT_ID);
         } else {
             //if (getArguments() != null) {
-            mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+            mAccountId = getArguments().getLong(ARG_ACCOUNT_ID);
         }
     }
 
@@ -130,7 +130,7 @@ public class PortfolioFragment
     public void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
 
-        saveInstanceState.putInt(ARG_ACCOUNT_ID, mAccountId);
+        saveInstanceState.putLong(ARG_ACCOUNT_ID, mAccountId);
     }
 
     // Private
@@ -195,7 +195,7 @@ public class PortfolioFragment
         });
     }
 
-    private void openEditInvestmentActivity(Integer stockId) {
+    private void openEditInvestmentActivity(Long stockId) {
         Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);

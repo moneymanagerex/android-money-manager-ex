@@ -290,7 +290,7 @@ public class PayeeReportFragment
         Cursor cursor = (Cursor) item;
         Payee payee = new Payee();
         /*for (String col : cursor.getColumnNames()) {
-            int idx = cursor.getColumnIndex(col);
+            long idx = cursor.getColumnIndex(col);
             Log.d("PayeeReportFragment", " Name " + col + "\t Type " + cursor.getType(idx) + "\t Value " + cursor.getString(idx));
         }*/
 //        payee.loadFromCursor(cursor);

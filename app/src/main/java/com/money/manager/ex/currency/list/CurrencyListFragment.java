@@ -71,7 +71,7 @@ public class CurrencyListFragment
     private static final int ID_LOADER_CURRENCY = 0;
 
     // Store previous device orientation when showing other screens (chart, etc.)
-    public int mPreviousOrientation = Constants.NOT_SET;
+    public int mPreviousOrientation = Constants.NOT_SET_INT;
 
 //    @Inject Lazy<CurrencyService> mCurrencyService;
     private CurrencyService mCurrencyService;
@@ -232,7 +232,7 @@ public class CurrencyListFragment
         // take cursor and move to position
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+        long currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
 
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
@@ -369,7 +369,7 @@ public class CurrencyListFragment
         Cursor cursor = adapter.getCursor();
         if (cursor == null) return null;
 
-        cursor.moveToPosition(Constants.NOT_SET);
+        cursor.moveToPosition(Constants.NOT_SET_INT);
         List<Currency> currencies = new ArrayList<>();
 
         while (cursor.moveToNext()) {

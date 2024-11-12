@@ -82,7 +82,7 @@ public class PerDatabaseFragment
 
         if (requestCode == REQUEST_PICK_CURRENCY) {// Returning from the currency picker screen.
             if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
-                int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
+                long currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
                 // set preference
                 CurrencyService utils = new CurrencyService(getActivity());
                 utils.setBaseCurrencyId(currencyId);
@@ -197,7 +197,7 @@ public class PerDatabaseFragment
 
                 Integer month = Ints.tryParse(currentMonth);
                 if (month != null) {
-                    //int month = Integer.parseInt(currentMonth) - 1;
+                    //long month = Integer.parseInt(currentMonth) - 1;
                     month = month - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
                         lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
@@ -313,7 +313,7 @@ public class PerDatabaseFragment
         final AccountRepository repository = new AccountRepository(getActivity());
 
         // set account name as the value here
-        Integer defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
+        Long defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
         String accountName = entries[0]; // none
         if (defaultAccountId != null && defaultAccountId != Constants.NOT_SET) {
             accountName = repository.loadName(defaultAccountId);
@@ -322,7 +322,7 @@ public class PerDatabaseFragment
 
         preference.setOnPreferenceChangeListener((preference1, newValue) -> {
             String accountName1 = entries[0];
-            int accountId = Integer.parseInt(newValue.toString());
+            long accountId = Integer.parseInt(newValue.toString());
             if (accountId != Constants.NOT_SET) {
                 accountName1 = repository.loadName(accountId);
             }
@@ -339,7 +339,7 @@ public class PerDatabaseFragment
         if (baseCurrency == null) return;
 
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-        Integer currencyId = currencyService.getBaseCurrencyId();
+        Long currencyId = currencyService.getBaseCurrencyId();
 
         Currency tableCurrency = currencyService.getCurrency(currencyId);
         if (tableCurrency != null) {

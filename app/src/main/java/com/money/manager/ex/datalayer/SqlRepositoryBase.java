@@ -45,8 +45,8 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         return database.insert(tableName, CONFLICT_FAIL, values);
     }
 
-    public int delete(String where, String... whereArgs) {
-        int result = database.delete(tableName, where, whereArgs);
+    public long delete(String where, String... whereArgs) {
+        long result = database.delete(tableName, where, whereArgs);
 
         return result;
     }
@@ -103,7 +103,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         // remove "_id" from the values.
         values.remove("_id");
 
-        int updateResult = database.update(tableName,
+        long updateResult = database.update(tableName,
                 CONFLICT_FAIL,
                 values,
                 where,

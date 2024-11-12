@@ -53,18 +53,18 @@ public class AccountTests {
 
     //@Test
     public void testPropertySetting() {
-        final int id = 3;
+        final long id = 3;
 
         this.account.setId(id);
 
-        int actual = this.account.getId();
+        long actual = this.account.getId();
 
         assertEquals(id, actual);
     }
 
     //@Test
     public void testThrowException() {
-        Integer actual = this.account.getId();
+        Long actual = this.account.getId();
 
         assertNull(actual);
     }
@@ -83,7 +83,7 @@ public class AccountTests {
         // When
 
         repo.save(account);
-        Integer id = account.getId();
+        Long id = account.getId();
 
         Account loaded = repo.load(id);
         loaded.setAccountNumber(accountNumber);

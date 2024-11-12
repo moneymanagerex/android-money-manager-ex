@@ -23,8 +23,8 @@ import com.money.manager.ex.domainmodel.EntityBase;
 
 public class NestedCategoryEntity
         extends EntityBase {
-    public static int ACTIVE = 1;
-    public static int NOT_ACTIVE = 0;
+    public static long ACTIVE = 1;
+    public static long NOT_ACTIVE = 0;
 
     public NestedCategoryEntity(Category category) {
         super();
@@ -39,17 +39,17 @@ public class NestedCategoryEntity
         setActive(Constants.NOT_SET);
     }
 
-    public NestedCategoryEntity(int categoryId, String categoryName, int parentId) {
+    public NestedCategoryEntity(long categoryId, String categoryName, long parentId) {
         super();
         setMandatoryField(categoryId, categoryName, parentId);
     }
 
-    public int getCategoryId() {
-        return getInt(QueryNestedCategory.CATEGID);
+    public long getCategoryId() {
+        return getLong(QueryNestedCategory.CATEGID);
     }
 
-    public void setCategoryId(int id) {
-        setInt(QueryNestedCategory.CATEGID, id);
+    public void setCategoryId(long id) {
+        setLong(QueryNestedCategory.CATEGID, id);
     }
 
     public String getCategoryName() {
@@ -60,12 +60,12 @@ public class NestedCategoryEntity
         setString(QueryNestedCategory.CATEGNAME, name);
     }
 
-    public int getParentId() {
-        return getInt(QueryNestedCategory.PARENTID);
+    public long getParentId() {
+        return getLong(QueryNestedCategory.PARENTID);
     }
 
-    public void setParentId(int id) {
-        setInt(QueryNestedCategory.PARENTID, id);
+    public void setParentId(long id) {
+        setLong(QueryNestedCategory.PARENTID, id);
     }
 
     public String getParentName() {
@@ -84,23 +84,23 @@ public class NestedCategoryEntity
         setString(QueryNestedCategory.BASENAME, basename);
     }
 
-    public int getActive() {
-        return getInt(QueryNestedCategory.ACTIVE);
+    public long getActive() {
+        return getLong(QueryNestedCategory.ACTIVE);
     }
 
-    public void setActive(int active) {
-        setInt(QueryNestedCategory.ACTIVE, active);
+    public void setActive(long active) {
+        setLong(QueryNestedCategory.ACTIVE, active);
     }
 
-    public int getLevel() {
-        return getInt(QueryNestedCategory.LEVEL);
+    public long getLevel() {
+        return getLong(QueryNestedCategory.LEVEL);
     }
 
-    public void setLevel(int level) {
-        setInt(QueryNestedCategory.LEVEL, level);
+    public void setLevel(long level) {
+        setLong(QueryNestedCategory.LEVEL, level);
     }
 
-    public void setMandatoryField(int categoryId, String categoryName, int parentId) {
+    public void setMandatoryField(long categoryId, String categoryName, long parentId) {
         setCategoryId(categoryId);
         setCategoryName(categoryName);
         setParentId(parentId);

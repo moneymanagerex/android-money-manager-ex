@@ -75,7 +75,7 @@ public class Select {
     public Select where(String selection, long... args) {
         this.selection = selection;
 
-        // convert array values from Integer to String
+        // convert array values from Long to String
         String[] stringArgs = Arrays.toString(args)
                 .split("[\\[\\]]")[1]
                 .split(", ");

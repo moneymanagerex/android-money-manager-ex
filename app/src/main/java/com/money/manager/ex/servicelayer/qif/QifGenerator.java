@@ -46,7 +46,7 @@ public class QifGenerator implements IQifGenerator {
         int originalCursorPosition = cursor.getPosition();
         cursor.moveToFirst();
 
-        int previousAccountId = 0;
+        long previousAccountId = 0;
         QifHeader header = new QifHeader(mContext);
         QifRecord record = new QifRecord(mContext);
         AccountTransactionDisplay transaction = new AccountTransactionDisplay();
@@ -55,7 +55,7 @@ public class QifGenerator implements IQifGenerator {
             // get data from cursor.
             transaction.loadFromCursor(cursor);
 
-            int accountId;
+            long accountId;
             if (transaction.getTransactionType() == TransactionTypes.Transfer) {
                 accountId = transaction.getToAccountId();
             } else {

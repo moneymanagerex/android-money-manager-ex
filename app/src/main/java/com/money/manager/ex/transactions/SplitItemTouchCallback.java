@@ -39,10 +39,10 @@ public class SplitItemTouchCallback
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 //        return 0;
 
-//        final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        final int dragFlags = 0;
+//        final long dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+        int dragFlags = 0;
 
-        final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
 
         return makeMovementFlags(dragFlags, swipeFlags);
     }

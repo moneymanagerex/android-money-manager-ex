@@ -152,8 +152,8 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         Private
     */
 
-    private int getBudgetId() {
-        return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
+    private long getBudgetId() {
+        return getIntent().getLongExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
     private void initializeModel() {
@@ -168,7 +168,7 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
             budget = new Budget();
         } else if (action.equals(Intent.ACTION_EDIT)) {
             // Existing record
-            int budgetId = getBudgetId();
+            long budgetId = getBudgetId();
             BudgetRepository repo = new BudgetRepository(this);
             budget = repo.load(budgetId);
         }
@@ -186,7 +186,7 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
     }
 
     private boolean save() {
-        int budgetId = getBudgetId();
+        long budgetId = getBudgetId();
         Budget budget = new Budget();
         budget.setId(budgetId);
         mModel.saveTo(budget);

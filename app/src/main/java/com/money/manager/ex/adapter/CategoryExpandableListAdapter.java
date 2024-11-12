@@ -76,8 +76,8 @@ public class CategoryExpandableListAdapter
 
     private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 
-    private int mIdGroupChecked = ListView.INVALID_POSITION;
-    private int mIdChildChecked = ListView.INVALID_POSITION;
+    private long mIdGroupChecked = ListView.INVALID_POSITION;
+    private long mIdChildChecked = ListView.INVALID_POSITION;
 
     private final boolean mShowSelector;
 
@@ -138,8 +138,8 @@ public class CategoryExpandableListAdapter
 //				public void onClick(View v) {
 //					String tag = v.getTag().toString();
 //					String[] ids = tag.split(":");
-//					Integer groupId = Integer.parseInt(ids[0]);
-//					Integer childId = Integer.parseInt(ids[1]);
+//					Long groupId = Integer.parseInt(ids[0]);
+//					Long childId = Integer.parseInt(ids[1]);
 //					setIdChildChecked(groupId, childId);
 //					// close
 //					closeFragment();
@@ -210,7 +210,7 @@ public class CategoryExpandableListAdapter
                 @Override
                 public void onClick(View v) {
                     String tag = v.getTag().toString();
-                    Integer groupId = Integer.parseInt(tag);
+                    Long groupId = Long.parseLong(tag);
                     setIdGroupChecked(groupId);
                     // close
                     closeFragment();
@@ -254,15 +254,15 @@ public class CategoryExpandableListAdapter
         return true;
     }
 
-    public int getIdGroupChecked() {
+    public long getIdGroupChecked() {
         return mIdGroupChecked;
     }
 
-    public int getIdChildChecked() {
+    public long getIdChildChecked() {
         return mIdChildChecked;
     }
 
-    public void setIdGroupChecked(int idGroup) {
+    public void setIdGroupChecked(long idGroup) {
         // If an existing group is clicked, collapse it. Reset the expanded id.
 //        if (mIdGroupChecked == idGroup) {
 //            mIdGroupChecked = ListView.INVALID_POSITION;
@@ -272,7 +272,7 @@ public class CategoryExpandableListAdapter
 //        }
     }
 
-    public void setIdChildChecked(int idGroup, int idChild) {
+    public void setIdChildChecked(long idGroup, long idChild) {
         mIdGroupChecked = idGroup;
         mIdChildChecked = idChild;
     }

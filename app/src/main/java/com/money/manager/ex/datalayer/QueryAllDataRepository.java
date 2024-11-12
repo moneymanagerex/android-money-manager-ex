@@ -51,7 +51,7 @@ public class QueryAllDataRepository
             QueryAllData.currency};
     }
 
-    public int add(AccountTransactionDisplay entity) {
+    public long add(AccountTransactionDisplay entity) {
         return insert(entity.contentValues);
     }
 

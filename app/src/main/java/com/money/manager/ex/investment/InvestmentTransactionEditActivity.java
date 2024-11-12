@@ -92,13 +92,13 @@ public class InvestmentTransactionEditActivity
         // load account & currency
         Intent intent = getIntent();
         if (intent != null) {
-            int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
+            long accountId = intent.getLongExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
             if (accountId != Constants.NOT_SET) {
                 AccountRepository repository = new AccountRepository(this);
                 mAccount = repository.load(accountId);
             }
 
-            int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
+            long stockId = intent.getLongExtra(ARG_STOCK_ID, Constants.NOT_SET);
             if (stockId != Constants.NOT_SET) {
                 StockRepository repo = new StockRepository(this);
                 mStock = repo.load(stockId);
@@ -167,7 +167,7 @@ public class InvestmentTransactionEditActivity
         // Handle action bar item clicks here. The action bar will
         // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long id = item.getItemId();
 
         if (id == MenuHelper.save) {
             return onActionDoneClick();
@@ -324,7 +324,7 @@ public class InvestmentTransactionEditActivity
         accountService.loadInvestmentAccountsToSpinner(viewHolder.accountSpinner, false);
 
 //        AccountRepository accountRepository = new AccountRepository(context);
-        final Integer accountId = mStock.getHeldAt();
+        final Long accountId = mStock.getHeldAt();
 //        if (accountId != null) {
 //            addMissingAccountToSelectors(accountRepository, accountId);
 //        }

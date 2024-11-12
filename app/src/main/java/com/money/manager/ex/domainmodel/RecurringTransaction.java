@@ -80,34 +80,34 @@ public class RecurringTransaction
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TOTRANSAMOUNT);
     }
 
-    public Integer getId() {
-        return getInt(BDID);
+    public Long getId() {
+        return getLong(BDID);
     }
 
-    public void setId(Integer id) {
-        setInt(BDID, id);
+    public void setId(Long id) {
+        setLong(BDID, id);
     }
 
     public boolean hasId() {
         return getId() != null && getId() != Constants.NOT_SET;
     }
 
-    public Integer getAccountId() {
-        return getInt(ITransactionEntity.ACCOUNTID);
+    public Long getAccountId() {
+        return getLong(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(Integer value) {
-        setInt(ITransactionEntity.ACCOUNTID, value);
-    }
-
-    @Override
-    public Integer getAccountToId() {
-        return getInt(ITransactionEntity.TOACCOUNTID);
+    public void setAccountId(Long value) {
+        setLong(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
-    public void setAccountToId(Integer value) {
-        setInt(ITransactionEntity.TOACCOUNTID, value);
+    public Long getAccountToId() {
+        return getLong(ITransactionEntity.TOACCOUNTID);
+    }
+
+    @Override
+    public void setAccountToId(Long value) {
+        setLong(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
@@ -141,13 +141,13 @@ public class RecurringTransaction
     }
 
     @Override
-    public Integer getCategoryId() {
-        return getInt(ITransactionEntity.CATEGID);
+    public Long getCategoryId() {
+        return getLong(ITransactionEntity.CATEGID);
     }
 
     @Override
-    public void setCategoryId(Integer value) {
-        setInt(ITransactionEntity.CATEGID, value);
+    public void setCategoryId(Long value) {
+        setLong(ITransactionEntity.CATEGID, value);
     }
 
     public boolean hasCategory() {
@@ -229,20 +229,20 @@ public class RecurringTransaction
         setString(ITransactionEntity.NOTES, value);
     }
 
-    public Integer getPaymentsLeft() {
-        return getInt(NUMOCCURRENCES);
+    public Long getPaymentsLeft() {
+        return getLong(NUMOCCURRENCES);
     }
 
-    public void setPaymentsLeft(Integer value) {
-        setInt(NUMOCCURRENCES, value);
+    public void setPaymentsLeft(Long value) {
+        setLong(NUMOCCURRENCES, value);
     }
 
-    public Integer getPayeeId() {
-        return getInt(ITransactionEntity.PAYEEID);
+    public Long getPayeeId() {
+        return getLong(ITransactionEntity.PAYEEID);
     }
 
-    public void setPayeeId(Integer value) {
-        setInt(ITransactionEntity.PAYEEID, value);
+    public void setPayeeId(Long value) {
+        setLong(ITransactionEntity.PAYEEID, value);
     }
 
     public boolean hasPayee() {
@@ -278,10 +278,10 @@ public class RecurringTransaction
     }
 
     // EP get RecurringMode
-    public void setRecurrenceMode(int value) {
-        int rec = getRecurrenceInt();
+    public void setRecurrenceMode(long value) {
+        long rec = getRecurrenceInt();
         rec = rec % 100;  // get base value
-        setInt(REPEATS,  rec + ( value * 100 ) ); // set recurrency mode
+        setLong(REPEATS,  rec + ( value * 100 ) ); // set recurrency mode
     }
     public Integer getRecurrenceMode() {
         try {
@@ -299,8 +299,8 @@ public class RecurringTransaction
         setString(ITransactionEntity.STATUS, value);
     }
 
-    public Integer getToAccountId() {
-        return getInt(ITransactionEntity.TOACCOUNTID);
+    public Long getToAccountId() {
+        return getLong(ITransactionEntity.TOACCOUNTID);
     }
 
     public String getTransactionCode() {

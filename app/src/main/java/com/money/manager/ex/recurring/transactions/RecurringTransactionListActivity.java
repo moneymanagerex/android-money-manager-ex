@@ -54,13 +54,13 @@ public class RecurringTransactionListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_toolbar_activity);
 
-        Integer trxid = 0;
+        Long trxid = 0L;
         String action = "";
 
         // check if launch from notification
         if (getIntent() != null && getIntent().getBooleanExtra(INTENT_EXTRA_LAUNCH_NOTIFICATION, false)) {
             action = getIntent().getStringExtra("ACTION");
-            trxid = getIntent().getIntExtra("ID", 0);
+            trxid = getIntent().getLongExtra("ID", 0);
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode()) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
@@ -87,7 +87,7 @@ public class RecurringTransactionListActivity
             // Skip or enter Occurrence
             NotificationManager notificationManager = (NotificationManager) getApplication().getApplicationContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(trxid);
+            notificationManager.cancel(trxid.intValue());
 
             if (action.equals("SKIP")) {
                 RecurringTransactionService recurringTransaction = new RecurringTransactionService(trxid, this);

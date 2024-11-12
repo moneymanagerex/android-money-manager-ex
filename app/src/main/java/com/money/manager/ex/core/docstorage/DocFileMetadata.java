@@ -8,6 +8,6 @@ import com.money.manager.ex.utils.MmxDate;
 public class DocFileMetadata {
     public String Uri;
     public String Name;
-    public int Size;
+    public long Size;
     public MmxDate lastModified;
 }

@@ -54,13 +54,13 @@ public class RecurringTransactionService
 
     }
 
-    public RecurringTransactionService(int recurringTransactionId, Context context){
+    public RecurringTransactionService(long recurringTransactionId, Context context){
         super(context);
 
         this.recurringTransactionId = recurringTransactionId;
     }
 
-    public int recurringTransactionId = Constants.NOT_SET;
+    public long recurringTransactionId = Constants.NOT_SET;
 
     private RecurringTransactionRepository mRepository;
     private RecurringTransaction mRecurringTransaction;
@@ -169,7 +169,7 @@ public class RecurringTransactionService
         return mRepository;
     }
 
-    public RecurringTransaction load(int id) {
+    public RecurringTransaction load(long id) {
         return getRepository().load(id);
     }
 
@@ -262,8 +262,8 @@ public class RecurringTransactionService
 
         // Delete recurring transactions.
         RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
-        int deleteResult = repo.delete(this.recurringTransactionId);
-//        int deleteResult = getContext().getContentResolver().delete(repo.getUri(),
+        long deleteResult = repo.delete(this.recurringTransactionId);
+//        long deleteResult = getContext().getContentResolver().delete(repo.getUri(),
 //                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
         if (deleteResult == 0) {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -288,7 +288,7 @@ public class RecurringTransactionService
         Cursor cursor = this.getCursorForSplitTransactions();
         if (cursor == null) return false;
 
-        int existingRecords = cursor.getCount();
+        long existingRecords = cursor.getCount();
         cursor.close();
         if(existingRecords == 0) {
             return true;
@@ -298,7 +298,7 @@ public class RecurringTransactionService
 
         SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
 
-        int deleteResult = getContext().getContentResolver().delete(
+        long deleteResult = getContext().getContentResolver().delete(
             repo.getUri(),
             SplitRecurringCategory.TRANSID + "=" + this.recurringTransactionId, null);
         if (deleteResult != 0) {
@@ -359,9 +359,9 @@ public class RecurringTransactionService
     private void decreasePaymentsLeft() {
         RecurringTransaction tx = getRecurringTransaction();
 
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Long paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            tx.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0L);
             return;
         }
 
@@ -375,9 +375,9 @@ public class RecurringTransactionService
     private void deleteIfLastPayment() {
         RecurringTransaction tx = getRecurringTransaction();
 
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Long paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            tx.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0L);
             return;
         }
 
@@ -422,7 +422,7 @@ public class RecurringTransactionService
         RecurringTransaction tx = getRecurringTransaction();
         Recurrence repeatType = Recurrence.valueOf(tx.getRecurrenceInt());
         Date newPaymentDate = tx.getPaymentDate();
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Integer paymentsLeft = tx.getPaymentsLeft().intValue();
 
         // calculate the next payment date
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
@@ -437,7 +437,7 @@ public class RecurringTransactionService
 
         Recurrence repeats = Recurrence.valueOf(tx.getRecurrenceInt());
         Date dueDate = tx.getDueDate();
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Integer paymentsLeft = tx.getPaymentsLeft().intValue();
 
         Date newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 

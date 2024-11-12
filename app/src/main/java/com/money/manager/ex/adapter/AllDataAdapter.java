@@ -84,16 +84,16 @@ public class AllDataAdapter
 
     private final LayoutInflater mInflater;
     // hash map for group
-    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final HashMap<Long, Integer> mHeadersAccountIndex;
     private final SparseBooleanArray mCheckedPosition;
     // account and currency
-    private int mAccountId = Constants.NOT_SET;
-    private int mCurrencyId = Constants.NOT_SET;
+    private long mAccountId = Constants.NOT_SET;
+    private long mCurrencyId = Constants.NOT_SET;
     // show account name and show balance
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private final Context mContext;
-    private HashMap<Integer, Money> balances;
+    private HashMap<Long, Money> balances;
     private final ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
@@ -129,7 +129,7 @@ public class AllDataAdapter
         boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
@@ -261,28 +261,28 @@ public class AllDataAdapter
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public long getAccountId() {
         return mAccountId;
     }
 
     /**
      * @param mAccountId the accountId to set
      */
-    public void setAccountId(int mAccountId) {
+    public void setAccountId(long mAccountId) {
         this.mAccountId = mAccountId;
     }
 
     /**
      * @return the mCurrencyId
      */
-    public int getCurrencyId() {
+    public long getCurrencyId() {
         return mCurrencyId;
     }
 
     /**
      * @param mCurrencyId the mCurrencyId to set
      */
-    public void setCurrencyId(int mCurrencyId) {
+    public void setCurrencyId(long mCurrencyId) {
         this.mCurrencyId = mCurrencyId;
     }
 
@@ -337,7 +337,7 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
     }
 
-    public void setBalances(HashMap<Integer, Money> balances) {
+    public void setBalances(HashMap<Long, Money> balances) {
         this.balances = balances;
 
         // update the balances on visible elements.
@@ -360,7 +360,7 @@ public class AllDataAdapter
 //                calculateBalanceAmount(cursor, holder);
 
                 // Save transaction Id.
-                int txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+                long txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
                 holder.txtBalance.setTag(txId);
 
                 requestBalanceDisplay(holder.txtBalance);
@@ -369,7 +369,7 @@ public class AllDataAdapter
                 holder.txtBalance.setVisibility(View.GONE);
             }
         } else {
-            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            long daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
@@ -431,7 +431,7 @@ public class AllDataAdapter
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
-                    int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+                    long cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
                     if (mAccountId != cursorAccountId) {
                         // This is in account transactions list where we display transfers to and from.
                         accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
@@ -463,7 +463,7 @@ public class AllDataAdapter
         Object tag = textView.getTag();
         if (tag == null) return;
 
-        int txId = (int) tag;
+        long txId = (int) tag;
         if (!this.balances.containsKey(txId)) return;
 
         CurrencyService currencyService = new CurrencyService(mContext);

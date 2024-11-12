@@ -38,12 +38,12 @@ public class Attachment
         super(contentValues);
     }
 
-    public Integer getId() {
-        return getInt(ATTACHMENTID);
+    public Long getId() {
+        return getLong(ATTACHMENTID);
     }
 
-    public void setId(Integer value) {
-        setInt(Attachment.ATTACHMENTID, value);
+    public void setId(Long value) {
+        setLong(Attachment.ATTACHMENTID, value);
     }
 
     public String getFilename() {
@@ -54,12 +54,12 @@ public class Attachment
         setString(Attachment.FILENAME, value);
     }
 
-    public Integer getRefId() {
-        return getInt(Attachment.REFID);
+    public Long getRefId() {
+        return getLong(Attachment.REFID);
     }
 
-    public void setRefId(Integer value) {
-        setInt(Attachment.REFID, value);
+    public void setRefId(Long value) {
+        setLong(Attachment.REFID, value);
     }
 
     public String getRefType() {

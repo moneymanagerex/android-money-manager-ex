@@ -72,12 +72,12 @@ public class Currency
         return getString(CURRENCY_SYMBOL);
     }
 
-    public int getCurrencyId() {
-        return getInt(CURRENCYID);
+    public long getCurrencyId() {
+        return getLong(CURRENCYID);
     }
 
-    public void setCurrencyid(int value) {
-        setInt(CURRENCYID, value);
+    public void setCurrencyid(long value) {
+        setLong(CURRENCYID, value);
     }
 
     public String getDecimalSeparator() {

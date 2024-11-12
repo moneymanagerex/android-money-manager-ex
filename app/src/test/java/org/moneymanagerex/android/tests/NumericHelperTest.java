@@ -59,7 +59,7 @@ public class NumericHelperTest {
 
     @Test
     public void testTryParse() throws Exception {
-        int actual = _numericHelper.tryParse("64");
+        long actual = _numericHelper.tryParse("64");
         assertEquals(64, actual);
     }
 

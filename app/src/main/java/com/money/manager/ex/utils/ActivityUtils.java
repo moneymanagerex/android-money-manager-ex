@@ -31,8 +31,8 @@ public class ActivityUtils {
      * @param activity Activity from which to get the current orientation information.
      * @return Code indicating the current device orientation.
      */
-    public static int forceCurrentOrientation(FragmentActivity activity) {
-        int prevOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
+    public static long forceCurrentOrientation(FragmentActivity activity) {
+        long prevOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         if (activity != null) {
             prevOrientation = activity.getRequestedOrientation(); // update current position
 

@@ -191,7 +191,7 @@ public class RecurringTransactionListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         int menuItemId = item.getItemId();
-        int scheduledTransactionId = (int) info.id;
+        long scheduledTransactionId = info.id;
 
         switch (menuItemId) {
             case R.id.menu_enter_next_occurrence:
@@ -300,7 +300,7 @@ public class RecurringTransactionListFragment
 
     // private
 
-    private void confirmDelete(final int id) {
+    private void confirmDelete(final long id) {
         UIHelper ui = new UIHelper(getContext());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -329,7 +329,7 @@ public class RecurringTransactionListFragment
                 .show();
     }
 
-    private void confirmSkip(final int id) {
+    private void confirmSkip(final long id) {
         UIHelper ui = new UIHelper(getContext());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -414,7 +414,7 @@ public class RecurringTransactionListFragment
 
     private void showDatesWithEvents(CaldroidFragment caldroid) {
         ListAdapter adapter = getListAdapter();
-        int count = adapter.getCount();
+        long count = adapter.getCount();
         ColorDrawable orange = new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.holo_orange_dark));
         RecurringTransaction tx = RecurringTransaction.createInstance();
 
@@ -426,7 +426,7 @@ public class RecurringTransactionListFragment
         }
     }
 
-    private void showCreateTransactionActivity(int scheduledTransactionId) {
+    private void showCreateTransactionActivity(long scheduledTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(getActivity());
         RecurringTransaction tx = repo.load(scheduledTransactionId);
         if (tx == null) return;
@@ -446,7 +446,7 @@ public class RecurringTransactionListFragment
      * @param purposeCode       Code that indicates why we are opening the editor.
      *                          example: REQUEST_ADD_REPEATING_TRANSACTION
      */
-    private void startRecurringTransactionEditActivity(Integer billDepositsId, int purposeCode) {
+    private void startRecurringTransactionEditActivity(Long billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID
         Intent intent = new Intent(getActivity(), RecurringTransactionEditActivity.class);
         // check transId not null

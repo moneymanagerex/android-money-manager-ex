@@ -88,7 +88,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     static String[] toAccountDetails;
 
     public static String CHANNEL_ID = "SmsTransaction_NotificationChannel";
-    private static final int ID_NOTIFICATION = 0x000A;
+    private static final long ID_NOTIFICATION = 0x000A;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -100,8 +100,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         final PreferenceConstants prf_const = new PreferenceConstants();
 
         //App Settings
-        int baseCurencyID, fromCurrencyID, toCurrencyID;
-        int baseAccountID, fromAccountID, toAccountID;
+        long baseCurencyID, fromCurrencyID, toCurrencyID;
+        long baseAccountID, fromAccountID, toAccountID;
 
         String baseCurrencySymbl, fromAccCurrencySymbl, toAccCurrencySymbl;
         String baseAccountName, fromAccountName, toAccountName;
@@ -167,7 +167,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
                                 if (!transCategory[0].isEmpty()) {
-                                    mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                    mCommon.transactionEntity.setCategoryId(Long.parseLong(transCategory[0]));
                                 }
 
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
@@ -177,7 +177,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
 
                                 if (!incomeCategory[0].isEmpty()) {
-                                    mCommon.transactionEntity.setCategoryId(parseInt(incomeCategory[0]));
+                                    mCommon.transactionEntity.setCategoryId(Long.parseLong(incomeCategory[0]));
                                 }
 
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
@@ -250,7 +250,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     mCommon.transactionEntity.setTransactionNumber(transRefNo);
                                 }
 
-                                int txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
+                                long txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
 
                                 //Update existing transaction
                                 if (txnId == 0) { //add new trnsaction
@@ -292,9 +292,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
                                         mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
 
-                                        mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
+                                        mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
-                                        mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
+                                        mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
@@ -334,7 +334,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
                                             if (!transCategory[0].isEmpty()) {
-                                                mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                                mCommon.transactionEntity.setCategoryId(Long.parseLong(transCategory[0]));
                                             }
 
                                             mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
@@ -446,7 +446,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
-    private static String getCurrencySymbl(int currencyID)
+    private static String getCurrencySymbl(long currencyID)
     {
         //Get the currency sysmbl
         String currencySymbl = "";
@@ -614,7 +614,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
-    private static String searchForAccountNum(String smsMsg, int mIndx)
+    private static String searchForAccountNum(String smsMsg, long mIndx)
     {
         String reqMatch =  "";
 
@@ -639,7 +639,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         2, 2, 1
                 };
 
-        int mFound;
+        long mFound;
 
         try
         {
@@ -680,13 +680,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String extractTransAmount(int indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
+    private static String extractTransAmount(long indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
     {
         String reqMatch = "";
         smsMsg = smsMsg.replace(",", "");
         String searchFor = "((\\s)?##SEARCH4CURRENCY##(.)?(\\s)?((\\d+)(\\.\\d+)?))";
         int[] getGroup = {5};
-        int indx = 0;
+        long indx = 0;
 
         //Handle multiple symbol for currency
         String[] searchCurrency;
@@ -842,9 +842,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return payeeDetails;
     }
 
-    private static Integer getTxnId(String refNumber, String transDate)
+    private static Long getTxnId(String refNumber, String transDate)
     {
-        int txnId = 0;
+        long txnId = 0;
 
         try
         {

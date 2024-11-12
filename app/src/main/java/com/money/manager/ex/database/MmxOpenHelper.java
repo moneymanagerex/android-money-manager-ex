@@ -105,7 +105,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         db.disableWriteAheadLogging();
    //     super.onOpen(db);
 
-//        int version = db.getVersion();
+//        long version = db.getVersion();
     }
 
     public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
@@ -268,7 +268,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         if (currencyCursor == null) return;
 
         // Get id of the base currency record.
-        int recordId = Constants.NOT_SET;
+        long recordId = Constants.NOT_SET;
         boolean recordExists = currencyCursor.moveToFirst();
         if (recordExists) {
             recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
@@ -276,7 +276,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         currencyCursor.close();
 
         // Use the system default currency.
-        int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
+        long currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
         if (currencyId == Constants.NOT_SET) {
             // Use Euro by default.
             currencyId = 2;
@@ -304,7 +304,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         super.finalize();
     }
 
-    public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
+    public void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
 

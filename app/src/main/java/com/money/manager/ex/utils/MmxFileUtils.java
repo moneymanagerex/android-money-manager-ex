@@ -152,7 +152,7 @@ public class MmxFileUtils {
 
     private boolean requestPermission(String permission, AppCompatActivity activity, int requestId) {
         boolean requesting = false;
-        int permissionResult = ContextCompat.checkSelfPermission(context, permission);
+        long permissionResult = ContextCompat.checkSelfPermission(context, permission);
 
         if (permissionResult != PackageManager.PERMISSION_GRANTED) {
             requesting = true;
@@ -176,7 +176,7 @@ public class MmxFileUtils {
                 PERMISSION_REQUEST_EXTERNAL_STORAGE);
 
             // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-            // app-defined int constant. The callback method gets the
+            // app-defined long constant. The callback method gets the
             // result of the request.
         }
         */

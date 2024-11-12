@@ -59,7 +59,7 @@ public class BudgetEntryRepository
                 BudgetEntry.PERIOD};
     }
 
-    public BudgetEntry load(int id) {
+    public BudgetEntry load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -79,7 +79,7 @@ public class BudgetEntryRepository
      * @param subCategoryId
      * @return
      */
-    public static String getKeyForCategories(int categoryId, int subCategoryId) {
+    public static String getKeyForCategories(long categoryId, long subCategoryId) {
         // Wolfsolver - adapt budget for category & sub category.
         if (categoryId < 0 ) {
             return "_"+subCategoryId;
@@ -113,7 +113,7 @@ public class BudgetEntryRepository
                 BudgetEntry budgetEntry = new BudgetEntry();
                 budgetEntry.loadFromCursor(cursor);
 
-                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
+                long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
                 Category category = categoryRepository.load(categoryId);
                 if (category == null) {
                     continue;

@@ -35,7 +35,7 @@ public class DateDisplay extends LinearLayout {
         initialize(context);
     }
 
-//    public DateDisplay(Context context, AttributeSet attrs, int defStyle) {
+//    public DateDisplay(Context context, AttributeSet attrs, long defStyle) {
 //        super(context, attrs, defStyle);
 //
 //        initialize(context);
@@ -46,7 +46,7 @@ public class DateDisplay extends LinearLayout {
 
 //        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Options, 0, 0);
 //        String titleText = a.getString(R.styleable.Options_titleText);
-//        int valueColor = a.getColor(R.styleable.Options_valueColor, android.R.color.holo_blue_light);
+//        long valueColor = a.getColor(R.styleable.Options_valueColor, android.R.color.holo_blue_light);
 //        a.recycle();
 
         initialize(context);

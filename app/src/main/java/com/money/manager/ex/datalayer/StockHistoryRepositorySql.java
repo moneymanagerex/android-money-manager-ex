@@ -100,7 +100,7 @@ public class StockHistoryRepositorySql
         Cursor cursor = database.query(sql, symbol, isoDate);
         if (cursor == null) return false;
 
-        int records = cursor.getCount();
+        long records = cursor.getCount();
         result = records > 0;
 
         cursor.close();
@@ -116,7 +116,7 @@ public class StockHistoryRepositorySql
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = database.update(TABLE_NAME, CONFLICT_FAIL, values, where, whereArgs);
+        long records = database.update(TABLE_NAME, CONFLICT_FAIL, values, where, whereArgs);
 
         result = records > 0;
 

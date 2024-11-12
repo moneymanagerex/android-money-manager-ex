@@ -52,8 +52,8 @@ public class AccountTransaction
                 Constants.NOT_SET, MoneyFactory.fromDouble(0));
     }
 
-    public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
-                                            int categoryId, Money amount) {
+    public static AccountTransaction create(long accountId, long payeeId, TransactionTypes type,
+                                            long categoryId, Money amount) {
         AccountTransaction tx = new AccountTransaction();
 
         tx.setAccountId(accountId);
@@ -88,34 +88,34 @@ public class AccountTransaction
         DatabaseUtils.cursorDoubleToCursorValues(c, TOTRANSAMOUNT, this.contentValues);
     }
 
-    public Integer getId() {
-        return getInt(TRANSID);
+    public Long getId() {
+        return getLong(TRANSID);
     }
 
-    public void setId(Integer id) {
-        setInt(TRANSID, id);
+    public void setId(Long id) {
+        setLong(TRANSID, id);
     }
 
     public boolean hasId() {
         return getId() != null && getId() != Constants.NOT_SET;
     }
 
-    public Integer getAccountId() {
-        return getInt(ITransactionEntity.ACCOUNTID);
+    public Long getAccountId() {
+        return getLong(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(Integer value) {
-        setInt(ITransactionEntity.ACCOUNTID, value);
-    }
-
-    @Override
-    public Integer getAccountToId() {
-        return getInt(ITransactionEntity.TOACCOUNTID);
+    public void setAccountId(Long value) {
+        setLong(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
-    public void setAccountToId(Integer value) {
-        setInt(ITransactionEntity.TOACCOUNTID, value);
+    public Long getAccountToId() {
+        return getLong(ITransactionEntity.TOACCOUNTID);
+    }
+
+    @Override
+    public void setAccountToId(Long value) {
+        setLong(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
@@ -148,12 +148,12 @@ public class AccountTransaction
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
-    public Integer getCategoryId() {
-        return getInt(ITransactionEntity.CATEGID);
+    public Long getCategoryId() {
+        return getLong(ITransactionEntity.CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
-        setInt(ITransactionEntity.CATEGID, value);
+    public void setCategoryId(Long value) {
+        setLong(ITransactionEntity.CATEGID, value);
     }
 
     public boolean hasCategory() {
@@ -176,12 +176,12 @@ public class AccountTransaction
         setString(ITransactionEntity.TRANSDATE, dateString);
     }
 
-    public Integer getFollowUpId() {
-        return getInt(FOLLOWUPID);
+    public Long getFollowUpId() {
+        return getLong(FOLLOWUPID);
     }
 
-    public void setFollowUpId(Integer value) {
-        setInt(FOLLOWUPID, value);
+    public void setFollowUpId(Long value) {
+        setLong(FOLLOWUPID, value);
     }
 
     public String getNotes() {
@@ -192,12 +192,12 @@ public class AccountTransaction
         setString(ITransactionEntity.NOTES, value);
     }
 
-    public Integer getPayeeId() {
-        return getInt(ITransactionEntity.PAYEEID);
+    public Long getPayeeId() {
+        return getLong(ITransactionEntity.PAYEEID);
     }
 
-    public void setPayeeId(Integer value) {
-        setInt(ITransactionEntity.PAYEEID, value);
+    public void setPayeeId(Long value) {
+        setLong(ITransactionEntity.PAYEEID, value);
     }
 
     public boolean hasPayee() {

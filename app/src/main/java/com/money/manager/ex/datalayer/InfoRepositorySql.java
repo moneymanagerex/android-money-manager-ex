@@ -63,7 +63,7 @@ public class InfoRepositorySql
         return results;
     }
 
-    public int delete(long id) {
+    public long delete(long id) {
         String idString = String.valueOf(id);
         return this.delete(Info.INFOID + "=?", idString);
     }

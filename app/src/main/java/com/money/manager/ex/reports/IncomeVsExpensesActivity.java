@@ -25,7 +25,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class IncomeVsExpensesActivity extends MmxBaseFragmentActivity {
 
-    public static final int SUBTOTAL_MONTH = 99;
+    public static final long SUBTOTAL_MONTH = 99;
 
     public boolean mIsDualPanel = false;
     private final IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();

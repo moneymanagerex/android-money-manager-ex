@@ -53,7 +53,7 @@ public class BudgetListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final int REQUEST_EDIT_BUDGET = 1;
+    public static final long REQUEST_EDIT_BUDGET = 1;
 
     /**
      * Use this factory method to create a new instance of
@@ -176,7 +176,7 @@ public class BudgetListFragment
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int budgetId = (int) info.id;
+        long budgetId = (int) info.id;
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
 
@@ -230,7 +230,7 @@ public class BudgetListFragment
         LoaderManager.getInstance(this).initLoader(LOADER_BUDGETS, null, this);
     }
 
-    private void editBudget(int budgetId) {
+    private void editBudget(long budgetId) {
         Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.putExtra(BudgetEditActivity.KEY_BUDGET_ID, budgetId);
         intent.setAction(Intent.ACTION_EDIT);
@@ -243,7 +243,7 @@ public class BudgetListFragment
         editBudgetLauncher.launch(intent);
     }
 
-    private void confirmDelete(final int budgetId) {
+    private void confirmDelete(final long budgetId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.delete)
                 .setMessage(R.string.confirmDelete)

@@ -60,15 +60,15 @@ public class GeneralSettings
      * Fetches the default account id. The default account is set per database.
      * @return Default account id.
      */
-    public Integer getDefaultAccountId() {
+    public Long getDefaultAccountId() {
 //        String value = get(R.string.pref_default_account, "");
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.DEFAULT_ACCOUNT_ID);
 
-        return NumericHelper.toInteger(value);
+        return NumericHelper.toLong(value);
     }
 
-    public void setDefaultAccountId(Integer accountId) {
+    public void setDefaultAccountId(Long accountId) {
         String value = "";
         if (accountId != null) {
             value = accountId.toString();
@@ -84,11 +84,11 @@ public class GeneralSettings
         return get(R.string.pref_theme, lightTheme);
     }
 
-    public Integer getBaseCurrencyId() {
+    public Long getBaseCurrencyId() {
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.BASECURRENCYID);
 
-        return NumericHelper.toInteger(value);
+        return NumericHelper.toLong(value);
     }
 
     public boolean getSendUsage() {

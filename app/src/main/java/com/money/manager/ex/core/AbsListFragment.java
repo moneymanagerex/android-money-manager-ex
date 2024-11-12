@@ -129,7 +129,7 @@ public class AbsListFragment
     /**
      * Get the position of the currently selected list item.
      */
-    public int getSelectedItemPosition() {
+    public long getSelectedItemPosition() {
         ensureList();
         return mList.getSelectedItemPosition();
     }
@@ -176,7 +176,7 @@ public class AbsListFragment
      * <p>Applications do not normally need to use this themselves.  The default
      * behavior of AbsListFragment is to start with the list not being shown, only
      * showing it once an adapter is given with {@link #setListAdapter(ListAdapter)}.
-     * If the list at that point had not been shown, when it does get shown
+     * If the list at that polong had not been shown, when it does get shown
      * it will be do without the user ever seeing the hidden state.
      *
      * @param shown If true, the list view is shown; if false, the progress

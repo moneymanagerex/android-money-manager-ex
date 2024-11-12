@@ -76,7 +76,7 @@ public class Core {
      * @param textResourceId id of string to display as a message
      */
     public void alert(int textResourceId) {
-        alert(Constants.NOT_SET, textResourceId);
+        alert(Constants.NOT_SET_INT, textResourceId);
     }
 
     public void alert(int title, int text) {
@@ -250,7 +250,7 @@ public class Core {
      * @return true if running on the tablet, otherwise false
      */
     public boolean isTablet() {
-        int layout = getContext().getResources().getConfiguration().screenLayout;
+        long layout = getContext().getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
                 ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
     }
@@ -271,7 +271,7 @@ public class Core {
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getAppVersionCode();
         int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getInt(getContext().getString(R.string.pref_last_version_key), Constants.NOT_SET);
+                .getInt(getContext().getString(R.string.pref_last_version_key), Constants.NOT_SET_INT);
 
         return lastVersionCode != currentVersionCode;
     }
@@ -340,12 +340,12 @@ public class Core {
         return true;
     }
 
-//    public int getColourFromStyledAttribute(int attribute) {
+//    public long getColourFromStyledAttribute(long attribute) {
 //        int[] attrs = { attribute };
 //        TypedArray ta = getContext().obtainStyledAttributes(getContext().getTheme(), attrs);
 //    }
 
-//    public int getColourFromThemeAttribute(int attribute) {
+//    public long getColourFromThemeAttribute(long attribute) {
 //        TypedValue typedValue = new TypedValue();
 //        getContext().getTheme().resolveAttribute(attribute, typedValue, true);
 //        return typedValue.resourceId;
@@ -360,7 +360,7 @@ public class Core {
 
 //        int[] arrayAttributes = new int[] { attribute };
 //        TypedArray typedArray = context.obtainStyledAttributes(arrayAttributes);
-//        int value = typedArray.getColor(0, context.getResources().getColor(R.color.abBackground));
+//        long value = typedArray.getColor(0, context.getResources().getColor(R.color.abBackground));
 //        typedArray.recycle();
 
         // Create an array of the attributes we want to resolve

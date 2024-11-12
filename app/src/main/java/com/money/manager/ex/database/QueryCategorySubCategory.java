@@ -31,9 +31,9 @@ public class QueryCategorySubCategory extends Dataset {
     public static final String SUBCATEGNAME = "SUBCATEGNAME";
     public static final String CATEGSUBNAME = "CATEGSUBNAME";
     //definizione dei campi
-    private int categId;
+    private long categId;
     private CharSequence categName;
-    private int subCategId;
+    private long subCategId;
     private CharSequence mSubcategoryName;
     private CharSequence categSubName;
 
@@ -47,11 +47,11 @@ public class QueryCategorySubCategory extends Dataset {
         return new String[]{ID, CATEGID, CATEGNAME, SUBCATEGID, SUBCATEGNAME, CATEGSUBNAME};
     }
 
-    public int getCategId() {
+    public long getCategId() {
         return categId;
     }
 
-    public void setCategId(int categId) {
+    public void setCategId(long categId) {
         this.categId = categId;
     }
 
@@ -71,11 +71,11 @@ public class QueryCategorySubCategory extends Dataset {
         this.categSubName = categSubName;
     }
 
-    public int getSubCategId() {
+    public long getSubCategId() {
         return subCategId;
     }
 
-    public void setSubCategId(int subCategId) {
+    public void setSubCategId(long subCategId) {
         this.subCategId = subCategId;
     }
 

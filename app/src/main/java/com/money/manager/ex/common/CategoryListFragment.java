@@ -74,7 +74,7 @@ public class CategoryListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
-    public Integer requestId;
+    public Long requestId;
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
 
@@ -84,8 +84,8 @@ public class CategoryListFragment
     // table or query
     private static QueryCategorySubCategory mQuery;
     private int mLayout;
-    private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
-    private int mIdChildChecked = ExpandableListView.INVALID_POSITION;
+    private long mIdGroupChecked = ExpandableListView.INVALID_POSITION;
+    private long mIdChildChecked = ExpandableListView.INVALID_POSITION;
 
     private List<Category> mCategories;
     private HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
@@ -239,8 +239,8 @@ public class CategoryListFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-            outState.putInt(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
-            outState.putInt(KEY_ID_CHILD, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdChildChecked());
+            outState.putLong(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
+            outState.putLong(KEY_ID_CHILD, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdChildChecked());
             outState.putString(KEY_CUR_FILTER, mCurFilter);
         }
     }
@@ -317,8 +317,8 @@ public class CategoryListFragment
 
             if (getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                 CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                int categId = adapter.getIdGroupChecked();
-                int subCategId = adapter.getIdChildChecked();
+                long categId = adapter.getIdGroupChecked();
+                long subCategId = adapter.getIdChildChecked();
 
                 if (categId == ExpandableListView.INVALID_POSITION) return;
 
@@ -377,12 +377,12 @@ public class CategoryListFragment
         Core core = new Core(getActivity().getApplicationContext());
         String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
 
-        int key = -1;
+        long key = -1;
         List<QueryCategorySubCategory> listSubCategories = null;
 
         // reset cursor if getting back on the fragment.
         if (data.getPosition() > 0) {
-            data.moveToPosition(Constants.NOT_SET);
+            data.moveToPosition(Constants.NOT_SET_INT);
         }
 
         while (data.moveToNext()) {
@@ -396,7 +396,7 @@ public class CategoryListFragment
 
                 // create instance category
                 Category category = new Category();
-                category.setId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                category.setId(data.getLong(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
                 category.setName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))).toString());
 
                 // add list
@@ -482,7 +482,7 @@ public class CategoryListFragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int rowsDelete = 0;
+                        long rowsDelete = 0;
                         if (categoryIds.subCategId <= 0) {
                             CategoryRepository repo = new CategoryRepository(getActivity());
                             rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
@@ -508,8 +508,8 @@ public class CategoryListFragment
     /**
      * Show alter binaryDialog, for create or edit new category
      */
-    private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
-                                            final CharSequence categoryName) {
+    private void showDialogEditCategoryName(SQLTypeTransaction type, long categoryId,
+                                            CharSequence categoryName) {
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
 
@@ -539,14 +539,14 @@ public class CategoryListFragment
 
                         switch (type) {
                             case INSERT:
-                                int insertResult = service.createNew(name, Constants.NOT_SET);
+                                long insertResult = service.createNew(name, Constants.NOT_SET);
 
                                 if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(categoryId, name, Constants.NOT_SET);
+                                long updateResult = service.update(categoryId, name, Constants.NOT_SET);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
@@ -568,8 +568,8 @@ public class CategoryListFragment
     /**
      * Show alter binaryDialog, for create or edit new category
      */
-    private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
-                                               final int subCategoryId, final CharSequence subCategName) {
+    private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final long categoryId,
+                                               final long subCategoryId, final CharSequence subCategName) {
 
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
@@ -587,7 +587,7 @@ public class CategoryListFragment
         final List<Category> categories = categoryService.getList();
 
         ArrayList<String> categoryNames = new ArrayList<>();
-        ArrayList<Integer> categoryIds = new ArrayList<>();
+        ArrayList<Long> categoryIds = new ArrayList<>();
         for (Category category : categories) {
             categoryIds.add(category.getId());
             categoryNames.add(category.getName());
@@ -619,19 +619,19 @@ public class CategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get parent category id
-                        int parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
+                        long parentID = categories.get(spnCategory.getSelectedItemPosition()).getId();
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
                             case INSERT:
-                                int insertResult = service.createNew(name, parentID);
+                                long insertResult = service.createNew(name, parentID);
 
                                 if (insertResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
-                                int updateResult = service.update(subCategoryId, name, parentID);
+                                long updateResult = service.update(subCategoryId, name, parentID);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }

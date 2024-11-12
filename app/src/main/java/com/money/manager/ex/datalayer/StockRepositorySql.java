@@ -44,18 +44,18 @@ public class StockRepositorySql
     }
 
 
-    public boolean delete(int id) {
-        int result = super.delete(StockFields.STOCKID + "=?", Integer.toString(id));
+    public boolean delete(long id) {
+        long result = super.delete(StockFields.STOCKID + "=?", Long.toString(id));
         return result > 0;
     }
 
-    public Stock load(int id) {
+    public Stock load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         return first(Stock.class,
                 null,
                 StockFields.STOCKID + "=?",
-                new String[] { Integer.toString(id) },
+                new String[] { Long.toString(id) },
                 null);
     }
 
@@ -70,7 +70,7 @@ public class StockRepositorySql
 
         // recalculate value
 
-        for (int id : ids) {
+        for (long id : ids) {
             Stock stock = load(id);
             stock.setCurrentPrice(price);
             // recalculate & assign the value
@@ -82,9 +82,9 @@ public class StockRepositorySql
     }
 
     public boolean save(Stock stock) {
-        int id = stock.getId();
+        long id = stock.getId();
 
-        return update(stock, StockFields.STOCKID + "=?", Integer.toString(id));
+        return update(stock, StockFields.STOCKID + "=?", Long.toString(id));
     }
 
     // Private

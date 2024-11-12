@@ -65,8 +65,8 @@ public class MmxDatabaseUtils {
         c.close();
     }
 
-    public static String[] getArgsForId(int id) {
-        String[] result = new String[] { Integer.toString(id) };
+    public static String[] getArgsForId(Long id) {
+        String[] result = new String[] { Long.toString(id) };
         return result;
     }
 
@@ -160,10 +160,10 @@ public class MmxDatabaseUtils {
 
         if (results.size() > 1) {
             // delete them, leaving only the first one
-            int keepId = results.get(0).getId();
+            long keepId = results.get(0).getId();
 
             for(Info toBeDeleted : results) {
-                int idToDelete = toBeDeleted.getId();
+                long idToDelete = toBeDeleted.getId();
                 if (idToDelete != keepId) {
                     repo.delete(idToDelete);
                 }

@@ -75,10 +75,10 @@ public class EditPriceDialog
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    int mAccountId;
+    long mAccountId;
     String mUserDateFormat;
     PriceDownloadedEvent mPrice;
-    int mCurrencyId = Constants.NOT_SET;
+    long mCurrencyId = Constants.NOT_SET;
 
     private EditPriceViewHolder viewHolder;
     private final Lazy<FormatUtilities> formatUtilitiesLazy;
@@ -169,10 +169,10 @@ public class EditPriceDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putInt(ARG_ACCOUNT, mAccountId);
+        savedInstanceState.putLong(ARG_ACCOUNT, mAccountId);
         savedInstanceState.putString(ARG_DATE, mUserDateFormat);
         savedInstanceState.putParcelable(ARG_PRICE, Parcels.wrap(mPrice));
-        savedInstanceState.putInt(ARG_SYMBOL, mCurrencyId);
+        savedInstanceState.putLong(ARG_SYMBOL, mCurrencyId);
     }
 
     @Subscribe

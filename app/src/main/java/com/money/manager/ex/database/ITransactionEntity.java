@@ -42,19 +42,19 @@ public interface ITransactionEntity {
     String TRANSDATE = "TRANSDATE";
     String FOLLOWUPID = "FOLLOWUPID";
 
-    Integer getId();
-    void setId(Integer value);
+    Long getId();
+    void setId(Long value);
     boolean hasId();
 
-    Integer getAccountId();
-    void setAccountId(Integer value);
+    Long getAccountId();
+    void setAccountId(Long value);
 
-    Integer getAccountToId();
-    void setAccountToId(Integer value);
+    Long getAccountToId();
+    void setAccountToId(Long value);
     boolean hasAccountTo();
 
-    Integer getCategoryId();
-    void setCategoryId(Integer value);
+    Long getCategoryId();
+    void setCategoryId(Long value);
     boolean hasCategory();
 
     /**
@@ -76,8 +76,8 @@ public interface ITransactionEntity {
     String getNotes();
     void setNotes(String value);
 
-    Integer getPayeeId();
-    void setPayeeId(Integer value);
+    Long getPayeeId();
+    void setPayeeId(Long value);
     boolean hasPayee();
 
     String getStatus();

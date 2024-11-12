@@ -187,7 +187,7 @@ public class PriceEditActivity
         Intent intent = getIntent();
         if (intent == null) return;
 
-        model.accountId = intent.getIntExtra(EditPriceDialog.ARG_ACCOUNT, Constants.NOT_SET);
+        model.accountId = intent.getLongExtra(EditPriceDialog.ARG_ACCOUNT, Constants.NOT_SET);
         model.symbol = intent.getStringExtra(EditPriceDialog.ARG_SYMBOL);
 
         String priceString = intent.getStringExtra(EditPriceDialog.ARG_PRICE);
@@ -197,7 +197,7 @@ public class PriceEditActivity
         model.date = new MmxDate(dateString);
 
         // currency!
-        model.currencyId = intent.getIntExtra(ARG_CURRENCY_ID, Constants.NOT_SET);
+        model.currencyId = intent.getLongExtra(ARG_CURRENCY_ID, Constants.NOT_SET);
     }
 
     private void save() {

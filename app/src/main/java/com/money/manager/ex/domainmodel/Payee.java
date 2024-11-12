@@ -34,19 +34,19 @@ public class Payee
 
     public Payee() {
         super();
-        setInt(Payee.ACTIVE, 1);
+        setLong(Payee.ACTIVE, 1L);
     }
 
     public Payee(ContentValues contentValues) {
         super(contentValues);
     }
 
-    public Integer getId() {
-        return getInt(PAYEEID);
+    public Long getId() {
+        return getLong(PAYEEID);
     }
 
-    public void setId(Integer value) {
-        setInt(Payee.PAYEEID, value);
+    public void setId(Long value) {
+        setLong(Payee.PAYEEID, value);
     }
 
     public String getName() {
@@ -57,12 +57,12 @@ public class Payee
         setString(Payee.PAYEENAME, value);
     }
 
-    public Integer getCategoryId() {
-        return getInt(Payee.CATEGID);
+    public Long getCategoryId() {
+        return getLong(Payee.CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
-        setInt(Payee.CATEGID, value);
+    public void setCategoryId(Long value) {
+        setLong(Payee.CATEGID, value);
     }
 
     public boolean hasCategory() {

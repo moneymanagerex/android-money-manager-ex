@@ -87,7 +87,7 @@ public class AccountServiceTests {
         Account account = Account.create("bank account", AccountTypes.CHECKING, AccountStatuses.OPEN,
             false, currency.getCurrencyId());
         repo.save(account);
-        int accountId = account.getId();
+        long accountId = account.getId();
 
         // When
         String actual = testObject.getAccountCurrencyCode(accountId);

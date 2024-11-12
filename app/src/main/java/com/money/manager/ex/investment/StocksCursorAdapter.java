@@ -38,7 +38,7 @@ public class StocksCursorAdapter
     extends CursorAdapter {
 
     public StocksCursorAdapter(Context context, Cursor cursor) {
-        super(context, cursor, Constants.NOT_SET);
+        super(context, cursor, Constants.NOT_SET_INT);
 
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mHeadersAccountIndex = new HashMap<>();
@@ -47,7 +47,7 @@ public class StocksCursorAdapter
     }
 
     private final LayoutInflater mInflater;
-    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final HashMap<Long, Integer> mHeadersAccountIndex;
     private final SparseBooleanArray mCheckedPosition;
 
     @Override
@@ -73,7 +73,7 @@ public class StocksCursorAdapter
         StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
+        long accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }

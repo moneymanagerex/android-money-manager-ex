@@ -112,11 +112,11 @@ public class RecurringTransactionEditActivity
             if (savedInstanceState == null) {
                 String action = getIntent().getAction();
                 if (action != null && action.equals(Intent.ACTION_EDIT)) {
-                    int id = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
+                    long id = getIntent().getLongExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
                     loadRecurringTransaction(id);
                 } else {
-                    mCommon.transactionEntity.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
+                    mCommon.transactionEntity.setAccountId(getIntent().getLongExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -254,14 +254,14 @@ public class RecurringTransactionEditActivity
         mViewHolder.paymentsLeftEditText.setVisibility(recurrence.getValue() > 0 ? View.VISIBLE : View.GONE);
         mViewHolder.paymentsLeftEditText.setHint(recurrence.getValue() >= 11 ? R.string.activates : R.string.payments_left);
 
-        Integer occurrences = getRecurringTransaction().getPaymentsLeft();
+        Long occurrences = getRecurringTransaction().getPaymentsLeft();
         if (occurrences == null) {
             occurrences = Constants.NOT_SET;
             getRecurringTransaction().setPaymentsLeft(Constants.NOT_SET);
         }
         String value = occurrences == Constants.NOT_SET
                 ? "∞"
-                : Integer.toString(occurrences);
+                : Long.toString(occurrences);
         mViewHolder.paymentsLeftEditText.setText(value);
 
 //        if (mRecurringTransaction.getPaymentsLeft() != null && mRecurringTransaction.getPaymentsLeft() >= 0) {
@@ -317,10 +317,10 @@ public class RecurringTransactionEditActivity
         Spinner spinRecurringMode = findViewById(R.id.recurringMode);
 
         RecurringTransaction tx = (RecurringTransaction) mCommon.transactionEntity;
-        Integer recurrence = tx.getRecurrenceInt();
+        int recurrence = tx.getRecurrenceInt().intValue();
         int recurrenceMode = 0;
 
-        recurrenceMode = recurrence / 100;
+        recurrenceMode =  recurrence / 100;
         recurrence = recurrence % 100;
 /*
         if (recurrence >= 200) {
@@ -345,7 +345,7 @@ public class RecurringTransactionEditActivity
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                getRecurringTransaction().setRecurrence(Constants.NOT_SET);
+                getRecurringTransaction().setRecurrence(Constants.NOT_SET_INT);
                 showPaymentsLeft();
             }
         });
@@ -465,7 +465,7 @@ public class RecurringTransactionEditActivity
      * @param recurringTransactionId transaction id
      * @return true if data selected, false nothing
      */
-    private boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadRecurringTransaction(long recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
         mCommon.transactionEntity = repo.load(recurringTransactionId);
         if (mCommon.transactionEntity == null) return false;
@@ -531,7 +531,7 @@ public class RecurringTransactionEditActivity
 
                 value = mViewHolder.paymentsLeftEditText.getText().toString();
         if (NumericHelper.isNumeric(value)) {
-            int paymentsLeft = NumericHelper.toInt(value);
+            long paymentsLeft = NumericHelper.toInt(value);
             getRecurringTransaction().setPaymentsLeft(paymentsLeft);
         } else {
             getRecurringTransaction().setPaymentsLeft(Constants.NOT_SET);
