@@ -53,7 +53,7 @@ public class FilterDialogFragment
 
     private TransactionFilter mTransactionFilter;
     private Account mAccount;
-    private long mRecords;
+    private int mRecords;
 
     public FilterDialogFragment() {
         // Required empty public constructor
