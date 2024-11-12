@@ -57,7 +57,7 @@ public class CommonSplitCategoryLogic {
      *          User enters 10 for Deposit on Deposit transaction. The sign will be +1.
      */
     public static Money getStorageAmount(TransactionTypes parentType, Money amount, ISplitTransaction split) {
-        long splitSign = split.getTransactionType(parentType) == parentType
+        int splitSign = split.getTransactionType(parentType) == parentType
                 ? +1
                 : -1;
 
