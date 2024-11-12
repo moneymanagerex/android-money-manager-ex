@@ -72,12 +72,12 @@ public class AboutFragment extends Fragment {
         TextView txtVersion = view.findViewById(R.id.textViewVersion);
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
-        long build = core.getAppVersionCode();
+        int build = core.getAppVersionCode();
         txtVersion.setText(getString(R.string.version) + " " + version + " (" + build + ")");
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
         TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
-        long currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         String copyrightString = getString(R.string.application_copyright, currentYear);
         textViewCopyright.setText(copyrightString);
 

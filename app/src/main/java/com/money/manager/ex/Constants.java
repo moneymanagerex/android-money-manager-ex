@@ -50,8 +50,4 @@ public class Constants {
 
     // Amount formats
     public static final String PRICE_FORMAT = "0.00##";
-
-    // UI
-    public static final long NotificationIconSize = 25;
-    public static final long NotificationBigIconSize = 48;
 }
