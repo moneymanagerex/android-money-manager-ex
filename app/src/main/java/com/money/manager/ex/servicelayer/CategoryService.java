@@ -68,7 +68,7 @@ public class CategoryService
                 .insert(repo.getUri(), values);
         long id = ContentUris.parseId(result);
 
-        return ((int) id);
+        return id;
     }
 
     public String getCategorySubcategoryName(long categoryId) {
