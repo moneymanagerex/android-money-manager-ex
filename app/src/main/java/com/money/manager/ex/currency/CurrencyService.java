@@ -21,11 +21,6 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.LongSparseArray;
-import android.util.SparseArray;
-
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -53,23 +48,12 @@ import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /**
  * This class implements all the methods of utility for the management of currencies.
  */
 public class CurrencyService
     extends ServiceBase {
-
-    @Inject
-    public CurrencyService(Context context) {
-        super(context);
-
-        mCurrencyCodes = new HashMap<>();
-        mCurrencies = new LongSparseArray<>();
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
 
     @Inject CurrencyRepositorySql mRepository;
 
@@ -80,6 +64,16 @@ public class CurrencyService
      * a fast lookup for symbol -> id. i.e. EUR->2.
      */
     private final HashMap<String, Long> mCurrencyCodes;
+
+    @Inject
+    public CurrencyService(Context context) {
+        super(context);
+
+        mCurrencyCodes = new HashMap<>();
+        mCurrencies = new LongSparseArray<>();
+
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
 
     /**
      * @param currencyId of the currency to be get
