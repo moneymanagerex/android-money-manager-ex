@@ -138,4 +138,7 @@ public class EntityBase
     public void setId(Long id) {
         throw new UnsupportedOperationException("Subclasses must override this method");
     }
+    public Long getId() {
+        throw new UnsupportedOperationException("Subclasses must override this method");
+    }
 }

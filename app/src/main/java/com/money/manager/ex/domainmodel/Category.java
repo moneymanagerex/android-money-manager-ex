@@ -41,7 +41,7 @@ public class Category
         super(contentValues);
     }
 
-    public long getId() {
+    public Long getId() {
         return getLong(CATEGID);
     }
 

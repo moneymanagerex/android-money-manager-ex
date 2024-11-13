@@ -34,7 +34,7 @@ public class Info
         return entity;
     }
 
-    public long getId() {
+    public Long getId() {
         return getLong(INFOID);
     }
 

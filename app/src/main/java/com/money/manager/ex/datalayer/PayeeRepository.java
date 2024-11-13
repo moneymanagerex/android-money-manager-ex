@@ -45,11 +45,6 @@ public class PayeeRepository
         };
     }
 
-    public long add(Payee entity) {
-        entity.setId(generateInstanceIdWithSuffix());
-        return insert(entity.contentValues);
-    }
-
     public boolean delete(long id) {
         if (id == Constants.NOT_SET) return false;
 
