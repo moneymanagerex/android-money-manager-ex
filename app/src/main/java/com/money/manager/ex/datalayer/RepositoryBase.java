@@ -86,8 +86,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     public long add(EntityBase entity) {
         entity.setId(generateInstanceIdWithSuffix());
-        return insert(entity.contentValues
-        );
+        return insert(entity.contentValues);
     }
 
     /**
