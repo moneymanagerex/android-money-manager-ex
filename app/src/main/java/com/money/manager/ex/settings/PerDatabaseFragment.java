@@ -197,7 +197,6 @@ public class PerDatabaseFragment
 
                 Integer month = Ints.tryParse(currentMonth);
                 if (month != null) {
-                    //long month = Integer.parseInt(currentMonth) - 1;
                     month = month - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
                         lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[month]);
@@ -322,7 +321,7 @@ public class PerDatabaseFragment
 
         preference.setOnPreferenceChangeListener((preference1, newValue) -> {
             String accountName1 = entries[0];
-            long accountId = Integer.parseInt(newValue.toString());
+            long accountId = Long.parseLong(newValue.toString());
             if (accountId != Constants.NOT_SET) {
                 accountName1 = repository.loadName(accountId);
             }

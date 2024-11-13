@@ -133,4 +133,12 @@ public class EntityBase
     protected void setDouble(String column, Double value) {
         contentValues.put(column, value);
     }
+
+    // Abstract method (must be implemented by subclasses)
+    public void setId(Long id) {
+        throw new UnsupportedOperationException("Subclasses must override this method");
+    }
+    public Long getId() {
+        throw new UnsupportedOperationException("Subclasses must override this method");
+    }
 }

@@ -157,7 +157,7 @@ public class HomeFragment
 
         // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
-            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
+            this.accountBalancedId = savedInstanceState.getLong(TAG_BALANCE_ACCOUNT);
         }
     }
 

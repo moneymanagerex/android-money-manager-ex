@@ -750,7 +750,7 @@ public class AccountTransactionListFragment
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
-            long accountId = Integer.parseInt(accountIdString);
+            long accountId = Long.parseLong(accountIdString);
             if (accountId == mAccountId) {
                 position = i;
                 break;
