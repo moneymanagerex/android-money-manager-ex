@@ -32,8 +32,8 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.recurring.transactions.Recurrence;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
+import com.money.manager.ex.scheduled.Recurrence;
+import com.money.manager.ex.scheduled.ScheduledTransactionListActivity;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.NotificationUtils;
@@ -109,24 +109,24 @@ public class RecurringTransactionProcess {
             NotificationManager notificationManager = (NotificationManager) getContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
-            Intent showIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
+            Intent showIntent = new Intent(getContext(), ScheduledTransactionListActivity.class);
             // set launch from notification // check pin code
-            showIntent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            showIntent.putExtra(ScheduledTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
             showIntent.setAction("SHOW/"+schedTrx.trxId);
             showIntent.putExtra("ACTION", "SHOW");
             showIntent.putExtra("ID", schedTrx.trxId);
             PendingIntent showPending = PendingIntent.getActivity(getContext(), 0, showIntent, PendingIntent.FLAG_IMMUTABLE);
 
             // todo: Actions
-            Intent skipIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
-            skipIntent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            Intent skipIntent = new Intent(getContext(), ScheduledTransactionListActivity.class);
+            skipIntent.putExtra(ScheduledTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
             skipIntent.setAction("SKIP/"+schedTrx.trxId);
             skipIntent.putExtra( "ACTION", "SKIP");
             skipIntent.putExtra("ID", schedTrx.trxId);
             PendingIntent skipPending = PendingIntent.getActivity(getContext(), 0, skipIntent, PendingIntent.FLAG_IMMUTABLE);
 
-            Intent enterIntent = new Intent(getContext(), RecurringTransactionListActivity.class);
-            enterIntent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
+            Intent enterIntent = new Intent(getContext(), ScheduledTransactionListActivity.class);
+            enterIntent.putExtra(ScheduledTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
             enterIntent.setAction("ENTER/"+schedTrx.trxId);
             enterIntent.putExtra( "ACTION", "ENTER");
             enterIntent.putExtra("ID", schedTrx.trxId);

@@ -29,11 +29,11 @@ import java.util.ArrayList;
 /**
  * Repository for Recurring Split Categories (TableBudgetSplitTransactions).
  */
-public class SplitRecurringCategoriesRepository
+public class SplitScheduledCategoryRepository
     extends RepositoryBase
     implements IRepository {
 
-    public SplitRecurringCategoriesRepository(Context context) {
+    public SplitScheduledCategoryRepository(Context context) {
         super(context, SplitRecurringCategory.TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions");
     }
 

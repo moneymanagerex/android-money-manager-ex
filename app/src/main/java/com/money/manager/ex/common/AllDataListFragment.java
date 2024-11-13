@@ -59,7 +59,7 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.home.DrawerMenuItem;
@@ -131,7 +131,7 @@ public class AllDataListFragment
         setListShown(false);
 
         // Read arguments
-        this.AccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+        this.AccountId = getArguments().getLong(ARG_ACCOUNT_ID);
 
         // Read header indicator directly from the activity.
         // todo: make this a parameter or a property.
@@ -703,7 +703,7 @@ public class AllDataListFragment
 
                         for (long transactionId : transactionIds) {
                             // First delete any splits. See if there are any split records.
-                            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
+                            SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
                             Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
                                     SplitCategory.TRANSID + "=" + transactionId,
                                     null, SplitCategory.SPLITTRANSID);

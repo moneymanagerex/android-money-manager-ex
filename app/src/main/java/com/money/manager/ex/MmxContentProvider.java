@@ -45,9 +45,9 @@ import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.AttachmentRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
@@ -111,9 +111,9 @@ public class MmxContentProvider
 //            new InfoRepositorySql(context),
                 new PayeeRepository(context),
                 new AttachmentRepository(context),
-                new RecurringTransactionRepository(context),
-                new SplitCategoriesRepository(context),
-                new SplitRecurringCategoriesRepository(context),
+                new ScheduledTransactionRepository(context),
+                new SplitCategoryRepository(context),
+                new SplitScheduledCategoryRepository(context),
                 new StockRepository(context),
                 new StockHistoryRepository(context),
                 new QueryAccountBills(context),

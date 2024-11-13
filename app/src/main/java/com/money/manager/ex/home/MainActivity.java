@@ -85,7 +85,7 @@ import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionProcess;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
+import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
@@ -629,7 +629,7 @@ public class MainActivity
         } else if (itemId == R.id.menu_payee) {
             showFragment(PayeeListFragment.class);
         } else if (itemId == R.id.menu_recurring_transaction) {
-            showFragment(RecurringTransactionListFragment.class);
+            showFragment(ScheduledTransactionListFragment.class);
         } else if (itemId == R.id.menu_budgets) {
             Intent intent = new Intent(this, BudgetsActivity.class);
             startActivity(intent);

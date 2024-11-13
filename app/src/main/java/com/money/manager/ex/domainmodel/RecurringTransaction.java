@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.recurring.transactions.Recurrence;
+import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.recurring.transactions;
+package com.money.manager.ex.scheduled;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -48,7 +48,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -72,7 +72,7 @@ import dagger.Lazy;
  * The recurring transactions list fragment.
  * Includes floating action button.
  */
-public class RecurringTransactionListFragment
+public class ScheduledTransactionListFragment
     extends BaseListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -279,7 +279,7 @@ public class RecurringTransactionListFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RecurringTransactionListActivity.RESULT_OK) {
+        if (resultCode == ScheduledTransactionListActivity.RESULT_OK) {
 //                switch (requestCode) {
 //                    case REQUEST_ADD_REPEATING_TRANSACTION:
 //                        break;
@@ -316,7 +316,7 @@ public class RecurringTransactionListFragment
 
                         // restart loader
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING,
-                                null, RecurringTransactionListFragment.this);
+                                null, ScheduledTransactionListFragment.this);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -343,7 +343,7 @@ public class RecurringTransactionListFragment
                         RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
                         recurringTransaction.moveNextOccurrence();
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
-                                RecurringTransactionListFragment.this);
+                                ScheduledTransactionListFragment.this);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -427,14 +427,14 @@ public class RecurringTransactionListFragment
     }
 
     private void showCreateTransactionActivity(long scheduledTransactionId) {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(getActivity());
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getActivity());
         RecurringTransaction tx = repo.load(scheduledTransactionId);
         if (tx == null) return;
 
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, scheduledTransactionId);
-        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
+        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ScheduledTransactionListFragment.java");
         // start for insert new transaction
         startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
     }
@@ -448,10 +448,10 @@ public class RecurringTransactionListFragment
      */
     private void startRecurringTransactionEditActivity(Long billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID
-        Intent intent = new Intent(getActivity(), RecurringTransactionEditActivity.class);
+        Intent intent = new Intent(getActivity(), ScheduledTransactionEditActivity.class);
         // check transId not null
         if (billDepositsId != null) {
-            intent.putExtra(RecurringTransactionEditActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
+            intent.putExtra(ScheduledTransactionEditActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);
