@@ -49,8 +49,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
@@ -394,7 +394,7 @@ public class CheckingTransactionEditActivity
 
         // Load Split Categories.
         if (mCommon.mSplitTransactions == null) {
-            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+            SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
             mCommon.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
         }
         // Load Attachments
@@ -427,7 +427,7 @@ public class CheckingTransactionEditActivity
      * @return A boolean indicating whether the operation was successful.
      */
     private boolean loadScheduledTransactionInternal(long scheduledTransactionId) {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(this);
         RecurringTransaction recurringTx = repo.load(scheduledTransactionId);
         if (recurringTx == null) return false;
 
@@ -725,7 +725,7 @@ public class CheckingTransactionEditActivity
 
     private boolean saveSplitCategories() {
         Long transactionId = mCommon.transactionEntity.getId();
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+        SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
         ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
 
         // deleted old split transaction

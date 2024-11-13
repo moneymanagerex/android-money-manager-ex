@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.recurring.transactions;
+package com.money.manager.ex.scheduled;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -40,8 +40,8 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -64,10 +64,10 @@ import timber.log.Timber;
 /**
  * Recurring transactions are stored in BillsDeposits table.
  */
-public class RecurringTransactionEditActivity
+public class ScheduledTransactionEditActivity
     extends MmxBaseFragmentActivity {
 
-    public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
+    public static final String KEY_MODEL = "ScheduledTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
@@ -87,7 +87,7 @@ public class RecurringTransactionEditActivity
 
     String mIntentAction;
 
-    private RecurringTransactionViewHolder mViewHolder;
+    private ScheduledTransactionViewHolder mViewHolder;
     private EditTransactionCommonFunctions mCommon;
 
     @Override
@@ -390,7 +390,7 @@ public class RecurringTransactionEditActivity
                 };
 
                 DatePickerDialog datePicker = new DatePickerDialog(
-                        RecurringTransactionEditActivity.this, // replace with the actual activity or context
+                        ScheduledTransactionEditActivity.this, // replace with the actual activity or context
                         listener,
                         dateTime.getYear(),
                         dateTime.getMonthOfYear() , // getMonth of year alresy return month -1
@@ -438,7 +438,7 @@ public class RecurringTransactionEditActivity
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommon.findControls(this);
 
-        mViewHolder = new RecurringTransactionViewHolder();
+        mViewHolder = new ScheduledTransactionViewHolder();
 
         // Due Date = date
         mCommon.initDateSelector();
@@ -466,7 +466,7 @@ public class RecurringTransactionEditActivity
      * @return true if data selected, false nothing
      */
     private boolean loadRecurringTransaction(long recurringTransactionId) {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(this);
         mCommon.transactionEntity = repo.load(recurringTransactionId);
         if (mCommon.transactionEntity == null) return false;
 
@@ -588,7 +588,7 @@ public class RecurringTransactionEditActivity
     }
 
     private boolean saveSplitCategories() {
-        SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
+        SplitScheduledCategoryRepository splitRepo = new SplitScheduledCategoryRepository(this);
 
         // deleted old split transaction
         if (mCommon.getDeletedSplitCategories().size() > 0) {
@@ -625,7 +625,7 @@ public class RecurringTransactionEditActivity
     }
 
     private boolean saveTransaction() {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(this);
 
         if (!mCommon.transactionEntity.hasId()) {
             // insert

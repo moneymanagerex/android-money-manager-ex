@@ -28,13 +28,12 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.recurring.transactions.Recurrence;
+import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class RecurringTransactionService
 
     public long recurringTransactionId = Constants.NOT_SET;
 
-    private RecurringTransactionRepository mRepository;
+    private ScheduledTransactionRepository mRepository;
     private RecurringTransaction mRecurringTransaction;
 
     /**
@@ -161,9 +160,9 @@ public class RecurringTransactionService
         return result.toDate();
     }
 
-    public RecurringTransactionRepository getRepository(){
+    public ScheduledTransactionRepository getRepository(){
         if (mRepository == null) {
-            mRepository = new RecurringTransactionRepository(getContext());
+            mRepository = new ScheduledTransactionRepository(getContext());
         }
 
         return mRepository;
@@ -241,7 +240,7 @@ public class RecurringTransactionService
 
         // Save changes
 
-        RecurringTransactionRepository repo = getRepository();
+        ScheduledTransactionRepository repo = getRepository();
         boolean updated = repo.update(mRecurringTransaction);
         if (!updated) {
             new UIHelper(getContext()).showToast(R.string.error_saving_record);
@@ -261,7 +260,7 @@ public class RecurringTransactionService
         if(!result) return false;
 
         // Delete recurring transactions.
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
         long deleteResult = repo.delete(this.recurringTransactionId);
 //        long deleteResult = getContext().getContentResolver().delete(repo.getUri(),
 //                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
@@ -296,7 +295,7 @@ public class RecurringTransactionService
 
         // delete them
 
-        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+        SplitScheduledCategoryRepository repo = new SplitScheduledCategoryRepository(getContext());
 
         long deleteResult = getContext().getContentResolver().delete(
             repo.getUri(),
@@ -391,7 +390,7 @@ public class RecurringTransactionService
      * @return cursor for all the related split transactions
      */
     private Cursor getCursorForSplitTransactions(){
-        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+        SplitScheduledCategoryRepository repo = new SplitScheduledCategoryRepository(getContext());
 
         return getContext().getContentResolver().query(
             repo.getUri(),
@@ -447,7 +446,7 @@ public class RecurringTransactionService
     }
 
     public AccountTransaction getAccountTransactionFromRecurring () {
-        RecurringTransactionRepository scheduledRepo = new RecurringTransactionRepository(this.getContext());
+        ScheduledTransactionRepository scheduledRepo = new ScheduledTransactionRepository(this.getContext());
         RecurringTransaction scheduledTrx = scheduledRepo.load(recurringTransactionId);
         return (scheduledTrx == null) ? null : getAccountTransactionFromRecurring( scheduledTrx ) ;
     }

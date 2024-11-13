@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
@@ -140,7 +140,7 @@ public class QifRecord {
         StringBuilder builder = new StringBuilder();
 
         // retrieve splits
-        SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
+        SplitCategoryRepository repo = new SplitCategoryRepository(mContext);
         long transactionId = transaction.getId();
         ArrayList<ISplitTransaction> splits = repo.loadSplitCategoriesFor(transactionId);
         if (splits == null) return Constants.EMPTY_STRING;

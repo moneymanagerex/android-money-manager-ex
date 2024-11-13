@@ -29,11 +29,11 @@ import java.util.ArrayList;
 /**
  * Repository for Split Categories (TableSplitTransaction).
  */
-public class SplitCategoriesRepository
+public class SplitCategoryRepository
     extends RepositoryBase
     implements IRepository {
 
-    public SplitCategoriesRepository(Context context) {
+    public SplitCategoryRepository(Context context) {
         super(context, SplitCategory.TABLE_NAME, DatasetType.TABLE, "splittransaction");
     }
 

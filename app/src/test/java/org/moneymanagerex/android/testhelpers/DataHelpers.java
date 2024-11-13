@@ -25,7 +25,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Currency;
@@ -103,7 +103,7 @@ public class DataHelpers {
             TransactionTypes.Withdrawal, 1, amount);
         txRepo.insert(tx);
         // split categories
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
+        SplitCategoryRepository splitRepo = new SplitCategoryRepository(context);
         SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1,
                 tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 1");
         splitRepo.insert(split1);

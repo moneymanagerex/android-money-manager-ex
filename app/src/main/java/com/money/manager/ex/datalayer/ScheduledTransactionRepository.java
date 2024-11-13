@@ -29,10 +29,10 @@ import com.money.manager.ex.domainmodel.RecurringTransaction;
 /**
  * Recurring transaction repository.
  */
-public class RecurringTransactionRepository
+public class ScheduledTransactionRepository
     extends RepositoryBase<RecurringTransaction>{
 
-    public RecurringTransactionRepository(Context context) {
+    public ScheduledTransactionRepository(Context context) {
         super(context, "billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
     }
 

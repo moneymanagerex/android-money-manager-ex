@@ -231,9 +231,9 @@
                 <action android:name="android.intent.action.INSERT" />
             </intent-filter>
         </activity>
-        <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
+        <activity android:name=".scheduled.ScheduledTransactionListActivity" />
         <activity
-                android:name=".recurring.transactions.RecurringTransactionEditActivity"
+                android:name=".scheduled.ScheduledTransactionEditActivity"
                 android:label="@string/new_edit_repeating_transaction" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />

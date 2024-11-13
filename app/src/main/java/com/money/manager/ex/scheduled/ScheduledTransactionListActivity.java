@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.recurring.transactions;
+package com.money.manager.ex.scheduled;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -40,14 +40,14 @@ import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 /**
  * Not used.
  */
-public class RecurringTransactionListActivity
+public class ScheduledTransactionListActivity
     extends MmxBaseFragmentActivity {
 
-    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
+    public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "ScheduledTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;
-    private static final String FRAGMENTTAG = RecurringTransactionListActivity.class.getSimpleName() + "_Fragment";
+    private static final String FRAGMENTTAG = ScheduledTransactionListActivity.class.getSimpleName() + "_Fragment";
 
-    private RecurringTransactionListFragment listFragment;
+    private ScheduledTransactionListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class RecurringTransactionListActivity
 
         // set fragment and fragment manager
         FragmentManager fm = getSupportFragmentManager();
-        listFragment = new RecurringTransactionListFragment();
+        listFragment = new ScheduledTransactionListFragment();
         // attach fragment on activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
@@ -114,7 +114,7 @@ public class RecurringTransactionListActivity
                         Intent intent = new Intent(this, CheckingTransactionEditActivity.class);
                         intent.setAction(Intent.ACTION_INSERT);
                         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, trxid);
-                        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "RecurringTransactionListFragment.java");
+                        intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ScheduledTransactionListFragment.java");
                         // start for insert new transaction
                         startActivity(intent, savedInstanceState);
 //                        startActivityForResult(intent, 1002); // TODO REQUEST_ADD_TRANSACTION
