@@ -45,10 +45,6 @@ public class Payee
         return getLong(PAYEEID);
     }
 
-    public void setId(Long value) {
-        setLong(Payee.PAYEEID, value);
-    }
-
     public String getName() {
         return getString(Payee.PAYEENAME);
     }
