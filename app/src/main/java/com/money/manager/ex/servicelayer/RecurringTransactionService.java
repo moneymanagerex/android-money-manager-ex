@@ -47,6 +47,9 @@ public class RecurringTransactionService
     extends ServiceBase {
 
     public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
+    public long recurringTransactionId = Constants.NOT_SET;
+    private ScheduledTransactionRepository mRepository;
+    private RecurringTransaction mRecurringTransaction;
 
     public RecurringTransactionService(Context context){
         super(context);
@@ -58,11 +61,6 @@ public class RecurringTransactionService
 
         this.recurringTransactionId = recurringTransactionId;
     }
-
-    public long recurringTransactionId = Constants.NOT_SET;
-
-    private ScheduledTransactionRepository mRepository;
-    private RecurringTransaction mRecurringTransaction;
 
     /**
      * @param date    to start calculate

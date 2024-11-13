@@ -47,8 +47,6 @@ public class ScheduledTransactionListActivity
     public static final int INTENT_REQUEST_PASSCODE = 2;
     private static final String FRAGMENTTAG = ScheduledTransactionListActivity.class.getSimpleName() + "_Fragment";
 
-    private ScheduledTransactionListFragment listFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +75,7 @@ public class ScheduledTransactionListActivity
 
         // set fragment and fragment manager
         FragmentManager fm = getSupportFragmentManager();
-        listFragment = new ScheduledTransactionListFragment();
+        ScheduledTransactionListFragment listFragment = new ScheduledTransactionListFragment();
         // attach fragment on activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
