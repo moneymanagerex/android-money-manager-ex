@@ -55,8 +55,15 @@ public class NumericHelper {
         return Integer.parseInt(value);
     }
 
-    public static long toLong(String value) {
-        return Long.parseLong(value);
+    public static Long toLong(String value) {
+        // return Long.parseLong(value);
+        Long result;
+        if (!TextUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
+            result = Long.parseLong(value);
+        } else {
+            result = null;
+        }
+        return result;
     }
 
     public static Integer toInteger(String value) {

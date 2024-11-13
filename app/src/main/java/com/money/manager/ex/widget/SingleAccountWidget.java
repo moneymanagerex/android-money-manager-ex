@@ -186,7 +186,7 @@ public class SingleAccountWidget
     }
 
     private void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
-        long accountId = Integer.parseInt(defaultAccountId);
+        long accountId = Long.parseLong(defaultAccountId);
         Account account = loadAccount(context, accountId);
         if (account == null) return;
 
