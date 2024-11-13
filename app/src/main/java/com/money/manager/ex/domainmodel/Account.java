@@ -203,7 +203,7 @@ public class Account
 
     public Date getInitialDate() {
         String dateString = getString(Account.INITIALDATE);
-        return dateString != null
+        return (dateString != null && !dateString.isEmpty())
                 ? new MmxDate(dateString).toDate()
                 : null;
     }
