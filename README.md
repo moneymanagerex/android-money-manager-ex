@@ -2,7 +2,7 @@
 
 See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.org/) for more user-oriented information.
 
-## Badges(
+## Badges
 [![GitHub License](https://img.shields.io/github/license/moneymanagerex/android-money-manager-ex)](https://github.com/wolfsolver/android-money-manager-ex/tree/master?tab=License-1-ov-file)
 [![GitHub Release](https://img.shields.io/github/v/release/moneymanagerex/android-money-manager-ex?include_prereleases&label=github%20release)](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
 [![F-Droid Version](https://img.shields.io/f-droid/v/com.money.manager.ex?include_prereleases&label=f-droid%20release)](https://f-droid.org/it/packages/com.money.manager.ex/)
