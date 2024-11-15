@@ -103,8 +103,9 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
-        //
-        if (isPhoneStorage()) return true;
+        // file can be manually removed from storage both intenal and external
+        if (isPhoneStorage() && isRemoteFileAccessible(true ) ) return true;
+
         // check if online
         if (!isActive()) return false;
 
@@ -120,6 +121,10 @@ public class SyncManager {
             }
         }
 
+        return isRemoteFileAccessible(true ) ;
+    }
+
+    public boolean isRemoteFileAccessible(boolean showAllert) {
         // check if remote file is accessible
         boolean exist = false;
         String remotePath = getRemotePath();
@@ -131,28 +136,29 @@ public class SyncManager {
             Timber.i("Remote Read got error: %s", e.getMessage());
         }
         if (!exist) {
-            Toast.makeText(getContext(), "Remote file is no longer available.", Toast.LENGTH_SHORT).show();
-            Timber.i("Remote file is no longer available.");
-            NotificationManager notificationManager = (NotificationManager) getContext()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            if (showAllert) {
+                Toast.makeText(getContext(), "Remote file is no longer available.", Toast.LENGTH_SHORT).show();
+                Timber.i("Remote file is no longer available.");
+                NotificationManager notificationManager = (NotificationManager) getContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE);
+                NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE)
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentTitle("Remote File is not Accessible")
-                    .setContentText("Try to reopen: "+remotePath);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE)
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentTitle("Remote File is not Accessible")
+                        .setContentText("Try to reopen: " + remotePath);
 
-            Notification notification = builder.build();
-            notificationManager.notify(1, notification);
-
+                Notification notification = builder.build();
+                notificationManager.notify(1, notification);
+            }
             return false;
         }
-
         return true;
     }
+
 
     /**
      * Gets last saved datetime of the remote file modification from the preferences.

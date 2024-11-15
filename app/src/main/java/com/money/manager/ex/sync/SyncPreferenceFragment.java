@@ -22,6 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -147,21 +148,19 @@ public class SyncPreferenceFragment
             DatabaseMetadata currentDb = getDatabases().getCurrent();
             FileStorageHelper storage = new FileStorageHelper(getContext());
 
-            Date localSnapshot = MmxDate.fromIso8601(currentDb.localSnapshotTimestamp).toDate();
-            Date localModified = storage.getLocalFileModifiedDate(currentDb).toDate();
+            SyncManager sync = new SyncManager(getContext());
+            if (sync.canSync()) {
+                boolean isLocalModified = storage.isLocalFileChanged(currentDb);
 
-            Date remoteSnapshot = MmxDate.fromIso8601(currentDb.remoteLastChangedDate).toDate();
-            Date remoteModified = storage.getRemoteFileModifiedDate(currentDb).toDate();
+                String message = String.format(
+                        "Local file changes indicator: %s.\n" +
+                                "Downloading will overwrite your local version.\nDo you want to continue?"
+                        , isLocalModified);
 
-            boolean isLocalModified = storage.isLocalFileChanged(currentDb);
-            boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
-
-            String message = String.format(
-                    "Local file changes indicator: %s.\n" +
-                            "Downloading will overwrite your local version.\nDo you want to continue?"
-                    , isLocalModified);
-
-            showConfirmDialog("Download Warning", message, this::forceDownload);
+                showConfirmDialog("Download Warning", message, this::forceDownload);
+            } else {
+                Toast.makeText(getContext(), "Remote file unavailable.", Toast.LENGTH_SHORT).show();
+            }
             return false;
         });
 
@@ -171,20 +170,18 @@ public class SyncPreferenceFragment
             DatabaseMetadata currentDb = getDatabases().getCurrent();
             FileStorageHelper storage = new FileStorageHelper(getContext());
 
-            Date localSnapshot = MmxDate.fromIso8601(currentDb.localSnapshotTimestamp).toDate();
-            Date localModified = storage.getLocalFileModifiedDate(currentDb).toDate();
+            SyncManager sync = new SyncManager(getContext());
+            if (sync.canSync()) {
+                boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
 
-            Date remoteSnapshot = MmxDate.fromIso8601(currentDb.remoteLastChangedDate).toDate();
-            Date remoteModified = storage.getRemoteFileModifiedDate(currentDb).toDate();
-
-            boolean isLocalModified = storage.isLocalFileChanged(currentDb);
-            boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
-
-            String message = String.format(
-                    "Remote file changes indicator: %s.\n" +
-                            "Uploading will overwrite your remote version.\nDo you want to continue?"
-                    , isRemoteModified);
-            showConfirmDialog("Upload Warning",message,this::forceUpload);
+                String message = String.format(
+                        "Remote file changes indicator: %s.\n" +
+                                "Uploading will overwrite your remote version.\nDo you want to continue?"
+                        , isRemoteModified);
+                showConfirmDialog("Upload Warning",message,this::forceUpload);
+            } else {
+                Toast.makeText(getContext(), "Remote file unavailable.", Toast.LENGTH_SHORT).show();
+            }
             return false;
         });
 
