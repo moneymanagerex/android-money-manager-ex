@@ -44,7 +44,7 @@ public class BehaviourSettings
     }
 
     public boolean getUseNestedCategory() {
-        return get(R.string.pref_use_nested_category, false);
+        return get(R.string.pref_use_nested_category, true);
     }
 
     public void setUseNestedCategory(boolean status) {
