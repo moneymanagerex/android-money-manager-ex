@@ -159,7 +159,7 @@ public class SyncPreferenceFragment
 
                 showConfirmDialog("Download Warning", message, this::forceDownload);
             } else {
-                Toast.makeText(getContext(), "Remote file unavailable.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
             }
             return false;
         });

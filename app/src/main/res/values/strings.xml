@@ -769,6 +769,7 @@
     <string name="remote_file_not_found">Remote file not found</string>
     <string name="error_checking_remote">Error checking for remote changes.</string>
     <string name="no_remote_change_date">The remote change date not found in the metadata.</string>
+    <string name="remote_unavailable">Remote file is unavailable</string>
 
     <!-- Select database screen -->
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>

@@ -137,7 +137,7 @@ public class SyncManager {
         }
         if (!exist) {
             if (showAllert) {
-                Toast.makeText(getContext(), "Remote file is no longer available.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
                 Timber.i("Remote file is no longer available.");
                 NotificationManager notificationManager = (NotificationManager) getContext()
                         .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -148,11 +148,12 @@ public class SyncManager {
                         .setAutoCancel(true)
                         .setSmallIcon(R.drawable.ic_stat_notification)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setContentTitle("Remote File is not Accessible")
-                        .setContentText("Try to reopen: " + remotePath);
+                        .setContentTitle(getContext().getString(R.string.remote_unavailable))
+                        .setContentText(remotePath);
 
                 Notification notification = builder.build();
                 notificationManager.notify(1, notification);
+
             }
             return false;
         }
