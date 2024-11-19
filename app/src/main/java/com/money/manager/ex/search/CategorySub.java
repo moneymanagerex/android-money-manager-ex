@@ -35,9 +35,9 @@ public class CategorySub implements Parcelable {
     public String subCategName;
 
     protected CategorySub(Parcel in) {
-        categId = in.readInt();
+        categId = in.readLong();
         categName = in.readString();
-        subCategId = in.readInt();
+        subCategId = in.readLong();
         subCategName = in.readString();
     }
 

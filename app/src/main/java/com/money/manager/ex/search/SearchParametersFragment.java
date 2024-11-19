@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.search;
 
-import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,6 +76,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -335,7 +335,7 @@ public class SearchParametersFragment
         setSearchParameters(searchParameters);
 
         String where = assembleWhereClause();
-        Log.d(this.getClass().getName(),"Where: \n"+where);
+        Timber.d(this.getClass().getName(),"Where: \n"+where);
         return where;
     }
 
@@ -450,7 +450,9 @@ public class SearchParametersFragment
         }
 
         // status
-        if (!searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE)) {
+        if (searchParameters.status != null &&
+                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) &&
+                !searchParameters.status.isEmpty()) {
             where.addStatement(QueryAllData.Status, "=", searchParameters.status);
         }
 
