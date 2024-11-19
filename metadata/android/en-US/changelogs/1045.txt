@@ -1,0 +1,5 @@
+- Set Nested Categories as the default for enhanced usability.  
+- Updated outdated policies and removed deprecated integrations.  
+- Fixed issues with remote file unavailability.  
+- Improved database handling with refined SUID for distributed databases and conflict resolution.  
+- Removed legacy storage permissions to meet Google Play compliance standards.  
