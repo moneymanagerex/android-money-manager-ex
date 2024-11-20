@@ -402,20 +402,20 @@ public class AllDataListFragment
 
     @Override
     public void onDeleteClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
 
         showDialogDeleteCheckingAccount(transIds);
     }
 
     @Override
     public void onChangeTransactionStatusClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
         changeTransactionStatus(transIds);
     }
 
     @Override
     public void onTransactionStatusClicked(String status) {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
 
         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
@@ -430,7 +430,7 @@ public class AllDataListFragment
 
     @Override
     public void onDuplicateTransactionsClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
         showDuplicateTransactionView(transIds);
     }
 
@@ -658,7 +658,7 @@ public class AllDataListFragment
         return total;
     }
 
-    private boolean setStatusCheckingAccount(int[] transId, String status) {
+    private boolean setStatusCheckingAccount(long[] transId, String status) {
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
@@ -688,7 +688,7 @@ public class AllDataListFragment
     /**
      * @param transactionIds primary key of transaction
      */
-    private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
+    private void showDialogDeleteCheckingAccount(final ArrayList<Long> transactionIds) {
         // create alert binaryDialog and set title and message
         UIHelper ui = new UIHelper(getActivity());
 
@@ -798,8 +798,8 @@ public class AllDataListFragment
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<Integer> getTransactionIds(){
-        final ArrayList<Integer> transIds = new ArrayList<>();
+    private ArrayList<Long> getTransactionIds(){
+        final ArrayList<Long> transIds = new ArrayList<>();
 
         AllDataAdapter adapter = getAllDataAdapter();
         if(adapter == null) return transIds;
@@ -819,7 +819,7 @@ public class AllDataListFragment
 //                    if (getListHeader() != null)
 //                        position--;
                 if (cursor.moveToPosition(position)) {
-                    transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                    transIds.add(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
             }
         }
@@ -827,7 +827,7 @@ public class AllDataListFragment
         return transIds;
     }
 
-    private void changeTransactionStatus(final ArrayList<Integer> transIds){
+    private void changeTransactionStatus(final ArrayList<Long> transIds){
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
 //        final Core core = new Core(getActivity().getApplicationContext());
         final Boolean isDarkTheme = new UIHelper(getActivity()).isUsingDarkTheme();
@@ -884,12 +884,12 @@ public class AllDataListFragment
         dialog.show();
     }
 
-    private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
+    private void showDuplicateTransactionView(ArrayList<Long> transIds) {
         // validation
         int transactionCount = transIds.size();
         if (transactionCount <= 0) return;
 
-        int[] ids = convertArrayListToArray(transIds);
+        long[] ids = convertArrayListToArray(transIds);
         Intent[] intents = new Intent[transactionCount];
         for (int i = 0; i < transactionCount; i++) {
             intents[i] = new Intent(getActivity(), CheckingTransactionEditActivity.class);
@@ -908,8 +908,8 @@ public class AllDataListFragment
         qif.export(adapter);
     }
 
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] result = new int[list.size()];
+    private long[] convertArrayListToArray(ArrayList<Long> list) {
+        long[] result = new long[list.size()];
         for (int i = 0; i < list.size(); i++) {
             result[i] = list.get(i);
         }
