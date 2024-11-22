@@ -190,7 +190,7 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            long amountAvailablelong = (int) (amountAvailable * 100);
+            long amountAvailablelong = (long)amountAvailable * 100;
             if (amountAvailablelong < 0) {
                 amountAvailableTextView.setTextColor(
                     ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))

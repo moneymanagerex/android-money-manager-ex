@@ -53,8 +53,6 @@ public class BudgetListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final long REQUEST_EDIT_BUDGET = 1;
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -176,7 +174,7 @@ public class BudgetListFragment
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        long budgetId = (int) info.id;
+        long budgetId = info.id;
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
 
