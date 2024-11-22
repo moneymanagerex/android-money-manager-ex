@@ -61,7 +61,7 @@ public class CategoryListActivity
             listFragment.mAction = intent.getAction();
             nestedListFragment.mAction = intent.getAction();
 
-            long requestId = intent.getLongExtra(KEY_REQUEST_ID, Constants.NOT_SET);
+            int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET_INT);
             listFragment.requestId = requestId;
             nestedListFragment.requestId = requestId;
         }
