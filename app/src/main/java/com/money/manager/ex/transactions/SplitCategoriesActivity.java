@@ -290,7 +290,7 @@ public class SplitCategoriesActivity
         }
     }
 
-    private void showCategorySelector(long requestId) {
+    private void showCategorySelector(int requestId) {
         Intent intent = new Intent(this, CategoryListActivity.class);
         intent.setAction(Intent.ACTION_PICK);
 

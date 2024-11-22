@@ -74,7 +74,7 @@ public class CategoryListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
-    public Long requestId;
+    public Integer requestId;
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
 
