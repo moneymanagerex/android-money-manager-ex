@@ -1,0 +1,2 @@
+- UI Improvement: View open accounts.
+- Bug Fixes: Fixed Integer2Long issues for split transactions, payee assignments, and more.
