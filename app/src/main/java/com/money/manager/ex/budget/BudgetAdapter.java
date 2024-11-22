@@ -231,15 +231,15 @@ public class BudgetAdapter
         // probabily until we don't handle third and other level actual value does not count correctlry
         if (!useNestedCategory) {
             if (!hasSubcategory) {
-                long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+                long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetQuery.CATEGID));
                 actual = getAmountForCategory(categoryId);
             } else {
-                long subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+                long subCategoryId = cursor.getLong(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
                 actual = getAmountForCategory(subCategoryId);
     //            actual = getAmountForSubCategory(subCategoryId);
             }
         } else {
-            long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+            long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
             actual = getAmountForCategory(categoryId);
         }
 

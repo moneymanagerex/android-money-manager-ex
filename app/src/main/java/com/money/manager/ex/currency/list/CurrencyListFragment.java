@@ -232,7 +232,7 @@ public class CurrencyListFragment
         // take cursor and move to position
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        long currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+        long currencyId = cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID));
 
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 

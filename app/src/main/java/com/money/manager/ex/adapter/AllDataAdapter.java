@@ -166,10 +166,10 @@ public class AllDataAdapter
         double amount;
         if (useDestinationValues(isTransfer, cursor)) {
             amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
-            setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndex(TOCURRENCYID)));
         } else {
             amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-            setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndex(CURRENCYID)));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
@@ -360,7 +360,7 @@ public class AllDataAdapter
 //                calculateBalanceAmount(cursor, holder);
 
                 // Save transaction Id.
-                long txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+                long txId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ID));
                 holder.txtBalance.setTag(txId);
 
                 requestBalanceDisplay(holder.txtBalance);
@@ -369,7 +369,7 @@ public class AllDataAdapter
                 holder.txtBalance.setVisibility(View.GONE);
             }
         } else {
-            long daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            long daysLeft = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
@@ -403,7 +403,7 @@ public class AllDataAdapter
                 // Account transactions
 
                 // See which value to use.
-                result = getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
+                result = getAccountId() == cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
             }
         } else {
             result = false;
@@ -431,7 +431,7 @@ public class AllDataAdapter
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
-                    long cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+                    long cursorAccountId = cursor.getLong(cursor.getColumnIndex(ACCOUNTID));
                     if (mAccountId != cursorAccountId) {
                         // This is in account transactions list where we display transfers to and from.
                         accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));

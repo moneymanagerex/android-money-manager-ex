@@ -334,7 +334,7 @@ public class DashboardFragment
                 category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
             }
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            long num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -366,7 +366,7 @@ public class DashboardFragment
             // load values
             String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            long num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small><i>" + num + "</i></small>",

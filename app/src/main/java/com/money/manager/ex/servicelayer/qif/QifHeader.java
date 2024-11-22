@@ -138,8 +138,8 @@ L5,000.00
     }
 
     private Account loadAccount(Cursor cursor) {
-//        long accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
-        long accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+//        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
         AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.load(accountId);
         return account;

@@ -600,7 +600,7 @@ public class WatchlistFragment
         if (args == null) return;
         if (!args.containsKey(KEY_ACCOUNT_ID)) return;
 
-        long accountId = args.getInt(KEY_ACCOUNT_ID);
+        long accountId = args.getLong(KEY_ACCOUNT_ID);
         this.mAccount = new AccountRepository(getActivity()).load(accountId);
     }
 
