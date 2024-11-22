@@ -463,7 +463,7 @@ public class AllDataAdapter
         Object tag = textView.getTag();
         if (tag == null) return;
 
-        long txId = (int) tag;
+        long txId = (long)tag;
         if (!this.balances.containsKey(txId)) return;
 
         CurrencyService currencyService = new CurrencyService(mContext);
