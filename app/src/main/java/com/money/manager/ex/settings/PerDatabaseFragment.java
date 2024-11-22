@@ -82,7 +82,7 @@ public class PerDatabaseFragment
 
         if (requestCode == REQUEST_PICK_CURRENCY) {// Returning from the currency picker screen.
             if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
-                long currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
+                long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
                 // set preference
                 CurrencyService utils = new CurrencyService(getActivity());
                 utils.setBaseCurrencyId(currencyId);

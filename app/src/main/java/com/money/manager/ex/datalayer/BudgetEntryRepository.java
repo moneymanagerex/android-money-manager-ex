@@ -113,7 +113,7 @@ public class BudgetEntryRepository
                 BudgetEntry budgetEntry = new BudgetEntry();
                 budgetEntry.loadFromCursor(cursor);
 
-                long categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
+                long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetEntry.CATEGID));
                 Category category = categoryRepository.load(categoryId);
                 if (category == null) {
                     continue;

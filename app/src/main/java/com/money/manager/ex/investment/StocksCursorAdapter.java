@@ -73,7 +73,7 @@ public class StocksCursorAdapter
         StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
 
         // header index
-        long accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
+        long accountId = cursor.getLong(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
