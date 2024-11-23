@@ -334,16 +334,19 @@ public class FileStorageHelper {
 
         // Use try-with-resources to automatically close resources
         File tempDatabaseFile = File.createTempFile("database", ".db", getContext().getFilesDir());
-        try (FileOutputStream outputStream = new FileOutputStream(tempDatabaseFile);
-             InputStream is = resolver.openInputStream(uri)) {
 
-            // Copy contents
-            long bytesCopied = ByteStreams.copy(is, outputStream);
-            Timber.i("copied %d bytes", bytesCopied);
-        } catch (Exception e) {
-            Timber.e(e);
-            return;
-        }
+        Thread thread = new Thread(() -> {
+            try {
+                FileOutputStream outputStream = new FileOutputStream(tempDatabaseFile);
+                InputStream is = resolver.openInputStream(uri);
+                long bytesCopied = ByteStreams.copy(is, outputStream);
+                Timber.i("copied %d bytes", bytesCopied);
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        });
+        thread.start();
+        thread.join();
 
         // Replace local database with downloaded version
         File localDatabaseFile = new File(localPath);

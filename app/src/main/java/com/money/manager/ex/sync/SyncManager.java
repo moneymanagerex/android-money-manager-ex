@@ -65,7 +65,9 @@ import timber.log.Timber;
  */
 public class SyncManager {
 
-    public static long scheduledJobId = Constants.NOT_SET;
+//    public static long scheduledJobId = Constants.NOT_SET;
+
+    private boolean isRemoteFileAccessibleExist = false;
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
@@ -126,16 +128,26 @@ public class SyncManager {
 
     public boolean isRemoteFileAccessible(boolean showAllert) {
         // check if remote file is accessible
-        boolean exist = false;
+        isRemoteFileAccessibleExist = false;
         String remotePath = getRemotePath();
+
+        Thread thread = new Thread(() -> {
+            try {
+                InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(remotePath));
+                inputStream.close();
+                isRemoteFileAccessibleExist = true;
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        });
+        thread.start();
         try {
-            InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(remotePath));
-            inputStream.close();
-            exist = true;
-        } catch (Exception e) {
-            Timber.i("Remote Read got error: %s", e.getMessage());
+            thread.join();
+        } catch (InterruptedException e) {
+            isRemoteFileAccessibleExist = false;
         }
-        if (!exist) {
+
+        if (!isRemoteFileAccessibleExist) {
             if (showAllert) {
                 Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
                 Timber.i("Remote file is no longer available.");
