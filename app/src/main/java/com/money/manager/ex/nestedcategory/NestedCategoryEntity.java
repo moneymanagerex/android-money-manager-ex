@@ -24,7 +24,7 @@ import com.money.manager.ex.domainmodel.EntityBase;
 public class NestedCategoryEntity
         extends EntityBase {
     public static long ACTIVE = 1;
-    public static long NOT_ACTIVE = 0;
+    public static long INACTIVE = 0;
 
     public NestedCategoryEntity(Category category) {
         super();
@@ -36,7 +36,7 @@ public class NestedCategoryEntity
         setCategoryId(Constants.NOT_SET);
         setCategoryName(Constants.EMPTY_STRING);
         setParentId(Constants.NOT_SET);
-        setActive(Constants.NOT_SET);
+        setActive(true);
     }
 
     public NestedCategoryEntity(long categoryId, String categoryName, long parentId) {
@@ -84,12 +84,17 @@ public class NestedCategoryEntity
         setString(QueryNestedCategory.BASENAME, basename);
     }
 
-    public long getActive() {
-        return getLong(QueryNestedCategory.ACTIVE);
+    public boolean getActive() {
+        if (getLong(QueryNestedCategory.ACTIVE) == ACTIVE )
+            return true;
+        return false;
     }
 
-    public void setActive(long active) {
-        setLong(QueryNestedCategory.ACTIVE, active);
+    public void setActive(boolean active) {
+        if ( active )
+            setLong(QueryNestedCategory.ACTIVE, ACTIVE );
+        else
+            setLong(QueryNestedCategory.ACTIVE, INACTIVE);
     }
 
     public long getLevel() {
@@ -104,7 +109,7 @@ public class NestedCategoryEntity
         setCategoryId(categoryId);
         setCategoryName(categoryName);
         setParentId(parentId);
-        setActive(ACTIVE);
+        setActive(true);
     }
 
     public boolean hasParent() {
@@ -117,6 +122,7 @@ public class NestedCategoryEntity
         category.setName(getCategoryName());
         category.setParentId(getParentId());
         category.setBasename(getBasename());
+        category.setActive(getActive());
         return category;
     }
 

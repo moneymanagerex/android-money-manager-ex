@@ -42,7 +42,6 @@ public class CategoryListActivity
 
     public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
-    CategoryListFragment listFragment = new CategoryListFragment();
     NestedCategoryListFragment nestedListFragment = new NestedCategoryListFragment();
 
     @Override
@@ -58,11 +57,9 @@ public class CategoryListActivity
         Intent intent = getIntent();
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            listFragment.mAction = intent.getAction();
             nestedListFragment.mAction = intent.getAction();
 
             int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET_INT);
-            listFragment.requestId = requestId;
             nestedListFragment.requestId = requestId;
         }
 
@@ -70,14 +67,11 @@ public class CategoryListActivity
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
             if (!useNestedCategory) {
-            // todo: use replace?
-            fm.beginTransaction()
-                .add(R.id.content, listFragment, FRAGMENTTAG)
-                .commit();
-            } else {
                 fm.beginTransaction()
                         .add(R.id.content, nestedListFragment, FRAGMENTTAG)
                         .commit();
+            } else {
+                assert( 1 == 2 ); // Todo MLLV
             }
         }
     }
@@ -88,17 +82,13 @@ public class CategoryListActivity
             // set result and terminate activity
             boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
             if (!useNestedCategory) {
-                CategoryListFragment fragment =
-                        (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-                if (fragment != null) {
-                    fragment.setResultAndFinish();
-                }
-            } else {
                 NestedCategoryListFragment fragment =
                         (NestedCategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
                 if (fragment != null) {
                     fragment.setResultAndFinish();
                 }
+            } else {
+                assert (1 == 2 ); // todo MLLV
             }
         }
         return super.onKeyUp(keyCode, event);

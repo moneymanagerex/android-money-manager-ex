@@ -58,7 +58,7 @@ public class CategoryService
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(Category.CATEGNAME, name);
+        values.put(Category.NAME, name);
         values.put(Category.ACTIVE, 1);
         values.put(Category.PARENTID, parentId);
 
@@ -98,7 +98,7 @@ public class CategoryService
      * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
+        Select query = new Select().where("PARENTID < 0").orderBy(Category.NAME);
 
         return getRepository().query(Category.class, query);
     }
@@ -109,14 +109,14 @@ public class CategoryService
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(Category.CATEGNAME, name);
+        values.put(Category.NAME, name);
         values.put(Category.PARENTID, parentId);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
         long result = getContext().getContentResolver().update(repo.getUri(),
                 values,
-                Category.CATEGID + "=?", new String[]{Long.toString(id)});
+                Category.ID + "=?", new String[]{Long.toString(id)});
 
         return result;
     }
@@ -128,7 +128,7 @@ public class CategoryService
      */
     public boolean isCategoryUsed(long categoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count(Category.CATEGID + "=?", new String[]{Long.toString(categoryId)});
+        long links = repo.count(Category.ID + "=?", new String[]{Long.toString(categoryId)});
         return links > 0;
     }
 
@@ -140,7 +140,7 @@ public class CategoryService
         if (ids.size() > 1 ) {return true;}
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count("( " + Category.CATEGID + "=? )",
+        long links = repo.count("( " + Category.ID + "=? )",
                 new String[]{Long.toString(categoryId)});
         return links > 0;
     }

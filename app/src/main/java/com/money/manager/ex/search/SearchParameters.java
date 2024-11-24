@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.search;
 
+import com.money.manager.ex.domainmodel.Category;
+
 import org.parceler.Parcel;
 
 import java.util.Date;
@@ -62,10 +64,9 @@ public class SearchParameters {
     public Long payeeId = null;
     public String payeeName;
 
-    // TODO Remove CategorySub and replace with Category
-    //  and with a flag for search in subcategory.
+    public Category category;
+    // TODO add  a flag for search in subcategory.
     //  flag must be driven also by the UI
-    public CategorySub category;
     public boolean searchSubCategory = false;
 
     public String transactionNumber;

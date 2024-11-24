@@ -43,6 +43,7 @@ import androidx.fragment.app.Fragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.payee.PayeeActivity;
@@ -250,13 +251,11 @@ public class SearchParametersFragment
                 break;
             case RequestCodes.CATEGORY:
                 //create class for store data
-                CategorySub categorySub = new CategorySub();
-                categorySub.categId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                categorySub.subCategId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
+                Category category = new Category();
+                category.setId( data.getLongExtra( CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET) ) ;
+                category.setName( data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME) );
                 //update into button
-                displayCategory(categorySub);
+                displayCategory(category);
                 break;
 
             case RequestCodes.AMOUNT_FROM:
@@ -477,11 +476,8 @@ public class SearchParametersFragment
         if (searchParameters.category != null) {
             // Issue 1532 need to check subcategory first
             long categId;
-            if  ( searchParameters.category.subCategId > 0 ) {
-                categId = searchParameters.category.subCategId;
-            } else {
-                categId = searchParameters.category.categId;
-            }
+            categId = searchParameters.category.getId();
+
             // Category. Also check the splits.
 
             // todo add search in sub category if flag is on
@@ -636,7 +632,7 @@ public class SearchParametersFragment
         }
         // Category
         if (txtSelectCategory.getTag() != null) {
-            searchParameters.category = (CategorySub) txtSelectCategory.getTag();
+            searchParameters.category = (Category) txtSelectCategory.getTag();
             searchParameters.searchSubCategory = cbxSearchSubCategory.isChecked();
         }
         // Transaction number
@@ -663,14 +659,13 @@ public class SearchParametersFragment
         viewHolder.txtAmountTo.setText(displayAmount);
     }
 
-    private void displayCategory(CategorySub categorySub) {
-        if (categorySub == null) {
+    private void displayCategory(Category category) {
+        if (category == null) {
             txtSelectCategory.setText("");
             txtSelectCategory.setTag(null);
         } else {
-            txtSelectCategory.setText(categorySub.categName +
-                    (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
-            txtSelectCategory.setTag(categorySub);
+            txtSelectCategory.setText(category.getName() );
+            txtSelectCategory.setTag(category);
         }
     }
 

@@ -38,8 +38,8 @@ public class CategoryRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {"CATEGID AS _id",
-                Category.CATEGID,
-                Category.CATEGNAME,
+                Category.ID,
+                Category.NAME,
                 Category.ACTIVE,
                 Category.PARENTID};
     }
@@ -49,7 +49,7 @@ public class CategoryRepository
 
         Category category = first(Category.class,
                 getAllColumns(),
-                Category.CATEGID + "=?",
+                Category.ID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),
                 null);
 
@@ -58,8 +58,8 @@ public class CategoryRepository
 
     public long loadIdByName(String name) {
         Category temp = first(Category.class,
-                new String[] { Category.CATEGID },
-                Category.CATEGNAME + "=?",
+                new String[] { Category.ID},
+                Category.NAME + "=?",
                 new String[] { name },
                 null);
 
@@ -70,8 +70,8 @@ public class CategoryRepository
 
     public long loadIdByName(String name, long parentId) {
         Category temp = first(Category.class,
-                new String[] { Category.CATEGID },
-                Category.CATEGNAME + "=? AND" + Category.PARENTID + "=?",
+                new String[] { Category.ID},
+                Category.NAME + "=? AND" + Category.PARENTID + "=?",
                 new String[] { name, Long.toString(parentId)},
                 null);
 

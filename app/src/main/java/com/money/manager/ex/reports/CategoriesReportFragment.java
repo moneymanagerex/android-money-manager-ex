@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.reports;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -38,7 +36,8 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 
@@ -262,7 +261,7 @@ public class CategoriesReportFragment
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        CategorySub category = null;
+        Category category = null;
         try {
             category = getCategoryFromSelectedItem(l, position);
         } catch (Exception e) {
@@ -346,25 +345,17 @@ public class CategoriesReportFragment
 
     // Private
 
-    private CategorySub getCategoryFromSelectedItem(ListView l, int position) {
+    private Category getCategoryFromSelectedItem(ListView l, int position) {
         // Reading item from the list view, not adapter!
         Object item = l.getItemAtPosition(position);
         if (item == null) return null;
 
         Cursor cursor = (Cursor) item;
 
-        ContentValues values = new ContentValues();
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CATEGID, values);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Category, values);
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Subcategory, values);
+        NestedCategoryEntity nestedCategory = new NestedCategoryEntity();
+        nestedCategory.loadFromCursor(cursor);
 
-        CategorySub result = new CategorySub();
-        result.categId = values.getAsLong(ViewMobileData.CATEGID);
-        result.categName = values.getAsString(ViewMobileData.Category);
-        result.subCategId = values.getAsLong(ViewMobileData.SubcategID);
-        result.subCategName = values.getAsString(ViewMobileData.Subcategory);
-        return result;
+        return nestedCategory.asCategory();
     }
 
     private void showSearchActivityFor(SearchParameters parameters) {

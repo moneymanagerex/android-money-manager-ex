@@ -27,7 +27,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
@@ -161,17 +160,13 @@ public class BudgetEntryFragment
 
                 if (id == LOADER_BUDGET) {
                     if (!useNestedCategory) {
-                        QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
-                        Select query = new Select(categories.getAllColumns())
-                                .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
-
-                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
-                    } else {
                         // useNestedCategory
                         QueryNestedCategory categories = new QueryNestedCategory(getActivity());
                         Select query = new Select(categories.getAllColumns())
                                 .orderBy(QueryNestedCategory.CATEGNAME);
                         result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
+                    } else {
+                        assert( 1 == 2 ); // Todo MLLV
                     }
                 }
                 return result;

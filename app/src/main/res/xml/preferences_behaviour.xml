@@ -19,7 +19,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
         android:icon="@null"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="@string/pref_use_nested_category"
         android:summary="@string/summary_use_nested_category"
         android:title="@string/title_use_nested_category" />

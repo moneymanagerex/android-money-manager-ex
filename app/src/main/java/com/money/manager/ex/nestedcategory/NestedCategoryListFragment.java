@@ -56,7 +56,6 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -197,10 +196,7 @@ public class NestedCategoryListFragment
             case VIEW_TRANSACTIONS: // view transactions
             case VIEW_TRANSACTIONS_SUB:
                 SearchParameters parameters = new SearchParameters();
-                CategorySub catSub = new CategorySub();
-                catSub.categId = category.getId();
-                catSub.categName = category.getName();
-                parameters.category = catSub;
+                parameters.category = category;
 
                 if (menuId == ContextMenuIds.VIEW_TRANSACTIONS_SUB) {
                     parameters.searchSubCategory = true;
@@ -364,7 +360,7 @@ public class NestedCategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-                mLayout, mCategories, null, showSelector, true);
+                mLayout, mCategories, showSelector, true);
         return adapter;
     }
 
@@ -385,7 +381,7 @@ public class NestedCategoryListFragment
         CategoryService service = new CategoryService(getActivity());
         ContentValues values = new ContentValues();
 
-        values.put(Category.CATEGID, category.getId());
+        values.put(Category.ID, category.getId());
         canDelete = !service.isCategoryUsedWithChildren(category.getId());
 
         if (!(canDelete)) {
@@ -418,7 +414,7 @@ public class NestedCategoryListFragment
                         long rowsDelete = 0;
                         CategoryRepository repo = new CategoryRepository(getActivity());
                         rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
-                                Category.CATEGID + "=" + category.getId(),
+                                Category.ID + "=" + category.getId(),
                                 null);
                         if (rowsDelete == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
