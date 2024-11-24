@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -155,7 +154,7 @@ public class SearchParametersFragment
                     mAccountIdList.add(mAccountList.get(i).getId());
                 } else {
                     mAccountNameList.add("");
-                    mAccountIdList.add(AdapterView.INVALID_ROW_ID);
+                    mAccountIdList.add(Constants.NOT_SET); // honor -1 as invalid id : issue #1919
                 }
             }
         }
