@@ -44,7 +44,7 @@ public class QueryAllDataRepository
                 QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.Amount,
             QueryAllData.BaseConvRate, QueryAllData.CURRENCYID, QueryAllData.AccountName,
             QueryAllData.ACCOUNTID,
-            QueryAllData.SPLITTED, QueryAllData.ParentCategID, QueryAllData.SubcategID,
+            QueryAllData.SPLITTED,
             QueryAllData.Payee, QueryAllData.PayeeID, QueryAllData.TransactionNumber,
             QueryAllData.Status, QueryAllData.Notes, QueryAllData.ToAccountName,
             QueryAllData.TOACCOUNTID, QueryAllData.ToAmount, QueryAllData.ToCurrencyId,

@@ -26,9 +26,7 @@ SELECT
     TX.ToTransAmount AS ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyId,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
-    -1 AS ParentCategID, -- Wolfsolver ignore subcategory (we use full category)
     TX.CATEGID AS CategID,
-    -1 AS SubcategID,  -- Wolfsolver ignore subcategory (we use full category)
     ifnull( PAYEE.PayeeName, '') AS Payee,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,

@@ -41,9 +41,7 @@ public class QueryAllData
     public static final String AccountName = "AccountName";
     public static final String ACCOUNTID = "AccountID";
     public static final String SPLITTED = "SPLITTED";
-    public static final String ParentCategID = "ParentCategID";
     public static final String CATEGID = "CategID";
-    public static final String SubcategID = "SubcategID";
     public static final String Payee = "Payee";
     public static final String PayeeID = "PayeeID";
     public static final String ToAccountName = "ToAccountName";
@@ -66,7 +64,7 @@ public class QueryAllData
     public String[] getAllColumns() {
         return new String[]{"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
                 Category, Subcategory, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
-                SPLITTED, CATEGID, ParentCategID, SubcategID, Payee, PayeeID, TransactionNumber, Status, Notes,
+                SPLITTED, CATEGID, Payee, PayeeID, TransactionNumber, Status, Notes,
                 ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
                 currency};
     }
