@@ -165,7 +165,9 @@ public class FileStorageHelper {
             dbUtils.useDatabase(metadata);
         } catch (Exception e) {
             Timber.e(e);
-            Toast.makeText(getContext(),"Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
+            try {
+                Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
+            } catch (Exception e1) {}
             return;
         }
         MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
