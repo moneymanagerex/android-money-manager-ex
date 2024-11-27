@@ -75,7 +75,7 @@ public class AllDataAdapter
     }
 
     // type cursor
-    private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
+    private final TypeCursor mTypeCursor;
 
     // define cursor field
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
