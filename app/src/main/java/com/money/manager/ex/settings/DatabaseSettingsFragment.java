@@ -128,8 +128,12 @@ public class DatabaseSettingsFragment
         final Preference preference = findPreference(requireActivity().getString(R.string.pref_database_version));
 
         String version = "N/A";
-
-        SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase db = null;
+        try {
+            db = openHelper.get().getReadableDatabase();
+        } catch (Exception e) {
+            Timber.e(e);
+        }
         if (db != null) {
             int versionNumber = db.getVersion();
             version = Integer.toString(versionNumber);
