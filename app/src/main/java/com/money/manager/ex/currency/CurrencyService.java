@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.LongSparseArray;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -493,6 +494,10 @@ public class CurrencyService
 
         String symbol;
         String baseCurrencySymbol = getBaseCurrencyCode();
+        if (baseCurrencySymbol == null ) {
+            Toast.makeText(getContext(),R.string.missing_default_currency,Toast.LENGTH_LONG).show();
+            return;
+        }
         ArrayList<String> currencySymbols = new ArrayList<>();
 
         for (Currency currency : currencies) {

@@ -149,6 +149,7 @@
     <string name="conversion_to_base_rate">Conversion</string>
     <string name="currency_name_empty">Currency name is required</string>
     <string name="new_edit_currency">New/Edit Currency</string>
+    <string name="missing_default_currency">Missing Default Currency in setting</string>
 
     <!-- transaction -->
     <string name="amount">Amount</string>
