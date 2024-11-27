@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/mmx_margin"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountName"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/mmx_margin"
         android:baselineAligned="false"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/linearLayoutDate"
@@ -45,7 +45,7 @@
             android:layout_gravity="center_vertical"
             android:background="@color/holo_blue_light"
             android:minHeight="52dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewMonth"
@@ -82,12 +82,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/mmx_margin"
             android:layout_marginLeft="@dimen/mmx_margin"
+            android:layout_marginEnd="@dimen/mmx_margin"
             android:layout_marginRight="@dimen/mmx_margin"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="@dimen/mmx_margin"
-            android:layout_marginEnd="@dimen/mmx_margin">
+            android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewPayee"
@@ -119,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewStatus"
