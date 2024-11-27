@@ -58,6 +58,15 @@ public class BehaviourSettingsFragment
         initializeNotificationTime();
         initializeSmsAutomation();
 
+        Preference nestedCat = findPreference(getString(R.string.pref_use_nested_category));
+        if (nestedCat != null) {
+            // TODO: until review of code for nestedcategory is not complited
+            (new AppSettings(getContext()).getBehaviourSettings()).setUseNestedCategory(false);
+            nestedCat.setEnabled(false);
+            nestedCat.setDefaultValue(false);
+
+        }
+
     }
 
     @Override
