@@ -17,8 +17,11 @@
 
 package com.money.manager.ex.about;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -37,29 +40,41 @@ import androidx.fragment.app.Fragment;
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {
     private static Fragment mInstance;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
 
     public static Fragment newInstance() {
         if (mInstance == null) {
             mInstance = new AboutFragment();
         }
+
         return mInstance;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MmexApplication.getApp().iocComponent.inject(this);
+
         String text, version;
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
@@ -74,6 +89,13 @@ public class AboutFragment extends Fragment {
         version = core.getAppVersionName();
         int build = core.getAppVersionCode();
         txtVersion.setText(getString(R.string.version) + " " + version + " (" + build + ")");
+        text = "<u>" + txtVersion.getText() + "</u>";
+        txtVersion.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+        txtVersion.setOnClickListener(v -> {
+            setClipboard(requireActivity(), version);
+            Toast.makeText(getActivity(), R.string.version_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        } );
+
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
         TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
@@ -99,6 +121,16 @@ public class AboutFragment extends Fragment {
         });
 
         // rate application
+
+        // Open Issue
+        TextView openIssues = view.findViewById(R.id.textOpenIssues);
+        text = "<u>" + openIssues.getText() + "</u>";
+        openIssues.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+        openIssues.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerOpenTracker = new OnClickListenerUrl();
+        clickListenerOpenTracker.setUrl(getApplicationWithUrl());
+        openIssues.setOnClickListener(clickListenerOpenTracker);
+
 
         // application issue tracker
         TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
@@ -237,7 +269,7 @@ public class AboutFragment extends Fragment {
         try {
             while ((line = in.readLine()) != null) {
                 output.append(line);
-                output.append(System.getProperty("line.separator"));
+                output.append(System.lineSeparator());
             }
 
             in.close();
@@ -251,8 +283,41 @@ public class AboutFragment extends Fragment {
     /**
      * ProcessBuilder may be used to redirect stdout for a process. Need to try it out.
      */
-    private void useProcessBuilder() {
-        ProcessBuilder pb = new ProcessBuilder("logcat -d");
+//    private void useProcessBuilder() {
+//        ProcessBuilder pb = new ProcessBuilder("logcat -d");
+//    }
+
+    private void setClipboard(Context context, String text) {
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+        clipboard.setPrimaryClip(clip);
 
     }
+
+    private String getApplicationWithUrl() {
+        String body;
+        Core core = new Core(getActivity());
+        int build = core.getAppVersionCode();
+        DatabaseMetadata db = mDatabases.get().getCurrent();
+
+        body = "[Put here your description]\n" +
+                "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
+                "Model: " + Build.MODEL + "\n"+
+                "Manufacturer: " + Build.MANUFACTURER +"\n" +
+//                "CodeName: " + Build.VERSION.CODENAME +"\n" +
+                "Release: " + Build.VERSION.RELEASE + "\n" +
+                "Api:" + Build.VERSION.SDK_INT +"\n" +
+                "LocalDB Extension: " + ( db == null ? "na" : db.localPath.substring(db.localPath.lastIndexOf("." ) ) ) + "\n" +
+                "RemoteDB: " + ( db == null ? "na" : db.getRemoteContentProvider()) + "\n" ;
+
+        String uri = Uri.parse("https://github.com/moneymanagerex/android-money-manager-ex/issues/new")
+                .buildUpon()
+                .appendQueryParameter("label", "bug")
+//                .appendQueryParameter("title", "Your title here")
+                .appendQueryParameter("body", body)
+                .build().toString();
+        Timber.d("github open issue url: %s", uri);
+        return uri;
+    }
+
 }

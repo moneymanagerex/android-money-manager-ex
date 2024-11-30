@@ -78,6 +78,14 @@
             android:text="@string/send_feedback"/>
 
         <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textOpenIssues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/issue_open"/>
+
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewIssuesTracker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

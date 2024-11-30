@@ -22,6 +22,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * An entry in the recent databases list.
@@ -55,5 +57,15 @@ public class DatabaseMetadata {
         } else {
             this.remoteLastChangedDate = value.toString(Constants.ISO_8601_FORMAT);
         }
+    }
+
+    public String getRemoteContentProvider() {
+        URI uri = null;
+        try {
+            uri = new URI(remotePath);
+        } catch (URISyntaxException e) {
+            return "";
+        }
+        return uri.getHost();
     }
 }
