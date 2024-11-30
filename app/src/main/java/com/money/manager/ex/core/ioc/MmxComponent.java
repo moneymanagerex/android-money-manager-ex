@@ -18,6 +18,7 @@
 package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
+import com.money.manager.ex.about.AboutFragment;
 import com.money.manager.ex.budget.BudgetAdapter;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.Core;
@@ -85,6 +86,7 @@ public interface MmxComponent {
     void inject(ScheduledTransactionListFragment fragment);
     void inject(SearchParametersFragment fragment);
     void inject(SyncPreferenceFragment fragment);
+    void inject(AboutFragment aboutFragment);
 
     // Dialogs
     void inject(EditPriceDialog dialog);
@@ -121,4 +123,5 @@ public interface MmxComponent {
 
     // Adapters
     void inject(BudgetAdapter adapter);
+
 }

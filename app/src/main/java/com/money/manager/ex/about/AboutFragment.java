@@ -45,6 +45,8 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,10 +54,15 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {
     private static Fragment mInstance;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
 
     public static Fragment newInstance() {
         if (mInstance == null) {
@@ -67,6 +74,8 @@ public class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MmexApplication.getApp().iocComponent.inject(this);
+
         String text, version;
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
@@ -291,6 +300,9 @@ public class AboutFragment extends Fragment {
         String body;
         Core core = new Core(getActivity());
         int build = core.getAppVersionCode();
+        DatabaseMetadata db = mDatabases.get().getCurrent();
+
+
 
         // Todo Add schema for remote url db
         body = "[Put here your description]\n" +
@@ -299,7 +311,9 @@ public class AboutFragment extends Fragment {
                 "Manufactur: " + android.os.Build.MANUFACTURER +"\n" +
                 "CodeName: " + Build.VERSION.CODENAME +"\n" +
                 "Release: " + Build.VERSION.RELEASE + "\n" +
-                "Api:" + Build.VERSION.SDK_INT +"\n" ;
+                "Api:" + Build.VERSION.SDK_INT +"\n" +
+                "LocalDB: " + ( db == null ? "na" : db.localPath )+ "\n" +
+                "RemoteDB: " + ( db == null ? "na" : db.remotePath) + "\n" ;
 
         String uri = Uri.parse("https://github.com/moneymanagerex/android-money-manager-ex/issues/new")
                 .buildUpon()
