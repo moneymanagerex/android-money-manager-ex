@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.currency.list;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -87,13 +88,13 @@ public class CurrencyListFragment
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        mAction = getActivity().getIntent().getAction();
-        if (mAction.equals(Intent.ACTION_MAIN)) {
+        mAction = requireActivity().getIntent().getAction();
+        if (Intent.ACTION_MAIN.equals(mAction)) {
             mAction = Intent.ACTION_EDIT;
         }
 
         // Filter currencies only if in the standalone Currencies list. Do not filter in pickers.
-        mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
+        mShowOnlyUsedCurrencies = !Intent.ACTION_PICK.equals(mAction);
 
         loaderCallbacks = initLoaderCallbacks();
     }
@@ -129,7 +130,7 @@ public class CurrencyListFragment
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
 
-        setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
+        setEmptyText(requireActivity().getResources().getString(R.string.currencies_empty));
 
         setHasOptionsMenu(true);
 
@@ -143,7 +144,7 @@ public class CurrencyListFragment
         loadData();
 
         // for some reason, the onViewCreated does not fire when expected.
-        setupFloatingActionButton(getView());
+        setupFloatingActionButton(requireView());
         attachFloatingActionButtonToListView();
         setFloatingActionButtonVisible(true);
     }
@@ -210,6 +211,7 @@ public class CurrencyListFragment
 
     // Context menu
 
+    @SuppressLint("Range")
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -231,8 +233,12 @@ public class CurrencyListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // take cursor and move to position
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
-        long currencyId = cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID));
+        if (info != null) {
+            cursor.moveToPosition(info.position);
+        } else {
+            cursor.moveToFirst();
+        }
+        @SuppressLint("Range") long currencyId = cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID));
 
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
@@ -275,6 +281,7 @@ public class CurrencyListFragment
         return true;
     }
 
+    @SuppressLint("Range")
     @Override
     protected void setResult() {
         Intent result;
@@ -288,7 +295,7 @@ public class CurrencyListFragment
 
                     result = new Intent();
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID,
-                            cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID)));
+                            cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID)));
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME,
                             cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
 
