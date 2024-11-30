@@ -85,8 +85,8 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public long add(EntityBase entity) {
-        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
-            entity.setId(generateInstanceIdWithSuffix());
+//        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
+//            entity.setId(newId());
         return insert(entity.contentValues);
     }
 
@@ -152,7 +152,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         return getContext().getContentResolver().bulkInsert(this.getUri(), items);
     }
 
-    long generateInstanceIdWithSuffix() {
+    long newId() {
         long ticks =  (System.currentTimeMillis());
 
         long randomSuffix = (long) (Math.random() * 1000);
@@ -178,7 +178,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 
         long id = ContentUris.parseId(insertUri);
 
-        return (int) id;
+        return id;
     }
 
     protected List<T> query(Class<T> resultType, String selection) {
