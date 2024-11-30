@@ -305,8 +305,8 @@ public class AboutFragment extends Fragment {
         // Todo Add schema for remote url db
         body = "[Put here your description]\n" +
                 "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
-                "Model: " + android.os.Build.MODEL + "\n"+
-                "Manufactur: " + android.os.Build.MANUFACTURER +"\n" +
+                "Model: " + MODEL + "\n"+
+                "Manufacturer: " + MANUFACTURER +"\n" +
                 "CodeName: " + Build.VERSION.CODENAME +"\n" +
                 "Release: " + Build.VERSION.RELEASE + "\n" +
                 "Api:" + Build.VERSION.SDK_INT +"\n" +
