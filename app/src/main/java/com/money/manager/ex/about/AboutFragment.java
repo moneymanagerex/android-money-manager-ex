@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.about;
 
-import android.app.Application;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,7 +39,6 @@ import androidx.fragment.app.Fragment;
 
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
-import com.google.common.base.Charsets;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -51,7 +50,6 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URLEncoder;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -72,6 +70,7 @@ public class AboutFragment extends Fragment {
         return mInstance;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MmexApplication.getApp().iocComponent.inject(this);
@@ -93,7 +92,7 @@ public class AboutFragment extends Fragment {
         text = "<u>" + txtVersion.getText() + "</u>";
         txtVersion.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         txtVersion.setOnClickListener(v -> {
-            setClipboard(getActivity(), version);
+            setClipboard(requireActivity(), version);
             Toast.makeText(getActivity(), R.string.version_copied_to_clipboard, Toast.LENGTH_SHORT).show();
         } );
 
@@ -270,7 +269,7 @@ public class AboutFragment extends Fragment {
         try {
             while ((line = in.readLine()) != null) {
                 output.append(line);
-                output.append(System.getProperty("line.separator"));
+                output.append(System.lineSeparator());
             }
 
             in.close();
@@ -284,10 +283,9 @@ public class AboutFragment extends Fragment {
     /**
      * ProcessBuilder may be used to redirect stdout for a process. Need to try it out.
      */
-    private void useProcessBuilder() {
-        ProcessBuilder pb = new ProcessBuilder("logcat -d");
-
-    }
+//    private void useProcessBuilder() {
+//        ProcessBuilder pb = new ProcessBuilder("logcat -d");
+//    }
 
     private void setClipboard(Context context, String text) {
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -302,12 +300,11 @@ public class AboutFragment extends Fragment {
         int build = core.getAppVersionCode();
         DatabaseMetadata db = mDatabases.get().getCurrent();
 
-        // Todo Add schema for remote url db
         body = "[Put here your description]\n" +
                 "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
-                "Model: " + MODEL + "\n"+
-                "Manufacturer: " + MANUFACTURER +"\n" +
-                "CodeName: " + Build.VERSION.CODENAME +"\n" +
+                "Model: " + Build.MODEL + "\n"+
+                "Manufacturer: " + Build.MANUFACTURER +"\n" +
+//                "CodeName: " + Build.VERSION.CODENAME +"\n" +
                 "Release: " + Build.VERSION.RELEASE + "\n" +
                 "Api:" + Build.VERSION.SDK_INT +"\n" +
                 "LocalDB Extension: " + ( db == null ? "na" : db.localPath.substring(db.localPath.lastIndexOf("." ) ) ) + "\n" +
