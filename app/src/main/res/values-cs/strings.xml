@@ -547,7 +547,6 @@
   <string name="all_accounts">Všechny účty</string>
   <string name="records">záznamy</string>
   <!-- db password entry -->
-  <string name="enter_password">Zadejte heslo</string>
   <string name="success">Operace byla úspěšná</string>
   <string name="overview">Přehled</string>
   <string name="title_activity_asset_allocation_overview">Přehled alokace aktiv</string>

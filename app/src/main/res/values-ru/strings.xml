@@ -587,7 +587,6 @@
   <string name="all_accounts">Все счета</string>
   <string name="records">записей</string>
   <!-- db password entry -->
-  <string name="enter_password">Введите пароль</string>
   <string name="success">Операция выполнена успешно</string>
   <string name="overview">Обзор</string>
   <string name="title_activity_asset_allocation_overview">Обзор распределения активов</string>

@@ -559,7 +559,6 @@ Toque para marcar a transação como atrasada</string>
   <string name="all_accounts">Todas as Contas</string>
   <string name="records">registos</string>
   <!-- db password entry -->
-  <string name="enter_password">Digite a palavra-passe</string>
   <string name="success">Verificação com sucesso!</string>
   <string name="overview">Vista geral</string>
   <string name="title_activity_asset_allocation_overview">Visão geral da alocação de ativos</string>

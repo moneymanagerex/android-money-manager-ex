@@ -592,7 +592,6 @@
   <string name="all_accounts">Alle Konten</string>
   <string name="records">Aufzeichnungen</string>
   <!-- db password entry -->
-  <string name="enter_password">Passwort eingeben</string>
   <string name="success">Operation erfolgreich</string>
   <string name="overview">Übersicht</string>
   <string name="title_activity_asset_allocation_overview">Übersicht der Vermögensverteilung</string>

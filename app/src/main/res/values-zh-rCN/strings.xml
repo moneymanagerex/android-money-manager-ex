@@ -590,7 +590,6 @@
   <string name="all_accounts">所有账户</string>
   <string name="records">记录</string>
   <!-- db password entry -->
-  <string name="enter_password">输入密码</string>
   <string name="success">操作成功</string>
   <string name="overview">概述</string>
   <string name="title_activity_asset_allocation_overview">资产配置概述</string>

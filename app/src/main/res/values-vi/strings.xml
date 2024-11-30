@@ -551,7 +551,6 @@
   <string name="all_accounts">Tất cả tài khoản</string>
   <string name="records">số bản ghi</string>
   <!-- db password entry -->
-  <string name="enter_password">Nhập mật khẩu</string>
   <string name="success">Thao tác Thành công</string>
   <string name="overview">Tổng quan</string>
   <string name="title_activity_asset_allocation_overview">Tổng quan cấp phát tài sản</string>

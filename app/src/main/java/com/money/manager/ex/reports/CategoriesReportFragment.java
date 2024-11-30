@@ -354,9 +354,9 @@ public class CategoriesReportFragment
         Cursor cursor = (Cursor) item;
 
         ContentValues values = new ContentValues();
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.CATEGID, values);
+        DatabaseUtils.cursorLongToContentValues(cursor, ViewMobileData.CATEGID, values);
         DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Category, values);
-        DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.SubcategID, values);
+        DatabaseUtils.cursorLongToContentValues(cursor, ViewMobileData.SubcategID, values);
         DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Subcategory, values);
 
         CategorySub result = new CategorySub();
