@@ -288,7 +288,7 @@ public class CurrencyListFragment
 
                     result = new Intent();
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID,
-                            cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID)));
+                            cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID)));
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME,
                             cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
 

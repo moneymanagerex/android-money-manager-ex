@@ -84,7 +84,7 @@
   <string name="account_list">قائمة الحساب</string>
   <string name="account_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
   <string name="account_balance">رصيد الحساب</string>
-  <string name="account_reconciled_balance">التوفيق بين التوازن</string>
+  <string name="account_reconciled_balance">تسوية الرصيد</string>
   <string name="delete_account">حذف الحساب</string>
   <string name="account_name">إسم الحساب</string>
   <string name="account_type">نوع الحساب</string>
@@ -124,6 +124,7 @@
   <string name="add_subcategory">إضافة فئة فرعية</string>
   <string name="edit_categoryName">تحرير الفئة</string>
   <string name="delete_category">حذف الفئة</string>
+  <string name="search_sub_category">تضمين الفئة الفرعية</string>
   <!-- currency -->
   <string name="currency_name">اسم العملة</string>
   <string name="currency_symbol">رمز العملة</string>
@@ -255,6 +256,10 @@
   <string name="enter">ادخال</string>
   <string name="enter_amount">أدخل القيمة</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">معاملة تلقائية</string>
+  <string name="manual">ادخال يدوى</string>
+  <string name="prompt">طلب إدخال</string>
+  <string name="auto">إدخال تلقائي</string>
   <!-- 20121121 -->
   <string name="send_feedback">إرسال الملاحظات</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -288,6 +293,8 @@
   <string name="last_month">الشهر السابق</string>
   <string name="last30days">آخر 30 يوما</string>
   <string name="last_year">السنة السابقة</string>
+  <string name="current_fin_year">العام المالى الحالى</string>
+  <string name="last_fin_year">العام المالى السابق</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">عدد المعاملات التي تم العثور عليها: %1$d</string>
@@ -378,6 +385,7 @@
   <string name="reset">إعادة تعيين</string>
   <string name="result_search">نتائج بحثك</string>
   <string name="new_repeating_transaction">معاملة مجدولة جديدة</string>
+  <string name="edit_repeating_transaction">تعديل معاملة مجدولة</string>
   <string name="time_frame">الإطار الزمني</string>
   <string name="show_chart">عرض الرسم البياني</string>
   <string name="add_transaction">إضافة مُعاملة</string>
@@ -480,7 +488,6 @@
   <string name="all_accounts">كافة الحسابات</string>
   <string name="records">معاملة</string>
   <!-- db password entry -->
-  <string name="enter_password">أدخل كلمة المرور</string>
   <string name="overview">نظرة عامّة</string>
   <string name="account_not_found">لم يتم العثور على الحساب</string>
   <string name="favourite">المفضلة</string>
@@ -550,4 +557,7 @@
   <string name="title_auto_transaction_number">ملء تلقائي لرقم المعاملة</string>
   <!-- Notification Setting -->
   <string name="notification_channel_recurring">إشعار المعاملة المجدولة</string>
+  <string name="attachment_folder">مجلد المرفقات</string>
+  <string name="attachment_folder_summary">حدد المجلد الذي سيتم حفظ المرفقات به</string>
+  <string name="pref_attachment_folder">مجلد المرفقات</string>
 </resources>

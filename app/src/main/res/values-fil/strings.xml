@@ -551,7 +551,6 @@
   <string name="all_accounts">Lahat ng account</string>
   <string name="records">mga tala</string>
   <!-- db password entry -->
-  <string name="enter_password">Ilagay ang password</string>
   <string name="success">Matagumpay ang operasyon</string>
   <string name="overview">Overview</string>
   <string name="title_activity_asset_allocation_overview">Pangkalahatang-ideya ng Asset Allocation</string>

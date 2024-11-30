@@ -551,7 +551,6 @@
   <string name="all_accounts">Semua akun</string>
   <string name="records">catatan</string>
   <!-- db password entry -->
-  <string name="enter_password">Masukkan kata kunci</string>
   <string name="success">Operasi sukses</string>
   <string name="overview">Ikhtisar</string>
   <string name="title_activity_asset_allocation_overview">Ikhtisar Alokasi Aset</string>

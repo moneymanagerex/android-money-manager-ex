@@ -111,7 +111,7 @@
   <string name="category_empty_list">Aucune catégorie n\'a été trouvée. Pour en créer une, appuyer sur le bouton plus vert.</string>
   <string name="select_category">Selectionner une catégorie</string>
   <string name="add_category">Ajouter une catégorie</string>
-  <string name="add_subcategory">Ajouter une  sous-catégorie</string>
+  <string name="add_subcategory">Ajouter une sous-catégorie</string>
   <string name="edit_categoryName">Modifier la catégorie</string>
   <string name="delete_category">Supprimer la catégorie</string>
   <!-- currency -->
@@ -154,7 +154,7 @@
   <string name="error_transfer_to_same_account">Les deux comptes lors du transfert doivent être distinct</string>
   <string name="about">A propos</string>
   <string name="add">Ajouter</string>
-  <string name="confirmDelete">Êtes-vous sûr de que vouloir supprimer l’enregistrement ?</string>
+  <string name="confirmDelete">Êtes-vous sûr de vouloir supprimer l’enregistrement ?</string>
   <string name="date">Date</string>
   <string name="delete">Supprimer</string>
   <string name="download">Télécharger</string>
@@ -195,8 +195,8 @@
   <!-- transaction list periods -->
   <string name="all_transaction">Toutes les opérations</string>
   <string name="today">Aujourd\'hui</string>
-  <string name="last7days">Des 7 derniers jours</string>
-  <string name="last15days">Des 2 dernieres semaines</string>
+  <string name="last7days">Les 7 derniers jours</string>
+  <string name="last15days">Les 2 dernières semaines</string>
   <string name="current_month">Mois en cours</string>
   <string name="current_year">Année en cours</string>
   <string name="future_transactions">Opérations à venir</string>
@@ -238,7 +238,7 @@
   <string name="error_next_occurrence_not_populate">Évènement suivant requis</string>
   <string name="enter_next_occurrence">Entrer l\'occurrence suivante</string>
   <string name="skip_next_occurrence">Ignorer l\'occurrence suivante</string>
-  <string name="skip_next_occurrence_confirmation">Vous voulez ignorer l\'occurrence suivante ?</string>
+  <string name="skip_next_occurrence_confirmation">Voulez-vous ignorer l\'occurrence suivante ?</string>
   <string name="notification_click_to_check_repeating_transaction">Appuyer pour vérifier les opérations en retard</string>
   <string name="skip">Passer</string>
   <string name="enter">Saisir</string>
@@ -258,14 +258,14 @@
   <string name="preferences_disable_passcode">Désactiver le code d\'accès</string>
   <string name="enter_your_previous_passcode">Saisissez votre code d\'accès précédent</string>
   <!--<string name="passcode_update">passcode is updated</string>-->
-  <string name="passcode_not_update">code d\'accès non mis à jour</string>
+  <string name="passcode_not_update">Code d\'accès non mis à jour</string>
   <!-- 20121217 -->
   <string name="lookups_wildcard">Vous pouvez utiliser le caractère générique % dans vos recherches</string>
   <string name="income_vs_expenses_current_month">Revenus vs dépenses : Mois en cours</string>
   <string name="income">Revenu</string>
   <string name="expenses">Dépenses</string>
   <string name="difference">Différence</string>
-  <string name="no_data">Aucun enregistrement n\'ont été trouvés. Essayez d\'ajuster la période ou appuyez sur le bouton pour en créer un. </string>
+  <string name="no_data">Aucun enregistrement n\'a été trouvé. Essayez d\'ajuster la période ou appuyez sur le bouton pour en créer un. </string>
   <string name="no_stock_data">Aucune donnée de stock disponible pour ce compte.</string>
   <string name="month">Mois</string>
   <string name="year">Année</string>
@@ -273,10 +273,12 @@
   <string name="menu_report_income_vs_expenses">Revenus Vs dépenses</string>
   <string name="total">Total</string>
   <!--<string name="option">Option</string>-->
-  <string name="all_time">Tous le temps</string>
+  <string name="all_time">Totalité  des opérations </string>
   <string name="last_month">Mois précédent</string>
   <string name="last30days">30 derniers jours</string>
   <string name="last_year">Année précédente</string>
+  <string name="current_fin_year">Exercice en cours</string>
+  <string name="last_fin_year">Exercice précédent</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Nombre de transactions trouvé : %1$d</string>
@@ -286,12 +288,12 @@
   <string name="financial_year_start_month">Exercice : Début mois</string>
   <string name="menu_move_database_to_external_storage">Exporter la base de données</string>
   <string name="database_has_been_moved">La base de données a été déplacée : %1$s</string>
-  <string name="copy_database_on_external_storage_failed">La copie de la base de données sur le stockage externe a échouée</string>
+  <string name="copy_database_on_external_storage_failed">La copie de la base de données sur le stockage externe a échoué</string>
   <string name="path_database_using">Vous utilisez la base de données enregistrée dans : %1$s</string>
   <!-- Split Categories -->
   <string name="split_transaction">Opération ventilée</string>
   <string name="split">Fractionner</string>
-  <string name="error_split_transaction_empty">Au moins une opération scission est requise</string>
+  <string name="error_split_transaction_empty">Au moins une opération fractionnée est requise</string>
   <string name="swipe_to_dismiss">Balayez les éléments pour supprimer.</string>
   <string name="export_data_to_csv">Exporter vers un fichier CSV</string>
   <string name="export_data_in_progress">Exportation des données. Veuillez patienter ...</string>
@@ -310,7 +312,7 @@
   <string name="donate_bitcoin">Nous acceptons également les dons de BitCoin.</string>
   <string name="donate_license">Pour des raisons de licence, nous ne sommes pas autorisés à placer des liens de don directement à l\'intérieur de l\'application.</string>
   <string name="donate_button_text">Donner</string>
-  <string name="homepage_button">Ouvrir la page d\'acceuil</string>
+  <string name="homepage_button">Ouvrir la page d\'accueil </string>
   <string name="android_sqlite_vesion">Version de SQLite</string>
   <string name="ascending">Croissant</string>
   <string name="descending">Décroissant</string>
@@ -366,7 +368,7 @@
   <string name="new_account">Nouveau compte</string>
   <string name="create_new_account">Créer nouveau compte</string>
   <string name="amount_greater_or_equal">Montant supérieur ou égal</string>
-  <string name="amount_from">Montant depuis</string>
+  <string name="amount_from">Montant à partir de </string>
   <string name="amount_less_or_equal">Montant inférieur ou égal</string>
   <string name="amount_to">Montant vers</string>
   <string name="reset">Réinitialiser</string>
@@ -382,7 +384,7 @@
   <string name="welcome_body">Toutes les opérations sur MoneyManagerEx sont dans vos comptes.\n\nVous n\'avez actuellement pas de comptes visibles. Ajuster le filtre pour les comptes visibles dans les paramètres, ou sélectionnez une des options ci-dessous.</string>
   <string name="welcome_body_dropbox">Si vous utilisez déjà MoneyManagerEx sous Windows, Linux ou Mac, vous pouvez vous connecter à un fournisseur de stockage cloud pour synchroniser votre base de données</string>
   <string name="configure_sync">Configurer la synchronisation</string>
-  <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en de début de mot</string>
+  <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en début de texte</string>
   <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc ... par contenu et non par les caractères du début</string>
   <string name="rate_application">Noter l\'application</string>
   <string name="withdrawal_from">Retrait de %1$s</string>
@@ -392,6 +394,7 @@
   <string name="donate_in_app_already_donate">Vous avez déjà contribué au développement de MoneyManagerEx pour Android en envoyant votre don.\n\nUn grand merci de la part de l\'équipe de développement !</string>
   <string name="donate_in_app_retrieving_status">Confirmation de vos dons depuis Google Play. Veuillez patienter ...</string>
   <string name="donate_in_app_error">Impossible d\'effectuer des achats intégrés. Vérifiez si la dernière version de l\'application Play Store est installée.</string>
+  <string name="title_use_nested_category">(BETA) Utiliser les catégories imbriquées</string>
   <string name="tools">Outils</string>
   <string name="entities">Données de référence</string>
   <string name="loading">Chargement &#8230;</string>
@@ -444,7 +447,7 @@
   <string name="pref_transaction_sort_by_type_summary">Organiser les transactions quotidiennes par type de transaction (dépôt, retrait, transfert)</string>
   <string name="pref_transaction_sort_by_type_title">Trier les Transactions par Type</string>
   <string name="warning">Attention</string>
-  <string name="no_transfer_splits">Vous avez choisi de passer au transfert, mais il y a plusieurs catégories sur la transaction. Vous voulez continuer et de supprimer ces catégories?</string>
+  <string name="no_transfer_splits">Vous avez choisi de passer au transfert, mais il y a plusieurs catégories sur la transaction. Voulez-vous continuer et supprimer ces catégories?</string>
   <string name="qif_export">Export Qif</string>
   <string name="update_prices">Mise à jour des prix</string>
   <string name="update_price">Mise à jour du prix</string>
@@ -469,7 +472,7 @@
   <string name="purge_history_failed">L\'historique des prix n\'a pas pu être purgé.</string>
   <string name="create_db">Créer la base de données</string>
   <string name="create_db_summary">Créez un nouveau fichier de base de données</string>
-  <string name="create_db_hint">Veuillez fournir le nom du fichier</string>
+  <string name="create_db_hint">Veuillez donner le nom du fichier</string>
   <string name="create_db_dialog_content">La base de données sera créé dans le répertoire de base de données par défaut. Vous pouvez omettre l\'extension de fichier (.mmb).</string>
   <string name="create_db_success">Base de données créée avec succès</string>
   <string name="create_db_error">Impossible de créer le nouveau fichier de la base de données</string>
@@ -491,7 +494,7 @@
   <string name="default_account_not_set">Le compte par défaut n\'a pas été sélectionné.</string>
   <string name="balance_account">Solde compte</string>
   <string name="balance_adjustment">Ajustement du solde</string>
-  <string name="cash">Espèce</string>
+  <string name="cash">Espèces</string>
   <string name="select_account">Sélectionnez le compte</string>
   <string name="invalid_transaction_number">Numéro d\'opération invalide</string>
   <string name="budgets">Budgets</string>
@@ -504,7 +507,7 @@
   <string name="title_activity_currency_rates_report">Taux de change</string>
   <string name="frequency">Fréquence</string>
   <string name="update_available">Mise à jour disponible</string>
-  <string name="update_available_online">Une base de données mise à jour est disponible sur sur le cloud. Voulez-vous mettre à jour ?</string>
+  <string name="update_available_online">Une base de données mise à jour est disponible sur le cloud. Voulez-vous mettre à jour ?</string>
   <string name="currency_not_found">Devise introuvable</string>
   <string name="current_database">Base de données active</string>
   <string name="about_logcat_header">Vous pouvez nous envoyer le journal des applications en cliquant sur le bouton ci-dessous.</string>
@@ -539,7 +542,7 @@
   <string name="delete_success">Élément supprimé</string>
   <!-- asset allocation -->
   <string name="asset_allocation">Allocation d\'actifs</string>
-  <string name="asset_classes_empty">Aucune classes d\'actifs n\'ont été définis. Pour créer une, appuyez sur le bouton vert.</string>
+  <string name="asset_classes_empty">Aucune classe d\'actifs n\'a été définie. Pour en créer une, appuyez sur le bouton vert.</string>
   <string name="title_activity_asset_class_edit">Modifier une catégorie d\'actifs</string>
   <string name="asset_class_name">Nom de la catégorie d\'actifs</string>
   <string name="asset_class">Catégorie d\'actifs</string>
@@ -555,9 +558,8 @@
   <string name="name">Nom</string>
   <string name="stock">Stock</string>
   <string name="all_accounts">Tous les comptes</string>
-  <string name="records">enregistrements</string>
+  <string name="records">Enregistrements</string>
   <!-- db password entry -->
-  <string name="enter_password">Saisissez le mot de passe</string>
   <string name="success">Opération terminée</string>
   <string name="overview">Aperçu</string>
   <string name="title_activity_asset_allocation_overview">Aperçu de l\'allocation des actifs</string>
@@ -667,7 +669,7 @@
   <!-- Errors -->
   <string name="error_parsing_value">Erreur d’analyse de la valeur saisie</string>
   <string name="remote_file_not_found">Fichier distant introuvable</string>
-  <string name="error_checking_remote">Erreurs de vérification des changements distants.</string>
+  <string name="error_checking_remote">Erreur de vérification des changements distants.</string>
   <string name="no_remote_change_date">La date de changement à distance est introuvable dans les métadonnées.</string>
   <!-- Select database screen -->
   <string name="intro_text">Pour commencer à utiliser Money Manager Ex, vous devez avoir un fichier de base de données pour stocker vos données. Veuillez sélectionner une des options disponibles ci-dessous.</string>

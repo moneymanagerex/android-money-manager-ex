@@ -551,7 +551,6 @@
   <string name="all_accounts">تمام اکاؤنٹ</string>
   <string name="records">معلومات</string>
   <!-- db password entry -->
-  <string name="enter_password">پاس ورڈ داخل کریں</string>
   <string name="success">آپریشن کامیاب</string>
   <string name="overview">جائزہ</string>
   <string name="title_activity_asset_allocation_overview">اثاثہ کے لیے مختص رقم کا جائزہ</string>

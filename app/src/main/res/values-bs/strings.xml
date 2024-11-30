@@ -551,7 +551,6 @@
   <string name="all_accounts">Svi računi</string>
   <string name="records">zapisi</string>
   <!-- db password entry -->
-  <string name="enter_password">Unesite lozinku</string>
   <string name="success">Operacija uspješna</string>
   <string name="overview">Pregled</string>
   <string name="title_activity_asset_allocation_overview">Pregled alokacije imovine</string>
