@@ -302,8 +302,6 @@ public class AboutFragment extends Fragment {
         int build = core.getAppVersionCode();
         DatabaseMetadata db = mDatabases.get().getCurrent();
 
-
-
         // Todo Add schema for remote url db
         body = "[Put here your description]\n" +
                 "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
@@ -312,8 +310,8 @@ public class AboutFragment extends Fragment {
                 "CodeName: " + Build.VERSION.CODENAME +"\n" +
                 "Release: " + Build.VERSION.RELEASE + "\n" +
                 "Api:" + Build.VERSION.SDK_INT +"\n" +
-                "LocalDB: " + ( db == null ? "na" : db.localPath )+ "\n" +
-                "RemoteDB: " + ( db == null ? "na" : db.remotePath) + "\n" ;
+                "LocalDB Extension: " + ( db == null ? "na" : db.localPath.substring(db.localPath.lastIndexOf("." ) ) ) + "\n" +
+                "RemoteDB: " + ( db == null ? "na" : db.getRemoteContentProvider()) + "\n" ;
 
         String uri = Uri.parse("https://github.com/moneymanagerex/android-money-manager-ex/issues/new")
                 .buildUpon()
