@@ -820,6 +820,8 @@
     <string name="attachment_folder">Attachment Folder</string>
     <string name="attachment_folder_summary">Select the folder where attachments will be saved</string>
     <string name="pref_attachment_folder">Attachment Folder</string>
+    <string name="version_copied_to_clipboard">Version number copied to cliboard</string>
+    <string name="issue_open">"Open issue on GitHub "</string>
 
 
 </resources>

@@ -17,8 +17,11 @@
 
 package com.money.manager.ex.about;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -36,7 +39,9 @@ import androidx.fragment.app.Fragment;
 
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
+import com.google.common.base.Charsets;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
@@ -44,6 +49,7 @@ import com.money.manager.ex.core.Core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.Calendar;
 
 import timber.log.Timber;
@@ -55,6 +61,7 @@ public class AboutFragment extends Fragment {
         if (mInstance == null) {
             mInstance = new AboutFragment();
         }
+
         return mInstance;
     }
 
@@ -74,6 +81,13 @@ public class AboutFragment extends Fragment {
         version = core.getAppVersionName();
         int build = core.getAppVersionCode();
         txtVersion.setText(getString(R.string.version) + " " + version + " (" + build + ")");
+        text = "<u>" + txtVersion.getText() + "</u>";
+        txtVersion.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+        txtVersion.setOnClickListener(v -> {
+            setClipboard(getActivity(), version);
+            Toast.makeText(getActivity(), R.string.version_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        } );
+
         // + " (" + getString(R.string.build) + " " + build + ")"
         //Copyright
         TextView textViewCopyright = view.findViewById(R.id.textViewCopyright);
@@ -99,6 +113,16 @@ public class AboutFragment extends Fragment {
         });
 
         // rate application
+
+        // Open Issue
+        TextView openIssues = view.findViewById(R.id.textOpenIssues);
+        text = "<u>" + openIssues.getText() + "</u>";
+        openIssues.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+        openIssues.setMovementMethod(LinkMovementMethod.getInstance());
+        OnClickListenerUrl clickListenerOpenTracker = new OnClickListenerUrl();
+        clickListenerOpenTracker.setUrl(getApplicationWithUrl());
+        openIssues.setOnClickListener(clickListenerOpenTracker);
+
 
         // application issue tracker
         TextView txtIssues = view.findViewById(R.id.textViewIssuesTracker);
@@ -255,4 +279,36 @@ public class AboutFragment extends Fragment {
         ProcessBuilder pb = new ProcessBuilder("logcat -d");
 
     }
+
+    private void setClipboard(Context context, String text) {
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+        clipboard.setPrimaryClip(clip);
+
+    }
+
+    private String getApplicationWithUrl() {
+        String body;
+        Core core = new Core(getActivity());
+        int build = core.getAppVersionCode();
+
+        // Todo Add schema for remote url db
+        body = "[Put here your description]\n" +
+                "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
+                "Model: " + android.os.Build.MODEL + "\n"+
+                "Manufactur: " + android.os.Build.MANUFACTURER +"\n" +
+                "CodeName: " + Build.VERSION.CODENAME +"\n" +
+                "Release: " + Build.VERSION.RELEASE + "\n" +
+                "Api:" + Build.VERSION.SDK_INT +"\n" ;
+
+        String uri = Uri.parse("https://github.com/moneymanagerex/android-money-manager-ex/issues/new")
+                .buildUpon()
+                .appendQueryParameter("label", "bug")
+//                .appendQueryParameter("title", "Your title here")
+                .appendQueryParameter("body", body)
+                .build().toString();
+        Timber.d("github open issue url: %s", uri);
+        return uri;
+    }
+
 }
