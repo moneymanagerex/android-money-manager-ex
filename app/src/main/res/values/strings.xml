@@ -440,8 +440,8 @@
     <string name="title_repeating_transaction_process">Process Scheduled Transaction</string>
     <string name="summary_repeating_transaction_process">Process scheduled transaction overdue (Post, Prompt, Manual)</string>
 
-    <string name="title_use_nested_category">(BETA) Use new nested category model</string>
-    <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model (Beta, use at own risk)</string>
+    <string name="title_use_nested_category">Use new nested category model</string>
+    <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model</string>
 
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>

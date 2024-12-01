@@ -417,8 +417,8 @@
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
   <string name="title_repeating_transaction_process">Processa transazioni pianificate</string>
   <string name="summary_repeating_transaction_process">Processa transazioni pianificate scadute (Automatica, Chiedi, Manuale)</string>
-  <string name="title_use_nested_category">(BETA) Usa un nuovo modello di categoria annidato</string>
-  <string name="summary_use_nested_category">Usa il nuovo modello di categoria annidato invece di categoria:sottocategoria (Beta, usa a proprio rischio)</string>
+  <string name="title_use_nested_category">Usa un nuovo modello di categoria annidato</string>
+  <string name="summary_use_nested_category">Usa il nuovo modello di categoria annidato invece di categoria:sottocategoria</string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
