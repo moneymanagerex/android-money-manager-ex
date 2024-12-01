@@ -416,8 +416,8 @@
   <string name="donate_in_app_retrieving_status">正在从 Google Play 确认您的捐款状态 请稍候&#8230;</string>
   <string name="donate_in_app_error">无法使用内购功能。请确认您是否安装了最新的谷歌应用商店程序</string>
   <string name="title_repeating_transaction_process">处理周期性交易</string>
-  <string name="title_use_nested_category">(BETA) 使用新嵌套类别结构</string>
-  <string name="summary_use_nested_category">使用新嵌套类别结构而不是类别:子类别结构 （Beta功能，自担风险）</string>
+  <string name="title_use_nested_category">使用新嵌套类别结构</string>
+  <string name="summary_use_nested_category">使用新嵌套类别结构而不是类别:子类别结构</string>
   <string name="tools">工具</string>
   <string name="entities">主体</string>
   <string name="loading">正在加载...</string>

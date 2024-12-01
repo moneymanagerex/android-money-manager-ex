@@ -417,8 +417,8 @@
   <string name="donate_in_app_error">Nem tudjuk használni az alkalmazáson belüli számlázást. Ellenőrizze, hogy a Play Áruház legfrissebb verziója van-e telepítve az eszközére.</string>
   <string name="title_repeating_transaction_process">Ütemezett ügyletének feldolgozása</string>
   <string name="summary_repeating_transaction_process">Ütemezett ügylet lejárt feldolgozása (bevitel, felszólítás, kézi)</string>
-  <string name="title_use_nested_category">(BÉTA) Új beágyazott kategóriamodell használata</string>
-  <string name="summary_use_nested_category">Új beágyazott kategóriamodell használata kategória:alkategória modell helyett (béta, használat saját felelősségre)</string>
+  <string name="title_use_nested_category">Új beágyazott kategóriamodell használata</string>
+  <string name="summary_use_nested_category">Új beágyazott kategóriamodell használata kategória:alkategória modell helyett</string>
   <string name="tools">Eszközök</string>
   <string name="entities">Listák</string>
   <string name="loading">Betöltés&#8230;</string>

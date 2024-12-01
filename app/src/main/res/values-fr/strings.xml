@@ -394,7 +394,7 @@
   <string name="donate_in_app_already_donate">Vous avez déjà contribué au développement de MoneyManagerEx pour Android en envoyant votre don.\n\nUn grand merci de la part de l\'équipe de développement !</string>
   <string name="donate_in_app_retrieving_status">Confirmation de vos dons depuis Google Play. Veuillez patienter ...</string>
   <string name="donate_in_app_error">Impossible d\'effectuer des achats intégrés. Vérifiez si la dernière version de l\'application Play Store est installée.</string>
-  <string name="title_use_nested_category">(BETA) Utiliser les catégories imbriquées</string>
+  <string name="title_use_nested_category">Utiliser les catégories imbriquées</string>
   <string name="tools">Outils</string>
   <string name="entities">Données de référence</string>
   <string name="loading">Chargement &#8230;</string>

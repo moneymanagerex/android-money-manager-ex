@@ -44,7 +44,9 @@ public class BehaviourSettings
     }
 
     public boolean getUseNestedCategory() {
-        return get(R.string.pref_use_nested_category, true);
+        // todo remove entire methods after cleaning old catsubcat
+        return true; // force true for cleaning old catsubcat
+        // return get(R.string.pref_use_nested_category, true);
     }
 
     public void setUseNestedCategory(boolean status) {

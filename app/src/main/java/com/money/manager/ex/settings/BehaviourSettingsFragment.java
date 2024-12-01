@@ -58,6 +58,15 @@ public class BehaviourSettingsFragment
         initializeNotificationTime();
         initializeSmsAutomation();
 
+        // todo force true and disable. remove after cleaning old catsubcat
+        Preference nestedCat = findPreference(getString(R.string.pref_use_nested_category));
+        if (nestedCat != null) {
+            // TODO: until review of code for nestedcategory is not complited
+            (new AppSettings(getContext()).getBehaviourSettings()).setUseNestedCategory(true);
+            nestedCat.setEnabled(false);
+            nestedCat.setDefaultValue(true);
+        }
+
     }
 
     @Override
