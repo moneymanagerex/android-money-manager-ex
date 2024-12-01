@@ -27,7 +27,7 @@ SELECT
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyId,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
     TX.CATEGID AS CategID,
-    ifnull( PAYEE.PayeeName, '') AS Payee,
+    ifnull( PAYEE.PayeeName, '') AS PayeeName,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
 
