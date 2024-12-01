@@ -39,15 +39,8 @@ public class BudgetEntryRepository
 
     public static final String TABLE_NAME = "budgettable_v1";
 
-    private boolean useNestedCategory = false;  // new NestedCateg
-
     public BudgetEntryRepository(Context context) {
         super(context, TABLE_NAME, DatasetType.TABLE, "budgettable");
-        try {
-            useNestedCategory = (new AppSettings(context).getBehaviourSettings().getUseNestedCategory());
-        } catch (Exception e) {
-
-        }
     }
 
     @Override
@@ -105,38 +98,20 @@ public class BudgetEntryRepository
 
         HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
 
-        if (!useNestedCategory) {
-            // use old way
-            CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        // use nested category
+        QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
+        while (cursor.moveToNext()) {
+            BudgetEntry budgetEntry = new BudgetEntry();
+            budgetEntry.loadFromCursor(cursor);
 
-            while (cursor.moveToNext()) {
-                BudgetEntry budgetEntry = new BudgetEntry();
-                budgetEntry.loadFromCursor(cursor);
-
-                long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetEntry.CATEGID));
-                Category category = categoryRepository.load(categoryId);
-                if (category == null) {
-                    continue;
-                }
-                budgetEntryHashMap.put(getKeyForCategories(category.getParentId(), categoryId), budgetEntry);
+            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
+            if (nestedCategory == null) {
+                continue;
             }
-            cursor.close();
-        } else {
-            // use nested category
-            QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
-            while (cursor.moveToNext()) {
-                BudgetEntry budgetEntry = new BudgetEntry();
-                budgetEntry.loadFromCursor(cursor);
-
-                NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
-                if (nestedCategory == null) {
-                    continue;
-                }
-                budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getParentId(), nestedCategory.getCategoryId()), budgetEntry);
-            }
-            cursor.close();
-
+            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getParentId(), nestedCategory.getCategoryId()), budgetEntry);
         }
+        cursor.close();
+
         return budgetEntryHashMap;
     }
 

@@ -616,12 +616,7 @@ public class MainActivity
         } else if (itemId == R.id.menu_account) {
             showFragment(AccountListFragment.class);
         } else if (itemId == R.id.menu_category) {
-            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
-            if (!useNestedCategory) {
-                showFragment(CategoryListFragment.class);
-            } else {
-                showFragment(NestedCategoryListFragment.class);
-            }
+            showFragment(NestedCategoryListFragment.class);
         } else if (itemId == R.id.menu_currency) {
             Intent intent = new Intent(MainActivity.this, CurrencyListActivity.class);
             intent.setAction(Intent.ACTION_EDIT);

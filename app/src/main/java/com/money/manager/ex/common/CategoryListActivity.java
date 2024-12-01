@@ -48,7 +48,6 @@ public class CategoryListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
 
         setContentView(R.layout.base_toolbar_activity);
 
@@ -69,16 +68,9 @@ public class CategoryListActivity
         // management fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
-            if (!useNestedCategory) {
-            // todo: use replace?
-            fm.beginTransaction()
-                .add(R.id.content, listFragment, FRAGMENTTAG)
-                .commit();
-            } else {
                 fm.beginTransaction()
                         .add(R.id.content, nestedListFragment, FRAGMENTTAG)
                         .commit();
-            }
         }
     }
 
@@ -86,19 +78,10 @@ public class CategoryListActivity
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // set result and terminate activity
-            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
-            if (!useNestedCategory) {
-                CategoryListFragment fragment =
-                        (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-                if (fragment != null) {
-                    fragment.setResultAndFinish();
-                }
-            } else {
-                NestedCategoryListFragment fragment =
-                        (NestedCategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-                if (fragment != null) {
-                    fragment.setResultAndFinish();
-                }
+            NestedCategoryListFragment fragment =
+                    (NestedCategoryListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            if (fragment != null) {
+                fragment.setResultAndFinish();
             }
         }
         return super.onKeyUp(keyCode, event);
