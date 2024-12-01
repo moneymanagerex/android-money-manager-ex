@@ -727,9 +727,8 @@ public class SearchParametersFragment
         viewHolder.txtSelectPayee.setText(searchParameters.payeeName);
         // Category
         displayCategory(searchParameters.category);
-        boolean useNestedCategory = (new AppSettings(getContext()).getBehaviourSettings().getUseNestedCategory());
-        cbxSearchSubCategory.setEnabled(useNestedCategory);
-        cbxSearchSubCategory.setChecked(useNestedCategory);
+        cbxSearchSubCategory.setEnabled(true);
+        cbxSearchSubCategory.setChecked(true);
 
         // Transaction number
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);
