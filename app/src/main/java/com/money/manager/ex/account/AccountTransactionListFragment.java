@@ -672,7 +672,7 @@ public class AccountTransactionListFragment
                 .toIsoDateString());
 
         // Status
-        where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());
+        where.addStatement(QueryAllData.STATUS, "IN", mFilter.transactionStatus.getSqlParameters());
 
         // create a bundle to returns
 

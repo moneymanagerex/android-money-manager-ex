@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.datalayer;
+package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
@@ -41,12 +40,12 @@ public class QueryAllDataRepository
     public String[] getAllColumns() {
         return new String[]{"ID AS _id", QueryAllData.ID, QueryAllData.TransactionType,
                 QueryAllData.Date, QueryAllData.Year, QueryAllData.Month, QueryAllData.Day,
-                QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.Amount,
+                QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.AMOUNT,
             QueryAllData.BaseConvRate, QueryAllData.CURRENCYID, QueryAllData.AccountName,
             QueryAllData.ACCOUNTID,
             QueryAllData.SPLITTED,
-            QueryAllData.Payee, QueryAllData.PayeeID, QueryAllData.TransactionNumber,
-            QueryAllData.Status, QueryAllData.Notes, QueryAllData.ToAccountName,
+            QueryAllData.PAYEENAME, QueryAllData.PAYEEID, QueryAllData.TransactionNumber,
+            QueryAllData.STATUS, QueryAllData.Notes, QueryAllData.ToAccountName,
             QueryAllData.TOACCOUNTID, QueryAllData.ToAmount, QueryAllData.ToCurrencyId,
             QueryAllData.currency};
     }
