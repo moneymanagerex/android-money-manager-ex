@@ -16,6 +16,10 @@
  */
 package com.money.manager.ex.common;
 
+// TODO: Issue #1792
+//       This file need to be deleted after code clean for NestedCategory
+//       replaced by NestedCategoryListFragment
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;

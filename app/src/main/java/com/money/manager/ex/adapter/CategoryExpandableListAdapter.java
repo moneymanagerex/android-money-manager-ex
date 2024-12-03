@@ -29,7 +29,6 @@ import android.widget.ListView;
 
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CategoryListFragment;
-import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 
@@ -43,27 +42,23 @@ public class CategoryExpandableListAdapter
 
     public CategoryExpandableListAdapter(Context context, int layout,
                                          List<Category> categories,
-                                         HashMap<Category,
-                                                 List<QueryCategorySubCategory>> subCategories,
+                                         Object subCategories,
                                          boolean showSelector) {
         mContext = context;
         mLayout = layout;
         mCategories = categories;
-        mSubCategories = subCategories;
         mShowSelector = showSelector;
         mUseNestedCategory = false;
     }
 
     public CategoryExpandableListAdapter(Context context, int layout,
                                          List<Category> categories,
-                                         HashMap<Category,
-                                                 List<QueryCategorySubCategory>> subCategories,
+                                         Object subCategories,
                                          boolean showSelector,
                                          Boolean source) {
         mContext = context;
         mLayout = layout;
         mCategories = categories;
-        mSubCategories = subCategories;
         mShowSelector = showSelector;
         mUseNestedCategory = source;
     }
@@ -73,8 +68,6 @@ public class CategoryExpandableListAdapter
     private final int mLayout;
 
     private final List<Category> mCategories;
-
-    private final HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 
     private long mIdGroupChecked = ListView.INVALID_POSITION;
     private long mIdChildChecked = ListView.INVALID_POSITION;
@@ -86,13 +79,6 @@ public class CategoryExpandableListAdapter
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        if (groupPosition < mCategories.size()) {
-            Category category = mCategories.get(groupPosition);
-            List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
-            if (childPosition < categorySubCategories.size()) {
-                return categorySubCategories.get(childPosition);
-            }
-        }
         return null;
     }
 
@@ -116,49 +102,12 @@ public class CategoryExpandableListAdapter
             holder = (CategoryListItemViewHolderChild) convertView.getTag();
         }
 
-        QueryCategorySubCategory entity = (QueryCategorySubCategory) getChild(groupPosition, childPosition);
-        if (entity == null) {
-            return convertView;
-        }
-
-        holder.text1.setText(entity.getSubcategoryName());
-
-        holder.text2.setText(entity.getCategName());
-        holder.text2.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
-
-        // Selector. Always hidden on subcategories.
-
-//		if (mShowSelector) {
-//			holder.selector.setVisibility(View.VISIBLE);
-//			// set the tag to be the group position
-//			holder.selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
-//
-//			holder.selector.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					String tag = v.getTag().toString();
-//					String[] ids = tag.split(":");
-//					Long groupId = Integer.parseInt(ids[0]);
-//					Long childId = Integer.parseInt(ids[1]);
-//					setIdChildChecked(groupId, childId);
-//					// close
-//					closeFragment();
-//				}
-//			});
-//		} else {
-        holder.selector.setVisibility(View.GONE);
-//		}
-
-        // indent subcategory
-        holder.indent.setVisibility(View.VISIBLE);
-
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (mSubCategories == null) { return 0; }
-        return mSubCategories.get(mCategories.get(groupPosition)).size();
+        return 0;
     }
 
     @Override
