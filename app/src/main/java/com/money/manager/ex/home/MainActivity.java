@@ -61,7 +61,6 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;

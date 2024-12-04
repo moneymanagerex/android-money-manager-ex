@@ -34,7 +34,6 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
@@ -117,7 +116,6 @@ public class MmxContentProvider
                 new StockRepository(context),
                 new StockHistoryRepository(context),
                 new QueryAccountBills(context),
-                new QueryCategorySubCategory(context),
                 new QueryAllData(context),
                 new QueryBillDeposits(context),
                 new QueryReportIncomeVsExpenses(context),

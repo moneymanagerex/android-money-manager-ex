@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.money.manager.ex.database;
+// TODO: Issue #1792
+//       This file need to be deleted after code clean for NestedCategory
+//       replaced by QueryNestedCategory
 
 import android.content.Context;
 import android.database.Cursor;

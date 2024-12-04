@@ -16,6 +16,10 @@
  */
 package com.money.manager.ex.common;
 
+// TODO: Issue #1792
+//       This file need to be deleted after code clean for NestedCategory
+//       replaced by NestedCategoryListFragment
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -429,7 +433,7 @@ public class CategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-            mLayout, mCategories, mSubCategories, showSelector);
+            mLayout, mCategories, showSelector);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
     }
