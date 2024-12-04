@@ -42,7 +42,6 @@ public class CategoryExpandableListAdapter
 
     public CategoryExpandableListAdapter(Context context, int layout,
                                          List<Category> categories,
-                                         Object subCategories,
                                          boolean showSelector) {
         mContext = context;
         mLayout = layout;
