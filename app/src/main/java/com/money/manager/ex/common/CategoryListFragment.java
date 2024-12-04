@@ -433,7 +433,7 @@ public class CategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-            mLayout, mCategories, mSubCategories, showSelector);
+            mLayout, mCategories, showSelector);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
     }
