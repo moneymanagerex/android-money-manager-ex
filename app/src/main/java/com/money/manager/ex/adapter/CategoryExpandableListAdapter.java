@@ -28,9 +28,11 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
@@ -38,6 +40,15 @@ import androidx.fragment.app.FragmentActivity;
 public class CategoryExpandableListAdapter
         extends BaseExpandableListAdapter {
 
+    public CategoryExpandableListAdapter(Context context, int layout,
+                                         List<Category> categories,
+                                         boolean showSelector) {
+        mContext = context;
+        mLayout = layout;
+        mCategories = categories;
+        mShowSelector = showSelector;
+        mUseNestedCategory = false;
+    }
 
     public CategoryExpandableListAdapter(Context context, int layout,
                                          List<Category> categories,
@@ -216,11 +227,19 @@ public class CategoryExpandableListAdapter
     private void closeFragment() {
         FragmentActivity activity = (FragmentActivity) getContext();
 
-        NestedCategoryListFragment fragment =
-                (NestedCategoryListFragment) activity
-                        .getSupportFragmentManager()
-                        .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-        fragment.setResultAndFinish();
+        if ( mUseNestedCategory ) {
+            NestedCategoryListFragment fragment =
+                    (NestedCategoryListFragment) activity
+                            .getSupportFragmentManager()
+                            .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+            fragment.setResultAndFinish();
+        } else {
+            CategoryListFragment fragment =
+                    (CategoryListFragment) activity
+                            .getSupportFragmentManager()
+                            .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+            fragment.setResultAndFinish();
+        }
     }
 
     private Context getContext() {
