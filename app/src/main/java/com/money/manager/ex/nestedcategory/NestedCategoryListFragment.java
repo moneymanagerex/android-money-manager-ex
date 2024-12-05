@@ -364,7 +364,7 @@ public class NestedCategoryListFragment
 
         boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-                mLayout, mCategories, null, showSelector, true);
+                mLayout, mCategories, showSelector, true);
         return adapter;
     }
 
