@@ -28,11 +28,9 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 
-import java.util.HashMap;
 import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
@@ -227,19 +225,11 @@ public class CategoryExpandableListAdapter
     private void closeFragment() {
         FragmentActivity activity = (FragmentActivity) getContext();
 
-        if ( mUseNestedCategory ) {
             NestedCategoryListFragment fragment =
                     (NestedCategoryListFragment) activity
                             .getSupportFragmentManager()
                             .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
             fragment.setResultAndFinish();
-        } else {
-            CategoryListFragment fragment =
-                    (CategoryListFragment) activity
-                            .getSupportFragmentManager()
-                            .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-            fragment.setResultAndFinish();
-        }
     }
 
     private Context getContext() {
