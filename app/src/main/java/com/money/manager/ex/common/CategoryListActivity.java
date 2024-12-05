@@ -42,7 +42,6 @@ public class CategoryListActivity
 
     public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
-    CategoryListFragment listFragment = new CategoryListFragment();
     NestedCategoryListFragment nestedListFragment = new NestedCategoryListFragment();
 
     @Override
@@ -57,11 +56,9 @@ public class CategoryListActivity
         Intent intent = getIntent();
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            listFragment.mAction = intent.getAction();
             nestedListFragment.mAction = intent.getAction();
 
             int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET_INT);
-            listFragment.requestId = requestId;
             nestedListFragment.requestId = requestId;
         }
 
