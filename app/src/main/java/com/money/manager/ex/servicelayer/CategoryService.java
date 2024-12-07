@@ -140,7 +140,7 @@ public class CategoryService
         if (ids.size() > 1 ) {return true;}
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count("( " + Category.CATEGID + "=? )",
+        long links = repo.count("( " + Category.CATEGID + "=? AND DELETEDTIME IS NULL )",
                 new String[]{Long.toString(categoryId)});
         return links > 0;
     }

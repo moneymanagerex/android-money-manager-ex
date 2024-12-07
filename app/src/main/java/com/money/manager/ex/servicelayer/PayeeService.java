@@ -111,7 +111,7 @@ public class PayeeService
 
     public boolean isPayeeUsed(long payeeId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Long.toString(payeeId)});
+        long links = repo.count(ITransactionEntity.PAYEEID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(payeeId)});
         return links > 0;
     }
 
