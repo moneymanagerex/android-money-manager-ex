@@ -551,7 +551,6 @@
   <string name="all_accounts">すべての口座</string>
   <string name="records">レコード</string>
   <!-- db password entry -->
-  <string name="enter_password">パスワードを入力</string>
   <string name="success">操作が正常終了しました</string>
   <string name="overview">概要</string>
   <string name="title_activity_asset_allocation_overview">資産配分の概要</string>

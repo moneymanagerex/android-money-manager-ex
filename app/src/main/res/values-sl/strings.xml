@@ -521,7 +521,6 @@
   <string name="all_accounts">Vsi računi</string>
   <string name="records">zapisi</string>
   <!-- db password entry -->
-  <string name="enter_password">Vpiši geslo </string>
   <string name="overview">Povzetek</string>
   <string name="favourite">Priljubljeno </string>
   <string name="split_reset_notice">Prisotne so razdeljene kategorije v tej transakciji. Ročno jih je treba odstraniti. </string>

@@ -551,7 +551,6 @@
   <string name="all_accounts">所有帳戶</string>
   <string name="records">紀錄</string>
   <!-- db password entry -->
-  <string name="enter_password">輸入密碼</string>
   <string name="success">操作成功</string>
   <string name="overview">概述</string>
   <string name="title_activity_asset_allocation_overview">資產分配概覽</string>

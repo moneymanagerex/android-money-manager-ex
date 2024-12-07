@@ -412,8 +412,8 @@
   <string name="donate_in_app_already_donate">Você já apoiou o desenvolvimento do MoneyManagerEx para o Android com a sua doação! \n\nMuito obrigado da equipe de desenvolvimento!</string>
   <string name="donate_in_app_retrieving_status">Recuperando o status de suas doações do Google Play. Aguarde&#8230;</string>
   <string name="donate_in_app_error">Não é possível usar o faturamento no aplicativo. Verifique se a versão mais recente do aplicativo Play Store está instalada.</string>
-  <string name="title_use_nested_category">(BETA) Use novo modelo de categoria aninhada</string>
-  <string name="summary_use_nested_category">Use o novo modelo de categoria aninhada em vez do modelo categoria:subcategoria (Beta, use por sua própria conta e risco)</string>
+  <string name="title_use_nested_category">Use novo modelo de categoria aninhada</string>
+  <string name="summary_use_nested_category">Use o novo modelo de categoria aninhada em vez do modelo categoria:subcategoria</string>
   <string name="tools">Ferramentas</string>
   <string name="entities">Entidades</string>
   <string name="loading">Carregando...</string>
@@ -587,7 +587,6 @@
   <string name="all_accounts">Todas as contas</string>
   <string name="records">registros</string>
   <!-- db password entry -->
-  <string name="enter_password">Digite a senha</string>
   <string name="success">Operação bem sucedida</string>
   <string name="overview">Visão geral</string>
   <string name="title_activity_asset_allocation_overview">Visão geral de alocação de ativos</string>

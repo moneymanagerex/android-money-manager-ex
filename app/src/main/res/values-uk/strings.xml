@@ -580,7 +580,6 @@
   <string name="all_accounts">Всі рахунки</string>
   <string name="records">записи</string>
   <!-- db password entry -->
-  <string name="enter_password">Введіть пароль</string>
   <string name="success">Операція виконана успішно</string>
   <string name="overview">Огляд</string>
   <string name="title_activity_asset_allocation_overview">Огляд розподілу активів</string>

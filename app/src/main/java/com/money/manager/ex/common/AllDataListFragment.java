@@ -633,8 +633,8 @@ public class AllDataListFragment
 
             // Read needed data.
             DatabaseUtils.cursorStringToContentValues(cursor, adapter.TRANSACTIONTYPE, values);
-            DatabaseUtils.cursorIntToContentValues(cursor, adapter.CURRENCYID, values);
-            DatabaseUtils.cursorIntToContentValues(cursor, adapter.TOCURRENCYID, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.CURRENCYID, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.TOCURRENCYID, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
 

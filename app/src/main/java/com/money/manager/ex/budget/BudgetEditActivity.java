@@ -34,7 +34,6 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 
 import timber.log.Timber;
@@ -49,8 +48,6 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
     private TextView budgetYearTextView;
     private TextView budgetMonthTextView;
 
-    private boolean useNestedCategory = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +56,6 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         // Initialize views using findViewById()
         budgetYearTextView = findViewById(R.id.budgetYearTextView);
         budgetMonthTextView = findViewById(R.id.budgetMonthTextView);
-
-        useNestedCategory = (new AppSettings(this.getBaseContext()).getBehaviourSettings().getUseNestedCategory());
 
         initializeToolbar();
 

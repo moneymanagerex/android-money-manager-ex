@@ -452,7 +452,7 @@ public class SearchParametersFragment
         if (searchParameters.status != null &&
                 !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) &&
                 !searchParameters.status.isEmpty()) {
-            where.addStatement(QueryAllData.Status, "=", searchParameters.status);
+            where.addStatement(QueryAllData.STATUS, "=", searchParameters.status);
         }
 
         addAmountStatements(where, searchParameters);
@@ -469,7 +469,7 @@ public class SearchParametersFragment
         }
         // payee
         if (searchParameters.payeeId != null) {
-            where.addStatement(QueryAllData.PayeeID, " = ", searchParameters.payeeId);
+            where.addStatement(QueryAllData.PAYEEID, " = ", searchParameters.payeeId);
         }
         // category
 
@@ -541,11 +541,11 @@ public class SearchParametersFragment
 
         // from amount
         if (searchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, " >= ", searchParameters.amountFrom);
+            where.addStatement(QueryAllData.AMOUNT, " >= ", searchParameters.amountFrom);
         }
         // to amount
         if (searchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, " <= ", searchParameters.amountTo);
+            where.addStatement(QueryAllData.AMOUNT, " <= ", searchParameters.amountTo);
         }
 
     }
@@ -561,11 +561,11 @@ public class SearchParametersFragment
 
         // from amount
         if (searchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, " >= ", lowerAmount);
+            where.addStatement(QueryAllData.AMOUNT, " >= ", lowerAmount);
         }
         // to amount
         if (searchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, " <= ", higherAmount);
+            where.addStatement(QueryAllData.AMOUNT, " <= ", higherAmount);
         }
     }
 
@@ -727,9 +727,8 @@ public class SearchParametersFragment
         viewHolder.txtSelectPayee.setText(searchParameters.payeeName);
         // Category
         displayCategory(searchParameters.category);
-        boolean useNestedCategory = (new AppSettings(getContext()).getBehaviourSettings().getUseNestedCategory());
-        cbxSearchSubCategory.setEnabled(useNestedCategory);
-        cbxSearchSubCategory.setChecked(useNestedCategory);
+        cbxSearchSubCategory.setEnabled(true);
+        cbxSearchSubCategory.setChecked(true);
 
         // Transaction number
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);

@@ -417,8 +417,8 @@
   <string name="donate_in_app_error">Der in-app Kauf kann nicht verwendet werden. Überprüfen Sie ob die neuste Version von Play Store installiert ist.</string>
   <string name="title_repeating_transaction_process">Geplante Buchung verarbeiten</string>
   <string name="summary_repeating_transaction_process">Geplante überfällige Buchung verarbeiten (nachträglich, Eingabe, manuell)</string>
-  <string name="title_use_nested_category">(BETA) Neues verschachteltes Kategorie-Modell verwenden</string>
-  <string name="summary_use_nested_category">Neues verschachteltes Kategorie-Modell anstelle von Kategorie:Unterkategorie-Modell verwenden (Beta, Verwendung auf eigene Gefahr)</string>
+  <string name="title_use_nested_category">Neues verschachteltes Kategorie-Modell verwenden</string>
+  <string name="summary_use_nested_category">Neues verschachteltes Kategorie-Modell anstelle von Kategorie:Unterkategorie-Modell verwenden</string>
   <string name="tools">Werkzeuge</string>
   <string name="entities">Extras</string>
   <string name="loading">Wird geladen&#8230;</string>
@@ -592,7 +592,6 @@
   <string name="all_accounts">Alle Konten</string>
   <string name="records">Aufzeichnungen</string>
   <!-- db password entry -->
-  <string name="enter_password">Passwort eingeben</string>
   <string name="success">Operation erfolgreich</string>
   <string name="overview">Übersicht</string>
   <string name="title_activity_asset_allocation_overview">Übersicht der Vermögensverteilung</string>

@@ -146,13 +146,13 @@ public class AccountService
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.Amount);
+                            tx.contentValues, QueryAllData.AMOUNT);
                     amount = tx.getAmount();
                     total = total.subtract(amount);
                     break;
                 case Deposit:
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.Amount);
+                            tx.contentValues, QueryAllData.AMOUNT);
                     amount = tx.getAmount();
                     total = total.add(amount);
                     break;
@@ -162,12 +162,12 @@ public class AccountService
 
                     if (tx.getAccountId().equals(accountId)) {
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                                tx.contentValues, QueryAllData.Amount);
+                                tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.subtract(amount);
                     } else {
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
-                                tx.contentValues, QueryAllData.Amount);
+                                tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.add(amount);
                     }

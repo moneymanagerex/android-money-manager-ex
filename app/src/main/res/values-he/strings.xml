@@ -551,7 +551,6 @@
   <string name="all_accounts">כל החשבונות</string>
   <string name="records">רישומים</string>
   <!-- db password entry -->
-  <string name="enter_password">הכנס סיסמה</string>
   <string name="success">הפעולה בוצעה בהצלחה</string>
   <string name="overview">סקירה</string>
   <string name="title_activity_asset_allocation_overview">סקירת הקצאת נכסים</string>

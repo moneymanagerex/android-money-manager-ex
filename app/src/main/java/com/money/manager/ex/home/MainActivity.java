@@ -61,7 +61,6 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -616,12 +615,7 @@ public class MainActivity
         } else if (itemId == R.id.menu_account) {
             showFragment(AccountListFragment.class);
         } else if (itemId == R.id.menu_category) {
-            boolean useNestedCategory = (new AppSettings(this).getBehaviourSettings().getUseNestedCategory());
-            if (!useNestedCategory) {
-                showFragment(CategoryListFragment.class);
-            } else {
-                showFragment(NestedCategoryListFragment.class);
-            }
+            showFragment(NestedCategoryListFragment.class);
         } else if (itemId == R.id.menu_currency) {
             Intent intent = new Intent(MainActivity.this, CurrencyListActivity.class);
             intent.setAction(Intent.ACTION_EDIT);

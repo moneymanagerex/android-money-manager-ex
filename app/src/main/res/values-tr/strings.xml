@@ -551,7 +551,6 @@
   <string name="all_accounts">Tüm Hesaplar</string>
   <string name="records">kayıtlar</string>
   <!-- db password entry -->
-  <string name="enter_password">Parolayı gir</string>
   <string name="success">İşlem başarılı</string>
   <string name="overview">Genel Görünüm</string>
   <string name="title_activity_asset_allocation_overview">Varlık Tahsisi Genel Görünüm</string>

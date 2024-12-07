@@ -546,7 +546,6 @@
   <string name="all_accounts">Všetky účty</string>
   <string name="records">záznamy</string>
   <!-- db password entry -->
-  <string name="enter_password">Zadajte heslo</string>
   <string name="success">Operácia bola úspešná</string>
   <string name="overview">Prehľad</string>
   <string name="asset_allocation_diff_threshold">Rozdiel prahovej hodnoty pridelenia majetku</string>

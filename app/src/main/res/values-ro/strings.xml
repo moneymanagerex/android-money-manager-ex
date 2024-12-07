@@ -551,7 +551,6 @@
   <string name="all_accounts">Toate conturile</string>
   <string name="records">înregistrări</string>
   <!-- db password entry -->
-  <string name="enter_password">Introdu parola</string>
   <string name="success">Operație reușită</string>
   <string name="overview">Privire de ansamblu</string>
   <string name="title_activity_asset_allocation_overview">Prezentare Alocarea Activelor</string>

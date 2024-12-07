@@ -43,7 +43,7 @@ public class AccountTransactionDisplay
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.Amount, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.AMOUNT, this.contentValues);
         DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
     }
 
@@ -60,7 +60,7 @@ public class AccountTransactionDisplay
     }
 
     public Money getAmount() {
-        return getMoney(QueryAllData.Amount);
+        return getMoney(QueryAllData.AMOUNT);
     }
 
     public String getCategory() {
@@ -89,11 +89,11 @@ public class AccountTransactionDisplay
     }
 
     public String getPayee() {
-        return getString(QueryAllData.Payee);
+        return getString(QueryAllData.PAYEENAME);
     }
 
     public String getStatusCode() {
-        return getString(QueryAllData.Status);
+        return getString(QueryAllData.STATUS);
     }
 
     public TransactionStatuses getStatus() {

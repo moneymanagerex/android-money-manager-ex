@@ -124,6 +124,7 @@
   <string name="add_subcategory">Aggiungi Sottocategoria</string>
   <string name="edit_categoryName">Modifica categoria</string>
   <string name="delete_category">Elimina Categoria</string>
+  <string name="search_sub_category">Includi sottocategoria</string>
   <!-- currency -->
   <string name="currency_name">Nome valuta</string>
   <string name="currency_symbol">Simbolo della valuta</string>
@@ -260,6 +261,7 @@
   <!-- EP Recurring mode recurring_mode -->
   <string name="recurringModeLabel">Transazione Automatica</string>
   <string name="manual">Inserimento manuale</string>
+  <string name="prompt">Conferma per inserimento</string>
   <string name="auto">Inserimento automatico</string>
   <!-- 20121121 -->
   <string name="send_feedback">Invia commenti</string>
@@ -294,6 +296,8 @@
   <string name="last_month">Mese precedente</string>
   <string name="last30days">Ultimi 30 Giorni</string>
   <string name="last_year">Anno precedente</string>
+  <string name="current_fin_year">Anno Finanziario in corso</string>
+  <string name="last_fin_year">Anno Finanziario Precedente</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Numero di transazioni trovate: %1$d</string>
@@ -411,6 +415,10 @@
   <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx per Android con una donazione! \n\nGrazie mille dal team di sviluppo!</string>
   <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
   <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
+  <string name="title_repeating_transaction_process">Processa transazioni pianificate</string>
+  <string name="summary_repeating_transaction_process">Processa transazioni pianificate scadute (Automatica, Chiedi, Manuale)</string>
+  <string name="title_use_nested_category">Usa un nuovo modello di categoria annidato</string>
+  <string name="summary_use_nested_category">Usa il nuovo modello di categoria annidato invece di categoria:sottocategoria</string>
   <string name="tools">Strumenti</string>
   <string name="entities">Entità</string>
   <string name="loading">Caricamento in corso&#8230;</string>
@@ -584,7 +592,6 @@
   <string name="all_accounts">Tutti i conti</string>
   <string name="records">elementi</string>
   <!-- db password entry -->
-  <string name="enter_password">Inserisci password</string>
   <string name="success">Operazione riuscita</string>
   <string name="overview">Panoramica</string>
   <string name="title_activity_asset_allocation_overview">Panoramica assegnazione bene</string>
@@ -696,6 +703,7 @@
   <string name="remote_file_not_found">File remoto non trovato</string>
   <string name="error_checking_remote">Controllo degli errori per modifiche remote.</string>
   <string name="no_remote_change_date">Data di modifica remota non trovata nei metadati.</string>
+  <string name="remote_unavailable">File remoto non disponibile</string>
   <!-- Select database screen -->
   <string name="intro_text">Per iniziare a utilizzare Money Manager Ex, è necessario avere un file di database per memorizzare i dati. Si prega di selezionare una delle opzioni disponibili qui sotto.</string>
   <string name="intro_create_db">Puoi creare un nuovo file e impostare le preferenze iniziali.</string>
@@ -717,16 +725,24 @@
   <string name="currency">Valuta</string>
   <string name="menu_create_database">Crea Database</string>
   <string name="create_database">Crea Database</string>
+  <string name="pref_anonymous_usage">prefanonymoususage</string>
   <string name="summary_anonymous_usage">Abilita per aiutarci a inviare dati anonimi sull\'utilizzo di MMEX</string>
   <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
+  <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
   <string name="title_auto_transaction_number">Inserire automaticamente il numero di transazione</string>
   <!-- Notification Setting -->
   <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
   <string name="summary_notifications_repeating_transaction">Mostra notifica per le transazioni pianificate scadute</string>
   <string name="notification_channel_recurring">Notifica Transazione Pianificata</string>
+  <string name="notification_channel_recurring__description">Notifica Transazione Pianificata scaduta</string>
+  <string name="notification_channel_remotefile">Operazione su File Remoto</string>
+  <string name="notification_channel_remotefile__description">Notifica Operazione su File Remota</string>
   <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
   <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
   <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
   <string name="notification_channel_fileoperation_conflict">Conflitto Di Sincronizzazione Mmex</string>
   <string name="show">Mostra</string>
+  <string name="attachment_folder">Cartella Allegati</string>
+  <string name="attachment_folder_summary">Seleziona la cartella in cui verranno salvati gli allegati</string>
+  <string name="pref_attachment_folder">Cartella Allegati</string>
 </resources>

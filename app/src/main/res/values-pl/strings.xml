@@ -562,7 +562,6 @@
   <string name="all_accounts">Wszystkie konta</string>
   <string name="records">zapisy</string>
   <!-- db password entry -->
-  <string name="enter_password">Wpisz hasło</string>
   <string name="success">Operacja powiodła się</string>
   <string name="overview">Przegląd</string>
   <string name="title_activity_asset_allocation_overview">Przegląd przydziału aktywów</string>

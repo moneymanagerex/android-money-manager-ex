@@ -580,7 +580,6 @@
   <string name="all_accounts">Alle konti</string>
   <string name="records">poster</string>
   <!-- db password entry -->
-  <string name="enter_password">Indtast adgangskode</string>
   <string name="success">Handling udført</string>
   <string name="overview">Overblik</string>
   <string name="title_activity_asset_allocation_overview">Aktivallokeringsoversigt</string>

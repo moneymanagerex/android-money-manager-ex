@@ -551,7 +551,6 @@
   <string name="all_accounts">Όλοι οι λογαριασμοί</string>
   <string name="records">εγγραφές</string>
   <!-- db password entry -->
-  <string name="enter_password">Εισάγετε κωδικό πρόσβασης</string>
   <string name="success">Επιτυχημένη λειτουργία</string>
   <string name="overview">Επισκόπηση</string>
   <string name="title_activity_asset_allocation_overview">Επισκόπηση κατανομή στοιχείων ενεργητικού</string>

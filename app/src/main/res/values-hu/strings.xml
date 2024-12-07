@@ -20,6 +20,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Egy egyszerű és könnyen használható alkalmazás, amely segít, hogy kézben tartsa pénzügyeit, kezelje a bankszámláit és a családi költségvetést.</string>
+  <string name="application_credits">Az MMEX Androidra az ActionBarSherlock könyvtárat használja</string>
   <string name="application_license">Nyílt forráskódú licenc</string>
   <!-- database -->
   <string name="db_insert_failed">Adatok felvitele nem sikerült</string>
@@ -61,13 +62,23 @@
   <string name="database_version">Adatbázis verzió</string>
   <string name="title_show_tutorial">Útmutató megjelenítése</string>
   <string name="summary_show_tutorial">Útmutató megjelenítése a következő indításkor?</string>
-  <string name="preferences_behaviour_focus_filter_title">Fókusz a szűrőkre</string>
+  <string name="preferences_behaviour_focus_filter_title">Szűrés a választókban</string>
   <string name="preferences_behaviour_focus_filter_summary">Engedélyezi a szűrőt a listáknál. Egyébként választhat a listából.</string>
   <string name="auto_sync_via_wifi">Automatikus összehangolás csak WiFi-hálózatokon</string>
   <string name="auto_sync_via_wifi_summary">Automatikus összehangolás engedélyezése csak WiFi-hálózati kapcsolat használata esetén.</string>
   <string name="sync_on_app_start">Összehangolás az alkalmazás indításakor.</string>
   <string name="sync_on_start">Összehangolás indításkor</string>
   <!-- Receive SMS strings -->
+  <string name="title_sms_auto_trans">Banki ügylet SMS feldolgozása</string>
+  <string name="summary_sms_auto_trans">Banki ügylet frissítése SMS-olvasás és ügylet létrehozása automatikusan</string>
+  <string name="deny_receive_sms_error">Ön megtagadta az engedélyt az SMS fogadására, így a banki ügylet SMS nem kerül feldolgozásra</string>
+  <string name="granted_receive_sms_access">Az engedély már megadva a RECEIVE_SMS számára</string>
+  <string name="revoke_receive_sms_access">Nyissa meg a Beállítások &gt;&gt; Alkalmazások &gt;&gt; Money Manager Ex (MMEX) &gt;&gt; Engedélyek és az SMS-hozzáférés megtagadása</string>
+  <string name="title_sms_trans_status_notification">SMS-ügylet állapotértesítése</string>
+  <string name="summary_sms_trans_status_notification">Engedélyezze a banki ügylet SMS folyamatának állapotának megjelenítését az értesítési területen, ahelyett, hogy Toast-üzenetként vagy Új ügylet képernyőként jelenjenek meg</string>
+  <string name="notification_click_to_edit_transaction">Érintse meg az ügylet szerkesztéséhez&#8230;</string>
+  <string name="notification_process_sms_transaction_status">Banki ügylet SMS állapotának feldolgozása</string>
+  <string name="notification_process_sms_channel_description">AMMEX SMS értesítési csatorna</string>
   <!-- account -->
   <string name="account">Számla</string>
   <string name="account_list">Számla lista</string>
@@ -113,6 +124,7 @@
   <string name="add_subcategory">Új alkategória</string>
   <string name="edit_categoryName">Kategória szerkesztése</string>
   <string name="delete_category">Kategória törlése</string>
+  <string name="search_sub_category">Alkategória szerepeltetése</string>
   <!-- currency -->
   <string name="currency_name">Pénznem neve</string>
   <string name="currency_symbol">Pénznem szimbóluma</string>
@@ -222,6 +234,7 @@
   <string name="in_x_months">(x) havonta</string>
   <string name="every_x_days">Minden (x). napon</string>
   <string name="every_x_months">Minden (x). hónapban</string>
+  <string name="repeating_empty_transaction">Nem található ütemezett ügylet. Létrehozásához érintse meg a zöld plusz gombot.</string>
   <string name="inactive">Inaktív</string>
   <string name="activates">Aktiválás</string>
   <string name="days_overdue">napja lejárt!</string>
@@ -239,12 +252,17 @@
   <string name="enter_next_occurrence">Következő előfordulás felvitele</string>
   <string name="skip_next_occurrence">Következő előfordulás kihagyása</string>
   <string name="skip_next_occurrence_confirmation">Szeretné kihagyni a következő előfordulást?</string>
+  <string name="notification_repeating_transaction_expired">Vannak lejárt ütemezett ügyletek</string>
   <string name="notification_click_to_check_repeating_transaction">Érintse meg az esedékesség ellenőrzéséhez</string>
+  <string name="num_repeating_transaction_expired">%1$d ütemezett ügylet lejárt</string>
   <string name="skip">Átugor</string>
   <string name="enter">Belépés</string>
-  <string name="enter_amount">Mennyiség Megadása</string>
+  <string name="enter_amount">Összeg megadása</string>
   <!-- EP Recurring mode recurring_mode -->
+  <string name="recurringModeLabel">Automatikus ügylet</string>
   <string name="manual">Kézi bevitel</string>
+  <string name="prompt">Rákérdezés bevitel előtt</string>
+  <string name="auto">Automatikus bevitel</string>
   <!-- 20121121 -->
   <string name="send_feedback">Visszajelzés küldése</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -252,12 +270,12 @@
   <string name="preferences_info_application">Információ</string>
   <string name="preferences_security">Biztonság</string>
   <string name="preferences_active_passcode">Jelszó bekapcsolása</string>
-  <string name="enter_your_passcode">Adja meg a jelszót</string>
-  <string name="reinsert_your_passcode">Adja meg újra az új jelszót</string>
+  <string name="enter_your_passcode">Jelszó megadása</string>
+  <string name="reinsert_your_passcode">Új jelszó megerősítésének megadása</string>
   <string name="passocde_no_macth">A megadott jelszavak nem egyeznek</string>
   <string name="preferences_edit_passcode">Jelszó szerkesztése</string>
   <string name="preferences_disable_passcode">Jelszó kikapcsolása</string>
-  <string name="enter_your_previous_passcode">Adja meg az előző jelszót</string>
+  <string name="enter_your_previous_passcode">Előző jelszó megadása</string>
   <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">Jelszó nem frissült</string>
   <!-- 20121217 -->
@@ -278,6 +296,8 @@
   <string name="last_month">Előző hónap</string>
   <string name="last30days">Utolsó 30 nap</string>
   <string name="last_year">Előző év</string>
+  <string name="current_fin_year">Jelenlegi pénzügyi év</string>
+  <string name="last_fin_year">Előző pénzügyi év</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Talált ügyletek száma: %1$d</string>
@@ -339,6 +359,7 @@
   <string name="menu_report_where_money_goes">Kiadások</string>
   <string name="menu_report_where_money_comes_from">Bevételek</string>
   <string name="title_check_repeating_transaction">Értesítési idő</string>
+  <string name="summary_check_repeating_transaction">Mikor szeretné ellenőrizni a lejárt ütemezett ügyleteket? (alapértelmezett idő 08:00)</string>
   <string name="credits">Készítők</string>
   <string name="libraries">Könyvtárak</string>
   <string name="top_withdrawals_last_30_days">Legnagyobb kivétek: Elmúlt 30 nap</string>
@@ -394,6 +415,10 @@
   <string name="donate_in_app_already_donate">Ön már támogatta adományával az MMEX Androidra fejlesztését!\n\nKöszönjük a fejlesztő csapattól!</string>
   <string name="donate_in_app_retrieving_status">Támogatási állapotának lekérése a Google Play szerveréről. Kérem, várjon&#8230;</string>
   <string name="donate_in_app_error">Nem tudjuk használni az alkalmazáson belüli számlázást. Ellenőrizze, hogy a Play Áruház legfrissebb verziója van-e telepítve az eszközére.</string>
+  <string name="title_repeating_transaction_process">Ütemezett ügyletének feldolgozása</string>
+  <string name="summary_repeating_transaction_process">Ütemezett ügylet lejárt feldolgozása (bevitel, felszólítás, kézi)</string>
+  <string name="title_use_nested_category">Új beágyazott kategóriamodell használata</string>
+  <string name="summary_use_nested_category">Új beágyazott kategóriamodell használata kategória:alkategória modell helyett</string>
   <string name="tools">Eszközök</string>
   <string name="entities">Listák</string>
   <string name="loading">Betöltés&#8230;</string>
@@ -432,6 +457,7 @@
   <string name="tutorial_global_1">Többféle pénznem és nyelv. Nyílt forráskód. Csatlakozzon fordító csapatunkhoz.</string>
   <string name="tutorial_sync_1">Multiplatform támogatás, összehangolás több felhő szolgáltatással. Adatainak importálása és exportálása egyéb alkalmazásokba.</string>
   <string name="transactions">Ügyletek</string>
+  <string name="tutorial_transactions_1">Betétek, kivételek és átutalások. Ütemezett ügyletek emlékeztetőkkel.</string>
   <string name="split_category">Kategória megosztás</string>
   <string name="title_activity_currency_chart">Árfolyam diagram</string>
   <string name="sort_by_ascending">Növekvő rendezés év és hónap szerint</string>
@@ -508,6 +534,7 @@
   <string name="update_available">Frissítés elérhető</string>
   <string name="update_available_online">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
   <string name="currency_not_found">Nem található pénznem</string>
+  <string name="homepage">Honlapunk: https://moneymanagerex.org/</string>
   <string name="current_database">Aktuális adatbázis</string>
   <string name="about_logcat_header">Elküldheti nekünk az alkalmazásnaplót az alábbi gombra kattintva.</string>
   <string name="transaction_type_filter">Szűrés tranzakció típusa szerint</string>
@@ -515,6 +542,11 @@
   <string name="filter_options_info">Szűrőbeállítások és információ</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Adatbázis-jelszó megadása</string>
+  <string name="fingerprint_info">Ujjlenyomat-olvasás a feloldáshoz</string>
+  <string name="fingerprint_no_hardware">Az eszköz nem támogatja az ujjlenyomat-hitelesítést</string>
+  <string name="fingerprint_check_permission">Kérjük, engedélyezze az ujjlenyomat-engedélyt</string>
+  <string name="fingerprint_has_enrolled">Nincs beállítva ujjlenyomat. Kérjük, regisztráljon legalább egy ujjlenyomatot az eszköz beállításaiban.</string>
+  <string name="fingerprint_is_keyguard_secure">Kérjük, engedélyezze a lezárási képernyő biztonságát az eszköz beállításaiban</string>
   <string name="income_expense_period">Bevétel/kiadás-időtartam</string>
   <string name="income_expense_period_summary">A bevétel/kiadás időszaka a főképernyő alján.</string>
   <string name="appwidget_text">PÉLDA</string>
@@ -533,6 +565,7 @@
   <string name="commission">Jutalék</string>
   <string name="value">Érték</string>
   <string name="view_transactions">Ügyletek megtekintése</string>
+  <string name="view_transactions_sub">Ügyletek megtekintése alkategóriákkal</string>
   <string name="error_downloading_symbol">Hiba történt a szimbólum árának letöltése során</string>
   <string name="error_updating_rates">Hiba történt az árfolyamok frissítésekor</string>
   <string name="error_no_price_found_for_symbol">Nem található a szimbólumhoz ár</string>
@@ -559,7 +592,6 @@
   <string name="all_accounts">Minden számla</string>
   <string name="records">bejegyzések</string>
   <!-- db password entry -->
-  <string name="enter_password">Jelszó megadása</string>
   <string name="success">Sikeres művelet</string>
   <string name="overview">Áttekintés</string>
   <string name="title_activity_asset_allocation_overview">Vagyon elosztás áttekintése</string>
@@ -667,14 +699,16 @@
   <!-- Warnings -->
   <string name="no_accounts_available_for_selection">Kijelölhető számlák nem állnak rendelkezésre. Kérjük, módosítsa a számlaszűrési beállításokat, vagy jelöljön meg néhány számlát kedvencként.</string>
   <!-- Errors -->
-  <string name="error_parsing_value">Hiba történt a megadott érték elemzésekor</string>
+  <string name="error_parsing_value">Hiba történt a megadott érték elemzésekor.</string>
   <string name="remote_file_not_found">Távoli fájl nem található</string>
   <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
   <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
+  <string name="remote_unavailable">A távoli fájl nem érhető el</string>
   <!-- Select database screen -->
   <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
   <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>
   <string name="intro_open_db">Vagy kijelölhet egy meglévő fájlt az eszközről.</string>
+  <string name="intro_sync">A felhőszolgáltatások használatához nyissa meg a fájlt egy előnyben részesített dokumentumszolgáltatótól.</string>
   <!-- Create Database screen -->
   <string name="select_language">Nyelv kiválasztása</string>
   <string name="run">MMEX indítása</string>
@@ -691,9 +725,24 @@
   <string name="currency">Pénznem</string>
   <string name="menu_create_database">Adatbázis létrehozása</string>
   <string name="create_database">Adatbázis létrehozása</string>
+  <string name="pref_anonymous_usage">előnyben részesítik a névtelen használatot</string>
+  <string name="summary_anonymous_usage">Engedélyezze, hogy segítsen nekünk névtelen adatokat küldeni az MMEX használatáról</string>
+  <string name="title_anonymous_usage">Névtelen használati adatok küldése</string>
+  <string name="pref_auto_transaction_number">előnyben részesítik az automatikus ügyletszám</string>
+  <string name="title_auto_transaction_number">Ügyletszám automatikus kitöltése</string>
   <!-- Notification Setting -->
+  <string name="title_notifications_repeating_transaction">Ütemezett ügylet lejárati értesítés</string>
+  <string name="summary_notifications_repeating_transaction">Az ütemezett ügylet lejárati értesítésének megjelenítése</string>
   <string name="notification_channel_recurring">Ütemezett ügyletének értesítése</string>
+  <string name="notification_channel_recurring__description">Ütemezett ügylet lejárati értesítés</string>
+  <string name="notification_channel_remotefile">Távoli fájlművelet</string>
+  <string name="notification_channel_remotefile__description">Távoli fájlművelet értesítése</string>
+  <string name="notification_channel_fileoperation_downloadin">MMEX letöltése</string>
+  <string name="notification_channel_fileoperation_uploadin">MMEX feltöltése</string>
   <string name="notification_channel_fileoperation_complete">Mmex feltöltés kész</string>
   <string name="notification_channel_fileoperation_conflict">MMEX összehangolási ütközés</string>
   <string name="show">Megjelenítés</string>
+  <string name="attachment_folder">Melléklet mappa</string>
+  <string name="attachment_folder_summary">Mappa kijelölése, ahová a mellékletek mentésre kerülnek</string>
+  <string name="pref_attachment_folder">Melléklet mappa</string>
 </resources>

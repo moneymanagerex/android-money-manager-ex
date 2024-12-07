@@ -566,7 +566,6 @@
   <string name="all_accounts">Alle rekeningen</string>
   <string name="records">records</string>
   <!-- db password entry -->
-  <string name="enter_password">Voer wachtwoord in</string>
   <string name="success">Bewerking succesvol</string>
   <string name="overview">Overzicht</string>
   <string name="title_activity_asset_allocation_overview">Bezittingen toewijzingen overzicht</string>

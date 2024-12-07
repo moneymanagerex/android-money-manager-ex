@@ -26,7 +26,7 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.QueryAllDataRepository;
+import com.money.manager.ex.database.QueryAllDataRepository;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
