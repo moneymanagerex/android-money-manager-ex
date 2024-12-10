@@ -48,9 +48,9 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
@@ -140,7 +140,7 @@ public class IncomeVsExpensesListFragment
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_YEARS:
-                ViewMobileData mobileData = new ViewMobileData(getContext());
+                QueryMobileData mobileData = new QueryMobileData(getContext());
                 selection = "SELECT DISTINCT Year as Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
                 query = new Select().where(selection);
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);

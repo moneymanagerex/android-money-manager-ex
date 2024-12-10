@@ -37,7 +37,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -163,7 +163,7 @@ public class CategoriesReportFragment
                 whereClause += " AND ";
             else
                 whereClause = "";
-            whereClause += " " + ViewMobileData.CATEGID + "=" + Math.abs(item.getItemId());
+            whereClause += " " + QueryMobileData.CATEGID + "=" + Math.abs(item.getItemId());
             //create arguments
             Bundle args = new Bundle();
             args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -193,8 +193,8 @@ public class CategoriesReportFragment
             whereClause = "/** */";
         }
         // use token to replace criteria
-        whereClause += "(" + ViewMobileData.Category + " Like '%" + newText + "%' OR " +
-                ViewMobileData.Subcategory + " Like '%" + newText + "%')/** */";
+        whereClause += "(" + QueryMobileData.Category + " Like '%" + newText + "%' OR " +
+                QueryMobileData.Subcategory + " Like '%" + newText + "%')/** */";
 
         //create arguments
         Bundle args = new Bundle();
@@ -207,39 +207,39 @@ public class CategoriesReportFragment
     @Override
     protected String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
 
         //data to compose builder
         String[] projectionIn = new String[]{
             "ID AS _id", // this does not fetch anything, unfortunately.
-            ViewMobileData.CATEGID, ViewMobileData.Category,
-            ViewMobileData.SubcategID, ViewMobileData.Subcategory,
-                ViewMobileData.CategoryFullName,
-            "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+            QueryMobileData.CATEGID, QueryMobileData.Category,
+            QueryMobileData.SubcategID, QueryMobileData.Subcategory,
+                QueryMobileData.CategoryFullName,
+            "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
-        String selection = ViewMobileData.Status + "<>'V' AND " +
-            ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        String selection = QueryMobileData.Status + "<>'V' AND " +
+            QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
 
-        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
-                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory
-                + ',' + ViewMobileData.CategoryFullName;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " +
+                QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory
+                + ',' + QueryMobileData.CategoryFullName;
 
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
             String filter = ((CategoriesReportActivity) getActivity()).mFilter;
             if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
-                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
+                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
             } else {
-                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
+                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") > 0";
             }
         }
 
-        // String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
-        String sortOrder = ViewMobileData.CategoryFullName;
+        // String sortOrder = QueryMobileData.Category + ", " + QueryMobileData.Subcategory;
+        String sortOrder = QueryMobileData.CategoryFullName;
 
         //compose builder
         builder.setTables(mobileData.getSource());
@@ -299,9 +299,9 @@ public class CategoriesReportFragment
         // process cursor
         while (cursor.moveToNext()) {
             ValuePieEntry item = new ValuePieEntry();
-            String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-                category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+            String category = cursor.getString(cursor.getColumnIndex(QueryMobileData.Category));
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory)))) {
+                category += " : " + cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory));
             }
             // total
             double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
@@ -354,16 +354,16 @@ public class CategoriesReportFragment
         Cursor cursor = (Cursor) item;
 
         ContentValues values = new ContentValues();
-        DatabaseUtils.cursorLongToContentValues(cursor, ViewMobileData.CATEGID, values);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Category, values);
-        DatabaseUtils.cursorLongToContentValues(cursor, ViewMobileData.SubcategID, values);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Subcategory, values);
+        DatabaseUtils.cursorLongToContentValues(cursor, QueryMobileData.CATEGID, values);
+        DatabaseUtils.cursorStringToContentValues(cursor, QueryMobileData.Category, values);
+        DatabaseUtils.cursorLongToContentValues(cursor, QueryMobileData.SubcategID, values);
+        DatabaseUtils.cursorStringToContentValues(cursor, QueryMobileData.Subcategory, values);
 
         CategorySub result = new CategorySub();
-        result.categId = values.getAsLong(ViewMobileData.CATEGID);
-        result.categName = values.getAsString(ViewMobileData.Category);
-        result.subCategId = values.getAsLong(ViewMobileData.SubcategID);
-        result.subCategName = values.getAsString(ViewMobileData.Subcategory);
+        result.categId = values.getAsLong(QueryMobileData.CATEGID);
+        result.categName = values.getAsString(QueryMobileData.Category);
+        result.subCategId = values.getAsLong(QueryMobileData.SubcategID);
+        result.subCategName = values.getAsString(QueryMobileData.Subcategory);
         return result;
     }
 

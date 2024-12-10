@@ -101,10 +101,6 @@ public class AccountTransactionDisplay
         return TransactionStatuses.get(code);
     }
 
-    public String getSubcategory() {
-        return getString(QueryAllData.Subcategory);
-    }
-
     public long getToAccountId() {
         return getLong(QueryAllData.TOACCOUNTID);
     }

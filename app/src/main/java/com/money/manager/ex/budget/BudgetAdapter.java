@@ -33,7 +33,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
@@ -254,12 +254,12 @@ public class BudgetAdapter
     }
 
     private double getAmountForCategory(long categoryId) {
-        double total = loadTotalFor(ViewMobileData.CATEGID + "=" + categoryId);
+        double total = loadTotalFor(QueryMobileData.CATEGID + "=" + categoryId);
         return total;
     }
 
     private double getAmountForSubCategory(long subCategoryId) {
-        double total = loadTotalFor(ViewMobileData.SubcategID + "=" + subCategoryId);
+        double total = loadTotalFor(QueryMobileData.SubcategID + "=" + subCategoryId);
         return total;
     }
 
@@ -267,10 +267,10 @@ public class BudgetAdapter
         double total = 0;
 
         long year = getYearFromBudgetName(mBudgetName);
-        where += " AND " + ViewMobileData.Year + "=" + year;
+        where += " AND " + QueryMobileData.Year + "=" + year;
         long month = getMonthFromBudgetName(mBudgetName);
         if (month != Constants.NOT_SET) {
-            where += " AND " + ViewMobileData.Month + "=" + month;
+            where += " AND " + QueryMobileData.Month + "=" + month;
         }
 
         try {
@@ -292,35 +292,35 @@ public class BudgetAdapter
 
     private String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
 
         //data to compose builder
         String[] projectionIn = new String[]{
-                "ID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category,
-                ViewMobileData.SubcategID, ViewMobileData.Subcategory,
-                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"
+                "ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
+                QueryMobileData.SubcategID, QueryMobileData.Subcategory,
+                "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
-        String selection = ViewMobileData.Status + "<>'V' AND " +
-                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        String selection = QueryMobileData.Status + "<>'V' AND " +
+                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
 
-        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " +
-                ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " +
+                QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory;
 
         String having = null;
 //        if (!TextUtils.isEmpty(((CategoriesReportActivity) context).mFilter)) {
 //            String filter = ((CategoriesReportActivity) context).mFilter;
 //            if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
-//                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
+//                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
 //            } else {
-//                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") > 0";
+//                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") > 0";
 //            }
 //        }
 
-        String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
+        String sortOrder = QueryMobileData.Category + ", " + QueryMobileData.Subcategory;
         String limit = null;
 
         builder.setTables(mobileData.getSource());
