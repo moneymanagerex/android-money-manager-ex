@@ -56,11 +56,12 @@ public class QueryBillDeposits
     public static String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
     public static String TRANSDATE = "TRANSDATE";
     public static String AMOUNT = "AMOUNT";
+    public static String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
 
     // get all columns
     @Override
     public String[] getAllColumns() {
-        return new String[]{BDID + " AS _id", BDID, PAYEEID, PAYEENAME, TOACCOUNTID, TOACCOUNTNAME,
+        return new String[]{BDID + " AS _id", BDID, PAYEEID, PAYEENAME, TOACCOUNTID, TOACCOUNTNAME, ATTACHMENTCOUNT,
                 ACCOUNTID, ACCOUNTNAME, CURRENCYID,
                 CATEGNAME, SUBCATEGNAME, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
