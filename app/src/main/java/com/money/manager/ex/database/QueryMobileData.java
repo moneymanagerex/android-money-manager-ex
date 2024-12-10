@@ -34,7 +34,6 @@ public class QueryMobileData
 	public static final String Date = "Date";
 	public static final String Year = "Year";
 	public static final String Month = "Month";
-	public static final String Day = "Day";
 	public static final String Category = "Category";
 	public static final String Subcategory = "Subcategory";
 	public static final String CategoryFullName = "CategoryFullName";
@@ -57,7 +56,8 @@ public class QueryMobileData
 	public static final String Notes = "Notes";
 	public static final String currency = "currency";
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
-	
+	public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
+
 	public QueryMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
 
@@ -70,7 +70,7 @@ public class QueryMobileData
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
+		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, ATTACHMENTCOUNT,
 				Category, Subcategory, CategoryFullName, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
                 SubcategID, PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,

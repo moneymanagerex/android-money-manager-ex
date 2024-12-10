@@ -31,6 +31,7 @@ SELECT
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
 
+    ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
     round( strftime( '%d', TX.transdate ) ) AS day,
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year
@@ -43,4 +44,10 @@ FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
     LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
     LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
+    LEFT JOIN (
+        select REFID, count(*) as ATTACHMENTCOUNT
+        from ATTACHMENT_V1
+        where REFTYPE = 'Transaction'
+        group by REFID
+    ) AS ATT on TX.TransID = ATT.REFID
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')

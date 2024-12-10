@@ -36,11 +36,11 @@ SELECT     TX.TransID AS ID,
     round( strftime( '%d', TX.transdate ) ) AS day,
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year,
+    ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
---    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
     LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
@@ -50,4 +50,10 @@ FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN splittransactions_v1 st ON TX.transid = st.transid
     LEFT JOIN categories SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
     LEFT JOIN categories SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.CATEGID
+    LEFT JOIN (
+    select REFID, count(*) as ATTACHMENTCOUNT
+    from ATTACHMENT_V1
+    where REFTYPE = 'Transaction'
+    group by REFID
+    ) AS ATT on TX.TransID = ATT.REFID
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')

@@ -23,8 +23,8 @@ import android.widget.TextView;
  */
 public class AllDataViewHolder {
     public LinearLayout linDate;
-    public TextView txtDay;
-    public TextView txtMonth;
+    public TextView txtDayMonth;
+    public TextView txtAttachment;
     public TextView txtYear;
     public TextView txtStatus;
     public TextView txtAmount;
