@@ -41,7 +41,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:text="@string/close"
             android:id="@+id/skipTextView"
             android:textSize="@dimen/mmx_text_view_size_medium"
@@ -51,7 +51,8 @@
             android:layout_alignTop="@+id/indicator_default"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textAllCaps = "true"
+            android:gravity="center_vertical"
+            android:textAllCaps="true"
             android:textColor="@color/material_white"/>
     </RelativeLayout>
 
