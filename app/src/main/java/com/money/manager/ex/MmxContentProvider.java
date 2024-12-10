@@ -34,9 +34,9 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
@@ -120,7 +120,7 @@ public class MmxContentProvider
                 new QueryBillDeposits(context),
                 new QueryReportIncomeVsExpenses(context),
                 new BudgetQuery(context),
-                new ViewMobileData(context),
+                new QueryMobileData(context),
                 new SQLDataSet(),
                 new QueryNestedCategory(context)
         );

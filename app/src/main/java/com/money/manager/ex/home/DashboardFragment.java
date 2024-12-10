@@ -49,9 +49,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.MmxDate;
@@ -218,17 +218,17 @@ public class DashboardFragment
     //@SuppressWarnings("deprecation")
     private String prepareQueryTopWithdrawals() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category, ViewMobileData.SubcategID,
-                ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
+        String[] projectionIn = new String[]{"ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category, QueryMobileData.SubcategID,
+                QueryMobileData.Subcategory, "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
 
-        String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal')"
-                + " AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+        String selection = QueryMobileData.Status + "<>'V' AND " + QueryMobileData.TransactionType + " IN ('Withdrawal')"
+                + " AND (julianday(date('now')) - julianday(" + QueryMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
-        String having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
-        String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " + QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory;
+        String having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
+        String sortOrder = "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
         // compose builder
         builder.setTables(mobileData.getSource());
@@ -239,19 +239,19 @@ public class DashboardFragment
     @SuppressWarnings("deprecation")
     private String prepareQueryTopPayees() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
         // data to compose builder
         String[] projectionIn = new String[]{"ID AS _id",
-                ViewMobileData.PAYEEID, ViewMobileData.Payee,
-                "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
+                QueryMobileData.PAYEEID, QueryMobileData.PAYEENAME,
+                "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) AS TOTAL",
                 "COUNT(*) AS NUM"};
 
-        String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType
-                + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+        String selection = QueryMobileData.Status + "<>'V' AND " + QueryMobileData.TransactionType
+                + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + QueryMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.Payee;
+        String groupBy = QueryMobileData.PAYEEID + ", " + QueryMobileData.PAYEENAME;
         String having = null;
-        String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
+        String sortOrder = "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
         // compose builder
         builder.setTables(mobileData.getSource());
@@ -329,9 +329,9 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String category = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-                category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
+            String category = "<b>" + cursor.getString(cursor.getColumnIndex(QueryMobileData.Category)) + "</b>";
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory)))) {
+                category += " : " + cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory));
             }
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             long num = cursor.getLong(cursor.getColumnIndex("NUM"));
@@ -364,7 +364,7 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
+            String payee = cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row

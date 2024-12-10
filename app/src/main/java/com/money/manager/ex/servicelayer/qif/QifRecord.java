@@ -213,13 +213,6 @@ public class QifRecord {
     }
 
     private String parseCategory(AccountTransactionDisplay transaction) {
-        String category = transaction.getCategory();
-        String subCategory = transaction.getSubcategory();
-
-        if (!TextUtils.isEmpty(subCategory)) {
-            return category + ":" + subCategory;
-        } else {
-            return category;
-        }
+        return transaction.getCategory();
     }
 }

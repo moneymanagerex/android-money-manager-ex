@@ -35,7 +35,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -114,7 +114,7 @@ public class PayeeReportFragment
             whereClause = "/** */";
         }
         // use token to replace criteria
-        whereClause += "(" + ViewMobileData.Payee + " Like '%" + newText + "%')/** */";
+        whereClause += "(" + QueryMobileData.PAYEENAME + " Like '%" + newText + "%')/** */";
 
         //create arguments
         Bundle args = new Bundle();
@@ -160,19 +160,19 @@ public class PayeeReportFragment
     @Override
     protected String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
         //data to compose builder
-        String[] projectionIn = new String[]{ ViewMobileData.PAYEEID + " AS _id",
-                ViewMobileData.PAYEEID, ViewMobileData.Payee,
-                "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL"};
-        String selection = ViewMobileData.Status + "<>'V' AND " +
-                ViewMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        String[] projectionIn = new String[]{ QueryMobileData.PAYEEID + " AS _id",
+                QueryMobileData.PAYEEID, QueryMobileData.PAYEENAME,
+                "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"};
+        String selection = QueryMobileData.Status + "<>'V' AND " +
+                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
-        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.Payee;
+        String groupBy = QueryMobileData.PAYEEID + ", " + QueryMobileData.PAYEENAME;
         String having = null;
-        String sortOrder = ViewMobileData.Payee;
+        String sortOrder = QueryMobileData.PAYEENAME;
         String limit = null;
         //compose builder
         builder.setTables(mobileData.getSource());
@@ -214,8 +214,8 @@ public class PayeeReportFragment
             ValuePieEntry item = new ValuePieEntry();
             // total
             double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
-                item.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME)))) {
+                item.setText(cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME)));
             } else {
                 item.setText(getString(R.string.empty_payee));
             }
@@ -295,9 +295,9 @@ public class PayeeReportFragment
         }*/
 //        payee.loadFromCursor(cursor);
         // The fields are different! Can't use standard loadFromCursor.
-        DatabaseUtils.cursorLongToContentValues(cursor, ViewMobileData._ID,
+        DatabaseUtils.cursorLongToContentValues(cursor, QueryMobileData._ID,
                 payee.contentValues, Payee.PAYEEID);
-        DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.Payee,
+        DatabaseUtils.cursorStringToContentValues(cursor, QueryMobileData.PAYEENAME,
                 payee.contentValues, Payee.PAYEENAME);
 
         return payee;

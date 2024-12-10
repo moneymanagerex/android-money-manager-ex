@@ -44,7 +44,7 @@ public class QueryReportIncomeVsExpenses
     }
 
     private void initialize(Context context, String whereStatement) {
-        ViewMobileData mobileData = new ViewMobileData(context);
+        QueryMobileData mobileData = new QueryMobileData(context);
         // add where statement
         if(!TextUtils.isEmpty(whereStatement)) {
             mobileData.setWhere(whereStatement);

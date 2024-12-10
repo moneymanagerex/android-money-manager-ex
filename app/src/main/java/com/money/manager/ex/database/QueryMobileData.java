@@ -25,7 +25,7 @@ import com.money.manager.ex.utils.MmxFileUtils;
 /**
  * This has been migrated to QueryAllData.
  */
-public class ViewMobileData
+public class QueryMobileData
 	extends Dataset {
 
 	// FIELDS
@@ -50,15 +50,15 @@ public class ViewMobileData
 	public static final String Splitted  = "SPLITTED";
 	public static final String CATEGID = "CATEGID";
 	public static final String SubcategID = "SubcategID";
-	public static final String Payee = "Payee";
-	public static final String PAYEEID = "PAYEEID";
+	public static final String PAYEENAME = "PayeeName";
+	public static final String PAYEEID = "PayeeID";
 	public static final String TransactionNumber = "TransactionNumber";
 	public static final String Status = "Status";
 	public static final String Notes = "Notes";
 	public static final String currency = "currency";
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	
-	public ViewMobileData(Context context) {
+	public QueryMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
 
         this.mContext = context.getApplicationContext();
@@ -73,7 +73,7 @@ public class ViewMobileData
 		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day,
 				Category, Subcategory, CategoryFullName, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
-                SubcategID, Payee, PAYEEID, TransactionNumber, Status, Notes, currency,
+                SubcategID, PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
                 AmountBaseConvRate};
 	}
 
