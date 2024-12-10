@@ -48,23 +48,13 @@
             android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewMonth"
+                android:id="@+id/textViewDayMonth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/mmx_text_view_size_micro"
-                app:typeface="roboto_light" />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_medium"
                 app:typeface="roboto_light" />
 
             <com.money.manager.ex.view.RobotoTextView
@@ -76,6 +66,18 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
+
+            <!-- Attachment Status -->
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewAttachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/mmx_text_view_size_micro"
+                app:typeface="roboto_light"
+                android:visibility="gone" /> <!-- Hidden by default -->
         </LinearLayout>
 
         <LinearLayout

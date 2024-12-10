@@ -79,6 +79,7 @@ public class AllDataAdapter
 
     // define cursor field
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
+        ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
 
@@ -104,9 +105,9 @@ public class AllDataAdapter
         AllDataViewHolder holder = new AllDataViewHolder();
         // take a pointer of object UI
         holder.linDate = view.findViewById(R.id.linearLayoutDate);
-        holder.txtDay = view.findViewById(R.id.textViewDay);
-        holder.txtMonth = view.findViewById(R.id.textViewMonth);
+        holder.txtDayMonth = view.findViewById(R.id.textViewDayMonth);
         holder.txtYear = view.findViewById(R.id.textViewYear);
+        holder.txtAttachment = view.findViewById(R.id.textViewAttachment);
         holder.txtStatus = view.findViewById(R.id.textViewStatus);
         holder.txtAmount = view.findViewById(R.id.textViewAmount);
         holder.txtPayee = view.findViewById(R.id.textViewPayee);
@@ -151,16 +152,21 @@ public class AllDataAdapter
 
             Date dateTime = new MmxDate(dateString).toDate();
 
-            String month = dateUtils.format(dateTime, "MMM");
-            holder.txtMonth.setText(month);
-
             String year = dateUtils.format(dateTime, "yyyy");
             holder.txtYear.setText(year);
 
-            String day = dateUtils.format(dateTime, "dd");
-            holder.txtDay.setText(day);
+            String day = dateUtils.format(dateTime, "dd MMM");
+            holder.txtDayMonth.setText(day);
         }
 
+        boolean hasAttachment = cursor.getLong(cursor.getColumnIndex(ATTACHMENTCOUNT)) > 0;
+        // Show attachment status if applicable
+        if (hasAttachment) {
+            holder.txtAttachment.setText("📎"); // Attachment icon
+            holder.txtAttachment.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtAttachment.setVisibility(View.GONE);
+        }
         // Amount
 
         double amount;
@@ -335,6 +341,7 @@ public class AllDataAdapter
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
         SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
+        ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {
