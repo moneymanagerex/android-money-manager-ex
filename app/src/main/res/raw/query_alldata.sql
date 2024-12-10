@@ -45,9 +45,9 @@ FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN currencyformats_v1 cf ON cf.currencyid = FROMACC.currencyid
     LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
     LEFT JOIN (
-    select REFID, count(*) as ATTACHMENTCOUNT
-    from ATTACHMENT_V1
-    where REFTYPE = 'Transaction'
-    group by REFID
-    ) AS ATT on TX.TransID and ATT.REFID
+        select REFID, count(*) as ATTACHMENTCOUNT
+        from ATTACHMENT_V1
+        where REFTYPE = 'Transaction'
+        group by REFID
+    ) AS ATT on TX.TransID = ATT.REFID
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')

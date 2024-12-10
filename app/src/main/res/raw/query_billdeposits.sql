@@ -36,8 +36,8 @@ FROM BILLSDEPOSITS_V1
     LEFT OUTER JOIN ACCOUNTLIST_V1 TOACCOUNT ON BILLSDEPOSITS_V1.TOACCOUNTID = TOACCOUNT.ACCOUNTID
     LEFT OUTER JOIN categories ON BILLSDEPOSITS_V1.CATEGID = categories.CATEGID
     LEFT JOIN (
-    select REFID, count(*) as ATTACHMENTCOUNT
-    from ATTACHMENT_V1
-    where REFTYPE = 'RecurringTransaction'
-    group by REFID
-    ) AS ATT on BILLSDEPOSITS_V1.BDID and ATT.REFID
+        select REFID, count(*) as ATTACHMENTCOUNT
+        from ATTACHMENT_V1
+        where REFTYPE = 'RecurringTransaction'
+        group by REFID
+    ) AS ATT on BILLSDEPOSITS_V1.BDID = ATT.REFID
