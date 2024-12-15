@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Général</string>
     <string name="preferences_perdatabase">Par-Base de données</string>
+    <string name="preferences_dispaly">Affichage</string>
     <string name="preferences_behaviour">Comportement</string>
     <string name="base_currency">Devise de référence</string>
     <string name="base_currency_changed">Devise de référence modifiée</string>
@@ -158,7 +159,7 @@
     <string name="delete">Supprimer</string>
     <string name="download">Télécharger</string>
     <string name="edit">Modifier</string>
-    <string name="home">Domicile</string>
+    <string name="home">Accueil</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Créer/Modifier une opération</string>
     <string name="refresh">Actualiser</string>
@@ -399,7 +400,7 @@
     <string name="title_use_nested_category">(BETA) Utiliser les catégories imbriquées</string>
     <string name="tools">Outils</string>
     <string name="entities">Données de référence</string>
-    <string name="loading">Chargement …</string>
+    <string name="loading">Chargement &#8230;</string>
     <string name="grand_total">Total</string>
     <string name="change_status">Modifier le statut</string>
     <string name="duplicate_selected_transactions">Dupliquer les opérations sélectionnées</string>
@@ -428,7 +429,7 @@
     <string name="action_settings">Paramètres</string>
     <string name="close">Fermer</string>
     <string name="tutorial_accounts_1">Plusieurs types de comptes : compte courant, épargne, actifs et placements.</string>
-    <string name="tutorial_accounts_2">Balayez vers la gauche pour continuer…</string>
+    <string name="tutorial_accounts_2">Balayez vers la gauche pour continuer&#8230;</string>
     <string name="financial_overview">Vue d\'ensemble</string>
     <string name="tutorial_overview_1">Vue d\'ensemble rapide, budgets, rapports personnalisables.</string>
     <string name="global">Mondial</string>
@@ -622,8 +623,8 @@
     <string name="dropbox_how_it_works">Comment fonctionne Dropbox avec Money Manager Ex\?</string>
     <string name="dropbox_link">Associer à Dropbox</string>
     <string name="dropbox_unlink">Dissocier de Dropbox</string>
-    <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Veuillez patienter…</string>
-    <string name="dropbox_uploadProgress">Envoi du fichier vers Dropbox. Veuillez patienter…</string>
+    <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Veuillez patienter&#8230;</string>
+    <string name="dropbox_uploadProgress">Envoi du fichier vers Dropbox. Veuillez patienter&#8230;</string>
     <string name="dropbox_linkedFile">Fichier Dropbox</string>
     <string name="dropbox_file_summary_all">Fichier à n’importe quel emplacement dans la Dropbox</string>
     <string name="db_not_dropbox">Votre base de données actuelle n\'est pas synchronisée. Veuillez s\'il vous plaît configurer la synchronisation sur Dropbox.</string>
@@ -639,9 +640,9 @@
     <string name="cloud_download">Télécharger le fichier de la base de données à partir du stockage cloud.</string>
     <string name="cloud_upload">Charger le fichier de la base de données sur le stockage cloud.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="sync_downloading">Téléchargement de la base de données. Veuillez patienter…</string>
-    <string name="sync_uploading">Envoi de la base de données. Veuillez patienter…</string>
-    <string name="syncProgress">Synchronisation du fichier en cours. Veuillez patientez…</string>
+    <string name="sync_downloading">Téléchargement de la base de données. Veuillez patienter&#8230;</string>
+    <string name="sync_uploading">Envoi de la base de données. Veuillez patienter&#8230;</string>
+    <string name="syncProgress">Synchronisation du fichier en cours. Veuillez patientez&#8230;</string>
     <string name="database_is_synchronized">La base de données est à jour</string>
     <string name="upload_file_complete">Votre base de données a été envoyée avec succès</string>
     <string name="every_5_minutes">Toutes les 5 minutes</string>

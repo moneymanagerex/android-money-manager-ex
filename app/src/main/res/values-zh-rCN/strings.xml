@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">通用设置</string>
     <string name="preferences_perdatabase">此数据库</string>
+    <string name="preferences_dispaly">外观 &amp; 显示</string>
     <string name="preferences_behaviour">表示方式</string>
     <string name="base_currency">基础货币</string>
     <string name="base_currency_changed">本位币已经变更</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">转到设置 &gt;&gt; 应用 &gt;&gt; Money Manager Ex &gt;&gt; 权限并拒绝短信访问权限</string>
     <string name="title_sms_trans_status_notification">短信交易状态通知</string>
     <string name="summary_sms_trans_status_notification">启用后将在通知区域显示银行交易短信处理的状态，而不显示浮窗提示或新交易界面。</string>
+    <string name="notification_click_to_edit_transaction">触摸以编辑记录&#8230;</string>
     <string name="notification_process_sms_transaction_status">处理银行交易短信状态</string>
     <string name="notification_process_sms_channel_description">AMMEX 短信通知频道</string>
     <!-- account -->
@@ -168,7 +170,7 @@
     <string name="delete">删除</string>
     <string name="download">下载</string>
     <string name="edit">编辑</string>
-    <string name="home">家</string>
+    <string name="home">首页</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">新建/编辑交易</string>
     <string name="refresh">刷新</string>
@@ -313,7 +315,7 @@
     <string name="error_split_transaction_empty">请至少拆分出一个交易</string>
     <string name="swipe_to_dismiss">滑动项目以删除</string>
     <string name="export_data_to_csv">将数据导出到 CSV 文件</string>
-    <string name="export_data_in_progress">正在导出数据 请稍候…</string>
+    <string name="export_data_in_progress">正在导出数据 请稍候&#8230;</string>
     <string name="export_file_complete">数据已成功导出到文件 %1$s</string>
     <string name="export_file_failed">导出文件 %1$s 失败</string>
     <string name="donate_header">安卓操作系统上的 MoneyManagerEx 是完全免费的。如果您喜欢此应用程序，您可以向开发团队捐赠以表支持。</string>
@@ -411,7 +413,7 @@
     <string name="mmex_website">MoneyManagerEx 网站</string>
     <string name="android_website">MMEx Android 版网站</string>
     <string name="donate_in_app_already_donate">您已用您的捐款支持 MoneyManagerEx 安卓版的发展。 \n\n开发团队在此向您表示由衷的感谢!</string>
-    <string name="donate_in_app_retrieving_status">正在从 Google Play 确认您的捐款状态 请稍候…</string>
+    <string name="donate_in_app_retrieving_status">正在从 Google Play 确认您的捐款状态 请稍候&#8230;</string>
     <string name="donate_in_app_error">无法使用内购功能。请确认您是否安装了最新的谷歌应用商店程序</string>
     <string name="title_repeating_transaction_process">处理周期性交易</string>
     <string name="title_use_nested_category">(BETA) 使用新嵌套类别结构</string>
@@ -447,7 +449,7 @@
     <string name="action_settings">设置</string>
     <string name="close">关闭</string>
     <string name="tutorial_accounts_1">多个账户类型：活期、定期、信贷、 资产和投资。</string>
-    <string name="tutorial_accounts_2">向左滑动以继续…</string>
+    <string name="tutorial_accounts_2">向左滑动以继续&#8230;</string>
     <string name="financial_overview">财务概况</string>
     <string name="tutorial_overview_1">快速浏览仪主页，预算，和自定义报告。</string>
     <string name="global">全球</string>
@@ -478,7 +480,7 @@
     <string name="all_prices_updated">所有价格均已更新。</string>
     <string name="download_complete">下载已完成</string>
     <string name="confirm_price_download">您确定要在线更新安全价格吗？</string>
-    <string name="starting_price_update">正在下载价格 请稍候…</string>
+    <string name="starting_price_update">正在下载价格 请稍候&#8230;</string>
     <string name="database_migrate_14_to_20">从 v1.4 迁移数据库</string>
     <string name="database_migrate_14_to_20_explanation">发现旧数据。点击此处以使用您以前的数据库。</string>
     <string name="database_migrate_14_to_20_failure">数据库迁移失败。请联系技术支持。</string>
@@ -617,9 +619,9 @@
     <string name="currencies_used">使用的货币</string>
     <string name="open_currencies">打开货币</string>
     <string name="import_all_currencies">导入货币</string>
-    <string name="import_currencies_in_progress">正在导入货币 请稍候…</string>
+    <string name="import_currencies_in_progress">正在导入货币 请稍候&#8230;</string>
     <string name="question_import_currencies">需要导入货币吗？</string>
-    <string name="start_currency_exchange_rates">正在更新货币汇率 请稍候…</string>
+    <string name="start_currency_exchange_rates">正在更新货币汇率 请稍候&#8230;</string>
     <string name="update_currency_exchange_rates">正在更新汇率：\n%1$s</string>
     <string name="success_currency_exchange_rates">货币汇率已成功更新</string>
     <string name="update_menu_currency_exchange_rates">更新汇率</string>
@@ -647,7 +649,7 @@
     <string name="dropbox_how_it_works">Dropbox 是如何在 Money Manager Ex 中工作的？</string>
     <string name="dropbox_link">链接到 Dropbox</string>
     <string name="dropbox_unlink">取消与 Dropbox 的链接</string>
-    <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候…</string>
+    <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候&#8230;</string>
     <string name="dropbox_uploadProgress">正在将文件上传至 Dropbox 请稍候</string>
     <string name="dropbox_linkedFile">Dropbox 文件</string>
     <string name="dropbox_file_summary_all">Dropbox 中任意位置的文件</string>
@@ -664,9 +666,9 @@
     <string name="cloud_download">从云存储下载数据库文件。</string>
     <string name="cloud_upload">将数据库文件上传到云存储。</string>
     <string name="sync_notification_title">Money Manager Ex - 同步</string>
-    <string name="sync_downloading">正在下载数据库，请稍候……</string>
-    <string name="sync_uploading">正在上传数据库，请稍候……</string>
-    <string name="syncProgress">正在同步 请稍候…</string>
+    <string name="sync_downloading">正在下载数据库，请稍候&#8230;&#8230;</string>
+    <string name="sync_uploading">正在上传数据库，请稍候&#8230;&#8230;</string>
+    <string name="syncProgress">正在同步 请稍候&#8230;</string>
     <string name="database_is_synchronized">您的数据库已是最新状态</string>
     <string name="upload_file_complete">您的数据库已经更新</string>
     <string name="every_5_minutes">每隔 5 分钟</string>

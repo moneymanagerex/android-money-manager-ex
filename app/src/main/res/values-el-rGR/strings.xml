@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Γενικά</string>
     <string name="preferences_perdatabase">Ανά Βάση Δεδομένων</string>
+    <string name="preferences_dispaly">Εμφάνιση</string>
     <string name="preferences_behaviour">Συμπεριφορά</string>
     <string name="base_currency">Βασική νομισματική μονάδα</string>
     <string name="base_currency_changed">Βασικό νόμισμα άλλαξε</string>
@@ -156,7 +157,7 @@
     <string name="delete">Διαγραφή</string>
     <string name="download">Λήψη</string>
     <string name="edit">Επεξεργασία</string>
-    <string name="home">Σπίτι</string>
+    <string name="home">Αρχή</string>
     <string name="logo">Λογότυπο</string>
     <string name="new_edit_transaction">Δημιουργία/επεξεργασία συναλλαγής</string>
     <string name="refresh">Ανανέωση</string>
@@ -387,7 +388,7 @@
     <string name="donate_in_app_error">Δεν μπορεί να χρησιμοποιηθεί η in-app billing. Ελέγξτε εάν είναι εγκατεστημένη η τελευταία έκδοση της εφαρμογής στο Play Store.</string>
     <string name="tools">Εργαλεία</string>
     <string name="entities">Οντότητες</string>
-    <string name="loading">Φόρτωση…</string>
+    <string name="loading">Φόρτωση&#8230;</string>
     <string name="grand_total">Γενικό σύνολο</string>
     <string name="change_status">Αλλαγή κατάστασης</string>
     <string name="duplicate_selected_transactions">Αναπαραγάγετε τις επιλεγμένες συναλλαγές</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Πώς λειτουργεί το Dropbox για το Money Manager Ex;</string>
     <string name="dropbox_link">Σύνδεση με Dropbox</string>
     <string name="dropbox_unlink">Αποσύνδεση από το Dropbox</string>
-    <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε…</string>
-    <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε…</string>
+    <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε&#8230;</string>
+    <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε&#8230;</string>
     <string name="dropbox_linkedFile">Αρχείο από το Dropbox</string>
     <string name="dropbox_file_summary_all">Αρχείο οπουδήποτε στο Dropbox</string>
     <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">Κατεβάστε το αρχείο βάσης δεδομένων από το σύννεφο αποθήκευσης.</string>
     <string name="cloud_upload">Ανεβάστε το αρχείο βάσης δεδομένων στο σύννεφο αποθήκευσης.</string>
     <string name="sync_notification_title">Money Manager Ex - Συγχρονισμός</string>
-    <string name="sync_downloading">Καταφόρτωση Β. Δ. Παρακαλώ περιμένετε…</string>
-    <string name="sync_uploading">Ανέβασμα Β. Δ. Παρακαλώ περιμένετε…</string>
-    <string name="syncProgress">Συγχρονισμός αρχείου. Παρακαλώ περιμένετε…</string>
+    <string name="sync_downloading">Καταφόρτωση Β. Δ. Παρακαλώ περιμένετε&#8230;</string>
+    <string name="sync_uploading">Ανέβασμα Β. Δ. Παρακαλώ περιμένετε&#8230;</string>
+    <string name="syncProgress">Συγχρονισμός αρχείου. Παρακαλώ περιμένετε&#8230;</string>
     <string name="database_is_synchronized">Η βάση δεδομένων είναι ενημερωμένη</string>
     <string name="upload_file_complete">Η Βάση δεδομένων σας έχει ανέβει επιτυχώς</string>
     <string name="every_5_minutes">Κάθε 5 λεπτά</string>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">فواتير</string>
+    <string name="category_2">طعام</string>
+    <string name="category_3">ترفيه</string>
+    <string name="category_4">سيارة</string>
+    <string name="category_5">تعليم</string>
+    <string name="category_6">احتياجات المنزل</string>
+    <string name="category_7">رعاية صحية</string>
+    <string name="category_8">تأمين</string>
+    <string name="category_9">إجازة</string>
+    <string name="category_10">ضرائب</string>
+    <string name="category_11">متفرقات</string>
+    <string name="category_12">هدايا</string>
+    <string name="category_13">إيراد</string>
+    <string name="category_14">إيرادات اخري</string>
+    <string name="category_15">أخرى</string>
+    <string name="category_16">تحويل</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">هاتف</string>
+    <string name="subcategory_2">كهرباء</string>
+    <string name="subcategory_3">غاز</string>
+    <string name="subcategory_4">إنترنت</string>
+    <string name="subcategory_5">إيجار</string>
+    <string name="subcategory_6">شبكة تلفزيون</string>
+    <string name="subcategory_7">مياه</string>
+    <string name="subcategory_8">مواد تموينية</string>
+    <string name="subcategory_9">مطعم</string>
+    <string name="subcategory_10">سينما</string>
+    <string name="subcategory_11">تأجير الفيديو</string>
+    <string name="subcategory_12">مجلات</string>
+    <string name="subcategory_13">صيانة</string>
+    <string name="subcategory_14">غاز</string>
+    <string name="subcategory_15">موقف سيارات</string>
+    <string name="subcategory_16">ترخيص</string>
+    <string name="subcategory_17">كتب</string>
+    <string name="subcategory_18">رسوم دراسية</string>
+    <string name="subcategory_19">أخرى</string>
+    <string name="subcategory_20">ملابس</string>
+    <string name="subcategory_21">أثاث</string>
+    <string name="subcategory_22">أخرى</string>
+    <string name="subcategory_23">صحة</string>
+    <string name="subcategory_24">طب الأسنان</string>
+    <string name="subcategory_25">طب العيون</string>
+    <string name="subcategory_26">طبيب</string>
+    <string name="subcategory_27">وصفة طبية</string>
+    <string name="subcategory_28">السيارة</string>
+    <string name="subcategory_29">الحياة</string>
+    <string name="subcategory_30">المنزل</string>
+    <string name="subcategory_31">صحة</string>
+    <string name="subcategory_32">السفر</string>
+    <string name="subcategory_33">إقامة</string>
+    <string name="subcategory_34">سياحة</string>
+    <string name="subcategory_35">ضريبة الدخل</string>
+    <string name="subcategory_36">ضريبة البيت</string>
+    <string name="subcategory_37">ضريبة المياه</string>
+    <string name="subcategory_38">أخرى</string>
+    <string name="subcategory_39">راتب</string>
+    <string name="subcategory_40">تعويض/مبلغ مسترد</string>
+    <string name="subcategory_41">إيرادات الاستثمار</string>
+</resources>

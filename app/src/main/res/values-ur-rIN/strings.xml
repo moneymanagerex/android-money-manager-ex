@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">جنرل</string>
     <string name="preferences_perdatabase">پری-ڈاٹا بیس</string>
+    <string name="preferences_dispaly">دیکھیں اور محسوس کریں</string>
     <string name="preferences_behaviour">برتاو</string>
     <string name="base_currency">بنیادی کرنسی</string>
     <string name="base_currency_changed">بنیادی کرنسی تبدیل ہونا</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">کم از کم ایک الگ لین دین کی ضرورت ہے</string>
     <string name="swipe_to_dismiss">اشیاء ہٹانے کے لیے swipe کریں.</string>
     <string name="export_data_to_csv">کوائف کو CSV فائل میں برآمد کریں</string>
-    <string name="export_data_in_progress">کوائف برآمد کر رہا ہے ۔ براۓ مہربانی انتظار کريں…</string>
+    <string name="export_data_in_progress">کوائف برآمد کر رہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
     <string name="export_file_complete">کوائف کامیابی سے مسل %1$s کے لیے برآمد کیا گیا ہے</string>
     <string name="export_file_failed">برآمد کریں مسل %1$s ناکام</string>
     <string name="donate_header">مونییمانگر برائے Android مفت فراہم کی جاتی ہے ۔ اگر آپکو یہ اپلیکیشن پسند ہے، آپ ترقیاتی ٹیم کو ایک امداد یا عطیہ کے ساتھ مدد کر سکتے ہیں.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">مونییماناگر ویب سائٹ</string>
     <string name="android_website">Android ڈاؤن لوڈ، ویب سائٹ کے لئے مم</string>
     <string name="donate_in_app_already_donate">آپ نے پہلے ہی مونییمانگر کی Android ترقیاتی ٹیم کو بزریعہ عطیہ امداد کیا ہے. \n\n ترقیاتی ٹیم کی طرف سے آپکا شکریہ!</string>
-    <string name="donate_in_app_retrieving_status">آپ کے عطیات کی حیثیت سے Google Play بازگیر کررہا ہے ۔ براۓ مہربانی انتظار کريں…</string>
+    <string name="donate_in_app_retrieving_status">آپ کے عطیات کی حیثیت سے Google Play بازگیر کررہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
     <string name="donate_in_app_error">ان ایپ بلنگ استعمال نہیں کر سکتے ہیں. اس بات کی پڈتال کریں کہ گوگل پلے میں اپلیکیشن انسٹال ہے یا نہیں.</string>
     <string name="tools">آلات</string>
     <string name="entities">ہیں ۔</string>
-    <string name="loading">لوڈ کر رہا ہے…</string>
+    <string name="loading">لوڈ کر رہا ہے&#8230;</string>
     <string name="grand_total">کل میزان</string>
     <string name="change_status">صورت حال تبدیل کریں</string>
     <string name="duplicate_selected_transactions">مثنی منتخب لین دین</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">سیٹنگیں</string>
     <string name="close">بند کریں</string>
     <string name="tutorial_accounts_1">متعدد اکاؤنٹ قسمیں: جانچ پڑتال ، بچت، کریڈٹ، اثاثہ جات اور سرمایہ کاری ۔.</string>
-    <string name="tutorial_accounts_2">جاری رکھنے کے لئے بائیں طرف سوایپ کریں…</string>
+    <string name="tutorial_accounts_2">جاری رکھنے کے لئے بائیں طرف سوایپ کریں&#8230;</string>
     <string name="financial_overview">مالی جائزہ</string>
     <string name="tutorial_overview_1">فوری جائزہ ڈیش بورڈ، بجٹ، تخصیص کاری کے ساتھ رپورٹیں ۔.</string>
     <string name="global">ہمہ گیر</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">تمام قیمتوں کو اپ ڈیٹ کیا گیا ہے ۔.</string>
     <string name="download_complete">ڈاؤن لوڈ مکمل.</string>
     <string name="confirm_price_download">کیاآپ آن لائن سیکیورٹی کی قیمتوں کی تازہ کاری کرنا چاہتے ہیں?</string>
-    <string name="starting_price_update">قیمتیں ڈاؤن لوڈ ہو رہی ہے, براہ مہربانی انتظار کریں…</string>
+    <string name="starting_price_update">قیمتیں ڈاؤن لوڈ ہو رہی ہے, براہ مہربانی انتظار کریں&#8230;</string>
     <string name="database_migrate_14_to_20">ڈیٹا بیس v1.4 سے ہجرت</string>
     <string name="database_migrate_14_to_20_explanation">پرانا کوائف پایا گیا ۔ پچھلے ڈیٹا بیس کو استعمال کرنے کے لئے یہاں پر ٹیپ کریں ۔.</string>
     <string name="database_migrate_14_to_20_failure">ڈیٹا بیس کی منتقلی ناکام ہوگئی ۔ برائے مہربانی تعاون سے رابطہ کریں ۔.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">استعمال شدہ کرنسیاں</string>
     <string name="open_currencies">کرنسیاں کھولیں</string>
     <string name="import_all_currencies">کرنسیاں درآمد کریں</string>
-    <string name="import_currencies_in_progress">کرنسیاں درآمد ہورہی ہے ۔ براۓ مہربانی انتظار کريں…</string>
+    <string name="import_currencies_in_progress">کرنسیاں درآمد ہورہی ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
     <string name="question_import_currencies">کیا آپ کرنسی کو درآمد کرنا چاہتے ہیں?</string>
-    <string name="start_currency_exchange_rates">زر مبادلہ کی شرح کرنسیوں کی تازہ کاری کر رہا ہے ۔ براۓ مہربانی انتظار کريں…</string>
+    <string name="start_currency_exchange_rates">زر مبادلہ کی شرح کرنسیوں کی تازہ کاری کر رہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
     <string name="update_currency_exchange_rates">ایکسچینج شرح کی تازہ کاری ہو رہی ہے: \n%1$s</string>
     <string name="success_currency_exchange_rates">تمام زر مبادلہ کی شرح کرنسیوں کی کامیابی سے تازہ کاری ہو گئی ہے</string>
     <string name="update_menu_currency_exchange_rates">زر مبادلہ کی شرح کی تازہ کاری کریں</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">ڈراپبکس کس طرح سے مونییمانگر کے لیے کام کرتا ہے?</string>
     <string name="dropbox_link">ڈراپ باکس کے لیے لنک</string>
     <string name="dropbox_unlink">ڈراپ باکس سے بے ربط کریں</string>
-    <string name="dropbox_downloadProgress">ڈراپبکس سے فایل ڈاون لوڈ ہورہی ہے. برائے مہربانی انتظار کريں…</string>
-    <string name="dropbox_uploadProgress">فایل ڈراپبکس پر اپلوڈ ہو رہی ہے. برائے مہربانی انتظار کريں…</string>
+    <string name="dropbox_downloadProgress">ڈراپبکس سے فایل ڈاون لوڈ ہورہی ہے. برائے مہربانی انتظار کريں&#8230;</string>
+    <string name="dropbox_uploadProgress">فایل ڈراپبکس پر اپلوڈ ہو رہی ہے. برائے مہربانی انتظار کريں&#8230;</string>
     <string name="dropbox_linkedFile">ڈراپ باکس فائل</string>
     <string name="dropbox_file_summary_all">ڈراپبکس میں کسی بھی جگہ دستاویزات</string>
     <string name="db_not_dropbox">آپ کا موجودہ ڈاٹا بیس سنکرانایز نہی کیا گیا ہے برائے مہربانی ڈراپبکس کو سنکرانایز پر سیٹ کریں.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">کلاؤڈ اسٹوریج سے ڈیٹا بیس فائل ڈاؤن لوڈ کریں ۔.</string>
     <string name="cloud_upload">کلاؤڈ سٹوریج کی ڈاٹا بیس فائل اپلوڈ کریں.</string>
     <string name="sync_notification_title">مونیمنیجر ایکس - ہم وقت سازی</string>
-    <string name="sync_downloading">ڈیٹا بیس ڈاؤن لوڈ ہورہا ہے ۔ براۓ مہربانی انتظار کريں…</string>
-    <string name="sync_uploading">ڈیٹا بیس اپ لوڈ ہورہا ہے ۔ براۓ مہربانی انتظار کريں…</string>
-    <string name="syncProgress">فایل کی ہم وقت سازی ہو رہی ہے. برائے مہربانی انتظار کريں…</string>
+    <string name="sync_downloading">ڈیٹا بیس ڈاؤن لوڈ ہورہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
+    <string name="sync_uploading">ڈیٹا بیس اپ لوڈ ہورہا ہے ۔ براۓ مہربانی انتظار کريں&#8230;</string>
+    <string name="syncProgress">فایل کی ہم وقت سازی ہو رہی ہے. برائے مہربانی انتظار کريں&#8230;</string>
     <string name="database_is_synchronized">ڈاٹا بیس اپ ٹو ڈیٹ ہے</string>
     <string name="upload_file_complete">آپ کے ڈیٹا بیس کو کامیابی کے ساتھ اپ لوڈ کیا گیا ہے</string>
     <string name="every_5_minutes">ہر 5 منٹ</string>

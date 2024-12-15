@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Ogólne</string>
     <string name="preferences_perdatabase">Na bazę danych</string>
+    <string name="preferences_dispaly">Wygląd</string>
     <string name="preferences_behaviour">Zachowanie</string>
     <string name="base_currency">Podstawowa waluta</string>
     <string name="base_currency_changed">Zmieniono podstawową walutę</string>
@@ -66,6 +67,7 @@
     <string name="sync_on_app_start">Synchronizuj podczas włączania aplikacji.</string>
     <string name="sync_on_start">Rozpocznij synchronizację</string>
     <!-- Receive SMS strings -->
+    <string name="notification_click_to_edit_transaction">Dotknij, aby edytować operację&#8230;</string>
     <!-- account -->
     <string name="account">Konto</string>
     <string name="account_list">Lista kont</string>
@@ -156,7 +158,7 @@
     <string name="delete">Usuń</string>
     <string name="download">Pobierz</string>
     <string name="edit">Edytuj</string>
-    <string name="home">Dom</string>
+    <string name="home">Strona główna</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Tworzenie/edycja transakcji</string>
     <string name="refresh">Odśwież</string>
@@ -292,7 +294,7 @@
     <string name="error_split_transaction_empty">Wymagany jest przynajmniej jeden element podzielonej transakcji</string>
     <string name="swipe_to_dismiss">Przesuń elementy, aby usunąć.</string>
     <string name="export_data_to_csv">Eksportuj dane do pliku CSV</string>
-    <string name="export_data_in_progress">Eksportowanie danych.  Prosze czekać…</string>
+    <string name="export_data_in_progress">Eksportowanie danych.  Prosze czekać&#8230;</string>
     <string name="export_file_complete">Dane zostały pomyślnie wyeksportowane do pliku %1$s</string>
     <string name="export_file_failed">Eksport do pliku %1$s nie powiódł się</string>
     <string name="donate_header">MoneyManagerEx dla Androida jest dostępny bezpłatnie. Jeżeli podoba ci się ta aplikacja, możesz wesprzeć zespół twórców dotacją.</string>
@@ -389,11 +391,11 @@
     <string name="mmex_website">Strona internetowa MoneyManagerEx</string>
     <string name="android_website">MMEx dla strony internetowej Android</string>
     <string name="donate_in_app_already_donate">Już wsparłeś rozwój MoneyManagerEx dla Android dotacją.\n\nPodziękowania od zespołu twórców!</string>
-    <string name="donate_in_app_retrieving_status">Pobieranie stanu dotacji z Google Play. Proszę czekać…</string>
+    <string name="donate_in_app_retrieving_status">Pobieranie stanu dotacji z Google Play. Proszę czekać&#8230;</string>
     <string name="donate_in_app_error">Nie można skorzystać z zakupów w aplikacji. Sprawdź, czy zainstalowana jest najnowsza wersja aplikacji Sklep Play.</string>
     <string name="tools">Narzędzia</string>
     <string name="entities">Składniki</string>
-    <string name="loading">Ładowanie…</string>
+    <string name="loading">Ładowanie&#8230;</string>
     <string name="grand_total">Łącznie</string>
     <string name="change_status">Zmień status</string>
     <string name="duplicate_selected_transactions">Powielenie zaznaczonych tranzakcji</string>
@@ -422,7 +424,7 @@
     <string name="action_settings">Ustawienia</string>
     <string name="close">Zamknij</string>
     <string name="tutorial_accounts_1">Wiele typów kont: bieżace, oszczędnościowe, kredytowe, aktywa i inwestycje.</string>
-    <string name="tutorial_accounts_2">Aby kontynuować przesuń palcem w lewo…</string>
+    <string name="tutorial_accounts_2">Aby kontynuować przesuń palcem w lewo&#8230;</string>
     <string name="financial_overview">Przegląd finansów</string>
     <string name="tutorial_overview_1">Szybki przegląd panelu głównego, budżety, raporty z możliwościa dostosowywania.</string>
     <string name="global">Globalne</string>
@@ -453,7 +455,7 @@
     <string name="all_prices_updated">Wszystkie ceny zostały zaktualizowane.</string>
     <string name="download_complete">Zakończono pobieranie.</string>
     <string name="confirm_price_download">Czy chcesz zaktualizować ceny bezpieczeństwa online?</string>
-    <string name="starting_price_update">Pobieranie cen, proszę czekać…</string>
+    <string name="starting_price_update">Pobieranie cen, proszę czekać&#8230;</string>
     <string name="database_migrate_14_to_20">Migracja bazy danych z v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Stare dane został znalezione. Naciśnij tutaj aby użyć swojej poprzedniej bazy danych.</string>
     <string name="database_migrate_14_to_20_failure">Migracja bazy danych nie powiodła się. Proszę skontaktować się z obsługą.</string>
@@ -589,9 +591,9 @@
     <string name="currencies_used">Używane waluty</string>
     <string name="open_currencies">Otwórz waluty</string>
     <string name="import_all_currencies">Importuj waluty</string>
-    <string name="import_currencies_in_progress">Importowanie walut. Proszę czekać…</string>
+    <string name="import_currencies_in_progress">Importowanie walut. Proszę czekać&#8230;</string>
     <string name="question_import_currencies">Czy chcesz zaimportować walutę?</string>
-    <string name="start_currency_exchange_rates">Aktualizowanie kursów wymiany walut. Proszę czekać…</string>
+    <string name="start_currency_exchange_rates">Aktualizowanie kursów wymiany walut. Proszę czekać&#8230;</string>
     <string name="update_currency_exchange_rates">Aktualizowanie kursu wymiany waluty:\n%1$s</string>
     <string name="success_currency_exchange_rates">Wszystkie kursy wymiany walut zostały pomyślnie zaktualizowane</string>
     <string name="update_menu_currency_exchange_rates">Zaktualizuj kurs wymiany</string>
@@ -619,8 +621,8 @@
     <string name="dropbox_how_it_works">Jak działa Dropbox dla aplikacji Money Manager Ex?</string>
     <string name="dropbox_link">Połącz z Dropbox</string>
     <string name="dropbox_unlink">Odłącz od Dropbox</string>
-    <string name="dropbox_downloadProgress">Pobieranie pliku z Dropbox. Proszę czekać…</string>
-    <string name="dropbox_uploadProgress">Przesyłanie pliku do Dropbox. Proszę czekać…</string>
+    <string name="dropbox_downloadProgress">Pobieranie pliku z Dropbox. Proszę czekać&#8230;</string>
+    <string name="dropbox_uploadProgress">Przesyłanie pliku do Dropbox. Proszę czekać&#8230;</string>
     <string name="dropbox_linkedFile">Plik Dropbox</string>
     <string name="dropbox_file_summary_all">Plik gdziekolwiek w Dropbox</string>
     <string name="db_not_dropbox">Twoja obecna baza danych nie jest zsynchronizowana. Ustaw synchronizację z Dropboxem.</string>
@@ -636,9 +638,9 @@
     <string name="cloud_download">Pobierz plik bazy danych z pamięci w chmurze.</string>
     <string name="cloud_upload">Prześlij plik bazy danych do pamięci w chmurze.</string>
     <string name="sync_notification_title">Money Manager Ex - Synchronizacja</string>
-    <string name="sync_downloading">Pobieranie bazy danych. Proszę czekać…</string>
-    <string name="sync_uploading">Przesyłanie bazy danych. Proszę czekać…</string>
-    <string name="syncProgress">Synchronizacja pliku. Proszę czekać…</string>
+    <string name="sync_downloading">Pobieranie bazy danych. Proszę czekać&#8230;</string>
+    <string name="sync_uploading">Przesyłanie bazy danych. Proszę czekać&#8230;</string>
+    <string name="syncProgress">Synchronizacja pliku. Proszę czekać&#8230;</string>
     <string name="database_is_synchronized">Baza danych jest aktualna</string>
     <string name="upload_file_complete">Baza danych została pomyślnie przesłana</string>
     <string name="every_5_minutes">Co 5 minut</string>

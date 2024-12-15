@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Genel</string>
     <string name="preferences_perdatabase">Veritabanı Genel</string>
+    <string name="preferences_dispaly">Görünüm</string>
     <string name="preferences_behaviour">Davranış</string>
     <string name="base_currency">Baz para birimi</string>
     <string name="base_currency_changed">Baz para birimi değiştirildi</string>
@@ -156,7 +157,7 @@
     <string name="delete">Sil</string>
     <string name="download">İndir</string>
     <string name="edit">Düzenle</string>
-    <string name="home">Ev</string>
+    <string name="home">Ana sayfa</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">İşlem Ekle/Düzenle</string>
     <string name="refresh">Yenile</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Bölünen işlemin en az bir bölmesi gereklidir</string>
     <string name="swipe_to_dismiss">Öğeleri kaldırmak için sürükle.</string>
     <string name="export_data_to_csv">Veriyi CSV olarak kaydet</string>
-    <string name="export_data_in_progress">Veri dışa aktarılıyor. Lütfen bekleyin…</string>
+    <string name="export_data_in_progress">Veri dışa aktarılıyor. Lütfen bekleyin&#8230;</string>
     <string name="export_file_complete">Veri %1$s dosyasına başarılı bir şekilde aktarıldı</string>
     <string name="export_file_failed">%1$s dosyasına aktarma başarısız</string>
     <string name="donate_header">MoneyManagerEx Android ücretsiz olarak sunulmaktadır. Eğer bu uygulamayı beğendiyseniz geliştirme ekibini bağışlarınız ile destekleyin.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">MoneyManagerEx Web sitesi</string>
     <string name="android_website">MMEx Android web sitesi</string>
     <string name="donate_in_app_already_donate">Android için MoneyManagerEx\'in geliştirilmesine zaten bağışlarınızla katkı sağladınız mı?\n\nGeliştirme ekibi adına size teşekkürler!</string>
-    <string name="donate_in_app_retrieving_status">Google Play\'den bağışlarınızın durumu alınıyor. Lütfen bekleyin…</string>
+    <string name="donate_in_app_retrieving_status">Google Play\'den bağışlarınızın durumu alınıyor. Lütfen bekleyin&#8230;</string>
     <string name="donate_in_app_error">Uygulama içi ödeme kullanılmıyor. Uygulamanın en son sürümünü kullandığınızdan emin olmak için Play Store\'u kontrol edin.</string>
     <string name="tools">Araçlar</string>
     <string name="entities">Varlıklar</string>
-    <string name="loading">Yükleniyor…</string>
+    <string name="loading">Yükleniyor&#8230;</string>
     <string name="grand_total">Genel Toplam</string>
     <string name="change_status">Durumu değiştir</string>
     <string name="duplicate_selected_transactions">Seçilen işlemleri çoğalt</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Ayarlar</string>
     <string name="close">Kapat</string>
     <string name="tutorial_accounts_1">Çoklu hesap türleri: Kontrol ediliyor, birikim, kredi kartı, varlıklar ve birikimler.</string>
-    <string name="tutorial_accounts_2">Devam etmek için sola kaydırın…</string>
+    <string name="tutorial_accounts_2">Devam etmek için sola kaydırın&#8230;</string>
     <string name="financial_overview">Mali Durum İzleme</string>
     <string name="tutorial_overview_1">Hızlı genel bakış denetim masası, bütçeler ve özelleştirilmiş raporlar.</string>
     <string name="global">Genel</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Bütün fiyatlar güncellendi.</string>
     <string name="download_complete">İndirme tamamlandı.</string>
     <string name="confirm_price_download">Güvenlik fiyatlarını online olarak güncellemek istiyor musunuz?</string>
-    <string name="starting_price_update">Fiyatlar indiriliyor, lütfen bekleyin…</string>
+    <string name="starting_price_update">Fiyatlar indiriliyor, lütfen bekleyin&#8230;</string>
     <string name="database_migrate_14_to_20">Veritabanını v1.4 sürümüne güncelle</string>
     <string name="database_migrate_14_to_20_explanation">Eski veriler bulundu. Eski veritabanını kullanmak için buraya dokunun.</string>
     <string name="database_migrate_14_to_20_failure">Veritabanı güncelleme başarısız. Lütfen destek ile iletişime geçin.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">Kullanılan para birimi</string>
     <string name="open_currencies">Açık para birimleri</string>
     <string name="import_all_currencies">Para Birimleri İçe Aktar</string>
-    <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin…</string>
+    <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin&#8230;</string>
     <string name="question_import_currencies">Para birimini içe aktarmak istiyor musunuz?</string>
-    <string name="start_currency_exchange_rates">Para birimlerinin döviz kurları güncelleniyor. Lütfen bekleyin…</string>
+    <string name="start_currency_exchange_rates">Para birimlerinin döviz kurları güncelleniyor. Lütfen bekleyin&#8230;</string>
     <string name="update_currency_exchange_rates">Döviz kuru güncelleniyor:\n%1$s</string>
     <string name="success_currency_exchange_rates">Para birimlerinin döviz kurları başarıyla güncellendi</string>
     <string name="update_menu_currency_exchange_rates">Döviz Kuru Güncelleştirme</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Money Manager Ex için Dropbox nasıl çalışır?</string>
     <string name="dropbox_link">Dropbox\'a Bağla</string>
     <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
-    <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin…</string>
-    <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin…</string>
+    <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
+    <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox Dosyası</string>
     <string name="dropbox_file_summary_all">Dropbox\'ın herhangi bir yerinde dosya</string>
     <string name="db_not_dropbox">Geçerli veritabanınız eşitlenmemiş. Lütfen Dropbox sekronizasyonu ayarlayın.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">Bulut deposundan veritabanı dosyasını indirin.</string>
     <string name="cloud_upload">Bulut deposuna veritabanı dosyası yükleyin.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="sync_downloading">Veritabanı indiriyor. Lütfen bekleyin…</string>
-    <string name="sync_uploading">Veritabanı yükleniyor. Lütfen bekleyin…</string>
-    <string name="syncProgress">Dosya eşitleniyor. Lütfen bekleyin…</string>
+    <string name="sync_downloading">Veritabanı indiriyor. Lütfen bekleyin&#8230;</string>
+    <string name="sync_uploading">Veritabanı yükleniyor. Lütfen bekleyin&#8230;</string>
+    <string name="syncProgress">Dosya eşitleniyor. Lütfen bekleyin&#8230;</string>
     <string name="database_is_synchronized">Veritabanı güncel</string>
     <string name="upload_file_complete">Veritabanınız başarı ile yüklendi</string>
     <string name="every_5_minutes">Her 5 dakikada</string>

@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Uopšteno</string>
     <string name="preferences_perdatabase">Po bazi podataka</string>
+    <string name="preferences_dispaly">Izgled</string>
     <string name="preferences_behaviour">Ponašanje</string>
     <string name="base_currency">Osnovna valuta</string>
     <string name="base_currency_changed">Osnovna valuta promijenjena</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Bar jedna od podijeljenih transakcija je neophodna</string>
     <string name="swipe_to_dismiss">Prevucite stavke za uklanjanje.</string>
     <string name="export_data_to_csv">Izvoz podataka u CSV datoteku</string>
-    <string name="export_data_in_progress">Izvoz podataka. Molim, sačekajte…</string>
+    <string name="export_data_in_progress">Izvoz podataka. Molim, sačekajte&#8230;</string>
     <string name="export_file_complete">Podaci su uspješno izvezeni u datoteku %1$s</string>
     <string name="export_file_failed">Izvoz datoteke %1$s nije uspio</string>
     <string name="donate_header">MoneyManagerEx za Android je dostupan besplatno. Ako ovaj program odgovara vašim željama, možete podržati razvojni tim donacijom.</string>
@@ -376,18 +377,18 @@
     <string name="welcome_body_dropbox">Ako već koristite MoneyManagerEx na Windows, Linux ili Mac, povežite se sa podacima u oblaku da biste sinkronizovali vašu bazu podataka</string>
     <string name="configure_sync">Konfigurisanje sinkronizacije</string>
     <string name="search_text_contain_title">Pretraživanje po sadržaja teksta a ne po tekstu koji počinje s</string>
-    <string name="search_text_contain_summary">Traži primaoca, kategorije, valute, itd… po sadržaju a ne početnim slovima</string>
+    <string name="search_text_contain_summary">Traži primaoca, kategorije, valute, itd&#8230; po sadržaju a ne početnim slovima</string>
     <string name="rate_application">Ocijenite program</string>
     <string name="withdrawal_from">Povlačenje iz %1$s</string>
     <string name="deposit_to">Depozit na %1$s</string>
     <string name="mmex_website">MoneyManagerEx web stranica</string>
     <string name="android_website">MMEx za Android web stranica</string>
     <string name="donate_in_app_already_donate">Već ste podržali razvoj MoneyManagerEx za Android svojom donacijom! \n\nHvala vam od razvojnog tima!</string>
-    <string name="donate_in_app_retrieving_status">Dohvaćanje statusa vaše donacije iz Google Play. Molim pričekajte…</string>
+    <string name="donate_in_app_retrieving_status">Dohvaćanje statusa vaše donacije iz Google Play. Molim pričekajte&#8230;</string>
     <string name="donate_in_app_error">Nije moguće korištenje plaćanja iz programa. Provjerite je li instalirana najnovija verzija Play Store aplikacije.</string>
     <string name="tools">Alati</string>
     <string name="entities">Entiteti</string>
-    <string name="loading">Učitavanje…</string>
+    <string name="loading">Učitavanje&#8230;</string>
     <string name="grand_total">Konačan iznos</string>
     <string name="change_status">Promijeni status</string>
     <string name="duplicate_selected_transactions">Dupliciraj odabrane transakcije</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Podešavanja</string>
     <string name="close">Zatvori</string>
     <string name="tutorial_accounts_1">Više vrsta računa: tekući, štedni, kreditni, imovina i investicije.</string>
-    <string name="tutorial_accounts_2">Prevucite lijevo za nastavak…</string>
+    <string name="tutorial_accounts_2">Prevucite lijevo za nastavak&#8230;</string>
     <string name="financial_overview">Finansijski pregled</string>
     <string name="tutorial_overview_1">Nadzorna ploča za brzi pregled, budžeti, izvještaji sa prilagođavanjem.</string>
     <string name="global">Globalno</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Sve cijene su ažurirane.</string>
     <string name="download_complete">Preuzimanje je završeno.</string>
     <string name="confirm_price_download">Želite li ažurirati cijene dionica online?</string>
-    <string name="starting_price_update">Skidanje cijena, molimo pričekajte…</string>
+    <string name="starting_price_update">Skidanje cijena, molimo pričekajte&#8230;</string>
     <string name="database_migrate_14_to_20">Migracija baze podataka sa verzije 1.4</string>
     <string name="database_migrate_14_to_20_explanation">Pronađeni su stari podaci. Dodirnite ovdje da biste koristili prethodnu bazu podataka.</string>
     <string name="database_migrate_14_to_20_failure">Migracija baze podataka nije uspjela. Molimo obratite se podršci.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">Valute, u upotrebi</string>
     <string name="open_currencies">Otvori valute</string>
     <string name="import_all_currencies">Uvezi valute</string>
-    <string name="import_currencies_in_progress">Uvoz valuta. Molim pričekajte…</string>
+    <string name="import_currencies_in_progress">Uvoz valuta. Molim pričekajte&#8230;</string>
     <string name="question_import_currencies">Želite li uvesti valutu?</string>
-    <string name="start_currency_exchange_rates">Ažuriranje kursa valuta. Molim pričekajte…</string>
+    <string name="start_currency_exchange_rates">Ažuriranje kursa valuta. Molim pričekajte&#8230;</string>
     <string name="update_currency_exchange_rates">Ažuriranje kursa valute: \n%1$s</string>
     <string name="success_currency_exchange_rates">Svi kursevi valuta su uspješno ažurirani</string>
     <string name="update_menu_currency_exchange_rates">Ažuriranje kursa valute</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
     <string name="dropbox_link">Poveži Dropbox</string>
     <string name="dropbox_unlink">Prekini vezu s Dropbox-om</string>
-    <string name="dropbox_downloadProgress">Preuzimanje datoteke sa Dropbox-a. Molim pričekajte…</string>
-    <string name="dropbox_uploadProgress">Upload datoteke na Dropbox. Molim pričekajte…</string>
+    <string name="dropbox_downloadProgress">Preuzimanje datoteke sa Dropbox-a. Molim pričekajte&#8230;</string>
+    <string name="dropbox_uploadProgress">Upload datoteke na Dropbox. Molim pričekajte&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox datoteka</string>
     <string name="dropbox_file_summary_all">Datoteka bilo gdje na Dropbox-u</string>
     <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">Preuzmi bazu podataka sa Cloud Storage.</string>
     <string name="cloud_upload">Uploaduj bazu podatak na Cloud Storage.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="sync_downloading">Preuzimanje baze podataka. Molim pričekajte…</string>
-    <string name="sync_uploading">Uploadujem bazu podataka. Molim pričekajte…</string>
-    <string name="syncProgress">Sinhronizujem datoteku. Molim pričekajte…</string>
+    <string name="sync_downloading">Preuzimanje baze podataka. Molim pričekajte&#8230;</string>
+    <string name="sync_uploading">Uploadujem bazu podataka. Molim pričekajte&#8230;</string>
+    <string name="syncProgress">Sinhronizujem datoteku. Molim pričekajte&#8230;</string>
     <string name="database_is_synchronized">Baza podataka je aktuelna</string>
     <string name="upload_file_complete">Vaša baza podataka je uspješno uploadovana</string>
     <string name="every_5_minutes">Svakih 5 minuta</string>

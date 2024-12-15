@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Основные</string>
     <string name="preferences_perdatabase">Настройки текущей БД</string>
+    <string name="preferences_dispaly">Внешний вид</string>
     <string name="preferences_behaviour">Поведение</string>
     <string name="base_currency">Основная валюта</string>
     <string name="base_currency_changed">Базовая валюта изменена</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">Перейдите в Настройки &gt;&gt; Приложения &gt;&gt; Money Manager Ex &gt;&gt; Разрешения и запретите доступ к SMS</string>
     <string name="title_sms_trans_status_notification">SMS с уведомлением о состоянии транзакции</string>
     <string name="summary_sms_trans_status_notification">Включить отображение статуса обработки SMS о транзакциях в области уведомлений вместо их отображения в виде всплывающего сообщения или экрана новой транзакции.</string>
+    <string name="notification_click_to_edit_transaction">Нажмите, чтобы изменить транзакцию&#8230;</string>
     <string name="notification_process_sms_transaction_status">Статус обработки SMS о транзакции</string>
     <string name="notification_process_sms_channel_description">Канал уведомлений по SMS AMMEX</string>
     <!-- account -->
@@ -149,7 +151,7 @@
     <string name="transfer">Перевод</string>
     <string name="transfer_amount">Сумма перевода</string>
     <string name="transaction_type">Тип транзакции</string>
-    <string name="transaction_status">Состояние</string>
+    <string name="transaction_status">Статус</string>
     <string name="withdrawal">Снятие</string>
     <string name="db_checking_insert_failed">Ошибка добавления транзакции</string>
     <string name="db_checking_update_failed">Ошибка обновления транзакции</string>
@@ -167,7 +169,7 @@
     <string name="delete">Удалить</string>
     <string name="download">Скачать</string>
     <string name="edit">Редактировать</string>
-    <string name="home">Дом</string>
+    <string name="home">Домой</string>
     <string name="logo">Логотип</string>
     <string name="new_edit_transaction">Добавить/редактировать проводку</string>
     <string name="refresh">Обновить</string>
@@ -310,7 +312,7 @@
     <string name="error_split_transaction_empty">Составная транзакция должна содержать хотя бы одну операцию</string>
     <string name="swipe_to_dismiss">Смахните элементы для удаления.</string>
     <string name="export_data_to_csv">Экспорт данных в CSV файл</string>
-    <string name="export_data_in_progress">Экспорт данных. Пожалуйста подождите…</string>
+    <string name="export_data_in_progress">Экспорт данных. Пожалуйста подождите&#8230;</string>
     <string name="export_file_complete">Данные были успешно выгружены в файл %1$s</string>
     <string name="export_file_failed">Экспорт файла %1$s не удался</string>
     <string name="donate_header">MoneyManagerEx для Android предоставляется бесплатно. Если вам понравилось это приложение, вы можете поддержать разработчиков отправив пожертвование.</string>
@@ -401,20 +403,20 @@
     <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac, синхронизируйте ваши файлы через облачное хранилище</string>
     <string name="configure_sync">Настройка синхронизации</string>
     <string name="search_text_contain_title">Поиск внутри строк</string>
-    <string name="search_text_contain_summary">Искать по всему тексту, а не только с начала строки (контрагенты, категории…)</string>
+    <string name="search_text_contain_summary">Искать по всему тексту, а не только с начала строки (контрагенты, категории&#8230;)</string>
     <string name="rate_application">Оценить приложение</string>
     <string name="withdrawal_from">Снятие со счета  %1$s</string>
     <string name="deposit_to">Пополнение счета %1$s</string>
     <string name="mmex_website">Сайт MoneyManagerEX</string>
     <string name="android_website">Сайт программы MMEx для Android</string>
     <string name="donate_in_app_already_donate">Вы уже поддержали разработчиков MoneyManagerEx для Android внеся пожертвование!\n\nБольшое спасибо от группы разработчиков!</string>
-    <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите…</string>
+    <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
     <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
     <string name="title_use_nested_category">(BETA) Использовать новую модель вложенных категорий</string>
     <string name="summary_use_nested_category">Использовать новую вложенную модель категорий вместо схемы \"категория:подкатегория\" (бета, использовать на свой риск)</string>
     <string name="tools">Инструменты</string>
     <string name="entities">Сущности</string>
-    <string name="loading">Загрузка…</string>
+    <string name="loading">Загрузка&#8230;</string>
     <string name="grand_total">Общий Итог</string>
     <string name="change_status">Изменить статус</string>
     <string name="duplicate_selected_transactions">Продублировать выделенные транзакции</string>
@@ -443,7 +445,7 @@
     <string name="action_settings">Настройки</string>
     <string name="close">Закрыть</string>
     <string name="tutorial_accounts_1">Различные типы счетов: текущий, сберегательный, кредитный, активов и инвестиционный.</string>
-    <string name="tutorial_accounts_2">Пролистните влево для продолжения…</string>
+    <string name="tutorial_accounts_2">Пролистните влево для продолжения&#8230;</string>
     <string name="financial_overview">Финансовый обзор</string>
     <string name="tutorial_overview_1">Обзорная панель, бюджеты, настраиваемые отчеты.</string>
     <string name="global">Глобальная</string>
@@ -614,9 +616,9 @@
     <string name="currencies_used">Валюты, использовано</string>
     <string name="open_currencies">Открыть валюты</string>
     <string name="import_all_currencies">Импорт валют</string>
-    <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите…</string>
+    <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите&#8230;</string>
     <string name="question_import_currencies">Вы хотите импортировать валюту?</string>
-    <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите…</string>
+    <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите&#8230;</string>
     <string name="update_currency_exchange_rates">Обновляем обменный курс:\n%1$s</string>
     <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
     <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
@@ -644,8 +646,8 @@
     <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
     <string name="dropbox_link">Связать с Dropbox</string>
     <string name="dropbox_unlink">Отвязать от Dropbox</string>
-    <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите…</string>
-    <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Пожалуйста, подождите…</string>
+    <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
+    <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Пожалуйста, подождите&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox файл</string>
     <string name="dropbox_file_summary_all">Файл в любом месте в Dropbox</string>
     <string name="db_not_dropbox">Ваша текущая база данных не синхронизирована. Пожалуйста, настройте Dropbox синхронизацию.</string>
@@ -661,9 +663,9 @@
     <string name="cloud_download">Скачать файл базы данных из облачного хранилища.</string>
     <string name="cloud_upload">Выгрузить файл базы данных в облако.</string>
     <string name="sync_notification_title">Money Manager Ex - Синхронизация</string>
-    <string name="sync_downloading">Загрузка базы данных. Подождите…</string>
-    <string name="sync_uploading">Выгрузка базы данных. Подождите…</string>
-    <string name="syncProgress">Синхронизирую файл. Пожалуйста подождите…</string>
+    <string name="sync_downloading">Загрузка базы данных. Подождите&#8230;</string>
+    <string name="sync_uploading">Выгрузка базы данных. Подождите&#8230;</string>
+    <string name="syncProgress">Синхронизирую файл. Пожалуйста подождите&#8230;</string>
     <string name="database_is_synchronized">База данных уже обновлена</string>
     <string name="upload_file_complete">Ваша база данных была успешно выгружена</string>
     <string name="every_5_minutes">Каждые 5 минут</string>

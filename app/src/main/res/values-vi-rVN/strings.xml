@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Chung</string>
     <string name="preferences_perdatabase">Cơ sở dữ liệu cá nhân</string>
+    <string name="preferences_dispaly">Nhìn &amp; Cảm nhận</string>
     <string name="preferences_behaviour">Hành vi</string>
     <string name="base_currency">Tiền tệ cơ sở</string>
     <string name="base_currency_changed">Tiền tệ cơ sở đã thay đổi</string>
@@ -156,7 +157,7 @@
     <string name="delete">Xóa</string>
     <string name="download">Tải về</string>
     <string name="edit">Sửa</string>
-    <string name="home">Nhà</string>
+    <string name="home">Trang chủ</string>
     <string name="logo">Biểu tượng</string>
     <string name="new_edit_transaction">Giao dịch Mới/Sửa</string>
     <string name="refresh">Làm mới</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Ít nhất phải có một giao dịch được chọn</string>
     <string name="swipe_to_dismiss">Kéo các mục để loại bỏ.</string>
     <string name="export_data_to_csv">Xuất dữ liệu ra tệp CSV</string>
-    <string name="export_data_in_progress">Đang xuất dữ liệu. Vui lòng chờ…</string>
+    <string name="export_data_in_progress">Đang xuất dữ liệu. Vui lòng chờ&#8230;</string>
     <string name="export_file_complete">Dữ liệu đã được xuất thành công ra tệp %1$s</string>
     <string name="export_file_failed">Xuất tập tin %1$s bị lỗi</string>
     <string name="donate_header">MoneyManagerEx cho Android được cung cấp miễn phí. Nếu ứng dụng này là theo ý thích của bạn, bạn có thể hỗ trợ các nhóm phát triển với một quyên tặng.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">Trang web MoneyManagerEx</string>
     <string name="android_website">MMEx cho trang web Android</string>
     <string name="donate_in_app_already_donate">Bạn đã hỗ trợ sự phát triển của MoneyManagerEx cho Android với tài trợ của bạn! \n\nCảm ơn bạn từ nhóm phát triển!</string>
-    <string name="donate_in_app_retrieving_status">Đang lấy trạng thái của sự tài trợ của bạn từ Google Play. Vui lòng chờ…</string>
+    <string name="donate_in_app_retrieving_status">Đang lấy trạng thái của sự tài trợ của bạn từ Google Play. Vui lòng chờ&#8230;</string>
     <string name="donate_in_app_error">Không thể sử dụng thanh toán trong ứng dụng. Kiểm tra xem phiên bản mới nhất của ứng dụng Cửa hàng Play đã được cài đặt chưa.</string>
     <string name="tools">Công cụ</string>
     <string name="entities">Đối tượng</string>
-    <string name="loading">Đang nạp…</string>
+    <string name="loading">Đang nạp&#8230;</string>
     <string name="grand_total">Tổng thành tiền</string>
     <string name="change_status">Thay đổi trạng thái</string>
     <string name="duplicate_selected_transactions">Nhân bản giao dịch đã chọn</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Thiết đặt</string>
     <string name="close">Đóng</string>
     <string name="tutorial_accounts_1">Nhiều loại tài khoản: kiểm tra, tiết kiệm, tín dụng, tài sản và đầu tư.</string>
-    <string name="tutorial_accounts_2">Vuốt trái để tiếp tục…</string>
+    <string name="tutorial_accounts_2">Vuốt trái để tiếp tục&#8230;</string>
     <string name="financial_overview">Tổng quan về tài chính</string>
     <string name="tutorial_overview_1">Tổng quan nhanh bảng điều khiển, ngân sách, báo cáo với các tùy chỉnh.</string>
     <string name="global">Toàn cảnh</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Tất cả giá đã được cập nhật.</string>
     <string name="download_complete">Tải xuống hoàn tất.</string>
     <string name="confirm_price_download">Bạn có muốn cập nhật giá bảo mật trực tuyến?</string>
-    <string name="starting_price_update">Đang tải giá, vui lòng chờ…</string>
+    <string name="starting_price_update">Đang tải giá, vui lòng chờ&#8230;</string>
     <string name="database_migrate_14_to_20">Di chuyển cơ sở dữ liệu từ v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Dữ liệu cũ đã được tìm thấy. Nhấp vào đây để dùng CSDL trước đó của bạn.</string>
     <string name="database_migrate_14_to_20_failure">Di chuyển CSDL không thành công. Vui lòng liên hệ với hỗ trợ.</string>
@@ -571,7 +572,7 @@
     <string name="currencies_used">Các loại tiền tệ, được sử dụng</string>
     <string name="open_currencies">Mở các loại tiền tệ</string>
     <string name="import_all_currencies">Nhập tiền tệ</string>
-    <string name="import_currencies_in_progress">Đang nhập tiền tệ. Vui lòng chờ…</string>
+    <string name="import_currencies_in_progress">Đang nhập tiền tệ. Vui lòng chờ&#8230;</string>
     <string name="question_import_currencies">Bạn có muốn nhập tiền tệ?</string>
     <string name="start_currency_exchange_rates">Đang cập nhật tỷ giá hối đoái của tiền tệ. Vui lòng chờ...</string>
     <string name="update_currency_exchange_rates">Đang cập nhậy tỉ giá hối đoái:\n%1$s</string>
@@ -594,7 +595,7 @@
     <string name="upload_to_drobpox">Tải dữ liệu lên Dropbox</string>
     <string name="dropbox_link">Kết nối với dịch vụ lưu trữ Dropbox</string>
     <string name="dropbox_unlink">Hủy liên kết khỏi Dropbox</string>
-    <string name="dropbox_downloadProgress">Đang tải tập tin từ Dropbox. Vui lòng chờ…</string>
+    <string name="dropbox_downloadProgress">Đang tải tập tin từ Dropbox. Vui lòng chờ&#8230;</string>
     <string name="dropbox_uploadProgress">Đang tải dữ liệu lên Dropbox. Xin vui lòng chờ...</string>
     <string name="dropbox_linkedFile">Các tệp tin trong Dropbox</string>
     <!-- Synchronization -->

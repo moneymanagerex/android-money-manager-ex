@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Allgemein</string>
     <string name="preferences_perdatabase">Per-Datenbank</string>
+    <string name="preferences_dispaly">Design</string>
     <string name="preferences_behaviour">Verhalten</string>
     <string name="base_currency">Basiswährung</string>
     <string name="base_currency_changed">Standard-Währung geändert</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">Gehen Sie zu den Einstellungen &gt;&gt; Apps &gt;&gt; MoneyManager Ex &gt;&gt; Berechtigungen und verweigern Sie den Zugriff für SMS</string>
     <string name="title_sms_trans_status_notification">SMS-Transaktionsstatus Benachrichtigung</string>
     <string name="summary_sms_trans_status_notification">Aktivieren, um den Status des Banktransaktions-SMS-Prozesses im Benachrichtigungsbereich anzuzeigen, anstatt ihn als Toast msg oder Neue Transaktion anzuzeigen</string>
+    <string name="notification_click_to_edit_transaction">Tippen, um die Transaktion zu bearbeiten&#8230; </string>
     <string name="notification_process_sms_transaction_status">Banktransaktions-SMS bearbeiten</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS-Benachrichtigungskanal</string>
     <!-- account -->
@@ -150,7 +152,7 @@
     <string name="transfer">Transaktion</string>
     <string name="transfer_amount">Höhe der Transaktion</string>
     <string name="transaction_type">Transaktionstyp</string>
-    <string name="transaction_status">Status</string>
+    <string name="transaction_status">Transaktionsstatus</string>
     <string name="withdrawal">Abhebung</string>
     <string name="db_checking_insert_failed">Einfügen von Transaktion fehlgeschlagen</string>
     <string name="db_checking_update_failed">Aktualisieren von Transaktion fehlgeschlagen</string>
@@ -168,7 +170,7 @@
     <string name="delete">Löschen</string>
     <string name="download">Download</string>
     <string name="edit">Bearbeiten</string>
-    <string name="home">Heim</string>
+    <string name="home">Startseite</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Transaktion hinzufügen/bearbeiten</string>
     <string name="refresh">Aktualisieren</string>
@@ -411,7 +413,7 @@
     <string name="mmex_website">MoneyManagerEx Website</string>
     <string name="android_website">MMEx für Android-Website</string>
     <string name="donate_in_app_already_donate">Sie haben bereits die Entwicklung von MoneyManager Ex für Android mit einer Spende unterstützt!\n\nDanke vom Entwicklerteam!</string>
-    <string name="donate_in_app_retrieving_status">Rufe den Status Ihrer Spende von Google Play ab. Bitte warten…</string>
+    <string name="donate_in_app_retrieving_status">Rufe den Status Ihrer Spende von Google Play ab. Bitte warten&#8230;</string>
     <string name="donate_in_app_error">Der in-app Kauf kann nicht verwendet werden. Überprüfen Sie ob die neuste Version von Play Store installiert ist.</string>
     <string name="title_repeating_transaction_process">Geplante Buchung verarbeiten</string>
     <string name="summary_repeating_transaction_process">Geplante überfällige Buchung verarbeiten (nachträglich, Eingabe, manuell)</string>
@@ -419,7 +421,7 @@
     <string name="summary_use_nested_category">Neues verschachteltes Kategorie-Modell anstelle von Kategorie:Unterkategorie-Modell verwenden (Beta, Verwendung auf eigene Gefahr)</string>
     <string name="tools">Werkzeuge</string>
     <string name="entities">Extras</string>
-    <string name="loading">Wird geladen…</string>
+    <string name="loading">Wird geladen&#8230;</string>
     <string name="grand_total">Gesamtbetrag</string>
     <string name="change_status">Status ändern</string>
     <string name="duplicate_selected_transactions">Dupliziere ausgewählte Transaktionen</string>
@@ -448,7 +450,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="close">Schließen</string>
     <string name="tutorial_accounts_1">Verschiedene Kontotypen: Girokonto, Ersparnisse, Kredite, Vermögenswerte und Anlagen.</string>
-    <string name="tutorial_accounts_2">Wischen Sie nach links um fortzufahren…</string>
+    <string name="tutorial_accounts_2">Wischen Sie nach links um fortzufahren&#8230;</string>
     <string name="financial_overview">Finanzübersicht</string>
     <string name="tutorial_overview_1">Anzeigetafel für schnelle Übersicht, Budgets, benutzerdefinierte Berichte.</string>
     <string name="global">Global</string>
@@ -619,9 +621,9 @@
     <string name="currencies_used">Verwendete Währungen</string>
     <string name="open_currencies">Währungsliste anzeigen</string>
     <string name="import_all_currencies">Import Währungen</string>
-    <string name="import_currencies_in_progress">Importiere Währungen. Bitte warten…</string>
+    <string name="import_currencies_in_progress">Importiere Währungen. Bitte warten&#8230;</string>
     <string name="question_import_currencies">Willst du eine Währung importieren?</string>
-    <string name="start_currency_exchange_rates">Wechselkurse werden aktualisiert. Bitte warten…</string>
+    <string name="start_currency_exchange_rates">Wechselkurse werden aktualisiert. Bitte warten&#8230;</string>
     <string name="update_currency_exchange_rates">Wechselkurs wird aktualisiert:\n%1$s</string>
     <string name="success_currency_exchange_rates">Alle Wechselkurse sind erfolgreich aktualisiert</string>
     <string name="update_menu_currency_exchange_rates">Aktualisiere Wechselkurs</string>
@@ -649,8 +651,8 @@
     <string name="dropbox_how_it_works">Wie funktioniert Dropbox mit Money Manager Ex\?</string>
     <string name="dropbox_link">Mit Dropbox verknüpfen</string>
     <string name="dropbox_unlink">Aufheben der Verknüpfung mit Dropbox</string>
-    <string name="dropbox_downloadProgress">Lade Datei von Dropbox herunter. Bitte warten…</string>
-    <string name="dropbox_uploadProgress">Lade die Datei zu Dropbox hoch. Bitte warten…</string>
+    <string name="dropbox_downloadProgress">Lade Datei von Dropbox herunter. Bitte warten&#8230;</string>
+    <string name="dropbox_uploadProgress">Lade die Datei zu Dropbox hoch. Bitte warten&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox-Datei</string>
     <string name="dropbox_file_summary_all">Datei irgendwo in Dropbox</string>
     <string name="db_not_dropbox">Die aktuelle Datenbank ist nicht synchronisiert. Bitte richten Sie die Dropbox-Synchronisation ein.</string>
@@ -666,9 +668,9 @@
     <string name="cloud_download">Lade Datenbank-Datei vom Cloudspeicher herunter.</string>
     <string name="cloud_upload">Lade Datenbank-Datei in den Cloudspeicher hoch.</string>
     <string name="sync_notification_title">MoneyManager Ex - Synchronisierung</string>
-    <string name="sync_downloading">Lade Datenbank herunter. Bitte warten…</string>
-    <string name="sync_uploading">Lade Datenbank hoch. Bitte warten…</string>
-    <string name="syncProgress">Synchronisiere Datei. Bitte warten…</string>
+    <string name="sync_downloading">Lade Datenbank herunter. Bitte warten&#8230;</string>
+    <string name="sync_uploading">Lade Datenbank hoch. Bitte warten&#8230;</string>
+    <string name="syncProgress">Synchronisiere Datei. Bitte warten&#8230;</string>
     <string name="database_is_synchronized">Die Datenbank ist aktuell</string>
     <string name="upload_file_complete">Ihre Datenbank wurde erfolgreich hochgeladen</string>
     <string name="every_5_minutes">Alle 5 Minuten</string>

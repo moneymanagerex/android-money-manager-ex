@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">証書</string>
+    <string name="category_2">食費</string>
+    <string name="category_3">余暇</string>
+    <string name="category_4">自動車</string>
+    <string name="category_5">教育</string>
+    <string name="category_6">日用品</string>
+    <string name="category_7">医療費</string>
+    <string name="category_8">保険</string>
+    <string name="category_9">休暇</string>
+    <string name="category_10">税金</string>
+    <string name="category_11">雑費</string>
+    <string name="category_12">贈答品</string>
+    <string name="category_13">収入</string>
+    <string name="category_14">その他の収入</string>
+    <string name="category_15">その他の支出</string>
+    <string name="category_16">振替</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">電話</string>
+    <string name="subcategory_2">電気</string>
+    <string name="subcategory_3">ガス</string>
+    <string name="subcategory_4">インターネット</string>
+    <string name="subcategory_5">家賃</string>
+    <string name="subcategory_6">ケーブル テレビ</string>
+    <string name="subcategory_7">水道</string>
+    <string name="subcategory_8">食料品</string>
+    <string name="subcategory_9">外食</string>
+    <string name="subcategory_10">映画</string>
+    <string name="subcategory_11">レンタル ビデオ</string>
+    <string name="subcategory_12">雑誌</string>
+    <string name="subcategory_13">修繕</string>
+    <string name="subcategory_14">ガス</string>
+    <string name="subcategory_15">駐車場</string>
+    <string name="subcategory_16">登録</string>
+    <string name="subcategory_17">書籍</string>
+    <string name="subcategory_18">授業料</string>
+    <string name="subcategory_19">その他</string>
+    <string name="subcategory_20">衣料品</string>
+    <string name="subcategory_21">家具</string>
+    <string name="subcategory_22">その他</string>
+    <string name="subcategory_23">健康</string>
+    <string name="subcategory_24">歯科</string>
+    <string name="subcategory_25">眼科</string>
+    <string name="subcategory_26">医師</string>
+    <string name="subcategory_27">処方箋</string>
+    <string name="subcategory_28">車</string>
+    <string name="subcategory_29">生活</string>
+    <string name="subcategory_30">ホーム</string>
+    <string name="subcategory_31">健康</string>
+    <string name="subcategory_32">旅行</string>
+    <string name="subcategory_33">宿泊施設</string>
+    <string name="subcategory_34">観光</string>
+    <string name="subcategory_35">所得税</string>
+    <string name="subcategory_36">固定資産税</string>
+    <string name="subcategory_37">水道税</string>
+    <string name="subcategory_38">その他</string>
+    <string name="subcategory_39">給与</string>
+    <string name="subcategory_40">償還/払戻</string>
+    <string name="subcategory_41">資産運用益</string>
+</resources>

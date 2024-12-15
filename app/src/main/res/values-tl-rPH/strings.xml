@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Pangkalahatan</string>
     <string name="preferences_perdatabase">Kada-Database</string>
+    <string name="preferences_dispaly">Itsura &amp; Pakiramdam</string>
     <string name="preferences_behaviour">Katangian</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Ngbago ang base currency</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Kinakailang ang kahit isang hating transaction</string>
     <string name="swipe_to_dismiss">I-swipe ang mga bagay upang maibura.</string>
     <string name="export_data_to_csv">I-export ang datos sa isang CSV na dokumento</string>
-    <string name="export_data_in_progress">Nag-eexport ng datos. Pakihintay…</string>
+    <string name="export_data_in_progress">Nag-eexport ng datos. Pakihintay&#8230;</string>
     <string name="export_file_complete">Ang mga datos ay matagumpay na na-export sa dokumentong %1$s</string>
     <string name="export_file_failed">Hindi nagtagumpay ang pag-export sa dokumentong %1$s</string>
     <string name="donate_header">Ang MoneyManagerEx para sa Android ay binibigay ng libre. Kung nasiyahan ka sa aplikasyon, maari kang sumuporta sa mga developer team gamit ang donasyon.</string>
@@ -376,18 +377,18 @@
     <string name="welcome_body_dropbox">Kung nakagamit ka na ng MoneyManagerEx sa Windows, Linux o Mac, maari mo\'ng i-link ang tagapaloob ng cloud storage upang ma-synchronize ang iyong database</string>
     <string name="configure_sync">I-kompigyura ang synchronization</string>
     <string name="search_text_contain_title">Paghahanap gamit ang nilalaman ng teksto at hindi gamit ang sinisimulan ng teksto</string>
-    <string name="search_text_contain_summary">Paghahanap ng binabayaran, kategorya, kurensiya, at iba pa… gamit ang nilalaman at hindi ang sinisimulang mga karakter</string>
+    <string name="search_text_contain_summary">Paghahanap ng binabayaran, kategorya, kurensiya, at iba pa&#8230; gamit ang nilalaman at hindi ang sinisimulang mga karakter</string>
     <string name="rate_application">I-rate ang aplikasyon</string>
     <string name="withdrawal_from">Pag-urong Mula sa %1$s</string>
     <string name="deposit_to">Maghulog Para Kay %1$s</string>
     <string name="mmex_website">MoneyManagerEx Website</string>
     <string name="android_website">MMEx para sa Android na Website</string>
     <string name="donate_in_app_already_donate">Nasuportahan mo na ang pagbuo ng MoneyManagerEx para sa Android dahil sa iyong donation!\n\nMaraming salamat galing sa grupo ng mga tagagawa!</string>
-    <string name="donate_in_app_retrieving_status">Kasalalukuyang kumukuha ng estado ng iyong mga donasyon galing sa Google Play. Mangyari lamang maghintay…</string>
+    <string name="donate_in_app_retrieving_status">Kasalalukuyang kumukuha ng estado ng iyong mga donasyon galing sa Google Play. Mangyari lamang maghintay&#8230;</string>
     <string name="donate_in_app_error">Hindi magagamit ang in-app na pagbayad. Suriin kung ang pinakabagong bersyon ng Play Store na aplikasyon ang na-install.</string>
     <string name="tools">Kagamitan</string>
     <string name="entities">Mga bagay</string>
-    <string name="loading">Naglo-load…</string>
+    <string name="loading">Naglo-load&#8230;</string>
     <string name="grand_total">Kabuuan</string>
     <string name="change_status">Palitan ang istado</string>
     <string name="duplicate_selected_transactions">Doblehen ang napiling mga transaksyon</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Mga Setting</string>
     <string name="close">Isara</string>
     <string name="tutorial_accounts_1">Iba\'t ibang uri ng mga account: checking, savings, kredit, mga asset, at pinamumuhunan.</string>
-    <string name="tutorial_accounts_2">I-swipe pakalawa para magpatuloy…</string>
+    <string name="tutorial_accounts_2">I-swipe pakalawa para magpatuloy&#8230;</string>
     <string name="financial_overview">Financial Overview</string>
     <string name="tutorial_overview_1">Mabilisang pag-overview sa dashboard, mga badyet, mga ulat na mayroong mga customization.</string>
     <string name="global">Pandaigdigan</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Na-update na ang lahat ng presyo.</string>
     <string name="download_complete">Kompleto na ang download.</string>
     <string name="confirm_price_download">Gusto mo bang i-update ang mga presyo ng seguridad online?</string>
-    <string name="starting_price_update">Nagda-download ng mga presyo, mangyari lamang na maghintay…</string>
+    <string name="starting_price_update">Nagda-download ng mga presyo, mangyari lamang na maghintay&#8230;</string>
     <string name="database_migrate_14_to_20">Lumipat ng database mula sa v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Lumang datos ang nahanap. I-tap dito upang gamitin ang iyong nakaraang database.</string>
     <string name="database_migrate_14_to_20_failure">Bigong malipat ang database. Maari lamang i-kontak ang support.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">Mga currency, nagamit</string>
     <string name="open_currencies">Buksan ang mga currency</string>
     <string name="import_all_currencies">Mag-import ng Mga Currency</string>
-    <string name="import_currencies_in_progress">Nag-iimport ng currency. Mangyari lamang maghintay…</string>
+    <string name="import_currencies_in_progress">Nag-iimport ng currency. Mangyari lamang maghintay&#8230;</string>
     <string name="question_import_currencies">Gusto mo bang mag-import ng currency?</string>
-    <string name="start_currency_exchange_rates">Ina-update ang mga halaga ng palitan ng mga pera. Mangyaring lamang maghintay…</string>
+    <string name="start_currency_exchange_rates">Ina-update ang mga halaga ng palitan ng mga pera. Mangyaring lamang maghintay&#8230;</string>
     <string name="update_currency_exchange_rates">Ina-update ang halaga ng palitan:\n%1$s</string>
     <string name="success_currency_exchange_rates">Lahat ng mga halaga ng palitan ng pera ay matagumpay na na-update</string>
     <string name="update_menu_currency_exchange_rates">I-update ang Halaga ng Palitan</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Paano magtrabaho ang Dropbox para sa Money Manager Ex\?</string>
     <string name="dropbox_link">I-link sa Dropbox</string>
     <string name="dropbox_unlink">I-unlink mula sa Dropbox</string>
-    <string name="dropbox_downloadProgress">Nagda-download ng dokumento mula sa Dropbox. Mangyaring lamang maghintay…</string>
-    <string name="dropbox_uploadProgress">Kasalukuyang ina-upload ang dokumento sa Dropbox. Mangyaring lamang maghintay…</string>
+    <string name="dropbox_downloadProgress">Nagda-download ng dokumento mula sa Dropbox. Mangyaring lamang maghintay&#8230;</string>
+    <string name="dropbox_uploadProgress">Kasalukuyang ina-upload ang dokumento sa Dropbox. Mangyaring lamang maghintay&#8230;</string>
     <string name="dropbox_linkedFile">Dokumento sa Dropbox</string>
     <string name="dropbox_file_summary_all">Dokumentong kahit saan sa Dropbox</string>
     <string name="db_not_dropbox">Ang iyong kasalukuyang database ay hindi naka-synchronize. Mangyari lamang i-set up ang pag-synchronize sa Dropbox.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">Idownload ang database na dokumento sa cloud storage.</string>
     <string name="cloud_upload">I-upload ang database na dokumento sa cloud storage.</string>
     <string name="sync_notification_title">Money Manager Ex - Pagsync</string>
-    <string name="sync_downloading">Nagda-download ng database. Mangyari lamang maghintay…</string>
-    <string name="sync_uploading">Nag-a upload ng database. Mangyari lamang maghintay…</string>
-    <string name="syncProgress">Nagsi-synchronize ng dokumento. Mangyari lamang maghintay…</string>
+    <string name="sync_downloading">Nagda-download ng database. Mangyari lamang maghintay&#8230;</string>
+    <string name="sync_uploading">Nag-a upload ng database. Mangyari lamang maghintay&#8230;</string>
+    <string name="syncProgress">Nagsi-synchronize ng dokumento. Mangyari lamang maghintay&#8230;</string>
     <string name="database_is_synchronized">Ang database ay ayon sa kasalukuyan</string>
     <string name="upload_file_complete">Ang iyong database ay matagumpay na na-upload</string>
     <string name="every_5_minutes">Kada limang minuto</string>

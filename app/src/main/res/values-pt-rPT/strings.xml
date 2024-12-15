@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Geral</string>
     <string name="preferences_perdatabase">Per-Banco de dados</string>
+    <string name="preferences_dispaly">Apresentação e Visual</string>
     <string name="preferences_behaviour">Comportamento</string>
     <string name="base_currency">Moeda Base</string>
     <string name="base_currency_changed">Moeda base alterada</string>
@@ -159,7 +160,7 @@
     <string name="delete">Eliminar</string>
     <string name="download">Transferir</string>
     <string name="edit">Editar</string>
-    <string name="home">Casa</string>
+    <string name="home">Início</string>
     <string name="logo">Logótipo</string>
     <string name="new_edit_transaction">Novo/Editar Movimento</string>
     <string name="refresh">Atualizar</string>
@@ -395,7 +396,7 @@ Toque para marcar a transação como atrasada</string>
     <string name="donate_in_app_error">Não pode utilizar a in-app billing. Verifique se tem instalada a última versão do Play Store.</string>
     <string name="tools">Ferramentas</string>
     <string name="entities">Entidades</string>
-    <string name="loading">A carregar…</string>
+    <string name="loading">A carregar&#8230;</string>
     <string name="grand_total">Total Geral</string>
     <string name="change_status">Alterar estado</string>
     <string name="duplicate_selected_transactions">Duplicar as operações selecionadas</string>
@@ -634,7 +635,7 @@ Toque para marcar a transação como atrasada</string>
     <string name="cloud_download">Faça download do arquivo da base de dados da nuvem.</string>
     <string name="cloud_upload">Guardar banco de dados na núvem.</string>
     <string name="sync_notification_title">Sicronizar Money Manager Ex</string>
-    <string name="sync_downloading">A fazer download da base de dados. Aguarde…</string>
+    <string name="sync_downloading">A fazer download da base de dados. Aguarde&#8230;</string>
     <string name="sync_uploading">Upload de dados. Aguarde...</string>
     <string name="syncProgress">A sincronizar ficheiro. Aguarde...</string>
     <string name="database_is_synchronized">A base de dados está actualizada</string>

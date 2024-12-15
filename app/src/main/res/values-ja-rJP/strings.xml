@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">全般</string>
     <string name="preferences_perdatabase">データベース単位</string>
+    <string name="preferences_dispaly">ルック &amp; フィール</string>
     <string name="preferences_behaviour">動作</string>
     <string name="base_currency">基本通貨</string>
     <string name="base_currency_changed">基本通貨を変更しました</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">少なくとも1つの分割取引が必要です</string>
     <string name="swipe_to_dismiss">削除するアイテムをスワイプします。</string>
     <string name="export_data_to_csv">データを CSV ファイルにエクスポートします</string>
-    <string name="export_data_in_progress">データをエクスポートしています。しばらくお待ちください…</string>
+    <string name="export_data_in_progress">データをエクスポートしています。しばらくお待ちください&#8230;</string>
     <string name="export_file_complete">データはファイル %1$s にエクスポートされました</string>
     <string name="export_file_failed">ファイル %1$s のエクスポートに失敗しました</string>
     <string name="donate_header">MoneyManagerEx for Android はフリーで提供しています。このアプリケーションを気に入っていただいた方は、寄付によって開発チームをサポートすることができます。</string>
@@ -376,18 +377,18 @@
     <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、クラウドストレージプロバイダーにリンクして、データベースを同期することができます</string>
     <string name="configure_sync">同期の構成</string>
     <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
-    <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等… を検索します</string>
+    <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等&#8230; を検索します</string>
     <string name="rate_application">アプリケーションの評価</string>
     <string name="withdrawal_from">%1$s から払戻</string>
     <string name="deposit_to">%1$s へ入金</string>
     <string name="mmex_website">MoneyManagerEx Webサイト</string>
     <string name="android_website">MMEx for Android Webサイト</string>
     <string name="donate_in_app_already_donate">既にあなたの寄付で MoneyManagerEx for Android の開発をサポートしていただいています!\n\n開発チームから、ありがとうございます!</string>
-    <string name="donate_in_app_retrieving_status">Google Play から寄付の状態を取得しています。しばらくお待ちください…</string>
+    <string name="donate_in_app_retrieving_status">Google Play から寄付の状態を取得しています。しばらくお待ちください&#8230;</string>
     <string name="donate_in_app_error">アプリ内課金を使用できません。Play ストア アプリケーションの最新バージョンがインストールされているかご確認ください。</string>
     <string name="tools">ツール</string>
     <string name="entities">エンティティ</string>
-    <string name="loading">読み込んでいます…</string>
+    <string name="loading">読み込んでいます&#8230;</string>
     <string name="grand_total">総合計</string>
     <string name="change_status">ステータスの変更</string>
     <string name="duplicate_selected_transactions">選択したトランザクションを複製</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">設定</string>
     <string name="close">閉じる</string>
     <string name="tutorial_accounts_1">複数の口座種類: 当座、預金、クレジット、資産、および投資。</string>
-    <string name="tutorial_accounts_2">左にスワイプして続行…</string>
+    <string name="tutorial_accounts_2">左にスワイプして続行&#8230;</string>
     <string name="financial_overview">財務概要</string>
     <string name="tutorial_overview_1">概要のダッシュ ボード、予算、カスタマイズしたレポート。</string>
     <string name="global">全般</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">すべての価格が更新されました。</string>
     <string name="download_complete">ダウンロードが完了しました。</string>
     <string name="confirm_price_download">オンラインでセキュリティの価格を更新しますか?</string>
-    <string name="starting_price_update">価格のダウンロード中、しばらくお待ちください…</string>
+    <string name="starting_price_update">価格のダウンロード中、しばらくお待ちください&#8230;</string>
     <string name="database_migrate_14_to_20">V1.4 からデータベースを移行します</string>
     <string name="database_migrate_14_to_20_explanation">古いデータが見つかりました。ここをタップすると、以前のデータベースを使用します。</string>
     <string name="database_migrate_14_to_20_failure">データベースの移行に失敗しました。サポートにお問い合わせください。</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">通貨、使用</string>
     <string name="open_currencies">通貨を開く</string>
     <string name="import_all_currencies">通貨のインポート</string>
-    <string name="import_currencies_in_progress">通貨をインポートしています。しばらくお待ちください…</string>
+    <string name="import_currencies_in_progress">通貨をインポートしています。しばらくお待ちください&#8230;</string>
     <string name="question_import_currencies">通貨をインポートしますか?</string>
-    <string name="start_currency_exchange_rates">通貨の為替レートを更新しています。しばらくお待ちください…</string>
+    <string name="start_currency_exchange_rates">通貨の為替レートを更新しています。しばらくお待ちください&#8230;</string>
     <string name="update_currency_exchange_rates">為替レートを更新中: \n%1$s</string>
     <string name="success_currency_exchange_rates">通貨の為替レートをすべて正常に更新しました</string>
     <string name="update_menu_currency_exchange_rates">為替レートを更新</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Money Manager Ex で Dropbox はどのように動作しますか?</string>
     <string name="dropbox_link">Dropbox にリンク</string>
     <string name="dropbox_unlink">Dropbox のリンクを解除</string>
-    <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください…</string>
-    <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください…</string>
+    <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
+    <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox のファイル</string>
     <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
     <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">クラウド ストレージからデータベース ファイルをダウンロードします。</string>
     <string name="cloud_upload">クラウド ストレージにデータベース ファイルをアップロードします。</string>
     <string name="sync_notification_title">Money Manager Ex - 同期</string>
-    <string name="sync_downloading">データベースのダウンロード中。しばらくお待ちください…</string>
-    <string name="sync_uploading">データベースのアップロード中。しばらくお待ちください…</string>
-    <string name="syncProgress">ファイルを同期しています。しばらくお待ちください…</string>
+    <string name="sync_downloading">データベースのダウンロード中。しばらくお待ちください&#8230;</string>
+    <string name="sync_uploading">データベースのアップロード中。しばらくお待ちください&#8230;</string>
+    <string name="syncProgress">ファイルを同期しています。しばらくお待ちください&#8230;</string>
     <string name="database_is_synchronized">データベースは最新の状態です</string>
     <string name="upload_file_complete">データベースが正常にアップロードされました</string>
     <string name="every_5_minutes">5 分毎</string>
