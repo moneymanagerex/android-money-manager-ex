@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- application -->
+    <string name="application_definition">یک اپلیکیشن ساده و کاربردی برای مدیریت امور مالی شخصی، حساب های بانکی، بودجه خانواده و غیره.</string>
+    <string name="application_license">مجوزهای منبع باز</string>
+    <!-- database -->
+    <string name="db_insert_failed">درج داده انجام نشد</string>
+    <string name="db_delete_failed">حذف داده ها ناموفق بود</string>
+    <string name="db_update_failed">به روز رسانی داده ها انجام نشد</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">خروج</string>
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">مدیریت</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_general">عمومی</string>
+    <string name="preferences_perdatabase">هر پایگاه داده</string>
+    <string name="preferences_behaviour">عملکرد</string>
+    <string name="base_currency">ارز پایه</string>
+    <string name="base_currency_changed">ارز پایه تغییر کرد</string>
+    <string name="base_currency_change_notification">ارز پایه تغییر کرده است. لطفاً برای دریافت مقادیر صحیح در ارز پایه جدید، نرخ تبدیل ارز را به روز کنید.</string>
+    <string name="view_accounts_opened">مشاهده حساب های باز</string>
+    <string name="if_not_selected_willShowAllAccounts">اگر انتخاب نشده باشد، همه حساب ها نشان داده می شود</string>
+    <string name="view_accounts_favorites">مشاهده اکانت های مورد علاقه</string>
+    <string name="version">نسخه</string>
+    <string name="build">نسخه</string>
+    <string name="path">مسیر پایگاه داده</string>
+    <string name="database_version">نسخه پایگاه داده</string>
+    <string name="title_show_tutorial">نمایش راهنما</string>
+    <string name="summary_show_tutorial">نمایش راهنما در اجرای بعدی؟</string>
+    <string name="preferences_behaviour_focus_filter_title">فیلتر در انتخابگرها</string>
+    <string name="preferences_behaviour_focus_filter_summary">تمرکز روی فیلتر انتخابگر ها. در غیر این صورت مرور</string>
+    <string name="auto_sync_via_wifi">همگام‌سازی خودکار فقط در WiFi</string>
+    <string name="auto_sync_via_wifi_summary">همگام سازی خودکار فقط در صورت اتصال WiFi.</string>
+    <string name="sync_on_app_start">همگام‌سازی در موقع شروع</string>
+    <string name="sync_on_start">همگام سازی در شروع</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">حساب کاربری</string>
+    <string name="account_list">لیست حساب</string>
+    <string name="account_empty_list">هیچ حساب کاربری پیدا نشد. برای ایجاد یکی، روی دکمه سبز ضربه بزنید.</string>
+    <string name="account_balance">مانده حساب</string>
+    <string name="delete_account">حذف حساب</string>
+    <string name="account_name">نام حساب</string>
+    <string name="account_type">نوع حساب‌</string>
+    <string name="account_number">شماره حساب</string>
+    <string name="account_status">وضعیت حساب</string>
+    <string name="favourite_account">حساب مورد علاقه</string>
+    <string name="select_currency">انتخاب واحد پول</string>
+    <string name="checking">حساب جاری</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <!-- transaction -->
+    <string name="status_reconciled">تطبیق‌یافته</string>
+    <string name="status_void">باطل</string>
+    <string name="status_follow_up">دنبال کردن</string>
+    <string name="status_duplicate">تکراری</string>
+    <string name="status_none">هیچ</string>
+    <string name="transfer">انتقال دادن</string>
+    <string name="transfer_amount">مبلغ انتقال</string>
+    <string name="transaction_type">نوع تراکنش</string>
+    <string name="withdrawal">برداشت</string>
+    <string name="db_checking_insert_failed">درج تراکنش ناموفق بود</string>
+    <string name="db_checking_update_failed">به روز رسانی تراکنش انجام نشد</string>
+    <string name="delete_transaction">حذف تراکنش</string>
+    <string name="new_transaction">تراکنش جدید</string>
+    <string name="error_payee_not_selected">گیرنده پرداخت الزامی است</string>
+    <string name="error_toaccount_not_selected">گیرنده حساب الزامی است</string>
+    <string name="error_category_not_selected">دسته بندی الزامی است</string>
+    <string name="error_totamount_empty">مبلغ کل مورد نیاز است</string>
+    <string name="error_transfer_to_same_account">دو حساب برای انتقال باید مجزا باشند</string>
+    <string name="about">درباره</string>
+    <string name="add">اضافه کردن</string>
+    <string name="confirmDelete">آیا از حذف سوابق اطمینان دارید؟</string>
+    <string name="date">تاریخ</string>
+    <string name="delete">حذف</string>
+    <string name="download">دانلود</string>
+    <string name="edit">ویرایش</string>
+    <string name="home">خانه</string>
+    <string name="logo">لوگو</string>
+    <string name="new_edit_transaction">تراکنش جدید</string>
+    <string name="refresh">تازه کردن</string>
+    <string name="search">جُستجو</string>
+    <string name="settings">تنظیمات</string>
+    <string name="summary">خلاصه</string>
+    <string name="sync">همگام سازی</string>
+    <string name="synchronize">همگام سازی</string>
+    <string name="open">باز کردن</string>
+    <string name="user">کاربر</string>
+    <string name="upload">آپلود</string>
+    <string name="username">نام کاربر</string>
+    <string name="to">به</string>
+    <string name="website">وب سایت</string>
+    <string name="contact">مخاطب</string>
+    <string name="access_info">دسترسی به اطلاعات</string>
+    <string name="initial_balance">موجودی اولیه</string>
+    <string name="notes">یادداشت‌ها</string>
+    <string name="closed">بسته شده</string>
+    <string name="theme_application">پوسته</string>
+    <string name="theme_holo">متریال تیره</string>
+    <string name="theme_light">متریال روشن</string>
+    <!-- 20120906 -->
+    <string name="close_application">بستن برنامه</string>
+    <string name="question_close_application">آیا می خواهید برنامه را ببندید؟</string>
+    <string name="error_intent_pick_file">هیچ فعالیتی برای مدیریت Intent Pick File یافت نشد</string>
+    <!-- transaction list periods -->
+    <string name="widget_summary">خلاصه</string>
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">هیچ</string>
+    <string name="notification_click_to_check_repeating_transaction">بررسی معوقه تراکنش</string>
+    <string name="skip">رد کردن</string>
+    <string name="enter">وارد کردن</string>
+    <string name="enter_amount">مبلغ را وارد کنید</string>
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <string name="send_feedback">ارسال بازخورد</string>
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <string name="preferences_info_application">اطلاعات</string>
+    <string name="preferences_security">امنیّت</string>
+    <string name="preferences_active_passcode">فعال سازی رمز عبور</string>
+    <string name="enter_your_passcode">گذرواژه خود را وارد کنید</string>
+    <string name="reinsert_your_passcode">گذرواژه خود را مجددا وارد کنید</string>
+    <string name="passocde_no_macth">گذرواژه ها مطابقت ندارند</string>
+    <string name="preferences_edit_passcode">تغییر گذرواژه</string>
+    <string name="preferences_disable_passcode">غیرفعال سازی گذرواژه</string>
+    <string name="enter_your_previous_passcode">واردکردن گذرواژه قبلی</string>
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">گذرواژه بروزرسانی نشد</string>
+    <!-- 20121217 -->
+    <string name="lookups_wildcard">برای جستجوها می توانید از کاراکتر عام % استفاده کنید</string>
+    <string name="income_vs_expenses_current_month">درآمد در مقابل هزینه: ماه جاری</string>
+    <string name="income">درآمد</string>
+    <string name="expenses">هزینه ها</string>
+    <string name="difference">تفاوت</string>
+    <string name="no_data">هیچ سابقه ای یافت نشد. سعی کنید دوره قابل مشاهده را تنظیم کنید یا برای ایجاد یکی روی دکمه سبز کلیک کنید.</string>
+    <string name="no_stock_data">اطلاعات موجودی برای این حساب موجود نیست.</string>
+    <string name="month">ماه</string>
+    <string name="year">سال</string>
+    <string name="menu_reports">گزارشات</string>
+    <string name="menu_report_income_vs_expenses">درآمد در مقابل هزینه</string>
+    <string name="total">مجموع</string>
+    <!--<string name="option">Option</string>-->
+    <string name="all_time">همیشه</string>
+    <string name="last_month">ماه قبل</string>
+    <string name="last30days">۳۰ روز گذشته</string>
+    <string name="last_year">سال قبل</string>
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <string name="number_transaction_found">تعداد تراکنش‌های یافت شده: %1$d</string>
+    <!-- 20130108 -->
+    <string name="date_format">فرمت تاریخ</string>
+    <string name="financial_year_start_day">سال مالی: روز شروع</string>
+    <string name="financial_year_start_month">سال مالی: ماه شروع</string>
+    <string name="menu_move_database_to_external_storage">خروجی‌گیری از پایگاه داده</string>
+    <string name="database_has_been_moved">پایگاه داده منتقل شده است: %1$s</string>
+    <string name="copy_database_on_external_storage_failed">کپی پایگاه داده در حافظه خارجی انجام نشد</string>
+    <string name="path_database_using">شما از پایگاه داده ذخیره شده در %1$s استفاده می کنید</string>
+    <!-- Split Categories -->
+    <string name="split_transaction">تقسیم تراکنش</string>
+    <string name="split">تقسیم</string>
+    <string name="error_split_transaction_empty">حداقل یکی از تراکنش های تقسیم مورد نیاز است</string>
+    <string name="swipe_to_dismiss">برای حذف موارد را تند بکشید.</string>
+    <string name="export_data_to_csv">داده ها را به فایل CSV صادر کنید</string>
+    <string name="export_data_in_progress">صادرا کردن داده ها لطفا صبر کنید…</string>
+    <string name="export_file_complete">داده ها با موفقیت به فایل %1$s صادر شد</string>
+    <string name="export_file_failed">فایل %1$s صادر نشد</string>
+    <string name="donate_header">MoneyManagerEx برای اندروید به صورت رایگان ارائه شده است. اگر برنامه را دوست دارید، می توانید با کمک مالی از تیم توسعه حمایت کنید.</string>
+    <string name="donate_in_app_title">صورت‌حساب درون‌برنامه‌ای Google Play</string>
+    <!-- languages -->
+    <string name="action_settings">تنظیمات</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <string name="per_database_settings">هر پایگاه داده</string>
+    <!-- Notification Setting -->
+</resources>
