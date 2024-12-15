@@ -10,105 +10,64 @@
     "translation": "app/src/main/res/values-%android_code%/strings.xml",
     "languages_mapping": {
       "android_code": {
-        # Chinese
-        "zh-CN": "zh-rCN",
-        "zh-TW": "zh-rTW",
-        # Portuguese
-        "pt-PT": "pt",
-        "pt-BR": "pt-rBR",
-        # Spanish
-        "es": "es",
-        "es-MX": "es-rMX",
-        "es-419": "es-r419",
-        # English
-        "en-GB": "en-rGB",
-        "en-US": "en",
-        "en-AU": "en-rAU",
-        "en-IN": "en-rIN",
-        # French
-        "fr": "fr",
-        "fr-CA": "fr-rCA",
-        # German
-        "de": "de",
-        "de-AT": "de-rAT",
-        "de-CH": "de-rCH",
-        # Italian
-        "it": "it",
         # Arabic
-        "ar": "ar",
-        "ar-SA": "ar-rSA",
-        "ar-EG": "ar-rEG",
-        # Russian
-        "ru": "ru",
-        # Ukrainian
-        "uk": "uk",
-        # Belarusian
-        "be": "be",
-        # Serbian
-        "sr-Latn": "sr-rLatn",
-        "sr-Cyrl": "sr-rCyrl",
-        # Japanese
-        "ja": "ja",
-        # Korean
-        "ko": "ko",
-        # Vietnamese
-        "vi": "vi",
-        # Hindi
-        "hi": "hi-rIN",
-        # Bengali
-        "bn-IN": "bn-rIN",
-        "bn-BD": "bn-rBD",
-        # Tamil
-        "ta-IN": "ta-rIN",
-        "ta-LK": "ta-rLK",
-        # Telugu
-        "te-IN": "te-rIN",
-        # Malay
-        "ms": "ms",
-        "ms-MY": "ms-rMY",
-        # Urdu
-        "ur-IN": "ur-rIN",
-        "ur-PK": "ur-rPK",
-        # Turkish
-        "tr": "tr",
-        # Persian
-        "fa": "fa",
-        # Greek
-        "el": "el",
-        # Polish
-        "pl": "pl",
-        # Hungarian
-        "hu": "hu",
+        "ar": "ar-rSA",
+        # Bosnian
+        "bs": "bs-rBA",
+        # Simplified Chinese
+        "zh-CN": "zh-rCN",
+        # Traditional Chinese
+        "zh-TW": "zh-rTW",
         # Czech
-        "cs": "cs",
-        # Slovak
-        "sk": "sk",
-        # Swedish
-        "sv": "sv",
+        "cs": "cs-rCZ",
         # Danish
-        "da": "da",
-        # Finnish
-        "fi": "fi",
+        "da": "da-rDK",
         # Dutch
-        "nl": "nl",
-        # Thai
-        "th": "th-rTH",
-        # Khmer
-        "km": "km-rKH",
-        # Lao
-        "lo": "lo-rLA",
+        "nl": "nl-rNL",
+        # French
+        "fr": "fr-rFR",
         # Filipino
-        "fil": "fil",
-        "fil-PH": "fil-rPH",
-        # Indonesian
-        "id": "id",
-        "id-ID": "id-rID",
-        # Burmese
-        "my": "my-rMM",
-        # Kazakh
-        "kk": "kk-rKZ",
-        # Uzbek
-        "uz": "uz-rUZ"
+        "fil": "fil-rPH",
+        # German
+        "de": "de-rDE",
+        # Greek
+        "el": "el-rGR",
+        # Hebrew
+        "he": "he-rIL",
+        # Hungarian
+        "hu": "hu-rHU",
+        # Indonesian (Old `in` compatibility)
+        "id": "in-rID",
+        # Italian
+        "it": "it-rIT",
+        # Japanese
+        "ja": "ja-rJP",
+        # Polish
+        "pl": "pl-rPL",
+        # Portuguese (Brazil)
+        "pt-BR": "pt-rBR",
+        # Portuguese (Portugal)
+        "pt-PT": "pt-rPT",
+        # Romanian
+        "ro": "ro-rRO",
+        # Russian
+        "ru": "ru-rRU",
+        # Slovak
+        "sk": "sk-rSK",
+        # Slovenian
+        "sl": "sl-rSI",
+        # Spanish
+        "es": "es-rES",
+        # Turkish
+        "tr": "tr-rTR",
+        # Ukrainian
+        "uk": "uk-rUA",
+        # Urdu (India)
+        "ur-IN": "ur-rIN",
+        # Urdu (Pakistan)
+        "ur-PK": "ur-rPK",
+        # Vietnamese
+        "vi": "vi-rVN"
       }
     }
   }
