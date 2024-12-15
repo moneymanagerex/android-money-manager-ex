@@ -96,6 +96,7 @@
     <string name="pref_budget">pref_budgets</string>
     <string name="pref_budget_show_simple_view">pref_budget_show_simple_view</string>
     <string name="pref_budget_load_current">pref_budget_load_current</string>
+    <string name="pref_budget_financial_year">pref_budget_financial_year</string>
 
     <!-- dropbox / deprecated -->
     <string name="pref_dropbox_download">dropbox2download</string>
