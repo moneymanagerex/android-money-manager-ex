@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -16,63 +16,63 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- default category -->
-  <string name="category_1">بلیں</string>
-  <string name="category_2">غزا</string>
-  <string name="category_3">مہلت</string>
-  <string name="category_4">خودبخود چلنے والی</string>
-  <string name="category_5">تعلیمات</string>
-  <string name="category_6">گھریلو اخراجات</string>
-  <string name="category_7">صحت کی پروا</string>
-  <string name="category_8">بیمہ</string>
-  <string name="category_9">چھٹی</string>
-  <string name="category_10">لگان</string>
-  <string name="category_11">منفرق مضامین</string>
-  <string name="category_12">خوش آمدات</string>
-  <string name="category_13">آمدنی</string>
-  <string name="category_14">دیگر آمدنی</string>
-  <string name="category_15">دیگر اخراجات</string>
-  <string name="category_16">منتقل کرنا</string>
-  <!-- default subcategory -->
-  <string name="subcategory_1">ٹیلی-فون</string>
-  <string name="subcategory_2">بجلی</string>
-  <string name="subcategory_3">گیس</string>
-  <string name="subcategory_4">انٹرنیٹ</string>
-  <string name="subcategory_5">کرایہ</string>
-  <string name="subcategory_6">کیبل ٹیلی-ویژن</string>
-  <string name="subcategory_7">پانی</string>
-  <string name="subcategory_8">پنساری کا سامان</string>
-  <string name="subcategory_9">رات کا کھانا</string>
-  <string name="subcategory_10">فلمیں</string>
-  <string name="subcategory_11">کرائیے کا ویڈیو</string>
-  <string name="subcategory_12">میگزین</string>
-  <string name="subcategory_13">دیکھ بھال</string>
-  <string name="subcategory_14">گیس</string>
-  <string name="subcategory_15">پارکنگ</string>
-  <string name="subcategory_16">رجسٹریشن</string>
-  <string name="subcategory_17">کتابیں</string>
-  <string name="subcategory_18">ٹیوشن</string>
-  <string name="subcategory_19">دیگر</string>
-  <string name="subcategory_20">لباس</string>
-  <string name="subcategory_21">فرنشننگ</string>
-  <string name="subcategory_22">دیگر</string>
-  <string name="subcategory_23">صحت</string>
-  <string name="subcategory_24">ڈینٹل</string>
-  <string name="subcategory_25">آنکھوں کی دیکھ بھال</string>
-  <string name="subcategory_26">معالج</string>
-  <string name="subcategory_27">نسخے</string>
-  <string name="subcategory_28">خود کار</string>
-  <string name="subcategory_29">زندگی</string>
-  <string name="subcategory_30">گھر</string>
-  <string name="subcategory_31">صحت</string>
-  <string name="subcategory_32">سفر</string>
-  <string name="subcategory_33">ٹھہرنے کی جگہ</string>
-  <string name="subcategory_34">تفریح</string>
-  <string name="subcategory_35">انکم ٹیکس</string>
-  <string name="subcategory_36">گھر ٹیکس</string>
-  <string name="subcategory_37">پانی کا ٹیکس</string>
-  <string name="subcategory_38">دیگر</string>
-  <string name="subcategory_39">تنخواہ</string>
-  <string name="subcategory_40">چکوتا/رقوم کی واپسی</string>
-  <string name="subcategory_41">سرمایہ کاری کی آمدنی</string>
+    <!-- default category -->
+    <string name="category_1">بلیں</string>
+    <string name="category_2">غزا</string>
+    <string name="category_3">مہلت</string>
+    <string name="category_4">خودبخود چلنے والی</string>
+    <string name="category_5">تعلیمات</string>
+    <string name="category_6">گھریلو اخراجات</string>
+    <string name="category_7">صحت کی پروا</string>
+    <string name="category_8">بیمہ</string>
+    <string name="category_9">چھٹی</string>
+    <string name="category_10">لگان</string>
+    <string name="category_11">منفرق مضامین</string>
+    <string name="category_12">خوش آمدات</string>
+    <string name="category_13">آمدنی</string>
+    <string name="category_14">دیگر آمدنی</string>
+    <string name="category_15">دیگر اخراجات</string>
+    <string name="category_16">منتقل کرنا</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">ٹیلی-فون</string>
+    <string name="subcategory_2">بجلی</string>
+    <string name="subcategory_3">گیس</string>
+    <string name="subcategory_4">انٹرنیٹ</string>
+    <string name="subcategory_5">کرایہ</string>
+    <string name="subcategory_6">کیبل ٹیلی-ویژن</string>
+    <string name="subcategory_7">پانی</string>
+    <string name="subcategory_8">پنساری کا سامان</string>
+    <string name="subcategory_9">رات کا کھانا</string>
+    <string name="subcategory_10">فلمیں</string>
+    <string name="subcategory_11">کرائیے کا ویڈیو</string>
+    <string name="subcategory_12">میگزین</string>
+    <string name="subcategory_13">دیکھ بھال</string>
+    <string name="subcategory_14">گیس</string>
+    <string name="subcategory_15">پارکنگ</string>
+    <string name="subcategory_16">رجسٹریشن</string>
+    <string name="subcategory_17">کتابیں</string>
+    <string name="subcategory_18">ٹیوشن</string>
+    <string name="subcategory_19">دیگر</string>
+    <string name="subcategory_20">لباس</string>
+    <string name="subcategory_21">فرنشننگ</string>
+    <string name="subcategory_22">دیگر</string>
+    <string name="subcategory_23">صحت</string>
+    <string name="subcategory_24">ڈینٹل</string>
+    <string name="subcategory_25">آنکھوں کی دیکھ بھال</string>
+    <string name="subcategory_26">معالج</string>
+    <string name="subcategory_27">نسخے</string>
+    <string name="subcategory_28">خود کار</string>
+    <string name="subcategory_29">زندگی</string>
+    <string name="subcategory_30">گھر</string>
+    <string name="subcategory_31">صحت</string>
+    <string name="subcategory_32">سفر</string>
+    <string name="subcategory_33">ٹھہرنے کی جگہ</string>
+    <string name="subcategory_34">تفریح</string>
+    <string name="subcategory_35">انکم ٹیکس</string>
+    <string name="subcategory_36">گھر ٹیکس</string>
+    <string name="subcategory_37">پانی کا ٹیکس</string>
+    <string name="subcategory_38">دیگر</string>
+    <string name="subcategory_39">تنخواہ</string>
+    <string name="subcategory_40">چکوتا/رقوم کی واپسی</string>
+    <string name="subcategory_41">سرمایہ کاری کی آمدنی</string>
 </resources>

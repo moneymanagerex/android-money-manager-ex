@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">Faturalar</string>
+    <string name="category_2">Yiyecek</string>
+    <string name="category_3">Gündelik</string>
+    <string name="category_4">Otomobil</string>
+    <string name="category_5">Eğitim</string>
+    <string name="category_6">Ev ihtiyaçları</string>
+    <string name="category_7">Sağlık</string>
+    <string name="category_8">Sigorta</string>
+    <string name="category_9">Tatil</string>
+    <string name="category_10">Vergiler</string>
+    <string name="category_11">Muhtelif</string>
+    <string name="category_12">Hediyeler</string>
+    <string name="category_13">Gelir</string>
+    <string name="category_14">Diğer Gelirler</string>
+    <string name="category_15">Diğer Giderler</string>
+    <string name="category_16">Havale</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Telefon</string>
+    <string name="subcategory_2">Elektrik</string>
+    <string name="subcategory_3">Doğal gaz</string>
+    <string name="subcategory_4">İnternet </string>
+    <string name="subcategory_5">Kira</string>
+    <string name="subcategory_6">Kablo TV</string>
+    <string name="subcategory_7">Su</string>
+    <string name="subcategory_8">Market</string>
+    <string name="subcategory_9">Dışarıda yemek</string>
+    <string name="subcategory_10">Filmler</string>
+    <string name="subcategory_11">Video Kiralama</string>
+    <string name="subcategory_12">Dergiler</string>
+    <string name="subcategory_13">Bakım</string>
+    <string name="subcategory_14">Doğal gaz</string>
+    <string name="subcategory_15">Otopark</string>
+    <string name="subcategory_16">Tescil</string>
+    <string name="subcategory_17">Kitaplar</string>
+    <string name="subcategory_18">Okul Harcı</string>
+    <string name="subcategory_19">Diğerleri</string>
+    <string name="subcategory_20">Giyim</string>
+    <string name="subcategory_21">Mobilya</string>
+    <string name="subcategory_22">Diğerleri</string>
+    <string name="subcategory_23">Sağlık</string>
+    <string name="subcategory_24">Diş</string>
+    <string name="subcategory_25">Göz</string>
+    <string name="subcategory_26">Hekim</string>
+    <string name="subcategory_27">Reçete</string>
+    <string name="subcategory_28">Oto</string>
+    <string name="subcategory_29">Yaşam</string>
+    <string name="subcategory_30">Ev</string>
+    <string name="subcategory_31">Sağlık</string>
+    <string name="subcategory_32">Seyahat</string>
+    <string name="subcategory_33">Konaklama</string>
+    <string name="subcategory_34">Gezi</string>
+    <string name="subcategory_35">Gelir Vergisi</string>
+    <string name="subcategory_36">Ev Vergisi</string>
+    <string name="subcategory_37">Su Vergisi</string>
+    <string name="subcategory_38">Diğerleri</string>
+    <string name="subcategory_39">Maaş</string>
+    <string name="subcategory_40">Geri Ödeme/İadeler</string>
+    <string name="subcategory_41">Yatırım Gelirleri</string>
+</resources>

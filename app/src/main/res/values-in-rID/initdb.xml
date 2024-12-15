@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">Bukti tagihan</string>
+    <string name="category_2">Makanan</string>
+    <string name="category_3">Kenyamanan</string>
+    <string name="category_4">Mobil</string>
+    <string name="category_5">Pendidikan</string>
+    <string name="category_6">Homeneeds</string>
+    <string name="category_7">Kesehatan</string>
+    <string name="category_8">Asuransi</string>
+    <string name="category_9">Liburan</string>
+    <string name="category_10">Pajak</string>
+    <string name="category_11">Miscellaneous</string>
+    <string name="category_12">Hadiah</string>
+    <string name="category_13">Pemasukan</string>
+    <string name="category_14">Penghasilan lain</string>
+    <string name="category_15">Biaya Lainnya</string>
+    <string name="category_16">Transfer</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Telepon</string>
+    <string name="subcategory_2">Listrik</string>
+    <string name="subcategory_3">Gas</string>
+    <string name="subcategory_4">Internet</string>
+    <string name="subcategory_5">Menyewa</string>
+    <string name="subcategory_6">TV Kabel</string>
+    <string name="subcategory_7">Air</string>
+    <string name="subcategory_8">Bahan Makanan</string>
+    <string name="subcategory_9">Makan di Luar</string>
+    <string name="subcategory_10">Film</string>
+    <string name="subcategory_11">Sewa Video</string>
+    <string name="subcategory_12">Majalah</string>
+    <string name="subcategory_13">Pemeliharaan</string>
+    <string name="subcategory_14">Gas</string>
+    <string name="subcategory_15">Parkir</string>
+    <string name="subcategory_16">Pendaftaran</string>
+    <string name="subcategory_17">Buku</string>
+    <string name="subcategory_18">Uang Sekolah</string>
+    <string name="subcategory_19">Lainnya</string>
+    <string name="subcategory_20">Pakaian</string>
+    <string name="subcategory_21">Furnishing</string>
+    <string name="subcategory_22">Lainnya</string>
+    <string name="subcategory_23">Kesehatan</string>
+    <string name="subcategory_24">Gigi</string>
+    <string name="subcategory_25">Eyecare</string>
+    <string name="subcategory_26">Dokter</string>
+    <string name="subcategory_27">Resep</string>
+    <string name="subcategory_28">Mobil</string>
+    <string name="subcategory_29">Kehidupan</string>
+    <string name="subcategory_30">Rumah</string>
+    <string name="subcategory_31">Kesehatan</string>
+    <string name="subcategory_32">Perjalanan</string>
+    <string name="subcategory_33">Penginapan</string>
+    <string name="subcategory_34">Melihat-lihat</string>
+    <string name="subcategory_35">Pajak penghasilan</string>
+    <string name="subcategory_36">Rumah pajak</string>
+    <string name="subcategory_37">Air pajak</string>
+    <string name="subcategory_38">Lainnya</string>
+    <string name="subcategory_39">Gaji</string>
+    <string name="subcategory_40">Penggantian/Pengembalian dana</string>
+    <string name="subcategory_41">Pendapatan investasi</string>
+</resources>
