@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">청구서</string>
+    <string name="category_2">음식</string>
+    <string name="category_3">레저</string>
+    <string name="category_4">자동차</string>
+    <string name="category_5">교육비</string>
+    <string name="category_6">생활집기</string>
+    <string name="category_7">의료바</string>
+    <string name="category_8">보험료</string>
+    <string name="category_9">휴가비용</string>
+    <string name="category_10">세금</string>
+    <string name="category_11">기타잡비</string>
+    <string name="category_12">선물비용</string>
+    <string name="category_14">기타 수입</string>
+    <string name="category_15">기타 지출</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">통신비</string>
+    <string name="subcategory_2">전기료</string>
+    <string name="subcategory_3">가스비</string>
+    <string name="subcategory_4">인터넷사용료</string>
+    <string name="subcategory_5">임차료</string>
+    <string name="subcategory_6">케이블TV 수신료</string>
+    <string name="subcategory_7">수도비</string>
+    <string name="subcategory_8">식료품</string>
+    <string name="subcategory_9">외식비</string>
+    <string name="subcategory_10">영화관람비</string>
+    <string name="subcategory_11">비디오 대여료</string>
+    <string name="subcategory_12">잡지구독료</string>
+    <string name="subcategory_13">유지점검비</string>
+    <string name="subcategory_14">가스비</string>
+    <string name="subcategory_15">주차비</string>
+    <string name="subcategory_16">등록비</string>
+    <string name="subcategory_17">도서구입비</string>
+    <string name="subcategory_18">등록금</string>
+    <string name="subcategory_19">기타비용</string>
+    <string name="subcategory_20">의류비</string>
+    <string name="subcategory_21">가구 및 비품</string>
+    <string name="subcategory_22">기타비용</string>
+    <string name="subcategory_23">건강</string>
+    <string name="subcategory_24">치과</string>
+    <string name="subcategory_25">안과</string>
+    <string name="subcategory_26">외과</string>
+    <string name="subcategory_27">처방전</string>
+    <string name="subcategory_28">자동차</string>
+    <string name="subcategory_29">생활비</string>
+    <string name="subcategory_30">집</string>
+    <string name="subcategory_31">건강</string>
+    <string name="subcategory_32">여행</string>
+    <string name="subcategory_33">숙박</string>
+    <string name="subcategory_34">관광</string>
+    <string name="subcategory_35">소득세</string>
+    <string name="subcategory_36">주택세</string>
+    <string name="subcategory_37">수도세</string>
+    <string name="subcategory_38">기타비용</string>
+    <string name="subcategory_39">급여</string>
+    <string name="subcategory_40">환급</string>
+    <string name="subcategory_41">투자수입</string>
+</resources>

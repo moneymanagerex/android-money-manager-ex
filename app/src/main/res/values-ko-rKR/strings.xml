@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_definition">개인 재정, 은행 계좌, 가족 예산 등을 간단하게 관리할수 있는 앱 입니다.</string>
+    <string name="application_license">오픈소스 라이선스</string>
+    <!-- database -->
+    <string name="db_insert_failed">데이터 추가 실패</string>
+    <string name="db_delete_failed">데이터 삭제 실패</string>
+    <string name="db_update_failed">데이터 업데이트 실패</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="version">버전</string>
+    <string name="path">데이터베이스 경로</string>
+    <string name="database_version">데이터베이스 버전</string>
+    <string name="title_show_tutorial">기본 사용법 보기</string>
+    <string name="summary_show_tutorial">다음번 실행시에 튜토리얼을 표시합니까?</string>
+    <string name="auto_sync_via_wifi">WiFi 가 켜져 있을때만 동기화 수행</string>
+    <string name="sync_on_start">어플리케이션 시작 시 동기화</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">계좌</string>
+    <string name="account_list">계좌 목록</string>
+    <string name="account_empty_list">계좌를 발견하지 못했습니다. 새로 만드시려면 녹색의 + 버튼을 탭해 주세요.</string>
+    <string name="account_balance">계좌 잔고</string>
+    <string name="delete_account">계좌 삭제</string>
+    <string name="account_name">계좌명</string>
+    <string name="account_type">계좌 유형</string>
+    <string name="account_number">계좌번호</string>
+    <string name="account_status">계좌 상태</string>
+    <string name="select_currency">통화 선택</string>
+    <string name="checking">확인 중</string>
+    <string name="db_account_insert_failed">계좌 추가 오류</string>
+    <string name="db_account_update_failed">계좌 업데이트 오류</string>
+    <string name="error_currency_not_selected">통화를 입력하십시오</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <string name="currency_symbol">통화 기호</string>
+    <string name="delete_currency">통화 삭제</string>
+    <string name="unit_name">단위 명</string>
+    <!-- transaction -->
+    <string name="home">집</string>
+    <string name="settings">설정</string>
+    <string name="summary">요약</string>
+    <!-- 20120906 -->
+    <!-- transaction list periods -->
+    <string name="current_month">이번 달</string>
+    <string name="widget_summary">요약</string>
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <!-- 20121217 -->
+    <string name="difference">차액</string>
+    <string name="menu_reports">보고서</string>
+    <!--<string name="option">Option</string>-->
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <!-- 20130108 -->
+    <!-- Split Categories -->
+    <string name="cash_accounts">현금 계정</string>
+    <string name="bank_accounts">은행 계좌</string>
+    <!-- languages -->
+    <string name="action_settings">설정</string>
+    <string name="budgets">예산</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <!-- Notification Setting -->
+</resources>

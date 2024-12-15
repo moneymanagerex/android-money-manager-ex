@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">Factures</string>
+    <string name="category_2">Alimentation</string>
+    <string name="category_3">Loisirs</string>
+    <string name="category_4">Automobile</string>
+    <string name="category_5">Éducation</string>
+    <string name="category_6">Besoins domestiques</string>
+    <string name="category_7">Soins de santé</string>
+    <string name="category_8">Assurance </string>
+    <string name="category_9">Vacances</string>
+    <string name="category_10">Taxes</string>
+    <string name="category_11">Divers</string>
+    <string name="category_12">Cadeaux</string>
+    <string name="category_13">Revenu</string>
+    <string name="category_14">Autres revenus</string>
+    <string name="category_15">Autres dépenses</string>
+    <string name="category_16">Virement</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Téléphone</string>
+    <string name="subcategory_2">Électricité</string>
+    <string name="subcategory_3">Gaz</string>
+    <string name="subcategory_4">Internet</string>
+    <string name="subcategory_5">Loyer</string>
+    <string name="subcategory_6">Télévision</string>
+    <string name="subcategory_7">Eau</string>
+    <string name="subcategory_8">Épicerie</string>
+    <string name="subcategory_9">Restaurant</string>
+    <string name="subcategory_10">Films</string>
+    <string name="subcategory_11">Location de films</string>
+    <string name="subcategory_12">Magazines</string>
+    <string name="subcategory_13">Entretien</string>
+    <string name="subcategory_14">Gaz</string>
+    <string name="subcategory_15">Parking</string>
+    <string name="subcategory_16">Inscription</string>
+    <string name="subcategory_17">Livres</string>
+    <string name="subcategory_18">Frais de scolarité</string>
+    <string name="subcategory_19">Autres</string>
+    <string name="subcategory_20">Vêtements</string>
+    <string name="subcategory_21">Ameublement</string>
+    <string name="subcategory_22">Autres</string>
+    <string name="subcategory_23">Santé</string>
+    <string name="subcategory_24">Soins dentaires</string>
+    <string name="subcategory_25">Opticien</string>
+    <string name="subcategory_26">Médecin</string>
+    <string name="subcategory_27">Ordonnances</string>
+    <string name="subcategory_28">Auto</string>
+    <string name="subcategory_29">Vie</string>
+    <string name="subcategory_30">Domicile</string>
+    <string name="subcategory_31">Santé</string>
+    <string name="subcategory_32">Voyage</string>
+    <string name="subcategory_33">Hébergement</string>
+    <string name="subcategory_34">Tourisme</string>
+    <string name="subcategory_35">Impôt sur le revenu</string>
+    <string name="subcategory_36">Taxes du domicile</string>
+    <string name="subcategory_37">Facture d\'eau</string>
+    <string name="subcategory_38">Autres</string>
+    <string name="subcategory_39">Salaire</string>
+    <string name="subcategory_40">Remboursement</string>
+    <string name="subcategory_41">Revenus d\'investissement</string>
+</resources>

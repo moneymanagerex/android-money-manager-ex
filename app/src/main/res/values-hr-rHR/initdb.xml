@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">Računi</string>
+    <string name="category_2">Hrana</string>
+    <string name="category_3">Razonoda</string>
+    <string name="category_4">Auto</string>
+    <string name="category_5">Edukacija</string>
+    <string name="category_6">Kućne potrepštine</string>
+    <string name="category_7">Briga o zdravlju</string>
+    <string name="category_8">Osiguranje</string>
+    <string name="category_9">Odmor</string>
+    <string name="category_10">Porezi</string>
+    <string name="category_11">Razno</string>
+    <string name="category_12">Darovi</string>
+    <string name="category_13">Prihod</string>
+    <string name="category_14">Ostali prihodi</string>
+    <string name="category_15">Ostali troškovi</string>
+    <string name="category_16">Prijenos</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Telefon</string>
+    <string name="subcategory_2">Struja</string>
+    <string name="subcategory_3">Gorivo/Plin</string>
+    <string name="subcategory_4">Internet</string>
+    <string name="subcategory_5">Najamnina</string>
+    <string name="subcategory_6">TV pretplata</string>
+    <string name="subcategory_7">Voda</string>
+    <string name="subcategory_8">Namirnice</string>
+    <string name="subcategory_9">Restorani</string>
+    <string name="subcategory_10">Filmovi</string>
+    <string name="subcategory_11">Iznajamljivanje filmova</string>
+    <string name="subcategory_12">Časopisi</string>
+    <string name="subcategory_13">Održavanje</string>
+    <string name="subcategory_14">Gorivo/Plin</string>
+    <string name="subcategory_15">Parkiranje</string>
+    <string name="subcategory_16">Registracija</string>
+    <string name="subcategory_17">Knjige</string>
+    <string name="subcategory_18">Školarina</string>
+    <string name="subcategory_19">Ostalo</string>
+    <string name="subcategory_20">Odjeća i obuća</string>
+    <string name="subcategory_21">Namještaj</string>
+    <string name="subcategory_22">Ostalo</string>
+    <string name="subcategory_23">Zdravstveno</string>
+    <string name="subcategory_24">Briga o zubima</string>
+    <string name="subcategory_25">Briga o očima</string>
+    <string name="subcategory_26">Liječnik</string>
+    <string name="subcategory_27">Lijekovi</string>
+    <string name="subcategory_28">Auto</string>
+    <string name="subcategory_29">Životno</string>
+    <string name="subcategory_30">Stambeno</string>
+    <string name="subcategory_31">Zdravstveno</string>
+    <string name="subcategory_32">Putovanja</string>
+    <string name="subcategory_33">Smještaj</string>
+    <string name="subcategory_34">Razgledavanje</string>
+    <string name="subcategory_35">Porez na dohodak</string>
+    <string name="subcategory_36">Porez na nekretninu</string>
+    <string name="subcategory_37">Porez na vodu</string>
+    <string name="subcategory_38">Ostalo</string>
+    <string name="subcategory_39">Plaća</string>
+    <string name="subcategory_40">Nadoknade</string>
+    <string name="subcategory_41">Prihod od investicija</string>
+</resources>

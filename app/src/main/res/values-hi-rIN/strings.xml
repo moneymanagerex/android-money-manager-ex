@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- application -->
+    <!-- database -->
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="select_currency">मुद्रा चुनें</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <!-- transaction -->
+    <string name="home">घर</string>
+    <!-- 20120906 -->
+    <!-- transaction list periods -->
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <!-- 20121217 -->
+    <!--<string name="option">Option</string>-->
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <!-- 20130108 -->
+    <!-- Split Categories -->
+    <!-- languages -->
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <!-- Notification Setting -->
+</resources>

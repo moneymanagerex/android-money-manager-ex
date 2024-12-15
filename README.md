@@ -33,8 +33,8 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 There are several ways you can contribute to the project:
 
 - code
-- translation
-- beta testing
+- translation via [MMEX4Android on Crowdin](https://crowdin.net/project/android-money-manager-ex)
+- beta testing via [Google Play Open Testing](https://play.google.com/apps/testing/com.money.manager.ex.android)
 - donations
 
 #### Translate
