@@ -7,7 +7,55 @@
 "files": [
   {
     "source": "app/src/main/res/values/strings.xml",
-    "translation": "app/src/main/res/values-%two_letters_code%/strings.xml",
+    "translation": "app/src/main/res/values-%android_code%/strings.xml",
+    "languages_mapping": {
+      "android_code": {
+        "zh-CN": "zh-rCN",
+        "zh-TW": "zh-rTW",
+        "pt-BR": "pt-rBR",
+        "es-MX": "es-rMX",
+        "en-GB": "en-rGB",
+        "en-IN": "en-rIN",
+        "fr-CA": "fr-rCA",
+        "bs-BA": "bs-rBA",
+        "sr-Latn": "sr-rLatn",
+        "sr-Cyrl": "sr-rCyrl",
+        "ca-ES": "ca-rES",
+        "fil-PH": "fil-rPH",
+        "ar-EG": "ar-rEG",
+        "ar-SA": "ar-rSA",
+        "ur-PK": "ur-rPK",
+        "ur-IN": "ur-rIN",
+        "ms-MY": "ms-rMY",
+        "bn-BD": "bn-rBD",
+        "bn-IN": "bn-rIN",
+        "hi-IN": "hi-rIN",
+        "ta-IN": "ta-rIN",
+        "ta-LK": "ta-rLK",
+        "te-IN": "te-rIN",
+        "ml-IN": "ml-rIN",
+        "kn-IN": "kn-rIN",
+        "mr-IN": "mr-rIN",
+        "gu-IN": "gu-rIN",
+        "pa-IN": "pa-rIN",
+        "th-TH": "th-rTH",
+        "km-KH": "km-rKH",
+        "lo-LA": "lo-rLA",
+        "vi-VN": "vi-rVN",
+        "ko-KR": "ko-rKR",
+        "ja-JP": "ja-rJP",
+        "ru-RU": "ru-rRU",
+        "uk-UA": "uk-rUA",
+        "be-BY": "be-rBY",
+        "kk-KZ": "kk-rKZ",
+        "uz-UZ": "uz-rUZ",
+        "tr-TR": "tr-rTR",
+        "fa-IR": "fa-rIR",
+        "he-IL": "he-rIL",
+        "id-ID": "id-rID",
+        "my-MM": "my-rMM"
+      }
+    }
   }
 ]
 
