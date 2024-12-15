@@ -10,64 +10,10 @@
     "translation": "app/src/main/res/values-%android_code%/strings.xml",
     "languages_mapping": {
       "android_code": {
-        # Arabic
-        "ar": "ar-rSA",
-        # Bosnian
-        "bs": "bs-rBA",
         # Simplified Chinese
         "zh-CN": "zh-rCN",
         # Traditional Chinese
         "zh-TW": "zh-rTW",
-        # Czech
-        "cs": "cs-rCZ",
-        # Danish
-        "da": "da-rDK",
-        # Dutch
-        "nl": "nl-rNL",
-        # French
-        "fr": "fr-rFR",
-        # Filipino
-        "fil": "fil-rPH",
-        # German
-        "de": "de-rDE",
-        # Greek
-        "el": "el-rGR",
-        # Hebrew
-        "he": "he-rIL",
-        # Hungarian
-        "hu": "hu-rHU",
-        # Indonesian (Old `in` compatibility)
-        "id": "in-rID",
-        # Italian
-        "it": "it-rIT",
-        # Japanese
-        "ja": "ja-rJP",
-        # Polish
-        "pl": "pl-rPL",
-        # Portuguese (Brazil)
-        "pt-BR": "pt-rBR",
-        # Portuguese (Portugal)
-        "pt-PT": "pt-rPT",
-        # Romanian
-        "ro": "ro-rRO",
-        # Russian
-        "ru": "ru-rRU",
-        # Slovak
-        "sk": "sk-rSK",
-        # Slovenian
-        "sl": "sl-rSI",
-        # Spanish
-        "es": "es-rES",
-        # Turkish
-        "tr": "tr-rTR",
-        # Ukrainian
-        "uk": "uk-rUA",
-        # Urdu (India)
-        "ur-IN": "ur-rIN",
-        # Urdu (Pakistan)
-        "ur-PK": "ur-rPK",
-        # Vietnamese
-        "vi": "vi-rVN"
       }
     }
   }
