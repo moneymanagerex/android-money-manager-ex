@@ -8,14 +8,6 @@
   {
     "source": "app/src/main/res/values/strings.xml",
     "translation": "app/src/main/res/values-%android_code%/strings.xml",
-    "languages_mapping": {
-      "android_code": {
-        # Simplified Chinese
-        "zh-CN": "zh-rCN",
-        # Traditional Chinese
-        "zh-TW": "zh-rTW",
-      }
-    }
   }
 ]
 
