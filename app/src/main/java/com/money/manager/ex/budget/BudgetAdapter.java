@@ -31,15 +31,19 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -82,10 +86,16 @@ public class BudgetAdapter
 
         MmexApplication.getApp().iocComponent.inject(this);
 
+        // get Budget financial
+        try {
+            useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
+        } catch (Exception e) {
+        }
+
     }
 
     @Inject Lazy<BriteDatabase> databaseLazy;
-
+    private boolean useBudgetFinancialYear = false;
     private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
@@ -266,15 +276,23 @@ public class BudgetAdapter
     private double loadTotalFor(String where) {
         double total = 0;
 
-        long year = getYearFromBudgetName(mBudgetName);
-        where += " AND " + QueryMobileData.Year + "=" + year;
-        long month = getMonthFromBudgetName(mBudgetName);
-        if (month != Constants.NOT_SET) {
-            where += " AND " + QueryMobileData.Month + "=" + month;
+        //use financia year
+        if (!useBudgetFinancialYear) {
+            long year = getYearFromBudgetName(mBudgetName);
+            where += " AND " + QueryMobileData.Year + "=" + year;
+            long month = getMonthFromBudgetName(mBudgetName);
+            if (month != Constants.NOT_SET) {
+                where += " AND " + QueryMobileData.Month + "=" + month;
+            }
+        } else {
+            MmxDate dateFrom = getStartDateForFinancialYear(mBudgetName);
+            MmxDate dateTo = new MmxDate(dateFrom.toDate());
+            dateTo.addYear(1).minusDays(1);
+            where += " AND " + QueryMobileData.Date + " BETWEEN '" + dateFrom.toIsoDateString() + "' AND '" + dateTo.toIsoDateString() + "'";
         }
 
         try {
-            // wolfsolver todo adapt query for nested category
+            // wolfsolver adapt query for nested category
             String query = prepareQuery(where);
             Cursor cursor = databaseLazy.get().query(query);
             if (cursor == null) return 0;
@@ -332,6 +350,20 @@ public class BudgetAdapter
         String yearString = budgetName.substring(0, 4);
         long year = Integer.parseInt(yearString);
         return year;
+    }
+
+    private MmxDate getStartDateForFinancialYear(String budgetName) {
+        MmxDate newDate = MmxDate.newDate();
+        try {
+            InfoService infoService = new InfoService(getContext());
+            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
+            newDate.setYear((int)getYearFromBudgetName(budgetName));
+            newDate.setDate(financialYearStartDay);
+            newDate.setMonth(financialYearStartMonth);
+        } catch (Exception e) {
+        }
+        return newDate;
     }
 
     private boolean isMonthlyBudget(String budgetName) {

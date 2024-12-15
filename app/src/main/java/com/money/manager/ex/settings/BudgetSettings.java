@@ -46,4 +46,8 @@ public class BudgetSettings
         set(R.string.pref_budget_show_simple_view, value);
     }
 
+    public Boolean getBudgetFinancialYear( ) {
+        return get(R.string.pref_budget_financial_year, false);
+    }
+
 }
