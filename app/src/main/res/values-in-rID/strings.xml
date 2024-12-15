@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Umum</string>
     <string name="preferences_perdatabase">Per Basis Data</string>
+    <string name="preferences_dispaly">Tampilan &amp; Nuansa</string>
     <string name="preferences_behaviour">Perilaku</string>
     <string name="base_currency">Mata uang dasar</string>
     <string name="base_currency_changed">Mata uang dasar diubah</string>
@@ -156,7 +157,7 @@
     <string name="delete">Hapus</string>
     <string name="download">Unduhan</string>
     <string name="edit">Ubah</string>
-    <string name="home">Rumah</string>
+    <string name="home">Beranda</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Baru/Ubah transaksi</string>
     <string name="refresh">Perbarui</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Setidaknya diperlukan salah satu dari transaksi yang terbagi</string>
     <string name="swipe_to_dismiss">Geser ihwal untuk menyingkirkan.</string>
     <string name="export_data_to_csv">Mengekspor data ke CSV file</string>
-    <string name="export_data_in_progress">Mengekspor data. Harap tunggu…</string>
+    <string name="export_data_in_progress">Mengekspor data. Harap tunggu&#8230;</string>
     <string name="export_file_complete">Data telah berhasil diekspor ke file %1$s</string>
     <string name="export_file_failed">Ekspor file %1$s gagal</string>
     <string name="donate_header">MoneyManagerEx untuk Android disediakan secara gratis. Jika Anda menyukai aplikasi ini, Anda dapat mendukung tim pengembangan dengan sumbangan.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">Situs web MoneyManagerEx</string>
     <string name="android_website">Website MMEx untuk Android</string>
     <string name="donate_in_app_already_donate">Anda sudah mendukung pengembangan dari MoneyManagerEx untuk Android dengan donasi! \n\nTerima kasih dari tim pengembangan!</string>
-    <string name="donate_in_app_retrieving_status">Mengambil status donasi Anda dari Google Play. Harap tunggu…</string>
+    <string name="donate_in_app_retrieving_status">Mengambil status donasi Anda dari Google Play. Harap tunggu&#8230;</string>
     <string name="donate_in_app_error">Tidak dapat menggunakan penagihan di app. Periksa apakah versi terbaru dari aplikasi Play Store telah diinstal.</string>
     <string name="tools">Peralatan</string>
     <string name="entities">Entitas</string>
-    <string name="loading">Memuat…</string>
+    <string name="loading">Memuat&#8230;</string>
     <string name="grand_total">Total keseluruhan</string>
     <string name="change_status">Mengubah status</string>
     <string name="duplicate_selected_transactions">Duplikasikan transaksi yang dipilih</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Pengaturan</string>
     <string name="close">Tutup</string>
     <string name="tutorial_accounts_1">Beberapa jenis rekening: giro, tabungan, kredit, aset dan investasi.</string>
-    <string name="tutorial_accounts_2">Geser ke kiri untuk lanjut…</string>
+    <string name="tutorial_accounts_2">Geser ke kiri untuk lanjut&#8230;</string>
     <string name="financial_overview">Ikhtisar Finansial</string>
     <string name="tutorial_overview_1">Gambaran singkat papan instrumen, anggaran, laporan dengan penyesuaian.</string>
     <string name="global">Global</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Semua harga telah diperbarui.</string>
     <string name="download_complete">Unduhan selesai.</string>
     <string name="confirm_price_download">Apakah Anda ingin memperbarui harga keamanan online?</string>
-    <string name="starting_price_update">Men-download harga, silahkan tunggu…</string>
+    <string name="starting_price_update">Men-download harga, silahkan tunggu&#8230;</string>
     <string name="database_migrate_14_to_20">Migrasi database dari v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Data lama ditemukan. Tekan di sini untuk menggunakan bais data Anda sebelumnya.</string>
     <string name="database_migrate_14_to_20_failure">Migrasi basis data gagal. Hubungi dukungan.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">Mata uang, digunakan</string>
     <string name="open_currencies">Mata uang terbuka</string>
     <string name="import_all_currencies">Mata uang impor</string>
-    <string name="import_currencies_in_progress">Mengimpor mata uang Mohon tunggu…</string>
+    <string name="import_currencies_in_progress">Mengimpor mata uang Mohon tunggu&#8230;</string>
     <string name="question_import_currencies">Apakah Anda ingin mengimpor mata uang?</string>
-    <string name="start_currency_exchange_rates">Memperbarui nilai tukar mata uang. Mohon tunggu…</string>
+    <string name="start_currency_exchange_rates">Memperbarui nilai tukar mata uang. Mohon tunggu&#8230;</string>
     <string name="update_currency_exchange_rates">Memperbarui nilai tukar:\n%1$s</string>
     <string name="success_currency_exchange_rates">Semua nilai tukar mata uang telah berhasil diupdate</string>
     <string name="update_menu_currency_exchange_rates">Perbarui Nilai Tukar</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Bagaimana cara kerja Dropbox untuk Money Manager Ex\?</string>
     <string name="dropbox_link">Link ke Dropbox</string>
     <string name="dropbox_unlink">Hapus tautan dari Dropbox</string>
-    <string name="dropbox_downloadProgress">Mengunduh file dari Dropbox. Mohon tunggu…</string>
-    <string name="dropbox_uploadProgress">Mengunggah file ke Dropbox. Mohon tunggu…</string>
+    <string name="dropbox_downloadProgress">Mengunduh file dari Dropbox. Mohon tunggu&#8230;</string>
+    <string name="dropbox_uploadProgress">Mengunggah file ke Dropbox. Mohon tunggu&#8230;</string>
     <string name="dropbox_linkedFile">File dropbox</string>
     <string name="dropbox_file_summary_all">File dimanapun di Dropbox</string>
     <string name="db_not_dropbox">Basis data Anda saat ini tidak disinkronisasi. Harap siapkan sinkronisasi Dropbox.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">Download file database dari penyimpanan awan.</string>
     <string name="cloud_upload">Upload file database ke penyimpanan awan.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="sync_downloading">Men-download database Mohon tunggu…</string>
-    <string name="sync_uploading">Mengupload database Mohon tunggu…</string>
-    <string name="syncProgress">Sinkronisasi file. Mohon tunggu…</string>
+    <string name="sync_downloading">Men-download database Mohon tunggu&#8230;</string>
+    <string name="sync_uploading">Mengupload database Mohon tunggu&#8230;</string>
+    <string name="syncProgress">Sinkronisasi file. Mohon tunggu&#8230;</string>
     <string name="database_is_synchronized">Database sudah up to date</string>
     <string name="upload_file_complete">Database anda telah berhasil diunggah</string>
     <string name="every_5_minutes">Setiap 5 menit</string>

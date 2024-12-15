@@ -45,6 +45,7 @@
     <!--<string name="import_export_failed">Import / Export failed</string>-->
     <!-- preferences -->
     <string name="preferences_general">Všeobecné</string>
+    <string name="preferences_dispaly">Vzhľad</string>
     <string name="preferences_behaviour">Chovanie</string>
     <string name="base_currency">Základná mena</string>
     <string name="base_currency_changed">Základná mena zmenená</string>
@@ -155,7 +156,7 @@
     <string name="delete">Odstrániť</string>
     <string name="download">Stiahnuť</string>
     <string name="edit">Upraviť</string>
-    <string name="home">Domácnosť</string>
+    <string name="home">Úvodná stránka</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Vložiť/Upraviť transakciu</string>
     <string name="refresh">Aktualizácia</string>
@@ -289,7 +290,7 @@
     <string name="error_split_transaction_empty">Je vyžadovaná aspoň jedno rozdelenie transakcie</string>
     <string name="swipe_to_dismiss">Potiahnutím položky ju odstránite.</string>
     <string name="export_data_to_csv">Export dát do CSV súboru</string>
-    <string name="export_data_in_progress">Exportujem dáta. Čakajte prosím…</string>
+    <string name="export_data_in_progress">Exportujem dáta. Čakajte prosím&#8230;</string>
     <string name="export_file_complete">Dáta boli úspešne exportované do súboru %1$s</string>
     <string name="export_file_failed">Export súboru %1$s zlyhal</string>
     <string name="donate_header">Aplikácia MoneyManagerEx pre Android je poskytovaná bezplatne. Ak sa vám aplikácia páči, môžete prispieť na jej vývoj a podporiť tak vývojový tým.</string>
@@ -382,11 +383,11 @@
     <string name="mmex_website">Web stránka MoneyManagerEx</string>
     <string name="android_website">Web stránka MMEx pre Android</string>
     <string name="donate_in_app_already_donate">Už ste podporil rozvoj MoneyManagerEx pre Android darovaním! \n\nVývojový tým Vám ďakuje!</string>
-    <string name="donate_in_app_retrieving_status">Načítanie stav vašich darov z Google Play. Počkajte prosím…</string>
+    <string name="donate_in_app_retrieving_status">Načítanie stav vašich darov z Google Play. Počkajte prosím&#8230;</string>
     <string name="donate_in_app_error">Nie je možné použiť Nákupy v aplikácii. Skontrolujte, či je nainštalovaná najnovšia verzie aplikácie Play Store.</string>
     <string name="tools">Nástroje</string>
     <string name="entities">Entity</string>
-    <string name="loading">Nahrávam…</string>
+    <string name="loading">Nahrávam&#8230;</string>
     <string name="grand_total">Celkový súčet</string>
     <string name="change_status">Zmeniť stav</string>
     <string name="duplicate_selected_transactions">Zdvojiť vybraté transakcie</string>
@@ -415,7 +416,7 @@
     <string name="action_settings">Nastavenie</string>
     <string name="close">Zatvoriť</string>
     <string name="tutorial_accounts_1">Niekoľko typov účtov: bežný, sporiaci, kreditný, aktíva a investície.</string>
-    <string name="tutorial_accounts_2">Pokračujte potiahnutím vľavo…</string>
+    <string name="tutorial_accounts_2">Pokračujte potiahnutím vľavo&#8230;</string>
     <string name="financial_overview">Finančný prehľad</string>
     <string name="tutorial_overview_1">Rýchly prehľad, rozpočty, zostavy s vlastným nastavením.</string>
     <string name="global">Globálne</string>
@@ -445,7 +446,7 @@
     <string name="all_prices_updated">Všetky ceny boli aktualizované.</string>
     <string name="download_complete">Sťahovanie dokončené.</string>
     <string name="confirm_price_download">Chcete aktualizovať kurz cenných papierov online?</string>
-    <string name="starting_price_update">Ceny sa sťahujú, počkajte prosím…</string>
+    <string name="starting_price_update">Ceny sa sťahujú, počkajte prosím&#8230;</string>
     <string name="database_migrate_14_to_20">Migrovať databázu z v1.,4</string>
     <string name="database_migrate_14_to_20_explanation">Boli nájdené staré dáta. Ak chcete použiť predchádzajúcu databázu, klepnite sem.</string>
     <string name="database_migrate_14_to_20_failure">Migrácia databázy sa nepodarila. Prosím kontaktujte podporu.</string>
@@ -572,9 +573,9 @@
     <string name="currencies_used">Meny, použité</string>
     <string name="open_currencies">Otvoriť meny</string>
     <string name="import_all_currencies">Importovať meny</string>
-    <string name="import_currencies_in_progress">Importujú sa meny. Počkajte prosím…</string>
+    <string name="import_currencies_in_progress">Importujú sa meny. Počkajte prosím&#8230;</string>
     <string name="question_import_currencies">Chcete importovať menu?</string>
-    <string name="start_currency_exchange_rates">Aktualizujú sa výmenné kurzy mien. Počkajte prosím…</string>
+    <string name="start_currency_exchange_rates">Aktualizujú sa výmenné kurzy mien. Počkajte prosím&#8230;</string>
     <string name="update_currency_exchange_rates">Aktualizujem výmenný kurz:\n%1$s</string>
     <string name="success_currency_exchange_rates">Všetky výmenné kurzy mien boli úspešne aktualizované</string>
     <string name="update_menu_currency_exchange_rates">Aktualizovať výmenný kurz</string>
@@ -597,8 +598,8 @@
     <string name="upload_to_drobpox">Nahrať na Dropbox</string>
     <string name="dropbox_link">Pripojiť k Dropboxu</string>
     <string name="dropbox_unlink">Odpojiť od Dropboxu</string>
-    <string name="dropbox_downloadProgress">Sťahujem súbor z Dropboxu. Počkajte prosím…</string>
-    <string name="dropbox_uploadProgress">Nahrávam súbor na Dropbox. Počkajte prosím…</string>
+    <string name="dropbox_downloadProgress">Sťahujem súbor z Dropboxu. Počkajte prosím&#8230;</string>
+    <string name="dropbox_uploadProgress">Nahrávam súbor na Dropbox. Počkajte prosím&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox súbor</string>
     <!-- Synchronization -->
     <string name="synchronization">Synchronizácia</string>
@@ -609,8 +610,8 @@
     <string name="invalid_database">Toto rozšírenie nie je uznané ako platná databáza.</string>
     <string name="reset_preferences">Obnoviť predvoľby</string>
     <string name="sync_notification_title">Money Manager Ex - Synchronizácia</string>
-    <string name="sync_uploading">Nahrávam databázu. Čakajte prosím…</string>
-    <string name="syncProgress">Synchronizujem súbor. Počkajte prosím…</string>
+    <string name="sync_uploading">Nahrávam databázu. Čakajte prosím&#8230;</string>
+    <string name="syncProgress">Synchronizujem súbor. Počkajte prosím&#8230;</string>
     <string name="database_is_synchronized">Databáza je aktuálna</string>
     <string name="upload_file_complete">Vaša databáze bola úspešne nahratá</string>
     <string name="every_5_minutes">Každých 5 minút</string>

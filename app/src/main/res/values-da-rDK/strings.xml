@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Generelt</string>
     <string name="preferences_perdatabase">Pr. database</string>
+    <string name="preferences_dispaly">Udseende og tilpasning</string>
     <string name="preferences_behaviour">Adfærd</string>
     <string name="base_currency">Standardvaluta</string>
     <string name="base_currency_changed">Standard valuta ændret</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">Gå til Indstillinger &gt;&gt; Apps &gt;&gt; Money Manager Ex &gt;&gt; Tilladelser, og nægt adgang til SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transaktionsstatusnotifikation</string>
     <string name="summary_sms_trans_status_notification">Aktivér for at vise status for banktransaktions-SMS behandlinger i notifikationsområdet i stedet for som Toast-besked eller Ny transaktion-skærm</string>
+    <string name="notification_click_to_edit_transaction">Tryk for at redigere transaktionen&#8230;</string>
     <string name="notification_process_sms_transaction_status">Behandl Banktransaktions-SMS status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS-notifikationskanal</string>
     <!-- account -->
@@ -306,7 +308,7 @@
     <string name="error_split_transaction_empty">Mindst en opdelt transaktion er nødvendig</string>
     <string name="swipe_to_dismiss">Swipe genstand for at fjerne.</string>
     <string name="export_data_to_csv">Eksportér data til CSV-fil</string>
-    <string name="export_data_in_progress">Eksporterer data. Vent venligst…</string>
+    <string name="export_data_in_progress">Eksporterer data. Vent venligst&#8230;</string>
     <string name="export_file_complete">Det lykkedes at ekportere dataen til filen: %1$s</string>
     <string name="export_file_failed">Det mislykkedes at eksporere filen: %1$s</string>
     <string name="donate_header">MoneyManagerEx til Android bliver tilbudt gratis. Hvis du kan lide programmet kan du støtte udviklingsholdet med en donation.</string>
@@ -404,11 +406,11 @@
     <string name="mmex_website">MoneyManagerEx-websted</string>
     <string name="android_website">MMEx for Android-websted</string>
     <string name="donate_in_app_already_donate">Du har allerede støttet udviklingen af MoneyManagerEx til Android med din donation!\n\nTak fra udviklingsteamet!</string>
-    <string name="donate_in_app_retrieving_status">Henter donationsstatus fra Google Play. Vent venligst…</string>
+    <string name="donate_in_app_retrieving_status">Henter donationsstatus fra Google Play. Vent venligst&#8230;</string>
     <string name="donate_in_app_error">Kan ikke bruge in-app fakturering. Tjek, om den seneste version af Play Butik-appen er installeret.</string>
     <string name="tools">Værktøjer</string>
     <string name="entities">Enheder</string>
-    <string name="loading">Indlæser…</string>
+    <string name="loading">Indlæser&#8230;</string>
     <string name="grand_total">I alt</string>
     <string name="change_status">Skift status</string>
     <string name="duplicate_selected_transactions">Dublér valgte transaktioner</string>
@@ -437,7 +439,7 @@
     <string name="action_settings">Indstillinger</string>
     <string name="close">Luk</string>
     <string name="tutorial_accounts_1">Flere kontotyper: Check, opsparing, kredit, aktiver og investeringer.</string>
-    <string name="tutorial_accounts_2">Stryg til venstre for at fortsætte…</string>
+    <string name="tutorial_accounts_2">Stryg til venstre for at fortsætte&#8230;</string>
     <string name="financial_overview">Finansielt overblik</string>
     <string name="tutorial_overview_1">Hurtig oversigt-panel, budgetter, rapporter med tilpasninger.</string>
     <string name="global">Global</string>
@@ -469,7 +471,7 @@
     <string name="all_prices_updated">Alle priser er blevet opdateret.</string>
     <string name="download_complete">Download fuldført.</string>
     <string name="confirm_price_download">Vil du opdatere priser på værdipapire online?</string>
-    <string name="starting_price_update">Henter priser, vent venligst…</string>
+    <string name="starting_price_update">Henter priser, vent venligst&#8230;</string>
     <string name="database_migrate_14_to_20">Migrér database fra v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Gammel data blev fundet. Klik her for at bruge din gamle database.</string>
     <string name="database_migrate_14_to_20_failure">Database migreringen fejlede. Kontakt venlist support.</string>
@@ -607,9 +609,9 @@
     <string name="currencies_used">Valutaer, benyttet</string>
     <string name="open_currencies">Åbn valutaer</string>
     <string name="import_all_currencies">Import valutaer</string>
-    <string name="import_currencies_in_progress">Importerer valutaer. Vent venligst…</string>
+    <string name="import_currencies_in_progress">Importerer valutaer. Vent venligst&#8230;</string>
     <string name="question_import_currencies">Vil du importere en valuta?</string>
-    <string name="start_currency_exchange_rates">Opdaterer valutakurserne. Vent venligst…</string>
+    <string name="start_currency_exchange_rates">Opdaterer valutakurserne. Vent venligst&#8230;</string>
     <string name="update_currency_exchange_rates">Opdatering af valutakurs:\n%1$s</string>
     <string name="success_currency_exchange_rates">Alle kurserne for valutaer er blevet opdateret</string>
     <string name="update_menu_currency_exchange_rates">Opdatér valutakurs</string>
@@ -637,8 +639,8 @@
     <string name="dropbox_how_it_works">Hvordan fungerer Dropbox til Money Manager Ex\?</string>
     <string name="dropbox_link">Link til Dropbox</string>
     <string name="dropbox_unlink">Fjern tilknytningen til Dropbox</string>
-    <string name="dropbox_downloadProgress">Henter filen fra Dropbox. Vent venligst…</string>
-    <string name="dropbox_uploadProgress">Sender filen til Dropbox. Vent venligst…</string>
+    <string name="dropbox_downloadProgress">Henter filen fra Dropbox. Vent venligst&#8230;</string>
+    <string name="dropbox_uploadProgress">Sender filen til Dropbox. Vent venligst&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox-fil</string>
     <string name="dropbox_file_summary_all">Gem hvor som helst i Dropbox</string>
     <string name="db_not_dropbox">Den nuværende database er ikke synkroniseret. Opsæt Dropbox-synkronisering.</string>
@@ -654,9 +656,9 @@
     <string name="cloud_download">Download databasefil fra cloud-lager.</string>
     <string name="cloud_upload">Upload databasefil til cloud-lager.</string>
     <string name="sync_notification_title">Money Manager Ex - Synkronisering</string>
-    <string name="sync_downloading">Henter databasen. Vent venligst…</string>
-    <string name="sync_uploading">Sender databasen. Vent venligst…</string>
-    <string name="syncProgress">Synkroniserer filen. Vent venligst…</string>
+    <string name="sync_downloading">Henter databasen. Vent venligst&#8230;</string>
+    <string name="sync_uploading">Sender databasen. Vent venligst&#8230;</string>
+    <string name="syncProgress">Synkroniserer filen. Vent venligst&#8230;</string>
     <string name="database_is_synchronized">Databasen er opdateret</string>
     <string name="upload_file_complete">Din database er sendt med succes</string>
     <string name="every_5_minutes">Hvert 5. minut</string>

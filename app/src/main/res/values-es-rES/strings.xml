@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Generales</string>
     <string name="preferences_perdatabase">Por base de datos</string>
+    <string name="preferences_dispaly">Apariencia</string>
     <string name="preferences_behaviour">Comportamiento</string>
     <string name="base_currency">Moneda base</string>
     <string name="base_currency_changed">Moneda base cambiada</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">Ir a Ajustes &gt;&gt; Aplicaciones &gt;&gt; MoneyManagerEx &gt;&gt; Permisos y negar el acceso para SMS</string>
     <string name="title_sms_trans_status_notification">Notificación de estado de la transacción SMS</string>
     <string name="summary_sms_trans_status_notification">Activar para mostrar el estado del proceso de transacción bancaria sms en el área de notificación en lugar de mostrarlos como un mensaje Toast o nueva pantalla de transacción</string>
+    <string name="notification_click_to_edit_transaction">Tocar para editar la transacción&#8230;</string>
     <string name="notification_process_sms_transaction_status">Procesar estatus de SMS de transacción bancaria</string>
     <string name="notification_process_sms_channel_description">Canal de notificación por SMS de AMMEX</string>
     <!-- account -->
@@ -167,7 +169,7 @@
     <string name="delete">Borrar</string>
     <string name="download">Descargar</string>
     <string name="edit">Modificar</string>
-    <string name="home">Hogar</string>
+    <string name="home">Inicio</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Agregar/Editar transacción</string>
     <string name="refresh">Actualizar</string>
@@ -306,7 +308,7 @@
     <string name="error_split_transaction_empty">Al menos una cantidad en la transacción divida es necesaria</string>
     <string name="swipe_to_dismiss">Deslizar los objetos para borrarlos.</string>
     <string name="export_data_to_csv">Exportar datos a un archivo CSV</string>
-    <string name="export_data_in_progress">Exportando datos. Por favor espere…</string>
+    <string name="export_data_in_progress">Exportando datos. Por favor espere&#8230;</string>
     <string name="export_file_complete">Los datos han sido exportados correctamente al archivo %1$s</string>
     <string name="export_file_failed">La Exportación del archivo %1$s ha fallado</string>
     <string name="donate_header">MoneyManagerEx para Android es ofrecido gratis. Si la aplicación es de tu gusto, puedes colaborar con el equipo de desarrollo haciendo una donación.</string>
@@ -400,11 +402,11 @@
     <string name="mmex_website">Sitio web de MoneyManagerEx</string>
     <string name="android_website">Sitio Web de MMEx para Android</string>
     <string name="donate_in_app_already_donate">Ha colaborado con el desarrollo de MoneyManagerEx para Android con su donación!\n\n Gracias de parte del equipo de desarrollo!</string>
-    <string name="donate_in_app_retrieving_status">Recibiendo el estado de sus donaciones desde Google Play. Por favor espere…</string>
+    <string name="donate_in_app_retrieving_status">Recibiendo el estado de sus donaciones desde Google Play. Por favor espere&#8230;</string>
     <string name="donate_in_app_error">No puede usar el pago desde aplicación. Compruebe que está usando la última versión disponible en Play Store.</string>
     <string name="tools">Herramientas</string>
     <string name="entities">Entidades</string>
-    <string name="loading">Cargando…</string>
+    <string name="loading">Cargando&#8230;</string>
     <string name="grand_total">Total</string>
     <string name="change_status">Cambiar Estado</string>
     <string name="duplicate_selected_transactions">Duplicar transacciones seleccionadas</string>
@@ -433,7 +435,7 @@
     <string name="action_settings">Opciones</string>
     <string name="close">Cerrar</string>
     <string name="tutorial_accounts_1">Múltiple tipos de cuentas: cuenta corriente, caja de ahorro, tarjeta de crédito, activos y cuentas de inversión.</string>
-    <string name="tutorial_accounts_2">Deslizar hacia la izquierda para continuar…</string>
+    <string name="tutorial_accounts_2">Deslizar hacia la izquierda para continuar&#8230;</string>
     <string name="financial_overview">Resumen Financiero</string>
     <string name="tutorial_overview_1">Panel de control de vista rápida, presupuestos, reportes personalizados.</string>
     <string name="global">Global</string>
@@ -464,7 +466,7 @@
     <string name="all_prices_updated">Todos las cotizaciones fueron actualizadas.</string>
     <string name="download_complete">Descarga completada.</string>
     <string name="confirm_price_download">¿Quieres actualizar los precios de la bolsa en linea?</string>
-    <string name="starting_price_update">Descargando cotizaciones, por favor espere…</string>
+    <string name="starting_price_update">Descargando cotizaciones, por favor espere&#8230;</string>
     <string name="database_migrate_14_to_20">Migrar la base de datos desde v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Se encontraron datos antiguos. Pulse aquí para usar su base de datos anterior.</string>
     <string name="database_migrate_14_to_20_failure">La migración de la base de datos ha fallado. Por favor póngase en contacto con soporte.</string>
@@ -598,7 +600,7 @@
     <string name="import_all_currencies">Importar Divisas</string>
     <string name="import_currencies_in_progress">Importando divisas. Por favor espere...</string>
     <string name="question_import_currencies">¿Quiere importar moneda?</string>
-    <string name="start_currency_exchange_rates">Actualizando los tipos de cambio de divisas. Por favor espere…</string>
+    <string name="start_currency_exchange_rates">Actualizando los tipos de cambio de divisas. Por favor espere&#8230;</string>
     <string name="update_currency_exchange_rates">Actualizando los tipos de cambio:\n%1$s</string>
     <string name="success_currency_exchange_rates">Se han actualizado todos los tipos de cambio de divisas con éxito</string>
     <string name="update_menu_currency_exchange_rates">Actualizar Cambio de Moneda</string>
@@ -626,8 +628,8 @@
     <string name="dropbox_how_it_works">¿Cómo funciona Dropbox para Money Manager Ex\?</string>
     <string name="dropbox_link">Vincular con Dropbox</string>
     <string name="dropbox_unlink">Desvincular con Dropbox</string>
-    <string name="dropbox_downloadProgress">Descargando archivo desde Dropbox. Por favor espere…</string>
-    <string name="dropbox_uploadProgress">Subiendo archivo a Dropbox. Por favor espere…</string>
+    <string name="dropbox_downloadProgress">Descargando archivo desde Dropbox. Por favor espere&#8230;</string>
+    <string name="dropbox_uploadProgress">Subiendo archivo a Dropbox. Por favor espere&#8230;</string>
     <string name="dropbox_linkedFile">Archivo Dropbox</string>
     <string name="dropbox_file_summary_all">Archivo en cualquier parte en Dropbox</string>
     <string name="db_not_dropbox">Su base de datos actual no está sincronizada. Por favor active la sincronización.</string>
@@ -643,9 +645,9 @@
     <string name="cloud_download">Descargar archivo de base de datos desde el almacenamiento en la nube.</string>
     <string name="cloud_upload">Guardar archivo de base de datos en el almacenamiento en la nube.</string>
     <string name="sync_notification_title">Money Manager Ex - Sincronización</string>
-    <string name="sync_downloading">Descargando base de datos. Por favor espere…</string>
-    <string name="sync_uploading">Subiendo base de datos. Por favor espere…</string>
-    <string name="syncProgress">Sincronizando archivo. Por favor espere…</string>
+    <string name="sync_downloading">Descargando base de datos. Por favor espere&#8230;</string>
+    <string name="sync_uploading">Subiendo base de datos. Por favor espere&#8230;</string>
+    <string name="syncProgress">Sincronizando archivo. Por favor espere&#8230;</string>
     <string name="database_is_synchronized">La base de datos está actualizada</string>
     <string name="upload_file_complete">La base de datos se ha subido con éxito</string>
     <string name="every_5_minutes">Cada 5 minutos</string>

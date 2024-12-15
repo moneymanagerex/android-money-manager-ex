@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Setări Generale</string>
     <string name="preferences_perdatabase">Per-Baza de date</string>
+    <string name="preferences_dispaly">Privește &amp; Simte</string>
     <string name="preferences_behaviour">Comportament</string>
     <string name="base_currency">Moneda de bază</string>
     <string name="base_currency_changed">Moneda de bază a fost modificată</string>
@@ -138,7 +139,7 @@
     <string name="transfer">Transfer</string>
     <string name="transfer_amount">Suma transferului</string>
     <string name="transaction_type">Tipul de tranzacţie</string>
-    <string name="transaction_status">Statut</string>
+    <string name="transaction_status">Situație</string>
     <string name="withdrawal">Retragere</string>
     <string name="db_checking_insert_failed">Introducerea tranzacției a eșuat</string>
     <string name="db_checking_update_failed">Actualizarea tranzacției a eșuat</string>
@@ -156,7 +157,7 @@
     <string name="delete">Șterge</string>
     <string name="download">Descarcă</string>
     <string name="edit">Editează</string>
-    <string name="home">Casă</string>
+    <string name="home">Home</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Tranzacţie nouă/editează</string>
     <string name="refresh">Reîmprospătează</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Este necesară măcar o împărțire a tranzacției</string>
     <string name="swipe_to_dismiss">Glisați elementele pentru a le elimina.</string>
     <string name="export_data_to_csv">Exportă datele ca fișier CSV</string>
-    <string name="export_data_in_progress">Se exportă datele. Te rog să aștepți…</string>
+    <string name="export_data_in_progress">Se exportă datele. Te rog să aștepți&#8230;</string>
     <string name="export_file_complete">Datele au fost exportate cu succes în fișierul %1$s</string>
     <string name="export_file_failed">Exportarea fișierului %1$s a eșuat</string>
     <string name="donate_header">Managerul Finanțelor Ex pentru Android este oferit gratuit. Dacă îți place aplicația, poți sprijini echipa de dezvoltare cu o donație.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">Pagina web MoneyManagerEx</string>
     <string name="android_website">Pagina web MMEx pentru Android</string>
     <string name="donate_in_app_already_donate">Ai sprijinit deja dezvoltarea MoneyManagerEx pentru Android prin donația ta!\n\n Mulțumiri din partea echipei de dezvoltare!</string>
-    <string name="donate_in_app_retrieving_status">Se preia statutul donațiilor tale din Google Play. Te rog să aştepţi…</string>
+    <string name="donate_in_app_retrieving_status">Se preia statutul donațiilor tale din Google Play. Te rog să aştepţi&#8230;</string>
     <string name="donate_in_app_error">Nu se poate folosi facturarea în aplicație. Verifică dacă ai instalată ultima versiune a aplicației Play Store.</string>
     <string name="tools">Instrumente</string>
     <string name="entities">Entități</string>
-    <string name="loading">Se încarcă…</string>
+    <string name="loading">Se încarcă&#8230;</string>
     <string name="grand_total">Total general</string>
     <string name="change_status">Schimbă statutul</string>
     <string name="duplicate_selected_transactions">Duplică tranzacțiile selectate</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Setări</string>
     <string name="close">Închide</string>
     <string name="tutorial_accounts_1">Tipuri de conturi multiple: cecuri, economii, active și investiții.</string>
-    <string name="tutorial_accounts_2">Glisează spre stânga pentru a continua…</string>
+    <string name="tutorial_accounts_2">Glisează spre stânga pentru a continua&#8230;</string>
     <string name="financial_overview">Situație Financiară</string>
     <string name="tutorial_overview_1">Privire de ansamblu bord, bugete, rapoarte cu personalizări.</string>
     <string name="global">Global</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Toate prețurile au fost actualizate.</string>
     <string name="download_complete">Descărcare completă.</string>
     <string name="confirm_price_download">Vrei să actualizezi online prețurile de securitate?</string>
-    <string name="starting_price_update">Se descarcă prețurile, te rog să aştepţi…</string>
+    <string name="starting_price_update">Se descarcă prețurile, te rog să aştepţi&#8230;</string>
     <string name="database_migrate_14_to_20">Migrarea bazei de date de la v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Au fost găsite date vechi. Apasă aici pentru a folosi baza ta de date anterioară.</string>
     <string name="database_migrate_14_to_20_failure">Migrarea bazei de date a eșuat. Te rog să contactezi asistența.</string>
@@ -578,9 +579,9 @@
     <string name="currencies_used">Monede, folosite</string>
     <string name="open_currencies">Deschide Monede</string>
     <string name="import_all_currencies">Importă Monede</string>
-    <string name="import_currencies_in_progress">Se importă monedele. Te rog să aştepţi…</string>
+    <string name="import_currencies_in_progress">Se importă monedele. Te rog să aştepţi&#8230;</string>
     <string name="question_import_currencies">Vrei să imporți moneda?</string>
-    <string name="start_currency_exchange_rates">Actualizarea cursurilor de schimb valutar. Te rog să aştepţi…</string>
+    <string name="start_currency_exchange_rates">Actualizarea cursurilor de schimb valutar. Te rog să aştepţi&#8230;</string>
     <string name="update_currency_exchange_rates">Actualizarea cursului de schimb valutar.:\n%1$s</string>
     <string name="success_currency_exchange_rates">Toate cursurile de schimb valutar au fost actualizate cu succes</string>
     <string name="update_menu_currency_exchange_rates">Actualizează rata de schimb</string>

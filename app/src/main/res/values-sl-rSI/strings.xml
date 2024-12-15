@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Splošno</string>
     <string name="preferences_perdatabase">Zbirke podatkovnih baz</string>
+    <string name="preferences_dispaly">Poglej &amp; Čuti</string>
     <string name="preferences_behaviour">Obnašanje</string>
     <string name="base_currency">Osnovna valuta</string>
     <string name="base_currency_changed">Sprememba osnovne valute</string>
@@ -73,6 +74,7 @@
     <string name="deny_receive_sms_error">Nisi dovolil prejemanja SMS zato SMS za tvojo bančno transakcijo ne bo procesiran.</string>
     <string name="granted_receive_sms_access">Dovoljenje za RECEIVE_SMS je že bilo dano</string>
     <string name="revoke_receive_sms_access"></string>
+    <string name="notification_click_to_edit_transaction">Tapni za urejanje transakcije</string>
     <string name="notification_process_sms_transaction_status">Stanje procesiranja SMS za bančne transakcije</string>
     <string name="notification_process_sms_channel_description"></string>
     <!-- account -->
@@ -302,7 +304,7 @@
     <string name="error_split_transaction_empty">Vsaj ena razdeljena transakcija je potrebna</string>
     <string name="swipe_to_dismiss">Povlecite elemente, ki jih želite odstraniti.</string>
     <string name="export_data_to_csv">Izvozite podatke v datoteko CSV</string>
-    <string name="export_data_in_progress">Izvoz podatkov. Prosim počakajte…</string>
+    <string name="export_data_in_progress">Izvoz podatkov. Prosim počakajte&#8230;</string>
     <string name="export_file_complete">Podatki so bili uspešno izvoženi v %1$s</string>
     <string name="export_file_failed">Izvoz datoteke %1$s ni uspel</string>
     <string name="donate_header">MoneyManagerEx za Android je brezplačen. Če vam je všeč prijava, lahko razvojno skupino podprete z donacijo.</string>
@@ -393,18 +395,18 @@
     <string name="welcome_body_dropbox">Če že uporabljate MoneyManagerEx v operacijskih sistemih Windows, Linux ali Mac, lahko sinhronizirate svojo bazo podatkov s ponudnikom shranjevanja v cloud</string>
     <string name="configure_sync">Nastavi sinhronizacijo</string>
     <string name="search_text_contain_title">Iskanje po vsebini besedila in ne po besedilu k se začne z</string>
-    <string name="search_text_contain_summary">Iskanje, prejemnikov plačil, kategorij, itd… po vsebini in ne z zagonom znakov</string>
+    <string name="search_text_contain_summary">Iskanje, prejemnikov plačil, kategorij, itd&#8230; po vsebini in ne z zagonom znakov</string>
     <string name="rate_application">Oceni aplikacijo</string>
     <string name="withdrawal_from">Odliv iz %1$s</string>
     <string name="deposit_to">Priliv v %1$s</string>
     <string name="mmex_website">Spletno mesto MoneyManagerEx</string>
     <string name="android_website">Spletno mesto MMEx za Android </string>
     <string name="donate_in_app_already_donate">Za razvoj razvojne MoneyManagerEx za Android ste že podpirali z donacijo!\n\n In zahvaljuje se vam razvojna ekipa!</string>
-    <string name="donate_in_app_retrieving_status">Pridobivanje statusa vaših prispevkov v Googlu Play. Prosim počakajte…</string>
+    <string name="donate_in_app_retrieving_status">Pridobivanje statusa vaših prispevkov v Googlu Play. Prosim počakajte&#8230;</string>
     <string name="donate_in_app_error">Zaračunavanja v aplikaciji ni mogoče uporabiti. Preverite, ali je nameščena najnovejša različica aplikacije Trgovina Play.</string>
     <string name="tools">Orodja</string>
     <string name="entities">Subjekti</string>
-    <string name="loading">Nalaganje…</string>
+    <string name="loading">Nalaganje&#8230;</string>
     <string name="grand_total">Skupaj</string>
     <string name="change_status">Spremeni status</string>
     <string name="duplicate_selected_transactions">Podvoji izbrane transakcije</string>
@@ -433,7 +435,7 @@
     <string name="action_settings">Nastavitve</string>
     <string name="close">Zapri</string>
     <string name="tutorial_accounts_1">Več vrst računov: preverjanje, prihranki, krediti, sredstva in naložbe.</string>
-    <string name="tutorial_accounts_2">Potegnite levo za nadaljevanje…</string>
+    <string name="tutorial_accounts_2">Potegnite levo za nadaljevanje&#8230;</string>
     <string name="financial_overview">Finančne storitve</string>
     <string name="tutorial_overview_1">Nadzorna plošča za hiter pregled, proračun, poročila s prilagoditvami.</string>
     <string name="global">Globalno</string>
@@ -463,7 +465,7 @@
     <string name="all_prices_updated">Vse cene posodobljene</string>
     <string name="download_complete">Prenos dokončan</string>
     <string name="confirm_price_download">Ali želite spletnemu mestu posodobiti cene varovanja?</string>
-    <string name="starting_price_update">Prenašanje cen, prosimo počakajte…</string>
+    <string name="starting_price_update">Prenašanje cen, prosimo počakajte&#8230;</string>
     <string name="database_migrate_14_to_20">Selitev podatkovnih zbirk iz v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Stari podatki so bili najdeni. Dotaknite se tukaj, če želite uporabiti prejšnjo zbirko podatkov.</string>
     <string name="database_migrate_14_to_20_failure">Migracija baze podatkov ni uspela. Obrnite se na podporo.</string>

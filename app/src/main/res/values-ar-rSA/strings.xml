@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">عام</string>
     <string name="preferences_perdatabase">في قاعدة البيانات</string>
+    <string name="preferences_dispaly">المظهر &amp; الشكل</string>
     <string name="preferences_behaviour">السلوك</string>
     <string name="base_currency">العملة الأساسية</string>
     <string name="base_currency_changed">تم تغيير العملة الأساسية</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access"></string>
     <string name="title_sms_trans_status_notification"></string>
     <string name="summary_sms_trans_status_notification"></string>
+    <string name="notification_click_to_edit_transaction"></string>
     <string name="notification_process_sms_transaction_status"></string>
     <string name="notification_process_sms_channel_description"></string>
     <!-- account -->
@@ -168,7 +170,7 @@
     <string name="delete">حذف</string>
     <string name="download">تحميل</string>
     <string name="edit">تعديل</string>
-    <string name="home">المنزل</string>
+    <string name="home">الرئيسية</string>
     <string name="logo">الشعار</string>
     <string name="new_edit_transaction">جديد/تعديل عملية</string>
     <string name="refresh">تحديث</string>
@@ -310,7 +312,7 @@
     <string name="error_split_transaction_empty">واحد على الأقل من معاملات التقسيم مطلوب</string>
     <string name="swipe_to_dismiss">التمرير السريع لإزالة البنود.</string>
     <string name="export_data_to_csv">تصدير البيانات إلى ملف CSV</string>
-    <string name="export_data_in_progress">جاري تصدير البيانات. الرجاء الانتظار…</string>
+    <string name="export_data_in_progress">جاري تصدير البيانات. الرجاء الانتظار&#8230;</string>
     <string name="export_file_complete">تم تصدير البيانات بنجاح إلى الملف %1$s</string>
     <string name="export_file_failed">فشل تصدير الملف %1$s</string>
     <string name="donate_header">هذا التطبيق متوفر مجاناً للجميع. إذا أعجبك، يُمكنك دعم فريق التطوير عن طريق التبرع.</string>
@@ -399,7 +401,7 @@
     <string name="donate_in_app_already_donate">You already supported the development of Money Manager Ex for Android with your donation. Thank you from development team!</string>
     <string name="tools">ادوات</string>
     <string name="entities">الكيانات</string>
-    <string name="loading">جاري التحميل…</string>
+    <string name="loading">جاري التحميل&#8230;</string>
     <string name="change_status">تغيير الحالة</string>
     <string name="sort">الترتيب</string>
     <string name="sort_by_name">الترتيب حسب الاسم</string>
@@ -422,7 +424,7 @@
     <string name="action_settings">إعدادات</string>
     <string name="close">إغلاق</string>
     <string name="tutorial_accounts_1">أنواع حسابات متعددة: جارِ، مدخرات، الائتمان، الأصول، والاستثمارات.</string>
-    <string name="tutorial_accounts_2">اسحب لليسار للمتابعة…</string>
+    <string name="tutorial_accounts_2">اسحب لليسار للمتابعة&#8230;</string>
     <string name="financial_overview">لمحة مالية عامة</string>
     <string name="tutorial_overview_1">لوحة إحصائيات سريعة, ميزانيات, تقارير مخصصة.</string>
     <string name="global">عالمي</string>
@@ -501,7 +503,7 @@
     <!-- Currencies -->
     <string name="currencies">العملات</string>
     <string name="import_all_currencies">استيراد العملات</string>
-    <string name="import_currencies_in_progress">جار استيراد العملات. الرجاء الانتظار…</string>
+    <string name="import_currencies_in_progress">جار استيراد العملات. الرجاء الانتظار&#8230;</string>
     <string name="update_menu_currency_exchange_rates">تحديث سعر الصرف</string>
     <string name="question_update_currency_exchange_rates">هل تريد تحديث سعر الصرف؟</string>
     <string name="active_currencies">العملات المستخدمة</string>

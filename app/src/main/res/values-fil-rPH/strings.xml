@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_perdatabase">Kada-Datos</string>
+    <string name="preferences_dispaly">Hitsura &amp; Pakiramdam</string>
     <string name="preferences_behaviour">Pag-uugali</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Base currency ay nagbago</string>
@@ -290,7 +291,7 @@
     <string name="error_split_transaction_empty">Kinakailangang hindi bababa sa isa ang split ng transaksyon</string>
     <string name="swipe_to_dismiss">Mag-swipe ng mga item upang maalis.</string>
     <string name="export_data_to_csv">I-export and datos sa CSV file</string>
-    <string name="export_data_in_progress">Nage-export ng datos. Pakihintay…</string>
+    <string name="export_data_in_progress">Nage-export ng datos. Pakihintay&#8230;</string>
     <string name="export_file_complete">Ang datos ay matagumpay na nai-export sa file na %1$s</string>
     <string name="export_file_failed">I-export ang mga file na %1$s ay nabigo</string>
     <string name="donate_header">MoneyManagerEx para sa Android ay libreng binigay. Kung gusto mo yung aplikasyon, maaari kang mag-suporta sa development team na may donasyon.</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">MoneyManagerEx Website</string>
     <string name="android_website">MMEx para sa Android Website</string>
     <string name="donate_in_app_already_donate">Ikaw ay suportado na sa development ng MoneyManagerEx sa Android sa iyong donasyon!\n\nSalamat mula sa development team!</string>
-    <string name="donate_in_app_retrieving_status">Pagkuha ng katayuan ng iyong mga donasyon mula sa Google Play. Mangyaring maghintay…</string>
+    <string name="donate_in_app_retrieving_status">Pagkuha ng katayuan ng iyong mga donasyon mula sa Google Play. Mangyaring maghintay&#8230;</string>
     <string name="donate_in_app_error">Hindi maaring gamitin ang in-app billing. Lagyan ng tsek kung naka-install ang pinakabagong bersyon ng Play Store application.</string>
     <string name="tools">Mga kagamitan</string>
     <string name="entities">Mga entity</string>
-    <string name="loading">Naglo-load…</string>
+    <string name="loading">Naglo-load&#8230;</string>
     <string name="grand_total">Kabuuang Total</string>
     <string name="change_status">Baguhin ang status</string>
     <string name="duplicate_selected_transactions">Doblehin ang mga napiling transaksyon</string>
@@ -416,7 +417,7 @@
     <string name="action_settings">Mga setting</string>
     <string name="close">Isara</string>
     <string name="tutorial_accounts_1">Maramihang mga uri ng account: checking, savings, credit, asset, at pamumuhunan.</string>
-    <string name="tutorial_accounts_2">Mag-swipe pakaliwa upang magpatuloy…</string>
+    <string name="tutorial_accounts_2">Mag-swipe pakaliwa upang magpatuloy&#8230;</string>
     <string name="financial_overview">Financial Overview</string>
     <string name="tutorial_overview_1">Mabilisang pag-overview ng dashboard, mga badyet, mga ulat sa mga pag-customize.</string>
     <string name="global">Pandaigdigan</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">Lahat ng presyo ay na-update na.</string>
     <string name="download_complete">Ang download ay kompleto na.</string>
     <string name="confirm_price_download">Gusto mo bang i-update ang mga presyo ng seguridad online?</string>
-    <string name="starting_price_update">Nagda-download ng mga presyo, pakihintay…</string>
+    <string name="starting_price_update">Nagda-download ng mga presyo, pakihintay&#8230;</string>
     <string name="database_migrate_14_to_20">Ilipat ang database mula sa v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Nakita na ang lumang datos. Tapikin dito para magamit ang nakaraang database.</string>
     <string name="database_migrate_14_to_20_failure">Paglipat ng database ay nabigo. Paki-contact ang support.</string>
@@ -579,9 +580,9 @@
     <string name="currencies_used">Mga pera, ginamit</string>
     <string name="open_currencies">Buksan ang pera</string>
     <string name="import_all_currencies">Mag-import ng Mga Pera</string>
-    <string name="import_currencies_in_progress">Nag-i-import ng mga pera. Mangyaring maghintay…</string>
+    <string name="import_currencies_in_progress">Nag-i-import ng mga pera. Mangyaring maghintay&#8230;</string>
     <string name="question_import_currencies">Gusto mo bang mag-import ng pera?</string>
-    <string name="start_currency_exchange_rates">Ina-update ang mga rate ng palitan ng mga pera. Mangyaring maghintay…</string>
+    <string name="start_currency_exchange_rates">Ina-update ang mga rate ng palitan ng mga pera. Mangyaring maghintay&#8230;</string>
     <string name="update_currency_exchange_rates">Ina-update ang halaga ng palitan:\n%1$s</string>
     <string name="success_currency_exchange_rates">Ang lahat ng mga rate ng palitan ng mga pera ay matagumpay na na-update</string>
     <string name="update_menu_currency_exchange_rates">I-update ang Rate ng Exchange</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">Paano gumagana ang Dropbox para sa Money Manager Ex\?</string>
     <string name="dropbox_link">I-link sa Dropbox</string>
     <string name="dropbox_unlink">I-unlink mula sa Dropbox</string>
-    <string name="dropbox_downloadProgress">Nagda-download ng file mula sa Dropbox. Mangyaring maghintay…</string>
-    <string name="dropbox_uploadProgress">Nag-a-upload ng file sa Dropbox. Mangyaring maghintay…</string>
+    <string name="dropbox_downloadProgress">Nagda-download ng file mula sa Dropbox. Mangyaring maghintay&#8230;</string>
+    <string name="dropbox_uploadProgress">Nag-a-upload ng file sa Dropbox. Mangyaring maghintay&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox File</string>
     <string name="dropbox_file_summary_all">Mag-file kahit saan sa Dropbox</string>
     <string name="db_not_dropbox">Ang iyong kasalukuyang database ay hindi naka-synchronize. Mangyaring i-set up ang pag-synchronize ng Dropbox.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">I-download ang database file mula sa cloud storage.</string>
     <string name="cloud_upload">Mag-upload ng database file sa cloud storage.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="sync_downloading">Nagda-download ng database. Mangyaring maghintay…</string>
-    <string name="sync_uploading">Nag-a-upload ng database. Mangyaring maghintay…</string>
-    <string name="syncProgress">Nag-synchronize ng file. Mangyaring maghintay…</string>
+    <string name="sync_downloading">Nagda-download ng database. Mangyaring maghintay&#8230;</string>
+    <string name="sync_uploading">Nag-a-upload ng database. Mangyaring maghintay&#8230;</string>
+    <string name="syncProgress">Nag-synchronize ng file. Mangyaring maghintay&#8230;</string>
     <string name="database_is_synchronized">Ang database ay napapanahon</string>
     <string name="upload_file_complete">Matagumpay na na-upload ang iyong database</string>
     <string name="every_5_minutes">Tuwing 5 na minuto</string>

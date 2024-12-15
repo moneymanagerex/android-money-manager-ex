@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">قبض ها</string>
+    <string name="category_2">غذا</string>
+    <string name="category_3">اوقات فراغت</string>
+    <string name="category_4">خودرو</string>
+    <string name="category_5">تحصیلات</string>
+    <string name="category_6">الزامات خانه</string>
+    <string name="category_7">بهداشت و درمان</string>
+    <string name="category_8">بيمه</string>
+    <string name="category_9">تعطیلات</string>
+    <string name="category_10">مالیات</string>
+    <string name="category_11">گوناگون</string>
+    <string name="category_12">هدايا</string>
+    <string name="category_13">درآمد</string>
+    <string name="category_14">دسایر درآمدها</string>
+    <string name="category_15">سایر مصارف</string>
+    <string name="category_16">انتقال دادن</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">تلفن</string>
+    <string name="subcategory_2">برق</string>
+    <string name="subcategory_3">گاز</string>
+    <string name="subcategory_4">اینترنت</string>
+    <string name="subcategory_5">اجاره</string>
+    <string name="subcategory_6">تلویزیون کابلی</string>
+    <string name="subcategory_7">مصرف آب</string>
+    <string name="subcategory_8">مواد غذایی</string>
+    <string name="subcategory_9">بیرون غذا خوردن</string>
+    <string name="subcategory_10">فیلم‌ها</string>
+    <string name="subcategory_11">کرایه فیلم</string>
+    <string name="subcategory_12">مجله روزنامه</string>
+    <string name="subcategory_13">تعمير</string>
+    <string name="subcategory_14">گاز</string>
+    <string name="subcategory_15">پارکنگ</string>
+    <string name="subcategory_16">ثبت نام</string>
+    <string name="subcategory_17">کتاب‌ها</string>
+    <string name="subcategory_18">شهریه</string>
+    <string name="subcategory_19">سایر موارد</string>
+    <string name="subcategory_20">پوشاک</string>
+    <string name="subcategory_21">مبلمان</string>
+    <string name="subcategory_22">سایر موارد</string>
+    <string name="subcategory_23">بهداشت و درمان</string>
+    <string name="subcategory_24">دندان پزشکی</string>
+    <string name="subcategory_25">سلامتی چشم</string>
+    <string name="subcategory_26">پزشک</string>
+    <string name="subcategory_27">نسخه ها</string>
+    <string name="subcategory_28">خودکار</string>
+    <string name="subcategory_29">زندگی</string>
+    <string name="subcategory_30">خانه</string>
+    <string name="subcategory_31">بهداشت و درمان</string>
+    <string name="subcategory_32">مسافرت</string>
+    <string name="subcategory_33">اقامتگاه ها</string>
+    <string name="subcategory_34">گشت و گذار</string>
+    <string name="subcategory_35">مالیات بر درآمد</string>
+    <string name="subcategory_36">مالیات خانه</string>
+    <string name="subcategory_37">مالیات آب</string>
+    <string name="subcategory_38">سایر موارد</string>
+    <string name="subcategory_39">حقوق</string>
+    <string name="subcategory_40">بازپرداخت / بازپرداخت</string>
+    <string name="subcategory_41">درآمد سرمایه گذاری</string>
+</resources>

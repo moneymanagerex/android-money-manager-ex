@@ -190,7 +190,7 @@
     <string name="error_split_transaction_empty">საჭიროა თუნდაც ერთი გაყოფილი ტრანზაქცია</string>
     <string name="swipe_to_dismiss">გაწიეთ ელემენტი წასასშლელად.</string>
     <string name="export_data_to_csv">მონაცემების ექსპორტი CSV ფაილში</string>
-    <string name="export_data_in_progress">მონაცემთა ექსპორტი. გთხოვთ მოიცადოთ…</string>
+    <string name="export_data_in_progress">მონაცემთა ექსპორტი. გთხოვთ მოიცადოთ&#8230;</string>
     <string name="export_file_complete">მონაცემთა ექსპორტი წარმატებით მოხდა ფაილში %1$s</string>
     <string name="export_file_failed">%1$s ფაილის ექსპორტი ვერ მოხერხდა</string>
     <string name="donate_in_app_title">Google Play აპლიკაციის შიდა ბილინგი</string>
@@ -231,7 +231,7 @@
     <string name="mmex_website">MoneyManagerEx-ში</string>
     <string name="tools">ხელსაწყოები</string>
     <string name="entities">იურიდიული პირები</string>
-    <string name="loading">იტვირთება…</string>
+    <string name="loading">იტვირთება&#8230;</string>
     <string name="grand_total">სულ</string>
     <string name="change_status">სტატუსის შეცვლა</string>
     <!-- languages -->
@@ -248,7 +248,7 @@
     <string name="price_updated">ფასი განახლებულია</string>
     <string name="all_prices_updated">ყველა ფასი განახლებულია.</string>
     <string name="download_complete">გადმოტვირთვა დასრულებულია.</string>
-    <string name="starting_price_update">ფასების გადმოტვირთვა, გთხოვთ მოიცადოთ…</string>
+    <string name="starting_price_update">ფასების გადმოტვირთვა, გთხოვთ მოიცადოთ&#8230;</string>
     <string name="database_migrate_14_to_20_explanation">ნაპოვნია ძველი მონაცემი. დააჭირეთ აქ ძველი მონაცემთა ბაზის გამოსაყენებლად.</string>
     <string name="database_migrate_14_to_20_success">მონაცემთა ბაზის მიგრაცია წარმატებით დასრულდა.</string>
     <string name="database_migrate_14_to_20_complete">მიგრაცია დასრულებულია. გთხოვთ დახუროთ პარამეტრები მონაცემთა ბაზის გამოსაყენებლად.</string>
@@ -325,9 +325,9 @@
     <string name="sync_enabled">სინქრონიზაცია ჩართულია</string>
     <string name="sync_provider">პროვაიდერი</string>
     <string name="please_wait">გთხოვთ მოიცადოთ</string>
-    <string name="sync_downloading">მონაცემთა ბაზის გადმოწერა. გთხოვთ მოიცადოთ…</string>
-    <string name="sync_uploading">მონაცემთა ბაზის ატვირთვა. გთხოვთ დაიცადოთ…</string>
-    <string name="syncProgress">ფაილის სინქრონიზაცია. გთხოვთ დაიცადოთ…</string>
+    <string name="sync_downloading">მონაცემთა ბაზის გადმოწერა. გთხოვთ მოიცადოთ&#8230;</string>
+    <string name="sync_uploading">მონაცემთა ბაზის ატვირთვა. გთხოვთ დაიცადოთ&#8230;</string>
+    <string name="syncProgress">ფაილის სინქრონიზაცია. გთხოვთ დაიცადოთ&#8230;</string>
     <string name="database_is_synchronized">მონაცემთა ბაზა განახლებულია</string>
     <string name="upload_file_complete">მონაცემთა ბაზა წარმატებით აიტვირთა</string>
     <string name="every_5_minutes">ყოველ 5 წუთში</string>

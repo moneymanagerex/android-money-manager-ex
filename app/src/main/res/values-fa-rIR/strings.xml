@@ -44,6 +44,7 @@
     <!-- preferences -->
     <string name="preferences_general">عمومی</string>
     <string name="preferences_perdatabase">هر پایگاه داده</string>
+    <string name="preferences_dispaly">شکل&amp; شمایل</string>
     <string name="preferences_behaviour">عملکرد</string>
     <string name="base_currency">ارز پایه</string>
     <string name="base_currency_changed">ارز پایه تغییر کرد</string>
@@ -192,7 +193,7 @@
     <string name="error_split_transaction_empty">حداقل یکی از تراکنش های تقسیم مورد نیاز است</string>
     <string name="swipe_to_dismiss">برای حذف موارد را تند بکشید.</string>
     <string name="export_data_to_csv">داده ها را به فایل CSV صادر کنید</string>
-    <string name="export_data_in_progress">صادرا کردن داده ها لطفا صبر کنید…</string>
+    <string name="export_data_in_progress">صادرا کردن داده ها لطفا صبر کنید&#8230;</string>
     <string name="export_file_complete">داده ها با موفقیت به فایل %1$s صادر شد</string>
     <string name="export_file_failed">فایل %1$s صادر نشد</string>
     <string name="donate_header">MoneyManagerEx برای اندروید به صورت رایگان ارائه شده است. اگر برنامه را دوست دارید، می توانید با کمک مالی از تیم توسعه حمایت کنید.</string>

@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Algemeen</string>
     <string name="preferences_perdatabase">Per-Database</string>
+    <string name="preferences_dispaly">Weergave</string>
     <string name="preferences_behaviour">Gedrag</string>
     <string name="base_currency">Standaardvaluta</string>
     <string name="base_currency_changed">Standaardvaluta gewijzigd</string>
@@ -67,6 +68,7 @@
     <string name="sync_on_app_start">Synchroniseer bij opstarten app.</string>
     <string name="sync_on_start">Synchroniseer bij starten</string>
     <!-- Receive SMS strings -->
+    <string name="notification_click_to_edit_transaction">Raak aan om de transactie te bewerken&#8230;</string>
     <!-- account -->
     <string name="account">Rekening</string>
     <string name="account_list">Rekeninglijst</string>
@@ -157,7 +159,7 @@
     <string name="delete">Verwijder</string>
     <string name="download">Download</string>
     <string name="edit">Bewerken</string>
-    <string name="home">Huishouden</string>
+    <string name="home">Huis</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">Transactie nieuw/bewerken</string>
     <string name="refresh">Verversen</string>
@@ -297,7 +299,7 @@
     <string name="error_split_transaction_empty">Ten minste één van de gesplitste transacties is vereist</string>
     <string name="swipe_to_dismiss">Swipe om te verwijderen.</string>
     <string name="export_data_to_csv">Exporteer gegevens naar CSV-bestand</string>
-    <string name="export_data_in_progress">Gegevens worden geëxporteerd. Een ogenblik geduld…</string>
+    <string name="export_data_in_progress">Gegevens worden geëxporteerd. Een ogenblik geduld&#8230;</string>
     <string name="export_file_complete">De gegevens werden succesvol geëxporteerd naar het bestand %1$s</string>
     <string name="export_file_failed">Exporteren van bestand %1$s is mislukt</string>
     <string name="donate_header">MoneyManagerEx voor Android wordt gratis aangeboden. Als deze app je bevalt, kun je het ontwikkelingsteam met een donatie steunen.</string>
@@ -398,7 +400,7 @@
     <string name="donate_in_app_error">Kan in-app facturering niet gebruiken. Controleer of u de nieuwste versie van de Play Store hebt geïnstalleerd.</string>
     <string name="tools">Hulpmiddelen</string>
     <string name="entities">Entiteiten</string>
-    <string name="loading">Bezig met laden…</string>
+    <string name="loading">Bezig met laden&#8230;</string>
     <string name="grand_total">Eindtotaal</string>
     <string name="change_status">Wijzig status</string>
     <string name="duplicate_selected_transactions">Kopieer geselecteerde transacties</string>
@@ -427,7 +429,7 @@
     <string name="action_settings">Instellingen</string>
     <string name="close">Sluiten</string>
     <string name="tutorial_accounts_1">Meerdere rekeningtypes: bankrekening, spaarrekening, krediet, bezittingen en investeringen.</string>
-    <string name="tutorial_accounts_2">Veeg naar links om verder te gaan…</string>
+    <string name="tutorial_accounts_2">Veeg naar links om verder te gaan&#8230;</string>
     <string name="financial_overview">Financieel overzicht</string>
     <string name="tutorial_overview_1">Snel overzicht dashboard, begrotingen, rapporten met aanpassingen.</string>
     <string name="global">Wereldwijd</string>
@@ -458,7 +460,7 @@
     <string name="all_prices_updated">Alle prijzen zijn bijgewerkt.</string>
     <string name="download_complete">Download voltooid.</string>
     <string name="confirm_price_download">Wilt u de effectprijzen online updaten?</string>
-    <string name="starting_price_update">Bezig met downloaden prijzen, moment geduld alsjeblieft…</string>
+    <string name="starting_price_update">Bezig met downloaden prijzen, moment geduld alsjeblieft&#8230;</string>
     <string name="database_migrate_14_to_20">v1.4 database migreren</string>
     <string name="database_migrate_14_to_20_explanation">Oude gegevens gevonden. Tik hier om je vorige databank te gebruiken.</string>
     <string name="database_migrate_14_to_20_failure">Overzetten databank mislukt. Neem alsjeblieft contact op met Ondersteuning.</string>
@@ -593,9 +595,9 @@
     <string name="currencies_used">Gebruikte valuta´s</string>
     <string name="open_currencies">Open valuta´s</string>
     <string name="import_all_currencies">Importeer valuta</string>
-    <string name="import_currencies_in_progress">Bezig met importeren valuta´s. Een ogenblik geduld…</string>
+    <string name="import_currencies_in_progress">Bezig met importeren valuta´s. Een ogenblik geduld&#8230;</string>
     <string name="question_import_currencies">Wil je valuta importeren?</string>
-    <string name="start_currency_exchange_rates">Bezig met het vernieuwen van de wisselkoersen. Even geduld…</string>
+    <string name="start_currency_exchange_rates">Bezig met het vernieuwen van de wisselkoersen. Even geduld&#8230;</string>
     <string name="update_currency_exchange_rates">Wisselkoers \n%1$s wordt bijgewerkt</string>
     <string name="success_currency_exchange_rates">De wisselkoersen zijn met succes bijgewerkt</string>
     <string name="update_menu_currency_exchange_rates">Werk wisselkoers bij</string>
@@ -623,8 +625,8 @@
     <string name="dropbox_how_it_works">Hoe werkt Dropbox met Money Manager Ex?</string>
     <string name="dropbox_link">Koppel aan Dropbox</string>
     <string name="dropbox_unlink">Loskoppelen van Dropbox</string>
-    <string name="dropbox_downloadProgress">Bezig met bestand downloaden van Dropbox. Een ogenblik geduld…</string>
-    <string name="dropbox_uploadProgress">Bezig met bestand uploaden naar Dropbox. Een ogenblik geduld…</string>
+    <string name="dropbox_downloadProgress">Bezig met bestand downloaden van Dropbox. Een ogenblik geduld&#8230;</string>
+    <string name="dropbox_uploadProgress">Bezig met bestand uploaden naar Dropbox. Een ogenblik geduld&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox bestand</string>
     <string name="dropbox_file_summary_all">Bestand eender waar in Dropbox</string>
     <string name="db_not_dropbox">Uw huidige databank is niet gesynchroniseerd. Stel aub uw Dropbox synchronisatie in.</string>
@@ -640,9 +642,9 @@
     <string name="cloud_download">Download databasebestand uit de cloud opslag.</string>
     <string name="cloud_upload">Upload databasebestand naar de cloud opslag.</string>
     <string name="sync_notification_title">Money Manager Ex - Synchronisatie</string>
-    <string name="sync_downloading">Bezig met downloaden van database. Een ogenblik geduld…</string>
-    <string name="sync_uploading">Uploaden database. Een ogenblik geduld…</string>
-    <string name="syncProgress">Bestand wordt gesynchroniseerd. Even geduld…</string>
+    <string name="sync_downloading">Bezig met downloaden van database. Een ogenblik geduld&#8230;</string>
+    <string name="sync_uploading">Uploaden database. Een ogenblik geduld&#8230;</string>
+    <string name="syncProgress">Bestand wordt gesynchroniseerd. Even geduld&#8230;</string>
     <string name="database_is_synchronized">De databank is up-to-date</string>
     <string name="upload_file_complete">Uw database is succesvol geüpload</string>
     <string name="every_5_minutes">Elke 5 minuten</string>

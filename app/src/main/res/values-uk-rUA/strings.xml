@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Загальні</string>
     <string name="preferences_perdatabase">База даних</string>
+    <string name="preferences_dispaly">Зовнішній вигляд</string>
     <string name="preferences_behaviour">Поведінка</string>
     <string name="base_currency">Основна валюта</string>
     <string name="base_currency_changed">Базова валюта змінена</string>
@@ -75,6 +76,7 @@
     <string name="revoke_receive_sms_access">Перейдіть у Налаштування &gt;&gt; Застосунки &gt;&gt; Money Manager Ex &gt;&gt; Дозволи та забороніть доступ до SMS</string>
     <string name="title_sms_trans_status_notification">Повідомлення про статус операцій з SMS</string>
     <string name="summary_sms_trans_status_notification">Увімкніть, аби показувати статус обробки SMS з операціями від банку в області повідомлень замість Toast-повідомлень, або екрану Нової операції</string>
+    <string name="notification_click_to_edit_transaction">Натисніть для редагування операції...</string>
     <string name="notification_process_sms_transaction_status">Статус обробки SMS з операцією від банку</string>
     <string name="notification_process_sms_channel_description">Канал повідомлень AMMEX SMS</string>
     <!-- account -->
@@ -215,7 +217,7 @@
     <string name="widget_all_accounts">Всі рахунки</string>
     <string name="widget_add_transaction">Додати транзакцію</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
-    <string name="none">Не вказано</string>
+    <string name="none">Жодного</string>
     <string name="once">Один раз</string>
     <string name="weekly">Кожного тижня</string>
     <string name="bi_weekly">Двічі на тиждень</string>
@@ -306,7 +308,7 @@
     <string name="error_split_transaction_empty">Необхідна принаймні одна з розділених транзакцій</string>
     <string name="swipe_to_dismiss">Змахніть елементи для видалення.</string>
     <string name="export_data_to_csv">Експортувати дані в CSV-файл</string>
-    <string name="export_data_in_progress">Експорт даних. Прошу чекати…</string>
+    <string name="export_data_in_progress">Експорт даних. Прошу чекати&#8230;</string>
     <string name="export_file_complete">Дані успішно експортовано до файлу %1$s</string>
     <string name="export_file_failed">Експорт файлу %1$s не вдався</string>
     <string name="donate_header">MoneyManagerEx для Android надається безкоштовно. Якщо тобі подобається додаток, ви можете підтримати команду розробників пожертвуванням.</string>
@@ -404,11 +406,11 @@
     <string name="mmex_website">Сайт MoneyManagerEX</string>
     <string name="android_website">Сайт програми MMEx для Android</string>
     <string name="donate_in_app_already_donate">Ви вже підтримали розробників MoneyManagerEx для Android пожертвою! \n\nПодяка вам від команди розробників!</string>
-    <string name="donate_in_app_retrieving_status">Отримання статусу ваших пожертв із Google Play. Прошу чекати…</string>
+    <string name="donate_in_app_retrieving_status">Отримання статусу ваших пожертв із Google Play. Прошу чекати&#8230;</string>
     <string name="donate_in_app_error">Не можна використовувати оплату в програмі. Перевірте, чи інстальовано останню версію Play Store.</string>
     <string name="tools">Інструменти</string>
     <string name="entities">Сутності</string>
-    <string name="loading">Завантаження…</string>
+    <string name="loading">Завантаження&#8230;</string>
     <string name="grand_total">Загальний підсумок</string>
     <string name="change_status">Змінити стан</string>
     <string name="duplicate_selected_transactions">Дублювати виділені транзакції</string>
@@ -437,7 +439,7 @@
     <string name="action_settings">Налаштування</string>
     <string name="close">Закрити</string>
     <string name="tutorial_accounts_1">Різні типи рахунків: поточний, заощадження, кредити, активи та інвестиції.</string>
-    <string name="tutorial_accounts_2">Гортайте ліворуч щоб продовжити…</string>
+    <string name="tutorial_accounts_2">Гортайте ліворуч щоб продовжити&#8230;</string>
     <string name="financial_overview">Фінансовий огляд</string>
     <string name="tutorial_overview_1">Короткий огляд панелі управління, бюджети, звіти з налаштуванням.</string>
     <string name="global">Глобальний</string>
@@ -469,7 +471,7 @@
     <string name="all_prices_updated">Всі ціни були поновлені.</string>
     <string name="download_complete">Завантаження завершено.</string>
     <string name="confirm_price_download">Оновити ціни безпеки онлайн?</string>
-    <string name="starting_price_update">Завантаження цін, зачекайте…</string>
+    <string name="starting_price_update">Завантаження цін, зачекайте&#8230;</string>
     <string name="database_migrate_14_to_20">Перенесення бази даних із v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Знайдено старі дані. Натисніть тут для використання попередньої бази даних.</string>
     <string name="database_migrate_14_to_20_failure">Не вдалося виконати перенесення бази. Будь ласка, зверніться до служби підтримки.</string>
@@ -607,9 +609,9 @@
     <string name="currencies_used">Використані валюти</string>
     <string name="open_currencies">Відкрити валюти</string>
     <string name="import_all_currencies">Імпорт валют</string>
-    <string name="import_currencies_in_progress">Імпорт валют. Прошу чекати…</string>
+    <string name="import_currencies_in_progress">Імпорт валют. Прошу чекати&#8230;</string>
     <string name="question_import_currencies">Ви хочете імпортувати валюту?</string>
-    <string name="start_currency_exchange_rates">Оновлення курсу валют. Прошу чекати…</string>
+    <string name="start_currency_exchange_rates">Оновлення курсу валют. Прошу чекати&#8230;</string>
     <string name="update_currency_exchange_rates">Оновлено обмінний курс: \n%1$s</string>
     <string name="success_currency_exchange_rates">Всі курси валют були успішно оновлені</string>
     <string name="update_menu_currency_exchange_rates">Оновлення обмінного курсу</string>
@@ -637,8 +639,8 @@
     <string name="dropbox_how_it_works">Як Dropbox працює з Money Manager Ex\?</string>
     <string name="dropbox_link">Підключится до Dropbox</string>
     <string name="dropbox_unlink">Від\'єднатися від Dropbox</string>
-    <string name="dropbox_downloadProgress">Завантаження файлу з Dropbox. Будь ласка, зачекайте…</string>
-    <string name="dropbox_uploadProgress">Вивантаження файлу до Dropbox. Будь ласка, зачекайте…</string>
+    <string name="dropbox_downloadProgress">Завантаження файлу з Dropbox. Будь ласка, зачекайте&#8230;</string>
+    <string name="dropbox_uploadProgress">Вивантаження файлу до Dropbox. Будь ласка, зачекайте&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox файл</string>
     <string name="dropbox_file_summary_all">Файл будь-де в Dropbox</string>
     <string name="db_not_dropbox">Поточна база даних не синхронізована. Будь ласка, налаштуйте синхронізацію Dropbox.</string>
@@ -654,9 +656,9 @@
     <string name="cloud_download">Завантажити файл бази даних з хмарного сховища.</string>
     <string name="cloud_upload">Завантажте файл бази даних на хмарне сховище.</string>
     <string name="sync_notification_title">Money Manager Ex - Синхронізація</string>
-    <string name="sync_downloading">Завантаження бази даних. Будь ласка, зачекайте…</string>
-    <string name="sync_uploading">Вивантаження бази даних. Будь ласка, зачекайте…</string>
-    <string name="syncProgress">Синхронізація файлу. Будь ласка, зачекайте…</string>
+    <string name="sync_downloading">Завантаження бази даних. Будь ласка, зачекайте&#8230;</string>
+    <string name="sync_uploading">Вивантаження бази даних. Будь ласка, зачекайте&#8230;</string>
+    <string name="syncProgress">Синхронізація файлу. Будь ласка, зачекайте&#8230;</string>
     <string name="database_is_synchronized">База даних в актуальному стані</string>
     <string name="upload_file_complete">Вашу базу даних успішно вивантажено</string>
     <string name="every_5_minutes">Кожні 5 хвилин</string>

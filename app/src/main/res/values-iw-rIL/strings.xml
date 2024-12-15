@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">כללי</string>
     <string name="preferences_perdatabase">למסד נתונים</string>
+    <string name="preferences_dispaly">נראה ומרגיש</string>
     <string name="preferences_behaviour">התנהגות</string>
     <string name="base_currency">מטבע בסיס</string>
     <string name="base_currency_changed">מטבע בסיסי השתנה</string>
@@ -138,7 +139,7 @@
     <string name="transfer">העברה</string>
     <string name="transfer_amount">סכום ההעברה</string>
     <string name="transaction_type">סוג תנועה</string>
-    <string name="transaction_status">סטטוס</string>
+    <string name="transaction_status">מצב</string>
     <string name="withdrawal">משיכה</string>
     <string name="db_checking_insert_failed">הוספת תנועה נכשלה</string>
     <string name="db_checking_update_failed">עדכון תנועה נכשל</string>
@@ -383,11 +384,11 @@
     <string name="mmex_website">אתר MoneyManagerEx</string>
     <string name="android_website">אתר MMEx לאנדרואיד</string>
     <string name="donate_in_app_already_donate">אתה כבר תומך בצצות הפיתוח של MoneyManagerEx עבור אנדרואיד עם התרומה שלך! \n\nצוות הפיתוח מודה לך!</string>
-    <string name="donate_in_app_retrieving_status">מאחזר את המצב של התרומות שלך מ- Google Play. המתן בבקשה…</string>
+    <string name="donate_in_app_retrieving_status">מאחזר את המצב של התרומות שלך מ- Google Play. המתן בבקשה&#8230;</string>
     <string name="donate_in_app_error">לא ניתן לבצע חיוב באמצעות in-app. בדוק אם מותקנת הגירסה העדכנית ביותר של  יישום Play Store.</string>
     <string name="tools">כלים</string>
     <string name="entities">ישויות</string>
-    <string name="loading">טוען…</string>
+    <string name="loading">טוען&#8230;</string>
     <string name="grand_total">סכום כולל</string>
     <string name="change_status">שנה סטטוס</string>
     <string name="duplicate_selected_transactions">שכפל תנועות נבחרות</string>
@@ -447,7 +448,7 @@
     <string name="all_prices_updated">כל המחירים עודכנו.</string>
     <string name="download_complete">הורדה הושלמה.</string>
     <string name="confirm_price_download">האם ברצונך לעדכן את המחירי אבטחה באינטרנט?</string>
-    <string name="starting_price_update">הורדת מחירים, אנא המתן…</string>
+    <string name="starting_price_update">הורדת מחירים, אנא המתן&#8230;</string>
     <string name="database_migrate_14_to_20">העביר מסד הנתונים מגירסה 1.4</string>
     <string name="database_migrate_14_to_20_explanation">נמצאו נתונים ישנים. הקש כאן כדי להשתמש מסד הנתונים הקודמים.</string>
     <string name="database_migrate_14_to_20_failure">העברת מסד הנתונים נכשלה. נא ליצור קשר עם התמיכה.</string>
@@ -579,7 +580,7 @@
     <string name="currencies_used">מטבע, בשימוש</string>
     <string name="open_currencies">פתח מטבעות</string>
     <string name="import_all_currencies">ייבוא סוגי מטבע</string>
-    <string name="import_currencies_in_progress">מייבוא סוגי מטבע. המתן …בבקשה...</string>
+    <string name="import_currencies_in_progress">מייבוא סוגי מטבע. המתן &#8230;בבקשה...</string>
     <string name="question_import_currencies">האם  לייבא מטבע?</string>
     <string name="start_currency_exchange_rates">מעדכון שערי חליפין למטבעות. המתן בבקשה...</string>
     <string name="update_currency_exchange_rates">מעדכן שער חליפין :\n%1$s</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">כיצד פועל Dropbox עם Money Manager Ex\?</string>
     <string name="dropbox_link">קישור ל Dropbox</string>
     <string name="dropbox_unlink">התנתק מ- Dropbox</string>
-    <string name="dropbox_downloadProgress">מוריד קובץ Dropbox. המתן בבקשה…</string>
-    <string name="dropbox_uploadProgress">מעלה קובץ ל Dropbox. המתן בבקשה…</string>
+    <string name="dropbox_downloadProgress">מוריד קובץ Dropbox. המתן בבקשה&#8230;</string>
+    <string name="dropbox_uploadProgress">מעלה קובץ ל Dropbox. המתן בבקשה&#8230;</string>
     <string name="dropbox_linkedFile">קובץ Dropbox</string>
     <string name="dropbox_file_summary_all">קובץ מכל מקום מDropbox</string>
     <string name="db_not_dropbox">מסד הנתונים הנוכחי אינו מסונכרן. אנא הגדר סנכרון עם Dropbox.</string>
@@ -626,9 +627,9 @@
     <string name="cloud_download">הורד קובץ מסד הנתונים מאחסון ענן.</string>
     <string name="cloud_upload">העלה קובץ מסד הנתונים לאחסון ענן.</string>
     <string name="sync_notification_title">סיכרון - Money Manager Ex</string>
-    <string name="sync_downloading">מורד את מסד הנתונים. אנא המתן…</string>
-    <string name="sync_uploading">מעלה את מסד הנתונים. אנא המתן…</string>
-    <string name="syncProgress">מסנכרן קובץ. אנא המתן…</string>
+    <string name="sync_downloading">מורד את מסד הנתונים. אנא המתן&#8230;</string>
+    <string name="sync_uploading">מעלה את מסד הנתונים. אנא המתן&#8230;</string>
+    <string name="syncProgress">מסנכרן קובץ. אנא המתן&#8230;</string>
     <string name="database_is_synchronized">מסד הנתונים עדכני</string>
     <string name="upload_file_complete">מסד הנתונים שלך הועלה בהצלחה</string>
     <string name="every_5_minutes">כל 5 דקות</string>

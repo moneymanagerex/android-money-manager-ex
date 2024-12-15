@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">一般</string>
     <string name="preferences_perdatabase">目前資料庫</string>
+    <string name="preferences_dispaly">外觀和感覺</string>
     <string name="preferences_behaviour">動作</string>
     <string name="base_currency">基本貨幣</string>
     <string name="base_currency_changed">基礎貨幣已更改</string>
@@ -156,7 +157,7 @@
     <string name="delete">刪除</string>
     <string name="download">下載</string>
     <string name="edit">編輯</string>
-    <string name="home">家居</string>
+    <string name="home">主頁</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">新增/編輯交易</string>
     <string name="refresh">重新整理</string>
@@ -203,7 +204,7 @@
     <string name="widget_all_accounts">所有帳戶</string>
     <string name="widget_add_transaction">新增交易</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
-    <string name="none">未核實</string>
+    <string name="none">無</string>
     <string name="once">僅此一次</string>
     <string name="weekly">每週</string>
     <string name="bi_weekly">雙週</string>
@@ -383,7 +384,7 @@
     <string name="mmex_website">MoneyManagerEx 網站</string>
     <string name="android_website">MMEx for Android 網站</string>
     <string name="donate_in_app_already_donate">您已經捐款支持 MoneyManagerEx for Android 的開發！ \n\n開發團隊感謝您！</string>
-    <string name="donate_in_app_retrieving_status">正從 Google Play 查閱您的捐款，請稍候…</string>
+    <string name="donate_in_app_retrieving_status">正從 Google Play 查閱您的捐款，請稍候&#8230;</string>
     <string name="donate_in_app_error">無法透過應用程式支付。請檢查是否安裝了最新版本的 Google Play 商店。</string>
     <string name="tools">工具</string>
     <string name="entities">實體</string>
@@ -609,8 +610,8 @@
     <string name="dropbox_how_it_works">如何搭配 Dropbox 在 Money Manager Ex 使用？</string>
     <string name="dropbox_link">連結至 Dropbox</string>
     <string name="dropbox_unlink">斷開 Dropbox 連結</string>
-    <string name="dropbox_downloadProgress">由 Dropbox 下載檔案中，請稍候…</string>
-    <string name="dropbox_uploadProgress">上傳檔案至 Dropbox 中，請稍候…</string>
+    <string name="dropbox_downloadProgress">由 Dropbox 下載檔案中，請稍候&#8230;</string>
+    <string name="dropbox_uploadProgress">上傳檔案至 Dropbox 中，請稍候&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox 檔案</string>
     <string name="dropbox_file_summary_all">Dropbox 中任一位置的檔案</string>
     <string name="db_not_dropbox">當前資料庫未同步。請設置收存箱同步。</string>

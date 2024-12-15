@@ -46,6 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_perdatabase">Per-Database</string>
+    <string name="preferences_dispaly">Afaan oromoo </string>
     <string name="preferences_behaviour"></string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed"></string>
@@ -252,7 +253,7 @@
     <string name="split">Split</string>
     <string name="error_split_transaction_empty">At least one of split transaction is required</string>
     <string name="export_data_to_csv">Export data to CSV file</string>
-    <string name="export_data_in_progress">Exporting data. Please wait…</string>
+    <string name="export_data_in_progress">Exporting data. Please wait&#8230;</string>
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
@@ -323,7 +324,7 @@
     <string name="welcome_header">Welcome to MoneyManagerEx!</string>
     <string name="welcome_body">Sve transakcije u MoneyManagerEx pripadaju računima.\n\nVi trenutno nemate vidljivih računa. Podesite filter za vidljive račune u postavkama ili odaberite jednu od opcija ispod.</string>
     <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
-    <string name="search_text_contain_summary">Search payee, categories, currencies, etc… by contents and not by starting characters</string>
+    <string name="search_text_contain_summary">Search payee, categories, currencies, etc&#8230; by contents and not by starting characters</string>
     <string name="rate_application">Rate Application</string>
     <string name="withdrawal_from">Withdrawal From %1$s</string>
     <string name="deposit_to">Deposit To %1$s</string>
@@ -338,9 +339,9 @@
     <!-- Currencies -->
     <string name="currencies">Currencies</string>
     <string name="import_all_currencies">Import Currencies</string>
-    <string name="import_currencies_in_progress">Importing currencies. Please wait…</string>
+    <string name="import_currencies_in_progress">Importing currencies. Please wait&#8230;</string>
     <string name="question_import_currencies">Do you want to import currency?</string>
-    <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait…</string>
+    <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait&#8230;</string>
     <string name="update_currency_exchange_rates">Updating the exchange rate:\n%1$s</string>
     <string name="success_currency_exchange_rates">All the exchange rates of currencies have been updated successfully</string>
     <string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
