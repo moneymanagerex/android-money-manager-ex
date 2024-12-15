@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
+    <string name="application_license">Open source licenses</string>
+    <!-- database -->
+    <string name="db_insert_failed">Inserting data failed</string>
+    <string name="db_delete_failed">Deleting data failed</string>
+    <string name="db_update_failed">Updating data failed</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">Exit</string>
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">Manage</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_general">General</string>
+    <string name="preferences_perdatabase">Per-Database</string>
+    <string name="preferences_behaviour"></string>
+    <string name="base_currency">Base currency</string>
+    <string name="base_currency_changed"></string>
+    <string name="base_currency_change_notification"></string>
+    <string name="view_accounts_opened">View open accounts</string>
+    <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
+    <string name="view_accounts_favorites">View favourite accounts</string>
+    <string name="version">Version</string>
+    <string name="build">Build</string>
+    <string name="path">Database path</string>
+    <string name="database_version">Database version:</string>
+    <string name="title_show_tutorial">Show tutorial </string>
+    <string name="summary_show_tutorial"></string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">Account</string>
+    <string name="account_list">Account List</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="account_name">Account name</string>
+    <string name="account_type">Account type</string>
+    <string name="account_number">Account number</string>
+    <string name="account_held_at">Held at</string>
+    <string name="account_status">Account status</string>
+    <string name="favourite_account">Favourite account</string>
+    <string name="select_currency">Select currency</string>
+    <string name="checking">Checking</string>
+    <string name="investment">Investment</string>
+    <string name="term">Term</string>
+    <string name="db_account_insert_failed">Error inserting account</string>
+    <string name="db_account_update_failed">Error updating account</string>
+    <string name="error_currency_not_selected">Currency is required</string>
+    <string name="error_initialbal_empty">Account initial balance is required</string>
+    <string name="error_accountname_empty">Account name is required</string>
+    <string name="error_accounttype_empty">Account type is required</string>
+    <string name="error_status_empty">Account status is required</string>
+    <!-- payee -->
+    <string name="payee_name">Payee name</string>
+    <string name="edit_payeeName">Edit Payee</string>
+    <string name="delete_payee">Delete Payee</string>
+    <string name="payee">Payee</string>
+    <string name="select_payee">Select Payee</string>
+    <string name="from">From</string>
+    <string name="db_payee_update_failed">Updating payee failed</string>
+    <!-- category / subcategory -->
+    <string name="category">Category</string>
+    <string name="subcategory">Subcategory</string>
+    <string name="select_category">Select Category</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_subcategory">Add Subcategory</string>
+    <string name="edit_categoryName">Edit Category</string>
+    <string name="delete_category">Delete Category</string>
+    <!-- currency -->
+    <string name="currency_name">Currency name</string>
+    <string name="currency_symbol">Currency symbol</string>
+    <string name="delete_currency">Delete Currency</string>
+    <string name="unit_name">Unit name</string>
+    <string name="cents_name">Cents name</string>
+    <string name="prefix_symbol">Prefix symbol</string>
+    <string name="suffix_symbol">Suffix symbol</string>
+    <string name="decimal_char">Decimal char</string>
+    <string name="group_char">Group char</string>
+    <string name="scale">Scale</string>
+    <string name="conversion_to_base_rate">Conversion</string>
+    <string name="currency_name_empty">Currency name is required</string>
+    <string name="new_edit_currency">New/Edit Currency</string>
+    <!-- transaction -->
+    <string name="amount">Amount</string>
+    <string name="total_amount">Total amount</string>
+    <string name="deposit">Deposit</string>
+    <string name="status">Status</string>
+    <string name="status_reconciled">Reconciled</string>
+    <string name="status_void">Void</string>
+    <string name="status_duplicate">Duplicate</string>
+    <string name="status_none">None</string>
+    <string name="transfer">Transfer</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="transaction_status">Status</string>
+    <string name="withdrawal">Withdrawal</string>
+    <string name="db_checking_insert_failed">Inserting transaction failed</string>
+    <string name="db_checking_update_failed">Updating transaction failed</string>
+    <string name="delete_transaction">Delete Transaction</string>
+    <string name="new_transaction">New transaction</string>
+    <string name="error_payee_not_selected">Payee is required</string>
+    <string name="error_toaccount_not_selected">To Account is required</string>
+    <string name="error_category_not_selected">Category is required</string>
+    <string name="error_totamount_empty">Total amount is required</string>
+    <string name="about">About</string>
+    <string name="add">Add</string>
+    <string name="date">Date</string>
+    <string name="delete">Delete</string>
+    <string name="download">Download</string>
+    <string name="edit">Edit</string>
+    <string name="logo">Logo</string>
+    <string name="new_edit_transaction">New/Edit Transaction</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="summary">Summary</string>
+    <string name="synchronize">Synchronize</string>
+    <string name="open">Open</string>
+    <string name="user">User</string>
+    <string name="upload">Upload</string>
+    <string name="username">User Name</string>
+    <string name="to">To</string>
+    <string name="website">Website</string>
+    <string name="contact">Contact</string>
+    <string name="access_info">Access info</string>
+    <string name="initial_balance">Initial balance</string>
+    <string name="notes">Notes</string>
+    <string name="closed">Closed</string>
+    <!-- 20120906 -->
+    <string name="close_application">Close application</string>
+    <string name="question_close_application">Do you want close application?</string>
+    <string name="error_intent_pick_file">No Activity found to handle Intent Pick File</string>
+    <string name="attention">Attention</string>
+    <string name="payee_can_not_deleted">The payee selected can not be deleted because it is referenced</string>
+    <string name="account_can_not_deleted">The account selected can not be deleted because it is referenced</string>
+    <string name="currency_can_not_deleted">The currency selected can not be deleted because it is referenced</string>
+    <string name="category_can_not_deleted">The category selected can not be deleted because it is referenced</string>
+    <!-- transaction list periods -->
+    <string name="all_transaction">All transactions</string>
+    <string name="last7days">Last 7 days</string>
+    <string name="last15days">Last 2 weeks</string>
+    <string name="current_month">Current month</string>
+    <string name="current_year">Current year</string>
+    <string name="show_transaction">Show Transaction</string>
+    <string name="changelog">Changelog</string>
+    <string name="transaction_number">Transaction number</string>
+    <string name="widget_summary">Summary</string>
+    <string name="widget_add_transaction">Add Transaction</string>
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">None</string>
+    <string name="weekly">Weekly</string>
+    <string name="bi_weekly">Bi-Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="bi_monthly">Bi-Monthly</string>
+    <string name="quaterly">Quaterly</string>
+    <string name="half_year">Half-Yearly</string>
+    <string name="yearly">Yearly</string>
+    <string name="four_months">Four-Months</string>
+    <string name="four_weeks">Four-Weeks</string>
+    <string name="daily">Daily</string>
+    <string name="in_x_days">In (x) Days</string>
+    <string name="in_x_months">In (x) Months</string>
+    <string name="every_x_days">Every (x) Days</string>
+    <string name="every_x_months">Every (x) Months</string>
+    <string name="inactive">Inactive</string>
+    <string name="activates">Activates</string>
+    <string name="days_overdue">days overdue!</string>
+    <string name="days_remaining">days remaining</string>
+    <string name="next_occurrence">Next Occurrence</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="repeats">Repeats</string>
+    <string name="error_next_occurrence_not_populate">Next occurrence is required</string>
+    <string name="enter_next_occurrence">Enter Next Occurrence</string>
+    <string name="skip_next_occurrence">Skip Next Occurrence</string>
+    <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <string name="send_feedback">Send Feedback</string>
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <string name="preferences_info_application">Info</string>
+    <string name="preferences_security">Security</string>
+    <string name="preferences_active_passcode">Activate Passcode</string>
+    <string name="enter_your_passcode">Enter your passcode</string>
+    <string name="reinsert_your_passcode">Re-enter your new passcode</string>
+    <string name="passocde_no_macth">Passcode do not match</string>
+    <string name="preferences_edit_passcode">Edit Passcode</string>
+    <string name="preferences_disable_passcode">Disable Passcode</string>
+    <string name="enter_your_previous_passcode">Enter your previous passcode</string>
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">passcode is not updated</string>
+    <!-- 20121217 -->
+    <string name="lookups_wildcard">For lookups you can use the % wildcard character</string>
+    <string name="income_vs_expenses_current_month">Income vs Expenses: Current Month</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="difference">Difference</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="menu_reports">Reports</string>
+    <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
+    <string name="total">Total</string>
+    <!--<string name="option">Option</string>-->
+    <string name="all_time">All Time</string>
+    <string name="last_month">Previous Month</string>
+    <string name="last30days">Last 30 Days</string>
+    <string name="last_year">Previous Year</string>
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <string name="number_transaction_found">Number of transactions found: %1$d</string>
+    <!-- 20130108 -->
+    <string name="date_format">Date Format</string>
+    <string name="financial_year_start_day">Financial Year: Start Day</string>
+    <string name="financial_year_start_month">Financial Year: Start Month</string>
+    <string name="database_has_been_moved">The database has been moved: %1$s</string>
+    <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
+    <string name="path_database_using">You\'re using the database saved in: %1$s</string>
+    <!-- Split Categories -->
+    <string name="split_transaction">Split Transaction</string>
+    <string name="split">Split</string>
+    <string name="error_split_transaction_empty">At least one of split transaction is required</string>
+    <string name="export_data_to_csv">Export data to CSV file</string>
+    <string name="export_data_in_progress">Exporting data. Please wait…</string>
+    <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
+    <string name="export_file_failed">Export file %1$s failed</string>
+    <string name="donate_in_app_title">Google Play In-App Billing</string>
+    <string name="donate_in_app_description">Donate via Google Play In-App Billing.</string>
+    <string name="donate_in_app_spinner_text">Select a donation amount</string>
+    <string name="donate_in_app_button">Donate</string>
+    <string name="donate_thank_you">Thank you for your donation!</string>
+    <string name="donate">Donate</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="donate_exlamation">Donate!</string>
+    <string name="donate_button_text">Donate</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="sorting_month">Sorting Months</string>
+    <string name="last_modified">Last modified</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="open_database">Open Database</string>
+    <string name="synchronization_interval">Synchronization Interval</string>
+    <string name="summary_synchronization_interval">How often should synchronize?</string>
+    <string name="tips_new_version_dropbox">From version 1.2.0 of Money Manager Ex for Android has changed the management of synchronization with Dropbox. For users who are already using the sync with Dropbox, you must redoing the configuration.\nThe configuration of sync with Dropbox and the selection of the database, is located in the settings.\nFrom version 1.2.0 of Money Manager Ex for Android can automatically synchronize the database with Dropbox</string>
+    <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
+    <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
+    <string name="menu_open_database">Open database</string>
+    <string name="tips">Tips</string>
+    <string name="title_application_font">Application Font</string>
+    <string name="summary_application_font">Select the font you want to give the application</string>
+    <string name="title_application_font_size">Application Font Size</string>
+    <string name="summary_application_font_size">Select the font size you want to give the application</string>
+    <string name="micro">Micro</string>
+    <string name="small">Small</string>
+    <string name="Default">Default</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
+    <string name="menu_report_where_money_goes">Where the Money Goes</string>
+    <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
+    <string name="credits">Credits</string>
+    <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>
+    <string name="top_payees_last_30_days">Top Payees: Last 30 Days</string>
+    <string name="upcoming_transactions">Upcoming Transactions</string>
+    <string name="quantity">Quantity</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="last3months">Last 3 months</string>
+    <string name="last6months">Last 6 months</string>
+    <string name="empty_category">Empty Category</string>
+    <string name="empty_payee">Empty Payee</string>
+    <string name="help">Help</string>
+    <string name="last">Last</string>
+    <string name="accounts">Accounts</string>
+    <string name="to_account">To Account</string>
+    <string name="from_account">From Account</string>
+    <string name="default_status">Default Status</string>
+    <string name="default_payee">Default Payee</string>
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="delete_one_selected_transaction">Are you sure you want delete the selected transaction?</string>
+    <string name="delete_others_selected_transaction">Are you sure you want delete the %d selected transactions?</string>
+    <string name="categories">Categories</string>
+    <string name="payees">Payees</string>
+    <string name="theme_holo_light">Holo Light</string>
+    <string name="new_account">New Account</string>
+    <string name="amount_greater_or_equal">Amount greater or equal</string>
+    <string name="amount_less_or_equal">Amount less or equal</string>
+    <string name="result_search">Result of your search</string>
+    <string name="path_database_not_exists">Database path not exists</string>
+    <string name="database_can_not_open_write">The database can not be opened for writing</string>
+    <string name="time_frame">Time Frame</string>
+    <string name="show_chart">Show Chart</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="welcome_header">Welcome to MoneyManagerEx!</string>
+    <string name="welcome_body">Sve transakcije u MoneyManagerEx pripadaju računima.\n\nVi trenutno nemate vidljivih računa. Podesite filter za vidljive račune u postavkama ili odaberite jednu od opcija ispod.</string>
+    <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
+    <string name="search_text_contain_summary">Search payee, categories, currencies, etc… by contents and not by starting characters</string>
+    <string name="rate_application">Rate Application</string>
+    <string name="withdrawal_from">Withdrawal From %1$s</string>
+    <string name="deposit_to">Deposit To %1$s</string>
+    <string name="mmex_website">MoneyManagerEx Website</string>
+    <!-- languages -->
+    <string name="action_settings">Settings</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <string name="currencies">Currencies</string>
+    <string name="import_all_currencies">Import Currencies</string>
+    <string name="import_currencies_in_progress">Importing currencies. Please wait…</string>
+    <string name="question_import_currencies">Do you want to import currency?</string>
+    <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait…</string>
+    <string name="update_currency_exchange_rates">Updating the exchange rate:\n%1$s</string>
+    <string name="success_currency_exchange_rates">All the exchange rates of currencies have been updated successfully</string>
+    <string name="update_menu_currency_exchange_rates">Update Exchange Rate</string>
+    <string name="question_update_currency_exchange_rates">Do you want to update exchange rate?</string>
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
+    <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
+    <!-- Synchronization -->
+    <string name="every_5_minutes">Every 5 minutes</string>
+    <string name="every_15_minutes">Every 15 minutes</string>
+    <string name="every_30_minutes">Every 30 minutes</string>
+    <string name="every_hour">Every hour</string>
+    <string name="every_2_hours">Every 2 hours</string>
+    <string name="every_6_hours">Every 6 hours</string>
+    <string name="every_12_hours">Every 12 hours</string>
+    <string name="never">Never</string>
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <string name="per_database_settings">Per-Database</string>
+    <!-- Notification Setting -->
+</resources>

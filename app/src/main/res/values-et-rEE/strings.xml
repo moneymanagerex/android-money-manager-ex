@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <!-- database -->
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">Välju</string>
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">Halda</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_general">Üldine</string>
+    <string name="preferences_behaviour">Käitumine</string>
+    <string name="base_currency">Baasvaluuta</string>
+    <string name="version">Versioon</string>
+    <string name="build">Ehita</string>
+    <string name="database_version">Andmebaasi versioon</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">Konto</string>
+    <string name="account_balance">Kontojääk</string>
+    <string name="delete_account">Kustuta konto</string>
+    <string name="account_name">Konto nimi</string>
+    <string name="account_type">Konto tüüp</string>
+    <string name="account_number">Konto number</string>
+    <string name="account_status">Konto olek</string>
+    <string name="select_currency">Vali valuuta</string>
+    <string name="checking">Kontrollimine</string>
+    <string name="investment">Investeering</string>
+    <string name="term">Tähtaeg</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <string name="add_subcategory">Lisa alamkategooria</string>
+    <string name="edit_categoryName">Muuda kategooriat</string>
+    <string name="delete_category">Kustuta kategooria</string>
+    <!-- currency -->
+    <string name="currency_name">Valuuta nimetus</string>
+    <string name="currency_symbol">Valuuta sümbol</string>
+    <string name="unit_name">Ühiku nimi</string>
+    <string name="prefix_symbol">Prefiksi sümbol</string>
+    <string name="suffix_symbol">Suffiksi sümbol</string>
+    <string name="scale">Mõõtkava</string>
+    <string name="conversion_to_base_rate">Teisendamine</string>
+    <!-- transaction -->
+    <string name="amount">Kogus</string>
+    <string name="total_amount">Summa kokku</string>
+    <string name="deposit">Sissemakse</string>
+    <string name="status">Staatus</string>
+    <string name="status_reconciled">Lepita</string>
+    <string name="status_void">Kehtetu</string>
+    <string name="status_follow_up">Vii ellu</string>
+    <string name="status_duplicate">Duplikaat</string>
+    <string name="status_none">Mitte ükski</string>
+    <string name="transfer">Ülekanne</string>
+    <string name="transfer_amount">Ülekande summa</string>
+    <string name="transaction_type">Tehingu tüüp</string>
+    <string name="transaction_status">Staatus</string>
+    <string name="withdrawal">Väljamakse</string>
+    <string name="delete_transaction">Kustutada tehing</string>
+    <string name="new_transaction">Uus tehing</string>
+    <string name="about">Info</string>
+    <string name="add">Lisa</string>
+    <string name="date">Kuupäev</string>
+    <string name="delete">Kustuta</string>
+    <string name="download">Lae alla</string>
+    <string name="edit">Muuda</string>
+    <string name="home">Kodu</string>
+    <string name="logo">Logo</string>
+    <string name="refresh">Värskenda</string>
+    <string name="search">Otsi</string>
+    <string name="settings">Seaded</string>
+    <!-- 20120906 -->
+    <!-- transaction list periods -->
+    <string name="widget_all_accounts">Kõik kontod</string>
+    <string name="widget_add_transaction">Lisa ülekanne</string>
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">Mitte ükski</string>
+    <string name="once">Üks kord</string>
+    <string name="weekly">Kord nädalas</string>
+    <string name="bi_weekly">Kord kahe nädala jooksul</string>
+    <string name="monthly">Igakuine</string>
+    <string name="bi_monthly">Kord kahe kuu jooksul</string>
+    <string name="yearly">Kord aastas</string>
+    <string name="daily">Iga päev</string>
+    <string name="inactive">Passivne</string>
+    <string name="activates">Käivita</string>
+    <string name="due_date">Tähtaeg</string>
+    <string name="payment_date">Laekumise kuupäev</string>
+    <string name="repeats">Kordamised</string>
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <!-- 20121217 -->
+    <!--<string name="option">Option</string>-->
+    <string name="all_time">Kogu aeg</string>
+    <string name="last_month">Eelmine kuu</string>
+    <string name="last30days">Viimase 30 päeva jooksul</string>
+    <string name="last_year">Eelmine aasta</string>
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <!-- 20130108 -->
+    <string name="date_format">Kuupäeva formaat</string>
+    <!-- Split Categories -->
+    <string name="split_transaction">Jaga tehing</string>
+    <string name="split">Jaga</string>
+    <string name="export_data_to_csv">Ekspordi andmed CSV failina</string>
+    <string name="donate_in_app_button">Anneta</string>
+    <string name="donate_thank_you">Tänan annetamast!</string>
+    <string name="donate">Anneta</string>
+    <string name="no_thanks">Tänan, ei</string>
+    <string name="donate_exlamation">Anneta!</string>
+    <string name="donate_button_text">Anneta</string>
+    <string name="ascending">Kasvav</string>
+    <string name="descending">Kahanev</string>
+    <string name="last_modified">Viimati muudetud</string>
+    <string name="dont_show_again">Ära enam näita</string>
+    <string name="dashboard">Töölaud</string>
+    <string name="last3months">Viimased 3 kuud</string>
+    <string name="last6months">Viimased 6 kuud</string>
+    <string name="empty_category">Tühi kategooria</string>
+    <string name="help">Abi</string>
+    <string name="last">Viimane</string>
+    <string name="accounts">Kontod</string>
+    <string name="to_account">Kontole</string>
+    <string name="from_account">Kontolt</string>
+    <string name="default_status">Vaikimisi staatus</string>
+    <string name="categories">Kategooriad</string>
+    <string name="payees">Makse saajad</string>
+    <string name="new_account">Uus konto</string>
+    <string name="create_new_account">Looge uus konto</string>
+    <string name="reset">Lähtesta</string>
+    <string name="time_frame">Ajavahemik</string>
+    <string name="show_chart">Kuva diagramm</string>
+    <string name="add_transaction">Lisa ülekanne</string>
+    <string name="tools">Tööriistad</string>
+    <string name="entities">Üksused</string>
+    <string name="loading">Laadimine...</string>
+    <string name="grand_total">Kõik kokku</string>
+    <string name="change_status">Muuda olekut</string>
+    <string name="sort">Sorteeri</string>
+    <string name="sort_order">Sorteerimis järjekord</string>
+    <string name="sort_by_name">Sorteeri nime järgi</string>
+    <string name="sort_by_usage">Sorteeri kasutuse järgi</string>
+    <string name="credit_card">Krediitkaart</string>
+    <string name="cash_accounts">Rahakontod</string>
+    <string name="bank_accounts">Pangakontod</string>
+    <!-- languages -->
+    <string name="locale_ar">Araabia</string>
+    <string name="keep_editing">Jätka redigeerimist</string>
+    <string name="discard">Loobu</string>
+    <string name="due_today">Tänaseks</string>
+    <string name="action_settings">Seaded</string>
+    <string name="close">Sulge</string>
+    <string name="global">Üldine</string>
+    <string name="transactions">Tehingud</string>
+    <string name="years">Aastad</string>
+    <string name="to_date">Kuupäevani</string>
+    <string name="from_date">Kuupäevast</string>
+    <string name="warning">Hoiatus</string>
+    <string name="download_complete">Allalaadimine lõpetatud.</string>
+    <string name="create_db">Loo andmebaas</string>
+    <string name="select_account">Vali konto</string>
+    <string name="budgets">Eelarved</string>
+    <string name="budget">Eelarve</string>
+    <string name="actual">Tegelik</string>
+    <string name="error">Viga</string>
+    <string name="title_activity_currency_rates_report">Vahetuskursid</string>
+    <string name="frequency">Sagedus</string>
+    <string name="update_available">Uuendus saadaval</string>
+    <string name="status_filter">Filtreeri staatuse järgi</string>
+    <!-- Password entry activity -->
+    <string name="configure">Konfigureeri</string>
+    <string name="add_widget">Vidina lisamine.</string>
+    <string name="watchlist">Jälgimisnimekiri</string>
+    <!-- edit investment transaction -->
+    <string name="purchase_date">Ostukuupäev</string>
+    <string name="symbol">Sümbol</string>
+    <string name="purchase_price">Ostuhind</string>
+    <string name="commission">Vahendustasu</string>
+    <string name="value">Väärtus</string>
+    <string name="other">Muu</string>
+    <string name="cleared">Puhastatud</string>
+    <!-- asset allocation -->
+    <string name="move_up">Nihuta üles</string>
+    <string name="move_down">Nihuta alla</string>
+    <string name="current_value">Aktiivne leht</string>
+    <string name="current">Praegune</string>
+    <string name="parent">Vanem</string>
+    <string name="name">Nimi</string>
+    <string name="stock">Ladu</string>
+    <string name="all_accounts">Kõik kontod</string>
+    <!-- db password entry -->
+    <string name="overview">Ülevaade</string>
+    <string name="account_not_found">Kasutajat ei leitud</string>
+    <string name="favourite">Lemmik</string>
+    <!-- budgets -->
+    <string name="add_budget">Lisa eelarve</string>
+    <string name="copy">Kopeeri</string>
+    <string name="print">Prindi</string>
+    <!-- Currencies -->
+    <string name="currencies">Valuutad</string>
+    <string name="update_menu_currency_exchange_rates">Värskenda vahetuskurssi</string>
+    <string name="all_currencies">Kõik valuutad</string>
+    <!-- Investment -->
+    <string name="portfolio">Portfell</string>
+    <string name="change_provider">Vaheta pakkujat</string>
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <string name="synchronization">Sünkroonimine</string>
+    <string name="sync_enabled">Sünkroonimine lubatud</string>
+    <string name="sync_provider">Pakkuja</string>
+    <string name="remote_file">Võrgufail</string>
+    <string name="please_wait">Palun oodake</string>
+    <string name="reset_preferences">Lähtesta eelistused</string>
+    <string name="database_is_synchronized">Andmebaas on ajakohane</string>
+    <string name="every_5_minutes">Iga 5 minuti järel</string>
+    <string name="every_10_minutes">Iga 10 minuti järel</string>
+    <string name="every_15_minutes">Iga 15 minuti järel</string>
+    <string name="every_30_minutes">Iga 30 minuti järel</string>
+    <string name="every_hour">Iga tund</string>
+    <string name="every_2_hours">Iga 2 tunni tagant</string>
+    <string name="every_3_hours">Iga 3 tunni tagant</string>
+    <string name="every_6_hours">Iga 6 tunni tagant</string>
+    <string name="every_12_hours">Iga 12 tunni järel</string>
+    <string name="never">Mitte kunagi</string>
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <string name="select_language">Vali keel</string>
+    <!-- Settings -->
+    <string name="save">Salvesta</string>
+    <string name="shares">Jaga</string>
+    <!-- Notification Setting -->
+</resources>
