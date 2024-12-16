@@ -790,6 +790,11 @@
 
     <string name="title_budget_show_simple_view">Show simple budget view</string>
     <string name="summary_budget_show_simple_view">If checked budgets use the simplified view</string>
+
+    <string name="title_pref_budget_financial_year">Use financial year in budget</string>
+    <string name="summary_pref_budget_financial_year">If checked budgets use financial year instead of calendar year</string>
+
+
     <string name="shares">Shares</string>
     <string name="loan">Loan</string>
     <string name="loan_account">Loan Accounts</string>
