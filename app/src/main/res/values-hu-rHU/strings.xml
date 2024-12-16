@@ -721,6 +721,8 @@
     <string name="save">Mentés</string>
     <string name="title_budget_show_simple_view">Egyszerű költségvetési nézet megjelenítése</string>
     <string name="summary_budget_show_simple_view">Ha be van jelölve a költségvetés, használja az egyszerűsített nézetet</string>
+    <string name="title_pref_budget_financial_year">Pénzügyi év felhasználása a költségvetésben</string>
+    <string name="summary_pref_budget_financial_year">Ha be van jelölve, a költségvetés a pénzügyi évet használja a naptári év helyett</string>
     <string name="shares">Megosztások</string>
     <string name="loan">Hitel</string>
     <string name="loan_account">Hitel fiók</string>

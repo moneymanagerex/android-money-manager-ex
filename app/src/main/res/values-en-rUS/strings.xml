@@ -46,8 +46,8 @@
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_perdatabase">Per-Database</string>
-    <string name="preferences_dispaly">Afaan oromoo </string>
-    <string name="preferences_behaviour"></string>
+    <string name="preferences_dispaly">Look &amp; Feel</string>
+    <string name="preferences_behaviour">Behavior</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed"></string>
     <string name="base_currency_change_notification"></string>
