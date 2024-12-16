@@ -20,7 +20,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+
 import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -57,7 +60,19 @@ import timber.log.Timber;
  * Adapter for budgets.
  */
 public class BudgetAdapter
-        extends SimpleCursorAdapter {
+    extends SimpleCursorAdapter {
+
+    @Inject
+    Lazy<BriteDatabase> databaseLazy;
+    private final int mLayout;
+    private String mBudgetName;
+    private long mBudgetYearId;
+    private HashMap<String, BudgetEntry> mBudgetEntries;
+
+    // budget financial year
+    private boolean useBudgetFinancialYear = false;
+    private MmxDate dateFrom;
+    private MmxDate dateTo;
 
     /**
      * Standard constructor.
@@ -94,14 +109,6 @@ public class BudgetAdapter
 
     }
 
-    @Inject Lazy<BriteDatabase> databaseLazy;
-    private boolean useBudgetFinancialYear = false;
-    private final int mLayout;
-    private String mBudgetName;
-    private long mBudgetYearId;
-    private HashMap<String, BudgetEntry> mBudgetEntries;
-
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(context);
@@ -118,7 +125,7 @@ public class BudgetAdapter
 
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryColumnIndex = cursor.getColumnIndex( QueryNestedCategory.CATEGNAME );
+            int categoryColumnIndex = cursor.getColumnIndex(QueryNestedCategory.CATEGNAME);
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 
@@ -128,7 +135,6 @@ public class BudgetAdapter
         subCategoryId = -1;
 
         // Frequency
-
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
 
         TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
@@ -139,7 +145,6 @@ public class BudgetAdapter
         CurrencyService currencyService = new CurrencyService(mContext);
 
         // Amount
-
         TextView amountTextView = view.findViewById(R.id.amountTextView);
         double amount = getBudgetAmountFor(categoryId, subCategoryId);
         if (amountTextView != null) {
@@ -150,8 +155,7 @@ public class BudgetAdapter
         // Estimated
         double estimated = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
-                : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
-                ;
+                : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
 
         // Actual
         TextView actualTextView = view.findViewById(R.id.actualTextView);
@@ -164,17 +168,16 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (estimated * 100)) {
                 actualTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                   ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
 
         // Amount Available
-
         TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
             double amountAvailable = -(estimated - actual);
@@ -183,14 +186,14 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            long amountAvailablelong = (long)amountAvailable * 100;
+            long amountAvailablelong = (long) amountAvailable * 100;
             if (amountAvailablelong < 0) {
                 amountAvailableTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailablelong > 0) {
                 amountAvailableTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -202,10 +205,16 @@ public class BudgetAdapter
 
     public void setBudgetName(String budgetName) {
         mBudgetName = budgetName;
+        if (useBudgetFinancialYear) {
+            dateFrom = getStartDateForFinancialYear(mBudgetName);
+            dateTo = new MmxDate(dateFrom.toDate());
+            dateTo.addYear(1).minusDays(1);
+        }
     }
 
     /**
      * As a side effect of the setter the budget entry thread cache is populated.
+     *
      * @param budgetYearId
      */
     public void setBudgetYearId(long budgetYearId) {
@@ -229,6 +238,7 @@ public class BudgetAdapter
 
     /**
      * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
+     *
      * @param categoryId
      * @param subCategoryId
      * @return
@@ -242,6 +252,7 @@ public class BudgetAdapter
 
     /**
      * Returns the period of the budgeted amount or NONE if there isn't any.
+     *
      * @param categoryId
      * @param subCategoryId
      * @return
@@ -256,6 +267,7 @@ public class BudgetAdapter
     /**
      * Builds a thread cache from the database for every category and subcategory present in
      * this budget.
+     *
      * @return
      */
     private HashMap<String, BudgetEntry> populateThreadCache() {
@@ -276,18 +288,19 @@ public class BudgetAdapter
     private double loadTotalFor(String where) {
         double total = 0;
 
-        //use financia year
-        if (!useBudgetFinancialYear) {
-            long year = getYearFromBudgetName(mBudgetName);
+        // if month use month budget
+        // if year check if financianl or calendar
+        long year = getYearFromBudgetName(mBudgetName);
+        long month = getMonthFromBudgetName(mBudgetName);
+        if (month != Constants.NOT_SET) {
+            // month
+            where += " AND " + QueryMobileData.Month + "=" + month;
+        } else
+        if (!useBudgetFinancialYear || dateFrom == null || dateTo == null ) {
+            // annual
             where += " AND " + QueryMobileData.Year + "=" + year;
-            long month = getMonthFromBudgetName(mBudgetName);
-            if (month != Constants.NOT_SET) {
-                where += " AND " + QueryMobileData.Month + "=" + month;
-            }
         } else {
-            MmxDate dateFrom = getStartDateForFinancialYear(mBudgetName);
-            MmxDate dateTo = new MmxDate(dateFrom.toDate());
-            dateTo.addYear(1).minusDays(1);
+            // financial
             where += " AND " + QueryMobileData.Date + " BETWEEN '" + dateFrom.toIsoDateString() + "' AND '" + dateTo.toIsoDateString() + "'";
         }
 
@@ -358,7 +371,7 @@ public class BudgetAdapter
             InfoService infoService = new InfoService(getContext());
             int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
             int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
-            newDate.setYear((int)getYearFromBudgetName(budgetName));
+            newDate.setYear((int) getYearFromBudgetName(budgetName));
             newDate.setDate(financialYearStartDay);
             newDate.setMonth(financialYearStartMonth);
         } catch (Exception e) {
