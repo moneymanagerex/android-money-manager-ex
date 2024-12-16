@@ -1502,8 +1502,13 @@ public class EditTransactionCommonFunctions {
     private void showDate(Date dateTime) {
         // Constants.LONG_DATE_MEDIUM_DAY_PATTERN
         String format = "EEE, " + getUserDateFormat();
-        //String display = dateTime.toString(format);
-        String display = dateTimeUtilsLazy.get().format(dateTime, format);
+        String display;
+        try {
+            display = dateTimeUtilsLazy.get().format(dateTime, format);
+        } catch (Exception e) {
+            Timber.e(e, "Error formatting date with ["+format+"]");
+            display = dateTimeUtilsLazy.get().format(dateTime, Constants.LONG_DATE_MEDIUM_DAY_PATTERN);
+        }
         viewHolder.dateTextView.setText(display);
     }
 
