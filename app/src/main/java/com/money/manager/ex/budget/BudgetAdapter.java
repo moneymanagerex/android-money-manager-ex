@@ -57,7 +57,7 @@ import timber.log.Timber;
  * Adapter for budgets.
  */
 public class BudgetAdapter
-    extends SimpleCursorAdapter {
+        extends SimpleCursorAdapter {
 
     /**
      * Standard constructor.
@@ -151,7 +151,7 @@ public class BudgetAdapter
         double estimated = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
-        ;
+                ;
 
         // Actual
         TextView actualTextView = view.findViewById(R.id.actualTextView);
@@ -164,11 +164,11 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (estimated * 100)) {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -186,11 +186,11 @@ public class BudgetAdapter
             long amountAvailablelong = (long)amountAvailable * 100;
             if (amountAvailablelong < 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailablelong > 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
