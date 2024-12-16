@@ -176,8 +176,14 @@ public class RecurringTransactionService
      * If not, the recurring transaction is deleted.
      */
     public void moveNextOccurrence() {
+        // Issue #1969
+        // Try to prevent if recurringTransactionId is not filled
+        if (recurringTransactionId <= 0) {
+            return;
+        }
         RecurringTransaction tx = getRecurringTransaction();
         if (tx == null) {
+            // Issue #1969 TODO - See dump on gPlay. Some time recurringTransactionId is not found on the database.
             throw new IllegalArgumentException("Recurring Transaction is not set!");
         }
 
