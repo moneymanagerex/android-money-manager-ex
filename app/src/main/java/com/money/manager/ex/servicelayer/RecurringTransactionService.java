@@ -183,8 +183,12 @@ public class RecurringTransactionService
         }
         RecurringTransaction tx = getRecurringTransaction();
         if (tx == null) {
-            // Issue #1969 TODO - See dump on gPlay. Some time recurringTransactionId is not found on the database.
-            throw new IllegalArgumentException("Recurring Transaction is not set!");
+            // Issue #1969 - See dump on gPlay. Some time recurringTransactionId is not found on the database.
+            //throw new IllegalArgumentException("Recurring Transaction is not set!");
+            try {
+             Toast.makeText(getContext(), "Not Found Transaction "+recurringTransactionId, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+            }
         }
 
         Integer recurrenceType = tx.getRecurrenceInt();
