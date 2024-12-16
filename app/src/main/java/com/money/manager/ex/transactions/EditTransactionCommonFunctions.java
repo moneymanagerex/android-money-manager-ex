@@ -161,6 +161,12 @@ public class EditTransactionCommonFunctions {
         return true;
     }
 
+    // issue #1961
+    public void displayNotes() {
+        if( this.viewHolder.edtNotes == null ) return;
+        this.viewHolder.edtNotes.setText(transactionEntity.getNotes());
+    }
+
     public void displayCategoryName() {
         // validation
         if (this.viewHolder.categoryTextView == null) return;
@@ -1264,6 +1270,10 @@ public class EditTransactionCommonFunctions {
         transactionEntity.setCategoryId(splitTransaction.getCategoryId());
         loadCategoryName();
 //        displayCategoryName();
+
+        // issue #1961
+        transactionEntity.setNotes(splitTransaction.getNotes());
+        displayNotes();
 
         // reset split indicator & display category
         setSplit(false);
