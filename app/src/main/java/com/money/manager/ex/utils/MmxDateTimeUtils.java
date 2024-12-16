@@ -21,6 +21,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.DatePicker;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
@@ -33,6 +34,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Date/time utilities using Java standard Date classes.
@@ -219,6 +222,11 @@ public class MmxDateTimeUtils {
      */
 
     private SimpleDateFormat getFormatterFor(String format) {
-        return new SimpleDateFormat(format, _locale);
+        try {
+            return new SimpleDateFormat(format, _locale);
+        } catch (Exception e) {
+            Timber.e(e, "Error formatting date with ["+format+"]");
+            return new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN, _locale);
+        }
     }
 }
