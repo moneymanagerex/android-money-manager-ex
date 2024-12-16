@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import timber.log.Timber;
+
 /**
  * Represent a first Recurring Transaction object and provides related operations.
  */
@@ -176,8 +178,14 @@ public class RecurringTransactionService
      * If not, the recurring transaction is deleted.
      */
     public void moveNextOccurrence() {
+        // Issue #1969
+        // Try to prevent if recurringTransactionId is not filled
+        if (recurringTransactionId <= 0) {
+            return;
+        }
         RecurringTransaction tx = getRecurringTransaction();
         if (tx == null) {
+            // Issue #1969 TODO - See dump on gPlay. Some time recurringTransactionId is not found on the database.
             throw new IllegalArgumentException("Recurring Transaction is not set!");
         }
 
