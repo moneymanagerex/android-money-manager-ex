@@ -81,7 +81,7 @@ public class AllDataAdapter
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
-        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
+        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS;
 
     private final LayoutInflater mInflater;
     // hash map for group
@@ -115,6 +115,8 @@ public class AllDataAdapter
         holder.txtCategorySub = view.findViewById(R.id.textViewCategorySub);
         holder.txtNotes = view.findViewById(R.id.textViewNotes);
         holder.txtBalance = view.findViewById(R.id.textViewBalance);
+        holder.textTags = view.findViewById(R.id.textViewTags);
+
         // set holder to view
         view.setTag(holder);
 
@@ -167,8 +169,17 @@ public class AllDataAdapter
         } else {
             holder.txtAttachment.setVisibility(View.GONE);
         }
-        // Amount
 
+        // tags
+        String tags = cursor.getString(cursor.getColumnIndex(TAGS));
+        if (!TextUtils.isEmpty(tags)) {
+            holder.textTags.setText(" \uD83C\uDFF7 "); // Tag icon
+            holder.textTags.setVisibility(View.VISIBLE);
+        } else {
+            holder.textTags.setVisibility(View.GONE);
+        }
+
+        // Amount
         double amount;
         if (useDestinationValues(isTransfer, cursor)) {
             amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
@@ -342,6 +353,7 @@ public class AllDataAdapter
         SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
         ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
+        TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {
