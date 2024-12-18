@@ -22,6 +22,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -35,6 +36,7 @@ import info.javaperformance.money.Money;
  * Source is QueryAllData.
  * Note: This data is readonly! Records can not be created or updated.
  */
+// TODO: Replace QueryAllData with QueryMobileData
 public class AccountTransactionDisplay
     extends EntityBase {
 
@@ -118,5 +120,9 @@ public class AccountTransactionDisplay
 
         TransactionTypes transactionType = TransactionTypes.valueOf(typeName);
         return transactionType;
+    }
+
+    public String getTags() {
+        return getString(QueryMobileData.TAGS);
     }
 }

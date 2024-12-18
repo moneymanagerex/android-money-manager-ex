@@ -232,6 +232,7 @@
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
     <string name="widget_add_transaction">Add Transaction</string>
+    <string name="tagsList_transactions">Tags for transaction</string>
 
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">None</string>

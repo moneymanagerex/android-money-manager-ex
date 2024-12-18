@@ -67,6 +67,7 @@ public class EditTransactionViewHolder {
     public EditText edtNotes;
     public TextView textViewAttachments;
     public RecyclerView recyclerAttachments;
+    public TextView tagsListTextView;
 
     public EditTransactionViewHolder(AppCompatActivity activity) {
         // Initialize views using findViewById
@@ -100,6 +101,8 @@ public class EditTransactionViewHolder {
         edtNotes = activity.findViewById(R.id.editTextNotes);
         textViewAttachments = activity.findViewById(R.id.textViewAttachments);
         recyclerAttachments = activity.findViewById(R.id.recyclerViewAttachments);
+
+        tagsListTextView = activity.findViewById(R.id.tagsList);
 
         // Add custom icons
         UIHelper uiHelper = new UIHelper(activity);

@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.Process;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -45,6 +44,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
@@ -81,7 +82,6 @@ import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.parceler.Parcels;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -128,6 +128,9 @@ public class EditTransactionCommonFunctions {
 
     public ArrayList<Attachment> mAttachments;
 
+    public ArrayList<Taglink> mTaglinks;
+    public String mTagLinksString;
+
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -165,6 +168,12 @@ public class EditTransactionCommonFunctions {
     public void displayNotes() {
         if( this.viewHolder.edtNotes == null ) return;
         this.viewHolder.edtNotes.setText(transactionEntity.getNotes());
+    }
+
+    public void displayTags() {
+        if( this.viewHolder.tagsListTextView == null ) return;
+        TaglinkRepository repo = new TaglinkRepository(getContext());
+        this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
     }
 
     public void displayCategoryName() {
@@ -1410,6 +1419,13 @@ public class EditTransactionCommonFunctions {
             mAttachments = new ArrayList<>();
         }
         return mAttachments;
+    }
+
+    private ArrayList<Taglink> getTaglinks() {
+        if (mTaglinks == null) {
+            mTaglinks = new ArrayList<>();
+        }
+        return mTaglinks;
     }
 
     private String getUserDateFormat() {

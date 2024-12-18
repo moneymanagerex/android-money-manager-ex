@@ -38,7 +38,8 @@ SELECT     TX.TransID AS ID,
     round( strftime( '%Y', TX.transdate ) ) AS year,
     ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
-        * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
+        * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate,
+	Tags.Tags as TAGS
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.CATEGID
@@ -56,4 +57,14 @@ FROM CHECKINGACCOUNT_V1 TX
     where REFTYPE = 'Transaction'
     group by REFID
     ) AS ATT on TX.TransID = ATT.REFID
+	LEFT JOIN (
+		select Transid, Tags from (
+		SELECT TRANSACTIONID as Transid,
+			   group_concat(TAGNAME) AS Tags
+		FROM (SELECT TAGLINK_V1.REFID as TRANSACTIONID, TAG_V1.TAGNAME
+			  FROM TAGLINK_V1 inner join TAG_V1 on TAGLINK_V1.TAGID = TAG_V1.TAGID
+			  where REFTYPE = "Transaction" and ACTIVE = 1
+			  ORDER BY REFID, TAGNAME)
+		GROUP BY TRANSACTIONID)
+    ) as TAGS on TX.Transid = TAGS.Transid
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
