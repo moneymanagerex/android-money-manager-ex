@@ -42,7 +42,7 @@
     <string name="subcategory_6">Pay TV</string>
     <string name="subcategory_7">Acqua</string>
     <string name="subcategory_8">Alimentari</string>
-    <string name="subcategory_9">Mangiare fuori</string>
+    <string name="subcategory_9">Ristorante</string>
     <string name="subcategory_10">Film</string>
     <string name="subcategory_11">Video Noleggio</string>
     <string name="subcategory_12">Riviste</string>
@@ -68,11 +68,11 @@
     <string name="subcategory_32">Viaggi</string>
     <string name="subcategory_33">Alloggio</string>
     <string name="subcategory_34">giro turistico</string>
-    <string name="subcategory_35">Imposte sul reddito</string>
+    <string name="subcategory_35">Imposta Sul Reddito</string>
     <string name="subcategory_36">Tasse sugli Immobili</string>
     <string name="subcategory_37">Tasse sull\'Acqua</string>
     <string name="subcategory_38">Altro</string>
     <string name="subcategory_39">Stipendio</string>
     <string name="subcategory_40">Restituzioni/Rimborsi</string>
-    <string name="subcategory_41">Redditi da investimenti</string>
+    <string name="subcategory_41">Reddito Dagli Investimenti</string>
 </resources>
