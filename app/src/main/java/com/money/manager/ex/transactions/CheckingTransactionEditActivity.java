@@ -39,9 +39,11 @@ import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -124,7 +126,7 @@ public class CheckingTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
-
+        mCommon.displayTags();
         mCommon.setDirty(false);
     }
 
@@ -401,6 +403,12 @@ public class CheckingTransactionEditActivity
         if (mCommon.mAttachments == null) {
             AttachmentRepository attachmentRepository = new AttachmentRepository(this);
             mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, "Transaction");
+        }
+
+        // load Tags
+        if (mCommon.mTaglinks == null ) {
+            TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(transId, Taglink.REFTYPE_TRANSACTION);
         }
 
         AccountRepository accountRepository = new AccountRepository(this);

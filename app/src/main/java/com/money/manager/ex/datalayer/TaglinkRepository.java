@@ -64,7 +64,7 @@ public class TaglinkRepository extends  RepositoryBase {
         return super.update(taglink, Taglink.TAGLINKID + "=" + id);
     }
 
-    public ArrayList<Taglink> loadTaglinkFor(long refId, String refType) {
+    public ArrayList<Taglink> loadTaglinksFor(long refId, String refType) {
         Cursor cursor = getContext().getContentResolver().query(getUri(), null,
                 Taglink.REFID + "=? AND " + Taglink.REFTYPE +  "=?",
                 new String[] { Long.toString(refId),  refType},
@@ -85,15 +85,25 @@ public class TaglinkRepository extends  RepositoryBase {
     }
 
     public String loadTagsfor(long refId, String refType) {
-        ArrayList<Taglink> listEntity = loadTaglinkFor(refId, refType);
+        ArrayList<Taglink> listEntity = loadTaglinksFor(refId, refType);
+        return loadTagsfor(listEntity);
+    }
+
+    public String loadTagsfor(ArrayList<Taglink> listEntity) {
         if (listEntity == null) return "";
         String tags = "";
         TagRepository tagRepository = new TagRepository(getContext());
         for (Taglink entity : listEntity) {
-            Tag tag = tagRepository.load(entity.getRefId());
-            tags += tag.getName() + ",";
+            Tag tag = tagRepository.load(entity.getTagId());
+            if (tag != null ) {
+                if ( tags.isEmpty() )
+                    tags = tag.getName();
+                else
+                    tags += ", " + tag.getName();
+            }
         }
         return tags;
     }
+
 
 }

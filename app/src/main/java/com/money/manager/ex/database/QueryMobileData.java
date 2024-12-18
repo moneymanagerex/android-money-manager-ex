@@ -29,6 +29,7 @@ public class QueryMobileData
 	extends Dataset {
 
 	// FIELDS
+	// TODO rename all field in a standard form, ALL CAPS or LetterCaps, not a mixed
 	public static final String ID = "ID";
 	public static final String TransactionType = "TransactionType";
 	public static final String Date = "Date";
@@ -57,6 +58,7 @@ public class QueryMobileData
 	public static final String currency = "currency";
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
+	public static final String TAGS = "TAGS";
 
 	public QueryMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
@@ -74,7 +76,7 @@ public class QueryMobileData
 				Category, Subcategory, CategoryFullName, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
                 SubcategID, PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
-                AmountBaseConvRate};
+                AmountBaseConvRate, TAGS };
 	}
 
     public void setWhere(String where) {
