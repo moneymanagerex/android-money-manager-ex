@@ -30,12 +30,11 @@ SELECT
     ifnull( PAYEE.PayeeName, '') AS PayeeName,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
-
     ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
     round( strftime( '%d', TX.transdate ) ) AS day,
     round( strftime( '%m', TX.transdate ) ) AS month,
-    round( strftime( '%Y', TX.transdate ) ) AS year
-
+    round( strftime( '%Y', TX.transdate ) ) AS year,
+	Tags.Tags as TAGS
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
@@ -50,4 +49,14 @@ FROM CHECKINGACCOUNT_V1 TX
         where REFTYPE = 'Transaction'
         group by REFID
     ) AS ATT on TX.TransID = ATT.REFID
+    LEFT JOIN (
+        select Transid, Tags from (
+        SELECT TRANSACTIONID as Transid,
+               group_concat(TAGNAME) AS Tags
+        FROM (SELECT TAGLINK_V1.REFID as TRANSACTIONID, TAG_V1.TAGNAME
+              FROM TAGLINK_V1 inner join TAG_V1 on TAGLINK_V1.TAGID = TAG_V1.TAGID
+              where REFTYPE = "Transaction" and ACTIVE = 1
+              ORDER BY REFID, TAGNAME)
+        GROUP BY TRANSACTIONID)
+    ) as TAGS on TX.TransID = TAGS.Transid
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')

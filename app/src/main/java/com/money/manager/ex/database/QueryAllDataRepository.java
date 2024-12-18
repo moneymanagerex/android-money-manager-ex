@@ -47,7 +47,8 @@ public class QueryAllDataRepository
             QueryAllData.PAYEENAME, QueryAllData.PAYEEID, QueryAllData.TransactionNumber,
             QueryAllData.STATUS, QueryAllData.Notes, QueryAllData.ToAccountName,
             QueryAllData.TOACCOUNTID, QueryAllData.ToAmount, QueryAllData.ToCurrencyId,
-            QueryAllData.currency};
+            QueryAllData.currency,
+            QueryAllData.TAGS};
     }
 
     public long add(AccountTransactionDisplay entity) {

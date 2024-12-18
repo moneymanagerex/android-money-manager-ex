@@ -33,4 +33,5 @@ public class AllDataViewHolder {
     public TextView txtCategorySub;
     public TextView txtNotes;
     public TextView txtBalance;
+    public TextView textTags;
 }

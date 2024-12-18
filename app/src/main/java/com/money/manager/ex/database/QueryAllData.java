@@ -53,6 +53,7 @@ public class QueryAllData
     public static final String Notes = "Notes";
     public static final String currency = "currency";
     public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
+    public static final String TAGS = "TAGS";
 
     public QueryAllData(Context context) {
         super(MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
@@ -67,6 +68,6 @@ public class QueryAllData
                 Category, Subcategory, AMOUNT, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 SPLITTED, CATEGID, PAYEENAME, PAYEEID, TransactionNumber, STATUS, Notes,
                 ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
-                currency};
+                currency, TAGS};
     }
 }
