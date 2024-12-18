@@ -402,7 +402,7 @@ public class CheckingTransactionEditActivity
         // Load Attachments
         if (mCommon.mAttachments == null) {
             AttachmentRepository attachmentRepository = new AttachmentRepository(this);
-            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, "Transaction");
+            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, mCommon.transactionEntity.getTransactionModel());
         }
 
         // load Tags
