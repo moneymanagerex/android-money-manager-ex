@@ -42,6 +42,7 @@ import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -137,6 +138,7 @@ public class ScheduledTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
+        mCommon.displayTags();
 
         showPaymentsLeft();
 
@@ -485,6 +487,13 @@ public class ScheduledTransactionEditActivity
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
         mCommon.loadCategoryName();
+
+        // load Tags
+        if (mCommon.mTaglinks == null ) {
+            TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel());
+        }
+
 
         return true;
     }

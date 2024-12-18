@@ -408,7 +408,7 @@ public class CheckingTransactionEditActivity
         // load Tags
         if (mCommon.mTaglinks == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(transId, Taglink.REFTYPE_TRANSACTION);
+            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel());
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
