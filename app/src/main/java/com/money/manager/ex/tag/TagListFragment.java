@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
