@@ -324,6 +324,11 @@ public class RecurringTransaction
         setString(ITransactionEntity.TRANSCODE, value.name());
     }
 
+    @Override
+    public String getTransactionModel() {
+        return "RecurringTransaction";
+    }
+
     // EP handle recurring mode
     public boolean isRecurringModeManual() {
         return (this.getRecurrenceInt() < 100 );

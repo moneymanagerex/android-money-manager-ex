@@ -234,6 +234,11 @@ public class AccountTransaction
         setString(ITransactionEntity.TRANSCODE, value.name());
     }
 
+    @Override
+    public String getTransactionModel() {
+        return "Transaction";
+    }
+
     public void setLastUpdatedTime(String value) {
         setString(LASTUPDATEDTIME, value);
     }
