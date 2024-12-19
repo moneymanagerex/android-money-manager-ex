@@ -367,6 +367,9 @@ public class ScheduledTransactionEditActivity
 
                                                   }
         );
+
+        // Tag
+        mCommon.initTagsControls();
     }
 
     private void initializePaymentDateSelector() {
@@ -653,6 +656,10 @@ public class ScheduledTransactionEditActivity
                 return false;
             }
         }
+
+        // save TagLinks
+        mCommon.saveTags();
+
         return true;
     }
 

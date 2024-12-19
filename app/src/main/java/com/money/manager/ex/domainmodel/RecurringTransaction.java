@@ -29,6 +29,7 @@ import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -44,6 +45,9 @@ public class RecurringTransaction
 
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
+
+    private ArrayList<Taglink> taglinks = null;
+
     /**
      * Payment Date
      */
@@ -327,6 +331,16 @@ public class RecurringTransaction
     @Override
     public String getTransactionModel() {
         return "RecurringTransaction";
+    }
+
+    @Override
+    public void setTags(ArrayList<Taglink> tags) {
+        taglinks = tags;
+    }
+
+    @Override
+    public ArrayList<Taglink> getTags() {
+        return taglinks;
     }
 
     // EP handle recurring mode

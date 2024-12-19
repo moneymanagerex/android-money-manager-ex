@@ -27,6 +27,7 @@ import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -42,6 +43,8 @@ public class AccountTransaction
 
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
+
+    private ArrayList<Taglink> taglinks = null;
 
     /**
      * Creates default, empty transaction.
@@ -237,6 +240,16 @@ public class AccountTransaction
     @Override
     public String getTransactionModel() {
         return "Transaction";
+    }
+
+    @Override
+    public void setTags(ArrayList<Taglink> tags) {
+        taglinks = tags;
+    }
+
+    @Override
+    public ArrayList<Taglink> getTags() {
+        return taglinks;
     }
 
     public void setLastUpdatedTime(String value) {

@@ -2,6 +2,8 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import java.util.ArrayList;
+
 public class Taglink extends EntityBase  {
 
     /* Table
@@ -39,4 +41,20 @@ public class Taglink extends EntityBase  {
     public long getTagId() { return getLong(TAGID); }
     public void setTagId(long value) { setLong(TAGID, value); }
 
+    public boolean inTaglinkList(ArrayList<Taglink> list ) {
+        for( Taglink entity : list ) {
+            if ( entity.getId() == getId() )
+                return true;
+        }
+        return false;
+    }
+
+    public static ArrayList<Taglink> clearCrossReference(ArrayList<Taglink> list) {
+        for (Taglink entity : list) {
+          entity.setRefType(null);
+          entity.setRefId(null);
+          entity.setId(null);
+        }
+        return list;
+    }
 }

@@ -15,6 +15,8 @@ public class Tag extends EntityBase {
     public static final String TAGNAME = "TAGNAME";
     public static final String ACTIVE = "ACTIVE";
 
+    public static final Long ACTIVE_TRUE = 1L;
+
     public Tag() { super(); }
     public Tag(ContentValues contentValues) {
         super(contentValues);
