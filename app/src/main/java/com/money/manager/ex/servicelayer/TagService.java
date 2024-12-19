@@ -111,7 +111,7 @@ public class TagService
     public boolean isUsed(long tagId) {
         // todo non funziona
         TaglinkRepository repo = new TaglinkRepository(getContext());
-        long links = repo.count( Tag.TAGID + "=? AND ACTIVE = 1", new String[]{Long.toString(tagId)});
+        long links = repo.count( Tag.TAGID + "=? AND ACTIVE=1", new String[]{Long.toString(tagId)});
         return links > 0;
     }
 

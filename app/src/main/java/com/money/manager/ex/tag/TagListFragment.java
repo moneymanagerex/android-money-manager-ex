@@ -218,7 +218,7 @@ public class TagListFragment     extends BaseListFragment
             String whereClause = "ACTIVE = 1";
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = Tag.TAGNAME + " AND LIKE ?"; // + mCurFilter + "%'";
+                whereClause += " AND " + Tag.TAGNAME + " LIKE ?"; // + mCurFilter + "%'";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             TagRepository repo = new TagRepository(getActivity());
