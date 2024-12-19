@@ -18,6 +18,7 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -44,7 +45,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
@@ -568,6 +571,102 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setNotes(editable.toString());
             }
         });
+    }
+
+    public void initTagsControls() {
+        if( this.viewHolder.tagsListTextView == null ) return;
+
+        this.viewHolder.tagsListTextView.setOnClickListener(v -> {
+            // inizialize display
+            TaglinkRepository repo = new TaglinkRepository(getContext());
+            this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
+
+            TagRepository tagRepository = new TagRepository(getContext());
+            ArrayList<Tag> tagsList = tagRepository.getAllActiveTag();
+            boolean[] tagsFlag = new boolean[tagsList.size()];
+            String[] tagsListString = new String[tagsList.size()];
+            for (int i = 0; i < tagsList.size(); i++) {
+                tagsListString[i] = tagsList.get(i).getName();
+                // set default from mTagLink
+                long tagId = tagsList.get(i).getId().intValue();
+                if ( mTaglinks != null && mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
+                    tagsFlag[i] = true;
+                };
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            // set title
+            builder.setTitle(R.string.tagsList_transactions);
+            builder.setCancelable(false);
+            builder.setMultiChoiceItems(tagsListString, tagsFlag,  new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                    tagsFlag[i] = b;
+                }
+            });
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Initialize string builder
+                    // Save also taglink, loop at mtaglink to check actual record
+                    for (int j = 0; j < tagsList.size(); j++) {
+                        long tagId = tagsList.get(j).getId().intValue();
+                        Taglink taglink ;
+                        try {
+                            taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
+                        } catch ( Exception e) {
+                            taglink = null;
+                        }
+                        if (taglink == null ) {
+                            if ( ! tagsFlag[j] ) {
+                                // flag off and mlink not present, nothing to do
+                            } else {
+                                // flag on and mlink not present, create
+                                if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
+                                taglink = new Taglink();
+                                taglink.setRefType(transactionEntity.getTransactionModel());
+                                taglink.setRefId(transactionEntity.getId());
+                                taglink.setTagId(tagId);
+                                mTaglinks.add(taglink);
+                            }
+                        } else {
+                            if ( ! tagsFlag[j] && mTaglinks != null ) {
+                                // flag off and mlink is present, delete
+                                mTaglinks.remove(taglink);
+                            } else {
+                                // flag on and mlink present  nothing
+                            }
+                        }
+                    }
+                    // update UI field
+                    displayTags();
+                }
+            });
+
+            builder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // dismiss dialog
+                    dialogInterface.dismiss();
+                }
+            });
+
+            builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // use for loop
+                    for (int j = 0; j < tagsListString.length; j++) {
+                        // remove all selection
+                        tagsFlag[j] = false;
+                    }
+                }
+            });
+
+            // show dialog
+            builder.show();
+    });
+
     }
 
     public void initPayeeControls() {
@@ -1592,4 +1691,16 @@ public class EditTransactionCommonFunctions {
         viewHolder.splitButton.setTextColor(ContextCompat.getColor(getContext(), buttonColour));
         viewHolder.splitButton.setBackgroundColor(ContextCompat.getColor(getContext(), buttonBackground));
     }
+
+    public void saveTags() {
+        // save TagLinks
+        TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
+        if (mTaglinks != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), mTaglinks);
+        } else {
+            taglinkRepository.deleteForTransaction(transactionEntity.getId());
+        }
+
+    }
+
 }

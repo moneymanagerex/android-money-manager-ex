@@ -31,6 +31,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.scheduled.ScheduledTransactionListActivity;
@@ -101,6 +102,8 @@ public class RecurringTransactionProcess {
                 AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository( this.getContext());
                 AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
                 accountTransactionRepository.insert(accountTrx);
+                TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
+                taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
                 service.moveNextOccurrence();
 
             }
@@ -117,7 +120,6 @@ public class RecurringTransactionProcess {
             showIntent.putExtra("ID", schedTrx.trxId);
             PendingIntent showPending = PendingIntent.getActivity(getContext(), 0, showIntent, PendingIntent.FLAG_IMMUTABLE);
 
-            // todo: Actions
             Intent skipIntent = new Intent(getContext(), ScheduledTransactionListActivity.class);
             skipIntent.putExtra(ScheduledTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
             skipIntent.setAction("SKIP/"+schedTrx.trxId);

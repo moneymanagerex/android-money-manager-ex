@@ -18,7 +18,9 @@
 package com.money.manager.ex.database;
 
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.domainmodel.Taglink;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -92,4 +94,6 @@ public interface ITransactionEntity {
 
     public String getTransactionModel();
 
+    public void setTags(ArrayList<Taglink> tags) ;
+    public ArrayList<Taglink> getTags() ;
 }

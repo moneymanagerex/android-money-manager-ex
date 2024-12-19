@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -93,29 +95,22 @@ public class ScheduledTransactionListActivity
             }
 
             if (action.equals("ENTER")) {
-                // ToDo: autopost automtically, try to find a way to open directly edit
-                // showCreateTransactionActivity(trxid);
-
-//                boolean isAutoExecution = (new AppSettings(this)).getBehaviourSettings().getNotificationRecurringTransaction();
-//                if (!isAutoExecution) {  // TODO: set with dialog
-                    // showCreateTransactionActivity(trxid);
-//                } else {
                     RecurringTransactionService service = new RecurringTransactionService(trxid, this);
                     RecurringTransaction tx = service.load(trxid);
                     if ( tx.isRecurringModeAuto()) {
                         AccountTransactionRepository accountTransactionRepository = new AccountTransactionRepository(getApplicationContext());
                         AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
                         accountTransactionRepository.insert(accountTrx);
+                        TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+                        taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
                         service.moveNextOccurrence();
                     } else {
-                        // showCreateTransactionActivity(trxid);
                         Intent intent = new Intent(this, CheckingTransactionEditActivity.class);
                         intent.setAction(Intent.ACTION_INSERT);
                         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, trxid);
                         intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ScheduledTransactionListFragment.java");
                         // start for insert new transaction
                         startActivity(intent, savedInstanceState);
-//                        startActivityForResult(intent, 1002); // TODO REQUEST_ADD_TRANSACTION
                     }
 
 //                }

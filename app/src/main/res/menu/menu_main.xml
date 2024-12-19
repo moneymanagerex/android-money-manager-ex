@@ -81,6 +81,9 @@
                 <item
                     android:id="@+id/menu_payee"
                     android:title="@string/payees"/>
+
+                <item android:id="@+id/menu_tag"
+                    android:title="@string/tag"/>"
                 <item
                     android:id="@+id/menu_recurring_transaction"
                     android:title="@string/recurring_transactions"/>
