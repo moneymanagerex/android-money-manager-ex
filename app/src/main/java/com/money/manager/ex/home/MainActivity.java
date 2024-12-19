@@ -54,6 +54,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -622,6 +623,8 @@ public class MainActivity
             startActivity(intent);
         } else if (itemId == R.id.menu_payee) {
             showFragment(PayeeListFragment.class);
+        } else if (itemId == R.id.menu_tag) {
+            showFragment(TagListFragment.class);
         } else if (itemId == R.id.menu_recurring_transaction) {
             showFragment(ScheduledTransactionListFragment.class);
         } else if (itemId == R.id.menu_budgets) {
@@ -843,6 +846,11 @@ public class MainActivity
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_group)
+                        .color(iconColor)));
+        // manage: Tags
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_tag)
+                .withText(getString(R.string.tag))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_label)
                         .color(iconColor)));
         childItems.add(childTools);
 

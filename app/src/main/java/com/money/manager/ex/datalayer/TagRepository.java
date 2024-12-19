@@ -35,6 +35,7 @@ public class TagRepository extends  RepositoryBase {
 
     public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
+        // TODO: Tag has inactive flag: no delete, but set inactive
         long result = delete(Tag.TAGID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }

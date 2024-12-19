@@ -28,7 +28,7 @@ public class Tag extends EntityBase {
     public void setId(Long id) { setLong(TAGID, id); }
 
     public String getName() { return getString(TAGNAME); }
-    public void setTagname(String value) { setString(TAGNAME, value); }
+    public void setName(String value) { setString(TAGNAME, value); }
 
     public Boolean getActive() { return getLong(ACTIVE)==1L; }
     public void setActive(Boolean value) { setLong(ACTIVE, value ? 1L : 0L); }
