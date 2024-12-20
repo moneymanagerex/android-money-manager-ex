@@ -203,6 +203,7 @@
     <string name="widget_summary">Celkem</string>
     <string name="widget_all_accounts">Všechny účty</string>
     <string name="widget_add_transaction">Přidat transakci</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Žádný</string>
     <string name="once">Jednou</string>

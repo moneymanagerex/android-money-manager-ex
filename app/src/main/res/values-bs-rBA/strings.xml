@@ -203,6 +203,7 @@
     <string name="widget_summary">Sažetak</string>
     <string name="widget_all_accounts">Svi računi</string>
     <string name="widget_add_transaction">Dodaj transakciju</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nijedan</string>
     <string name="once">Jednom</string>
