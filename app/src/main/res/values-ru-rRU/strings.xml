@@ -216,6 +216,7 @@
     <string name="widget_summary">Сводка</string>
     <string name="widget_all_accounts">Все счета</string>
     <string name="widget_add_transaction">Добавить транзакцию</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Нет</string>
     <string name="once">Однократно</string>

@@ -102,6 +102,7 @@
     <!-- 20120906 -->
     <!-- transaction list periods -->
     <string name="widget_summary">Summering</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="once">En gång</string>
     <string name="weekly">Veckovis</string>

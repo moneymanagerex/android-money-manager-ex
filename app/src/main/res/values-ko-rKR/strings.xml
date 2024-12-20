@@ -79,6 +79,7 @@
     <!-- transaction list periods -->
     <string name="current_month">이번 달</string>
     <string name="widget_summary">요약</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <!-- EP Recurring mode recurring_mode -->
     <!-- 20121121 -->

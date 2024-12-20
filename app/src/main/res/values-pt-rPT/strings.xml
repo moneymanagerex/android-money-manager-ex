@@ -206,6 +206,7 @@
     <string name="widget_summary">Resumo</string>
     <string name="widget_all_accounts">Todas as Contas</string>
     <string name="widget_add_transaction">Adicionar Operação</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nenhum</string>
     <string name="once">Uma vez</string>

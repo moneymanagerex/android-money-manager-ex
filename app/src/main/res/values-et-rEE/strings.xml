@@ -103,6 +103,7 @@
     <!-- transaction list periods -->
     <string name="widget_all_accounts">Kõik kontod</string>
     <string name="widget_add_transaction">Lisa ülekanne</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Mitte ükski</string>
     <string name="once">Üks kord</string>

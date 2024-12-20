@@ -203,6 +203,7 @@
     <string name="widget_summary">סיכום</string>
     <string name="widget_all_accounts">כל החשבונות</string>
     <string name="widget_add_transaction">הוסף תנועה</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">ללא</string>
     <string name="once">חד פעמי</string>

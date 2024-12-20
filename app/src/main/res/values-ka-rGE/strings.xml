@@ -144,6 +144,7 @@
     <string name="current_month">მიმდინარე თვე</string>
     <string name="widget_summary">შეჯამება</string>
     <string name="widget_add_transaction">ტრანზაქციის დამატება</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <!-- EP Recurring mode recurring_mode -->
     <!-- 20121121 -->

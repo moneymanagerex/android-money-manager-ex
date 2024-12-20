@@ -217,6 +217,7 @@
     <string name="widget_summary">摘要</string>
     <string name="widget_all_accounts">所有账户</string>
     <string name="widget_add_transaction">添加交易</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">无</string>
     <string name="once">仅一次</string>

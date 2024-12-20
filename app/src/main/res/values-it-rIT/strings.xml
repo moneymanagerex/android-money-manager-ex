@@ -218,6 +218,7 @@
     <string name="widget_summary">Riepilogo</string>
     <string name="widget_all_accounts">Tutti i conti</string>
     <string name="widget_add_transaction">Aggiungi Transazione</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nessuna</string>
     <string name="once">Una volta</string>

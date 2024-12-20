@@ -218,6 +218,7 @@
     <string name="widget_summary">Összesen</string>
     <string name="widget_all_accounts">Minden számla</string>
     <string name="widget_add_transaction">Ügylet hozzáadása</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Soha</string>
     <string name="once">Egyszer</string>
