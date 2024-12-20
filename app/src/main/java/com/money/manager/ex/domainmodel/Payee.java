@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
-
 import com.money.manager.ex.Constants;
 
 /**
@@ -26,35 +24,14 @@ import com.money.manager.ex.Constants;
 public class Payee
     extends EntityBase {
 
-    public static final String PAYEEID = "PAYEEID";
-    public static final String PAYEENAME = "PAYEENAME";
+    public static final String ID = "PAYEEID";
+    public static final String NAME = "PAYEENAME";
     public static final String CATEGID = "CATEGID";
     public static final String NUMBER = "NUMBER";
     public static final String ACTIVE = "ACTIVE";
 
     public Payee() {
-        super();
-        setLong(Payee.ACTIVE, 1L);
-    }
-
-    public Payee(ContentValues contentValues) {
-        super(contentValues);
-    }
-
-    public Long getId() {
-        return getLong(PAYEEID);
-    }
-
-    public void setId(Long value) {
-        setLong(Payee.PAYEEID, value);
-    }
-
-    public String getName() {
-        return getString(Payee.PAYEENAME);
-    }
-
-    public void setName(String value) {
-        setString(Payee.PAYEENAME, value);
+        super(ID, NAME, ACTIVE);
     }
 
     public Long getCategoryId() {

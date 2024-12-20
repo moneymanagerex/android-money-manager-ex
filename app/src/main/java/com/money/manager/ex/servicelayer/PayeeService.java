@@ -42,7 +42,7 @@ public class PayeeService
 
     public Payee loadByName(String name) {
         Payee payee = null;
-        String selection = Payee.PAYEENAME + "='" + name + "'";
+        String selection = Payee.NAME + "='" + name + "'";
 
         Cursor cursor = getContext().getContentResolver().query(
                 this.payeeRepository.getUri(),
@@ -67,18 +67,18 @@ public class PayeeService
 
         if(TextUtils.isEmpty(name)) return result;
 
-        String selection = Payee.PAYEENAME + "=?";
+        String selection = Payee.NAME + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(
                 payeeRepository.getUri(),
-                new String[]{ Payee.PAYEEID },
+                new String[]{ Payee.ID},
                 selection,
                 new String[] { name },
                 null);
         if (cursor == null) return Constants.NOT_SET;
 
         if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
+            result = cursor.getInt(cursor.getColumnIndex(Payee.ID));
         }
 
         cursor.close();
@@ -121,11 +121,11 @@ public class PayeeService
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(Payee.PAYEENAME, name);
+        values.put(Payee.NAME, name);
 
         return getContext().getContentResolver().update(payeeRepository.getUri(),
                 values,
-                Payee.PAYEEID + "=?",
+                Payee.ID + "=?",
                 new String[]{Long.toString(id)});
     }
 

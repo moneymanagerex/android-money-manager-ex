@@ -21,16 +21,10 @@ public class Taglink extends EntityBase  {
     public static final String REFID = "REFID";
     public static final String TAGID = "TAGID";
 
-    public Taglink() { super(); }
+    public Taglink() { super(TAGLINKID,null, null); }
     public Taglink(ContentValues contentValues) {
         super(contentValues);
     }
-
-    @Override
-    public Long getId() { return getLong(TAGLINKID); }
-
-    @Override
-    public void setId(Long id) { setLong(TAGLINKID, id); }
 
     public String getRefType() { return getString(REFTYPE); }
     public void setRefType(String value) { setString(REFTYPE, value); }
@@ -43,7 +37,7 @@ public class Taglink extends EntityBase  {
 
     public boolean inTaglinkList(ArrayList<Taglink> list ) {
         for( Taglink entity : list ) {
-            if ( entity.getId() == getId() )
+            if ( entity.getId().longValue() == getId().longValue() )
                 return true;
         }
         return false;

@@ -39,12 +39,27 @@ import info.javaperformance.money.MoneyFactory;
 public class EntityBase
     implements IEntity {
 
+    public static String ID = "_ID";
+    public static String NAME = "NAME";
+    public static String ACTIVE = "ACTIVE";
+    public static final Long ACTIVE_TRUE = 1L;
+    public static final Long ACTIVE_FALSE = 0L;
+
     /**
      * Default constructor.
      */
     protected EntityBase() {
         contentValues = new ContentValues();
     }
+
+    protected EntityBase(String mID, String mName, String mActive)  {
+        contentValues = new ContentValues();
+        ID = mID;
+        NAME = mName;
+        ACTIVE = mActive;
+        if (!(ACTIVE == null) ) setActive(true);
+    }
+
 
     protected EntityBase(ContentValues contentValues) {
         this.contentValues = contentValues;
@@ -69,6 +84,15 @@ public class EntityBase
     protected void setBoolean(String column, Boolean value) {
         contentValues.put(column, value.toString().toUpperCase());
     }
+
+    protected Boolean getBooleanFromNumber(String column) {
+        return ( contentValues.getAsLong(column).longValue() == ACTIVE_TRUE );
+    }
+
+    protected void setBooleanAsNumber(String column, Boolean value) {
+        contentValues.put(column, (value ? ACTIVE_TRUE : ACTIVE_FALSE) );
+    }
+
 
     protected Money getMoney(String fieldName) {
         String value = contentValues.getAsString(fieldName);
@@ -135,10 +159,49 @@ public class EntityBase
     }
 
     // Abstract method (must be implemented by subclasses)
-    public void setId(Long id) {
-        throw new UnsupportedOperationException("Subclasses must override this method");
+    public void setId(Long value) {
+        try{
+            setLong(ID, value);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
     }
     public Long getId() {
-        throw new UnsupportedOperationException("Subclasses must override this method");
+        try{
+            return getLong(ID);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
     }
+
+    public void setName(String value) {
+        try {
+            setString(NAME, value);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
+    }
+    public String getName() {
+        try{
+            return getString(NAME);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
+    }
+
+    public void setActive(boolean value) {
+        try {
+            setBooleanAsNumber(ACTIVE, value);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
+    }
+    public boolean getActive() {
+        try{
+            return getBooleanFromNumber(ACTIVE);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Subclasses must override this method");
+        }
+    }
+
 }

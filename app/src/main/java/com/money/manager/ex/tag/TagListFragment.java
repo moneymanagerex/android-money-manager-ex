@@ -46,7 +46,7 @@ public class TagListFragment     extends BaseListFragment
 
     private static final int ID_LOADER_TAG = 0;
 
-    private static final String SORT_BY_NAME = "UPPER(" + Tag.TAGNAME + ")";
+    private static final String SORT_BY_NAME = "UPPER(" + Tag.NAME + ")";
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE TAGID = TAGLINK_V1.TAGID ) DESC";
 
     private Context mContext;
@@ -72,7 +72,7 @@ public class TagListFragment     extends BaseListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { Tag.TAGNAME },
+                layout, null, new String[] { Tag.NAME},
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
@@ -149,7 +149,7 @@ public class TagListFragment     extends BaseListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Tag.TAGNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Tag.NAME)));
 
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
@@ -218,7 +218,7 @@ public class TagListFragment     extends BaseListFragment
             String whereClause = "ACTIVE = 1";
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause += " AND " + Tag.TAGNAME + " LIKE ?"; // + mCurFilter + "%'";
+                whereClause += " AND " + Tag.NAME + " LIKE ?"; // + mCurFilter + "%'";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             TagRepository repo = new TagRepository(getActivity());
@@ -280,8 +280,8 @@ public class TagListFragment     extends BaseListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            long tagId = cursor.getLong(cursor.getColumnIndex(Tag.TAGID));
-            String tagName = cursor.getString(cursor.getColumnIndex(Tag.TAGNAME));
+            long tagId = cursor.getLong(cursor.getColumnIndex(Tag.ID));
+            String tagName = cursor.getString(cursor.getColumnIndex(Tag.NAME));
 
             sendResultToActivity(tagId, tagName);
 

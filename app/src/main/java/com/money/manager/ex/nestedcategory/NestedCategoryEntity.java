@@ -23,8 +23,6 @@ import com.money.manager.ex.domainmodel.EntityBase;
 
 public class NestedCategoryEntity
         extends EntityBase {
-    public static long ACTIVE = 1;
-    public static long NOT_ACTIVE = 0;
 
     public NestedCategoryEntity(Category category) {
         super();
@@ -32,11 +30,11 @@ public class NestedCategoryEntity
     }
 
     public NestedCategoryEntity() {
-        super();
+        super(QueryNestedCategory.CATEGID, QueryNestedCategory.CATEGNAME,QueryNestedCategory.ACTIVE);
         setCategoryId(Constants.NOT_SET);
         setCategoryName(Constants.EMPTY_STRING);
         setParentId(Constants.NOT_SET);
-        setActive(Constants.NOT_SET);
+        setActive(false);
     }
 
     public NestedCategoryEntity(long categoryId, String categoryName, long parentId) {
@@ -45,19 +43,19 @@ public class NestedCategoryEntity
     }
 
     public long getCategoryId() {
-        return getLong(QueryNestedCategory.CATEGID);
+        return getId();
     }
 
     public void setCategoryId(long id) {
-        setLong(QueryNestedCategory.CATEGID, id);
+        setId(id);
     }
 
     public String getCategoryName() {
-        return getString(QueryNestedCategory.CATEGNAME);
+        return getName();
     }
 
     public void setCategoryName(String name) {
-        setString(QueryNestedCategory.CATEGNAME, name);
+        setName(name);
     }
 
     public long getParentId() {
@@ -84,13 +82,6 @@ public class NestedCategoryEntity
         setString(QueryNestedCategory.BASENAME, basename);
     }
 
-    public long getActive() {
-        return getLong(QueryNestedCategory.ACTIVE);
-    }
-
-    public void setActive(long active) {
-        setLong(QueryNestedCategory.ACTIVE, active);
-    }
 
     public long getLevel() {
         return getLong(QueryNestedCategory.LEVEL);
@@ -104,7 +95,7 @@ public class NestedCategoryEntity
         setCategoryId(categoryId);
         setCategoryName(categoryName);
         setParentId(parentId);
-        setActive(ACTIVE);
+        setActive(true);
     }
 
     public boolean hasParent() {

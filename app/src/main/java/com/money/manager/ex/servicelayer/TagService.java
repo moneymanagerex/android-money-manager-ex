@@ -22,8 +22,6 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.Tag;
@@ -43,7 +41,7 @@ public class TagService
 
     public Tag loadByName(String name) {
         Tag tag = null;
-        String selection = Tag.TAGNAME + "='" + name + "'";
+        String selection = Tag.NAME + "='" + name + "'";
 
         Cursor cursor = getContext().getContentResolver().query(
                 this.tagRepository.getUri(),
@@ -68,18 +66,18 @@ public class TagService
 
         if(TextUtils.isEmpty(name)) return result;
 
-        String selection = Tag.TAGNAME + "=?";
+        String selection = Tag.NAME + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(
                 tagRepository.getUri(),
-                new String[]{ Tag.TAGID },
+                new String[]{ Tag.ID},
                 selection,
                 new String[] { name },
                 null);
         if (cursor == null) return Constants.NOT_SET;
 
         if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Tag.TAGID));
+            result = cursor.getInt(cursor.getColumnIndex(Tag.ID));
         }
 
         cursor.close();
@@ -111,7 +109,7 @@ public class TagService
     public boolean isUsed(long tagId) {
         // todo non funziona
         TaglinkRepository repo = new TaglinkRepository(getContext());
-        long links = repo.count( Tag.TAGID + "=?", new String[]{Long.toString(tagId)});
+        long links = repo.count( Tag.ID + "=?", new String[]{Long.toString(tagId)});
         return links > 0;
     }
 
@@ -121,11 +119,11 @@ public class TagService
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(Tag.TAGNAME, name);
+        values.put(Tag.NAME, name);
 
         return getContext().getContentResolver().update(tagRepository.getUri(),
                 values,
-                Tag.TAGID + "=?",
+                Tag.ID + "=?",
                 new String[]{Long.toString(id)});
     }
 

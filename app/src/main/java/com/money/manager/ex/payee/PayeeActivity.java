@@ -19,13 +19,8 @@ package com.money.manager.ex.payee;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
-import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.common.BaseListFragment;
-
-import androidx.fragment.app.FragmentManager;
 
 public class PayeeActivity
     extends MmxBaseFragmentActivity {
@@ -39,39 +34,15 @@ public class PayeeActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_toolbar_activity);
+        super.inizializeCommon(listFragment,FRAGMENTTAG);
 
-        // enable home button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // process intent
         Intent intent = getIntent();
         String action = intent.getAction();
-
         if (!TextUtils.isEmpty(action)) {
             PayeeListFragment.mAction = action;
         }
-        FragmentManager fm = getSupportFragmentManager();
-        // attach fragment activity
-        if (fm.findFragmentById(R.id.content) == null) {
-            // todo: use .replace
-            fm.beginTransaction()
-                .add(R.id.content, listFragment, FRAGMENTTAG)
-                .commit();
-        }
+
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // set result
-            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
-                    .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.getActivity().setResult(RESULT_CANCELED);
-                fragment.getActivity().finish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
+
 }

@@ -25,8 +25,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.provider.DocumentsContract;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +54,9 @@ public abstract class MmxBaseFragmentActivity
 
     private Toolbar mToolbar;
     private boolean mDisplayHomeAsUpEnabled = false;
+
+    private BaseListFragment listFragment;
+    private String FRAGMENTTAG = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,4 +276,41 @@ public abstract class MmxBaseFragmentActivity
        // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
         directoryPickerLauncher.launch(intent);
     }
+
+    protected void inizializeCommon(BaseListFragment mListFragment, String mFragmentTAG) {
+        setContentView(R.layout.base_toolbar_activity);
+        listFragment = mListFragment;
+        FRAGMENTTAG = mFragmentTAG;
+
+        // enable home button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // process intent
+        FragmentManager fm = getSupportFragmentManager();
+        // attach fragment activity
+        if (fm.findFragmentById(R.id.content) == null) {
+            // todo: use .replace
+            fm.beginTransaction()
+                    .add(R.id.content, listFragment, FRAGMENTTAG)
+                    .commit();
+        }
+
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (FRAGMENTTAG == null) return super.onKeyUp(keyCode, event);
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // set result
+            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
+                    .findFragmentByTag(FRAGMENTTAG);
+            if (fragment != null) {
+                fragment.getActivity().setResult(RESULT_CANCELED);
+                fragment.getActivity().finish();
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 }

@@ -19,12 +19,7 @@ package com.money.manager.ex.tag;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
-import androidx.fragment.app.FragmentManager;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class TagActivity
@@ -39,39 +34,15 @@ public class TagActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_toolbar_activity);
 
-        // enable home button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        super.inizializeCommon(listFragment,FRAGMENTTAG);
 
-        // process intent
         Intent intent = getIntent();
         String action = intent.getAction();
-
         if (!TextUtils.isEmpty(action)) {
             TagListFragment.mAction = action;
         }
-        FragmentManager fm = getSupportFragmentManager();
-        // attach fragment activity
-        if (fm.findFragmentById(R.id.content) == null) {
-            // todo: use .replace
-            fm.beginTransaction()
-                    .add(R.id.content, listFragment, FRAGMENTTAG)
-                    .commit();
-        }
+
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // set result
-            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
-                    .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.getActivity().setResult(RESULT_CANCELED);
-                fragment.getActivity().finish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

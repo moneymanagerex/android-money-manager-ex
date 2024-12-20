@@ -70,7 +70,7 @@ public class PayeeListFragment
     private static final int ID_LOADER_PAYEE = 0;
 
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
-    private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
+    private static final String SORT_BY_NAME = "UPPER(" + Payee.NAME + ")";
 
     private Context mContext;
     private String mCurFilter;
@@ -95,7 +95,7 @@ public class PayeeListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { Payee.PAYEENAME },
+                layout, null, new String[] { Payee.NAME},
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
@@ -179,7 +179,7 @@ public class PayeeListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.NAME)));
 
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
@@ -247,7 +247,7 @@ public class PayeeListFragment
             String whereClause = null;
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
+                whereClause = Payee.NAME + " LIKE ?"; // + mCurFilter + "%'";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             PayeeRepository repo = new PayeeRepository(getActivity());
@@ -309,8 +309,8 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            long payeeId = cursor.getLong(cursor.getColumnIndex(Payee.PAYEEID));
-            String payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
+            long payeeId = cursor.getLong(cursor.getColumnIndex(Payee.ID));
+            String payeeName = cursor.getString(cursor.getColumnIndex(Payee.NAME));
 
             sendResultToActivity(payeeId, payeeName);
 

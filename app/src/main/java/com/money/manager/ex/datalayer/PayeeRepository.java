@@ -37,8 +37,8 @@ public class PayeeRepository
     @Override
     public String[] getAllColumns() {
         return new String[] { "PAYEEID AS _id",
-                Payee.PAYEEID,
-                Payee.PAYEENAME,
+                Payee.ID,
+                Payee.NAME,
                 Payee.CATEGID,
                 Payee.NUMBER,
                 Payee.ACTIVE
@@ -48,23 +48,21 @@ public class PayeeRepository
     public boolean delete(long id) {
         if (id == Constants.NOT_SET) return false;
 
-        long result = delete(Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
+        long result = delete(Payee.ID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
 
     public Payee load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Payee payee = (Payee) super.first(Payee.class,
+        return (Payee) super.first(Payee.class,
                 getAllColumns(),
-                Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id),
+                Payee.ID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);
-
-        return payee;
     }
 
     public boolean save(Payee payee) {
         long id = payee.getId();
-        return super.update(payee, Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
+        return super.update(payee, Payee.ID + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 }

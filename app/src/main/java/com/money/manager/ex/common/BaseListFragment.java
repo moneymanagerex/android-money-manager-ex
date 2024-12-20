@@ -54,6 +54,8 @@ public abstract class BaseListFragment
     // hint search view
     private String mSearchHint = "";
 
+    public static String mAction = null;
+
     // abstract method
     public abstract String getSubTitle();
 
@@ -90,7 +92,7 @@ public abstract class BaseListFragment
         super.onStart();
         // show tooltip wildcard
         // check search type
-        Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
+        boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isSearchMenuVisible() && !searchType && !isShowTipsWildcard) {
