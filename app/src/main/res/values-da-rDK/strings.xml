@@ -216,6 +216,7 @@
     <string name="widget_summary">Oversigt</string>
     <string name="widget_all_accounts">Alle konti</string>
     <string name="widget_add_transaction">Tilføj transaktion</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Ingen</string>
     <string name="once">En gang</string>

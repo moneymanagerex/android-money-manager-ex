@@ -179,6 +179,7 @@
     <string name="transaction_number">Transaction number</string>
     <string name="widget_summary">Summary</string>
     <string name="widget_add_transaction">Add Transaction</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">None</string>
     <string name="weekly">Weekly</string>

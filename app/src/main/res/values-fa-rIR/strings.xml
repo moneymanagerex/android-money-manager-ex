@@ -136,6 +136,7 @@
     <string name="error_intent_pick_file">هیچ فعالیتی برای مدیریت Intent Pick File یافت نشد</string>
     <!-- transaction list periods -->
     <string name="widget_summary">خلاصه</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">هیچ</string>
     <string name="notification_click_to_check_repeating_transaction">بررسی معوقه تراکنش</string>

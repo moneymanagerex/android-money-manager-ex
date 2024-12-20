@@ -217,6 +217,7 @@
     <string name="widget_summary">مُلخص</string>
     <string name="widget_all_accounts">كافة الحسابات</string>
     <string name="widget_add_transaction">إضافة مُعاملة</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">لا شيء</string>
     <string name="once">مرة واحدة</string>

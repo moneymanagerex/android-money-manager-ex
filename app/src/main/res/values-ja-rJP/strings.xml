@@ -203,6 +203,7 @@
     <string name="widget_summary">概要</string>
     <string name="widget_all_accounts">すべての口座</string>
     <string name="widget_add_transaction">取引を追加</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">なし</string>
     <string name="once">1 回</string>

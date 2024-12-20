@@ -203,6 +203,7 @@
     <string name="widget_summary">Ringkasan</string>
     <string name="widget_all_accounts">Semua akun</string>
     <string name="widget_add_transaction">Tambahkan transaksi</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Tidak ada</string>
     <string name="once">Sekali</string>

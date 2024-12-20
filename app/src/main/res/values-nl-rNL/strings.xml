@@ -206,6 +206,7 @@
     <string name="widget_summary">Overzicht</string>
     <string name="widget_all_accounts">Alle rekeningen</string>
     <string name="widget_add_transaction">Voeg transactie toe</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Geen</string>
     <string name="once">Eenmalig</string>
