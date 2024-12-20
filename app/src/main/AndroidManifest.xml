@@ -432,6 +432,16 @@
             android:resource="@dimen/app_minimumsize_h" />
 
         <activity android:name=".investment.PriceEditActivity" />
+
+        <!-- Error Handling -->
+        <activity
+            android:process=":report_process"
+            android:name=".errorhandle.AuthActivity"
+            android:label="@string/title_activity_auth"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,6 +55,9 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.errorhandle.AuthActivity;
+import com.money.manager.ex.errorhandle.LoggingExceptionHandler;
+import com.money.manager.ex.errorhandle.MyExceptionHandler;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -172,6 +176,12 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new LoggingExceptionHandler(this);
+
+        // test
+        int test = 0;
+        if (test == 1) throw new IllegalStateException("This state is not allowed.");
+        if ( test == 2) {test = 0; test = 1 / test;};
 
         MmexApplication.getApp().iocComponent.inject(this);
 
