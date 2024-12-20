@@ -36,7 +36,6 @@ import info.javaperformance.money.Money;
  * Source is QueryAllData.
  * Note: This data is readonly! Records can not be created or updated.
  */
-// TODO: Replace QueryAllData with QueryMobileData
 public class AccountTransactionDisplay
     extends EntityBase {
 

@@ -30,9 +30,11 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -471,6 +473,12 @@ public class RecurringTransactionService
         accountTrx.setCategoryId(scheduledTrx.getCategoryId());
         accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
         accountTrx.setNotes(scheduledTrx.getNotes());
+
+        // tags
+        TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
+        accountTrx.setTags(
+                Taglink.clearCrossReference(
+                        taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         return  accountTrx;
     }

@@ -2,7 +2,6 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.nfc.TagLostException;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
@@ -60,8 +59,39 @@ public class TaglinkRepository extends  RepositoryBase {
     }
 
     public boolean save(Taglink taglink) {
-        long id = taglink.getId();
-        return super.update(taglink, Taglink.TAGLINKID + "=" + id);
+        try {
+            long id = taglink.getId();
+            return update(taglink, Taglink.TAGLINKID + "=" + id);
+        } catch (Exception e) {
+            return ( add(taglink) > 0 ) ;
+        }
+    }
+
+    public boolean save(ArrayList<Taglink> taglinks) {
+        for (Taglink taglink : taglinks) {
+            if ( ! save(taglink) )
+                return false;
+        }
+        return true;
+    }
+
+    public boolean saveAllFor(String model, long refId, ArrayList<Taglink> taglinks) {
+        if ( taglinks == null || taglinks.size() == 0 ) {
+            deleteForType(refId, model);
+            return true;
+        }
+        ArrayList<Taglink> old = loadTaglinksFor(refId, model);
+        for (Taglink entity : old) {
+            if (!entity.inTaglinkList(taglinks))
+                delete(entity.getId());
+        }
+
+        // be sure to set refid
+        for ( int i = 0; i < taglinks.size(); i++ ) {
+            taglinks.get(i).setRefId(refId);
+            taglinks.get(i).setRefType(model);
+        }
+        return save(taglinks);
     }
 
     public ArrayList<Taglink> loadTaglinksFor(long refId, String refType) {

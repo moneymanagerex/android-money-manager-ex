@@ -1,12 +1,19 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import java.util.ArrayList;
 
 public class TagRepository extends  RepositoryBase {
     public TagRepository(Context context) {
@@ -28,6 +35,7 @@ public class TagRepository extends  RepositoryBase {
 
     public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
+        // TODO: Tag has inactive flag: no delete, but set inactive
         long result = delete(Tag.TAGID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
@@ -46,6 +54,27 @@ public class TagRepository extends  RepositoryBase {
     public boolean save(Tag entity) {
         long id = entity.getId();
         return super.update(entity, Tag.TAGID + "=" + id);
+    }
+
+    public ArrayList<Tag> getAllActiveTag() {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(Tag.ACTIVE, "=", Tag.ACTIVE_TRUE);
+
+        Cursor cursor = openCursor(this.getAllColumns(),
+                where.getWhere(),
+                null,
+                "lower (" + Tag.TAGNAME + ")");
+
+        ArrayList<Tag> listEntity = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            Tag entity = new Tag();
+            entity.loadFromCursor(cursor);
+            listEntity.add(entity);
+        }
+        cursor.close();
+
+        return listEntity;
     }
 
 }

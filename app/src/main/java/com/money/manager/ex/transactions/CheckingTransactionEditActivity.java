@@ -43,6 +43,7 @@ import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -385,6 +386,9 @@ public class CheckingTransactionEditActivity
 
         // notes
         mCommon.initNotesControls();
+
+        // Tag
+        mCommon.initTagsControls();
     }
 
     private boolean loadTransaction(long transId) {
@@ -460,6 +464,10 @@ public class CheckingTransactionEditActivity
 
         // e splits
         createSplitCategoriesFromRecurringTransaction();
+
+        // tags
+        TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+        mCommon.mTaglinks = Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel()));
 
         return true;
     }
@@ -796,6 +804,9 @@ public class CheckingTransactionEditActivity
                 return false;
             }
         }
+
+        mCommon.saveTags();
+
         return true;
     }
 }

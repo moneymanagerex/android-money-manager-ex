@@ -232,7 +232,17 @@
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
     <string name="widget_add_transaction">Add Transaction</string>
+
+    <!-- TAG -->
+    <string name="tag">Tag/Label</string>
     <string name="tagsList_transactions">Tags for transaction</string>
+    <string name="tag_name">Tag name</string>
+    <string name="edit_tagName">Edit Tag</string>
+    <string name="delete_tag">Delete Tag</string>
+    <string name="select_tag">Select Tag</string>
+    <string name="tag_empty_list">No Tag has been found. To create one, tap the green plus button.</string>
+    <string name="tag_can_not_deleted">The selected tag can not be deleted because it is referenced</string>
+    <string name="db_tag_update_failed">Updating Tag failed</string>
 
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">None</string>
