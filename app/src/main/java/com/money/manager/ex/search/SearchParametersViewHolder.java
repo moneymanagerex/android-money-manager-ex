@@ -37,6 +37,7 @@ public class SearchParametersViewHolder {
     public TextView txtSelectPayee;
     public TextView txtDateTo;
     public EditText edtNotes;
+    public TextView txtSelectTag;
 
     public SearchParametersViewHolder(View view) {
         // Initialize views using findViewById
@@ -48,5 +49,6 @@ public class SearchParametersViewHolder {
         txtSelectPayee = view.findViewById(R.id.textViewSelectPayee);
         txtDateTo = view.findViewById(R.id.textViewToDate);
         edtNotes = view.findViewById(R.id.editTextNotes);
+        txtSelectTag = view.findViewById(R.id.textViewSelectTag);
     }
 }

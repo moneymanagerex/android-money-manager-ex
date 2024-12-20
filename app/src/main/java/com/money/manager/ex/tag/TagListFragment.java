@@ -30,11 +30,13 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.domainmodel.Tag;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -200,12 +202,12 @@ public class TagListFragment     extends BaseListFragment
 
             case VIEW_TRANSACTIONS:
                 // TODO: implement search parameter
-                Toast.makeText(getContext(), "View Transaction is still not implemented", Toast.LENGTH_SHORT).show();
-//                SearchParameters parameters = new SearchParameters();
-//                parameters.tagId = tag.getId();
-//                parameters.tagName = tag.getName();
-//                Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
-//                startActivity(intent);
+//                Toast.makeText(getContext(), "View Transaction is still not implemented", Toast.LENGTH_SHORT).show();
+                SearchParameters parameters = new SearchParameters();
+                parameters.tagId = tag.getId();
+                parameters.tagName = tag.getName();
+                Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
+                startActivity(intent);
         }
         return false;
     }
