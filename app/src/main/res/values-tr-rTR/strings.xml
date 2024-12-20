@@ -203,6 +203,7 @@
     <string name="widget_summary">Özet</string>
     <string name="widget_all_accounts">Tüm Hesaplar</string>
     <string name="widget_add_transaction">İşlem Ekle</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Hiçbiri</string>
     <string name="once">Bir defa</string>

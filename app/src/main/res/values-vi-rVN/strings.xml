@@ -203,6 +203,7 @@
     <string name="widget_summary">Tóm lược</string>
     <string name="widget_all_accounts">Tất cả tài khoản</string>
     <string name="widget_add_transaction">Thêm giao dịch</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Không</string>
     <string name="once">Chỉ một lần</string>

@@ -216,6 +216,7 @@
     <string name="widget_summary">Підсумок</string>
     <string name="widget_all_accounts">Всі рахунки</string>
     <string name="widget_add_transaction">Додати транзакцію</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Жодного</string>
     <string name="once">Один раз</string>

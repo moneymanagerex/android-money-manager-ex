@@ -217,6 +217,7 @@
     <string name="widget_summary">Übersicht</string>
     <string name="widget_all_accounts">Alle Konten</string>
     <string name="widget_add_transaction">Transaktion hinzufügen</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nichts</string>
     <string name="once">Einmalig</string>

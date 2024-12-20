@@ -147,6 +147,7 @@
     <string name="last7days">Poslednjih 7 dana</string>
     <string name="last15days">Poslednje 2 nedelje</string>
     <string name="widget_summary">Pregled</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Ništa</string>
     <string name="once">Jednom</string>

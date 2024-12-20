@@ -203,6 +203,7 @@
     <string name="widget_summary">خلاصہ</string>
     <string name="widget_all_accounts">تمام اکاؤنٹ</string>
     <string name="widget_add_transaction">لین دین کا ا ضافہ کریں</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">کوئی نہیں</string>
     <string name="once">ایک بار</string>

@@ -203,6 +203,7 @@
     <string name="widget_summary">Sumar</string>
     <string name="widget_all_accounts">Toate conturile</string>
     <string name="widget_add_transaction">Adaugă Tranzacție</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Niciunul</string>
     <string name="once">O singură dată</string>

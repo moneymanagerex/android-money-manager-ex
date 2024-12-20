@@ -202,6 +202,7 @@
     <string name="widget_summary">Celkom</string>
     <string name="widget_all_accounts">Všetky účty</string>
     <string name="widget_add_transaction">Pridať transakciu</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Žiadny</string>
     <string name="once">Raz</string>

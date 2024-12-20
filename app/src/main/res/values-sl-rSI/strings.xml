@@ -213,6 +213,7 @@
     <string name="widget_summary">Povzetek</string>
     <string name="widget_all_accounts">Vsi računi</string>
     <string name="widget_add_transaction">Dodaj transakcijo</string>
+    <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nobena</string>
     <string name="once">Enkrat</string>
