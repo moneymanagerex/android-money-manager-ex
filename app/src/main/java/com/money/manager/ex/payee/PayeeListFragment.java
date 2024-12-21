@@ -383,7 +383,7 @@ public class PayeeListFragment
                         switch (type) {
                             case INSERT:
                                 Payee payee = service.createNew(name);
-                                if (payee != null) {
+                                if (payee != null && payee.getId() != null) {
                                     // Created a new payee. But only if picking a payee for another activity.
                                     if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
                                         // Select it and close.
