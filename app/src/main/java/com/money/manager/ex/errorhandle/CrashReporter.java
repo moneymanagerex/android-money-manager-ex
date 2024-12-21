@@ -1,10 +1,48 @@
 package com.money.manager.ex.errorhandle;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
-public class LoggingExceptionHandlerDetail {
+/**
+ * Activity based Exception handler ...
+ */
+public class CrashReporter implements Thread.UncaughtExceptionHandler {
+
+    private final Context mContext;
+    private final Thread.UncaughtExceptionHandler rootHandler;
+
+    public CrashReporter(Context context) {
+        mContext = context;
+        // we should store the current exception handler -- to invoke it for all not handled exceptions ...
+        rootHandler = Thread.getDefaultUncaughtExceptionHandler();
+        // we replace the exception handler now with us -- we will properly dispatch the exceptions ...
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+
+    @Override
+    public void uncaughtException(final Thread thread, final Throwable ex) {
+        // note we can't just open in Android an dialog etc. we have to use Intents here
+        // http://stackoverflow.com/questions/13416879/show-a-dialog-in-thread-setdefaultuncaughtexceptionhandler
+
+        Intent registerActivity = new Intent(mContext, CrashReportActivity.class);
+        registerActivity.setAction("HANDLE_ERROR");
+        registerActivity.putExtra("ERROR", CrashReporter.class.getName());
+        registerActivity.putExtra(Intent.EXTRA_TEXT, generateReport(thread,ex));
+        registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        mContext.startActivity(registerActivity);
+
+//        rootHandler.uncaughtException(thread, ex);
+
+        // make sure we die, otherwise the app will hang ...
+        android.os.Process.killProcess(android.os.Process.myPid());
+        // sometimes on older android version killProcess wasn't enough -- strategy pattern should be considered here
+        System.exit(0);
+
+    }
 
     public static String generateReport(final Thread t, final Throwable e) {
         StackTraceElement[] arr = e.getStackTrace();
@@ -62,9 +100,7 @@ public class LoggingExceptionHandlerDetail {
         report.append(Build.VERSION.INCREMENTAL);
         report.append("\n");
         report.append(lineSeperator);
-
-//        Log.e("Report ::", report.toString());
-
         return  report.toString();
     }
+
 }
