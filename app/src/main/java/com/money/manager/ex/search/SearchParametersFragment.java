@@ -61,6 +61,7 @@ import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.tag.TagActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -199,6 +200,16 @@ public class SearchParametersFragment
             }
         });
 
+        //Payee
+        viewHolder.txtSelectTag.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TagActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, RequestCodes.TAG);
+            }
+        });
+
         //Category
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
@@ -246,6 +257,10 @@ public class SearchParametersFragment
             case RequestCodes.PAYEE:
                 viewHolder.txtSelectPayee.setTag(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
+                break;
+            case RequestCodes.TAG:
+                viewHolder.txtSelectTag.setTag(data.getLongExtra(TagActivity.INTENT_RESULT_TAGID, Constants.NOT_SET));
+                viewHolder.txtSelectTag.setText(data.getStringExtra(TagActivity.INTENT_RESULT_TAGNAME));
                 break;
             case RequestCodes.CATEGORY:
                 //create class for store data
@@ -528,6 +543,11 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.Notes + " LIKE '%" + searchParameters.notes + "%'");
         }
 
+        // tag
+        if (searchParameters.tagId != null) {
+            where.addStatement(QueryAllData.TAGS + " LIKE '%" + searchParameters.tagName +"%'");
+        }
+
         return where.getWhere();
     }
 
@@ -632,6 +652,11 @@ public class SearchParametersFragment
         if (viewHolder.txtSelectPayee.getTag() != null) {
             searchParameters.payeeId = Long.parseLong(viewHolder.txtSelectPayee.getTag().toString());
             searchParameters.payeeName = viewHolder.txtSelectPayee.getText().toString();
+        }
+        // tag
+        if (viewHolder.txtSelectTag.getTag() != null) {
+            searchParameters.tagId = Long.parseLong(viewHolder.txtSelectTag.getTag().toString());
+            searchParameters.tagName = viewHolder.txtSelectTag.getText().toString();
         }
         // Category
         if (txtSelectCategory.getTag() != null) {

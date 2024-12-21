@@ -39,18 +39,18 @@ import info.javaperformance.money.MoneyFactory;
 public class EntityBase
     implements IEntity {
 
+    public ContentValues contentValues;
+
     /**
      * Default constructor.
      */
-    protected EntityBase() {
+    public EntityBase() {
         contentValues = new ContentValues();
     }
 
-    protected EntityBase(ContentValues contentValues) {
+    public EntityBase(ContentValues contentValues) {
         this.contentValues = contentValues;
     }
-
-    public ContentValues contentValues;
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();

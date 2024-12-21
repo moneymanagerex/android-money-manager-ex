@@ -34,6 +34,8 @@ public class RequestCodes {
     public static final int PASSCODE = 7;
     public static final int PAYEE = 8;
     public static final int PRICE = 9;
+    public static final int TAG = 21;
+
     /**
      * Used when selecting a database from a storage access framework.
      */
