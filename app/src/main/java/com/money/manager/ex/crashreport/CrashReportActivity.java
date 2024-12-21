@@ -1,4 +1,4 @@
-package com.money.manager.ex.errorhandle;
+package com.money.manager.ex.crashreport;
 
 
 import android.content.Intent;
@@ -13,27 +13,23 @@ import androidx.appcompat.widget.Toolbar;
 import com.money.manager.ex.R;
 
 public class CrashReportActivity extends AppCompatActivity {
-    Intent intent = null;
+    private Intent intent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (intent != null) return;
-
         setContentView(R.layout.activity_auth);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         handleIntent();
     }
 
+
     void handleIntent() {
         if (intent != null) return;
 
         intent = getIntent();
         if (intent == null) return;
-        if ( ! getIntent().getAction().equals("HANDLE_ERROR") ) {
-            return;
-        }
 
         String source = intent.getStringExtra("ERROR");
         String report = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -63,5 +59,7 @@ public class CrashReportActivity extends AppCompatActivity {
 
     private void closeActivity() {
         this.finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
     }
 }

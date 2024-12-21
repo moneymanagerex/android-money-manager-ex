@@ -1,4 +1,4 @@
-package com.money.manager.ex.errorhandle;
+package com.money.manager.ex.crashreport;
 
 
 import android.content.Context;
@@ -35,12 +35,11 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
 
         mContext.startActivity(registerActivity);
 
-//        rootHandler.uncaughtException(thread, ex);
-
-        // make sure we die, otherwise the app will hang ...
-        android.os.Process.killProcess(android.os.Process.myPid());
-        // sometimes on older android version killProcess wasn't enough -- strategy pattern should be considered here
-        System.exit(0);
+        rootHandler.uncaughtException(thread, ex);
+//        // make sure we die, otherwise the app will hang ...
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        // sometimes on older android version killProcess wasn't enough -- strategy pattern should be considered here
+//        System.exit(0);
 
     }
 
@@ -91,7 +90,7 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
         report.append(lineSeperator);
         report.append("--------- Firmware ---------\n\n");
         report.append("SDK: ");
-        report.append(Build.VERSION.SDK);
+        report.append(Build.VERSION.SDK_INT);
         report.append("\n");
         report.append("Release: ");
         report.append(Build.VERSION.RELEASE);

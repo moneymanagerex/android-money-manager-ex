@@ -54,7 +54,6 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.errorhandle.CrashReporter;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -173,11 +172,6 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // test
-        int test = 2;
-        if (test == 1) throw new IllegalStateException("This state is not allowed.");
-        if ( test == 2) {test = 0; test = 1 / test;};
 
         MmexApplication.getApp().iocComponent.inject(this);
 
