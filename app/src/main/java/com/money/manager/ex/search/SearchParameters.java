@@ -70,4 +70,7 @@ public class SearchParameters {
 
     public String transactionNumber;
     public String notes;
+
+    public Long tagId;
+    public String tagName;
 }

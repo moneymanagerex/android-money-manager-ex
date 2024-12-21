@@ -41,9 +41,7 @@ public class TagActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_toolbar_activity);
 
-        // enable home button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        super.inizializeCommon(listFragment,FRAGMENTTAG);
         // process intent
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -51,27 +49,6 @@ public class TagActivity
         if (!TextUtils.isEmpty(action)) {
             TagListFragment.mAction = action;
         }
-        FragmentManager fm = getSupportFragmentManager();
-        // attach fragment activity
-        if (fm.findFragmentById(R.id.content) == null) {
-            // todo: use .replace
-            fm.beginTransaction()
-                    .add(R.id.content, listFragment, FRAGMENTTAG)
-                    .commit();
-        }
-    }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // set result
-            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
-                    .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.getActivity().setResult(RESULT_CANCELED);
-                fragment.getActivity().finish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
     }
 }

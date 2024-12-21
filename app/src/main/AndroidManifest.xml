@@ -191,6 +191,14 @@
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".tag.TagActivity"
+            android:label="@string/tag" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".account.AccountListActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />

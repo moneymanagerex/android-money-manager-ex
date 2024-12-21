@@ -54,6 +54,8 @@ public abstract class BaseListFragment
     // hint search view
     private String mSearchHint = "";
 
+    public static String mAction = null;
+
     // abstract method
     public abstract String getSubTitle();
 

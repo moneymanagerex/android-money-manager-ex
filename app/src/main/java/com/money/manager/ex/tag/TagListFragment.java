@@ -1,5 +1,6 @@
 package com.money.manager.ex.tag;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,11 +31,13 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.domainmodel.Tag;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -143,6 +146,7 @@ public class TagListFragment     extends BaseListFragment
 
     // Context Menu
 
+    @SuppressLint("Range")
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -199,13 +203,11 @@ public class TagListFragment     extends BaseListFragment
                 break;
 
             case VIEW_TRANSACTIONS:
-                // TODO: implement search parameter
-                Toast.makeText(getContext(), "View Transaction is still not implemented", Toast.LENGTH_SHORT).show();
-//                SearchParameters parameters = new SearchParameters();
-//                parameters.tagId = tag.getId();
-//                parameters.tagName = tag.getName();
-//                Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
-//                startActivity(intent);
+                SearchParameters parameters = new SearchParameters();
+                parameters.tagId = tag.getId();
+                parameters.tagName = tag.getName();
+                Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
+                startActivity(intent);
         }
         return false;
     }
@@ -280,8 +282,8 @@ public class TagListFragment     extends BaseListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            long tagId = cursor.getLong(cursor.getColumnIndex(Tag.TAGID));
-            String tagName = cursor.getString(cursor.getColumnIndex(Tag.TAGNAME));
+            @SuppressLint("Range") long tagId = cursor.getLong(cursor.getColumnIndex(Tag.TAGID));
+            @SuppressLint("Range") String tagName = cursor.getString(cursor.getColumnIndex(Tag.TAGNAME));
 
             sendResultToActivity(tagId, tagName);
 
