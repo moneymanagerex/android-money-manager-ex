@@ -461,8 +461,9 @@
         <!-- Error Handling -->
         <activity
             android:process=":report_process"
-            android:name=".errorhandle.AuthActivity"
+            android:name=".errorhandle.CrashReportActivity"
             android:label="@string/title_activity_auth"
+            android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

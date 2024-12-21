@@ -11,11 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
-import org.w3c.dom.Text;
-
-public class AuthActivity extends AppCompatActivity {
+public class CrashReportActivity extends AppCompatActivity {
     Intent intent = null;
 
     @Override
@@ -55,16 +52,16 @@ public class AuthActivity extends AppCompatActivity {
                     .build().toString();
             Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             this.startActivity(myIntent);
+
+            closeActivity();
+
         });
 
         Button cancel = findViewById(R.id.buttonQuit);
-        cancel.setOnClickListener(v -> {
-            this.finish();
+        cancel.setOnClickListener(view -> closeActivity());
+    }
 
-            // make sure we die, otherwise the app will hang ...
-            android.os.Process.killProcess(android.os.Process.myPid());
-            // sometimes on older android version killProcess wasn't enough -- strategy pattern should be considered here
-            System.exit(0);
-        });
+    private void closeActivity() {
+        this.finish();
     }
 }
