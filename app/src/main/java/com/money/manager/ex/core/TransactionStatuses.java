@@ -39,16 +39,15 @@ public enum TransactionStatuses {
     }
 
     public static TransactionStatuses get(String code) {
-        if (code.equals("N")) {
-            return TransactionStatuses.NONE;
-        }
         for (TransactionStatuses value : TransactionStatuses.values()) {
             String currentCode = value.getCode();
             if (currentCode.equals(code)) {
                 return value;
             }
         }
-        throw new IllegalArgumentException("no transaction status found for " + code);
+
+        // fallback to NONE for any unrecognized string
+        return TransactionStatuses.NONE;
     }
 
     TransactionStatuses(String code) {
