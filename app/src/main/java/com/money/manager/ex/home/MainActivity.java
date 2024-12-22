@@ -433,13 +433,15 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         } else {
             try {
                 super.onBackPressed();
             } catch (IllegalStateException e) {
-                Timber.e(e, "on back pressed");
+                Timber.e(e, "IllegalStateException in onBackPressed");
+            } catch (NullPointerException e) {
+                Timber.e(e, "NullPointerException in onBackPressed");
             }
         }
     }
