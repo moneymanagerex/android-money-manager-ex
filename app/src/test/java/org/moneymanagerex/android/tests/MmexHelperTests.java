@@ -61,10 +61,8 @@ public class MmexHelperTests {
     public void backup_file_generation() {
         String path = Environment.getExternalStorageDirectory().getPath() + "/somefile.mmb";
 
-        MmxOpenHelper testObject = new MmxOpenHelper(UnitTestHelper.getContext(), path);
-
         try {
-            testObject.createDatabaseBackupOnUpgrade(path, 3);
+            MmxOpenHelper.createDatabaseBackupOnUpgrade(path, 3);
         } catch (Exception ex) {
             Log.d("error", ex.getMessage());
         }

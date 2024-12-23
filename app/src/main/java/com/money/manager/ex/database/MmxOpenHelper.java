@@ -306,7 +306,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         super.finalize();
     }
 
-    public void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
+    public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
 
