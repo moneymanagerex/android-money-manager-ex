@@ -26,6 +26,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.sqlite3mc.SupportFactory;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -36,8 +37,6 @@ import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxFileUtils;
-
-import net.sqlcipher.database.SupportFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +66,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         this.mContext = context;
         this.dbPath = dbPath;
         this.mPassword = MmexApplication.getApp().getPassword();
+
+        // Load the sqlite3mc native library.
+        System.loadLibrary("sqliteX");
     }
 
     private final Context mContext;
@@ -304,7 +306,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         super.finalize();
     }
 
-    public void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
+    public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
 

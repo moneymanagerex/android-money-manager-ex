@@ -68,7 +68,6 @@ public class FileStorageHelper {
 
             showSelectLocalFileDialog();
         }
-
     }
 
     public void showCreateFilePicker() {
