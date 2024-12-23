@@ -219,6 +219,15 @@
     <string name="widget_all_accounts">Tutti i conti</string>
     <string name="widget_add_transaction">Aggiungi Transazione</string>
     <!-- TAG -->
+    <string name="tag">Tag/Etichetta</string>
+    <string name="tagsList_transactions">Tag per la transazione</string>
+    <string name="tag_name">Nome Tag</string>
+    <string name="edit_tagName">Modifica Tag</string>
+    <string name="delete_tag">Elimina Tag</string>
+    <string name="select_tag">Seleziona Tag</string>
+    <string name="tag_empty_list">Nessun Tag è stato trovato. Per crearne uno, tocca il pulsante verde più.</string>
+    <string name="tag_can_not_deleted">Il tag selezionato non può essere eliminato perché è referenziato</string>
+    <string name="db_tag_update_failed">Aggiornamento Tag non riuscito</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nessuna</string>
     <string name="once">Una volta</string>
@@ -722,6 +731,8 @@
     <string name="save">Salva</string>
     <string name="title_budget_show_simple_view">Mostra vista semplificata budget</string>
     <string name="summary_budget_show_simple_view">Se selezionato usa la vista semplificata per i budget</string>
+    <string name="title_pref_budget_financial_year">Utilizzare l\'esercizio finanziario nel Budget</string>
+    <string name="summary_pref_budget_financial_year">Se selezionato, i bilanci utilizzano l\'esercizio finanziario anziché l\'anno civile</string>
     <string name="shares">Azioni</string>
     <string name="loan">Prestito</string>
     <string name="loan_account">Conti di prestito</string>
