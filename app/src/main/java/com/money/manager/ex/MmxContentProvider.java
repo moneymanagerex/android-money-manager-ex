@@ -143,7 +143,7 @@ public class MmxContentProvider
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         try {
-            return query_internal(uri, projection, selection, selectionArgs, sortOrder);
+            return query_internal(uri, projection, selection, selectionArgs != null ? selectionArgs : new String[0], sortOrder);
         } catch (Exception e) {
             Timber.e(e, "content provider.query %s", uri);
         }
@@ -361,7 +361,7 @@ public class MmxContentProvider
     }
 
     private Cursor query_internal(Uri uri, String[] projection, String selection,
-                                  String[] selectionArgs, String sortOrder) {
+                                  @NonNull String[] selectionArgs, String sortOrder) {
         Timber.v("Querying URI: %s", uri);
         Timber.v("Querying selection: %s", selection);
 
