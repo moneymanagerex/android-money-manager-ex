@@ -247,7 +247,7 @@ public class PayeeListFragment
             String whereClause = null;
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
+                whereClause = Payee.PAYEENAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             PayeeRepository repo = new PayeeRepository(getActivity());
