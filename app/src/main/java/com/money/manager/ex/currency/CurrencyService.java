@@ -19,7 +19,6 @@ package com.money.manager.ex.currency;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.LongSparseArray;
 import android.widget.Toast;
 
@@ -228,7 +227,7 @@ public class CurrencyService
                 // could not get base currency from the system. Use Euro?
                 //Currency euro = repo.loadCurrency("EUR");
                 //result = euro.getCurrencyId();
-                Log.w("CurrencyService", "system default currency is null!");
+                Timber.tag("CurrencyService").w("system default currency is null!");
                 result = 2;
             } else {
                 CurrencyRepository repo = getRepository();
@@ -238,7 +237,7 @@ public class CurrencyService
                     result = defaultCurrency.getCurrencyId();
                 } else {
                     // currency not found.
-                    Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
+                    Timber.tag("CurrencyService").w("currency " + systemCurrency.getCurrencyCode() +
                             "not found!");
                     result = 2;
                 }
@@ -490,7 +489,7 @@ public class CurrencyService
     }
 
     public void updateExchangeRates(List<Currency> currencies){
-        if (currencies == null || currencies.size() <= 0) return;
+        if (currencies == null || currencies.size() == 0) return;
 
         String symbol;
         String baseCurrencySymbol = getBaseCurrencyCode();

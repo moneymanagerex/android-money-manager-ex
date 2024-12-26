@@ -39,7 +39,6 @@ public class MmxCursorLoader
     public MmxCursorLoader(Context context, Uri uri, Select query) {
         // String[] projection, String selection, String[] selectionArgs, String sortOrder
         super(context, uri, query.projection, query.selection, query.selectionArgs, query.sort);
-
     }
 
     @Override
