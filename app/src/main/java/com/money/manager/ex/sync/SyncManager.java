@@ -105,8 +105,7 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
-        // file can be manually removed from storage both intenal and external
-        if (isPhoneStorage() && isRemoteFileAccessible(true ) ) return true;
+        if (isPhoneStorage()) return true;
 
         // check if online
         if (!isActive()) return false;
@@ -122,11 +121,10 @@ public class SyncManager {
                 return false;
             }
         }
-
-        return isRemoteFileAccessible(true ) ;
+        return true;
     }
 
-    public boolean isRemoteFileAccessible(boolean showAllert) {
+    public boolean isRemoteFileAccessible(boolean showAlert) {
         // check if remote file is accessible
         isRemoteFileAccessibleExist = false;
         String remotePath = getRemotePath();
@@ -148,7 +146,7 @@ public class SyncManager {
         }
 
         if (!isRemoteFileAccessibleExist) {
-            if (showAllert) {
+            if (showAlert) {
                 Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
                 Timber.i("Remote file is no longer available.");
                 NotificationManager notificationManager = (NotificationManager) getContext()
