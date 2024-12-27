@@ -48,23 +48,6 @@ import timber.log.Timber;
  * Various methods that assist with the UI Android requirements.
  */
 public class UIHelper {
-
-    /**
-     * Extracts the path to the selected database file.
-     * @param data Intent
-     * @return Path to the selected file.
-     */
-    public static String getSelectedFile(Intent data) {
-        if (data == null) return null;
-
-        String filePath = data.getData().getPath();
-
-        // check if the db file is valid
-        if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
-
-        return filePath;
-    }
-
     /*
         Instance
      */

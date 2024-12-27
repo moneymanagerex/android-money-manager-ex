@@ -299,18 +299,6 @@ public class MainActivity
         if (resultCode != RESULT_OK && requestCode != RequestCodes.PASSCODE) return;
 
         switch (requestCode) {
-            case RequestCodes.SELECT_FILE:
-                // Opening from intent.
-                if (resultCode != RESULT_OK) return;
-
-                String selectedPath = UIHelper.getSelectedFile(data);
-                if (TextUtils.isEmpty(selectedPath)) {
-                    new UIHelper(this).showToast(R.string.invalid_database);
-                    return;
-                }
-
-                changeDatabase(DatabaseMetadataFactory.getInstance(selectedPath));
-                break;
             case RequestCodes.REQUEST_PASSWORD:
                 String path = data.getStringExtra(MainActivity.EXTRA_DATABASE_PATH);
                 DatabaseMetadata selectedDatabase = getDatabases().get(path);
@@ -337,7 +325,7 @@ public class MainActivity
                         Passcode passcode = new Passcode(getApplicationContext());
                         String passDb = passcode.getPasscode();
 
-                        if (passIntent != null && passDb != null) {
+                        if (passDb != null) {
                             isAuthenticated = passIntent.equals(passDb);
                             if (!isAuthenticated) {
                                 Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();

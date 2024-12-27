@@ -152,25 +152,6 @@ public class SyncService
         enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
     }
 
-    private void showNotificationUploadComplete(boolean result, File localFile) {
-        if (mNotificationManager == null) return;
-
-        mNotificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-
-        if (!result) return;
-
-        // create notification for open file
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.setData(Uri.fromFile(localFile));
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), RequestCodes.SELECT_FILE, intent, PendingIntent.FLAG_IMMUTABLE);
-        // notification
-        Notification notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationUploadComplete(pendingIntent);
-        // notify
-        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification);
-    }
-
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
