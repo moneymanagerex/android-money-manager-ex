@@ -26,7 +26,8 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.sqlite3mc.SupportFactory;
+// import com.money.manager.ex.sqlite3mc.SupportFactory;
+import net.sqlcipher.database.SupportFactory;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -68,7 +69,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         this.mPassword = MmexApplication.getApp().getPassword();
 
         // Load the sqlite3mc native library.
-        System.loadLibrary("sqliteX");
+        // System.loadLibrary("sqliteX");
     }
 
     private final Context mContext;

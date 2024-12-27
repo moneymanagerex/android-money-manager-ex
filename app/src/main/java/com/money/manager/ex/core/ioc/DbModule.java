@@ -19,7 +19,8 @@ package com.money.manager.ex.core.ioc;
 
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
-import com.money.manager.ex.sqlite3mc.SupportFactory;
+// import com.money.manager.ex.sqlite3mc.SupportFactory;
+import net.sqlcipher.database.SupportFactory;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.squareup.sqlbrite3.BriteDatabase;
