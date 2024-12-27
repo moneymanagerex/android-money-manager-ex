@@ -21,7 +21,6 @@ import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
@@ -147,10 +146,16 @@ public class PasscodeActivity extends AppCompatActivity {
 		buttonKeyBack.setImageDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_backspace)
             .color(ui.getPrimaryTextColor()));
 
-		// Handle fingerprint authentication
-		findViewById(R.id.fpImageView).setVisibility(View.GONE);
-		findViewById(R.id.fingerprintInfo).setVisibility(View.GONE);
-		setupLegacyFingerprintAuth();
+		try {
+			// Handle fingerprint authentication
+			findViewById(R.id.fpImageView).setVisibility(View.GONE);
+			findViewById(R.id.fingerprintInfo).setVisibility(View.GONE);
+			setupLegacyFingerprintAuth();
+		} catch (Exception e)
+		{
+			// handle java.lang.RuntimeException on
+			// void android.view.View.setVisibility(int)
+		}
 		// TODO setupBiometricPrompt();
     }
 
@@ -181,6 +186,7 @@ public class PasscodeActivity extends AppCompatActivity {
 			} else nullRequestFocus = true;
 			//quick-fix convert 'switch' to 'if-else'
 			if (getFocus.getId() == R.id.editTextPasscode1) {
+				// no action
 			} else if (getFocus.getId() == R.id.editTextPasscode2) {
 				findViewById(R.id.editTextPasscode1).requestFocus();
 				if (nullRequestFocus) {
@@ -228,7 +234,7 @@ public class PasscodeActivity extends AppCompatActivity {
 				try {
 					generateKey();
 				} catch (FingerprintException e) {
-					e.printStackTrace();
+					Timber.e(e, "Error generating key");
 				}
 				if (initCipher()) {
 					FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
@@ -265,7 +271,7 @@ public class PasscodeActivity extends AppCompatActivity {
 				| InvalidAlgorithmParameterException
 				| CertificateException
 				| IOException exc) {
-			exc.printStackTrace();
+			Timber.e(exc, "Error KeySoreException");
 			throw new FingerprintException(exc);
 		}
 
