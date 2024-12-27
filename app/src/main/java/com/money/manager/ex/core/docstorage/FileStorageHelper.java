@@ -255,6 +255,7 @@ public class FileStorageHelper {
 
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
+        result.lastModified = new MmxDate(0);
 
         try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
