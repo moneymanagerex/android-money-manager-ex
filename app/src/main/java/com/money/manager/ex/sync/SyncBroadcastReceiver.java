@@ -34,8 +34,6 @@ public class SyncBroadcastReceiver
         Timber.d("receiving a sync intent %s",intent);
 
         SyncManager sync = new SyncManager(context);
-        if (!sync.canSync()) return;
-
         sync.triggerSynchronization();
     }
 }
