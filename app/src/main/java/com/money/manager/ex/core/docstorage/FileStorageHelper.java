@@ -65,8 +65,6 @@ public class FileStorageHelper {
             host.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
             Timber.e(e, "No storage providers found.");
-
-            showSelectLocalFileDialog();
         }
     }
 
@@ -354,34 +352,6 @@ public class FileStorageHelper {
         Timber.d("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
         // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
         Files.move(tempDatabaseFile, localDatabaseFile);
-    }
-
-    /**
-     * Shows a file picker. The results from the picker will be sent to the host activity.
-     * This is a custom picker that works with local files only.
-     * Uses SELECT_FILE request code.
-     */
-    private void showSelectLocalFileDialog() {
-        int requestCode = RequestCodes.SELECT_FILE;
-        AppCompatActivity host = (AppCompatActivity) _host;
-
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(host);
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        String dbDirectory = dbManager.getDefaultDatabaseDirectory();
-        // Environment.getDefaultDatabaseDirectory().getPath()
-
-        // This works if you defined the intent filter
-         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-         intent.setType("*/*");
-        // Set these depending on your use case. These are the defaults.
-
-        // Configure initial directory by specifying a String.
-        // You could specify a String like "/storage/emulated/0/", but that can
-        // dangerous. Always use Android's API calls to get paths to the SD-card or
-        // internal memory.
-        // Environment.getExternalStorageDirectory().getPath()
-
-        host.startActivityForResult(intent, requestCode);
     }
 
     /**
