@@ -23,9 +23,9 @@
     <string name="application_credits">Az MMEX Androidra az ActionBarSherlock könyvtárat használja</string>
     <string name="application_license">Nyílt forráskódú licenc</string>
     <!-- database -->
-    <string name="db_insert_failed">Adatok felvitele nem sikerült</string>
-    <string name="db_delete_failed">Adatok törlése nem sikerült</string>
-    <string name="db_update_failed">Adatok frissítése nem sikerült</string>
+    <string name="db_insert_failed">Hiba történt az adatok beszúrásakor.</string>
+    <string name="db_delete_failed">Hiba történt az adatok törlésekor.</string>
+    <string name="db_update_failed">Hiba történt az adatok frissítésekor.</string>
     <!-- menu -->
     <!--<string name="menu">Menu</string>-->
     <string name="menu_exit">Kilépés</string>
@@ -97,8 +97,8 @@
     <string name="investment">Befektetési</string>
     <string name="investment_accounts">Befektetési számlák</string>
     <string name="term">Időszaki</string>
-    <string name="db_account_insert_failed">Hiba történt a számla beillesztésekor</string>
-    <string name="db_account_update_failed">Hiba történt a számla frissítésekor</string>
+    <string name="db_account_insert_failed">Hiba történt a számla beszúrásakor.</string>
+    <string name="db_account_update_failed">Hiba történt a számla frissítésekor.</string>
     <string name="error_currency_not_selected">Pénznem megadása kötelező</string>
     <string name="error_saving_default_currency">Hiba történt az alapértelmezett pénznem mentése során</string>
     <string name="error_initialbal_empty">Kezdő egyenleg megadása kötelező</string>
@@ -112,9 +112,9 @@
     <string name="delete_payee">Partner törlése</string>
     <string name="payee">Partner</string>
     <string name="select_payee">Válasszon partnert</string>
-    <string name="payee_empty_list">Nincsenek partnerek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
+    <string name="payee_empty_list">Nincsenek kedvezményezettek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="from">Dátumtól</string>
-    <string name="db_payee_update_failed">Partner frissítése nem sikerült</string>
+    <string name="db_payee_update_failed">Hiba történt a kedvezményezett frissítésekor.</string>
     <!-- category / subcategory -->
     <string name="category">Kategória</string>
     <string name="subcategory">Alkategória</string>
@@ -148,15 +148,15 @@
     <string name="status_reconciled">Visszaigazolt</string>
     <string name="status_void">Hiányos</string>
     <string name="status_follow_up">Követés</string>
-    <string name="status_duplicate">Ismétlődő</string>
+    <string name="status_duplicate">Megkettőzés</string>
     <string name="status_none">Nincs</string>
     <string name="transfer">Átutalás</string>
     <string name="transfer_amount">Átutalás összege</string>
     <string name="transaction_type">Ügylet típusa</string>
     <string name="transaction_status">Státusz</string>
     <string name="withdrawal">Kivét</string>
-    <string name="db_checking_insert_failed">Ügylet beszúrása nem sikerült</string>
-    <string name="db_checking_update_failed">Ügylet frissítése nem sikerült</string>
+    <string name="db_checking_insert_failed">Hiba történt az ügylet beszúrásakor.</string>
+    <string name="db_checking_update_failed">Hiba történt az ügylet frissítésekor.</string>
     <string name="delete_transaction">Ügylet törlése</string>
     <string name="new_transaction">Új ügylet</string>
     <string name="error_payee_not_selected">Partner megadása kötelező</string>
@@ -166,7 +166,7 @@
     <string name="error_transfer_to_same_account">Átutalás csak két különböző számla között lehetséges</string>
     <string name="about">Rólunk</string>
     <string name="add">Hozzáad</string>
-    <string name="confirmDelete">Biztos törölni akarod a tételt?</string>
+    <string name="confirmDelete">Biztosan törölni szeretné a bejegyzést?</string>
     <string name="date">Dátum</string>
     <string name="delete">Törlés</string>
     <string name="download">Letöltés</string>
@@ -219,6 +219,15 @@
     <string name="widget_all_accounts">Minden számla</string>
     <string name="widget_add_transaction">Ügylet hozzáadása</string>
     <!-- TAG -->
+    <string name="tag">Címke</string>
+    <string name="tagsList_transactions">Ügylet címkék</string>
+    <string name="tag_name">Címkenév</string>
+    <string name="edit_tagName">Címke szerkesztése</string>
+    <string name="delete_tag">Címke törlése</string>
+    <string name="select_tag">Címke kijelölése</string>
+    <string name="tag_empty_list">Nincsenek címkék. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
+    <string name="tag_can_not_deleted">A kijelölt címke nem törölhető, mert hivatkoznak rá.</string>
+    <string name="db_tag_update_failed">Hiba történt a címke frissítésekor.</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Soha</string>
     <string name="once">Egyszer</string>
@@ -236,7 +245,7 @@
     <string name="in_x_months">(x) havonta</string>
     <string name="every_x_days">Minden (x). napon</string>
     <string name="every_x_months">Minden (x). hónapban</string>
-    <string name="repeating_empty_transaction">Nem található ütemezett ügylet. Létrehozásához érintse meg a zöld plusz gombot.</string>
+    <string name="repeating_empty_transaction">Nincsenek ütemezett ügyletek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="inactive">Inaktív</string>
     <string name="activates">Aktiválás</string>
     <string name="days_overdue">napja lejárt!</string>
@@ -286,7 +295,7 @@
     <string name="income">Bevételek</string>
     <string name="expenses">Kiadások</string>
     <string name="difference">Különbség</string>
-    <string name="no_data">Nincsenek adatok. Próbálja módosítani a megjelenítendő időszakot, vagy a zöld plusz gombbal vigyen fel új adatot. </string>
+    <string name="no_data">Nincsenek bejegyzések. Próbálja módosítani a megjelenítendő időszakot, vagy a zöld plusz gombbal vigyen fel új adatot. </string>
     <string name="no_stock_data">Nincs adat ehhez a számlához.</string>
     <string name="month">Hónap</string>
     <string name="year">Év</string>
@@ -309,7 +318,7 @@
     <string name="financial_year_start_month">Pénzügyi év: Kezdő hónap</string>
     <string name="menu_move_database_to_external_storage">Adatbázis export</string>
     <string name="database_has_been_moved">Az adatbázis másolása megtörtént: %1$s</string>
-    <string name="copy_database_on_external_storage_failed">Az adatbázis másolása sikertelen</string>
+    <string name="copy_database_on_external_storage_failed">Hiba történt az adatbázis külső tárolóra másolásakor.</string>
     <string name="path_database_using">Ön ezt az adatbázist használja: %1$s</string>
     <!-- Split Categories -->
     <string name="split_transaction">Ügylet megosztása</string>
@@ -319,7 +328,7 @@
     <string name="export_data_to_csv">Adatok exportálása CSV állományba</string>
     <string name="export_data_in_progress">Adatok exportálása. Kérem várjon&#8230;</string>
     <string name="export_file_complete">Az adatok exportálása sikeresen megtörtént a %1$s állományba</string>
-    <string name="export_file_failed">Export állomány %1$s nem sikerült</string>
+    <string name="export_file_failed">Hiba történt a(z) %1$s fájl exportálásakor.</string>
     <string name="donate_header">A Money Manager Ex for Android használata ingyenes. Ha tetszik az alkalmazás, adománnyal támogathatja a fejlesztő csapatot.</string>
     <string name="donate_in_app_title">Google Play alkalmazáson belüli vásárlás</string>
     <string name="donate_in_app_description">Támogatás Google Play-en keresztül alkalmazáson belüli fizetéssel.</string>
@@ -442,7 +451,7 @@
     <!-- languages -->
     <string name="locale_application">Alkalmazás nyelve</string>
     <string name="locale_ar">Arab</string>
-    <string name="transaction_cancel_confirm">Biztosan eldobja a változásokat?</string>
+    <string name="transaction_cancel_confirm">Biztosan elveti szeretné a változtatásokat?</string>
     <string name="keep_editing">Szerkesztés folytatása</string>
     <string name="discard">Elvet</string>
     <string name="invalid_expression">Érvénytelen kifejezés</string>
@@ -487,16 +496,16 @@
     <string name="starting_price_update">Árak letöltése, kérem várjon&#8230;</string>
     <string name="database_migrate_14_to_20">1.4 verziós adatbázis migrálása</string>
     <string name="database_migrate_14_to_20_explanation">Régi adat található. Koppintson ide a korábbi adatbázis használatához.</string>
-    <string name="database_migrate_14_to_20_failure">Adatbázis migrálás nem sikerült. Kérjük vegye fel velünk a kapcsolatot.</string>
+    <string name="database_migrate_14_to_20_failure">Hiba történt az adatbázis áttelepítésekor. Kérjük, forduljon az ügyfélszolgálathoz.</string>
     <string name="database_migrate_14_to_20_success">Adatbázis migrálás sikerült.</string>
     <string name="database_migrate_14_to_20_complete">Migrálás befejeződött. Kérjük lépjen ki a beállításokból az adatbázis használatának megkezdéséhez.</string>
     <string name="database_migrate_14_to_20_intro">Egy adatbázist találtunk a régi helyen. Érintse meg a gombot alul az SD kártyára történő migráláshoz és használatához.</string>
     <string name="clear_recent_files_list">Legutóbbi fájlok törlése</string>
     <string name="export_prices">Árak exportálása</string>
-    <string name="purge_history">Ár előzmények törlése</string>
-    <string name="purge_history_confirmation">Biztosan szeretné törölni a teljes ár előzményeket minden számlán?</string>
-    <string name="purge_history_complete">Ár előzmények törlése megtörtént.</string>
-    <string name="purge_history_failed">Ár előzmények törlése nem sikerült.</string>
+    <string name="purge_history">Árelőzmények törlése</string>
+    <string name="purge_history_confirmation">Biztosan szeretné törölni a teljes árelőzményeket minden számlán?</string>
+    <string name="purge_history_complete">Árelőzmények törlése megtörtént.</string>
+    <string name="purge_history_failed">Hiba történt az árelőzmények törlésekor.</string>
     <string name="create_db">Adatbázis létrehozása</string>
     <string name="create_db_summary">Új adatbázis állomány létrehozása</string>
     <string name="create_db_hint">Kérjük adja meg az állomány nevét</string>
@@ -512,7 +521,7 @@
     <string name="db_check_schema_summary">Minden tábla meglétének az ellenőrzése az adatbázisban.</string>
     <string name="db_check_schema_success">Minden szükséges tábla megvan az adatbázisban.</string>
     <string name="db_check_schema_error">Hiba: hiányzó táblák az adatbázisban!</string>
-    <string name="db_fix_duplicates">Ismétlődő bejegyzések javítása</string>
+    <string name="db_fix_duplicates">Megkettőzés bejegyzések javítása</string>
     <string name="split_amount_negative">A teljes összeg nem lehet negatív.</string>
     <string name="select_all">Mind kiválasztása</string>
     <string name="choose_type">Típus választása</string>
@@ -575,17 +584,17 @@
     <string name="cleared">Törölve</string>
     <string name="delete_success">Elem törölve</string>
     <!-- asset allocation -->
-    <string name="asset_allocation">Vagyon elosztás</string>
-    <string name="asset_classes_empty">Nincsenek vagyontárgy-osztályok. Új létrehozásához érintse meg a zöld plusz gombot.</string>
+    <string name="asset_allocation">Eszközelosztás</string>
+    <string name="asset_classes_empty">Nincsenek eszközosztályok. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="title_activity_asset_class_edit">Eszközosztály szerkesztése</string>
-    <string name="asset_class_name">Vagyontárgy-osztály neve</string>
+    <string name="asset_class_name">Eszközosztály neve</string>
     <string name="asset_class">Eszközosztály</string>
     <string name="allocation">Átutalás</string>
     <string name="current_allocation">Jelenlegi átutalás</string>
     <string name="move_up">Mozgatás Felfelé</string>
     <string name="move_down">Mozgatás lefelé</string>
     <string name="securities">Értékpapírok</string>
-    <string name="no_records_found_create">Nincsenek adatok. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
+    <string name="no_records_found_create">Nincsenek bejegyzések. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="current_value">Jelenlegi érték</string>
     <string name="current">Aktuális</string>
     <string name="parent">Szülő</string>
@@ -598,10 +607,10 @@
     <string name="password_hint">Csak az .emb fájlhoz</string>
     <string name="success">Sikeres művelet</string>
     <string name="overview">Áttekintés</string>
-    <string name="title_activity_asset_allocation_overview">Vagyon elosztás áttekintése</string>
-    <string name="asset_allocation_diff_threshold">Eszközallokáció különbség küszöbértéke</string>
+    <string name="title_activity_asset_allocation_overview">Eszközelosztás áttekintése</string>
+    <string name="asset_allocation_diff_threshold">Eszközelosztás különbség küszöbértéke</string>
     <string name="asset_allocation_diff_threshold_summary">A küszöbérték, ami aktiválja a különböző értékek szinezését.</string>
-    <string name="error_saving_record">Hiba történt a rekord mentésekor</string>
+    <string name="error_saving_record">Hiba történt a bejegyzés mentése közben.</string>
     <string name="error_loading_currency">Hiba történt a pénznem betöltésekor</string>
     <string name="symbol_required">A Szimbólum kötelező</string>
     <string name="recurrence_type_not_set">Nincs beállítva ismétlődéstípus</string>
@@ -633,7 +642,7 @@
     <string name="update_menu_currency_exchange_rates">Árfolyam frissítés</string>
     <string name="question_update_currency_exchange_rates">Szeretné frissíteni az árfolyamokat?</string>
     <string name="error_update_currency_exchange_rate">Hiba történt az árfolyam frissítésekor</string>
-    <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
+    <string name="currencies_empty">Nincsenek pénznemek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="active_currencies">Aktív Pénznemek</string>
     <string name="inactive_currencies">Inaktív Pénznemek</string>
     <string name="all_currencies">Minden Pénznem</string>
