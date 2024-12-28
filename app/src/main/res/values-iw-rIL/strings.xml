@@ -123,7 +123,6 @@
     <string name="decimal_char">סימן עשרוני</string>
     <string name="group_char">סימן \'אלפים\'</string>
     <string name="scale">קנה מידה</string>
-    <string name="conversion_to_base_rate">המרה</string>
     <string name="currency_name_empty">נדרש שם מטבע</string>
     <string name="new_edit_currency">חדש/עריכת מטבע</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">כל (x) חודשים</string>
     <string name="inactive">לא פעיל</string>
     <string name="activates">משפעל</string>
-    <string name="days_overdue">ימים בפיגור!</string>
-    <string name="days_remaining">ימים שנותרו</string>
     <string name="due_date">תאריך להגשה</string>
     <string name="next_occurrence">המופע הבא</string>
     <string name="payment_date">תאריך תשלום</string>

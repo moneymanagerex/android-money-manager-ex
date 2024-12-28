@@ -136,7 +136,6 @@
     <string name="decimal_char">小数点</string>
     <string name="group_char">千分符</string>
     <string name="scale">小数位数</string>
-    <string name="conversion_to_base_rate">转换</string>
     <string name="currency_name_empty">请输入货币名称</string>
     <string name="new_edit_currency">新建/编辑货币</string>
     <!-- transaction -->
@@ -238,8 +237,6 @@
     <string name="repeating_empty_transaction">未找到可用的周期性交易。轻触绿色加号按钮可新建一个周期性交易。</string>
     <string name="inactive">未启用</string>
     <string name="activates">触发数值</string>
-    <string name="days_overdue">天 - 到期</string>
-    <string name="days_remaining">天后执行</string>
     <string name="new_edit_repeating_transaction">添加/修改周期性交易</string>
     <string name="due_date">到期日期</string>
     <string name="next_occurrence">下个到期日</string>

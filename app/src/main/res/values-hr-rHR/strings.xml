@@ -126,7 +126,6 @@
     <string name="decimal_char">Decimalni znak</string>
     <string name="group_char">Znak razdvajanja</string>
     <string name="scale">Mjera</string>
-    <string name="conversion_to_base_rate">Konverzija</string>
     <string name="currency_name_empty">Ime valute je obavezno</string>
     <string name="new_edit_currency">Nova valuta/Uredi valutu</string>
     <!-- transaction -->
@@ -228,8 +227,6 @@
     <string name="repeating_empty_transaction">Nije pronađena nijedna zakazana transakcija. Dodirni zeleni gumb plus za izradu transakcije.</string>
     <string name="inactive">Neaktivano</string>
     <string name="activates">Aktiviranja</string>
-    <string name="days_overdue">dana kasni!</string>
-    <string name="days_remaining">dana preostalo</string>
     <string name="new_edit_repeating_transaction">Nova zakazana transakcija/Uredi zakazanu transakciju</string>
     <string name="due_date">Datum dospijeća</string>
     <string name="next_occurrence">Sljedeći događaj</string>

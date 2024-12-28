@@ -123,7 +123,6 @@
     <string name="decimal_char">Desetinný oddělovač</string>
     <string name="group_char">Skupinový oddělovač</string>
     <string name="scale">Míra</string>
-    <string name="conversion_to_base_rate">Směnný kurz</string>
     <string name="currency_name_empty">Je vyžadován název měny</string>
     <string name="new_edit_currency">Nová/úprava měny</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Každých (x) měsíců</string>
     <string name="inactive">Neaktivní</string>
     <string name="activates">Aktivní</string>
-    <string name="days_overdue">dny po splatnosti!</string>
-    <string name="days_remaining">dnů zbývá</string>
     <string name="due_date">Datum splatnosti</string>
     <string name="next_occurrence">Další výskyt</string>
     <string name="payment_date">Datum platby</string>

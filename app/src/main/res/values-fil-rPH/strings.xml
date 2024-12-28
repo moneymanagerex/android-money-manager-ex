@@ -123,7 +123,6 @@
     <string name="decimal_char">Decimal char</string>
     <string name="group_char">Group char</string>
     <string name="scale">Laki</string>
-    <string name="conversion_to_base_rate">Konbersyon</string>
     <string name="currency_name_empty">Pangalan ng currency ay kailangan</string>
     <string name="new_edit_currency">Bago/I-edit ang Currency</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Lahat (x) Buwan</string>
     <string name="inactive">Hindi aktibo</string>
     <string name="activates">Aktibo</string>
-    <string name="days_overdue">ilang araw na overdue!</string>
-    <string name="days_remaining">mga araw na natitira</string>
     <string name="due_date">Takdang petsa</string>
     <string name="next_occurrence">Susunod na pangyayari</string>
     <string name="payment_date">Petsa ng pagbabayad</string>

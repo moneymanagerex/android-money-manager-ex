@@ -125,7 +125,6 @@
     <string name="decimal_char">Decimaal teken</string>
     <string name="group_char">Groepeer teken</string>
     <string name="scale">Schaal</string>
-    <string name="conversion_to_base_rate">Conversie</string>
     <string name="currency_name_empty">Valutanaam is vereist</string>
     <string name="new_edit_currency">Nieuw/Bewerk valuta</string>
     <!-- transaction -->
@@ -227,8 +226,6 @@
     <string name="repeating_empty_transaction">Er zijn geen geplande transacties gevonden. Tik op de groene + knop om er een aan te maken.</string>
     <string name="inactive">Inactief</string>
     <string name="activates">Activeringen</string>
-    <string name="days_overdue">aantal dagen te laat!</string>
-    <string name="days_remaining">resterende dagen</string>
     <string name="due_date">Verloopdatum</string>
     <string name="next_occurrence">Volgende verwerking</string>
     <string name="payment_date">Betalingsdatum</string>

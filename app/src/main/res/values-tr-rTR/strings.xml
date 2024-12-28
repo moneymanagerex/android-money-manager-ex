@@ -123,7 +123,6 @@
     <string name="decimal_char">Ondalık işareti</string>
     <string name="group_char">Grup simgesi</string>
     <string name="scale">Aralık</string>
-    <string name="conversion_to_base_rate">Dönüşüm</string>
     <string name="currency_name_empty">Para birimi adı gereklidir</string>
     <string name="new_edit_currency">Para birimi ekle/düzenle</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Her (x) Ay</string>
     <string name="inactive">Etkin değil</string>
     <string name="activates">Etkinleştirir</string>
-    <string name="days_overdue">gün kaldı!</string>
-    <string name="days_remaining">gün kaldı</string>
     <string name="due_date">Bitiş Tarihi</string>
     <string name="next_occurrence">Sonraki Gerçekleşme</string>
     <string name="payment_date">Ödeme Tarihi</string>

@@ -58,10 +58,10 @@
     <string name="version">Versione</string>
     <string name="build">Build</string>
     <string name="path">Percorso del database</string>
-    <string name="remote_path">Percorso di accesso remoto</string>
+    <string name="remote_path">Percorso del file remoto</string>
     <string name="database_version">Versione del database</string>
     <string name="title_show_tutorial">Visualizza tutorial</string>
-    <string name="summary_show_tutorial">Visualizza tutorial al prossimo avvio?</string>
+    <string name="summary_show_tutorial">Visualizzare il tutorial al prossimo avvio?</string>
     <string name="preferences_behaviour_focus_filter_title">Filtra selezioni</string>
     <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni si focalizza sul filtro. Diversamente scorre fra le selezioni disponibili.</string>
     <string name="auto_sync_via_wifi">Sincronizzazione automatica solo su WiFi</string>
@@ -74,8 +74,8 @@
     <string name="deny_receive_sms_error">Hai negato l\'autorizzazione a ricevere l\'SMS, quindi il tuo SMS di transazione bancaria non verrà elaborato.</string>
     <string name="granted_receive_sms_access">Autorizzazione già concessa per RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Vai in Impostazioni &gt;&gt; Applicazioni &gt;&gt; Money Manager Ex &gt;&gt; Autorizzazioni e nega l\'accesso per SMS</string>
-    <string name="title_sms_trans_status_notification">Notifica dello stato delle transazioni via SMS</string>
-    <string name="summary_sms_trans_status_notification">Consente di mostrare lo stato del processo di invio degli sms di transazione bancaria nell\'area di notifica invece di mostrarli come messaggio Toast o nella schermata Nuova transazione.</string>
+    <string name="title_sms_trans_status_notification">Notifica lo stato delle transazioni via SMS</string>
+    <string name="summary_sms_trans_status_notification">Consente di mostrare lo stato del processo degli SMS di transazione bancaria nell\'area di notifica invece di mostrarli come messaggio Toast o nella schermata Nuova transazione.</string>
     <string name="notification_click_to_edit_transaction">Tocca per modificare la transazione&#8230;</string>
     <string name="notification_process_sms_transaction_status">Processa Stato Transazione Bancaria via SMS</string>
     <string name="notification_process_sms_channel_description">Canale di notifica SMS AMMEX</string>
@@ -136,9 +136,8 @@
     <string name="decimal_char">Separatore decimale</string>
     <string name="group_char">Separatore migliaia</string>
     <string name="scale">Scala</string>
-    <string name="conversion_to_base_rate">Tasso Base di Conversione</string>
-    <string name="currency_name_empty">Nome della valuta è richiesto</string>
-    <string name="new_edit_currency">Nuovo/Modifica Valuta</string>
+    <string name="currency_name_empty">Il nome della valuta è richiesto</string>
+    <string name="new_edit_currency">Nuova / Modifica Valuta</string>
     <string name="missing_default_currency">Manca la Valuta Predefinita nelle impostazioni</string>
     <!-- transaction -->
     <string name="amount">Importo</string>
@@ -156,14 +155,14 @@
     <string name="transaction_status">Stato</string>
     <string name="withdrawal">Prelievo</string>
     <string name="db_checking_insert_failed">Inserimento operazione non riuscito</string>
-    <string name="db_checking_update_failed">Aggiornamento operazione non riuscito</string>
-    <string name="delete_transaction">Elimina operazione</string>
-    <string name="new_transaction">Nuova operazione</string>
+    <string name="db_checking_update_failed">Aggiornamento transazione non riuscito</string>
+    <string name="delete_transaction">Elimina Transazione</string>
+    <string name="new_transaction">Nuova transazione</string>
     <string name="error_payee_not_selected">Il beneficiario è richiesto</string>
     <string name="error_toaccount_not_selected">Il conto di destinazione è richiesto</string>
     <string name="error_category_not_selected">La categoria è richiesta</string>
-    <string name="error_totamount_empty">Importo totale è richiesto</string>
-    <string name="error_transfer_to_same_account">Per il trasferimento i conti devono essere diversi</string>
+    <string name="error_totamount_empty">L\'importo totale è richiesto</string>
+    <string name="error_transfer_to_same_account">I due account per il trasferimento devono essere diversi</string>
     <string name="about">A proposito di</string>
     <string name="add">Aggiungi</string>
     <string name="confirmDelete">Sicuro di voler eliminare questo record?</string>
@@ -248,8 +247,6 @@
     <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.</string>
     <string name="inactive">Inattivo</string>
     <string name="activates">Attiva</string>
-    <string name="days_overdue">giorni scaduti!</string>
-    <string name="days_remaining">giorni rimanenti</string>
     <string name="new_edit_repeating_transaction">Aggiungi/Modifica Transazione Pianificata</string>
     <string name="due_date">Scadenza</string>
     <string name="next_occurrence">Prossima Scadenza</string>
@@ -751,7 +748,7 @@
     <string name="notification_channel_recurring">Notifica Transazione Pianificata</string>
     <string name="notification_channel_recurring__description">Notifica Transazione Pianificata scaduta</string>
     <string name="notification_channel_remotefile">Operazione su File Remoto</string>
-    <string name="notification_channel_remotefile__description">Notifica Transazione su File Remoto</string>
+    <string name="notification_channel_remotefile__description">Notifica Operazione su File Remota</string>
     <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
     <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>

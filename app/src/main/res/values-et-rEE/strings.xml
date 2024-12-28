@@ -70,7 +70,6 @@
     <string name="prefix_symbol">Prefiksi sümbol</string>
     <string name="suffix_symbol">Suffiksi sümbol</string>
     <string name="scale">Mõõtkava</string>
-    <string name="conversion_to_base_rate">Teisendamine</string>
     <!-- transaction -->
     <string name="amount">Kogus</string>
     <string name="total_amount">Summa kokku</string>

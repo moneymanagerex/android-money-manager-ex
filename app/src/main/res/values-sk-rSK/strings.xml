@@ -122,7 +122,6 @@
     <string name="decimal_char">Oddeľovať desatín</string>
     <string name="group_char">Skupinový oddeľovač</string>
     <string name="scale">Mierka</string>
-    <string name="conversion_to_base_rate">Konverzný kurz</string>
     <string name="currency_name_empty">Je vyžadovaný názov meny</string>
     <string name="new_edit_currency">Vložiť/Upraviť menu</string>
     <!-- transaction -->
@@ -222,8 +221,6 @@
     <string name="every_x_months">Každých (x) mesiacov</string>
     <string name="inactive">Neaktívna</string>
     <string name="activates">Aktivuje</string>
-    <string name="days_overdue">dní po splatnosti!</string>
-    <string name="days_remaining">dní zostáva</string>
     <string name="due_date">Dátum splatnosti</string>
     <string name="next_occurrence">Ďalší výskyt</string>
     <string name="payment_date">Dátum platby</string>

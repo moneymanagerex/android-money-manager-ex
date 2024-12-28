@@ -135,7 +135,6 @@
     <string name="decimal_char">Decimaladskiller</string>
     <string name="group_char">Gruppekarakter</string>
     <string name="scale">Skala</string>
-    <string name="conversion_to_base_rate">Omregning</string>
     <string name="currency_name_empty">Valutanavn er nødvendig</string>
     <string name="new_edit_currency">Ny/rediger valuta</string>
     <!-- transaction -->
@@ -237,8 +236,6 @@
     <string name="repeating_empty_transaction">Ingen planlagte transaktioner fundet. Tryk på den grønne plus-knap for at oprette én.</string>
     <string name="inactive">Inaktiv</string>
     <string name="activates">Aktiverer</string>
-    <string name="days_overdue">dage over frist!</string>
-    <string name="days_remaining">dage tilbage</string>
     <string name="new_edit_repeating_transaction">Ny/redigér planlagt transaktion</string>
     <string name="due_date">Forfaldsdato</string>
     <string name="next_occurrence">Næste forekomst</string>
