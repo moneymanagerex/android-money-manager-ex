@@ -66,8 +66,8 @@ public class Category
     }
 
     public String getBasename() { return getString(BASENAME);}
-    public void setBasename(String value) { setString(BASENAME, value);}
 
+    public void setBasename(String value) { setString(BASENAME, value);}
 }
 
 
