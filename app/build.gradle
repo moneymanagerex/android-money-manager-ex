@@ -207,8 +207,8 @@ dependencies {
     implementation fileTree(dir: 'sqlite3mc', include: ['*.aar', '*.jar'], exclude: [])
     annotationProcessor 'org.parceler:parceler:1.1.13'
     // Dagger 2
-    implementation 'com.google.dagger:dagger:2.53.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.53.1'
+    implementation 'com.google.dagger:dagger:2.54'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.54'
     // picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 

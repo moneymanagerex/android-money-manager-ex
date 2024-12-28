@@ -35,10 +35,10 @@ public class SplitItemFactory {
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {
             entity = SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
+                    parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
         } else {
             entity = SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
+                    parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
         }
 
         return entity;
