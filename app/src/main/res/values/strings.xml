@@ -264,8 +264,8 @@
     <string name="repeating_empty_transaction">No scheduled transactions have been found. To create one, tap the green plus button.</string>
     <string name="inactive">Inactive</string>
     <string name="activates">Activates</string>
-    <string name="days_overdue">days overdue!</string>
-    <string name="days_remaining">days remaining</string>
+    <string name="days_overdue">%d days overdue!</string>
+    <string name="days_remaining">%d days remaining</string>
     <string name="new_edit_repeating_transaction">New/Edit Scheduled Transaction</string>
     <string name="due_date">Due Date</string>
     <string name="next_occurrence">Next Occurrence</string>
