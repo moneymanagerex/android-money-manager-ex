@@ -34,8 +34,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * All Accounts widget
  */
-public class AccountBillsWidgetProvider
-    extends AppWidgetProvider {
+public class AccountBillsWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -45,7 +44,7 @@ public class AccountBillsWidgetProvider
         MmexApplication app = new MmexApplication();
         CurrencyService currencyService = new CurrencyService(context);
 
-        for (int i = 0; i < appWidgetIds.length; ++i) {
+        for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_account_bills);
             remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
@@ -59,19 +58,19 @@ public class AccountBillsWidgetProvider
             Intent intentRefresh = new Intent(context, AccountBillsWidgetProvider.class);
             intentRefresh.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intentRefresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.imageButtonRefresh, pendingRefresh);
 
             //service
             Intent svcIntent = new Intent(context, AccountBillsWidgetService.class);
 
-            svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
             remoteViews.setRemoteAdapter(R.id.listViewAccountBills, svcIntent);
 
             // update widget
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.listViewAccountBills);
-            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.listViewAccountBills);
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }

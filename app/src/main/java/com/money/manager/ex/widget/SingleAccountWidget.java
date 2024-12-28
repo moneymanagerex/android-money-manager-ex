@@ -44,11 +44,8 @@ import timber.log.Timber;
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
  */
-public class SingleAccountWidget
-    extends AppWidgetProvider {
-
+public class SingleAccountWidget extends AppWidgetProvider {
     // Static
-
     /**
      * Returns number of cells needed for given size of the widget.
      *
@@ -64,7 +61,6 @@ public class SingleAccountWidget
     }
 
     // Dynamic
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
