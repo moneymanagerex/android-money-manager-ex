@@ -307,6 +307,17 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         super.finalize();
     }
 
+    public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
+        SupportSQLiteOpenHelper.Configuration configuration =
+                SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                        .name(this.dbPath)
+                        .callback(this)
+                        .build();
+
+        return factory.create(configuration);
+    }
+
     public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
