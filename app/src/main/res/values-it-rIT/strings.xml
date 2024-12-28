@@ -751,7 +751,7 @@
     <string name="notification_channel_recurring">Notifica Transazione Pianificata</string>
     <string name="notification_channel_recurring__description">Notifica Transazione Pianificata scaduta</string>
     <string name="notification_channel_remotefile">Operazione su File Remoto</string>
-    <string name="notification_channel_remotefile__description">Notifica Operazione su File Remota</string>
+    <string name="notification_channel_remotefile__description">Notifica Transazione su File Remoto</string>
     <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
     <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
