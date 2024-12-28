@@ -400,7 +400,10 @@ public class DashboardFragment
             int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             long currencyId = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
             String daysLeftText = "";
-            daysLeftText = Math.abs(daysLeft) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
+            boolean hasNumber = getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue).indexOf("%d") >= 0;
+            daysLeftText = String.format( (hasNumber ? getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) : "%d " + getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) ),
+                    Math.abs(daysLeft));
+
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small>" + currencyService.getCurrencyFormatted(currencyId, MoneyFactory.fromDouble(total)) + "</small>",
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},

@@ -47,6 +47,7 @@ import java.util.Locale;
 import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Adapter for all_data query. The list of transactions (account/recurring).
@@ -392,8 +393,10 @@ public class AllDataAdapter
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
-                holder.txtBalance.setText(Math.abs(daysLeft) + " " +
-                        context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
+                boolean hasNumber = context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue).indexOf("%d") >= 0;
+                holder.txtBalance.setText(
+                        String.format((hasNumber ? context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) : "%d " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue)),
+                                Math.abs(daysLeft)));
             }
             holder.txtBalance.setVisibility(View.VISIBLE);
         }

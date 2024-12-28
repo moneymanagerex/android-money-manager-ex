@@ -237,8 +237,8 @@
   <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.</string>
   <string name="inactive">Inattivo</string>
   <string name="activates">Attiva</string>
-  <string name="days_overdue">giorni scaduti!</string>
-  <string name="days_remaining">giorni rimanenti</string>
+  <string name="days_overdue">Scaduta da %d giorni!</string>
+  <string name="days_remaining">%d giorni rimanenti</string>
   <string name="new_edit_repeating_transaction">Aggiungi/Modifica Transazione Pianificata</string>
   <string name="due_date">Scadenza</string>
   <string name="next_occurrence">Prossima Scadenza</string>
