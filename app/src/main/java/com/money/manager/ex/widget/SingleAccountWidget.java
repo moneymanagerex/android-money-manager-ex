@@ -68,18 +68,16 @@ public class SingleAccountWidget
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final long N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
-        final long N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            SingleAccountWidgetConfigureActivity.deleteTitlePref(context, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            SingleAccountWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
         }
     }
 
@@ -260,7 +258,7 @@ public class SingleAccountWidget
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         views.setOnClickPendingIntent(R.id.refreshDataPanel, pendingIntent);
     }
