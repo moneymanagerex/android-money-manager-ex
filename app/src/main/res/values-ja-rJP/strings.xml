@@ -123,7 +123,6 @@
     <string name="decimal_char">10 進数の文字</string>
     <string name="group_char">グループ文字</string>
     <string name="scale">小数点以下の桁数</string>
-    <string name="conversion_to_base_rate">変換</string>
     <string name="currency_name_empty">通貨名が必要です</string>
     <string name="new_edit_currency">通貨を新しく作成/編集</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">(X) ヶ月毎</string>
     <string name="inactive">無効</string>
     <string name="activates">有効にする</string>
-    <string name="days_overdue">日期限超過!</string>
-    <string name="days_remaining">残り日数</string>
     <string name="due_date">期日</string>
     <string name="next_occurrence">次回発生</string>
     <string name="payment_date">支払日</string>

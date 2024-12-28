@@ -136,7 +136,6 @@
     <string name="decimal_char">Tizedes jel</string>
     <string name="group_char">Csoport jel</string>
     <string name="scale">Skála</string>
-    <string name="conversion_to_base_rate">Átváltás</string>
     <string name="currency_name_empty">Pénznem nevének megadása kötelező</string>
     <string name="new_edit_currency">Új pénznem/Pénznem szerkesztése</string>
     <string name="missing_default_currency">Hiányzik az alapértelmezett pénznem a beállításokban</string>
@@ -248,8 +247,6 @@
     <string name="repeating_empty_transaction">Nincsenek ütemezett ügyletek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="inactive">Inaktív</string>
     <string name="activates">Aktiválás</string>
-    <string name="days_overdue">napja lejárt!</string>
-    <string name="days_remaining">hátralévő nap</string>
     <string name="new_edit_repeating_transaction">Új ütemezett ügylet/Ütemezett ügylet szerkesztése</string>
     <string name="due_date">Határidő</string>
     <string name="next_occurrence">Következő előfordulás</string>

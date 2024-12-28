@@ -126,7 +126,6 @@
     <string name="decimal_char">Separador decimal</string>
     <string name="group_char">Símbolo de agrupamento</string>
     <string name="scale">Escala</string>
-    <string name="conversion_to_base_rate">Conversão</string>
     <string name="currency_name_empty">É requerido o nome da divisa</string>
     <string name="new_edit_currency">Nova/Editar Moeda</string>
     <!-- transaction -->
@@ -226,8 +225,6 @@
     <string name="every_x_months">Cada (x) Mes(es)</string>
     <string name="inactive">Inativa</string>
     <string name="activates">Ativa</string>
-    <string name="days_overdue">dia(s) de atraso</string>
-    <string name="days_remaining">dia(s) restante(s)</string>
     <string name="due_date">Data em que vence</string>
     <string name="next_occurrence">Próxima ocorrência</string>
     <string name="payment_date">Data de Pagamento</string>

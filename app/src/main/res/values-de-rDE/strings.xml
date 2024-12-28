@@ -136,7 +136,6 @@
     <string name="decimal_char">Dezimaltrennzeichen</string>
     <string name="group_char">Tausendertrennzeichen</string>
     <string name="scale">Skalierung</string>
-    <string name="conversion_to_base_rate">Umwandlung</string>
     <string name="currency_name_empty">Name der Währung ist erforderlich</string>
     <string name="new_edit_currency">Währung hinzufügen/bearbeiten</string>
     <!-- transaction -->
@@ -238,8 +237,6 @@
     <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
     <string name="inactive">Inaktiv</string>
     <string name="activates">aktiviert</string>
-    <string name="days_overdue">Tage überfällig!</string>
-    <string name="days_remaining">Tage verbleibend</string>
     <string name="new_edit_repeating_transaction">Geplante Transaktion neu/bearbeiten</string>
     <string name="due_date">Fälligkeitsdatum</string>
     <string name="next_occurrence">Nächstes Vorkommen</string>

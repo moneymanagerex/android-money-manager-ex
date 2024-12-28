@@ -133,7 +133,6 @@
     <string name="decimal_char">Decimalni znak</string>
     <string name="group_char">Skupinski znak</string>
     <string name="scale">Merilo</string>
-    <string name="conversion_to_base_rate">Pogovor</string>
     <string name="currency_name_empty">Ime valute je potrebno</string>
     <string name="new_edit_currency">Nova/urejanje valute</string>
     <!-- transaction -->
@@ -234,8 +233,6 @@
     <string name="repeating_empty_transaction">Nobenih ponavljajočih se transakcij ni bilo mogoče najti. Če jo želiš ustvariti, tapni zeleni gumb plus.</string>
     <string name="inactive">Neaktiven</string>
     <string name="activates">Aktivira</string>
-    <string name="days_overdue">dni zamuja!</string>
-    <string name="days_remaining">ostanek dni</string>
     <string name="new_edit_repeating_transaction">Novo/uredi ponavljajoče se transakcije</string>
     <string name="due_date">Datum zapadlosti</string>
     <string name="next_occurrence">Naslednji pojav</string>

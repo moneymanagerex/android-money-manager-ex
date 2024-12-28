@@ -123,7 +123,6 @@
     <string name="decimal_char">Caracter pentru zecimale</string>
     <string name="group_char">Caracter pentru grup</string>
     <string name="scale">Mărime</string>
-    <string name="conversion_to_base_rate">Schimb valutar</string>
     <string name="currency_name_empty">Trebuie precizat numele monedei</string>
     <string name="new_edit_currency">Monedă nouă/editează</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">La fiecare (x) Luni</string>
     <string name="inactive">Inactiv</string>
     <string name="activates">Activări</string>
-    <string name="days_overdue">zile în întârziere!</string>
-    <string name="days_remaining">zile rămase</string>
     <string name="due_date">Data scadentă</string>
     <string name="next_occurrence">Următoarea apariție</string>
     <string name="payment_date">Data plății</string>

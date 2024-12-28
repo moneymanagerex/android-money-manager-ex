@@ -135,7 +135,6 @@
     <string name="decimal_char">Separador decimal</string>
     <string name="group_char">Separador de millares</string>
     <string name="scale">Escala</string>
-    <string name="conversion_to_base_rate">Conversión a tasa base</string>
     <string name="currency_name_empty">El nombre de la moneda es requerido</string>
     <string name="new_edit_currency">Agregar/Editar moneda</string>
     <!-- transaction -->
@@ -237,8 +236,6 @@
     <string name="repeating_empty_transaction">No se encontraron transacciones programadas. Para crear una, pulse el botón verde con el signo Más.</string>
     <string name="inactive">Inactiva</string>
     <string name="activates">Se Activa</string>
-    <string name="days_overdue">días atrasados!</string>
-    <string name="days_remaining">días restantes</string>
     <string name="new_edit_repeating_transaction">Agregar/Editar Transacción Programada</string>
     <string name="due_date">Fecha de vencimiento</string>
     <string name="next_occurrence">Siguiente Ocurrencia</string>

@@ -124,7 +124,6 @@
     <string name="decimal_char">Separator dziesiętny</string>
     <string name="group_char">Separator tysięcy</string>
     <string name="scale">Skala</string>
-    <string name="conversion_to_base_rate">Kurs wymiany</string>
     <string name="currency_name_empty">Nazwa waluty jest wymagana</string>
     <string name="new_edit_currency">Tworzenie/edycja waluty</string>
     <!-- transaction -->
@@ -225,8 +224,6 @@
     <string name="every_x_months">Co (x) miesięcy</string>
     <string name="inactive">Nieaktywna</string>
     <string name="activates">Aktywuj</string>
-    <string name="days_overdue">dni opóźnienia!</string>
-    <string name="days_remaining">dni pozostało</string>
     <string name="new_edit_repeating_transaction">Dodaj/edytuj Zaplanowaną operację</string>
     <string name="due_date">Termin zapłaty</string>
     <string name="next_occurrence">Najbliższe wystąpienie</string>

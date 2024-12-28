@@ -135,7 +135,6 @@
     <string name="decimal_char">Десятковий символ</string>
     <string name="group_char">Розділювач груп</string>
     <string name="scale">Шкала</string>
-    <string name="conversion_to_base_rate">Перетворення</string>
     <string name="currency_name_empty">Необхідна назва валюти</string>
     <string name="new_edit_currency">Створити/редагувати валюту</string>
     <!-- transaction -->
@@ -237,8 +236,6 @@
     <string name="repeating_empty_transaction">Не знайдено запланованих операцій. Для створення, натисніть на зеленій кнопці з плюсом</string>
     <string name="inactive">Неактивні</string>
     <string name="activates">Активувати</string>
-    <string name="days_overdue">прострочено днів!</string>
-    <string name="days_remaining">днів, що залишилися</string>
     <string name="new_edit_repeating_transaction">Створити/редагувати Заплановану операцію</string>
     <string name="due_date">До дати</string>
     <string name="next_occurrence">Наступна подія</string>

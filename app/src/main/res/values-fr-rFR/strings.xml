@@ -125,7 +125,6 @@
     <string name="decimal_char">Caractère des décimales</string>
     <string name="group_char">Caractère de groupement</string>
     <string name="scale">Echelle</string>
-    <string name="conversion_to_base_rate">Taux de conversion de base</string>
     <string name="currency_name_empty">Le nom de la devise est requis</string>
     <string name="new_edit_currency">Créer/Éditer une devise</string>
     <!-- transaction -->
@@ -226,8 +225,6 @@
     <string name="every_x_months">Tous les (x) mois</string>
     <string name="inactive">Inactif</string>
     <string name="activates">active </string>
-    <string name="days_overdue">jours de retard !</string>
-    <string name="days_remaining">jours restants</string>
     <string name="due_date">Date d\'échéance</string>
     <string name="next_occurrence">Occurrence suivante</string>
     <string name="payment_date">Date du versement</string>

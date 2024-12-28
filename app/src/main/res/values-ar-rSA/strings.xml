@@ -136,7 +136,6 @@
     <string name="decimal_char">حرف عشري</string>
     <string name="group_char">مجموعة شار</string>
     <string name="scale">مقياس</string>
-    <string name="conversion_to_base_rate">التحويل</string>
     <string name="currency_name_empty">مطلوب اسم العملة</string>
     <string name="new_edit_currency">جديد/تعديل العملة</string>
     <!-- transaction -->
@@ -238,8 +237,6 @@
     <string name="repeating_empty_transaction">لم يتم العثور على أي معاملات مجدولة. لإنشاء معاملة مجدولة، انقر على زر الزائد الأخضر.</string>
     <string name="inactive">غير نشط</string>
     <string name="activates"></string>
-    <string name="days_overdue">أيام متأخرة!</string>
-    <string name="days_remaining">أيام متبقية</string>
     <string name="new_edit_repeating_transaction"></string>
     <string name="due_date">تاريخ الاستحقاق</string>
     <string name="next_occurrence">التكرار التالي</string>

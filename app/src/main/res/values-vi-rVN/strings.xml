@@ -123,7 +123,6 @@
     <string name="decimal_char">Kí tự thập phân</string>
     <string name="group_char">Kí tự nhóm</string>
     <string name="scale">Tỷ lệ</string>
-    <string name="conversion_to_base_rate">Chuyển đổi</string>
     <string name="currency_name_empty">Tên tiền tệ là cần thiết</string>
     <string name="new_edit_currency">Mới/Sửa tiền tệ</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Mỗi (x) tháng</string>
     <string name="inactive">Không hoạt động</string>
     <string name="activates">Kích hoạt</string>
-    <string name="days_overdue">ngày quá hạn!</string>
-    <string name="days_remaining">ngày còn lại</string>
     <string name="due_date">Ngày hết hạn</string>
     <string name="next_occurrence">Lần xuất hiện tiếp theo</string>
     <string name="payment_date">Ngày thanh toán</string>

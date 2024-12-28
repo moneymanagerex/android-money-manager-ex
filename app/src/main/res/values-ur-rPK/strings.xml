@@ -123,7 +123,6 @@
     <string name="decimal_char">اعشاری ٹراؤٹ</string>
     <string name="group_char">گروپ توسیع کریکٹر</string>
     <string name="scale">پیمانہ</string>
-    <string name="conversion_to_base_rate">بدلی</string>
     <string name="currency_name_empty">کرنسی کا نام مطلوب ہے ۔</string>
     <string name="new_edit_currency">نئی/ترمیم کرنسی</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">(Xہر) ماہ</string>
     <string name="inactive">غیر فعال</string>
     <string name="activates">عملیں</string>
-    <string name="days_overdue">موخر دن!</string>
-    <string name="days_remaining">باقی دن</string>
     <string name="due_date">واجب تاریخ</string>
     <string name="next_occurrence">اگلا وقوعہ</string>
     <string name="payment_date">ادائیگی کی تاریخ</string>

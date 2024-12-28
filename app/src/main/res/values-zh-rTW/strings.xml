@@ -123,7 +123,6 @@
     <string name="decimal_char">小數點字元</string>
     <string name="group_char">數字分組字元</string>
     <string name="scale">比例</string>
-    <string name="conversion_to_base_rate">轉換為基本利率</string>
     <string name="currency_name_empty">需要貨幣名稱</string>
     <string name="new_edit_currency">新增/編輯貨幣</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">每 (x) 月</string>
     <string name="inactive">未啟用</string>
     <string name="activates">啟動</string>
-    <string name="days_overdue">日 - 過期</string>
-    <string name="days_remaining">日 - 到期</string>
     <string name="due_date">到期日期</string>
     <string name="next_occurrence">下次到期日</string>
     <string name="payment_date">付款日期</string>

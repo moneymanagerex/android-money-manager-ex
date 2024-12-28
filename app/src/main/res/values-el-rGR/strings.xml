@@ -123,7 +123,6 @@
     <string name="decimal_char">Δεκαδική char</string>
     <string name="group_char">Ομάδα char</string>
     <string name="scale">Κλίμακα</string>
-    <string name="conversion_to_base_rate">Μετατροπή</string>
     <string name="currency_name_empty">Απαιτείται το όνομα του νομίσματος</string>
     <string name="new_edit_currency">Δημιουργία/επεξεργασία νομίσματος</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Κάθε (x) μήνες</string>
     <string name="inactive">Ανενεργό</string>
     <string name="activates">Ενεργοποιεί</string>
-    <string name="days_overdue">μέρες καθυστέρησης!</string>
-    <string name="days_remaining">Εναπομείνουσες ημέρες</string>
     <string name="due_date">Ημερομηνία ολοκλήρωσης</string>
     <string name="next_occurrence">Επόμενη εμφάνιση</string>
     <string name="payment_date">Ημ/νία εξόφλησης</string>

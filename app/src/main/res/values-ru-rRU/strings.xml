@@ -135,7 +135,6 @@
     <string name="decimal_char">Разделитель целой и дробной части</string>
     <string name="group_char">Разделитель групп</string>
     <string name="scale">Дробных</string>
-    <string name="conversion_to_base_rate">Обменный курс</string>
     <string name="currency_name_empty">Требуется указать название валюты</string>
     <string name="new_edit_currency">Создать/Редактировать валюту</string>
     <!-- transaction -->
@@ -237,8 +236,6 @@
     <string name="repeating_empty_transaction">Запланированные транзакции отсутствуют. Для создания нажмите кнопку \"+\".</string>
     <string name="inactive">Неактивна</string>
     <string name="activates">Активировать</string>
-    <string name="days_overdue">дней просрочки!</string>
-    <string name="days_remaining">дней осталось</string>
     <string name="new_edit_repeating_transaction">Создать/Изменить запланированную транзакцию</string>
     <string name="due_date">Дата платежа</string>
     <string name="next_occurrence">Следующее начисление</string>

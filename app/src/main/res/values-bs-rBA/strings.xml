@@ -123,7 +123,6 @@
     <string name="decimal_char">Decimalni znak</string>
     <string name="group_char">Znak za grupisanje</string>
     <string name="scale">Skala</string>
-    <string name="conversion_to_base_rate">Konverzija</string>
     <string name="currency_name_empty">Ime valute je neophodno</string>
     <string name="new_edit_currency">Nova/izmjena valute</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Svakih (x) mjeseci</string>
     <string name="inactive">Neaktivan</string>
     <string name="activates">Aktivira</string>
-    <string name="days_overdue">dana kasni!</string>
-    <string name="days_remaining">dan(a) preostalo</string>
     <string name="due_date">Datum dospijeća</string>
     <string name="next_occurrence">Sljedeće pojavljivanje</string>
     <string name="payment_date">Datum plaćanja</string>

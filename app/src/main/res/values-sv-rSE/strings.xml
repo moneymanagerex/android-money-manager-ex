@@ -121,8 +121,6 @@
     <string name="every_x_months">Var (x) månad</string>
     <string name="inactive">Inaktiv</string>
     <string name="activates">Aktivera</string>
-    <string name="days_overdue">dag(ar) försenad!</string>
-    <string name="days_remaining">Dagar kvar</string>
     <!-- EP Recurring mode recurring_mode -->
     <!-- 20121121 -->
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->

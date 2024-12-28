@@ -123,7 +123,6 @@
     <string name="decimal_char">Kode desimal</string>
     <string name="group_char">Kode Pengelompokan</string>
     <string name="scale">Skala</string>
-    <string name="conversion_to_base_rate">Konversi</string>
     <string name="currency_name_empty">Nama mata uang diperlukan</string>
     <string name="new_edit_currency">Baru/Ubah Mata uang</string>
     <!-- transaction -->
@@ -223,8 +222,6 @@
     <string name="every_x_months">Setiap (x) bulan</string>
     <string name="inactive">Tidak aktif</string>
     <string name="activates">Mengaktifkan</string>
-    <string name="days_overdue">hari terlambat!</string>
-    <string name="days_remaining">sisa hari</string>
     <string name="due_date">Tanggal Jatuh Tempo</string>
     <string name="next_occurrence">Kejadian Berikutnya</string>
     <string name="payment_date">Tanggal Pembayaran</string>
