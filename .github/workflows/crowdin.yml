@@ -3,6 +3,8 @@ name: Crowdin Action
 on:
   push:
     branches: [ master ]
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at 00:00 UTC
 
 jobs:
   synchronize-with-crowdin:
