@@ -237,6 +237,8 @@
     <string name="repeating_empty_transaction">لم يتم العثور على أي معاملات مجدولة. لإنشاء معاملة مجدولة، انقر على زر الزائد الأخضر.</string>
     <string name="inactive">غير نشط</string>
     <string name="activates"></string>
+    <string name="days_overdue">%d أيام متأخرة!</string>
+    <string name="days_remaining">%d أيام متبقية</string>
     <string name="new_edit_repeating_transaction"></string>
     <string name="due_date">تاريخ الاستحقاق</string>
     <string name="next_occurrence">التكرار التالي</string>
@@ -254,6 +256,7 @@
     <string name="enter">ادخال</string>
     <string name="enter_amount">أدخل القيمة</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">معاملة تلقائية</string>
     <string name="manual">ادخال يدوى</string>
     <string name="prompt">طلب إدخال</string>
     <string name="auto">إدخال تلقائي</string>
@@ -322,6 +325,7 @@
     <string name="no_thanks">لا، شكراً</string>
     <string name="donate_exlamation">تبرع!</string>
     <string name="donate_direct">يمكنك التبرع مباشرتا بالنقر على روابط التبرع على صفحة الإنترنت الخاصة بالتطبيق.</string>
+    <string name="donate_bitcoin">نحن أيضا نقبل تبرع بيتكوين.</string>
     <string name="donate_button_text">التبرع</string>
     <string name="homepage_button">فتح الصفحة الرئيسية</string>
     <string name="android_sqlite_vesion">إصدار SQLite</string>
@@ -350,6 +354,7 @@
     <string name="menu_report_where_money_goes">أين تذهب النقود</string>
     <string name="menu_report_where_money_comes_from">من أين تأتي النقود</string>
     <string name="title_check_repeating_transaction">وقت الإشعار</string>
+    <string name="summary_check_repeating_transaction">ما هو الوقت الذي تريد التحقق فيه من إذا كانت هناك معاملات مجدولة متأخرة؟ (الافتراضي 08:00)</string>
     <string name="credits">المساهمون في العمل</string>
     <string name="libraries">المكتبات</string>
     <string name="top_payees_last_30_days">أعلى المٌستفيدون: آخر 30 يوماً</string>
@@ -551,6 +556,8 @@
     <string name="currency">العملة</string>
     <string name="menu_create_database">إنشاء قاعدة بيانات</string>
     <string name="create_database">إنشاء قاعدة بيانات</string>
+    <string name="summary_anonymous_usage">فعّله لمساعدتنا في إرسال بيانات بشكل مجهول حول استخدام MMEX</string>
+    <string name="title_anonymous_usage">إرسال بيانات عن الاستخدام بشكل مجهول</string>
     <string name="title_auto_transaction_number">ملء تلقائي لرقم المعاملة</string>
     <!-- Notification Setting -->
     <string name="notification_channel_recurring">إشعار المعاملة المجدولة</string>
