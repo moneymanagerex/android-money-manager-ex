@@ -219,15 +219,15 @@
     <string name="widget_all_accounts">Tutti i conti</string>
     <string name="widget_add_transaction">Aggiungi Transazione</string>
     <!-- TAG -->
-    <string name="tag">Tag/Etichetta</string>
+    <string name="tag">Etichetta</string>
     <string name="tagsList_transactions">Tag per la transazione</string>
-    <string name="tag_name">Nome Tag</string>
-    <string name="edit_tagName">Modifica Tag</string>
-    <string name="delete_tag">Elimina Tag</string>
-    <string name="select_tag">Seleziona Tag</string>
-    <string name="tag_empty_list">Nessun Tag è stato trovato. Per crearne uno, tocca il pulsante verde più.</string>
-    <string name="tag_can_not_deleted">Il tag selezionato non può essere eliminato perché è referenziato</string>
-    <string name="db_tag_update_failed">Aggiornamento Tag non riuscito</string>
+    <string name="tag_name">Nome Etichetta</string>
+    <string name="edit_tagName">Modifica Etichetta</string>
+    <string name="delete_tag">Elimina Etichetta</string>
+    <string name="select_tag">Seleziona Etichetta</string>
+    <string name="tag_empty_list">Nessuna Etichetta è stato trovata. Per crearne una, tocca il pulsante verde più.</string>
+    <string name="tag_can_not_deleted">L\'Etichetta selezionata non può essere eliminata perché è utilizzata.</string>
+    <string name="db_tag_update_failed">Aggiornamento Etichetta non riuscito</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nessuna</string>
     <string name="once">Una volta</string>
@@ -270,6 +270,7 @@
     <string name="enter">Inserisci</string>
     <string name="enter_amount">Inserire importo</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Transazione Automatica</string>
     <string name="manual">Inserimento manuale</string>
     <string name="prompt">Conferma per l\'inserimento</string>
     <string name="auto">Inserimento automatico</string>
@@ -574,6 +575,7 @@
     <string name="commission">Commissione</string>
     <string name="value">Valore</string>
     <string name="view_transactions">Visualizza transazioni</string>
+    <string name="view_transactions_sub">Visualizza transazioni con sottocategorie</string>
     <string name="error_downloading_symbol">Errore nell\'aggiornamento del prezzo per il simbolo</string>
     <string name="error_updating_rates">Errore nell\'aggiornamento dei tassi</string>
     <string name="error_no_price_found_for_symbol">Nessun prezzo trovato per il simbolo</string>
