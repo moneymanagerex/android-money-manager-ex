@@ -256,7 +256,6 @@
     <string name="enter">Ввод</string>
     <string name="enter_amount">Введите сумму</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Автовыполнение</string>
     <string name="manual">Выполнение вручную</string>
     <string name="prompt">По запросу</string>
     <string name="auto">Выполнить автоматически</string>
@@ -558,7 +557,6 @@
     <string name="commission">Комиссия</string>
     <string name="value">Значение</string>
     <string name="view_transactions">Просмотр транзакций</string>
-    <string name="view_transactions_sub">Просмотр транзакций с подкатегориями</string>
     <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
     <string name="error_updating_rates">Ошибка обновление курсов</string>
     <string name="error_no_price_found_for_symbol">Цена для символа не найдена</string>

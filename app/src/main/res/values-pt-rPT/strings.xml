@@ -243,7 +243,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="enter">Entrar</string>
     <string name="enter_amount">Insira valor</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Transação Automática</string>
     <string name="manual">Introdução manual</string>
     <string name="prompt">Perguntar para introduzir</string>
     <string name="auto">Introdução automática</string>

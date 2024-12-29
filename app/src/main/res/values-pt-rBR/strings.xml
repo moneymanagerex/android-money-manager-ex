@@ -256,7 +256,6 @@
     <string name="enter">Entrar</string>
     <string name="enter_amount">Digite a quantidade</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Transação Automática</string>
     <string name="manual">Entrada manual</string>
     <string name="prompt">Solicitar entrada</string>
     <string name="auto">Entrada automática</string>
@@ -558,7 +557,6 @@
     <string name="commission">Comissão</string>
     <string name="value">Valor</string>
     <string name="view_transactions">Ver transações</string>
-    <string name="view_transactions_sub">Ver transações com subcategorias</string>
     <string name="error_downloading_symbol">Erro ao baixar o preço para o símbolo</string>
     <string name="error_updating_rates">Erro ao atualizar as taxas</string>
     <string name="error_no_price_found_for_symbol">Nenhum preço foi encontrado para o símbolo</string>

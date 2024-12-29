@@ -243,7 +243,6 @@
     <string name="enter">Saisir</string>
     <string name="enter_amount">Saisir le montant</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Transaction automatique</string>
     <string name="auto">Entrée automatique</string>
     <!-- 20121121 -->
     <string name="send_feedback">Envoyer un commentaire</string>

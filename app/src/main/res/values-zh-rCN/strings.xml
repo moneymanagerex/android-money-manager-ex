@@ -257,7 +257,6 @@
     <string name="enter">回车</string>
     <string name="enter_amount">输入金额</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">自动交易</string>
     <string name="manual">手动输入</string>
     <string name="prompt">提示输入</string>
     <string name="auto">自动输入</string>
@@ -561,7 +560,6 @@
     <string name="commission">佣金</string>
     <string name="value">市值</string>
     <string name="view_transactions">查看交易记录</string>
-    <string name="view_transactions_sub">查看子类别的交易</string>
     <string name="error_downloading_symbol">下载汇率时发生错误</string>
     <string name="error_updating_rates">更新汇率时出错</string>
     <string name="error_no_price_found_for_symbol">无此币种汇价</string>

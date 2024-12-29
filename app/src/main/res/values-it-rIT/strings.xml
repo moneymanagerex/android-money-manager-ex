@@ -124,7 +124,7 @@
     <string name="add_subcategory">Aggiungi Sottocategoria</string>
     <string name="edit_categoryName">Modifica categoria</string>
     <string name="delete_category">Elimina Categoria</string>
-    <string name="search_sub_category">Includi sottocategoria</string>
+    <string name="search_sub_category">Includi sottocategorie</string>
     <!-- currency -->
     <string name="currency_name">Nome valuta</string>
     <string name="currency_symbol">Simbolo della valuta</string>
@@ -136,6 +136,7 @@
     <string name="decimal_char">Separatore decimale</string>
     <string name="group_char">Separatore migliaia</string>
     <string name="scale">Scala</string>
+    <string name="conversion_to_base_rate">Tasso di cambio</string>
     <string name="currency_name_empty">Il nome della valuta è richiesto</string>
     <string name="new_edit_currency">Nuova / Modifica Valuta</string>
     <string name="missing_default_currency">Manca la Valuta Predefinita nelle impostazioni</string>
@@ -197,23 +198,23 @@
     <!-- 20120906 -->
     <string name="close_application">Chiudi applicazione</string>
     <string name="question_close_application">Vuoi chiudere l\'applicazione?</string>
-    <string name="error_intent_pick_file">Nessuna attività trovata per gestire l\' Intent Pick File</string>
+    <string name="error_intent_pick_file">Nessuna attività trovato per gestire l\'intent \"PICK_FILE\"</string>
     <string name="attention">Attenzione</string>
     <string name="payee_can_not_deleted">Il beneficiario selezionato non può essere cancellato perché in uso</string>
     <string name="account_can_not_deleted">Il conto selezionato non può essere cancellato perché in uso</string>
     <string name="currency_can_not_deleted">La valuta selezionata non può essere cancellata perché in uso</string>
     <string name="category_can_not_deleted">La categoria selezionata non può essere cancellata perché in uso</string>
     <!-- transaction list periods -->
-    <string name="all_transaction">Tutte le operazioni</string>
+    <string name="all_transaction">Tutte le transazioni</string>
     <string name="today">Oggi</string>
     <string name="last7days">Ultima settimana</string>
     <string name="last15days">Ultime 2 settimane</string>
     <string name="current_month">Mese corrente</string>
     <string name="current_year">Anno corrente</string>
-    <string name="future_transactions">Operazioni future</string>
-    <string name="show_transaction">Visualizzazione Operazioni</string>
+    <string name="future_transactions">Transazioni future</string>
+    <string name="show_transaction">Visualizzazione Transazioni</string>
     <string name="changelog">Modifiche di Versione</string>
-    <string name="transaction_number">Numero di operazione</string>
+    <string name="transaction_number">Numero transazione</string>
     <string name="widget_summary">Riepilogo</string>
     <string name="widget_all_accounts">Tutti i conti</string>
     <string name="widget_add_transaction">Aggiungi Transazione</string>
@@ -239,7 +240,7 @@
     <string name="yearly">Annuale</string>
     <string name="four_months">Quattro Mesi</string>
     <string name="four_weeks">Quattro Settimane</string>
-    <string name="daily">Quotidiane</string>
+    <string name="daily">Giornaliero</string>
     <string name="in_x_days">In (x) Giorni</string>
     <string name="in_x_months">In (x) Mesi</string>
     <string name="every_x_days">Ogni (x) Giorni</string>
@@ -247,14 +248,16 @@
     <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.</string>
     <string name="inactive">Inattivo</string>
     <string name="activates">Attiva</string>
+    <string name="days_overdue">Scaduta da %d giorni</string>
+    <string name="days_remaining">%d giorni rimanenti</string>
     <string name="new_edit_repeating_transaction">Aggiungi/Modifica Transazione Pianificata</string>
     <string name="due_date">Scadenza</string>
-    <string name="next_occurrence">Prossima Scadenza</string>
+    <string name="next_occurrence">Prossima occorrenza</string>
     <string name="payment_date">Data di pagamento</string>
-    <string name="repeats">Cadenza</string>
+    <string name="repeats">Ripetizioni</string>
     <string name="occurs">Ricorre</string>
     <string name="payments_left">Pagamenti rimanenti</string>
-    <string name="payments_left_required">E\' richiesto il valore dei pagamenti rimanenti</string>
+    <string name="payments_left_required">E\' richiesto il numero dei pagamenti rimanenti</string>
     <string name="due_date_required">La data di scadenza è obbligatoria</string>
     <string name="error_next_occurrence_not_populate">E\' richiesta la prossima scadenza</string>
     <string name="enter_next_occurrence">Inserire la prossima scadenza</string>
@@ -267,9 +270,8 @@
     <string name="enter">Inserisci</string>
     <string name="enter_amount">Inserire importo</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Transazione Automatica</string>
     <string name="manual">Inserimento manuale</string>
-    <string name="prompt">Conferma per inserimento</string>
+    <string name="prompt">Conferma per l\'inserimento</string>
     <string name="auto">Inserimento automatico</string>
     <!-- 20121121 -->
     <string name="send_feedback">Invia commenti</string>
@@ -293,7 +295,7 @@
     <string name="expenses">Uscite</string>
     <string name="difference">Differenza</string>
     <string name="no_data">Nessun record trovato. Provare modificando il periodo visibile o premere il pulsante verde per creare una. </string>
-    <string name="no_stock_data">Nessun dato dell\'azione disponibile per questo conto.</string>
+    <string name="no_stock_data">Nessun Azione disposibile per questo conto</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
     <string name="menu_reports">Resoconti</string>
@@ -318,7 +320,7 @@
     <string name="copy_database_on_external_storage_failed">Copia del database su archiviazione esterna fallita</string>
     <string name="path_database_using">Stai utilizzando il database salvato in: %1$s</string>
     <!-- Split Categories -->
-    <string name="split_transaction">Operazione Suddivisa</string>
+    <string name="split_transaction">Transazione Suddivisa</string>
     <string name="split">Suddividi</string>
     <string name="error_split_transaction_empty">E\' richiesta almeno una operazione suddivisa</string>
     <string name="swipe_to_dismiss">Scorri sugli elementi per rimuoverli.</string>
@@ -332,13 +334,13 @@
     <string name="donate_in_app_spinner_text">Seleziona l\'importo della donazione</string>
     <string name="donate_in_app_button">Donate</string>
     <string name="donate_thank_you">Grazie per la vostra donazione!</string>
-    <string name="donate">Donate</string>
+    <string name="donate">Dona</string>
     <string name="no_thanks">No, grazie</string>
     <string name="donate_exlamation">Donate!</string>
     <string name="donate_direct">E\' possibile donare cliccando direttamente sul link Donate sul nostro sito web app.</string>
     <string name="donate_bitcoin">Ora accettiamo anche donazioni BitCoin.</string>
     <string name="donate_license">Per ragioni di licenza di Google, non possiamo inserire dei link per donazione direttamente all\'interno dell\'app.</string>
-    <string name="donate_button_text">Donate</string>
+    <string name="donate_button_text">Dona</string>
     <string name="homepage_button">Apri Home page</string>
     <string name="android_sqlite_vesion">Versione SQLite</string>
     <string name="ascending">Crescente</string>
@@ -380,14 +382,14 @@
     <string name="empty_category">Categoria vuota</string>
     <string name="empty_payee">Beneficiario vuoto</string>
     <string name="help">Guida</string>
-    <string name="delete_repeating_transaction">Elimina Transazioni Pianificate</string>
+    <string name="delete_repeating_transaction">Elimina Transazione Pianificata</string>
     <string name="last">Ultimo</string>
     <string name="accounts">Conti</string>
     <string name="to_account">Al Conto</string>
     <string name="from_account">Dal Conto</string>
     <string name="default_status">Stato predefinito</string>
     <string name="default_payee">Beneficiario predefinito</string>
-    <string name="edit_transaction">Modifica operazione</string>
+    <string name="edit_transaction">Modifica Transazione</string>
     <string name="delete_one_selected_transaction">Sei sicuro di voler eliminare l\'operazione selezionata?</string>
     <string name="delete_others_selected_transaction">Sei sicuro di che volere cancellare le %d operazioni selezionate?</string>
     <string name="categories">Categorie</string>
@@ -425,8 +427,8 @@
     <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
     <string name="title_repeating_transaction_process">Processa transazioni pianificate</string>
     <string name="summary_repeating_transaction_process">Processa transazioni pianificate scadute (Automatica, Chiedi, Manuale)</string>
-    <string name="title_use_nested_category">(BETA) Usa un nuovo modello di categoria annidato</string>
-    <string name="summary_use_nested_category">Usa il nuovo modello di categoria annidato invece di categoria:sottocategoria (Beta, usa a proprio rischio)</string>
+    <string name="title_use_nested_category">Usa un nuovo modello di categoria annidato</string>
+    <string name="summary_use_nested_category">Usa il nuovo modello di categoria annidato invece di categoria:sottocategoria</string>
     <string name="tools">Strumenti</string>
     <string name="entities">Entità</string>
     <string name="loading">Caricamento in corso&#8230;</string>
@@ -447,7 +449,6 @@
     <string name="montly_last_bussines_day">Mensile (ultimo giorno lavorativo)</string>
     <!-- languages -->
     <string name="locale_application">Lingua dell\'applicazione</string>
-    <string name="locale_ar">Arabo</string>
     <string name="transaction_cancel_confirm">Sicuro di voler annullare le modifiche?</string>
     <string name="keep_editing">Mantenere la modifica</string>
     <string name="discard">Abbandona</string>
@@ -464,7 +465,7 @@
     <string name="global">Globale</string>
     <string name="tutorial_global_1">Svariate valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
     <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione con servizi Cloud. Importazione ed esportazione dei dati in altre applicazioni.</string>
-    <string name="transactions">Operazioni</string>
+    <string name="transactions">Transazioni</string>
     <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni pianificate con promemoria.</string>
     <string name="split_category">-Categoria Suddivisa-</string>
     <string name="title_activity_currency_chart">Grafico del tasso di cambio valuta</string>
@@ -489,7 +490,7 @@
     <string name="price_updated">Prezzo aggiornato</string>
     <string name="all_prices_updated">Tutti i prezzi sono stati aggiornati.</string>
     <string name="download_complete">Download completato.</string>
-    <string name="confirm_price_download">Si desidera aggiornare i prezzi di sicurezza online?</string>
+    <string name="confirm_price_download">Si desidera aggiornare i prezzi online?</string>
     <string name="starting_price_update">Download prezzi, attendere prego&#8230;</string>
     <string name="database_migrate_14_to_20">Migra il database dalla versione 1.4</string>
     <string name="database_migrate_14_to_20_explanation">Sono stati trovati vecchi dati. Tocca qui per utilizzare il database precedente.</string>
@@ -572,8 +573,7 @@
     <string name="price_date">Data del prezzo</string>
     <string name="commission">Commissione</string>
     <string name="value">Valore</string>
-    <string name="view_transactions">Visualizza operazioni</string>
-    <string name="view_transactions_sub">Visualizza transazioni con sottocategorie</string>
+    <string name="view_transactions">Visualizza transazioni</string>
     <string name="error_downloading_symbol">Errore nell\'aggiornamento del prezzo per il simbolo</string>
     <string name="error_updating_rates">Errore nell\'aggiornamento dei tassi</string>
     <string name="error_no_price_found_for_symbol">Nessun prezzo trovato per il simbolo</string>
@@ -618,8 +618,8 @@
     <!-- budgets -->
     <string name="add_budget">Nuovo budget</string>
     <string name="budget_name">Nome del budget</string>
-    <string name="budget_year">Budget anno</string>
-    <string name="budget_month">Budget mese</string>
+    <string name="budget_year">Budget per anno</string>
+    <string name="budget_month">Budget per mese</string>
     <string name="copy">Copia</string>
     <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
     <string name="print">Stampa</string>
@@ -631,7 +631,7 @@
     <string name="currencies_used">Valute, usate</string>
     <string name="open_currencies">Valute aperte</string>
     <string name="import_all_currencies">Importa Valute</string>
-    <string name="import_currencies_in_progress">L\'importazione valute. Attendere prego&#8230;</string>
+    <string name="import_currencies_in_progress">Importazione valute. Attendere&#8230;</string>
     <string name="question_import_currencies">Vuoi importare la valuta?</string>
     <string name="start_currency_exchange_rates">Aggiornamento tassi di cambio delle valute. Attendere prego&#8230;</string>
     <string name="update_currency_exchange_rates">Aggiornamento tasso di cambio:\n%1$s</string>
@@ -675,7 +675,7 @@
     <string name="invalid_database">Questa estensione non è riconosciuta come database valido.</string>
     <string name="reset_preferences">Ripristina le preferenze</string>
     <string name="preferences_reset">Le preferenze di sincronizzazione sono state ripristinate.</string>
-    <string name="cloud_download">Scarica il file del database dall\'archiviazione su cloud.</string>
+    <string name="cloud_download">Scarica il file del database dall\'archiviazione cloud.</string>
     <string name="cloud_upload">Carica il file del database su archiviazione cloud.</string>
     <string name="sync_notification_title">Money Manager Ex - Sincronizzazione</string>
     <string name="sync_downloading">Scaricamento del database in corso. Attendere, prego&#8230;</string>
@@ -737,10 +737,8 @@
     <string name="currency">Valuta</string>
     <string name="menu_create_database">Crea Database</string>
     <string name="create_database">Crea Database</string>
-    <string name="pref_anonymous_usage">prefanonymoususage</string>
     <string name="summary_anonymous_usage">Abilita per aiutarci a inviare dati anonimi sull\'utilizzo di MMEX</string>
     <string name="title_anonymous_usage">Invia dati anonimi di utilizzo</string>
-    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Inserire automaticamente il numero di transazione</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Notifica Transazione Pianificata scaduta </string>
