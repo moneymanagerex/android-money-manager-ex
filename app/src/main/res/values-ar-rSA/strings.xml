@@ -254,7 +254,6 @@
     <string name="enter">ادخال</string>
     <string name="enter_amount">أدخل القيمة</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">معاملة تلقائية</string>
     <string name="manual">ادخال يدوى</string>
     <string name="prompt">طلب إدخال</string>
     <string name="auto">إدخال تلقائي</string>

@@ -243,7 +243,6 @@
     <string name="enter">Voer in</string>
     <string name="enter_amount">Vul bedrag in</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Automatische transactie</string>
     <string name="manual">Handmatige invoer</string>
     <string name="prompt">Vragen om invoer</string>
     <string name="auto">Automatische invoer</string>

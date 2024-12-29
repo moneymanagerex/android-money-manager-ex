@@ -267,7 +267,6 @@
     <string name="enter">Belépés</string>
     <string name="enter_amount">Összeg megadása</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Automatikus ügylet</string>
     <string name="manual">Kézi bevitel</string>
     <string name="prompt">Rákérdezés bevitel előtt</string>
     <string name="auto">Automatikus bevitel</string>
@@ -573,7 +572,6 @@
     <string name="commission">Jutalék</string>
     <string name="value">Érték</string>
     <string name="view_transactions">Ügyletek megtekintése</string>
-    <string name="view_transactions_sub">Ügyletek megtekintése alkategóriákkal</string>
     <string name="error_downloading_symbol">Hiba történt a szimbólum árának letöltése során</string>
     <string name="error_updating_rates">Hiba történt az árfolyamok frissítésekor</string>
     <string name="error_no_price_found_for_symbol">Nem található a szimbólumhoz ár</string>

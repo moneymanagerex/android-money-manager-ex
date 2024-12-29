@@ -257,7 +257,6 @@
     <string name="enter">Eingeben</string>
     <string name="enter_amount">Betrag eingeben</string>
     <!-- EP Recurring mode recurring_mode -->
-    <string name="recurringModeLabel">Automatische Transaktion</string>
     <string name="manual">Manuelle Eingabe</string>
     <string name="prompt">Eingabe abfragen</string>
     <string name="auto">Automatischer Eintrag</string>
@@ -563,7 +562,6 @@
     <string name="commission">Provision</string>
     <string name="value">Wert</string>
     <string name="view_transactions">Transaktionen anzeigen</string>
-    <string name="view_transactions_sub">Transaktionen mit Unterkategorien anzeigen</string>
     <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
