@@ -251,13 +251,11 @@ public class FileStorageHelper {
     }
 
     private DocFileMetadata getRemoteMetadata(Uri uri) {
-        Context host = _host;
-
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
         result.lastModified = new MmxDate(0);
 
-        try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
+        try (Cursor cursor = _host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 Timber.w("Cursor is null or empty for URI: %s", uri);
                 return result;
