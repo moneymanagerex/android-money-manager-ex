@@ -251,15 +251,14 @@ public class FileStorageHelper {
     }
 
     private DocFileMetadata getRemoteMetadata(Uri uri) {
-        Context host = _host;
-
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
         result.lastModified = new MmxDate(0);
 
-        try (Cursor cursor = host.getContentResolver().query(uri, null, null, null, null, null)) {
+        try (Cursor cursor = _host.getContentResolver().query(uri, null, null, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
-                return null;
+                Timber.w("Cursor is null or empty for URI: %s", uri);
+                return result;
             }
             // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
             // Use constant values for column names to avoid errors
@@ -281,7 +280,7 @@ public class FileStorageHelper {
                 result.lastModified = new MmxDate(0); // or set to a default value
             }
         } catch (Exception e) {
-            Timber.e(e);
+            Timber.e(e, "Error retrieving metadata for URI: %s", uri);
         }
 
         // check the values
