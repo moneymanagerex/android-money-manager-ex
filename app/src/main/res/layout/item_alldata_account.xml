@@ -67,29 +67,37 @@
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
 
-            <!-- Attachment Status -->
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewAttachment"
+            <!-- Row for Attachment Status and Tags -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                app:typeface="roboto_light"
-                android:visibility="gone" /> <!-- Hidden by default -->
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewTags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                app:typeface="roboto_light"
-                android:visibility="gone" />
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewAttachment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"
+                    android:visibility="gone" /> <!-- Hidden by default -->
 
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewTags"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
