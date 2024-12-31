@@ -15,8 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
+import java.nio.file.Files;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.database.DatabaseManager;
@@ -29,8 +28,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import timber.log.Timber;
 
@@ -292,19 +294,24 @@ public class FileStorageHelper {
      */
     private void uploadDatabase(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
-        Uri remote = Uri.parse(metadata.remotePath);
+        Uri remoteUri = Uri.parse(metadata.remotePath);
 
-        try (ParcelFileDescriptor pfd = resolver.openFileDescriptor(remote, "w");
-             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor())) {
+        File localFile = new File(metadata.localPath);
 
-            File localFile = new File(metadata.localPath);
-            Files.copy(localFile, fileOutputStream);
+        try (ParcelFileDescriptor pfd = resolver.openFileDescriptor(remoteUri, "w")) {
+            if (pfd == null) {
+                throw new FileNotFoundException("Failed to obtain ParcelFileDescriptor for URI: " + remoteUri);
+            }
 
-            Timber.d("Database stored successfully.");
+            // Use Files.copy() for direct file-to-stream copy
+            try (OutputStream outputStream = new FileOutputStream(pfd.getFileDescriptor())) {
+                Files.copy(localFile.toPath(), outputStream);
+                Timber.d("Database stored successfully to %s", remoteUri);
+            }
         } catch (FileNotFoundException e) {
-            Timber.e(e, "File not found during upload");
+            Timber.e(e, "File not found during upload: %s", metadata.localPath);
         } catch (IOException e) {
-            Timber.e(e, "IO error during upload");
+            Timber.e(e, "IO error during upload: %s", metadata.localPath);
         }
     }
 
@@ -331,27 +338,31 @@ public class FileStorageHelper {
     private void downloadDatabase(Uri uri, String localPath) throws Exception {
         ContentResolver resolver = getContext().getContentResolver();
 
-        // Use try-with-resources to automatically close resources
+        // Temporary database file creation
         File tempDatabaseFile = File.createTempFile("database", ".db", getContext().getFilesDir());
 
-        Thread thread = new Thread(() -> {
-            try {
-                FileOutputStream outputStream = new FileOutputStream(tempDatabaseFile);
-                InputStream is = resolver.openInputStream(uri);
-                long bytesCopied = ByteStreams.copy(is, outputStream);
-                Timber.i("copied %d bytes", bytesCopied);
+        // Use CompletableFuture for async operations
+        CompletableFuture<Void> downloadTask = CompletableFuture.runAsync(() -> {
+            try (InputStream is = resolver.openInputStream(uri);
+                 OutputStream os = Files.newOutputStream(tempDatabaseFile.toPath())) {
+                if (is == null) {
+                    throw new IOException("InputStream is null for URI: " + uri);
+                }
+                long bytesCopied = is.transferTo(os); // Stream API to copy bytes
+                Timber.i("Copied %d bytes", bytesCopied);
             } catch (Exception e) {
-                Timber.e(e);
+                Timber.e(e, "Error downloading database");
+                throw new RuntimeException(e); // Wrap exception for CompletableFuture
             }
         });
-        thread.start();
-        thread.join();
 
-        // Replace local database with downloaded version
+        // Wait for the async task to complete
+        downloadTask.get(); // Propagates exceptions if any
+
+        // Replace the local database with the downloaded version
         File localDatabaseFile = new File(localPath);
-        Timber.d("%s %s %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath(), localPath);
-        // StandardCopyOption.REPLACE_EXISTING ensures that the destination file is replaced if it exists
-        Files.move(tempDatabaseFile, localDatabaseFile);
+        Timber.d("Moving temp file %s to %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath());
+        Files.move(tempDatabaseFile.toPath(), localDatabaseFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**
