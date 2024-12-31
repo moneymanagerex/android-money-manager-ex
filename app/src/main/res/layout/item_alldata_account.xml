@@ -64,7 +64,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/mmx_text_view_size_medium"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
 
             <!-- Attachment Status -->
