@@ -839,7 +839,7 @@
     <string name="version_copied_to_clipboard">Version number copied to cliboard</string>
     <string name="issue_open">"Open issue on GitHub "</string>
 
-    <!-- Builer button -->
+    <!-- Builder button -->
     <string name="OK">OK</string>
     <string name="CANCEL">Cancel</string>
     <string name="CLEAR_ALL">Clear all</string>
