@@ -605,7 +605,7 @@ public class EditTransactionCommonFunctions {
                 }
             });
 
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // Initialize string builder
@@ -644,7 +644,7 @@ public class EditTransactionCommonFunctions {
                 }
             });
 
-            builder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.CANCEL,new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // dismiss dialog
@@ -652,15 +652,10 @@ public class EditTransactionCommonFunctions {
                 }
             });
 
-            builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    // use for loop
-                    for (int j = 0; j < tagsListString.length; j++) {
-                        // remove all selection
-                        tagsFlag[j] = false;
-                    }
-                    mTaglinks = new ArrayList<Taglink>();
+                    mTaglinks.clear();
                     displayTags();
                 }
             });
