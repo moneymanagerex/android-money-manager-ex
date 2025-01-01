@@ -580,7 +580,7 @@ public class EditTransactionCommonFunctions {
             // inizialize display
             TaglinkRepository repo = new TaglinkRepository(getContext());
             this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
-
+            boolean saveData = false;
             TagRepository tagRepository = new TagRepository(getContext());
             ArrayList<Tag> tagsList = tagRepository.getAllActiveTag();
             boolean[] tagsFlag = new boolean[tagsList.size()];
@@ -660,6 +660,8 @@ public class EditTransactionCommonFunctions {
                         // remove all selection
                         tagsFlag[j] = false;
                     }
+                    mTaglinks = new ArrayList<Taglink>();
+                    displayTags();
                 }
             });
 
