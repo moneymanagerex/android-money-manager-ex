@@ -660,6 +660,8 @@ public class EditTransactionCommonFunctions {
                         // remove all selection
                         tagsFlag[j] = false;
                     }
+                    mTaglinks = new ArrayList<Taglink>();
+                    displayTags();
                 }
             });
 
