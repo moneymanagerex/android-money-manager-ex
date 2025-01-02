@@ -32,17 +32,13 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
-import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -146,11 +142,10 @@ public class SyncPreferenceFragment
 
         viewHolder.download.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
-            FileStorageHelper storage = new FileStorageHelper(getContext());
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {
-                boolean isLocalModified = storage.isLocalFileChanged(currentDb);
+                boolean isLocalModified = currentDb.isLocalFileChanged();
 
                 String message = String.format(
                         "Local file changes indicator: %s.\n" +
@@ -168,11 +163,10 @@ public class SyncPreferenceFragment
 
         viewHolder.upload.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
-            FileStorageHelper storage = new FileStorageHelper(getContext());
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {
-                boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+                boolean isRemoteModified = currentDb.isRemoteFileChanged(getContext());
 
                 String message = String.format(
                         "Remote file changes indicator: %s.\n" +

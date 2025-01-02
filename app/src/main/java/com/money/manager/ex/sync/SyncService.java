@@ -19,7 +19,6 @@ package com.money.manager.ex.sync;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,10 +30,8 @@ import androidx.core.app.JobIntentService;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
@@ -155,8 +152,8 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
-        boolean isLocalModified = storage.isLocalFileChanged(currentDb);
-        boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+        boolean isLocalModified = currentDb.isLocalFileChanged();
+        boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
         Uri uri = Uri.parse(currentDb.remotePath);
 
@@ -164,7 +161,7 @@ public class SyncService
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(outMessenger, SyncServiceMessage.FILE_NOT_CHANGED);
 //            sendStopEvent();
-            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+            MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
                 put("authority", uri.getAuthority());
                 put("result", "no change");
             }});
@@ -176,7 +173,7 @@ public class SyncService
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
  //           sendStopEvent();
-            MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+            MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
                 put("authority", uri.getAuthority());
                 put("result", "Conflict");
             }});

@@ -1083,14 +1083,7 @@ public class MainActivity
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
                 item.setTag(entry.localPath);
-
-                if (entry.isSynchronised()) {
-                    item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
-                            .color(iconColor));
-                } else {
-                    item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
-                            .color(iconColor));
-                }
+                item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud).color(iconColor));
                 childDatabases.add(item);
             }
         }
@@ -1163,7 +1156,7 @@ public class MainActivity
         }
 
         // Check cloud storage for updates?
-        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, true);
+        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, false);
         if (syncOnStart && !this.dbUpdateCheckDone) {
             sync.triggerSynchronization();
 
