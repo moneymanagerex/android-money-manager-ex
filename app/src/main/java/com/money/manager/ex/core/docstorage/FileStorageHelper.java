@@ -110,28 +110,6 @@ public class FileStorageHelper {
     /*
         Private area
      */
-
-    public boolean isLocalFileChanged(DatabaseMetadata metadata) {
-        Date localModified = metadata.getLocalFileModifiedDate().toDate();
-        // The timestamp when the local file was downloaded.
-        Date localSnapshot = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
-
-        Timber.d("Local  file modified time: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
-
-        return localModified.after(localSnapshot);
-    }
-
-    public boolean isRemoteFileChanged(DatabaseMetadata metadata) {
-        Date remoteModified = metadata.getRemoteFileModifiedDate(_host).toDate();
-        // Check if the remote file was modified since fetched.
-        // This is the modification timestamp of the remote file when it was last downloaded.
-        Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
-
-        Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
-
-        return remoteModified.after(remoteSnapshot);
-    }
-
     /**
      * Copies the remote database locally and updates the metadata.
      * @param metadata Database file metadata.
