@@ -20,13 +20,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.database.DatabaseManager;
-import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.utils.MmxDate;
-
 /**
  * Factory for the database metadata records.
  */
