@@ -110,28 +110,6 @@ public class FileStorageHelper {
     /*
         Private area
      */
-
-    public boolean isLocalFileChanged(DatabaseMetadata metadata) {
-        Date localModified = getLocalFileModifiedDate(metadata).toDate();
-        // The timestamp when the local file was downloaded.
-        Date localSnapshot = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
-
-        Timber.d("Local  file modified time: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
-
-        return localModified.after(localSnapshot);
-    }
-
-    public boolean isRemoteFileChanged(DatabaseMetadata metadata) {
-        Date remoteModified = getRemoteFileModifiedDate(metadata).toDate();
-        // Check if the remote file was modified since fetched.
-        // This is the modification timestamp of the remote file when it was last downloaded.
-        Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
-
-        Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
-
-        return remoteModified.after(remoteSnapshot);
-    }
-
     /**
      * Copies the remote database locally and updates the metadata.
      * @param metadata Database file metadata.
@@ -146,9 +124,9 @@ public class FileStorageHelper {
             return;
         }
 
-        metadata.remoteLastChangedDate = getRemoteFileModifiedDate(metadata).toIsoDateString();
+        metadata.remoteLastChangedDate = metadata.getRemoteFileModifiedDate(_host).toIsoDateString();
         // Store the local snapshot timestamp, the time when the file was downloaded.
-        metadata.localSnapshotTimestamp = getLocalFileModifiedDate(metadata).toIsoString();
+        metadata.localSnapshotTimestamp = metadata.getLocalFileModifiedDate().toIsoString();
 
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
@@ -178,7 +156,7 @@ public class FileStorageHelper {
         uploadDatabase(metadata);
 
         // Update the modification timestamps, both local and remote.
-        MmxDate localLastModifiedMmxDate = getLocalFileModifiedDate(metadata);
+        MmxDate localLastModifiedMmxDate = metadata.getLocalFileModifiedDate();
         Date localLastModified = localLastModifiedMmxDate.toDate();
 
         Uri remoteUri = Uri.parse(metadata.remotePath);
@@ -299,22 +277,6 @@ public class FileStorageHelper {
         File localDatabaseFile = new File(localPath);
         Timber.d("Moving temp file %s to %s", tempDatabaseFile.toPath(), localDatabaseFile.toPath());
         Files.move(tempDatabaseFile.toPath(), localDatabaseFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    /**
-     * Reads the date/time when the local database file was last changed.
-     * @return The date/time of the last change
-     */
-    public MmxDate getLocalFileModifiedDate(DatabaseMetadata metadata) {
-        File localFile = new File(metadata.localPath);
-        long localFileTimestamp = localFile.lastModified();
-        return new MmxDate(localFileTimestamp);
-    }
-
-    public MmxDate getRemoteFileModifiedDate(DatabaseMetadata metadata) {
-        DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(_host, metadata);
-        // This is current dateModified at the remote file.
-        return remote.lastModified;
     }
 
     private void pollNewRemoteTimestamp(DatabaseMetadata metadata) {

@@ -152,8 +152,8 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
-        boolean isLocalModified = storage.isLocalFileChanged(currentDb);
-        boolean isRemoteModified = storage.isRemoteFileChanged(currentDb);
+        boolean isLocalModified = currentDb.isLocalFileChanged();
+        boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
         Uri uri = Uri.parse(currentDb.remotePath);
 
