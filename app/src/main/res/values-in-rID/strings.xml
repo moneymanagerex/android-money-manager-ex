@@ -678,4 +678,5 @@
     <string name="loan_account">Rekening pinjaman</string>
     <string name="shares_accounts">Rekening Saham</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

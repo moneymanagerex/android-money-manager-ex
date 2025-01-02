@@ -364,4 +364,5 @@
     <!-- Settings -->
     <string name="per_database_settings">Per-Database</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

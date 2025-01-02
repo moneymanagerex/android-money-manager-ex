@@ -674,4 +674,5 @@
     <string name="title_budget_show_simple_view">Basit bütçe görünümünü göster</string>
     <string name="summary_budget_show_simple_view">Kontrol edilen bütçeler basitleştirilmiş görünümü kullanıyorsa</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

@@ -757,4 +757,5 @@
     <string name="pref_attachment_folder">Melléklet mappa</string>
     <string name="version_copied_to_clipboard">A verziószám a vágólapra másolva</string>
     <string name="issue_open">"Hibabejelentés a GitHubon "</string>
+    <!-- Builder button -->
 </resources>

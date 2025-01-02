@@ -217,4 +217,5 @@
     <!-- Settings -->
     <string name="per_database_settings">هر پایگاه داده</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

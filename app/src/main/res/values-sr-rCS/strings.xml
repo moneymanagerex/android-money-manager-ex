@@ -203,4 +203,5 @@
     <!-- Settings -->
     <string name="per_database_settings">Po bazi podataka</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

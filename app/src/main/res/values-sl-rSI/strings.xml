@@ -574,4 +574,5 @@
     <string name="title_budget_show_simple_view"></string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction"></string>
+    <!-- Builder button -->
 </resources>

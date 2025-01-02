@@ -685,4 +685,5 @@ Toque para marcar a transação como atrasada</string>
     <string name="loan_account">Contas de Empréstimos</string>
     <string name="shares_accounts">Contas de Acções</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

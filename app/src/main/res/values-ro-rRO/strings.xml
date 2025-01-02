@@ -609,4 +609,5 @@
     <!-- Settings -->
     <string name="per_database_settings">Per-Baza de date</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

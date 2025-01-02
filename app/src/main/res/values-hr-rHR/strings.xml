@@ -710,4 +710,5 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex prijenos</string>
     <string name="notification_channel_fileoperation_complete">Mmex prijenos završen</string>
     <string name="notification_channel_fileoperation_conflict">Konflikt u Mmex sinkronizaciji</string>
+    <!-- Builder button -->
 </resources>

@@ -677,4 +677,5 @@
     <string name="loan_account">Δανειακοί Λογαριασμοί</string>
     <string name="shares_accounts">Μετοχικοί Λογαριασμοί</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

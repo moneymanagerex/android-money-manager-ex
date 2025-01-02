@@ -636,4 +636,5 @@
     <string name="loan_account">Tài khoản các khoản cho vay</string>
     <string name="shares_accounts">Tài khoản cổ phần</string>
     <!-- Notification Setting -->
+    <!-- Builder button -->
 </resources>

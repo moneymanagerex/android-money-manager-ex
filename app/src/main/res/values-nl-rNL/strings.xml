@@ -702,4 +702,5 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex uploaden</string>
     <string name="notification_channel_fileoperation_complete">Mmex upload voltooid</string>
     <string name="show">Weergeven</string>
+    <!-- Builder button -->
 </resources>
