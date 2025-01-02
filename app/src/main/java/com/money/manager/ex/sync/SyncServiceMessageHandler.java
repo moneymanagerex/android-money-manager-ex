@@ -20,6 +20,7 @@ package com.money.manager.ex.sync;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class SyncServiceMessageHandler
     extends Handler {
 
     public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
+        super(Looper.getMainLooper()); // Explicitly use the main thread's Looper
         MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
@@ -141,16 +143,4 @@ public class SyncServiceMessageHandler
             Timber.e(e, "showing progress dialog on sync.");
         }
     }
-
-//    private void storeRecentDb(String remoteFile) {
-//        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-//
-//        DatabaseMetadata entry = getDatabases().get(localPath);
-//        if (entry == null) {
-//            entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
-//        }
-//
-//        getDatabases().add(entry);
-//    }
-
 }

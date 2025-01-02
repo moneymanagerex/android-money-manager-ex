@@ -14,6 +14,7 @@ import android.provider.OpenableColumns;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.nio.file.Files;
 import com.money.manager.ex.MmexApplication;
@@ -92,7 +93,7 @@ public class FileStorageHelper {
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getDocFileMetadata(docUri);
+        DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
         DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
@@ -102,7 +103,7 @@ public class FileStorageHelper {
 
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getDocFileMetadata(docUri);
+        DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
         DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
@@ -119,7 +120,7 @@ public class FileStorageHelper {
         // The timestamp when the local file was downloaded.
         Date localSnapshot = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
 
-        Timber.d("Local  file mtime: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
+        Timber.d("Local  file modified time: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
 
         return localModified.after(localSnapshot);
     }
@@ -130,7 +131,7 @@ public class FileStorageHelper {
         // This is the modification timestamp of the remote file when it was last downloaded.
         Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
-        Timber.d("Remote file mtime: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
+        Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
 
         return remoteModified.after(remoteSnapshot);
     }
@@ -185,7 +186,7 @@ public class FileStorageHelper {
         Date localLastModified = localLastModifiedMmxDate.toDate();
 
         Uri remoteUri = Uri.parse(metadata.remotePath);
-        DocFileMetadata remote = getDocFileMetadata(remoteUri);
+        DocFileMetadata remote = DocFileMetadata.fromUri(_host, remoteUri);
 
         if (remote.lastModified.toDate().before(localLastModified)) {
             // The metadata has not been updated yet!
@@ -243,48 +244,6 @@ public class FileStorageHelper {
         return metadata;
     }
 
-    private DocFileMetadata getDocFileMetadata(DatabaseMetadata metadata) {
-        Uri remoteUri = Uri.parse(metadata.remotePath);
-        return getDocFileMetadata(remoteUri);
-    }
-
-    private DocFileMetadata getDocFileMetadata(Uri uri) {
-        DocFileMetadata result = new DocFileMetadata();
-        result.Uri = uri.toString();
-        result.lastModified = new MmxDate(0);
-
-        try (Cursor cursor = _host.getContentResolver().query(uri, null, null, null, null, null)) {
-            if (cursor == null || !cursor.moveToFirst()) {
-                Timber.w("Cursor is null or empty for URI: %s", uri);
-                return result;
-            }
-            // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
-            // Use constant values for column names to avoid errors
-            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
-
-            result.Name = cursor.getString(displayNameIndex);
-
-            if (!cursor.isNull(sizeIndex)) {
-                result.Size = cursor.getInt(sizeIndex);
-            } else {
-                result.Size = -1; // or set to a default value
-            }
-
-            if (!cursor.isNull(lastModifiedIndex)) {
-                result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
-            } else {
-                result.lastModified = new MmxDate(0); // or set to a default value
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Error retrieving metadata for URI: %s", uri);
-        }
-
-        // check the values
-        return result;
-    }
-
     /**
      * Just pushes the given local file to the document provider, using a temporary name.
      */
@@ -308,21 +267,6 @@ public class FileStorageHelper {
             Timber.e(e, "File not found during upload: %s", metadata.localPath);
         } catch (IOException e) {
             Timber.e(e, "IO error during upload: %s", metadata.localPath);
-        }
-    }
-
-    /**
-     * Shows how to delete the remote file. This was supposed to be used if a temp file is
-     * uploaded. However, it is easy to overwrite the original file.
-     * @param metadata The file info
-     */
-    private void deleteRemoteFile(DatabaseMetadata metadata) {
-        ContentResolver resolver = getContext().getContentResolver();
-        Uri remote = Uri.parse(metadata.remotePath);
-        try {
-            DocumentsContract.deleteDocument(resolver, remote);
-        } catch (FileNotFoundException e) {
-            Timber.e(e);
         }
     }
 
@@ -372,7 +316,7 @@ public class FileStorageHelper {
     }
 
     public MmxDate getRemoteFileModifiedDate(DatabaseMetadata metadata) {
-        DocFileMetadata remote = getDocFileMetadata(metadata);
+        DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(_host, metadata);
         // This is current dateModified at the remote file.
         return remote.lastModified;
     }
@@ -388,7 +332,7 @@ public class FileStorageHelper {
             public void run() {
                 // Fetch the remote metadata until it has reflected the upload.
                 Uri uri = Uri.parse(metadata.remotePath);
-                DocFileMetadata remote = getDocFileMetadata(uri);
+                DocFileMetadata remote = DocFileMetadata.fromUri(_host, uri);
                 Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
