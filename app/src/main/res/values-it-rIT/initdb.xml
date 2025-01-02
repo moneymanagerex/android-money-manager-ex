@@ -18,14 +18,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- default category -->
     <string name="category_1">Bollette</string>
-    <string name="category_2">Cibo</string>
+    <string name="category_2">Vitto</string>
     <string name="category_3">Tempo libero</string>
     <string name="category_4">Automobile</string>
     <string name="category_5">Istruzione</string>
     <string name="category_6">Manutenzione della Casa</string>
     <string name="category_7">Salute</string>
     <string name="category_8">Assicurazione</string>
-    <string name="category_9">Vacanza</string>
+    <string name="category_9">Vacanze</string>
     <string name="category_10">Tasse</string>
     <string name="category_11">Varie</string>
     <string name="category_12">Regali</string>

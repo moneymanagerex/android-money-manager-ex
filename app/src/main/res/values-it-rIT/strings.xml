@@ -62,8 +62,8 @@
     <string name="database_version">Versione del database</string>
     <string name="title_show_tutorial">Visualizza tutorial</string>
     <string name="summary_show_tutorial">Visualizzare il tutorial al prossimo avvio?</string>
-    <string name="preferences_behaviour_focus_filter_title">Filtra selezioni</string>
-    <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni si focalizza sul filtro. Diversamente scorre fra le selezioni disponibili.</string>
+    <string name="preferences_behaviour_focus_filter_title">Filtro nelle selezioni</string>
+    <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni utilizza il filtro. Diversamente scorre fra le selezioni disponibili.</string>
     <string name="auto_sync_via_wifi">Sincronizzazione automatica solo su WiFi</string>
     <string name="auto_sync_via_wifi_summary">Sincronizza automaticamente solo con collegamento WiFi attivo.</string>
     <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
@@ -324,7 +324,7 @@
     <string name="split_transaction">Transazione Suddivisa</string>
     <string name="split">Suddividi</string>
     <string name="error_split_transaction_empty">E\' richiesta almeno una operazione suddivisa</string>
-    <string name="swipe_to_dismiss">Scorri sugli elementi per rimuoverli.</string>
+    <string name="swipe_to_dismiss">Scorri orizzontalmente gli elementi per rimuoverli.</string>
     <string name="export_data_to_csv">Esporta dati in un file CSV</string>
     <string name="export_data_in_progress">Esportazione dei dati. Attendere prego&#8230;</string>
     <string name="export_file_complete">I dati sono stati esportati con successo nel file %1$s</string>
@@ -364,7 +364,7 @@
     <string name="summary_application_font_size">Seleziona la dimensione del carattere da usare con l\'applicazione</string>
     <string name="micro">Micro</string>
     <string name="small">Piccolo</string>
-    <string name="Default">Default</string>
+    <string name="Default">Predefinito</string>
     <string name="medium">Medio</string>
     <string name="large">Grande</string>
     <string name="menu_report_where_money_goes">Dove va il denaro</string>
@@ -450,6 +450,7 @@
     <string name="montly_last_bussines_day">Mensile (ultimo giorno lavorativo)</string>
     <!-- languages -->
     <string name="locale_application">Lingua dell\'applicazione</string>
+    <string name="locale_ar">Arabo</string>
     <string name="transaction_cancel_confirm">Sicuro di voler annullare le modifiche?</string>
     <string name="keep_editing">Mantenere la modifica</string>
     <string name="discard">Abbandona</string>
@@ -724,7 +725,7 @@
     <!-- Create Database screen -->
     <string name="select_language">Seleziona lingua</string>
     <string name="run">Esegui Money Manager Ex</string>
-    <string name="create_db_info_1">Il percorso predefinito del database è:</string>
+    <string name="create_db_info_1">La posizione predefinita del database è:</string>
     <!-- Settings -->
     <string name="per_database_settings">Per Database</string>
     <string name="save">Salva</string>
@@ -760,4 +761,5 @@
     <string name="version_copied_to_clipboard">Numero di versione copiato negli appunti</string>
     <string name="issue_open">"Apri segnalazione su GitHub "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Cancella tutto</string>
 </resources>
