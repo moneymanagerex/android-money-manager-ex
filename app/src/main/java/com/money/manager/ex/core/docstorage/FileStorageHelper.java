@@ -124,7 +124,7 @@ public class FileStorageHelper {
             return;
         }
 
-        metadata.remoteLastChangedDate = metadata.getRemoteFileModifiedDate(_host).toIsoDateString();
+        metadata.remoteLastChangedDate = metadata.getRemoteFileModifiedDate(_host).toIsoString();
         // Store the local snapshot timestamp, the time when the file was downloaded.
         metadata.localSnapshotTimestamp = metadata.getLocalFileModifiedDate().toIsoString();
 
