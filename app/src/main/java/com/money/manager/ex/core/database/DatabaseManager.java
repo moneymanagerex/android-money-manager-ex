@@ -80,7 +80,7 @@ public class DatabaseManager {
      * Gets the directory where the database is (to be) stored. New databases
      * are created here by default.
      * The directory is created if it does not exist.
-     * Ref: https://gist.github.com/granoeste/5574148
+     * Ref: <a href="https://gist.github.com/granoeste/5574148">...</a>
      * @return the default database directory
      */
     public String getDefaultDatabaseDirectory() {

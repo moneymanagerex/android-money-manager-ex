@@ -4,13 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
-import android.provider.OpenableColumns;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -92,8 +89,8 @@ public class FileStorageHelper {
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
-        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+        DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
+        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
 
@@ -102,8 +99,8 @@ public class FileStorageHelper {
 
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
-        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+        DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
+        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
 
@@ -119,7 +116,7 @@ public class FileStorageHelper {
         // The timestamp when the local file was downloaded.
         Date localSnapshot = MmxDate.fromIso8601(metadata.localSnapshotTimestamp).toDate();
 
-        Timber.d("Local  file mtime: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
+        Timber.d("Local  file modified time: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
 
         return localModified.after(localSnapshot);
     }
@@ -130,7 +127,7 @@ public class FileStorageHelper {
         // This is the modification timestamp of the remote file when it was last downloaded.
         Date remoteSnapshot = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
-        Timber.d("Remote file mtime: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
+        Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
 
         return remoteModified.after(remoteSnapshot);
     }
@@ -149,12 +146,9 @@ public class FileStorageHelper {
             return;
         }
 
-        DocFileMetadata remote = getRemoteMetadata(uri);
-        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
-
+        metadata.remoteLastChangedDate = getRemoteFileModifiedDate(metadata).toIsoDateString();
         // Store the local snapshot timestamp, the time when the file was downloaded.
-        MmxDate localSnapshot = getLocalFileModifiedDate(metadata);
-        metadata.localSnapshotTimestamp = localSnapshot.toIsoString();
+        metadata.localSnapshotTimestamp = getLocalFileModifiedDate(metadata).toIsoString();
 
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
@@ -166,13 +160,13 @@ public class FileStorageHelper {
             Timber.e(e);
             try {
                 Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
-            } catch (Exception e1) {}
+            } catch (Exception ignored) {}
             return;
         }
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
-                       put("authority", uri.getAuthority());
-                        put("result", "pullDatabase");
-                    }});
+        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
+            put("authority", uri.getAuthority());
+            put("result", "pullDatabase");
+        }});
     }
 
     /**
@@ -188,7 +182,7 @@ public class FileStorageHelper {
         Date localLastModified = localLastModifiedMmxDate.toDate();
 
         Uri remoteUri = Uri.parse(metadata.remotePath);
-        DocFileMetadata remote = getRemoteMetadata(remoteUri);
+        DocFileMetadata remote = DocFileMetadata.fromUri(_host, remoteUri);
 
         if (remote.lastModified.toDate().before(localLastModified)) {
             // The metadata has not been updated yet!
@@ -201,7 +195,7 @@ public class FileStorageHelper {
 
         saveMetadata(metadata);
 
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
             put("authority", remoteUri.getAuthority());
             put("result", "pushDatabase");
         }});
@@ -219,7 +213,7 @@ public class FileStorageHelper {
      * Retrieves the database file from a document Uri.
      */
     private Uri getDatabaseUriFromProvider(Intent activityResultData) {
-        if (activityResultData == null) {
+        if (activityResultData == null || activityResultData.getData() == null) {
             return null;
         }
 
@@ -234,59 +228,16 @@ public class FileStorageHelper {
         return uri;
     }
 
-    private DatabaseMetadata getMetadataForRemote(DocFileMetadata fileMetadata) {
+    private DatabaseMetadata getDatabaseMetadata(DocFileMetadata docFileMetadata) {
         DatabaseMetadata metadata = new DatabaseMetadata();
-        metadata.remotePath = fileMetadata.Uri;
-        metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
+        metadata.remotePath = docFileMetadata.Uri;
+        metadata.remoteLastChangedDate = docFileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        // TODO add cloud storage provider in the path?
         String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        metadata.localPath = localPath + File.separator + fileMetadata.Name;
+        metadata.localPath = localPath + File.separator + docFileMetadata.Name;
 
         return metadata;
-    }
-
-    private DocFileMetadata getRemoteMetadata(DatabaseMetadata metadata) {
-        Uri remoteUri = Uri.parse(metadata.remotePath);
-        return getRemoteMetadata(remoteUri);
-    }
-
-    private DocFileMetadata getRemoteMetadata(Uri uri) {
-        DocFileMetadata result = new DocFileMetadata();
-        result.Uri = uri.toString();
-        result.lastModified = new MmxDate(0);
-
-        try (Cursor cursor = _host.getContentResolver().query(uri, null, null, null, null, null)) {
-            if (cursor == null || !cursor.moveToFirst()) {
-                Timber.w("Cursor is null or empty for URI: %s", uri);
-                return result;
-            }
-            // columns: document_id, mime_type, _display_name, last_modified, flags, _size.
-            // Use constant values for column names to avoid errors
-            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
-
-            result.Name = cursor.getString(displayNameIndex);
-
-            if (!cursor.isNull(sizeIndex)) {
-                result.Size = cursor.getInt(sizeIndex);
-            } else {
-                result.Size = -1; // or set to a default value
-            }
-
-            if (!cursor.isNull(lastModifiedIndex)) {
-                result.lastModified = new MmxDate(cursor.getLong(lastModifiedIndex));
-            } else {
-                result.lastModified = new MmxDate(0); // or set to a default value
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Error retrieving metadata for URI: %s", uri);
-        }
-
-        // check the values
-        return result;
     }
 
     /**
@@ -312,21 +263,6 @@ public class FileStorageHelper {
             Timber.e(e, "File not found during upload: %s", metadata.localPath);
         } catch (IOException e) {
             Timber.e(e, "IO error during upload: %s", metadata.localPath);
-        }
-    }
-
-    /**
-     * Shows how to delete the remote file. This was supposed to be used if a temp file is
-     * uploaded. However, it is easy to overwrite the original file.
-     * @param metadata The file info
-     */
-    private void deleteRemoteFile(DatabaseMetadata metadata) {
-        ContentResolver resolver = getContext().getContentResolver();
-        Uri remote = Uri.parse(metadata.remotePath);
-        try {
-            DocumentsContract.deleteDocument(resolver, remote);
-        } catch (FileNotFoundException e) {
-            Timber.e(e);
         }
     }
 
@@ -372,12 +308,11 @@ public class FileStorageHelper {
     public MmxDate getLocalFileModifiedDate(DatabaseMetadata metadata) {
         File localFile = new File(metadata.localPath);
         long localFileTimestamp = localFile.lastModified();
-        MmxDate localSnapshot = new MmxDate(localFileTimestamp);
-        return localSnapshot;
+        return new MmxDate(localFileTimestamp);
     }
 
     public MmxDate getRemoteFileModifiedDate(DatabaseMetadata metadata) {
-        DocFileMetadata remote = getRemoteMetadata(metadata);
+        DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(_host, metadata);
         // This is current dateModified at the remote file.
         return remote.lastModified;
     }
@@ -393,7 +328,7 @@ public class FileStorageHelper {
             public void run() {
                 // Fetch the remote metadata until it has reflected the upload.
                 Uri uri = Uri.parse(metadata.remotePath);
-                DocFileMetadata remote = getRemoteMetadata(uri);
+                DocFileMetadata remote = DocFileMetadata.fromUri(_host, uri);
                 Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
