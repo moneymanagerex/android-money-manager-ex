@@ -280,7 +280,7 @@ public class FileStorageHelper {
                 DocFileMetadata remote = DocFileMetadata.fromUri(_host, uri);
                 Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
-                if (remote.lastModified.toDate().before(storedLastChange)) {
+                if (remote.lastModified.toDate().equals(storedLastChange)) {
                     // repeat
                     Timber.d("fetching the actual remote metadata...");
                     handler.postDelayed(this, milliseconds); // Optional, to repeat the task.
