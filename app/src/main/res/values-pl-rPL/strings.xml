@@ -700,4 +700,5 @@
     <string name="notification_channel_fileoperation_uploadin">Przesyłanie Mmex</string>
     <string name="notification_channel_fileoperation_complete">Przesyłanie Mmex zakończone</string>
     <string name="notification_channel_fileoperation_conflict">Konflikt synchronizacji Mmex</string>
+    <!-- Builder button -->
 </resources>

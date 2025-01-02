@@ -738,4 +738,5 @@
     <string name="attachment_folder">Dateianhang Ordner</string>
     <string name="attachment_folder_summary">Wählen Sie den Ordner, in dem Anhänge gespeichert werden</string>
     <string name="pref_attachment_folder">Dateianhang Ordner</string>
+    <!-- Builder button -->
 </resources>

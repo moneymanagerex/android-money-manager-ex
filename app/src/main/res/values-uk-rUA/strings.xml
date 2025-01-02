@@ -724,4 +724,5 @@
     <string name="notification_channel_fileoperation_uploadin">Вивантаження Mmex</string>
     <string name="notification_channel_fileoperation_complete">Завантаження Mmex завершено</string>
     <string name="notification_channel_fileoperation_conflict">Конфлікт синхронізації Mmex</string>
+    <!-- Builder button -->
 </resources>

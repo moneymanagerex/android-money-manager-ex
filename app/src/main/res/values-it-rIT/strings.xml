@@ -759,4 +759,5 @@
     <string name="pref_attachment_folder">Cartella Allegati</string>
     <string name="version_copied_to_clipboard">Numero di versione copiato negli appunti</string>
     <string name="issue_open">"Apri segnalazione su GitHub "</string>
+    <!-- Builder button -->
 </resources>

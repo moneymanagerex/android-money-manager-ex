@@ -724,4 +724,5 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex uploades</string>
     <string name="notification_channel_fileoperation_complete">Mmex-upload fuldført</string>
     <string name="notification_channel_fileoperation_conflict">Mmex-synkkonflikt</string>
+    <!-- Builder button -->
 </resources>
