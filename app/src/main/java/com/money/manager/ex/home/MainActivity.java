@@ -181,8 +181,6 @@ public class MainActivity
             return;
         }
         Amplitude amplitude = MmexApplication.getAmplitude();
-        // todo: remove this after the users upgrade the recent files list.
-        migrateRecentDatabases();
 
         // Reset the request for restart. If we are in onCreate, we are restarting already.
         setRestartActivity(false);
@@ -344,7 +342,7 @@ public class MainActivity
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRestartActivity(true);
     }
@@ -528,7 +526,7 @@ public class MainActivity
             dbUtils.checkIntegrity();
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
-                Timber.w(e.getMessage());
+                Timber.w(e);
             } else {
                 Timber.e(e, "changing the database");
             }
@@ -1143,8 +1141,7 @@ public class MainActivity
             }
         }
 
-        boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
-        this.dbUpdateCheckDone = skipRemoteCheck;
+        this.dbUpdateCheckDone = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
     }
 
     private void initializeSync() {
@@ -1167,7 +1164,7 @@ public class MainActivity
 
     private void populateScheduledTransactions() {
         // start notification & execution for scheduled transaction
-        boolean processRecurringTransaction = false;
+        boolean processRecurringTransaction;
         if (!isScheduledTransactionStarted) {
             AppSettings settings = new AppSettings(this);
             processRecurringTransaction = settings.getBehaviourSettings().getProcessRecurringTransaction();
@@ -1336,7 +1333,7 @@ public class MainActivity
 //                    .commit();
             try {
                 Toast.makeText(context,
-                                Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
+                                Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>"), Html.FROM_HTML_MODE_LEGACY),
                                 Toast.LENGTH_LONG)
                         .show();
             } catch (Exception e) {
@@ -1407,26 +1404,5 @@ public class MainActivity
         // make top-level so there's no going back.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-
-    /**
-     * New migration - all entries must have the Remote Url as we are now using
-     * storage access framework.
-     */
-    private void migrateRecentDatabases() {
-        RecentDatabasesProvider databases = getDatabases();
-        // if there are entries with empty remote location, migrate:
-        // - clean up the list
-        // - create the default entry
-        // - save the default entry.
-        for (DatabaseMetadata entry : databases.map.values()) {
-            if (TextUtils.isEmpty(entry.remotePath)) {
-                databases.clear();
-                // create & save the default entry.
-                DatabaseMetadata currentEntry = databases.getCurrent();
-
-                return;
-            }
-        }
     }
 }
