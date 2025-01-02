@@ -840,8 +840,6 @@
     <string name="issue_open">"Open issue on GitHub "</string>
 
     <!-- Builder button -->
-    <string name="OK">OK</string>
-    <string name="CANCEL">Cancel</string>
     <string name="CLEAR_ALL">Clear all</string>
 
 </resources>

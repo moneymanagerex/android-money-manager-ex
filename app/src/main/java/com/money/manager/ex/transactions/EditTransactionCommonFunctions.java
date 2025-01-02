@@ -605,7 +605,7 @@ public class EditTransactionCommonFunctions {
                 }
             });
 
-            builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // Initialize string builder
@@ -644,7 +644,7 @@ public class EditTransactionCommonFunctions {
                 }
             });
 
-            builder.setNegativeButton(R.string.CANCEL,new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(android.R.string.cancel,new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // dismiss dialog
