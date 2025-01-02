@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.nio.file.Files;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
@@ -90,7 +89,7 @@ public class FileStorageHelper {
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
-        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
+        DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
         pullDatabase(metadata);
 
@@ -100,7 +99,7 @@ public class FileStorageHelper {
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
-        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
+        DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
         pullDatabase(metadata);
 
@@ -204,18 +203,6 @@ public class FileStorageHelper {
                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         return uri;
-    }
-
-    private DatabaseMetadata getDatabaseMetadata(DocFileMetadata docFileMetadata) {
-        DatabaseMetadata metadata = new DatabaseMetadata();
-        metadata.remotePath = docFileMetadata.Uri;
-        metadata.remoteLastChangedDate = docFileMetadata.lastModified.toIsoString();
-
-        // Local file will always be the same.
-        String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        metadata.localPath = localPath + File.separator + docFileMetadata.Name;
-
-        return metadata;
     }
 
     /**
