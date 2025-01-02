@@ -35,6 +35,13 @@ public class DocFileMetadata {
         result.Uri = uri.toString();
         result.lastModified = new MmxDate(0); // Default value
 
+        try {
+            context.getContentResolver().notifyChange(uri, null);
+            Timber.d("Metadata refresh triggered for URI: %s", uri);
+        } catch (Exception e) {
+            Timber.w(e, "Failed to refresh metadata for URI: %s", uri);
+        }
+
         // Try with DocumentFile first
         try {
             DocumentFile documentFile = DocumentFile.fromSingleUri(context, uri);
