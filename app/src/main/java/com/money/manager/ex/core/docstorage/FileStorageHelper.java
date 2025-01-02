@@ -149,12 +149,9 @@ public class FileStorageHelper {
             return;
         }
 
-        DocFileMetadata remote = getDocFileMetadata(uri);
-        metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
-
+        metadata.remoteLastChangedDate = getRemoteFileModifiedDate(metadata).toIsoDateString();
         // Store the local snapshot timestamp, the time when the file was downloaded.
-        MmxDate localSnapshot = getLocalFileModifiedDate(metadata);
-        metadata.localSnapshotTimestamp = localSnapshot.toIsoString();
+        metadata.localSnapshotTimestamp = getLocalFileModifiedDate(metadata).toIsoString();
 
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
