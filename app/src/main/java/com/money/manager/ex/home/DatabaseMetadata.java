@@ -47,9 +47,6 @@ public class DatabaseMetadata {
         File file = new File(this.localPath);
         return file.getName();
     }
-    public boolean isSynchronised() {
-        return !TextUtils.isEmpty(remotePath);
-    }
 
     public void setRemoteLastChangedDate(MmxDate value) {
         if (value == null) {
@@ -60,7 +57,7 @@ public class DatabaseMetadata {
     }
 
     public String getRemoteContentProvider() {
-        URI uri = null;
+        URI uri;
         try {
             uri = new URI(remotePath);
         } catch (URISyntaxException e) {

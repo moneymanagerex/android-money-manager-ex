@@ -1083,14 +1083,7 @@ public class MainActivity
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
                 item.setTag(entry.localPath);
-
-                if (entry.isSynchronised()) {
-                    item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
-                            .color(iconColor));
-                } else {
-                    item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
-                            .color(iconColor));
-                }
+                item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud).color(iconColor));
                 childDatabases.add(item);
             }
         }

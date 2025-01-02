@@ -92,8 +92,8 @@ public class FileStorageHelper {
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
-        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+        DocFileMetadata fileMetadata = getDocFileMetadata(docUri);
+        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
 
@@ -102,8 +102,8 @@ public class FileStorageHelper {
 
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
-        DocFileMetadata fileMetadata = getRemoteMetadata(docUri);
-        DatabaseMetadata metadata = getMetadataForRemote(fileMetadata);
+        DocFileMetadata fileMetadata = getDocFileMetadata(docUri);
+        DatabaseMetadata metadata = getDatabaseMetadata(fileMetadata);
 
         pullDatabase(metadata);
 
@@ -149,7 +149,7 @@ public class FileStorageHelper {
             return;
         }
 
-        DocFileMetadata remote = getRemoteMetadata(uri);
+        DocFileMetadata remote = getDocFileMetadata(uri);
         metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
 
         // Store the local snapshot timestamp, the time when the file was downloaded.
@@ -166,13 +166,13 @@ public class FileStorageHelper {
             Timber.e(e);
             try {
                 Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
-            } catch (Exception e1) {}
+            } catch (Exception ignored) {}
             return;
         }
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
-                       put("authority", uri.getAuthority());
-                        put("result", "pullDatabase");
-                    }});
+        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
+            put("authority", uri.getAuthority());
+            put("result", "pullDatabase");
+        }});
     }
 
     /**
@@ -188,7 +188,7 @@ public class FileStorageHelper {
         Date localLastModified = localLastModifiedMmxDate.toDate();
 
         Uri remoteUri = Uri.parse(metadata.remotePath);
-        DocFileMetadata remote = getRemoteMetadata(remoteUri);
+        DocFileMetadata remote = getDocFileMetadata(remoteUri);
 
         if (remote.lastModified.toDate().before(localLastModified)) {
             // The metadata has not been updated yet!
@@ -201,7 +201,7 @@ public class FileStorageHelper {
 
         saveMetadata(metadata);
 
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
             put("authority", remoteUri.getAuthority());
             put("result", "pushDatabase");
         }});
@@ -219,7 +219,7 @@ public class FileStorageHelper {
      * Retrieves the database file from a document Uri.
      */
     private Uri getDatabaseUriFromProvider(Intent activityResultData) {
-        if (activityResultData == null) {
+        if (activityResultData == null || activityResultData.getData() == null) {
             return null;
         }
 
@@ -234,25 +234,24 @@ public class FileStorageHelper {
         return uri;
     }
 
-    private DatabaseMetadata getMetadataForRemote(DocFileMetadata fileMetadata) {
+    private DatabaseMetadata getDatabaseMetadata(DocFileMetadata docFileMetadata) {
         DatabaseMetadata metadata = new DatabaseMetadata();
-        metadata.remotePath = fileMetadata.Uri;
-        metadata.remoteLastChangedDate = fileMetadata.lastModified.toIsoString();
+        metadata.remotePath = docFileMetadata.Uri;
+        metadata.remoteLastChangedDate = docFileMetadata.lastModified.toIsoString();
 
         // Local file will always be the same.
-        // TODO add cloud storage provider in the path?
         String localPath = new DatabaseManager(_host).getDefaultDatabaseDirectory();
-        metadata.localPath = localPath + File.separator + fileMetadata.Name;
+        metadata.localPath = localPath + File.separator + docFileMetadata.Name;
 
         return metadata;
     }
 
-    private DocFileMetadata getRemoteMetadata(DatabaseMetadata metadata) {
+    private DocFileMetadata getDocFileMetadata(DatabaseMetadata metadata) {
         Uri remoteUri = Uri.parse(metadata.remotePath);
-        return getRemoteMetadata(remoteUri);
+        return getDocFileMetadata(remoteUri);
     }
 
-    private DocFileMetadata getRemoteMetadata(Uri uri) {
+    private DocFileMetadata getDocFileMetadata(Uri uri) {
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
         result.lastModified = new MmxDate(0);
@@ -372,12 +371,11 @@ public class FileStorageHelper {
     public MmxDate getLocalFileModifiedDate(DatabaseMetadata metadata) {
         File localFile = new File(metadata.localPath);
         long localFileTimestamp = localFile.lastModified();
-        MmxDate localSnapshot = new MmxDate(localFileTimestamp);
-        return localSnapshot;
+        return new MmxDate(localFileTimestamp);
     }
 
     public MmxDate getRemoteFileModifiedDate(DatabaseMetadata metadata) {
-        DocFileMetadata remote = getRemoteMetadata(metadata);
+        DocFileMetadata remote = getDocFileMetadata(metadata);
         // This is current dateModified at the remote file.
         return remote.lastModified;
     }
@@ -393,7 +391,7 @@ public class FileStorageHelper {
             public void run() {
                 // Fetch the remote metadata until it has reflected the upload.
                 Uri uri = Uri.parse(metadata.remotePath);
-                DocFileMetadata remote = getRemoteMetadata(uri);
+                DocFileMetadata remote = getDocFileMetadata(uri);
                 Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
