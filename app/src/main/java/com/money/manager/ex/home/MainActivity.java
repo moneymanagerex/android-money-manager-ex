@@ -1156,7 +1156,7 @@ public class MainActivity
         }
 
         // Check cloud storage for updates?
-        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, true);
+        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, false);
         if (syncOnStart && !this.dbUpdateCheckDone) {
             sync.triggerSynchronization();
 

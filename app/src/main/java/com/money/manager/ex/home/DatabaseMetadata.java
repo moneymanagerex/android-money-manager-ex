@@ -20,6 +20,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.DocFileMetadata;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -117,5 +118,17 @@ public class DatabaseMetadata {
         Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
 
         return remoteModified.after(remoteSnapshot);
+    }
+
+    public static DatabaseMetadata fromDocFileMetadata(Context context, DocFileMetadata docFileMetadata) {
+        DatabaseMetadata metadata = new DatabaseMetadata();
+        metadata.remotePath = docFileMetadata.Uri;
+        metadata.remoteLastChangedDate = docFileMetadata.lastModified.toIsoString();
+
+        // Local file will always be the same.
+        String localPath = new DatabaseManager(context).getDefaultDatabaseDirectory();
+        metadata.localPath = localPath + File.separator + docFileMetadata.Name;
+
+        return metadata;
     }
 }
