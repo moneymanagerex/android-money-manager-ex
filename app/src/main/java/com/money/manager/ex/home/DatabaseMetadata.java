@@ -16,9 +16,11 @@
  */
 package com.money.manager.ex.home;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.docstorage.DocFileMetadata;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.io.File;
@@ -64,5 +66,25 @@ public class DatabaseMetadata {
             return "";
         }
         return uri.getHost();
+    }
+
+    /**
+     * Reads the date/time when the local database file was last changed.
+     * @return The date/time of the last change
+     */
+    public MmxDate getLocalFileModifiedDate() {
+        File localFile = new File(this.localPath);
+        long localFileTimestamp = localFile.lastModified();
+        return new MmxDate(localFileTimestamp);
+    }
+
+    /**
+     * Reads the date/time when the remote database file was last changed.
+     * @return The date/time of the last change
+     */
+    public MmxDate getRemoteFileModifiedDate(Context context) {
+        DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(context, this);
+        // This is current dateModified at the remote file.
+        return remote.lastModified;
     }
 }
