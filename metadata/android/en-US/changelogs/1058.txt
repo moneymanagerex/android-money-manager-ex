@@ -1,0 +1,4 @@
+• Sync: Various refinements, including resolver.notifyChange to improve synchronization, especially for OneDrive.
+• ARN: Fixed issues with loadCategoryName related ARNs.
+• Tag: Bug fixes and alignment with Desktop MMEX.
+• Encryption: Workflow refinement for opening/creating databases from the main menu.
