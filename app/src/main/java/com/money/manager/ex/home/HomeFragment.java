@@ -44,7 +44,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.google.common.io.Files;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -86,10 +85,12 @@ import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -379,13 +380,14 @@ public class HomeFragment
             AppCompatActivity activity = (AppCompatActivity) getActivity();
 
             // show title
-            activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+            Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowTitleEnabled(true);
 
-            // Show db name in toolbar.
             String dbPath = new AppSettings(activity).getDatabaseSettings().getDatabasePath();
-            //String dbFileName = FilenameUtils.getBaseName(dbPath);
-            String dbFileName = Files.getNameWithoutExtension(dbPath);
-            activity.getSupportActionBar().setSubtitle(dbFileName);
+            if (dbPath != null && !dbPath.isEmpty()) {
+                activity.getSupportActionBar().setSubtitle(Paths.get(dbPath).getFileName().toString());
+            } else {
+                activity.getSupportActionBar().setSubtitle(R.string.path_database_not_exists);
+            }
         }
 
         // reload data.

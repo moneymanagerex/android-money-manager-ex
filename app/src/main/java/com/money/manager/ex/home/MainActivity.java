@@ -305,15 +305,23 @@ public class MainActivity
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
-                changeDatabase(db);
+                if (db.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                    changeDatabase(db);
+                }
                 break;
-
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                changeDatabase(db2);
+                if (db2.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                    changeDatabase(db2);
+                }
                 break;
-
             case RequestCodes.PASSCODE:
                 isAuthenticated = false;
                 isInAuthentication = false;
@@ -574,12 +582,16 @@ public class MainActivity
             String key = item.getTag().toString();
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
-                // TODO request password 1/3
-                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
-                intent.putExtra(EXTRA_DATABASE_PATH, key);
-                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
+                // TODO request password 1/3 upon testing instead of extension
+                if (key.endsWith(".emb")) {
+                    Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+                    intent.putExtra(EXTRA_DATABASE_PATH, key);
+                    startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
+                } else {
+                    MmexApplication.getApp().setPassword(""); // reset password
+                    onOpenDatabaseClick(selectedDatabase);
+                }
 
-                // onOpenDatabaseClick(selectedDatabase);
                 return result;
             }
         }
@@ -593,12 +605,10 @@ public class MainActivity
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
         } else if (itemId == R.id.menu_open_database) {
-            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
-            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
         } else if (itemId == R.id.menu_account) {
@@ -1132,8 +1142,12 @@ public class MainActivity
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
+                if (db.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                }
                 changeDatabase(db);
                 return;
             } catch (Exception e) {
