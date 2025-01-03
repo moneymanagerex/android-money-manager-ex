@@ -46,10 +46,6 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
     @Inject
     Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
-    private Toolbar mToolbar;
-    private Button createDatabaseButton;
-    private Button openDatabaseButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +54,9 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         MmexApplication.getApp().iocComponent.inject(this);
 
         // Initialize views using findViewById()
-        mToolbar = findViewById(R.id.toolbar);
-        createDatabaseButton = findViewById(R.id.createDatabaseButton);
-        openDatabaseButton = findViewById(R.id.openDatabaseButton);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
+        Button createDatabaseButton = findViewById(R.id.createDatabaseButton);
+        Button openDatabaseButton = findViewById(R.id.openDatabaseButton);
 
         // Request external storage permissions for Android 6+.
         MmxFileUtils fileUtils = new MmxFileUtils(this);

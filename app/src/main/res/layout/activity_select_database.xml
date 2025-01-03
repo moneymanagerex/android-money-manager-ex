@@ -89,18 +89,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:text="@string/intro_sync" />
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--style="@style/RaisedButton">-->
-            <!--<com.money.manager.ex.view.RobotoButton-->
-                <!--android:id="@+id/setupSyncButton"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/configure_sync" />-->
-        <!--</LinearLayout>-->
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -607,12 +607,10 @@ public class MainActivity
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
         } else if (itemId == R.id.menu_open_database) {
-            //startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
-            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
         } else if (itemId == R.id.menu_account) {
@@ -1146,8 +1144,12 @@ public class MainActivity
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
+                if (db.localPath.endsWith("emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                }
                 changeDatabase(db);
                 return;
             } catch (Exception e) {
