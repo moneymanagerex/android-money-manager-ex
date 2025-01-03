@@ -222,10 +222,12 @@ public class FileStorageHelper {
             // Use Files.copy() for direct file-to-stream copy
             try (OutputStream outputStream = new FileOutputStream(pfd.getFileDescriptor())) {
                 Files.copy(localFile.toPath(), outputStream);
+                // Notify resolver to ensure synchronization
+                resolver.notifyChange(remoteUri, null);
                 Timber.d("Database stored successfully to %s", remoteUri);
             }
         } catch (FileNotFoundException e) {
-            Timber.e(e, "File not found during upload: %s", metadata.localPath);
+            Timber.e(e, "File not found during upload: %s, URI: %s", metadata.localPath, remoteUri);
         } catch (IOException e) {
             Timber.e(e, "IO error during upload: %s", metadata.localPath);
         }
