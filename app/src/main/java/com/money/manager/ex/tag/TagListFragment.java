@@ -351,7 +351,7 @@ public class TagListFragment     extends BaseListFragment
                         String name = edtTagName.getText().toString();
 
                         // issue #2030: PC version does not support space
-                        if (name.contains(" ") || name.contains("&") || name.contains("&")) {
+                        if (name.contains(" ") || name.contains("&") || name.contains("|")) {
                             name = name.replaceAll("[ &|]", "_");
                             Toast.makeText(getContext(), R.string.space_replaced_with__,Toast.LENGTH_LONG).show();
                         }
