@@ -243,6 +243,7 @@
     <string name="tag_empty_list">No Tag has been found. To create one, tap the green plus button.</string>
     <string name="tag_can_not_deleted">The selected tag can not be deleted because it is referenced</string>
     <string name="db_tag_update_failed">Updating Tag failed</string>
+    <string name="space_replaced_with__">Space, &amp; and | was replaced with "_"</string>
 
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">None</string>
