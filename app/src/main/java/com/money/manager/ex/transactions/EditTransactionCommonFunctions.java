@@ -932,11 +932,18 @@ public class EditTransactionCommonFunctions {
         if (category != null) {
             this.categoryName = category.getName();
             // Done handled nested category
+            int limit = 0;
             while (category != null && category.getParentId() > 0)
             {
+                limit++;
+                if (limit > 15) {
+                    // Avoid infinite loop
+                    break;
+                }
                 category = categoryRepository.load(category.getParentId());
-                if (category != null)
+                if (category != null) {
                     this.categoryName = category.getName() + ":" + this.categoryName;
+                }
             }
         }
 
