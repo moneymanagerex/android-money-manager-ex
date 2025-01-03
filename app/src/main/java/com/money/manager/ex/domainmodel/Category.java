@@ -18,6 +18,8 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import com.money.manager.ex.Constants;
+
 import org.parceler.Parcel;
 
 /**
@@ -50,7 +52,10 @@ public class Category
     }
 
     public long getParentId() {
-        return getLong(PARENTID);
+        if (getLong(PARENTID) != null && getLong(PARENTID) > 0 && getLong(PARENTID) != getId()) {
+            return getLong(PARENTID);
+        }
+        return Constants.NOT_SET;
     }
 
     public void setParentId(Long value) {

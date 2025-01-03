@@ -924,6 +924,7 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadCategoryName() {
+        this.categoryName = ""; // set default #2041. There is case with empty category?
         if(!this.transactionEntity.hasCategory()) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
@@ -931,14 +932,19 @@ public class EditTransactionCommonFunctions {
         if (category != null) {
             this.categoryName = category.getName();
             // Done handled nested category
+            int limit = 0;
             while (category != null && category.getParentId() > 0)
             {
+                limit++;
+                if (limit > 15) {
+                    // Avoid infinite loop
+                    break;
+                }
                 category = categoryRepository.load(category.getParentId());
-                if (category != null)
+                if (category != null) {
                     this.categoryName = category.getName() + ":" + this.categoryName;
+                }
             }
-        } else {
-            this.categoryName = null;
         }
 
         return true;
