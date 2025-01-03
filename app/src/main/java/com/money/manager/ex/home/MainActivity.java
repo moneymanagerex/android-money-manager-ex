@@ -305,7 +305,7 @@ public class MainActivity
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
-                if (db.localPath.endsWith("emb")) {
+                if (db.localPath.endsWith(".emb")) {
                     startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 } else {
                     MmexApplication.getApp().setPassword("");
@@ -315,7 +315,7 @@ public class MainActivity
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                if (db2.localPath.endsWith("emb")) {
+                if (db2.localPath.endsWith(".emb")) {
                     startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 } else {
                     MmexApplication.getApp().setPassword("");
@@ -583,7 +583,7 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3 upon testing instead of extension
-                if (key.endsWith("emb")) {
+                if (key.endsWith(".emb")) {
                     Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
                     intent.putExtra(EXTRA_DATABASE_PATH, key);
                     startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
@@ -1143,7 +1143,7 @@ public class MainActivity
 
                 // Open this database.
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
-                if (db.localPath.endsWith("emb")) {
+                if (db.localPath.endsWith(".emb")) {
                     startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 } else {
                     MmexApplication.getApp().setPassword("");
