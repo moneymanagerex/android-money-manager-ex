@@ -200,7 +200,7 @@ public class AllDataAdapter
         // text color amount
         int amountTextColor;
         if (isTransfer) {
-            amountTextColor = ContextCompat.getColor(mContext, R.color.material_grey_700);
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_blue_700); // gray is not well-visible in dark
         } else if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             amountTextColor = ContextCompat.getColor(mContext, R.color.material_green_700);
         } else {
