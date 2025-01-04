@@ -48,7 +48,7 @@
             android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewDayMonth"
+                android:id="@+id/textViewMonth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -58,46 +58,26 @@
                 app:typeface="roboto_light" />
 
             <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/mmx_text_view_size_medium"
+                app:typeface="roboto_light" />
+
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
 
-            <!-- Row for Attachment Status and Tags -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewAttachment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/mmx_text_view_size_micro"
-                    app:typeface="roboto_light"
-                    android:visibility="gone" /> <!-- Hidden by default -->
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewTags"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/mmx_text_view_size_micro"
-                    app:typeface="roboto_light"
-                    android:visibility="gone" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -125,16 +105,53 @@
                 android:ellipsize="end"
                 android:singleLine="true" />
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewNotes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                android:textStyle="italic"
-                android:visibility="gone"
-                app:typeface="roboto_condensed_italic" />
+            <!-- Row for Attachment Status and Tags -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewAttachment"
+                    android:text="📎"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"
+                    android:visibility="visible" /> <!-- Hidden by default -->
+
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewTags"
+                    android:text="🏷"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    app:typeface="roboto_light"
+                    android:visibility="visible" />  <!-- Hidden by default -->
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textSize="@dimen/mmx_text_view_size_micro"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    app:typeface="roboto_condensed_italic" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

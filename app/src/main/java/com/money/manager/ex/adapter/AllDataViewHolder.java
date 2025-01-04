@@ -23,9 +23,11 @@ import android.widget.TextView;
  */
 public class AllDataViewHolder {
     public LinearLayout linDate;
-    public TextView txtDayMonth;
-    public TextView txtAttachment;
+    public TextView txtDay;
+    public TextView txtMonth;
     public TextView txtYear;
+    public TextView txtAttachment;
+    public TextView textTags;
     public TextView txtStatus;
     public TextView txtAmount;
     public TextView txtPayee;
@@ -33,5 +35,4 @@ public class AllDataViewHolder {
     public TextView txtCategorySub;
     public TextView txtNotes;
     public TextView txtBalance;
-    public TextView textTags;
 }

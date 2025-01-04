@@ -64,7 +64,7 @@ public class QueryAllData
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ID AS _id", ID, TransactionType, Date, Year, Month, ATTACHMENTCOUNT,
+        return new String[]{"ID AS _id", ID, TransactionType, Date, Year, Month, Day, ATTACHMENTCOUNT,
                 Category, Subcategory, AMOUNT, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 SPLITTED, CATEGID, PAYEENAME, PAYEEID, TransactionNumber, STATUS, Notes,
                 ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
