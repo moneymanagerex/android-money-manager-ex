@@ -106,7 +106,8 @@ public class AllDataAdapter
         AllDataViewHolder holder = new AllDataViewHolder();
         // take a pointer of object UI
         holder.linDate = view.findViewById(R.id.linearLayoutDate);
-        holder.txtDayMonth = view.findViewById(R.id.textViewDayMonth);
+        holder.txtDay = view.findViewById(R.id.textViewDay);
+        holder.txtMonth = view.findViewById(R.id.textViewMonth);
         holder.txtYear = view.findViewById(R.id.textViewYear);
         holder.txtAttachment = view.findViewById(R.id.textViewAttachment);
         holder.txtStatus = view.findViewById(R.id.textViewStatus);
@@ -155,17 +156,20 @@ public class AllDataAdapter
 
             Date dateTime = new MmxDate(dateString).toDate();
 
+            String month = dateUtils.format(dateTime, "MMM");
+            holder.txtMonth.setText(month);
+
             String year = dateUtils.format(dateTime, "yyyy");
             holder.txtYear.setText(year);
 
-            String day = dateUtils.format(dateTime, "dd MMM");
-            holder.txtDayMonth.setText(day);
+            String day = dateUtils.format(dateTime, "dd");
+            holder.txtDay.setText(day);
         }
 
         boolean hasAttachment = cursor.getLong(cursor.getColumnIndex(ATTACHMENTCOUNT)) > 0;
         // Show attachment status if applicable
         if (hasAttachment) {
-            holder.txtAttachment.setText("📎"); // Attachment icon
+// in view            holder.txtAttachment.setText("\uD83D\uDCCE "); // unicode Attachment icon
             holder.txtAttachment.setVisibility(View.VISIBLE);
         } else {
             holder.txtAttachment.setVisibility(View.GONE);
@@ -174,7 +178,7 @@ public class AllDataAdapter
         // tags
         String tags = cursor.getString(cursor.getColumnIndex(TAGS));
         if (!TextUtils.isEmpty(tags)) {
-            holder.textTags.setText(" \uD83C\uDFF7 "); // Tag icon
+// in view            holder.textTags.setText(" \uD83C\uDFF7 "); // Tag icon
             holder.textTags.setVisibility(View.VISIBLE);
         } else {
             holder.textTags.setVisibility(View.GONE);
@@ -196,7 +200,7 @@ public class AllDataAdapter
         // text color amount
         int amountTextColor;
         if (isTransfer) {
-            amountTextColor = ContextCompat.getColor(mContext, R.color.material_grey_700);
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_blue_700); // gray is not well-visible in dark
         } else if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             amountTextColor = ContextCompat.getColor(mContext, R.color.material_green_700);
         } else {
