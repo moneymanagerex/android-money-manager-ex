@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
+    <string name="application_credits">Money Manager Ex for Android Project uses ActionBarSherlock library</string>
     <string name="application_license">Open source licenses</string>
     <!-- database -->
     <string name="db_insert_failed">Inserting data failed</string>
@@ -57,9 +58,12 @@
     <string name="version">Version</string>
     <string name="build">Build</string>
     <string name="path">Database path</string>
+    <string name="remote_path">Remote path</string>
     <string name="database_version">Database version:</string>
     <string name="title_show_tutorial">Show tutorial </string>
     <string name="summary_show_tutorial"></string>
+    <string name="preferences_behaviour_focus_filter_title">Filter in selectors</string>
+    <string name="preferences_behaviour_focus_filter_summary">Focus on filter in selectors. Otherwise browse.</string>
     <!-- Receive SMS strings -->
     <!-- account -->
     <string name="account">Account</string>
