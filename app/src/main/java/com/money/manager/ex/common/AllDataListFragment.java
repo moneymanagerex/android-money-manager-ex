@@ -646,6 +646,12 @@ public class AllDataListFragment
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
 
+            // is void?
+            DatabaseUtils.cursorStringToContentValues(cursor, adapter.STATUS, values);
+            if ( values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
+                // void. skip
+                continue;
+            }
             transType = values.getAsString(adapter.TRANSACTIONTYPE);
             transactionType = TransactionTypes.valueOf(transType);
 
