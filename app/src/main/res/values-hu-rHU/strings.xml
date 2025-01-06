@@ -136,6 +136,7 @@
     <string name="decimal_char">Tizedes jel</string>
     <string name="group_char">Csoport jel</string>
     <string name="scale">Skála</string>
+    <string name="conversion_to_base_rate">Átváltás</string>
     <string name="currency_name_empty">Pénznem nevének megadása kötelező</string>
     <string name="new_edit_currency">Új pénznem/Pénznem szerkesztése</string>
     <string name="missing_default_currency">Hiányzik az alapértelmezett pénznem a beállításokban</string>
@@ -227,6 +228,7 @@
     <string name="tag_empty_list">Nincsenek címkék. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="tag_can_not_deleted">A kijelölt címke nem törölhető, mert hivatkoznak rá.</string>
     <string name="db_tag_update_failed">Hiba történt a címke frissítésekor.</string>
+    <string name="space_replaced_with__">Szóköz, &amp; és | helyére „_” került</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Soha</string>
     <string name="once">Egyszer</string>
@@ -247,6 +249,8 @@
     <string name="repeating_empty_transaction">Nincsenek ütemezett ügyletek. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="inactive">Inaktív</string>
     <string name="activates">Aktiválás</string>
+    <string name="days_overdue">%d napja lejárt!</string>
+    <string name="days_remaining">%d nap maradt</string>
     <string name="new_edit_repeating_transaction">Új ütemezett ügylet/Ütemezett ügylet szerkesztése</string>
     <string name="due_date">Határidő</string>
     <string name="next_occurrence">Következő előfordulás</string>
@@ -267,6 +271,7 @@
     <string name="enter">Belépés</string>
     <string name="enter_amount">Összeg megadása</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Automatikus ügylet</string>
     <string name="manual">Kézi bevitel</string>
     <string name="prompt">Rákérdezés bevitel előtt</string>
     <string name="auto">Automatikus bevitel</string>
@@ -572,6 +577,7 @@
     <string name="commission">Jutalék</string>
     <string name="value">Érték</string>
     <string name="view_transactions">Ügyletek megtekintése</string>
+    <string name="view_transactions_sub">Ügyletek megtekintése alkategóriákkal</string>
     <string name="error_downloading_symbol">Hiba történt a szimbólum árának letöltése során</string>
     <string name="error_updating_rates">Hiba történt az árfolyamok frissítésekor</string>
     <string name="error_no_price_found_for_symbol">Nem található a szimbólumhoz ár</string>
@@ -758,4 +764,5 @@
     <string name="version_copied_to_clipboard">A verziószám a vágólapra másolva</string>
     <string name="issue_open">"Hibabejelentés a GitHubon "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Összes törlése</string>
 </resources>

@@ -136,8 +136,10 @@
     <string name="decimal_char">Dezimaltrennzeichen</string>
     <string name="group_char">Tausendertrennzeichen</string>
     <string name="scale">Skalierung</string>
+    <string name="conversion_to_base_rate">Konvertierung</string>
     <string name="currency_name_empty">Name der Währung ist erforderlich</string>
     <string name="new_edit_currency">Währung hinzufügen/bearbeiten</string>
+    <string name="missing_default_currency">Standardwährung fehlt in der Einstellung</string>
     <!-- transaction -->
     <string name="amount">Betrag</string>
     <string name="total_amount">Gesamtbetrag</string>
@@ -217,6 +219,16 @@
     <string name="widget_all_accounts">Alle Konten</string>
     <string name="widget_add_transaction">Transaktion hinzufügen</string>
     <!-- TAG -->
+    <string name="tag">Tag/Label</string>
+    <string name="tagsList_transactions">Stichworte zur Transaktion </string>
+    <string name="tag_name">Tag-Name</string>
+    <string name="edit_tagName">Tag bearbeiten</string>
+    <string name="delete_tag">Tag löschen</string>
+    <string name="select_tag">Tag auswählen</string>
+    <string name="tag_empty_list">Es wurde kein Tag gefunden. Um eines zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
+    <string name="tag_can_not_deleted">Der ausgewählte Tag kann nicht gelöscht werden, da auf ihn verwiesen wird</string>
+    <string name="db_tag_update_failed"> Tag Aktualisierung fehlgeschlagen</string>
+    <string name="space_replaced_with__">Leerzeichen, &amp; und | wurde durch \"_\" ersetzt</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nichts</string>
     <string name="once">Einmalig</string>
@@ -237,6 +249,8 @@
     <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
     <string name="inactive">Inaktiv</string>
     <string name="activates">aktiviert</string>
+    <string name="days_overdue">%d Tage überfällig!</string>
+    <string name="days_remaining">%d Tage verbleiben</string>
     <string name="new_edit_repeating_transaction">Geplante Transaktion neu/bearbeiten</string>
     <string name="due_date">Fälligkeitsdatum</string>
     <string name="next_occurrence">Nächstes Vorkommen</string>
@@ -257,6 +271,7 @@
     <string name="enter">Eingeben</string>
     <string name="enter_amount">Betrag eingeben</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Automatische Transaktion</string>
     <string name="manual">Manuelle Eingabe</string>
     <string name="prompt">Eingabe abfragen</string>
     <string name="auto">Automatischer Eintrag</string>
@@ -562,6 +577,7 @@
     <string name="commission">Provision</string>
     <string name="value">Wert</string>
     <string name="view_transactions">Transaktionen anzeigen</string>
+    <string name="view_transactions_sub">Transaktionen mit Unterkategorien anzeigen</string>
     <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
@@ -588,6 +604,8 @@
     <string name="all_accounts">Alle Konten</string>
     <string name="records">Aufzeichnungen</string>
     <!-- db password entry -->
+    <string name="enter_password">Passwort eingeben (optional)</string>
+    <string name="password_hint">Nur für .emb Datei</string>
     <string name="success">Operation erfolgreich</string>
     <string name="overview">Übersicht</string>
     <string name="title_activity_asset_allocation_overview">Übersicht der Vermögensverteilung</string>
@@ -699,6 +717,7 @@
     <string name="remote_file_not_found">Datei im Onlinespeicher nicht gefunden</string>
     <string name="error_checking_remote">Fehler beim Überprüfen der Datenbank im Onlinespeicher auf Änderungen.</string>
     <string name="no_remote_change_date">Das Datum der externen Änderung wurde in den Metadaten nicht gefunden.</string>
+    <string name="remote_unavailable">Remote-Datei ist nicht verfügbar</string>
     <!-- Select database screen -->
     <string name="intro_text">Um MoneyManager Ex verwenden zu können, müssen Sie eine Datenbank haben, um Ihre Daten zu speichern. Bitte wählen Sie eine der verfügbaren Optionen.</string>
     <string name="intro_create_db">Sie können eine neue Datei erstellen und die ersten Einstellungen vornehmen.</string>
@@ -713,6 +732,8 @@
     <string name="save">Speichern</string>
     <string name="title_budget_show_simple_view">Zeige die einfache Budget-Ansicht</string>
     <string name="summary_budget_show_simple_view">Falls Budgets ausgewählt, einfache Ansicht benutzen</string>
+    <string name="title_pref_budget_financial_year">Geschäftsjahr im Budget verwenden</string>
+    <string name="summary_pref_budget_financial_year">Wenn angekreuzt, verwenden die Budgets das Haushaltsjahr anstelle des Kalenderjahres</string>
     <string name="shares">Aktien</string>
     <string name="loan">Darlehen</string>
     <string name="loan_account">Darlehenskonten</string>
@@ -730,6 +751,8 @@
     <string name="summary_notifications_repeating_transaction">Benachrichtigung für überfällige geplante Buchungen anzeigen</string>
     <string name="notification_channel_recurring">Benachrichtigung über geplante Transaktionen</string>
     <string name="notification_channel_recurring__description">Überfällige geplante Transaktionsbenachrichtigung</string>
+    <string name="notification_channel_remotefile">Remote-Datei-Operation</string>
+    <string name="notification_channel_remotefile__description">Benachrichtigung für Remote-Dateivorgänge</string>
     <string name="notification_channel_fileoperation_downloadin">MMEX herunterladen</string>
     <string name="notification_channel_fileoperation_uploadin">MMEX hochladen</string>
     <string name="notification_channel_fileoperation_complete">MMEX hochladen abgeschlossen</string>
@@ -738,5 +761,8 @@
     <string name="attachment_folder">Dateianhang Ordner</string>
     <string name="attachment_folder_summary">Wählen Sie den Ordner, in dem Anhänge gespeichert werden</string>
     <string name="pref_attachment_folder">Dateianhang Ordner</string>
+    <string name="version_copied_to_clipboard">Versionsnummer in die Zwischenablage kopiert</string>
+    <string name="issue_open">"Offene Themen auf GitHub"</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Alle schließen</string>
 </resources>
