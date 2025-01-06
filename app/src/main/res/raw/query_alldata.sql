@@ -21,7 +21,7 @@ SELECT
     FromAcc.AccountID AS AccountID,
     FromAcc.AccountName AS AccountName,
     -- Destination
-    ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountId,
+    ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountID,
     ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
     TX.ToTransAmount AS ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyId,

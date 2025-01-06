@@ -55,8 +55,10 @@ import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
@@ -237,7 +239,13 @@ public class AllDataListFragment
                 sort = args.getString(KEY_ARGUMENTS_SORT);
             }
             // create loader
-            QueryAllData allData = new QueryAllData(getActivity());
+            Dataset allData;
+            if (args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
+                // coming from report, use mobile data
+                allData = new QueryMobileData(getActivity());
+            } else {
+                allData = new QueryAllData(getActivity());
+            }
             Select query = new Select(allData.getAllColumns())
                     .where(selection)
                     .orderBy(sort);
