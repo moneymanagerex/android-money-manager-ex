@@ -114,7 +114,7 @@ public class AllDataListFragment
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    public long AccountId = Constants.NOT_SET;
+    public long accountId = Constants.NOT_SET;
     private LinearLayout footer;
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
@@ -133,7 +133,7 @@ public class AllDataListFragment
         setListShown(false);
 
         // Read arguments
-        this.AccountId = getArguments().getLong(ARG_ACCOUNT_ID);
+        this.accountId = getArguments().getLong(ARG_ACCOUNT_ID);
 
         // Read header indicator directly from the activity.
         // todo: make this a parameter or a property.
@@ -144,7 +144,7 @@ public class AllDataListFragment
 
         // create adapter for data.
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
-        adapter.setAccountId(this.AccountId);
+        adapter.setAccountId(this.accountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
@@ -528,7 +528,7 @@ public class AllDataListFragment
         // set the account id in the data adapter
         AllDataAdapter adapter = getAllDataAdapter();
         if (adapter != null) {
-            adapter.setAccountId(this.AccountId);
+            adapter.setAccountId(this.accountId);
             adapter.setBalances(null);
         }
 
@@ -628,6 +628,8 @@ public class AllDataListFragment
         long baseCurrencyId = currencyService.getBaseCurrencyId();
         ContentValues values = new ContentValues();
 
+        long searchForAccount = accountId;
+
         long currencyId;
         Money amount;
         Money converted;
@@ -646,18 +648,30 @@ public class AllDataListFragment
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
 
-            // is void?
             DatabaseUtils.cursorStringToContentValues(cursor, adapter.STATUS, values);
             if ( values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
                 // void. skip
                 continue;
             }
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.ACCOUNTID, values);
+
             transType = values.getAsString(adapter.TRANSACTIONTYPE);
             transactionType = TransactionTypes.valueOf(transType);
 
             if (transactionType.equals(TransactionTypes.Transfer)) {
                 currencyId = values.getAsLong(adapter.TOCURRENCYID);
-                amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
+                // Issue 2054 adapt sign based on current account and direction
+                // check mArguments(Account)
+                if ( searchForAccount == Constants.NOT_SET ) {
+                    // ignore transaction since this as + and -
+                    continue;
+                } else if ( searchForAccount == values.getAsLong(adapter.ACCOUNTID) ) {
+                    // source
+                    amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
+                } else {
+                    // Dest
+                    amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
+                }
             } else {
                 currencyId = values.getAsLong(adapter.CURRENCYID);
                 amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
@@ -779,7 +793,7 @@ public class AllDataListFragment
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.AccountId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.accountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity

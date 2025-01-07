@@ -803,7 +803,7 @@ public class AccountTransactionListFragment
 
         // switch account. Reload transactions.
         mAccountId = accountId;
-        mAllDataListFragment.AccountId = accountId;
+        mAllDataListFragment.accountId = accountId;
         mAllDataListFragment.loadData(prepareQuery());
 
         // hide account details bar if all accounts are selected
