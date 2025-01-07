@@ -180,13 +180,20 @@ public class SearchActivity
                     .commit();
         }
 
-        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
+        //search parameters
+        SearchParameters searchParameters = getSearchFragment().getSearchParameters();
+        if (searchParameters != null && searchParameters.accountId != null )
+            searchResultsFragment = AllDataListFragment.newInstance(searchParameters.accountId, false);
+        else
+            searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
+
 
         searchResultsFragment.showTotalsFooter();
 
         //create parameter bundle
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
+
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +

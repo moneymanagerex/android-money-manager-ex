@@ -514,21 +514,15 @@ public class SearchParametersFragment
                 }
                 whereSubCategory = "(" + whereSubCategory + ")" ;
 
-                where.addStatement("(" +
-                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") " +
-                        " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
-                        " FROM " + SplitCategory.TABLE_NAME +
-                        " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
-                        ")" +
-                        ")");
+                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
+                where.addStatement(
+                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") "
+                        );
             } else {
-                where.addStatement("(" +
-                        "(" + QueryAllData.CATEGID + "=" + categId + ") " +
-                        " OR (" + categId + " IN (select " + QueryAllData.CATEGID +
-                        " FROM " + SplitCategory.TABLE_NAME +
-                        " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
-                        ")" +
-                        ")");
+                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
+                where.addStatement(
+                        "(" + QueryAllData.CATEGID + "=" + categId + ") "
+                        );
 
             }
 

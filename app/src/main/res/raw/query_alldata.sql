@@ -21,10 +21,10 @@ SELECT
     FromAcc.AccountID AS AccountID,
     FromAcc.AccountName AS AccountName,
     -- Destination
-    ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountId,
+    ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountID,
     ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
     TX.ToTransAmount AS ToAmount,
-    ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyId,
+    ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyID,
     ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
     TX.CATEGID AS CategID,
     ifnull( PAYEE.PayeeName, '') AS PayeeName,
