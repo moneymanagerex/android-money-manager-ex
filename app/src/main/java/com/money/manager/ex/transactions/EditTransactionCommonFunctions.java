@@ -576,6 +576,8 @@ public class EditTransactionCommonFunctions {
     public void initTagsControls() {
         if( this.viewHolder.tagsListTextView == null ) return;
 
+        if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
+
         this.viewHolder.tagsListTextView.setOnClickListener(v -> {
             // inizialize display
             TaglinkRepository repo = new TaglinkRepository(getContext());
@@ -589,7 +591,7 @@ public class EditTransactionCommonFunctions {
                 tagsListString[i] = tagsList.get(i).getName();
                 // set default from mTagLink
                 long tagId = tagsList.get(i).getId().intValue();
-                if ( mTaglinks != null && mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
+                if ( mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
                     tagsFlag[i] = true;
                 };
             }
@@ -623,7 +625,6 @@ public class EditTransactionCommonFunctions {
                                 // flag off and mlink not present, nothing to do
                             } else {
                                 // flag on and mlink not present, create
-                                if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
                                 taglink = new Taglink();
                                 taglink.setRefType(transactionEntity.getTransactionModel());
                                 taglink.setRefId(transactionEntity.getId());
@@ -631,7 +632,7 @@ public class EditTransactionCommonFunctions {
                                 mTaglinks.add(taglink);
                             }
                         } else {
-                            if ( ! tagsFlag[j] && mTaglinks != null ) {
+                            if ( ! tagsFlag[j] ) {
                                 // flag off and mlink is present, delete
                                 mTaglinks.remove(taglink);
                             } else {
