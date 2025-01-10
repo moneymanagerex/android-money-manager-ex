@@ -24,7 +24,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,6 +66,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 /**
  * The recurring transactions list fragment.
@@ -183,7 +183,7 @@ public class ScheduledTransactionListFragment
         ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
         if (menuInfo == null) {
             String errorMessage = "no context menu info";
-            Log.w(this.getClass().getSimpleName(), errorMessage);
+            Timber.tag(this.getClass().getSimpleName()).w(errorMessage);
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
             handler.showMessage("no context menu info");
             return false;
@@ -414,8 +414,9 @@ public class ScheduledTransactionListFragment
 
     private void showDatesWithEvents(CaldroidFragment caldroid) {
         ListAdapter adapter = getListAdapter();
-        long count = adapter.getCount();
-        ColorDrawable orange = new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.holo_orange_dark));
+        if (adapter == null) return;
+        int count = adapter.getCount();
+        ColorDrawable orange = new ColorDrawable(ContextCompat.getColor(requireActivity(), R.color.holo_orange_dark));
         RecurringTransaction tx = RecurringTransaction.createInstance();
 
         for (int i = 0; i < count; i++) {
