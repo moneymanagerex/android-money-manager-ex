@@ -66,7 +66,6 @@ public class InvestmentTransactionEditActivity
 
     public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
-    public static final String DATEPICKER_TAG = "datepicker";
 
     public static final int REQUEST_NUM_SHARES = 1;
     public static final int REQUEST_PURCHASE_PRICE = 2;
@@ -75,7 +74,6 @@ public class InvestmentTransactionEditActivity
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
     private InvestmentTransactionViewHolder mViewHolder;
@@ -178,6 +176,7 @@ public class InvestmentTransactionEditActivity
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         onActionCancelClick();
     }
 
@@ -202,9 +201,7 @@ public class InvestmentTransactionEditActivity
     }
 
     public void setDirty(boolean dirty) {
-        mDirty = dirty;
     }
-
 
     private void onNumSharesClick() {
         Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
@@ -226,6 +223,8 @@ public class InvestmentTransactionEditActivity
     }
 
     private void onCommissionClick() {
+        if (mAccount == null) return;
+
         Calculator.forActivity(this)
                 .amount(mStock.getCommission())
                 .currency(mAccount.getCurrencyId())
