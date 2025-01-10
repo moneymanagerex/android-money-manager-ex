@@ -1,0 +1,4 @@
+• Restored the original date layout and added tags and attachments to notes.
+• Improved report functionality to match the desktop version.
+• Fixed crashes during tag editing, list loading, and account actions.
+• Added new translations for better localization.
