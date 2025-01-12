@@ -49,6 +49,8 @@ import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -217,32 +219,39 @@ public class Core {
      * @return CharSequence modified
      */
     public CharSequence highlight(String search, String originalText) {
-        if (TextUtils.isEmpty(search))
+        if (TextUtils.isEmpty(search) || TextUtils.isEmpty(originalText)) {
             return originalText;
-        // ignore case and accents
-        // the same thing should have been done for the search text
-        String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
-
-        int start = normalizedText.indexOf(search.toLowerCase());
-        if (start < 0) {
-            // not found, nothing to to
-            return originalText;
-        } else {
-            // highlight each appearance in the original text
-            // while searching in normalized text
-            Spannable highlighted = new SpannableString(originalText);
-            while (start >= 0) {
-                int spanStart = Math.min(start, originalText.length());
-                int spanEnd = Math.min(start + search.length(), originalText.length());
-
-                highlighted.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), spanStart,
-                        spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                start = normalizedText.indexOf(search, spanEnd);
-            }
-            return highlighted;
         }
+
+        // Normalize strings to remove diacritics and ensure uniformity
+        String normalizedSearch = Normalizer.normalize(search, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .toLowerCase();
+
+        String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .toLowerCase();
+
+        // Build a regex pattern to find all occurrences of the search term
+        Pattern pattern = Pattern.compile(Pattern.quote(normalizedSearch), Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(normalizedText);
+
+        Spannable highlighted = new SpannableString(originalText);
+
+        // Highlight matches in the original text using normalized indices
+        while (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+
+            // Map the normalized indices back to the original text
+            int spanStart = Math.min(start, originalText.length());
+            int spanEnd = Math.min(end, originalText.length());
+
+            highlighted.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), spanStart,
+                    spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return highlighted;
     }
 
     /**
