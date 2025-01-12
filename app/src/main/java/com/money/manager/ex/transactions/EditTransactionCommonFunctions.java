@@ -932,18 +932,17 @@ public class EditTransactionCommonFunctions {
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
+            Timber.d("Determine Recursive Category Name.\n  categoryName: " + this.categoryName);
             // Done handled nested category
             int limit = 0;
-            while (category != null && category.getParentId() > 0)
+            while ( limit < 15 && category != null && category.getParentId() > 0)
             {
                 limit++;
-                if (limit > 15) {
-                    // Avoid infinite loop
-                    break;
-                }
                 category = categoryRepository.load(category.getParentId());
                 if (category != null) {
+                    Timber.d("  [%d] Recursive call for id = %d ", limit, category.getId());
                     this.categoryName = category.getName() + ":" + this.categoryName;
+                    Timber.d("     new name = [%s]", this.categoryName);
                 }
             }
         }
