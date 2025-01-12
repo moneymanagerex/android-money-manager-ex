@@ -677,6 +677,8 @@
     <string name="loan">貸款</string>
     <string name="loan_account">貸款帳戶</string>
     <string name="shares_accounts">股票帳戶</string>
+    <string name="menu_create_database">建立資料庫</string>
+    <string name="create_database">建立資料庫</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
 </resources>
