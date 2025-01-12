@@ -217,6 +217,7 @@ public class NestedCategoryListFragment
         // the search filter, and restart the loader to do a new query
         // with this filter.
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        if (mCurFilter.equals("%")) mCurFilter = null; // remove is like all
         restartLoader();
         return true;
     }
@@ -354,7 +355,8 @@ public class NestedCategoryListFragment
                 // create instance category
                 NestedCategoryEntity category = new NestedCategoryEntity();
                 category.loadFromCursor(data);
-                category.setCategoryName(core.highlight(filter, category.getCategoryName()).toString());
+// this cause error in unicode string search. see issue #2001. For now simply remove. but we need to find a better way
+//                category.setCategoryName(core.highlight(filter, category.getCategoryName()).toString());
 
                 // add list
                 mCategories.add(category.asCategory());
