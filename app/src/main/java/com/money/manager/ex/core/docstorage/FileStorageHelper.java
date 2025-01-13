@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.file.Files;
+
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -83,6 +84,7 @@ public class FileStorageHelper {
 
     /**
      * Open the selected database file from Storage Access Framework.
+     *
      * @param activityResultData the intent received in onActivityResult after the file
      *                           is selected in the picker.
      */
@@ -109,8 +111,10 @@ public class FileStorageHelper {
     /*
         Private area
      */
+
     /**
      * Copies the remote database locally and updates the metadata.
+     *
      * @param metadata Database file metadata.
      */
     public void pullDatabase(DatabaseMetadata metadata) {
@@ -137,7 +141,8 @@ public class FileStorageHelper {
             Timber.e(e);
             try {
                 Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             return;
         }
         MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
@@ -148,6 +153,7 @@ public class FileStorageHelper {
 
     /**
      * Pushes the local file to the document provider and updates the metadata.
+     *
      * @param metadata Database file metadata.
      */
     public void pushDatabase(DatabaseMetadata metadata) {
@@ -200,7 +206,7 @@ public class FileStorageHelper {
         // Take persistable URI permission.
         _host.getContentResolver().takePersistableUriPermission(uri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         return uri;
     }
@@ -235,6 +241,7 @@ public class FileStorageHelper {
 
     /**
      * Creates a local copy of the database from document storage.
+     *
      * @param uri Remote Uri
      * @throws IOException boom
      */
@@ -246,8 +253,9 @@ public class FileStorageHelper {
 
         // Use CompletableFuture for async operations
         CompletableFuture<Void> downloadTask = CompletableFuture.runAsync(() -> {
-            try (InputStream is = resolver.openInputStream(uri);
-                 OutputStream os = Files.newOutputStream(tempDatabaseFile.toPath())) {
+            try {
+                InputStream is = resolver.openInputStream(uri);
+                OutputStream os = Files.newOutputStream(tempDatabaseFile.toPath()) ;
                 if (is == null) {
                     throw new IOException("InputStream is null for URI: " + uri);
                 }
