@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.file.Files;
+
+import com.google.common.io.ByteStreams;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -251,7 +253,7 @@ public class FileStorageHelper {
                 if (is == null) {
                     throw new IOException("InputStream is null for URI: " + uri);
                 }
-                long bytesCopied = is.transferTo(os); // Stream API to copy bytes
+                long bytesCopied = ByteStreams.copy(is, os);
                 Timber.i("Copied %d bytes", bytesCopied);
             } catch (Exception e) {
                 Timber.e(e, "Error downloading database");
