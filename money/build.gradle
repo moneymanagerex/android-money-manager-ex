@@ -15,7 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
     namespace "info.javaperformance.money"
@@ -25,6 +28,16 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdk rootProject.ext.targetSdk
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     buildTypes {
         debug {
             minifyEnabled false

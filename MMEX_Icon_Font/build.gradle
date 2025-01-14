@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
     namespace "com.mikepenz.mmex_icon_font_typeface_library"
@@ -28,6 +31,16 @@ android {
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     buildTypes {
         debug {
 
