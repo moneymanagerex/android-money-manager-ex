@@ -243,6 +243,7 @@
     <string name="enter">Saisir</string>
     <string name="enter_amount">Saisir le montant</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Transaction automatique</string>
     <string name="auto">Entrée automatique</string>
     <!-- 20121121 -->
     <string name="send_feedback">Envoyer un commentaire</string>
@@ -561,6 +562,7 @@
     <string name="all_accounts">Tous les comptes</string>
     <string name="records">Enregistrements</string>
     <!-- db password entry -->
+    <string name="enter_password">Entrez un mot de passe (facultatif)</string>
     <string name="success">Opération terminée</string>
     <string name="overview">Aperçu</string>
     <string name="title_activity_asset_allocation_overview">Aperçu de l\'allocation des actifs</string>
@@ -697,7 +699,10 @@
     <string name="notification_channel_fileoperation_uploadin">Téléversement de Mmex</string>
     <string name="notification_channel_fileoperation_complete">Téléversement Mmex terminé</string>
     <string name="notification_channel_fileoperation_conflict">Conflit de synchronisation Mmex</string>
+    <string name="show">Afficher</string>
     <string name="attachment_folder">Dossier des pièces jointes</string>
     <string name="pref_attachment_folder">Dossier des pièces jointes</string>
+    <string name="issue_open">"Ouvrir un ticket sur GitHub "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Effacer tout</string>
 </resources>
