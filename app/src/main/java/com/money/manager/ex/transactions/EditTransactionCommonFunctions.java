@@ -132,7 +132,6 @@ public class EditTransactionCommonFunctions {
     public ArrayList<Attachment> mAttachments;
 
     public ArrayList<Taglink> mTaglinks;
-    public String mTagLinksString;
 
     // Controls
     public EditTransactionViewHolder viewHolder;
@@ -147,7 +146,7 @@ public class EditTransactionCommonFunctions {
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
     private final ArrayList<Long> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
-    private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
+    private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
 
     public boolean deleteMarkedSplits(IRepository repository) {
@@ -717,12 +716,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initStatusSelector() {
-        mStatusItems = activity.getResources().getStringArray(R.array.status_items);
+        String[] statusItems = activity.getResources().getStringArray(R.array.status_items);
         mStatusValues = activity.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, mStatusItems);
+                android.R.layout.simple_spinner_item, statusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinStatus.setAdapter(adapterStatus);
 
