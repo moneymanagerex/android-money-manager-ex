@@ -69,8 +69,8 @@ public class PayeeListFragment
 //    private static final long MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
 
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
     private Context mContext;
     private String mCurFilter;
