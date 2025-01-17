@@ -189,7 +189,9 @@ public class CheckingTransactionEditActivity
 
     @Override
     public void onBackPressed() {
-        onActionCancelClick();
+        if (!onActionCancelClick()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -672,7 +674,7 @@ public class CheckingTransactionEditActivity
         mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
                 EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
 
-        mScheduledTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
+        mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
 
         // action
 //        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
