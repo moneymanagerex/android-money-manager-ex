@@ -531,7 +531,7 @@ public class CheckingTransactionEditActivity
                 executor.execute(() -> {
                     try {
                         Core core = new Core(getApplicationContext());
-                        Payee payee = core.getLastPayeeUsed();
+                        Payee payee = core.getLastPayeeUsed(mCommon.transactionEntity.getAccountId());
                         if (payee != null && mCommon.transactionEntity.getPayeeId() == Constants.NOT_SET) {
                             // get id payee and category
                             mCommon.transactionEntity.setPayeeId(payee.getId());
@@ -597,7 +597,7 @@ public class CheckingTransactionEditActivity
                             if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
                                 Core core = new Core(this);
-                                Payee payee = core.getLastPayeeUsed();
+                                Payee payee = core.getLastPayeeUsed(mCommon.transactionEntity.getAccountId());
 
                                 if (payee != null) {
                                     mCommon.transactionEntity.setPayeeId(payee.getId());

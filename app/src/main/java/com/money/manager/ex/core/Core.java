@@ -134,7 +134,7 @@ public class Core {
      * Method, which returns the last payee used
      * @return last payee used
      */
-    public Payee getLastPayeeUsed() {
+    public Payee getLastPayeeUsed(long accountId) {
 //        MmxOpenHelper helper = MmxOpenHelper.getInstance(getContext());
         Payee payee = null;
 
@@ -146,17 +146,37 @@ public class Core {
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
-        Cursor cursor = openHelper.get().getReadableDatabase().query(sql);
+        // SQL query with accountId filtering
+        String sqlWithAccountId =
+                "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID " +
+                        "FROM CHECKINGACCOUNT_V1 C " +
+                        "INNER JOIN PAYEE_V1 P ON C.PAYEEID = P.PAYEEID " +
+                        "WHERE C.TransCode <> 'Transfer' " +
+                        "AND (C.DELETEDTIME IS NULL OR C.DELETEDTIME = '') " +
+                        "AND (C.accountid = ? OR C.toaccountid = ?) " +
+                        "ORDER BY C.TransDate DESC, C.TransId DESC " +
+                        "LIMIT 1";
 
-        // check if cursor can be open
-        if (cursor != null && cursor.moveToFirst()) {
-            payee = new Payee();
-            payee.loadFromCursor(cursor);
-
-            cursor.close();
+        // Attempt query with accountId
+        try (Cursor cursor = openHelper.get().getReadableDatabase().query(
+                sqlWithAccountId,
+                new String[]{String.valueOf(accountId), String.valueOf(accountId)})) {
+            if (cursor != null && cursor.moveToFirst()) {
+                payee = new Payee();
+                payee.loadFromCursor(cursor);
+            }
         }
-        //close database
-        //helper.close();
+
+        if (payee == null) {
+            try (Cursor cursor = openHelper.get().getReadableDatabase().query(sql)) {
+                // check if cursor can be open
+                if (cursor != null && cursor.moveToFirst()) {
+                    payee = new Payee();
+                    payee.loadFromCursor(cursor);
+                }
+            }
+        }
+
 
         return payee;
     }
