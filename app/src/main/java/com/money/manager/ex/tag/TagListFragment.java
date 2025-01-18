@@ -99,7 +99,7 @@ public class TagListFragment     extends BaseListFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_tag, menu);
+        inflater.inflate(R.menu.menu_sort, menu);
 
         int sort = 0;
         
