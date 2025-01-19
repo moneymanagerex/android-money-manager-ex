@@ -14,11 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.money.manager.ex.nestedcategory;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -29,15 +27,19 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -45,12 +47,11 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
-import com.money.manager.ex.common.BaseExpandableListFragment;
+import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.CategoryRepository;
@@ -67,39 +68,34 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * List of Category. Used as a picker/selector also.
+ */
 public class NestedCategoryListFragment
-        extends BaseExpandableListFragment
+        extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
-    public Integer requestId;
+    public Integer requestId; // this is used in splittransaction. not sure that this is the correct place
 
-    private static final int ID_LOADER_CATEGORYSUB = 0;
+    private static final int ID_LOADER_NESTEDCATEGORY = 0;
 
-    private static final String KEY_ID_GROUP = "CategorySubCategory:idGroup";
-    private static final String KEY_CUR_FILTER = "CategorySubCategory:curFilter";
-    // table or query
-    private static QueryNestedCategory mQuery;
-    private int mLayout;
-//    private long mIdGroupChecked = ExpandableListView.INVALID_POSITION;
+    private static final String SORT_BY_NAME = "UPPER(" + QueryNestedCategory.CATEGNAME + ")";
+// note use T. for resovle name from dinamic from
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) \n" +
+            "FROM CHECKINGACCOUNT_V1 \n" +
+            "WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID\n" +
+            "  AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '')) DESC";
 
-    private List<Category> mCategories;
+//    private Context mContext;
     private String mCurFilter;
+    private int mSort = 0;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // create category adapter
-        mQuery = new QueryNestedCategory(getActivity());
-
-        mCategories = new ArrayList<>();
-
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
-
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
 
         setHasOptionsMenu(true);
 
@@ -110,48 +106,65 @@ public class NestedCategoryListFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
-        /*
-            Define the layout.
-            Show category selector (arrow) when used as a picker.
-            Show simple list when opened independently.
-        */
-        mLayout = R.layout.simple_expandable_list_item_selector;
+        int layout = android.R.layout.simple_list_item_1;
 
-        // manage context menu
-        registerForContextMenu(getExpandableListView());
+        // associate adapter
+        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+                layout, null, new String[] { QueryNestedCategory.CATEGNAME },
+                new int[]{android.R.id.text1}, 0);
+        // set adapter
+        setListAdapter(adapter);
 
-        getExpandableListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        registerForContextMenu(getListView());
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         setListShown(false);
 
-        addListClickHandlers();
+        attachFloatingActionButtonToListView();
 
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_CATEGORYSUB, null, this);
+        getLoaderManager().initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
 
-        // Hide default group indicator
-        getExpandableListView().setGroupIndicator(null);
-    }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(KEY_ID_GROUP)) {
-//            mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
-        }
-        if (savedInstanceState.containsKey(KEY_CUR_FILTER)) {
-            mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
-        }
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_sort, menu);
+        final MenuItem item = menu.findItem(R.id.menu_sort_name);
+        item.setChecked(true);
+    }
 
-//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-        int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_sort_name ||
+            item.getItemId() == R.id.menu_sort_usage) {
+            if (item.getItemId() == R.id.menu_sort_name )  {
+                mSort = 0;
+            } else {
+                mSort = 1;
+            }
 
-        menu.setHeaderTitle(mCategories.get(group).getName());
+            item.setChecked(true);
+            // restart search
+            restartLoader();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("Range")
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME)));
 
         // context menu from resource
         menu.add(Menu.NONE, ContextMenuIds.ADD_SUB.getId(), Menu.NONE, getString(R.string.add_subcategory));
@@ -163,16 +176,24 @@ public class NestedCategoryListFragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info ;
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
+            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        } else {
+            return false;
+        }
 
-//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-        int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        cursor.moveToPosition(info.position);
 
-        Category category = mCategories.get(group);
-        // category dovrebbe puntare alla riga che abbiamo scelto
+        NestedCategoryEntity nestedCategory = new NestedCategoryEntity();
+        nestedCategory.loadFromCursor(cursor);
+
+        Category category = nestedCategory.asCategory();
 
         // manage select menu
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
+        if (menuId == null) return  false;
         switch (menuId) {
             case ADD_SUB:
                 Category newCat = new Category();
@@ -211,6 +232,58 @@ public class NestedCategoryListFragment
         return false;
     }
 
+
+    // Data loader
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (id == ID_LOADER_NESTEDCATEGORY) {// update id selected
+            // load data
+            String whereClause = "ACTIVE <> 0";
+            String[] selectionArgs = null;
+            if (!TextUtils.isEmpty(mCurFilter)) {
+                whereClause += " AND " + QueryNestedCategory.CATEGNAME + " LIKE ?";
+                selectionArgs = new String[]{mCurFilter + "%"};
+            }
+            QueryNestedCategory repo = new QueryNestedCategory(getActivity());
+            Select query = new Select(repo.getAllColumns())
+                    .where(whereClause, selectionArgs)
+                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+
+            return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+        adapter.changeCursor(null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if (data == null) return;
+
+        if (loader.getId() == ID_LOADER_NESTEDCATEGORY) {
+            MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+            String highlightFilter = mCurFilter != null
+                    ? mCurFilter.replace("%", "")
+                    : "";
+            adapter.setHighlightFilter(highlightFilter);
+            adapter.changeCursor(data);
+
+            if (isResumed()) {
+                setListShown(true);
+                if (data.getCount() <= 0 && getFloatingActionButton() != null) {
+                    getFloatingActionButton().show(true);
+                }
+            } else {
+                setListShownNoAnimation(true);
+            }
+        }
+    }
+
     @Override
     public boolean onQueryTextChange(String newText) {
         // Called when the action bar search text has changed.  Update
@@ -220,152 +293,66 @@ public class NestedCategoryListFragment
         restartLoader();
         return true;
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-            outState.putLong(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
-            outState.putString(KEY_CUR_FILTER, mCurFilter);
-        }
-    }
-
-    // Data loader
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (id == ID_LOADER_CATEGORYSUB) {// update id selected
-            if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-                CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-//                mIdGroupChecked = adapter.getIdGroupChecked();
-            }
-            // clear arraylist and hashmap
-            mCategories.clear();
-
-            // load data
-            String whereClause = null;
-            String[] selectionArgs = null;
-            if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = QueryNestedCategory.CATEGNAME + " LIKE ?";
-                selectionArgs = new String[]{mCurFilter + "%"};
-            }
-            Select query = new Select(mQuery.getAllColumns())
-                    .where(whereClause, selectionArgs)
-                    .orderBy(QueryNestedCategory.CATEGNAME);
-
-            return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        if (loader.getId() == ID_LOADER_CATEGORYSUB) {// clear the data storage collections.
-            mCategories.clear();
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == ID_LOADER_CATEGORYSUB) {
-            setListAdapter(getAdapter(data));
-
-            if (isResumed()) {
-                setListShown(true);
-
-                boolean noData = data == null || data.getCount() <= 0;
-                if (noData && getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
-                }
-            } else {
-                setListShownNoAnimation(true);
-            }
-
-        }
-    }
-
     // Other
 
     @Override
     protected void setResult() {
         if (Intent.ACTION_PICK.equals(mAction)) {
-            if (getExpandableListAdapter() == null) return;
+            // Cursor that is already in the desired position, because positioned in the event onListItemClick
+            Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+            @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
 
-            Intent result = null;
+            sendResultToActivity(id, name);
 
-            if (getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-                CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                long categId = adapter.getIdGroupChecked();
-
-                if (categId == ExpandableListView.INVALID_POSITION) return;
-                for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
-                    if (mCategories.get(groupIndex).getId() == categId) {
-                        result = new Intent();
-                        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
-                        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
-                                mCategories.get(groupIndex).getName());
-                        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                        result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, "");
-                        break;
-                    }
-                }
-            }
-
-            if (result != null) {
-                result.putExtra(CategoryListActivity.KEY_REQUEST_ID, this.requestId);
-
-                getActivity().setResult(Activity.RESULT_OK, result);
-            } else {
-                getActivity().setResult(Activity.RESULT_CANCELED);
-            }
+            return;
         }
+
+        getActivity().setResult(CategoryListActivity.RESULT_CANCELED);
+
     }
+
+    private void sendResultToActivity(long id, String name) {
+        Intent result = new Intent();
+        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, id);
+        result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME, name);
+
+        result.putExtra(CategoryListActivity.KEY_REQUEST_ID, this.requestId);
+
+        getActivity().setResult(AppCompatActivity.RESULT_OK, result);
+
+        getActivity().finish();
+    }
+
 
     @Override
     public String getSubTitle() {
         return getString(R.string.categories);
     }
 
-    @Override
-    public void onFloatingActionButtonClickListener() {
-        showTypeSelectorDialog();
+    public void onFloatingActionButtonClicked() {
+        String search = !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "";
+        Category category = new Category();
+        category.setName(search);
+        showDialogEditCategoryName(SQLTypeTransaction.INSERT, category);
     }
 
-    @SuppressLint("Range")
-    public CategoryExpandableListAdapter getAdapter(Cursor data) {
-        if (data == null) return null;
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
 
-        mCategories.clear();
-        // create core and fixed string filter to highlight
-        Core core = new Core(getActivity().getApplicationContext());
-        String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
-
-        long key = -1;
-
-        // reset cursor if getting back on the fragment.
-        if (data.getPosition() > 0) {
-            data.moveToPosition(Constants.NOT_SET_INT);
-        }
-
-        while (data.moveToNext()) {
-            if (key != data.getInt(data.getColumnIndex(QueryNestedCategory.CATEGID))) {
-                // update key
-                key = data.getInt(data.getColumnIndex(QueryNestedCategory.CATEGID));
-                // create instance category
-                NestedCategoryEntity category = new NestedCategoryEntity();
-                category.loadFromCursor(data);
-                category.setCategoryName(core.highlight(filter, category.getCategoryName()).toString());
-
-                // add list
-                mCategories.add(category.asCategory());
+        // On select go back to the calling activity (if there is one)
+        if (getActivity().getCallingActivity() != null) {
+            Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+            if (cursor != null) {
+                if (cursor.moveToPosition(position)) {
+                    setResultAndFinish();
+                }
             }
-
+        } else {
+            // No calling activity, this is the independent tags view. Show context menu.
+            getActivity().openContextMenu(v);
         }
-
-        boolean showSelector = mAction.equals(Intent.ACTION_PICK);
-        CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-                mLayout, mCategories, showSelector, true);
-        return adapter;
     }
 
     // Private
@@ -374,7 +361,7 @@ public class NestedCategoryListFragment
      * Restart loader to view data
      */
     private void restartLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
+        getLoaderManager().restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
     }
 
     /**
@@ -512,7 +499,7 @@ public class NestedCategoryListFragment
         }
 
         // Fill categories list.
-        final List<NestedCategoryEntity> categories = mQuery.getNestedCategoryEntities(null);
+        final List<NestedCategoryEntity> categories = (new QueryNestedCategory(getActivity())).getNestedCategoryEntities(null);
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Long> categoryIds = new ArrayList<>();
@@ -581,58 +568,6 @@ public class NestedCategoryListFragment
                 .show();
     }
 
-    private void addListClickHandlers() {
-        // the list handlers available only when selecting a category.
-        if (mAction.equals(Intent.ACTION_PICK)) {
-
-            getExpandableListView().setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-                @Override
-                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                    if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
-                        CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-
-                        Category category = mCategories.get(groupPosition);
-
-                        adapter.setIdGroupChecked(category.getId());
-                        adapter.notifyDataSetChanged();
-
-                        setResultAndFinish();
-                    }
-                    return false;
-                }
-            });
-        }
-    }
-
-    /**
-     * Choose the item type: category / subcategory.
-     */
-    private void showTypeSelectorDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.choose_type)
-                .setSingleChoiceItems(R.array.category_type, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NestedCategoryEntity newCategory = new NestedCategoryEntity(-1, null, -1);
-                        if (which == 0) {
-                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());
-                        } else {
-                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, newCategory.asCategory());
-                        }
-
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(android.R.string.ok, null) // null listener to prevent dialog from automatically dismissing
-                .setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
     private void showSearchActivityFor(SearchParameters parameters) {
         Intent intent = new Intent(getActivity(), SearchActivity.class);

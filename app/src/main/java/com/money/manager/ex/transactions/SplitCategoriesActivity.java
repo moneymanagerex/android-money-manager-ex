@@ -129,7 +129,6 @@ public class SplitCategoriesActivity
 
         if (requestCode == REQUEST_PICK_CATEGORY) {
             long categoryId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-            long subcategoryId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
             int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET_INT);
 
             ISplitTransaction split = mAdapter.splitTransactions.get(location);
@@ -233,8 +232,8 @@ public class SplitCategoriesActivity
 
         this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
 
-        int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-        mAdapter.transactionType = TransactionTypes.values()[transactionType];
+        long transactionType = intent.getLongExtra(KEY_TRANSACTION_TYPE, 0);
+        mAdapter.transactionType = TransactionTypes.values()[(int)transactionType];
 
         mAdapter.currencyId = intent.getLongExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
