@@ -69,16 +69,8 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
 
 ### Nested Category
 
-> [!IMPORTANT]
-> Need to be activate in setting --> beavhiour --> Use nested category
-
 Money Manager Ex on Desktop can manage nested subcategory.
 From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
-This is a beta feature: you can enable this feature in Setting->Behaviour->Enable Nested Category
-
-#### Enable new Nested Category Management
-Nested Category need to be enabled in setting
-![image](https://github.com/user-attachments/assets/6f3e8719-426c-45c5-9014-07153b03a385)
 
 #### Avilability
 Nested category is used in:
