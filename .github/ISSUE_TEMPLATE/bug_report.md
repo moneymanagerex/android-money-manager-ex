@@ -30,7 +30,8 @@ If applicable, add screenshots to help explain your problem.
  - Synchronization: [e.g. 5min interval and Sync on Start]
  - Encrypted: [e.g. Yes with password]
  - Security: [e.g. Actived with passcode or fingerprint]
- - App Version: [e.g. 2024.01.01]
+ - App Version: [e.g. 2025.01.14]
 
 **Additional context**
 Add any other context about the problem here.
+Great if you can try [the latest beta version](https://play.google.com/apps/testing/com.money.manager.ex.android)
