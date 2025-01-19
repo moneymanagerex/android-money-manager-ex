@@ -31,8 +31,8 @@ Money Manager Ex for Android can be installed from the F-Droid or directly from 
    - Build the project and install the APK on your Android device.
 
 3. **From Google Play Store:** 
-Install directly from (Google play store)[https://play.google.com/store/apps/details?id=com.money.manager.ex.android].
-If you like to contribute you can also enroll as (beta tester)[https://play.google.com/apps/testing/com.money.manager.ex.android].
+Install directly from [Google play store](https://play.google.com/store/apps/details?id=com.money.manager.ex.android).
+If you like to contribute you can also enroll as [beta tester](https://play.google.com/apps/testing/com.money.manager.ex.android).
 
 ## Getting Started
 
