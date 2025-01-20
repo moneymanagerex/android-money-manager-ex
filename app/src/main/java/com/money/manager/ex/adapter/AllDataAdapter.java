@@ -81,9 +81,7 @@ public class AllDataAdapter
     // define cursor field
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
-        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY,
-//            SUBCATEGORY,
-            NOTES,
+        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS;
 
     private final LayoutInflater mInflater;
