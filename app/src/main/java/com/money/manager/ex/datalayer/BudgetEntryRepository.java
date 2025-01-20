@@ -24,10 +24,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
-import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
-import com.money.manager.ex.settings.AppSettings;
 
 import java.util.HashMap;
 
@@ -69,18 +67,11 @@ public class BudgetEntryRepository
     /**
      * Returns a string value which is used as a key in the budget entry thread cache
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    public static String getKeyForCategories(long categoryId, long subCategoryId) {
+    public static String getKeyForCategories(long categoryId) {
         // Wolfsolver - adapt budget for category & sub category.
-        if (categoryId < 0 ) {
-            return "_"+subCategoryId;
-        }
-        if ( subCategoryId < 0 ) {
-            return "_" + categoryId;
-        }
-        return "_" + subCategoryId;
+        return "_" + categoryId;
     }
 
     public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {
@@ -108,7 +99,7 @@ public class BudgetEntryRepository
             if (nestedCategory == null) {
                 continue;
             }
-            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getParentId(), nestedCategory.getCategoryId()), budgetEntry);
+            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getCategoryId()), budgetEntry);
         }
         cursor.close();
 

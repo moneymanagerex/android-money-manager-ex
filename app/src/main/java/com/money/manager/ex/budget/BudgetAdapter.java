@@ -130,12 +130,10 @@ public class BudgetAdapter
         }
 
         long categoryId;
-        long subCategoryId;
         categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
-        subCategoryId = -1;
 
         // Frequency
-        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
+        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
 
         TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
@@ -146,7 +144,7 @@ public class BudgetAdapter
 
         // Amount
         TextView amountTextView = view.findViewById(R.id.amountTextView);
-        double amount = getBudgetAmountFor(categoryId, subCategoryId);
+        double amount = getBudgetAmountFor(categoryId);
         if (amountTextView != null) {
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
@@ -240,11 +238,10 @@ public class BudgetAdapter
      * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
      *
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    private double getBudgetAmountFor(long categoryId, long subCategoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+    private double getBudgetAmountFor(long categoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
         return mBudgetEntries.containsKey(key)
                 ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
                 : 0;
@@ -254,11 +251,10 @@ public class BudgetAdapter
      * Returns the period of the budgeted amount or NONE if there isn't any.
      *
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId, long subCategoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
         return mBudgetEntries.containsKey(key)
                 ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
                 : BudgetPeriodEnum.NONE;
