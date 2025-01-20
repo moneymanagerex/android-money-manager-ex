@@ -11,15 +11,13 @@ WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcate
 SELECT     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
-    COALESCE( SCAT.categname, CAT.categname ) AS CategoryFullName,
-    COALESCE( SCAT.parentcategname, SCAT.catshortname, CAT.parentcategname, CAT.catshortname ) AS Category,
-    COALESCE( SCAT.catshortname, CAT.catshortname ) AS Subcategory,
+    COALESCE( SCAT.categname, CAT.categname, "" ) AS Category,  -- was FullCatgName
     cf.currency_symbol AS currency,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
-        ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 ) AS Amount,
+        ( CASE ifnull( st.CATEGID, -1) WHEN -1 THEN TX.TRANSAMOUNT ELSE st.splittransamount END) , 2 ) AS Amount,
     FROMACC.CurrencyID AS CurrencyID,
     FROMACC.AccountName AS AccountName,
     FROMACC.AccountID AS AccountID,
@@ -27,9 +25,8 @@ SELECT     TX.TransID AS ID,
     ifnull( TX.TOACCOUNTID, -1 ) AS ToAccountID,
     TX.ToTransAmount AS ToAmount,
     ifnull( TOACC.CURRENCYID, -1 ) AS ToCurrencyID,
-    ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
-    coalesce( SPARENTCAT.CATEGID, PARENTCAT.CATEGID, st.CategId, TX.CategId ) AS CATEGID,
-    -1 AS SubcategID,
+    ( CASE ifnull( ST.CATEGID, -1 ) WHEN -1 THEN 0 ELSE 1 END ) AS SPLITTED,
+    coalesce( st.CategId, TX.CategId, -1 ) AS CATEGID,
     ifnull( PAYEE.PayeeName, '') AS PayeeName,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
@@ -37,12 +34,12 @@ SELECT     TX.TransID AS ID,
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year,
     ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
-    ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) * ( CASE TX.CATEGID WHEN -1 THEN st.splittransamount ELSE TX.TRANSAMOUNT END) , 2 )
+    ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
+	  ( CASE ifnull( st.CATEGID, -1) WHEN -1 THEN TX.TRANSAMOUNT ELSE st.splittransamount END) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate,
 	Tags.Tags as TAGS
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
-    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID
@@ -50,7 +47,6 @@ FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN currencyformats_v1 cfTo ON cfTo.currencyid = TOACC.currencyid
     LEFT JOIN splittransactions_v1 st ON TX.transid = st.transid
     LEFT JOIN categories SCAT ON SCAT.CATEGID = st.CATEGID AND TX.TransId = st.transid
-    LEFT JOIN categories SPARENTCAT ON SPARENTCAT.CATEGID = SCAT.CATEGID
     LEFT JOIN (
     select REFID, count(*) as ATTACHMENTCOUNT
     from ATTACHMENT_V1

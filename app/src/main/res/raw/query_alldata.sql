@@ -10,8 +10,7 @@ SELECT
     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
-    CAT.categName AS Category, -- Wolfsolver set full category name
-    NULL AS Subcategory,       -- Wolfsolver ignore subcategory
+    CAT.categName AS Category,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
@@ -37,7 +36,6 @@ SELECT
 	Tags.Tags as TAGS
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
-    LEFT JOIN categories PARENTCAT ON PARENTCAT.CATEGID = CAT.PARENTID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
     LEFT JOIN ACCOUNTLIST_V1 FROMACC ON FROMACC.ACCOUNTID = TX.ACCOUNTID
     LEFT JOIN ACCOUNTLIST_V1 TOACC ON TOACC.ACCOUNTID = TX.TOACCOUNTID

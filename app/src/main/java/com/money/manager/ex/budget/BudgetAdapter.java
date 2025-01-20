@@ -130,12 +130,10 @@ public class BudgetAdapter
         }
 
         long categoryId;
-        long subCategoryId;
         categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
-        subCategoryId = -1;
 
         // Frequency
-        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
+        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
 
         TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
@@ -146,7 +144,7 @@ public class BudgetAdapter
 
         // Amount
         TextView amountTextView = view.findViewById(R.id.amountTextView);
-        double amount = getBudgetAmountFor(categoryId, subCategoryId);
+        double amount = getBudgetAmountFor(categoryId);
         if (amountTextView != null) {
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
@@ -240,11 +238,10 @@ public class BudgetAdapter
      * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
      *
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    private double getBudgetAmountFor(long categoryId, long subCategoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+    private double getBudgetAmountFor(long categoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
         return mBudgetEntries.containsKey(key)
                 ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
                 : 0;
@@ -254,11 +251,10 @@ public class BudgetAdapter
      * Returns the period of the budgeted amount or NONE if there isn't any.
      *
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId, long subCategoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
         return mBudgetEntries.containsKey(key)
                 ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
                 : BudgetPeriodEnum.NONE;
@@ -277,11 +273,6 @@ public class BudgetAdapter
 
     private double getAmountForCategory(long categoryId) {
         double total = loadTotalFor(QueryMobileData.CATEGID + "=" + categoryId);
-        return total;
-    }
-
-    private double getAmountForSubCategory(long subCategoryId) {
-        double total = loadTotalFor(QueryMobileData.SubcategID + "=" + subCategoryId);
         return total;
     }
 
@@ -328,7 +319,6 @@ public class BudgetAdapter
         //data to compose builder
         String[] projectionIn = new String[]{
                 "ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
-                QueryMobileData.SubcategID, QueryMobileData.Subcategory,
                 "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
@@ -338,8 +328,7 @@ public class BudgetAdapter
             selection += " AND " + whereClause;
         }
 
-        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " +
-                QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category;
 
         String having = null;
 //        if (!TextUtils.isEmpty(((CategoriesReportActivity) context).mFilter)) {
@@ -351,7 +340,7 @@ public class BudgetAdapter
 //            }
 //        }
 
-        String sortOrder = QueryMobileData.Category + ", " + QueryMobileData.Subcategory;
+        String sortOrder = QueryMobileData.Category;
         String limit = null;
 
         builder.setTables(mobileData.getSource());
@@ -369,8 +358,8 @@ public class BudgetAdapter
         MmxDate newDate = MmxDate.newDate();
         try {
             InfoService infoService = new InfoService(getContext());
-            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
             newDate.setYear((int) getYearFromBudgetName(budgetName));
             newDate.setDate(financialYearStartDay);
             newDate.setMonth(financialYearStartMonth);

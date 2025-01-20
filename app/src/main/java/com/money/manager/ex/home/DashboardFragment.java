@@ -220,13 +220,13 @@ public class DashboardFragment
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         QueryMobileData mobileData = new QueryMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category, QueryMobileData.SubcategID,
-                QueryMobileData.Subcategory, "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
+        String[] projectionIn = new String[]{"ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
+                "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
 
         String selection = QueryMobileData.Status + "<>'V' AND " + QueryMobileData.TransactionType + " IN ('Withdrawal')"
                 + " AND (julianday(date('now')) - julianday(" + QueryMobileData.Date + ") <= 30)";
 
-        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " + QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", ";
         String having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
         String sortOrder = "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
@@ -330,9 +330,6 @@ public class DashboardFragment
         while (cursor.moveToNext()) {
             // load values
             String category = "<b>" + cursor.getString(cursor.getColumnIndex(QueryMobileData.Category)) + "</b>";
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory)))) {
-                category += " : " + cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory));
-            }
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row

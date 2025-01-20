@@ -37,8 +37,6 @@ public class QueryMobileData
 	public static final String Month = "Month";
 	public static final String Day = "Day";
 	public static final String Category = "Category";
-	public static final String Subcategory = "Subcategory";
-	public static final String CategoryFullName = "CategoryFullName";
 	public static final String Amount = "Amount";
 	public static final String BaseConvRate = "BaseConvRate";
 	public static final String CURRENCYID = "CurrencyID";
@@ -50,7 +48,6 @@ public class QueryMobileData
 	public static final String ToCurrencyID = "ToCurrencyID";
 	public static final String Splitted  = "SPLITTED";
 	public static final String CATEGID = "CATEGID";
-	public static final String SubcategID = "SubcategID";
 	public static final String PAYEENAME = "PayeeName";
 	public static final String PAYEEID = "PayeeID";
 	public static final String TransactionNumber = "TransactionNumber";
@@ -74,9 +71,9 @@ public class QueryMobileData
 	@Override
 	public String[] getAllColumns() {
 		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day, ATTACHMENTCOUNT,
-				Category, Subcategory, CategoryFullName, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
+				Category, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
-                SubcategID, PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
+                PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
                 AmountBaseConvRate, TAGS };
 	}
 

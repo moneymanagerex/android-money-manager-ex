@@ -61,10 +61,6 @@ public class CategoriesReportAdapter
         String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
         if (!TextUtils.isEmpty(category)) {
             column1 = "<b>" + category + "</b>";
-            String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
-            if (!TextUtils.isEmpty(subCategory)) {
-                column1 += " : " + subCategory;
-            }
         } else {
             column1 = "<i>" + context.getString(R.string.empty_category);
         }

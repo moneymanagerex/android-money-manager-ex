@@ -131,8 +131,8 @@ public class MmxDateTimeUtils {
 // Financial year issue #1790
         } else if (period.equalsIgnoreCase(context.getString(R.string.current_fin_year))) {
             InfoService infoService = new InfoService(context);
-            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
-            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
             MmxDate toDay = new MmxDate();
             dateFrom = dateFrom.setDate(financialYearStartDay);
             dateTo = dateTo.setDate(financialYearStartDay);
