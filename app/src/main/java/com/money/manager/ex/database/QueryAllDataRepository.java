@@ -40,7 +40,7 @@ public class QueryAllDataRepository
     public String[] getAllColumns() {
         return new String[]{"ID AS _id", QueryAllData.ID, QueryAllData.TransactionType,
                 QueryAllData.Date, QueryAllData.Year, QueryAllData.Month, QueryAllData.Day, QueryAllData.ATTACHMENTCOUNT,
-                QueryAllData.Category, QueryAllData.Subcategory, QueryAllData.AMOUNT,
+                QueryAllData.Category, QueryAllData.AMOUNT,
             QueryAllData.BaseConvRate, QueryAllData.CURRENCYID, QueryAllData.AccountName,
             QueryAllData.ACCOUNTID,
             QueryAllData.SPLITTED,

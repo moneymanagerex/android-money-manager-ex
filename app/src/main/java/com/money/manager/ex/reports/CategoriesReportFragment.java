@@ -193,8 +193,7 @@ public class CategoriesReportFragment
             whereClause = "/** */";
         }
         // use token to replace criteria
-        whereClause += "(" + QueryMobileData.Category + " Like '%" + newText + "%' OR " +
-                QueryMobileData.Subcategory + " Like '%" + newText + "%')/** */";
+        whereClause += "(" + QueryMobileData.Category + " Like '%" + newText + "%')";
 
         //create arguments
         Bundle args = new Bundle();
@@ -213,8 +212,6 @@ public class CategoriesReportFragment
         String[] projectionIn = new String[]{
             "ID AS _id", // this does not fetch anything, unfortunately.
             QueryMobileData.CATEGID, QueryMobileData.Category,
-            QueryMobileData.SubcategID, QueryMobileData.Subcategory,
-                QueryMobileData.CategoryFullName,
             "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
@@ -224,9 +221,7 @@ public class CategoriesReportFragment
             selection += " AND " + whereClause;
         }
 
-        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " +
-                QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory
-                + ',' + QueryMobileData.CategoryFullName;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category;
 
         String having = null;
         if (!TextUtils.isEmpty(((CategoriesReportActivity) getActivity()).mFilter)) {
@@ -239,7 +234,7 @@ public class CategoriesReportFragment
         }
 
         // String sortOrder = QueryMobileData.Category + ", " + QueryMobileData.Subcategory;
-        String sortOrder = QueryMobileData.CategoryFullName;
+        String sortOrder = QueryMobileData.Category;
 
         //compose builder
         builder.setTables(mobileData.getSource());
@@ -300,9 +295,6 @@ public class CategoriesReportFragment
         while (cursor.moveToNext()) {
             ValuePieEntry item = new ValuePieEntry();
             String category = cursor.getString(cursor.getColumnIndex(QueryMobileData.Category));
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory)))) {
-                category += " : " + cursor.getString(cursor.getColumnIndex(QueryMobileData.Subcategory));
-            }
             // total
             double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
             // check if category is empty
@@ -356,14 +348,10 @@ public class CategoriesReportFragment
         ContentValues values = new ContentValues();
         DatabaseUtils.cursorLongToContentValues(cursor, QueryMobileData.CATEGID, values);
         DatabaseUtils.cursorStringToContentValues(cursor, QueryMobileData.Category, values);
-        DatabaseUtils.cursorLongToContentValues(cursor, QueryMobileData.SubcategID, values);
-        DatabaseUtils.cursorStringToContentValues(cursor, QueryMobileData.Subcategory, values);
 
         CategorySub result = new CategorySub();
         result.categId = values.getAsLong(QueryMobileData.CATEGID);
         result.categName = values.getAsString(QueryMobileData.Category);
-        result.subCategId = values.getAsLong(QueryMobileData.SubcategID);
-        result.subCategName = values.getAsString(QueryMobileData.Subcategory);
         return result;
     }
 

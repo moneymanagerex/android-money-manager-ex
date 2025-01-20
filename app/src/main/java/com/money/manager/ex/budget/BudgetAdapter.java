@@ -280,11 +280,6 @@ public class BudgetAdapter
         return total;
     }
 
-    private double getAmountForSubCategory(long subCategoryId) {
-        double total = loadTotalFor(QueryMobileData.SubcategID + "=" + subCategoryId);
-        return total;
-    }
-
     private double loadTotalFor(String where) {
         double total = 0;
 
@@ -328,7 +323,6 @@ public class BudgetAdapter
         //data to compose builder
         String[] projectionIn = new String[]{
                 "ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
-                QueryMobileData.SubcategID, QueryMobileData.Subcategory,
                 "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
         };
 
@@ -338,8 +332,7 @@ public class BudgetAdapter
             selection += " AND " + whereClause;
         }
 
-        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", " +
-                QueryMobileData.SubcategID + ", " + QueryMobileData.Subcategory;
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category;
 
         String having = null;
 //        if (!TextUtils.isEmpty(((CategoriesReportActivity) context).mFilter)) {
@@ -351,7 +344,7 @@ public class BudgetAdapter
 //            }
 //        }
 
-        String sortOrder = QueryMobileData.Category + ", " + QueryMobileData.Subcategory;
+        String sortOrder = QueryMobileData.Category;
         String limit = null;
 
         builder.setTables(mobileData.getSource());
@@ -369,8 +362,8 @@ public class BudgetAdapter
         MmxDate newDate = MmxDate.newDate();
         try {
             InfoService infoService = new InfoService(getContext());
-            int financialYearStartDay = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = new Integer(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
             newDate.setYear((int) getYearFromBudgetName(budgetName));
             newDate.setDate(financialYearStartDay);
             newDate.setMonth(financialYearStartMonth);

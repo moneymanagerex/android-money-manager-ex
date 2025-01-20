@@ -81,7 +81,9 @@ public class AllDataAdapter
     // define cursor field
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
-        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
+        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY,
+//            SUBCATEGORY,
+            NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS;
 
     private final LayoutInflater mInflater;
@@ -229,12 +231,9 @@ public class AllDataAdapter
         String categorySub;
         if (!isTransfer) {
             categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
-            // check sub category
-            if (!(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(SUBCATEGORY))))) {
-                categorySub += " : <i>" + cursor.getString(cursor.getColumnIndex(SUBCATEGORY)) + "</i>";
-            }
+            boolean isSplited = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED)) == 1;
             // write category/subcategory format html
-            if (!TextUtils.isEmpty(categorySub)) {
+            if (!isSplited) {
                 // Display category/sub-category.
                 categorySub = Html.fromHtml(categorySub).toString();
             } else {
@@ -355,7 +354,6 @@ public class AllDataAdapter
         TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
         ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.TOACCOUNTNAME;
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
-        SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
         ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
