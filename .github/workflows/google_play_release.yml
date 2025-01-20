@@ -1,0 +1,15 @@
+name: Upload Android Release to Play Store
+on:
+  workflow_dispatch: null
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON_GPLAY }}
+          packageName: com.money.manager.ex.android
+          releaseFiles: app/gplay/release/ammx-*-gplay-release.aab
+          track: beta
+          status: inProgress
