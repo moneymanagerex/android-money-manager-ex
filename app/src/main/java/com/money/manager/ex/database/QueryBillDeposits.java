@@ -58,6 +58,7 @@ public class QueryBillDeposits
     public static String AMOUNT = "AMOUNT";
     public static String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
     public static String TAGS = "TAGS";
+    public static String COLOR = "COLOR";
 
     // get all columns
     @Override

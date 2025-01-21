@@ -24,6 +24,7 @@ import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
@@ -164,5 +165,17 @@ public class InfoService
         }
 
         return result;
+    }
+
+    public int getColorNumberFromInfoKey(int n) {
+        if ( n <= 0 ) {
+            return Color.TRANSPARENT;
+        }
+        String colorList = getInfoValue(String.format("USER_COLOR%d",n),"");
+        if ( colorList.isEmpty() ) {
+            return  Color.TRANSPARENT;
+        }
+        String[] colors = colorList.split(",");
+        return Color.rgb(Integer.parseInt(colors[0]), Integer.parseInt(colors[1]), Integer.parseInt(colors[2]));
     }
 }

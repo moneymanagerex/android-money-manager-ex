@@ -36,6 +36,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -82,7 +83,7 @@ public class AllDataAdapter
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
-        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS;
+        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR;
 
     private final LayoutInflater mInflater;
     // hash map for group
@@ -118,6 +119,7 @@ public class AllDataAdapter
         holder.txtNotes = view.findViewById(R.id.textViewNotes);
         holder.txtBalance = view.findViewById(R.id.textViewBalance);
         holder.textTags = view.findViewById(R.id.textViewTags);
+        holder.viewColor = view.findViewById(R.id.viewColor);
 
         // set holder to view
         view.setTag(holder);
@@ -260,6 +262,16 @@ public class AllDataAdapter
 
         // Display balance account or days left.
         displayBalanceAmountOrDaysLeft(holder, cursor, context);
+
+        // color
+        int color = cursor.getInt(cursor.getColumnIndex(COLOR));
+        if (color > 0 ) {
+            InfoService infoService = new InfoService(context);
+            holder.viewColor.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
+            holder.viewColor.setVisibility(View.VISIBLE);
+        } else {
+            holder.viewColor.setVisibility(View.GONE);
+        }
     }
 
     public void clearPositionChecked() {
@@ -355,6 +367,7 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
         ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
+        COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {

@@ -57,6 +57,7 @@ public class QueryMobileData
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
 	public static final String TAGS = "TAGS";
+	public static final String COLOR = "Color";
 
 	public QueryMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
@@ -74,7 +75,7 @@ public class QueryMobileData
 				Category, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 ToAccountName, ToAccountID, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
                 PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
-                AmountBaseConvRate, TAGS };
+                AmountBaseConvRate, TAGS, COLOR };
 	}
 
     public void setWhere(String where) {
