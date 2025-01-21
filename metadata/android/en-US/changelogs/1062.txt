@@ -1,0 +1,6 @@
+* Last Used Payee: enable two tiers: account level or global level
+* Varius bug fix
+  * Handling the Financial Year Correctly
+  * Fix Order in Entity...
+  * set default if Currency not set
+  * and some code review
