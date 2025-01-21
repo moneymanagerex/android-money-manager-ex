@@ -232,6 +232,8 @@ public class FileStorageHelper {
             Timber.e(e, "File not found during upload: %s, URI: %s", metadata.localPath, remoteUri);
         } catch (IOException e) {
             Timber.e(e, "IO error during upload: %s", metadata.localPath);
+        } catch (Exception e) {
+            Timber.e(e, "Error during upload: %s", remoteUri);
         }
     }
 
