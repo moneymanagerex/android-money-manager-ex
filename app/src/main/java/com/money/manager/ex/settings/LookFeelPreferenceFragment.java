@@ -19,7 +19,6 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-import com.google.common.primitives.Ints;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
@@ -29,10 +28,10 @@ import com.money.manager.ex.view.RobotoView;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
+
 import timber.log.Timber;
 
 /**
@@ -53,60 +52,48 @@ public class LookFeelPreferenceFragment
 
         // Show Open accounts
 
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
-                findPreference(getString(R.string.pref_account_open_visible));
+        final CheckBoxPreference chkAccountOpen = findPreference(getString(R.string.pref_account_open_visible));
         if (chkAccountOpen != null) {
             // set initial value
-            Boolean showOpenAccounts = settings.getViewOpenAccounts();
+            boolean showOpenAccounts = settings.getViewOpenAccounts();
             chkAccountOpen.setChecked(showOpenAccounts);
 
-            chkAccountOpen.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    settings.setViewOpenAccounts((Boolean) newValue);
-                    MainActivity.setRestartActivity(true);
-                    return true;
-                }
+            chkAccountOpen.setOnPreferenceChangeListener((preference, newValue) -> {
+                settings.setViewOpenAccounts((Boolean) newValue);
+                MainActivity.setRestartActivity(true);
+                return true;
             });
         }
 
         // Show Favourite accounts
 
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference)
-                findPreference(getString(R.string.pref_account_fav_visible));
+        final CheckBoxPreference chkAccountFav = findPreference(getString(R.string.pref_account_fav_visible));
         if (chkAccountFav != null) {
             // set initial value
-            Boolean showOpenAccounts = settings.getViewFavouriteAccounts();
+            boolean showOpenAccounts = settings.getViewFavouriteAccounts();
             chkAccountFav.setChecked(showOpenAccounts);
 
-            chkAccountFav.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    settings.setViewFavouriteAccounts((Boolean) newValue);
-                    MainActivity.setRestartActivity(true);
-                    return true;
-                }
+            chkAccountFav.setOnPreferenceChangeListener((preference, newValue) -> {
+                settings.setViewFavouriteAccounts((Boolean) newValue);
+                MainActivity.setRestartActivity(true);
+                return true;
             });
         }
 
         // Hide reconciled amounts setting.
 
-        final SwitchPreferenceCompat chkHideReconciled = (SwitchPreferenceCompat) findPreference(getString(
+        final SwitchPreferenceCompat chkHideReconciled = findPreference(getString(
                 R.string.pref_transaction_hide_reconciled_amounts));
 
-        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                MainActivity.setRestartActivity(true);
-                return true;
-            }
-        };
         // Set the main activity to restart on change of any of the following preferences.
-        chkHideReconciled.setOnPreferenceChangeListener(listener);
+        chkHideReconciled.setOnPreferenceChangeListener((preference, newValue) -> {
+            MainActivity.setRestartActivity(true);
+            return true;
+        });
 
         // Show Transactions, period
 
-        final ListPreference lstShow = (ListPreference) findPreference(getString(
+        final ListPreference lstShow = findPreference(getString(
                 R.string.pref_show_transaction));
         if (lstShow != null) {
             // set the available values for selection.
@@ -122,50 +109,40 @@ public class LookFeelPreferenceFragment
             DefinedDateRange range = ranges.get(rangeName);
 
             lstShow.setSummary(range.getLocalizedName(getActivity()));
-            lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String newRangeKey = newValue.toString();
-                    DefinedDateRange range = ranges.getByName(newRangeKey);
+            lstShow.setOnPreferenceChangeListener((preference, newValue) -> {
+                String newRangeKey = newValue.toString();
+                DefinedDateRange range1 = ranges.getByName(newRangeKey);
 
-                    lstShow.setSummary(range.getLocalizedName(getActivity()));
-                    return true;
-                }
+                lstShow.setSummary(range1.getLocalizedName(getActivity()));
+                return true;
             });
         }
 
         // Font type
-
-        final ListPreference lstFont = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
+        final ListPreference lstFont = findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
         if (lstFont != null) {
-            lstFont.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Integer newInt = Ints.tryParse(newValue.toString());
-                    if (newInt != null) {
-                        Timber.d("Preference set: font = %s", newValue.toString());
+            lstFont.setOnPreferenceChangeListener((preference, newValue) -> {
+                Integer newInt = Integer.parseInt(newValue.toString());
+                if (newInt != null) {
+                    Timber.d("Preference set: font = %s", newValue.toString());
 
-                        RobotoView.setUserFont(newInt);
-                        return true;
-                    }
-                    return false;
+                    RobotoView.setUserFont(newInt);
+                    return true;
                 }
+                return false;
             });
         }
 
         // Font size
-
-        final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
+        final ListPreference lstFontSize = findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
         if (lstFontSize != null) {
-            lstFontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            lstFontSize.setSummary(lstFontSize.getValue());
+            lstFontSize.setOnPreferenceChangeListener((preference, newValue) -> {
+                Timber.d("Preference set: font = %s", newValue.toString());
+                lstFontSize.setSummary(newValue.toString());
 
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Timber.d("Preference set: font = %s", newValue.toString());
-
-                    RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
-                    return true;
-                }
+                RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
+                return true;
             });
         }
     }

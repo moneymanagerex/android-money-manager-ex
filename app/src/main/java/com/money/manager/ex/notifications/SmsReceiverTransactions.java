@@ -17,7 +17,6 @@
 
 /************** Change Logs *****************
  * Created by velmuruganc on 11/24/2017.
- *
  * Modification:
  * 2017/12/12 - velmuruganc :
  */
@@ -35,10 +34,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
@@ -60,7 +61,7 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -81,13 +82,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     /// Db setup
     public static MmxOpenHelper MmxHelper;
-    public static SQLiteDatabase db;
+    public static SupportSQLiteDatabase db;
 
     static String[] fromAccountDetails;
     static String[] toAccountDetails;
 
     public static String CHANNEL_ID = "SmsTransaction_NotificationChannel";
-    private static final int ID_NOTIFICATION = 0x000A;
+    private static final long ID_NOTIFICATION = 0x000A;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -99,8 +100,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         final PreferenceConstants prf_const = new PreferenceConstants();
 
         //App Settings
-        int baseCurencyID, fromCurrencyID, toCurrencyID;
-        int baseAccountID, fromAccountID, toAccountID;
+        long baseCurencyID, fromCurrencyID, toCurrencyID;
+        long baseAccountID, fromAccountID, toAccountID;
 
         String baseCurrencySymbl, fromAccCurrencySymbl, toAccCurrencySymbl;
         String baseAccountName, fromAccountName, toAccountName;
@@ -166,7 +167,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
 
                                 if (!transCategory[0].isEmpty()) {
-                                    mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                    mCommon.transactionEntity.setCategoryId(Long.parseLong(transCategory[0]));
                                 }
 
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
@@ -176,7 +177,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 String[] incomeCategory = getCategoryOrSubCategoryByName("Income");
 
                                 if (!incomeCategory[0].isEmpty()) {
-                                    mCommon.transactionEntity.setCategoryId(parseInt(incomeCategory[0]));
+                                    mCommon.transactionEntity.setCategoryId(Long.parseLong(incomeCategory[0]));
                                 }
 
                                 mCommon.transactionEntity.setTransactionType(TransactionTypes.Deposit);
@@ -199,7 +200,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
                             db = MmxHelper.getReadableDatabase();
 
-                            baseCurencyID = gen_settings.getBaseCurrencytId();
+                            baseCurencyID = gen_settings.getBaseCurrencyId();
                             baseAccountID = gen_settings.getDefaultAccountId();
                             baseAccountName = "";
                             fromAccountID = -1;
@@ -249,7 +250,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     mCommon.transactionEntity.setTransactionNumber(transRefNo);
                                 }
 
-                                int txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
+                                long txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
 
                                 //Update existing transaction
                                 if (txnId == 0) { //add new trnsaction
@@ -291,9 +292,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
                                         mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
 
-                                        mCommon.transactionEntity.setPayeeId(parseInt(transPayee[0]));
+                                        mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
-                                        mCommon.transactionEntity.setCategoryId(parseInt(transPayee[2]));
+                                        mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
@@ -333,7 +334,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                             String[] transCategory = getCategoryOrSubCategoryByName("Transfer");
                                             if (!transCategory[0].isEmpty()) {
-                                                mCommon.transactionEntity.setCategoryId(parseInt(transCategory[0]));
+                                                mCommon.transactionEntity.setCategoryId(Long.parseLong(transCategory[0]));
                                             }
 
                                             mCommon.transactionEntity.setNotes(mCommon.transactionEntity.getNotes() + "\n\n" + msgBody);
@@ -445,25 +446,32 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
-    private static String getCurrencySymbl(int currencyID)
+    private static String getCurrencySymbl(long currencyID)
     {
         //Get the currency sysmbl
         String currencySymbl = "";
         String[] reqCurrFields = {"CURRENCYID", "DECIMAL_POINT", "GROUP_SEPARATOR",  "CURRENCY_SYMBOL"};
 
-        try
-        {
-            Cursor currencyCursor = db.query("CURRENCYFORMATS_V1", reqCurrFields, "CURRENCYID = ?",
-                    new String[] { String.valueOf(currencyID)}, null, null, null );
+        String tableName = "CURRENCYFORMATS_V1";
+        String[] columns = reqCurrFields;
+        String selection = "CURRENCYID = ?";
+        String[] selectionArgs = new String[]{String.valueOf(currencyID)};
+        String sortOrder = null;
 
-            if(currencyCursor.moveToFirst()) {
+        SupportSQLiteQueryBuilder queryBuilder = SupportSQLiteQueryBuilder.builder(tableName);
+        SupportSQLiteQuery query = queryBuilder.selection(selection, selectionArgs)
+                .columns(columns)
+                .orderBy(sortOrder)
+                .create();
+        try {
+            Cursor currencyCursor = db.query(query);
+
+            if (currencyCursor.moveToFirst()) {
                 currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndex("CURRENCY_SYMBOL"));
             }
 
             currencyCursor.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Timber.e(e, "getCurrencySymbl");
         }
 
@@ -606,7 +614,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
-    private static String searchForAccountNum(String smsMsg, int mIndx)
+    private static String searchForAccountNum(String smsMsg, long mIndx)
     {
         String reqMatch =  "";
 
@@ -631,7 +639,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         2, 2, 1
                 };
 
-        int mFound;
+        long mFound;
 
         try
         {
@@ -672,13 +680,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String extractTransAmount(int indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
+    private static String extractTransAmount(long indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
     {
         String reqMatch = "";
         smsMsg = smsMsg.replace(",", "");
         String searchFor = "((\\s)?##SEARCH4CURRENCY##(.)?(\\s)?((\\d+)(\\.\\d+)?))";
         int[] getGroup = {5};
-        int indx = 0;
+        long indx = 0;
 
         //Handle multiple symbol for currency
         String[] searchCurrency;
@@ -811,7 +819,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
 
-                Cursor payeeCursor = db.rawQuery(sql, null);
+                Cursor payeeCursor = db.query(sql);
 
                 if(payeeCursor.moveToFirst())
                 {
@@ -834,9 +842,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return payeeDetails;
     }
 
-    private static Integer getTxnId(String refNumber, String transDate)
+    private static Long getTxnId(String refNumber, String transDate)
     {
-        int txnId = 0;
+        long txnId = 0;
 
         try
         {
@@ -849,7 +857,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "AND TRANSDATE ='" + transDate + "' " +
                                 "ORDER BY TRANSID LIMIT 1";
 
-                Cursor txnCursor = db.rawQuery(sql, null);
+                Cursor txnCursor = db.query(sql);
 
                 if(txnCursor.moveToFirst())
                 {
@@ -882,7 +890,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "WHERE s.SUBCATEGNAME = '" + searchName + "' " +
                                 "ORDER BY s.SUBCATEGID  LIMIT 1";
 
-                Cursor cCursor = db.rawQuery(sql, null);
+                Cursor cCursor = db.query(sql);
 
                 if(cCursor.moveToFirst())
                 {
@@ -898,7 +906,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     "WHERE c.CATEGNAME = '" + searchName + "' " +
                                     "ORDER BY c.CATEGID  LIMIT 1";
 
-                    cCursor = db.rawQuery(sql, null);
+                    cCursor = db.query(sql);
 
                     if(cCursor.moveToFirst())
                     {
@@ -941,7 +949,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     "ORDER BY A.ACCOUNTID " +
                                     "LIMIT 1";
 
-                    Cursor accountCursor = db.rawQuery(sql, null);
+                    Cursor accountCursor = db.query(sql);
 
                     if(accountCursor.moveToFirst())
                     {
@@ -1066,15 +1074,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Create the NotificationChannel
-                NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
-                nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
+            // Create the NotificationChannel
+            NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
+            nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
 
-                // Register the channel with the system; you can't change the importance
-                // or other notification behaviors after this
-                notificationManager.createNotificationChannel(nChannel);
-            }
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager.createNotificationChannel(nChannel);
 
             Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                     .setAutoCancel(true)

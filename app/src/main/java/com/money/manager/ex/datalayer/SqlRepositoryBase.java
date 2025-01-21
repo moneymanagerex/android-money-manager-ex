@@ -17,13 +17,13 @@
 
 package com.money.manager.ex.datalayer;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.domainmodel.EntityBase;
-import com.money.manager.ex.sync.SyncManager;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import timber.log.Timber;
 
@@ -42,13 +42,11 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     public String tableName;
 
     public long insert(ContentValues values) {
-        return database.insert(tableName, values);
+        return database.insert(tableName, CONFLICT_FAIL, values);
     }
 
-    public int delete(String where, String... whereArgs) {
-        int result = database.delete(tableName, where, whereArgs);
-
-        notifySync();
+    public long delete(String where, String... whereArgs) {
+        long result = database.delete(tableName, where, whereArgs);
 
         return result;
     }
@@ -105,27 +103,19 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         // remove "_id" from the values.
         values.remove("_id");
 
-        int updateResult = database.update(tableName,
+        long updateResult = database.update(tableName,
+                CONFLICT_FAIL,
                 values,
                 where,
                 selectionArgs
         );
 
         if (updateResult != 0) {
-            notifySync();
-
             result = true;
         } else {
             Timber.w("update failed, %s, values: %s", tableName, entity.contentValues);
         }
 
         return result;
-    }
-
-    /**
-     * Notify sync engine about the database update.
-     */
-    private void notifySync() {
-        new SyncManager(MmexApplication.getApp()).dataChanged();
     }
 }

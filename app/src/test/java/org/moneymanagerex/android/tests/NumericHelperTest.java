@@ -18,17 +18,14 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.NumericHelper;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -62,7 +59,7 @@ public class NumericHelperTest {
 
     @Test
     public void testTryParse() throws Exception {
-        int actual = _numericHelper.tryParse("64");
+        long actual = _numericHelper.tryParse("64");
         assertEquals(64, actual);
     }
 

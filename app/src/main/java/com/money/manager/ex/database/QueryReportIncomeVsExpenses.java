@@ -35,7 +35,7 @@ public class QueryReportIncomeVsExpenses
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ROWID AS _id",
+        return new String[]{"0 AS _id",
             IncomeVsExpenseReportEntity.YEAR,
             IncomeVsExpenseReportEntity.Month,
             IncomeVsExpenseReportEntity.Income,
@@ -44,7 +44,7 @@ public class QueryReportIncomeVsExpenses
     }
 
     private void initialize(Context context, String whereStatement) {
-        ViewMobileData mobileData = new ViewMobileData(context);
+        QueryMobileData mobileData = new QueryMobileData(context);
         // add where statement
         if(!TextUtils.isEmpty(whereStatement)) {
             mobileData.setWhere(whereStatement);
@@ -54,7 +54,7 @@ public class QueryReportIncomeVsExpenses
         // assemble the source statement by combining queries.
         String source = MmxFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
         source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileDataQuery);
-
+        source = "(" + source + ") xxxx";
         this.setSource(source);
     }
 }

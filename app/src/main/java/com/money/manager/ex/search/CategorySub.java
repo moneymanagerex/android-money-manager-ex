@@ -29,15 +29,15 @@ public class CategorySub implements Parcelable {
         // default constructor
     }
 
-    public int categId;
+    public long categId;
     public String categName;
-    public int subCategId;
+    public long subCategId;
     public String subCategName;
 
     protected CategorySub(Parcel in) {
-        categId = in.readInt();
+        categId = in.readLong();
         categName = in.readString();
-        subCategId = in.readInt();
+        subCategId = in.readLong();
         subCategName = in.readString();
     }
 
@@ -60,10 +60,10 @@ public class CategorySub implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(categId);
+        parcel.writeLong(categId);
         parcel.writeString(categName);
 
-        parcel.writeInt(subCategId);
+        parcel.writeLong(subCategId);
         parcel.writeString(subCategName);
     }
 }

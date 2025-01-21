@@ -38,10 +38,10 @@ public class SearchParameters {
     }
 
     // Account
-    public Integer accountId;
+    public Long accountId;
 
     // Currency
-    public Integer currencyId;
+    public Long currencyId;
 
     // Transaction Type
     public boolean deposit;
@@ -59,11 +59,18 @@ public class SearchParameters {
     public Date dateFrom;
     public Date dateTo;
 
-    public Integer payeeId = null;
+    public Long payeeId = null;
     public String payeeName;
 
+    // TODO Remove CategorySub and replace with Category
+    //  and with a flag for search in subcategory.
+    //  flag must be driven also by the UI
     public CategorySub category;
+    public boolean searchSubCategory = false;
 
     public String transactionNumber;
     public String notes;
+
+    public Long tagId;
+    public String tagName;
 }

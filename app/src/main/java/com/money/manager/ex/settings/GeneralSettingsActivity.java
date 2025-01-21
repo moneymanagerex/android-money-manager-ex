@@ -37,8 +37,4 @@ public class GeneralSettingsActivity
         setTitle(R.string.preferences_general);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        return super.onOptionsItemSelected(item);
-//    }
 }

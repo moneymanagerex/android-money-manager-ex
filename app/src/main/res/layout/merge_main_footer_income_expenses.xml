@@ -35,7 +35,9 @@
                 android:singleLine="true"
                 android:text="@string/income"
 
-                android:textColor="@color/md_green" />
+                android:textColor="@color/md_green"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewIncome"
@@ -45,9 +47,11 @@
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:gravity="right"
+                android:gravity="end"
                 android:singleLine="true"
-                android:textColor="@color/md_green" />
+                android:textColor="@color/md_green"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
 
             <ProgressBar
                 android:id="@+id/progressBarIncome"
@@ -60,7 +64,9 @@
                 android:layout_weight="1"
                 android:indeterminate="false"
                 android:paddingTop="2dp"
-                android:progressDrawable="@drawable/progress_income" />
+                android:progressDrawable="@drawable/progress_income"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
         </TableRow>
 
         <TableRow>
@@ -73,7 +79,9 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/expenses"
-                android:textColor="@color/md_red" />
+                android:textColor="@color/md_red"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewExpenses"
@@ -83,9 +91,11 @@
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:gravity="right"
+                android:gravity="end"
                 android:singleLine="true"
-                android:textColor="@color/md_red" />
+                android:textColor="@color/md_red"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
 
             <ProgressBar
                 android:id="@+id/progressBarExpenses"
@@ -98,7 +108,9 @@
                 android:layout_weight="1"
                 android:indeterminate="false"
                 android:paddingTop="2dp"
-                android:progressDrawable="@drawable/progress_expenses" />
+                android:progressDrawable="@drawable/progress_expenses"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
         </TableRow>
 
         <TableRow>
@@ -111,7 +123,9 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="@string/difference" />
+                android:text="@string/difference"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewDifference"
@@ -121,8 +135,10 @@
                 android:layout_column="1"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:gravity="right"
-                android:singleLine="true" />
+                android:gravity="end"
+                android:singleLine="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp" />
 
             <ProgressBar
                 android:id="@+id/progressBarDifference"
@@ -136,7 +152,9 @@
                 android:indeterminate="false"
                 android:paddingTop="2dp"
                 android:progressDrawable="@drawable/progress_expenses"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp" />
         </TableRow>
     </TableLayout>
 

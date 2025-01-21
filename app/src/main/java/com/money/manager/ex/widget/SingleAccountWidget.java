@@ -22,12 +22,9 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
@@ -47,19 +44,16 @@ import timber.log.Timber;
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
  */
-public class SingleAccountWidget
-    extends AppWidgetProvider {
-
+public class SingleAccountWidget extends AppWidgetProvider {
     // Static
-
     /**
      * Returns number of cells needed for given size of the widget.
      *
      * @param size Widget size in dp.
      * @return Size in number of cells.
      */
-    private static int getCellsForSize(int size) {
-        int n = 2;
+    private static long getCellsForSize(long size) {
+        long n = 2;
         while (70 * n - 30 < size) {
             ++n;
         }
@@ -67,22 +61,19 @@ public class SingleAccountWidget
     }
 
     // Dynamic
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            SingleAccountWidgetConfigureActivity.deleteTitlePref(context, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            SingleAccountWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
         }
     }
 
@@ -101,10 +92,10 @@ public class SingleAccountWidget
                                       AppWidgetManager appWidgetManager,
                                       int appWidgetId, Bundle newOptions) {
         // Here you can update your widget view
-        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-//        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-//        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        long minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+//        long maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+        long minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+//        long maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
         Timber.d("resized");
 
@@ -121,23 +112,19 @@ public class SingleAccountWidget
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
             // this call is available only on API 16!
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                int width, height;
-                Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+            int width, height;
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
-                width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+            width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
-                //AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
+            //AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
 //                width = info.minResizeWidth;
 //                height = info.minResizeHeight;
 //                width = info.minWidth;
 //                height = info.minHeight;
 
-                mRemoteViews = getRemoteViews(context, width, height);
-            } else {
-                mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
-            }
+            mRemoteViews = getRemoteViews(context, width, height);
         }
         return mRemoteViews;
     }
@@ -149,10 +136,10 @@ public class SingleAccountWidget
      * @param height current height
      * @return Remote views for the current widget.
      */
-    private RemoteViews getRemoteViews(Context context, int width, int height) {
+    private RemoteViews getRemoteViews(Context context, long width, long height) {
         // First find out rows and columns based on width provided.
-        //int rows = getCellsForSize(minHeight);
-        int columns = getCellsForSize(width);
+        //long rows = getCellsForSize(minHeight);
+        long columns = getCellsForSize(width);
 
         if (columns <= 2) {
             // Get 1 column widget remote view and return
@@ -171,10 +158,10 @@ public class SingleAccountWidget
 
         // todo: load the configured account id
         AppSettings settings = new AppSettings(context);
-        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
 //        if (StringUtils.isNotEmpty(defaultAccountId)) {
         if (defaultAccountId != null) {
-            String defaultAccountString = Integer.toString(defaultAccountId);
+            String defaultAccountString = Long.toString(defaultAccountId);
             displayAccountInfo(context, defaultAccountString, views);
         }
 
@@ -193,7 +180,7 @@ public class SingleAccountWidget
     }
 
     private void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
-        int accountId = Integer.parseInt(defaultAccountId);
+        long accountId = Long.parseLong(defaultAccountId);
         Account account = loadAccount(context, accountId);
         if (account == null) return;
 
@@ -224,7 +211,7 @@ public class SingleAccountWidget
 
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         views.setOnClickPendingIntent(R.id.newTransactionPanel, pendingIntent);
         // for now, the button requires a separate setup. try to find a way to propagate click.
@@ -247,14 +234,14 @@ public class SingleAccountWidget
         return summary;
     }
 
-    private Account loadAccount(Context context, int accountId) {
+    private Account loadAccount(Context context, long accountId) {
         AccountRepository repository = new AccountRepository(context);
         return repository.load(accountId);
     }
 
     private void initializeStartAppCommand(Context context, RemoteViews views) {
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         // Get the layout for the App Widget and attach an on-click listener to the button
 //        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.appwidget_provider_layout);
 
@@ -267,7 +254,7 @@ public class SingleAccountWidget
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         views.setOnClickPendingIntent(R.id.refreshDataPanel, pendingIntent);
     }

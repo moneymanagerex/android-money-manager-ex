@@ -17,13 +17,16 @@
 
 package com.money.manager.ex.core;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.TypedValue;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.Constants;
@@ -34,9 +37,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
@@ -48,23 +48,6 @@ import timber.log.Timber;
  * Various methods that assist with the UI Android requirements.
  */
 public class UIHelper {
-
-    /**
-     * Extracts the path to the selected database file.
-     * @param data Intent
-     * @return Path to the selected file.
-     */
-    public static String getSelectedFile(Intent data) {
-        if (data == null) return null;
-
-        String filePath = data.getData().getPath();
-
-        // check if the db file is valid
-        if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
-
-        return filePath;
-    }
-
     /*
         Instance
      */
@@ -91,26 +74,26 @@ public class UIHelper {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(final Subscriber<? super Boolean> subscriber) {
-                final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                        .title(title)
-                        .content(message)
-                        .positiveText(positiveTextId)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(title)
+                        .setMessage(message)
+                        .setPositiveButton(positiveTextId, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            public void onClick(DialogInterface dialog, int which) {
                                 subscriber.onNext(true);
                                 subscriber.onCompleted();
                             }
                         })
-                        .negativeText(negativeTextId)
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        .setNegativeButton(negativeTextId, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            public void onClick(DialogInterface dialog, int which) {
                                 subscriber.onNext(false);
                                 subscriber.onCompleted();
                             }
-                        })
-                        .build();
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
                 // cleaning up
                 subscriber.add(Subscriptions.create(new Action0() {
@@ -206,7 +189,7 @@ public class UIHelper {
         if (getContext().getTheme().resolveAttribute(attr, tv, true))
             return tv.resourceId;
         else
-            return Constants.NOT_SET;
+            return Constants.NOT_SET_INT;
     }
 
     public void showToast(int messageId) {

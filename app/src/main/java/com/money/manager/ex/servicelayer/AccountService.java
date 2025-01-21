@@ -66,7 +66,7 @@ public class AccountService
     }
 
     public Account createAccount(String name, AccountTypes accountType, AccountStatuses status,
-                                 boolean favourite, int currencyId) {
+                                 boolean favourite, long currencyId) {
         Account account = Account.create(name, accountType, status, favourite, currencyId);
 
         // update
@@ -107,7 +107,7 @@ public class AccountService
      * account initial balance.
      * @param isoDate date in ISO format
      */
-    public Money calculateBalanceOn(int accountId, String isoDate) {
+    public Money calculateBalanceOn(long accountId, String isoDate) {
         Money total = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -146,13 +146,13 @@ public class AccountService
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.Amount);
+                            tx.contentValues, QueryAllData.AMOUNT);
                     amount = tx.getAmount();
                     total = total.subtract(amount);
                     break;
                 case Deposit:
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.Amount);
+                            tx.contentValues, QueryAllData.AMOUNT);
                     amount = tx.getAmount();
                     total = total.add(amount);
                     break;
@@ -162,12 +162,12 @@ public class AccountService
 
                     if (tx.getAccountId().equals(accountId)) {
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                                tx.contentValues, QueryAllData.Amount);
+                                tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.subtract(amount);
                     } else {
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
-                                tx.contentValues, QueryAllData.Amount);
+                                tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.add(amount);
                     }
@@ -179,14 +179,14 @@ public class AccountService
         return total;
     }
 
-    public String getAccountCurrencyCode(int accountId) {
+    public String getAccountCurrencyCode(long accountId) {
         AccountRepository repo = new AccountRepository(getContext());
         Account account = (Account) repo.first(Account.class,
             new String[] {Account.CURRENCYID},
             Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(accountId)},
+            new String[] { Long.toString(accountId)},
             null);
-        int currencyId = account.getCurrencyId();
+        long currencyId = account.getCurrencyId();
 
         CurrencyService currencyService = new CurrencyService(getContext());
         return currencyService.getCurrency(currencyId).getCode();
@@ -238,7 +238,7 @@ public class AccountService
      * @param accountId id of the account
      * @return a boolean indicating if there are any transactions using this account.
      */
-    public boolean isAccountUsed(int accountId) {
+    public boolean isAccountUsed(long accountId) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         // transactional accounts
         where.addStatement(
@@ -249,13 +249,13 @@ public class AccountService
         );
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int txCount = repo.count(where.getWhere(), null);
+        long txCount = repo.count(where.getWhere(), null);
 
         // investment accounts
         StockRepository stockRepository = new StockRepository(getContext());
         where.clear();
         where.addStatement(StockFields.HELDAT, "=", accountId);
-        int investmentCount = stockRepository.count(where.getWhere(), null);
+        long investmentCount = stockRepository.count(where.getWhere(), null);
 
         return (txCount + investmentCount) > 0;
     }
@@ -294,8 +294,8 @@ public class AccountService
             MatrixCursor extras = new MatrixCursor(new String[]{"_id", Account.ACCOUNTID,
                     Account.ACCOUNTNAME, Account.INITIALBAL});
             String title = getContext().getString(R.string.all_accounts);
-            extras.addRow(new String[]{Integer.toString(Constants.NOT_SET),
-                    Integer.toString(Constants.NOT_SET), title, "0.0"});
+            extras.addRow(new String[]{Long.toString(Constants.NOT_SET),
+                    Long.toString(Constants.NOT_SET), title, "0.0"});
             Cursor[] cursors = {extras, cursor};
             finalCursor = new MergeCursor(cursors);
         }
@@ -332,7 +332,7 @@ public class AccountService
         return result;
     }
 
-    public Money loadInitialBalance(int accountId) {
+    public Money loadInitialBalance(long accountId) {
         AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.load(accountId);
         return account.getInitialBalance();

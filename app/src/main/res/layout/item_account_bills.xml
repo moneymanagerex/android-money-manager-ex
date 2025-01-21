@@ -45,7 +45,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="@string/account_name" />
+            android:text="@string/account_name"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +65,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:textStyle="bold"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewItemAccountTotalReconciled"
@@ -74,7 +78,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="0"
-            android:textSize="@dimen/mmx_text_view_size_micro"/>
+            android:textSize="@dimen/mmx_text_view_size_micro"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
 </LinearLayout>

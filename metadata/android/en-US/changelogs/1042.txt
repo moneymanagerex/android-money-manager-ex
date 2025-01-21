@@ -1,0 +1,5 @@
+- Fix currency creation bug
+- Extra confirm for force push/pull to/from remote
+- Update i18n on 2024-10-19 from Crowdin
+- Skip networking check for Phone storage as remote 
+- Make android compatible with both '' and 'N' for NONE transaction status

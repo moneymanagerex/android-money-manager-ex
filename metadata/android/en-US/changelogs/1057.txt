@@ -1,0 +1,4 @@
+- Database: Simplified database setup and upgraded Dagger to v2.54.
+- Widgets: Fixed permissions, improved formatting, and cleaned up code.
+- UI/UX: Adjusted Year text size and combined Attachment Status with Tags.
+- Bug Fix: Resolved crash for edge cases in file handling.

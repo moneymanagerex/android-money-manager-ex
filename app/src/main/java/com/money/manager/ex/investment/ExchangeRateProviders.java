@@ -40,7 +40,7 @@ public enum ExchangeRateProviders {
         return result;
     }
 
-    public static int indexOf(ExchangeRateProviders value) {
+    public static long indexOf(ExchangeRateProviders value) {
         ExchangeRateProviders[] providers = ExchangeRateProviders.values();
         int count = providers.length;
 

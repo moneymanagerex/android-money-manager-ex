@@ -17,6 +17,7 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,7 +30,6 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -54,8 +54,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -68,7 +66,6 @@ public class InvestmentTransactionEditActivity
 
     public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
-    public static final String DATEPICKER_TAG = "datepicker";
 
     public static final int REQUEST_NUM_SHARES = 1;
     public static final int REQUEST_PURCHASE_PRICE = 2;
@@ -77,7 +74,6 @@ public class InvestmentTransactionEditActivity
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
     private InvestmentTransactionViewHolder mViewHolder;
@@ -88,20 +84,19 @@ public class InvestmentTransactionEditActivity
         setContentView(R.layout.activity_investment_transaction_edit);
 
         MmexApplication.getApp().iocComponent.inject(this);
-        ButterKnife.bind(this);
 
         setDisplayHomeAsUpEnabled(true);
 
         // load account & currency
         Intent intent = getIntent();
         if (intent != null) {
-            int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
+            long accountId = intent.getLongExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
             if (accountId != Constants.NOT_SET) {
                 AccountRepository repository = new AccountRepository(this);
                 mAccount = repository.load(accountId);
             }
 
-            int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
+            long stockId = intent.getLongExtra(ARG_STOCK_ID, Constants.NOT_SET);
             if (stockId != Constants.NOT_SET) {
                 StockRepository repo = new StockRepository(this);
                 mStock = repo.load(stockId);
@@ -170,7 +165,7 @@ public class InvestmentTransactionEditActivity
         // Handle action bar item clicks here. The action bar will
         // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long id = item.getItemId();
 
         if (id == MenuHelper.save) {
             return onActionDoneClick();
@@ -181,6 +176,7 @@ public class InvestmentTransactionEditActivity
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         onActionCancelClick();
     }
 
@@ -205,11 +201,9 @@ public class InvestmentTransactionEditActivity
     }
 
     public void setDirty(boolean dirty) {
-        mDirty = dirty;
     }
 
-    @OnClick(R.id.numSharesView)
-    public void onNumSharesClick() {
+    private void onNumSharesClick() {
         Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
 
         Calculator.forActivity(this)
@@ -218,8 +212,7 @@ public class InvestmentTransactionEditActivity
                 .show(REQUEST_NUM_SHARES);
     }
 
-    @OnClick(R.id.purchasePriceView)
-    public void onPurchasePriceClick() {
+    private void onPurchasePriceClick() {
         if (mAccount == null) return;
 
         Calculator.forActivity(this)
@@ -229,16 +222,16 @@ public class InvestmentTransactionEditActivity
                 .show(REQUEST_PURCHASE_PRICE);
     }
 
-    @OnClick(R.id.commissionView)
-    public void onCommissionClick() {
+    private void onCommissionClick() {
+        if (mAccount == null) return;
+
         Calculator.forActivity(this)
                 .amount(mStock.getCommission())
                 .currency(mAccount.getCurrencyId())
                 .show(REQUEST_COMMISSION);
     }
 
-    @OnClick(R.id.currentPriceView)
-    public void onCurrentPriceClick() {
+    private void onCurrentPriceClick() {
         Calculator.forActivity(this)
                 .currency(mAccount.getCurrencyId())
                 .amount(mStock.getCurrentPrice())
@@ -300,6 +293,22 @@ public class InvestmentTransactionEditActivity
         mViewHolder.symbolEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_account_balance), null, null, null);
         mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
         mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
+
+        mViewHolder.numSharesView.setOnClickListener(view -> {
+            onNumSharesClick();
+        });
+
+        mViewHolder.purchasePriceView.setOnClickListener(view -> {
+            onPurchasePriceClick();
+        });
+
+        mViewHolder.commissionView.setOnClickListener(view -> {
+            onCommissionClick();
+        });
+
+        mViewHolder.currentPriceView.setOnClickListener(view -> {
+            onCurrentPriceClick();
+        });
     }
 
     /**
@@ -314,7 +323,7 @@ public class InvestmentTransactionEditActivity
         accountService.loadInvestmentAccountsToSpinner(viewHolder.accountSpinner, false);
 
 //        AccountRepository accountRepository = new AccountRepository(context);
-        final Integer accountId = mStock.getHeldAt();
+        final Long accountId = mStock.getHeldAt();
 //        if (accountId != null) {
 //            addMissingAccountToSelectors(accountRepository, accountId);
 //        }
@@ -343,29 +352,28 @@ public class InvestmentTransactionEditActivity
         // Purchase Date
 
         viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    setDirty(true);
-
-                    MmxDate dateTime = new MmxDate(year, monthOfYear, dayOfMonth);
-                    viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
-                }
-            };
-
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mStock.getPurchaseDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                        .setOnDateSetListener(listener)
-                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                if (new UIHelper(InvestmentTransactionEditActivity.this).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
+                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    setDirty(true);
+
+                    MmxDate dateTime = new MmxDate(year, month, dayOfMonth);
+                    viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        InvestmentTransactionEditActivity.this,
+                        listener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 

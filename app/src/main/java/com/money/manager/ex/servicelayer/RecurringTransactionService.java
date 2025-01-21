@@ -21,15 +21,21 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.recurring.transactions.Recurrence;
+import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.util.ArrayList;
@@ -43,22 +49,20 @@ public class RecurringTransactionService
     extends ServiceBase {
 
     public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
+    public long recurringTransactionId = Constants.NOT_SET;
+    private ScheduledTransactionRepository mRepository;
+    private RecurringTransaction mRecurringTransaction;
 
     public RecurringTransactionService(Context context){
         super(context);
 
     }
 
-    public RecurringTransactionService(int recurringTransactionId, Context context){
+    public RecurringTransactionService(long recurringTransactionId, Context context){
         super(context);
 
         this.recurringTransactionId = recurringTransactionId;
     }
-
-    public int recurringTransactionId = Constants.NOT_SET;
-
-    private RecurringTransactionRepository mRepository;
-    private RecurringTransaction mRecurringTransaction;
 
     /**
      * @param date    to start calculate
@@ -156,15 +160,15 @@ public class RecurringTransactionService
         return result.toDate();
     }
 
-    public RecurringTransactionRepository getRepository(){
+    public ScheduledTransactionRepository getRepository(){
         if (mRepository == null) {
-            mRepository = new RecurringTransactionRepository(getContext());
+            mRepository = new ScheduledTransactionRepository(getContext());
         }
 
         return mRepository;
     }
 
-    public RecurringTransaction load(int id) {
+    public RecurringTransaction load(long id) {
         return getRepository().load(id);
     }
 
@@ -174,9 +178,19 @@ public class RecurringTransactionService
      * If not, the recurring transaction is deleted.
      */
     public void moveNextOccurrence() {
+        // Issue #1969
+        // Try to prevent if recurringTransactionId is not filled
+        if (recurringTransactionId <= 0) {
+            return;
+        }
         RecurringTransaction tx = getRecurringTransaction();
         if (tx == null) {
-            throw new IllegalArgumentException("Recurring Transaction is not set!");
+            // Issue #1969 - See dump on gPlay. Some time recurringTransactionId is not found on the database.
+            //throw new IllegalArgumentException("Recurring Transaction is not set!");
+            try {
+             Toast.makeText(getContext(), "Not Found Transaction "+recurringTransactionId, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+            }
         }
 
         Integer recurrenceType = tx.getRecurrenceInt();
@@ -236,7 +250,7 @@ public class RecurringTransactionService
 
         // Save changes
 
-        RecurringTransactionRepository repo = getRepository();
+        ScheduledTransactionRepository repo = getRepository();
         boolean updated = repo.update(mRecurringTransaction);
         if (!updated) {
             new UIHelper(getContext()).showToast(R.string.error_saving_record);
@@ -256,9 +270,9 @@ public class RecurringTransactionService
         if(!result) return false;
 
         // Delete recurring transactions.
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
-        int deleteResult = repo.delete(this.recurringTransactionId);
-//        int deleteResult = getContext().getContentResolver().delete(repo.getUri(),
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
+        long deleteResult = repo.delete(this.recurringTransactionId);
+//        long deleteResult = getContext().getContentResolver().delete(repo.getUri(),
 //                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
         if (deleteResult == 0) {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -283,7 +297,7 @@ public class RecurringTransactionService
         Cursor cursor = this.getCursorForSplitTransactions();
         if (cursor == null) return false;
 
-        int existingRecords = cursor.getCount();
+        long existingRecords = cursor.getCount();
         cursor.close();
         if(existingRecords == 0) {
             return true;
@@ -291,9 +305,9 @@ public class RecurringTransactionService
 
         // delete them
 
-        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+        SplitScheduledCategoryRepository repo = new SplitScheduledCategoryRepository(getContext());
 
-        int deleteResult = getContext().getContentResolver().delete(
+        long deleteResult = getContext().getContentResolver().delete(
             repo.getUri(),
             SplitRecurringCategory.TRANSID + "=" + this.recurringTransactionId, null);
         if (deleteResult != 0) {
@@ -354,9 +368,9 @@ public class RecurringTransactionService
     private void decreasePaymentsLeft() {
         RecurringTransaction tx = getRecurringTransaction();
 
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Long paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            tx.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0L);
             return;
         }
 
@@ -370,9 +384,9 @@ public class RecurringTransactionService
     private void deleteIfLastPayment() {
         RecurringTransaction tx = getRecurringTransaction();
 
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Long paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            tx.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0L);
             return;
         }
 
@@ -386,7 +400,7 @@ public class RecurringTransactionService
      * @return cursor for all the related split transactions
      */
     private Cursor getCursorForSplitTransactions(){
-        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+        SplitScheduledCategoryRepository repo = new SplitScheduledCategoryRepository(getContext());
 
         return getContext().getContentResolver().query(
             repo.getUri(),
@@ -417,7 +431,7 @@ public class RecurringTransactionService
         RecurringTransaction tx = getRecurringTransaction();
         Recurrence repeatType = Recurrence.valueOf(tx.getRecurrenceInt());
         Date newPaymentDate = tx.getPaymentDate();
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Integer paymentsLeft = tx.getPaymentsLeft().intValue();
 
         // calculate the next payment date
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
@@ -432,7 +446,7 @@ public class RecurringTransactionService
 
         Recurrence repeats = Recurrence.valueOf(tx.getRecurrenceInt());
         Date dueDate = tx.getDueDate();
-        Integer paymentsLeft = tx.getPaymentsLeft();
+        Integer paymentsLeft = tx.getPaymentsLeft().intValue();
 
         Date newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 
@@ -440,4 +454,33 @@ public class RecurringTransactionService
             tx.setDueDate(newDueDate);
         }
     }
+
+    public AccountTransaction getAccountTransactionFromRecurring () {
+        ScheduledTransactionRepository scheduledRepo = new ScheduledTransactionRepository(this.getContext());
+        RecurringTransaction scheduledTrx = scheduledRepo.load(recurringTransactionId);
+        return (scheduledTrx == null) ? null : getAccountTransactionFromRecurring( scheduledTrx ) ;
+    }
+    public AccountTransaction getAccountTransactionFromRecurring (@NonNull RecurringTransaction scheduledTrx) {
+        AccountTransaction accountTrx = AccountTransaction.create();
+        accountTrx.setDate(scheduledTrx.getPaymentDate());
+        accountTrx.setAccountId(scheduledTrx.getAccountId());
+        accountTrx.setAccountToId(scheduledTrx.getToAccountId());
+        accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
+        accountTrx.setStatus(scheduledTrx.getStatus());
+        accountTrx.setAmount(scheduledTrx.getAmount());
+        accountTrx.setAmountTo(scheduledTrx.getAmountTo());
+        accountTrx.setPayeeId(scheduledTrx.getPayeeId());
+        accountTrx.setCategoryId(scheduledTrx.getCategoryId());
+        accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
+        accountTrx.setNotes(scheduledTrx.getNotes());
+
+        // tags
+        TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
+        accountTrx.setTags(
+                Taglink.clearCrossReference(
+                        taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
+
+        return  accountTrx;
+    }
+
 }

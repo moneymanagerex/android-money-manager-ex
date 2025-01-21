@@ -14,19 +14,33 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace "com.mikepenz.mmex_icon_font_typeface_library"
+    compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion 22
-        targetSdkVersion 31
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdk
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     buildTypes {
         debug {
 
@@ -48,8 +62,8 @@ dependencies {
 //    compile project(':library-core')
     implementation(
     //compile(
-            "com.mikepenz:iconics-core:3.0.3@aar",
-            "com.mikepenz:iconics-views:3.0.3@aar"
+            'com.mikepenz:iconics-core:3.2.5@aar',
+            'com.mikepenz:iconics-views:3.2.5@aar'
     )
     api 'androidx.appcompat:appcompat:1.6.1'
 }

@@ -21,10 +21,8 @@ import android.content.Context;
 
 import com.money.manager.ex.investment.ExchangeRateProviders;
 import com.money.manager.ex.investment.prices.IExchangeRateUpdater;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.prices.FixerService;
-import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
-import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
+import com.money.manager.ex.investment.prices.FreeCurrencyExchangeRateAPIService;
+
 import com.money.manager.ex.settings.InvestmentSettings;
 
 import java.util.Objects;
@@ -46,7 +44,7 @@ public class ExchangeRateUpdaterFactory {
         //                updater = new MorningstarPriceUpdater(context);
         //                break;
         if (Objects.requireNonNull(provider) == ExchangeRateProviders.Fixer) {
-            updater = new FixerService(context);
+            updater = new FreeCurrencyExchangeRateAPIService(context);
             //            case YahooYql:
 //                updater = new YqlSecurityPriceUpdaterRetrofit(context);
 //                break;
@@ -54,7 +52,7 @@ public class ExchangeRateUpdaterFactory {
 //                updater = new YahooCsvQuoteDownloaderRetrofit(context);
 //                break;
         } else {
-            updater = new FixerService(context);
+            updater = new FreeCurrencyExchangeRateAPIService(context);
         }
 
         return updater;

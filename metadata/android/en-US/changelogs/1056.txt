@@ -1,0 +1,5 @@
+- Refactor: clean up and format
+- Encryption: switch to SQLite3MC revert 
+- Fix crash: set default getRemoteFileModifiedDate
+- Fix ARN: handle java.lang.RuntimeException on fingerprint
+- Fix ANR: just enable light check

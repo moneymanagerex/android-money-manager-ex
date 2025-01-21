@@ -1,0 +1,4 @@
+• Enhanced Search: Added Unicode support for keyword highlighting.
+• Upgraded Requirements: Minimum Android version is now 10 (SDK 29).
+• Improved Performance: Updated key libraries and moved to Java 11.
+• New Translations: Added support for more languages.

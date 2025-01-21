@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.search;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -30,15 +31,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
@@ -55,6 +61,7 @@ import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.tag.TagActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -66,14 +73,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -92,13 +95,14 @@ public class SearchParametersFragment
     private EditText txtNotes;
     private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
+    private CheckBox cbxSearchSubCategory;
     // arrays list account name and account id
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
-    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<Long> mAccountIdList = new ArrayList<>();
     private List<Account> mAccountList;
     // currencies
     private ArrayList<String> mCurrencySymbolList = new ArrayList<>();
-    private final ArrayList<Integer> mCurrencyIdList = new ArrayList<>();
+    private final ArrayList<Long> mCurrencyIdList = new ArrayList<>();
     private List<Currency> mCurrencies;
     // status item and values
     private final ArrayList<String> mStatusItems = new ArrayList<>();
@@ -132,8 +136,6 @@ public class SearchParametersFragment
 
         View view = inflater.inflate(R.layout.search_parameters_fragment, container, false);
 
-        // bind events
-        ButterKnife.bind(this, view);
         // bind controls
         viewHolder = new SearchParametersViewHolder(view);
 
@@ -153,7 +155,7 @@ public class SearchParametersFragment
                     mAccountIdList.add(mAccountList.get(i).getId());
                 } else {
                     mAccountNameList.add("");
-                    mAccountIdList.add(AdapterView.INVALID_POSITION);
+                    mAccountIdList.add(Constants.NOT_SET); // honor -1 as invalid id : issue #1919
                 }
             }
         }
@@ -182,6 +184,12 @@ public class SearchParametersFragment
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCurrency.setAdapter(currencyAdapter);
 
+        //
+        viewHolder.txtDateFrom.setOnClickListener(v -> onDateFromClicked());
+        viewHolder.txtDateTo.setOnClickListener(v -> onDateToClicked());
+        viewHolder.txtAmountFrom.setOnClickListener(v -> onAmountFromClicked());
+        viewHolder.txtAmountTo.setOnClickListener(v -> onAmountToClicked());
+
         //Payee
         viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
@@ -189,6 +197,16 @@ public class SearchParametersFragment
                 Intent intent = new Intent(getContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent, RequestCodes.PAYEE);
+            }
+        });
+
+        //Payee
+        viewHolder.txtSelectTag.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TagActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, RequestCodes.TAG);
             }
         });
 
@@ -237,15 +255,19 @@ public class SearchParametersFragment
 
         switch (requestCode) {
             case RequestCodes.PAYEE:
-                viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                viewHolder.txtSelectPayee.setTag(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
+                break;
+            case RequestCodes.TAG:
+                viewHolder.txtSelectTag.setTag(data.getLongExtra(TagActivity.INTENT_RESULT_TAGID, Constants.NOT_SET));
+                viewHolder.txtSelectTag.setText(data.getStringExtra(TagActivity.INTENT_RESULT_TAGNAME));
                 break;
             case RequestCodes.CATEGORY:
                 //create class for store data
                 CategorySub categorySub = new CategorySub();
-                categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                categorySub.categId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                categorySub.subCategId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                 categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 //update into button
                 displayCategory(categorySub);
@@ -290,7 +312,7 @@ public class SearchParametersFragment
         // 'Reset' toolbar item
         inflater.inflate(R.menu.menu_clear, menu);
         MenuItem item = menu.findItem(R.id.clearMenuItem);
-        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
         super.onCreateOptionsMenu(menu,inflater);
@@ -327,7 +349,7 @@ public class SearchParametersFragment
         setSearchParameters(searchParameters);
 
         String where = assembleWhereClause();
-
+        Timber.d(this.getClass().getName(),"Where: \n"+where);
         return where;
     }
 
@@ -338,16 +360,15 @@ public class SearchParametersFragment
         displaySearchCriteria();
     }
 
-    @OnClick(R.id.textViewFromDate)
-    void onDateFromClicked() {
+    private void onDateFromClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateFrom);
 
-        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+        DatePickerDialog datePicker = new DatePickerDialog(
+                getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, month, dayOfMonth);
 
                         SearchParameters parameters = getSearchParameters();
                         parameters.dateFrom = date.toDate();
@@ -356,25 +377,24 @@ public class SearchParametersFragment
                         String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
                         viewHolder.txtDateFrom.setText(displayText);
                     }
-                })
-                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
-
-        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-            datePicker.setThemeDark();
-        }
-        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                },
+                currentValue.getYear(),
+                currentValue.getMonthOfYear(),
+                currentValue.getDayOfMonth()
+        );
+        // Optionally, you can customize the DatePickerDialog further if needed
+        datePicker.show();
     }
 
-    @OnClick(R.id.textViewToDate)
-    void onDateToClicked() {
+    private void onDateToClicked() {
         MmxDate currentValue = new MmxDate(getSearchParameters().dateTo);
 
-        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+        DatePickerDialog datePicker = new DatePickerDialog(
+                getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, month, dayOfMonth);
 
                         SearchParameters parameters = getSearchParameters();
                         parameters.dateTo = date.toDate();
@@ -383,35 +403,31 @@ public class SearchParametersFragment
                         String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
                         viewHolder.txtDateTo.setText(displayText);
                     }
-                })
-                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
-
-        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-            datePicker.setThemeDark();
-        }
-        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                },
+                currentValue.getYear(),
+                currentValue.getMonthOfYear(),
+                currentValue.getDayOfMonth()
+        );
+        // Optionally, you can customize the DatePickerDialog further if needed
+        datePicker.show();
     }
 
-    @OnClick(R.id.textViewFromAmount)
-    void onAmountFromClicked() {
+    private void onAmountFromClicked() {
         Money amount = getSearchParameters().amountFrom;
         if (amount == null) {
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity())
-                .amount(amount)
-                .show(RequestCodes.AMOUNT_FROM);
+        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_FROM);
     }
 
-    @OnClick(R.id.textViewToAmount)
-    void onAmountToClicked() {
+    private void onAmountToClicked() {
         Money amount = getSearchParameters().amountTo;
         if (amount == null) {
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forActivity(getActivity()).amount(amount).show(RequestCodes.AMOUNT_TO);
+        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_TO);
     }
 
     // Private
@@ -448,8 +464,10 @@ public class SearchParametersFragment
         }
 
         // status
-        if (!searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE)) {
-            where.addStatement(QueryAllData.Status, "=", searchParameters.status);
+        if (searchParameters.status != null &&
+                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) &&
+                !searchParameters.status.isEmpty()) {
+            where.addStatement(QueryAllData.STATUS, "=", searchParameters.status);
         }
 
         addAmountStatements(where, searchParameters);
@@ -466,31 +484,48 @@ public class SearchParametersFragment
         }
         // payee
         if (searchParameters.payeeId != null) {
-            where.addStatement(QueryAllData.PayeeID, " = ", searchParameters.payeeId);
+            where.addStatement(QueryAllData.PAYEEID, " = ", searchParameters.payeeId);
         }
         // category
-        if (searchParameters.category != null) {
-            CategorySub categorySub = searchParameters.category;
-            // Category. Also check the splits.
-            where.addStatement("(" +
-                    "(" + QueryAllData.CategID + "=" + categorySub.categId + ") " +
-                    " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
-                    " FROM " + SplitCategory.TABLE_NAME +
-                    " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
-                    ")" +
-                    ")");
 
-            // subcategory
-            if (categorySub.subCategId != Constants.NOT_SET) {
-                // Subcategory. Also check the splits.
-                where.addStatement("(" +
-                        "(" + QueryAllData.SubcategID + "=" + categorySub.subCategId + ") " +
-                        " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-                        " FROM " + SplitCategory.TABLE_NAME +
-                        " WHERE " + SplitCategory.TRANSID + " = " + QueryAllData.ID + ")" +
-                        ")" +
-                        ")");
+        if (searchParameters.category != null) {
+            // Issue 1532 need to check subcategory first
+            long categId;
+            if  ( searchParameters.category.subCategId > 0 ) {
+                categId = searchParameters.category.subCategId;
+            } else {
+                categId = searchParameters.category.categId;
             }
+            // Category. Also check the splits.
+
+            // todo add search in sub category if flag is on
+            if (searchParameters.searchSubCategory) {
+                // build where also for sub category
+                String whereSubCategory = null;
+                QueryNestedCategory subQuery = new QueryNestedCategory(this.getActivity());
+                List<NestedCategoryEntity> subCat = subQuery.getChildrenNestedCategoryEntities(categId);
+                for( NestedCategoryEntity child : subCat) {
+                    if (whereSubCategory != null ) {
+                        whereSubCategory += ", ";
+                    } else {
+                        whereSubCategory = "";
+                    }
+                    whereSubCategory += Long.toString(child.getCategoryId());
+                }
+                whereSubCategory = "(" + whereSubCategory + ")" ;
+
+                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
+                where.addStatement(
+                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") "
+                        );
+            } else {
+                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
+                where.addStatement(
+                        "(" + QueryAllData.CATEGID + "=" + categId + ") "
+                        );
+
+            }
+
         }
 
         // transaction number
@@ -500,6 +535,11 @@ public class SearchParametersFragment
         // notes
         if (!TextUtils.isEmpty(searchParameters.notes)) {
             where.addStatement(QueryAllData.Notes + " LIKE '%" + searchParameters.notes + "%'");
+        }
+
+        // tag
+        if (searchParameters.tagId != null) {
+            where.addStatement(QueryAllData.TAGS + " LIKE '%" + searchParameters.tagName +"%'");
         }
 
         return where.getWhere();
@@ -515,11 +555,11 @@ public class SearchParametersFragment
 
         // from amount
         if (searchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, " >= ", searchParameters.amountFrom);
+            where.addStatement(QueryAllData.AMOUNT, " >= ", searchParameters.amountFrom);
         }
         // to amount
         if (searchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, " <= ", searchParameters.amountTo);
+            where.addStatement(QueryAllData.AMOUNT, " <= ", searchParameters.amountTo);
         }
 
     }
@@ -535,11 +575,11 @@ public class SearchParametersFragment
 
         // from amount
         if (searchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, " >= ", lowerAmount);
+            where.addStatement(QueryAllData.AMOUNT, " >= ", lowerAmount);
         }
         // to amount
         if (searchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, " <= ", higherAmount);
+            where.addStatement(QueryAllData.AMOUNT, " <= ", higherAmount);
         }
     }
 
@@ -554,7 +594,7 @@ public class SearchParametersFragment
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
             if (selectedAccountPosition != AdapterView.INVALID_POSITION) {
-                int selectedAccountId = mAccountIdList.get(selectedAccountPosition);
+                long selectedAccountId = mAccountIdList.get(selectedAccountPosition);
                 if (selectedAccountId != Constants.NOT_SET) {
                     searchParameters.accountId = selectedAccountId;
                 }
@@ -565,7 +605,7 @@ public class SearchParametersFragment
         if (this.spinCurrency != null) {
             int position = spinCurrency.getSelectedItemPosition();
             if (position != AdapterView.INVALID_POSITION) {
-                int currencyId = mCurrencyIdList.get(position);
+                long currencyId = mCurrencyIdList.get(position);
                 if (currencyId != Constants.NOT_SET) {
                     searchParameters.currencyId = currencyId;
                 }
@@ -604,12 +644,18 @@ public class SearchParametersFragment
 //        }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
-            searchParameters.payeeId = Integer.parseInt(viewHolder.txtSelectPayee.getTag().toString());
+            searchParameters.payeeId = Long.parseLong(viewHolder.txtSelectPayee.getTag().toString());
             searchParameters.payeeName = viewHolder.txtSelectPayee.getText().toString();
+        }
+        // tag
+        if (viewHolder.txtSelectTag.getTag() != null) {
+            searchParameters.tagId = Long.parseLong(viewHolder.txtSelectTag.getTag().toString());
+            searchParameters.tagName = viewHolder.txtSelectTag.getText().toString();
         }
         // Category
         if (txtSelectCategory.getTag() != null) {
             searchParameters.category = (CategorySub) txtSelectCategory.getTag();
+            searchParameters.searchSubCategory = cbxSearchSubCategory.isChecked();
         }
         // Transaction number
         if (!TextUtils.isEmpty(viewHolder.txtTransNumber.getText())) {
@@ -624,9 +670,9 @@ public class SearchParametersFragment
     }
 
     private void displayAmountFrom() {
-            FormatUtilities format = new FormatUtilities(getActivity());
-            String displayAmount = format.formatWithLocale(getSearchParameters().amountFrom);
-            viewHolder.txtAmountFrom.setText(displayAmount);
+        FormatUtilities format = new FormatUtilities(getActivity());
+        String displayAmount = format.formatWithLocale(getSearchParameters().amountFrom);
+        viewHolder.txtAmountFrom.setText(displayAmount);
     }
 
     private void displayAmountTo() {
@@ -700,6 +746,9 @@ public class SearchParametersFragment
         viewHolder.txtSelectPayee.setText(searchParameters.payeeName);
         // Category
         displayCategory(searchParameters.category);
+        cbxSearchSubCategory.setEnabled(true);
+        cbxSearchSubCategory.setChecked(true);
+
         // Transaction number
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);
         // Notes
@@ -717,6 +766,7 @@ public class SearchParametersFragment
         cbxWithdrawal = view.findViewById(R.id.checkBoxWithdrawal);
 
         txtSelectCategory = view.findViewById(R.id.textViewSelectCategory);
+        cbxSearchSubCategory = view.findViewById(R.id.checkBoxSearchSubCategory);
 
         spinStatus = view.findViewById(R.id.spinnerStatus);
 

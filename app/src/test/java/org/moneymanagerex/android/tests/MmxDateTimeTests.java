@@ -19,15 +19,12 @@ package org.moneymanagerex.android.tests;
 
 import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 /**
  * Tests for conversion from JodaTime back to the standard Java date types.

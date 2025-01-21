@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,7 +25,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -33,30 +36,24 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.core.bundlers.PriceDownloadedEventBundler;
-import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
 
 import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import dagger.Lazy;
-import icepick.Icepick;
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -78,10 +75,10 @@ public class EditPriceDialog
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    @State int mAccountId;
-    @State String mUserDateFormat;
-    @State(PriceDownloadedEventBundler.class) PriceDownloadedEvent mPrice;
-    @State int mCurrencyId = Constants.NOT_SET;
+    long mAccountId;
+    String mUserDateFormat;
+    PriceDownloadedEvent mPrice;
+    long mCurrencyId = Constants.NOT_SET;
 
     private EditPriceViewHolder viewHolder;
     private final Lazy<FormatUtilities> formatUtilitiesLazy;
@@ -102,7 +99,10 @@ public class EditPriceDialog
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            mAccountId = savedInstanceState.getInt(ARG_ACCOUNT);
+            mUserDateFormat = savedInstanceState.getString(ARG_DATE);
+            mPrice = Parcels.unwrap(savedInstanceState.getParcelable(ARG_PRICE));
+            mCurrencyId = savedInstanceState.getInt(ARG_SYMBOL);
         } else {
             createNewEntity();
         }
@@ -136,8 +136,6 @@ public class EditPriceDialog
                     Toast.makeText(getContext(), getContext().getString(R.string.error_update_currency_exchange_rate),
                             Toast.LENGTH_SHORT).show();
                 }
-
-                new SyncManager(getContext()).dataChanged();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -171,7 +169,10 @@ public class EditPriceDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        Icepick.saveInstanceState(this, savedInstanceState);
+        savedInstanceState.putLong(ARG_ACCOUNT, mAccountId);
+        savedInstanceState.putString(ARG_DATE, mUserDateFormat);
+        savedInstanceState.putParcelable(ARG_PRICE, Parcels.wrap(mPrice));
+        savedInstanceState.putLong(ARG_SYMBOL, mCurrencyId);
     }
 
     @Subscribe
@@ -208,23 +209,22 @@ public class EditPriceDialog
             public void onClick(View v) {
                 MmxDate priceDate = new MmxDate(mPrice.date);
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                        .setOnDateSetListener(listener)
-                        .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear(), priceDate.getDayOfMonth());
-                if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(((FragmentActivity) getContext()).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
-            }
-
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    mPrice.date = new MmxDate(year, monthOfYear, dayOfMonth).toDate();
+                final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                    mPrice.date = new MmxDate(year, month, dayOfMonth).toDate();
                     showDate();
-                }
-            };
+                };
+
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        getActivity(),
+                        listener,
+                        priceDate.getYear(),
+                        priceDate.getMonthOfYear(),
+                        priceDate.getDayOfMonth()
+                );
+
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
+            }
         };
         viewHolder.dateTextView.setOnClickListener(dateClickListener);
 

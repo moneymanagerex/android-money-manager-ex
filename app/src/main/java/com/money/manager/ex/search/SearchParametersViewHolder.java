@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,24 +24,31 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoCheckBox;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * View holder for Search Parameters view.
  */
 public class SearchParametersViewHolder {
 
-    public SearchParametersViewHolder(View view) {
-        ButterKnife.bind(this, view);
-    }
+    public TextView txtDateFrom;
+    public RobotoCheckBox cbxDeposit;
+    public TextView txtAmountFrom;
+    public TextView txtAmountTo;
+    public EditText txtTransNumber;
+    public TextView txtSelectPayee;
+    public TextView txtDateTo;
+    public EditText edtNotes;
+    public TextView txtSelectTag;
 
-    @BindView(R.id.textViewFromDate) TextView txtDateFrom;
-    @BindView(R.id.checkBoxDeposit) RobotoCheckBox cbxDeposit;
-    @BindView(R.id.textViewFromAmount) TextView txtAmountFrom;
-    @BindView(R.id.textViewToAmount) TextView txtAmountTo;
-    @BindView(R.id.editTextTransNumber) EditText txtTransNumber;
-    @BindView(R.id.textViewSelectPayee) TextView txtSelectPayee;
-    @BindView(R.id.textViewToDate) TextView txtDateTo;
-    @BindView(R.id.editTextNotes) EditText edtNotes;
+    public SearchParametersViewHolder(View view) {
+        // Initialize views using findViewById
+        txtDateFrom = view.findViewById(R.id.textViewFromDate);
+        cbxDeposit = view.findViewById(R.id.checkBoxDeposit);
+        txtAmountFrom = view.findViewById(R.id.textViewFromAmount);
+        txtAmountTo = view.findViewById(R.id.textViewToAmount);
+        txtTransNumber = view.findViewById(R.id.editTextTransNumber);
+        txtSelectPayee = view.findViewById(R.id.textViewSelectPayee);
+        txtDateTo = view.findViewById(R.id.textViewToDate);
+        edtNotes = view.findViewById(R.id.editTextNotes);
+        txtSelectTag = view.findViewById(R.id.textViewSelectTag);
+    }
 }

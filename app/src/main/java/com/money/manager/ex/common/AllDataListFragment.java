@@ -17,15 +17,14 @@
 package com.money.manager.ex.common;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -42,40 +41,39 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.ActionBar;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.AllDataAdapter;
+import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
+import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.R;
-import com.money.manager.ex.servicelayer.qif.QifExport;
-import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
-import com.money.manager.ex.core.ExportToCsvFile;
-import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.servicelayer.qif.QifExport;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -90,7 +88,7 @@ public class AllDataListFragment
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
 
-    public static AllDataListFragment newInstance(int accountId) {
+    public static AllDataListFragment newInstance(long accountId) {
         return newInstance(accountId, true);
     }
 
@@ -100,11 +98,11 @@ public class AllDataListFragment
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataListFragment
      */
-    public static AllDataListFragment newInstance(int accountId, boolean showFloatingButton) {
+    public static AllDataListFragment newInstance(long accountId, boolean showFloatingButton) {
         AllDataListFragment fragment = new AllDataListFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putLong(ARG_ACCOUNT_ID, accountId);
         args.putBoolean(ARG_SHOW_FLOATING_BUTTON, showFloatingButton);
         fragment.setArguments(args);
 
@@ -116,7 +114,7 @@ public class AllDataListFragment
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    public int AccountId = Constants.NOT_SET;
+    public long accountId = Constants.NOT_SET;
     private LinearLayout footer;
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
@@ -135,7 +133,7 @@ public class AllDataListFragment
         setListShown(false);
 
         // Read arguments
-        this.AccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+        this.accountId = getArguments().getLong(ARG_ACCOUNT_ID);
 
         // Read header indicator directly from the activity.
         // todo: make this a parameter or a property.
@@ -146,7 +144,7 @@ public class AllDataListFragment
 
         // create adapter for data.
         AllDataAdapter adapter = new AllDataAdapter(getActivity(), null, TypeCursor.ALLDATA);
-        adapter.setAccountId(this.AccountId);
+        adapter.setAccountId(this.accountId);
         adapter.setShowAccountName(isShownHeader());
         adapter.setShowBalanceAmount(isShownBalance());
 
@@ -164,7 +162,7 @@ public class AllDataListFragment
                 if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                     Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                     if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startEditAccountTransactionActivity(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                        startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                     }
                 }
             }
@@ -241,7 +239,13 @@ public class AllDataListFragment
                 sort = args.getString(KEY_ARGUMENTS_SORT);
             }
             // create loader
-            QueryAllData allData = new QueryAllData(getActivity());
+            Dataset allData;
+            if (args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
+                // coming from report, use mobile data
+                allData = new QueryMobileData(getActivity());
+            } else {
+                allData = new QueryAllData(getActivity());
+            }
             Select query = new Select(allData.getAllColumns())
                     .where(selection)
                     .orderBy(sort);
@@ -361,7 +365,7 @@ public class AllDataListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
+        long itemId = item.getItemId();
 
         if (itemId == R.id.menu_export_to_csv) {
             exportDataToCSVFile();
@@ -406,20 +410,20 @@ public class AllDataListFragment
 
     @Override
     public void onDeleteClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
 
         showDialogDeleteCheckingAccount(transIds);
     }
 
     @Override
     public void onChangeTransactionStatusClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
         changeTransactionStatus(transIds);
     }
 
     @Override
     public void onTransactionStatusClicked(String status) {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
 
         if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
             ((AllDataAdapter) getListAdapter()).clearPositionChecked();
@@ -434,7 +438,7 @@ public class AllDataListFragment
 
     @Override
     public void onDuplicateTransactionsClicked() {
-        ArrayList<Integer> transIds = getTransactionIds();
+        ArrayList<Long> transIds = getTransactionIds();
         showDuplicateTransactionView(transIds);
     }
 
@@ -453,7 +457,7 @@ public class AllDataListFragment
 
     // Methods
 
-    public void displayRunningBalances(HashMap<Integer, Money> balances) {
+    public void displayRunningBalances(HashMap<Long, Money> balances) {
         AllDataAdapter adapter = getAllDataAdapter();
         if(adapter == null) return;
 
@@ -524,7 +528,7 @@ public class AllDataListFragment
         // set the account id in the data adapter
         AllDataAdapter adapter = getAllDataAdapter();
         if (adapter != null) {
-            adapter.setAccountId(this.AccountId);
+            adapter.setAccountId(this.accountId);
             adapter.setBalances(null);
         }
 
@@ -621,35 +625,55 @@ public class AllDataListFragment
         int originalPosition = cursor.getPosition();
         AllDataAdapter adapter = getAllDataAdapter();
         CurrencyService currencyService = new CurrencyService(getContext());
-        int baseCurrencyId = currencyService.getBaseCurrencyId();
+        long baseCurrencyId = currencyService.getBaseCurrencyId();
         ContentValues values = new ContentValues();
 
-        int currencyId;
+        long searchForAccount = accountId;
+
+        long currencyId;
         Money amount;
         Money converted;
         String transType;
         TransactionTypes transactionType;
 
-        cursor.moveToPosition(Constants.NOT_SET);
+        cursor.moveToPosition(Constants.NOT_SET_INT);
 
         while(cursor.moveToNext()) {
             values.clear();
 
             // Read needed data.
             DatabaseUtils.cursorStringToContentValues(cursor, adapter.TRANSACTIONTYPE, values);
-            DatabaseUtils.cursorIntToContentValues(cursor, adapter.CURRENCYID, values);
-            DatabaseUtils.cursorIntToContentValues(cursor, adapter.TOCURRENCYID, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.CURRENCYID, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.TOCURRENCYID, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
+
+            DatabaseUtils.cursorStringToContentValues(cursor, adapter.STATUS, values);
+            if ( values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
+                // void. skip
+                continue;
+            }
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.ACCOUNTID, values);
 
             transType = values.getAsString(adapter.TRANSACTIONTYPE);
             transactionType = TransactionTypes.valueOf(transType);
 
             if (transactionType.equals(TransactionTypes.Transfer)) {
-                currencyId = values.getAsInteger(adapter.TOCURRENCYID);
-                amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
+                currencyId = values.getAsLong(adapter.TOCURRENCYID);
+                // Issue 2054 adapt sign based on current account and direction
+                // check mArguments(Account)
+                if ( searchForAccount == Constants.NOT_SET ) {
+                    // ignore transaction since this as + and -
+                    continue;
+                } else if ( searchForAccount == values.getAsLong(adapter.ACCOUNTID) ) {
+                    // source
+                    amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
+                } else {
+                    // Dest
+                    amount = MoneyFactory.fromString(values.getAsString(adapter.TOAMOUNT));
+                }
             } else {
-                currencyId = values.getAsInteger(adapter.CURRENCYID);
+                currencyId = values.getAsLong(adapter.CURRENCYID);
                 amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
             }
 
@@ -662,15 +686,11 @@ public class AllDataListFragment
         return total;
     }
 
-    private boolean setStatusCheckingAccount(int[] transId, String status) {
+    private boolean setStatusCheckingAccount(long[] transId, String status) {
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
-        SyncManager sync = new SyncManager(getActivity());
-        // Pause synchronization while bulk processing.
-        sync.disableAutoUpload();
-
-        for (int id : transId) {
+        for (long id : transId) {
             // content value for updates
             ContentValues values = new ContentValues();
             // set new state
@@ -679,23 +699,16 @@ public class AllDataListFragment
             AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
 
             // update
-            int updateResult = getActivity().getContentResolver().update(repo.getUri(),
+            long updateResult = getActivity().getContentResolver().update(repo.getUri(),
                     values,
                     AccountTransaction.TRANSID + "=?",
-                    new String[]{Integer.toString(id)});
+                    new String[]{Long.toString(id)});
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
-
-                sync.enableAutoUpload();
-                sync.dataChanged();
 
                 return false;
             }
         }
-
-        // Now notify Dropbox about modifications.
-        sync.enableAutoUpload();
-        sync.dataChanged();
 
         return true;
     }
@@ -703,85 +716,64 @@ public class AllDataListFragment
     /**
      * @param transactionIds primary key of transaction
      */
-    private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
+    private void showDialogDeleteCheckingAccount(final ArrayList<Long> transactionIds) {
         // create alert binaryDialog and set title and message
-        MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_transaction)
-            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-            .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
-                    transactionIds.size(), transactionIds.size()));
-//        alert.setIcon(R.drawable.ic_action_warning_light);
+        UIHelper ui = new UIHelper(getActivity());
 
-        // set listener button positive
-        alertDialog.positiveText(android.R.string.ok);
-        alertDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                SyncManager sync = new SyncManager(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.delete_transaction)
+                .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
+                .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+                        transactionIds.size(), transactionIds.size()))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                // Pause sync notification while bulk processing.
-                sync.disableAutoUpload();
+                        for (long transactionId : transactionIds) {
+                            // First delete any splits. See if there are any split records.
+                            SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
+                            Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                                    SplitCategory.TRANSID + "=" + transactionId,
+                                    null, SplitCategory.SPLITTRANSID);
+                            long splitCount = curSplit.getCount();
+                            curSplit.close();
 
-                for (int transactionId : transactionIds) {
-                    // First delete any splits. See if there are any split records.
-                    SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
-                    Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                            SplitCategory.TRANSID + "=" + transactionId,
-                            null, SplitCategory.SPLITTRANSID);
-                    int splitCount = curSplit.getCount();
-                    curSplit.close();
+                            if (splitCount > 0) {
+                                long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                                        SplitCategory.TRANSID + "=?",
+                                        new String[]{Long.toString(transactionId)});
+                                if (deleteResult != splitCount) {
+                                    Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
-                    if (splitCount > 0) {
-                        int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                                SplitCategory.TRANSID + "=?",
-                                new String[]{Integer.toString(transactionId)});
-                        if (deleteResult != splitCount) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
 
-                            // Now notify Dropbox about modifications.
-                            sync.enableAutoUpload();
-                            sync.dataChanged();
+                            // Delete the transaction.
 
-                            return;
+                            AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
+                            long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                                    AccountTransaction.TRANSID + "=?",
+                                    new String[]{Long.toString(transactionId)});
+                            if (deleteResult == 0) {
+                                Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                                return;
+                            }
                         }
+
+                        // restart loader
+                        loadData();
                     }
-
-                    // Delete the transaction.
-
-                    AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
-
-                    int deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
-                            AccountTransaction.TRANSID + "=?",
-                            new String[]{Integer.toString(transactionId)});
-                    if (deleteResult == 0) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-
-                        // Now notify Dropbox about modifications.
-                        sync.enableAutoUpload();
-                        sync.dataChanged();
-
-                        return;
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
-                }
-
-                // Now notify Dropbox about modifications.
-                sync.enableAutoUpload();
-                sync.dataChanged();
-
-                // restart loader
-                loadData();
-            }
-        });
-        // set listener negative button
-        alertDialog.negativeText(android.R.string.cancel);
-        alertDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.build().show();
+                })
+                .show();
     }
 
     /**
@@ -789,7 +781,7 @@ public class AllDataListFragment
      *
      * @param transId null set if you want to do a new transaction, or transaction id
      */
-    private void startEditAccountTransactionActivity(Integer transId) {
+    private void startEditAccountTransactionActivity(Long transId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
 
@@ -801,7 +793,7 @@ public class AllDataListFragment
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
-            intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.AccountId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.accountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
@@ -826,7 +818,7 @@ public class AllDataListFragment
         // Clear selection first.
         adapter.clearPositionChecked();
 
-        int numRecords = adapter.getCount();
+        long numRecords = adapter.getCount();
         for (int i = 0; i < numRecords; i++) {
             adapter.setPositionChecked(i, true);
         }
@@ -834,8 +826,8 @@ public class AllDataListFragment
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<Integer> getTransactionIds(){
-        final ArrayList<Integer> transIds = new ArrayList<>();
+    private ArrayList<Long> getTransactionIds(){
+        final ArrayList<Long> transIds = new ArrayList<>();
 
         AllDataAdapter adapter = getAllDataAdapter();
         if(adapter == null) return transIds;
@@ -846,8 +838,8 @@ public class AllDataListFragment
             // List view only contains the one that was tapped, ignoring the Select All.
 //                SparseBooleanArray positionChecked = getListView().getCheckedItemPositions();
             SparseBooleanArray positionChecked = adapter.getPositionsChecked();
-//                int checkedItemsCount = getListView().getCheckedItemCount();
-            int checkedItemsCount = positionChecked.size();
+//                long checkedItemsCount = getListView().getCheckedItemCount();
+            long checkedItemsCount = positionChecked.size();
 
             for (int i = 0; i < checkedItemsCount; i++) {
                 int position = positionChecked.keyAt(i);
@@ -855,7 +847,7 @@ public class AllDataListFragment
 //                    if (getListHeader() != null)
 //                        position--;
                 if (cursor.moveToPosition(position)) {
-                    transIds.add(cursor.getInt(cursor.getColumnIndex(QueryAllData.ID)));
+                    transIds.add(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
             }
         }
@@ -863,7 +855,7 @@ public class AllDataListFragment
         return transIds;
     }
 
-    private void changeTransactionStatus(final ArrayList<Integer> transIds){
+    private void changeTransactionStatus(final ArrayList<Long> transIds){
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
 //        final Core core = new Core(getActivity().getApplicationContext());
         final Boolean isDarkTheme = new UIHelper(getActivity()).isUsingDarkTheme();
@@ -891,15 +883,13 @@ public class AllDataListFragment
                 .withShortcut("V"));
 
         // open binaryDialog
-        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.change_status))
-                .adapter(adapter, null)
-                .build();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.change_status));
 
-        ListView listView = dialog.getListView();
-        if (listView != null) listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Set the adapter
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(DialogInterface dialog, int position) {
                 DrawerMenuItem item = adapter.getItem(position);
                 switch (item.getId()) {
                     case R.id.menu_none:
@@ -916,15 +906,18 @@ public class AllDataListFragment
                 dialog.dismiss();
             }
         });
+
+        // Create and show the AlertDialog
+        final AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    private void showDuplicateTransactionView(ArrayList<Integer> transIds) {
+    private void showDuplicateTransactionView(ArrayList<Long> transIds) {
         // validation
         int transactionCount = transIds.size();
         if (transactionCount <= 0) return;
 
-        int[] ids = convertArrayListToArray(transIds);
+        long[] ids = convertArrayListToArray(transIds);
         Intent[] intents = new Intent[transactionCount];
         for (int i = 0; i < transactionCount; i++) {
             intents[i] = new Intent(getActivity(), CheckingTransactionEditActivity.class);
@@ -943,8 +936,8 @@ public class AllDataListFragment
         qif.export(adapter);
     }
 
-    private int[] convertArrayListToArray(ArrayList<Integer> list) {
-        int[] result = new int[list.size()];
+    private long[] convertArrayListToArray(ArrayList<Long> list) {
+        long[] result = new long[list.size()];
         for (int i = 0; i < list.size(); i++) {
             result[i] = list.get(i);
         }

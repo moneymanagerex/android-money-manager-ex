@@ -18,7 +18,10 @@
 package com.money.manager.ex.transactions;
 
 import android.content.Context;
-import android.os.Build;
+import android.text.Editable;
+// not used
+// import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +56,7 @@ public class SplitCategoriesAdapter
     }
 
     public List<ISplitTransaction> splitTransactions;
-    public int currencyId;
+    public long currencyId;
     /**
      * Transaction type for the main transaction that contains the splits.
      */
@@ -74,6 +77,7 @@ public class SplitCategoriesAdapter
 
         initAmountControl(viewHolder);
         initCategorySelector(viewHolder);
+        initNotesControls(viewHolder);
         initTransactionTypeButton(viewHolder);
 
         return viewHolder;
@@ -89,6 +93,7 @@ public class SplitCategoriesAdapter
         bindCategory(getContext(), holder, split);
         bindTransactionTypeButton(split, holder);
         bindAmount(split, holder);
+        bindNotes(split, holder);
     }
 
     @Override
@@ -120,17 +125,16 @@ public class SplitCategoriesAdapter
         holder.txtSelectCategory.setText(buttonText);
     }
 
+    private void bindNotes(ISplitTransaction splitTransaction, SplitItemViewHolder holder) {
+        String notes = splitTransaction.getNotes();
+        holder.txtNotesSplit.setText(notes);
+    }
+
+
     private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
-        int green;
-        int red;
         // 15
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            green = getContext().getColor(R.color.material_green_700);
-            red = getContext().getColor(R.color.material_red_700);
-        } else {
-            green = getContext().getResources().getColor(R.color.material_green_700);
-            red = getContext().getResources().getColor(R.color.material_red_700);
-        }
+        int green = getContext().getColor(R.color.material_green_700);
+        int red = getContext().getColor(R.color.material_red_700);
 
         if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
             // withdrawal
@@ -194,12 +198,35 @@ public class SplitCategoriesAdapter
         });
     }
 
+    public void initNotesControls(final SplitItemViewHolder viewHolder) {
+        viewHolder.txtNotesSplit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // todo: empty method?
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // todo: empty method?
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int position = viewHolder.getAdapterPosition();
+                // change transaction type.
+                ISplitTransaction split = splitTransactions.get(position);
+                split.setNotes(editable.toString());
+//                notifyItemChanged(position);
+            }
+        });
+    }
+
     /**
      * Swipe support
      */
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
+    public void onItemMove(long fromPosition, long toPosition) {
 //        if (fromPosition < toPosition) {
 //            for (int i = fromPosition; i < toPosition; i++) {
 //                Collections.swap(mItems, i, i + 1);

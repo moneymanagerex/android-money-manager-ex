@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">MoneyManagerEx</string>
+    <string name="application_definition">მარტივი და ადვილად გამოსაყენებელი პროგრამა პირადი ფინანსების, საბანკო ანგარიშების, ოჯახის ბიუჯეტისა და სხვ. მენეჯმენტისთვის.</string>
+    <string name="application_license">ღია წყაროს ლიცენზიები</string>
+    <!-- database -->
+    <string name="db_insert_failed">მონაცემების ჩასმა ვერ მოხერხდა</string>
+    <string name="db_delete_failed">მონაცემების წაშლა ვერ მოხერხდა</string>
+    <string name="db_update_failed">მონაცემთა განახლება ვერ მოხერხდა</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">გასვლა</string>
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">მართვა</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_general">ზოგადი</string>
+    <string name="preferences_perdatabase">ყოველ მონაცემთა ბაზაზე</string>
+    <string name="preferences_behaviour">თვისება</string>
+    <string name="base_currency">საბაზისო ვალუტა</string>
+    <string name="base_currency_changed">საბაზისო ვალუტა შეიცვალა</string>
+    <string name="base_currency_change_notification">საბაზისო კურსი შეიცვალა. გთხოვთ განაახლოთ ვალუტის გაცვლითი კურსი ახალ საბაზისო კურსში სწორი თანხების მისაღებად.</string>
+    <string name="view_accounts_opened">ღია ანგარიშების ნახვა</string>
+    <string name="if_not_selected_willShowAllAccounts">მოუნიშნავის შემთხვევაში ნაჩვენები იქნება ყველა ანგარიში</string>
+    <string name="view_accounts_favorites">რჩეული ანგარიშების ნახვა</string>
+    <string name="version">ვერსია</string>
+    <string name="build">Build</string>
+    <string name="path">Database path</string>
+    <string name="database_version">მონაცემთა ბაზის ვერსია</string>
+    <string name="title_show_tutorial">გაკვეთილის ჩვენება</string>
+    <string name="summary_show_tutorial">გაჩვენოთ გაკვეთილი შემდეგი ჩართვისას?</string>
+    <string name="preferences_behaviour_focus_filter_title">ფილტრი სელექტორებში</string>
+    <string name="preferences_behaviour_focus_filter_summary">აირჩიეთ ფილტრი სელექტორში, ან დაათვალიერეთ.</string>
+    <string name="auto_sync_via_wifi">ავტომატური სინქრონიზაცია Wifi-სთან დაკავშირებისას</string>
+    <string name="auto_sync_via_wifi_summary">ავტომატური სინქრონიზაცია მხოლოდ Wifi-სთან დაკავშირებისას.</string>
+    <string name="sync_on_app_start">სინქრონიზაცია აპლიკაციის ჩართვისას.</string>
+    <string name="sync_on_start">სინქრონიზაცია ჩართვისას</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">ანგარიში</string>
+    <string name="account_list">ანგარიშების სია</string>
+    <string name="account_empty_list">ანგარიშები არ მოიძებნა. ახლის შესაქმნელად დააჭირეთ მწვანე პლიუსის ღილაკს.</string>
+    <string name="account_balance">ანგარიშის ბალანსი</string>
+    <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="delete_account">ანგარიშის წაშლა</string>
+    <string name="account_name">ანგარიშის სახელი</string>
+    <string name="account_type">ანგარიშის ტიპი</string>
+    <string name="account_number">ანგარიშის ნომერი</string>
+    <string name="account_status">ანგარიშის სტატუსი</string>
+    <string name="favourite_account">რჩეული ანგარიში</string>
+    <string name="select_currency">მონიშნეთ ვალუტა</string>
+    <string name="checking">მოწმდება</string>
+    <string name="investment">ინვესტიცია</string>
+    <string name="investment_accounts">საინვესტიციო ანგარიში</string>
+    <string name="term">ვადა</string>
+    <string name="db_account_insert_failed">შეცდომა ანგარიშის ჩასმისას</string>
+    <string name="db_account_update_failed">შეცდომა ანგარიშის განახლებისას</string>
+    <string name="error_currency_not_selected">ვალუტა სავალდებულოა</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <!-- transaction -->
+    <string name="db_checking_insert_failed">შეცდომა ტრანზაქციის ჩასმისას</string>
+    <string name="db_checking_update_failed">შეცდომა ტრანზაქციის განახლებისას</string>
+    <string name="delete_transaction">ტრანზაქციის წაშლა</string>
+    <string name="new_transaction">ახალი ტრანზაქცია</string>
+    <string name="error_payee_not_selected">მიმღები სავალდებულოა</string>
+    <string name="error_toaccount_not_selected">მიმღები ანგარიში სავალდებულოა</string>
+    <string name="error_category_not_selected">კატეგორია სავალდებულოა</string>
+    <string name="error_totamount_empty">სრული თანხა სავალდებულოა</string>
+    <string name="about">შესახებ</string>
+    <string name="add">დამატება</string>
+    <string name="confirmDelete">დარწმუნებული ხართ, რომ გსურთ ჩანაწერის წაშლა?</string>
+    <string name="date">თარიღი</string>
+    <string name="delete">წაშლა</string>
+    <string name="download">გადმოწერა</string>
+    <string name="edit">შეცვლა</string>
+    <string name="home">სახლი</string>
+    <string name="logo">ლოგო</string>
+    <string name="new_edit_transaction">ახალი ტრანზაქცია/შეცვლა</string>
+    <string name="refresh">განახლება</string>
+    <string name="search">ძებნა</string>
+    <string name="settings">პარამეტრები</string>
+    <string name="summary">შეჯამება</string>
+    <string name="sync">სინქრონიზაცია</string>
+    <string name="synchronize">სინქრონიზირება</string>
+    <string name="open">გახსნა</string>
+    <string name="user">მომხმარებელი</string>
+    <string name="upload">ატვირთვა</string>
+    <string name="username">მომხმარებლის სახელი</string>
+    <string name="to">მიმღები</string>
+    <string name="website">ვებგვერდი</string>
+    <string name="contact">კონტაქტი</string>
+    <string name="access_info">წვდომის ინფორმაცია</string>
+    <string name="initial_balance">საწყისი ბალანსი</string>
+    <string name="notes">შენიშვნები</string>
+    <string name="closed">დახურულია</string>
+    <string name="theme_application">თემა</string>
+    <string name="theme_holo">მუქი მასალა</string>
+    <string name="theme_light">ღია მასალა</string>
+    <!-- 20120906 -->
+    <string name="close_application">აპლიკაციის დახურვა</string>
+    <string name="question_close_application">გსურთ აპლიკაციის დახურვა?</string>
+    <string name="attention">ყურადღება</string>
+    <string name="payee_can_not_deleted">აღნიშნული მიმღების წაშლა შეუძლებელია, რადგან ის დაკავშირებულია</string>
+    <string name="account_can_not_deleted">აღნიშნული ანგარიშის წაშლა შეუძლებელია, რადგან ის დაკავშრებულია</string>
+    <string name="currency_can_not_deleted">აღნიშნული ვალუტის წაშლა შეუძლებელია, რადგან ის დაკავშირებულია</string>
+    <string name="category_can_not_deleted">აღნიშნული კატეგორიის წაშლა შეუძლებელია, რადგან ის დაკავშირებულია</string>
+    <!-- transaction list periods -->
+    <string name="all_transaction">ყველა ტრანზაქცია</string>
+    <string name="today">დღეს</string>
+    <string name="last7days">ბოლო 7 დღე</string>
+    <string name="last15days">ბოლო 2 კვირა</string>
+    <string name="current_month">მიმდინარე თვე</string>
+    <string name="widget_summary">შეჯამება</string>
+    <string name="widget_add_transaction">ტრანზაქციის დამატება</string>
+    <!-- TAG -->
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <string name="preferences_active_passcode">პაროლის გააქტიურება</string>
+    <string name="enter_your_passcode">შეიყვანეთ პაროლი</string>
+    <string name="reinsert_your_passcode">ხელახლა შეიყვანეთ პაროლი</string>
+    <string name="passocde_no_macth">პაროლები არ ემთხვევა</string>
+    <string name="preferences_edit_passcode">პაროლის რედაქტირება</string>
+    <string name="preferences_disable_passcode">პაროლის გამორთვა</string>
+    <string name="enter_your_previous_passcode">შეიყვანეთ წინა პაროლი</string>
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">პაროლი არ არის განახლებული</string>
+    <!-- 20121217 -->
+    <string name="income_vs_expenses_current_month">შემოსავალი vs გასავალი: მიმდინარე თვე</string>
+    <string name="income">შემოსავალი</string>
+    <string name="expenses">ხარჯები</string>
+    <string name="difference">სხვაობა</string>
+    <string name="month">თვე</string>
+    <string name="year">წელი</string>
+    <string name="menu_reports">რეპორტები</string>
+    <string name="menu_report_income_vs_expenses">შემოსავალი vs გასავლები</string>
+    <string name="total">ჯამი</string>
+    <!--<string name="option">Option</string>-->
+    <string name="all_time">ყველა დრო</string>
+    <string name="last_month">წინა თვე</string>
+    <string name="last30days">ბოლო 30 დღე</string>
+    <string name="last_year">წინა წელი</string>
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <string name="number_transaction_found">ნაპოვნია %1$d ტრანზაქცია</string>
+    <!-- 20130108 -->
+    <string name="date_format">თარიღის ფორმატი</string>
+    <string name="financial_year_start_day">ფინანსური წელი: დაწყების თარიღი</string>
+    <string name="financial_year_start_month">ფინანსური წელი: დაწყების თვე</string>
+    <string name="menu_move_database_to_external_storage">მონაცემთა ბაზის ექსპორტი</string>
+    <string name="database_has_been_moved">მონაცემთა ბაზა გადაადგილდა: %1$s</string>
+    <string name="copy_database_on_external_storage_failed">მონაცემთა ბაზის ასლის გაკეთება გარე სათავსოზე ვერ მოხერხდა</string>
+    <string name="path_database_using">თქვენ იყენებთ მონაცემთა ბაზას, რომელიც შენახულია: %1$s</string>
+    <!-- Split Categories -->
+    <string name="split_transaction">ტრანზაქციის გაყოფა</string>
+    <string name="split">გაყოფა</string>
+    <string name="error_split_transaction_empty">საჭიროა თუნდაც ერთი გაყოფილი ტრანზაქცია</string>
+    <string name="swipe_to_dismiss">გაწიეთ ელემენტი წასასშლელად.</string>
+    <string name="export_data_to_csv">მონაცემების ექსპორტი CSV ფაილში</string>
+    <string name="export_data_in_progress">მონაცემთა ექსპორტი. გთხოვთ მოიცადოთ&#8230;</string>
+    <string name="export_file_complete">მონაცემთა ექსპორტი წარმატებით მოხდა ფაილში %1$s</string>
+    <string name="export_file_failed">%1$s ფაილის ექსპორტი ვერ მოხერხდა</string>
+    <string name="donate_in_app_title">Google Play აპლიკაციის შიდა ბილინგი</string>
+    <string name="donate_in_app_button">შემოწირულობა</string>
+    <string name="donate_thank_you">მადლობა შემოწირულობისთვის!</string>
+    <string name="donate">შემოწირულობა</string>
+    <string name="no_thanks">არა, გმადლობთ</string>
+    <string name="donate_exlamation">შეწირვა!</string>
+    <string name="donate_button_text">შემოწირულობა</string>
+    <string name="last">ბოლო</string>
+    <string name="accounts">ანგარიშები</string>
+    <string name="to_account">ანგარიშში</string>
+    <string name="from_account">ანგარიშიდან</string>
+    <string name="default_status">ნაგულისხმევი სტატუსი</string>
+    <string name="default_payee">ნაგულისხმევი მიმღები</string>
+    <string name="edit_transaction">ტრანზაქციის შეცვლა</string>
+    <string name="delete_one_selected_transaction">დარწმუნებული ხართ, რომ გსურთ მონიშნული ტრანზაქციის წაშლა?</string>
+    <string name="delete_others_selected_transaction">დარწმყნებული ხართ, რომ გსურთ %d მონიშნული ტრანზაქციის წაშლა?</string>
+    <string name="categories">კატეგორიები</string>
+    <string name="payees">მიმღებები</string>
+    <string name="theme_holo_light">Holo Light</string>
+    <string name="new_account">ახალი ნაგარიში</string>
+    <string name="create_new_account">ახალი ანგარიშის შექმნა</string>
+    <string name="amount_greater_or_equal">თანხა მეტია ან ტოლია</string>
+    <string name="amount_from">თანხის წყარო</string>
+    <string name="amount_less_or_equal">თანხა ნაკლებია ან მეტია</string>
+    <string name="amount_to">თანხის მიმღები</string>
+    <string name="reset">განულება</string>
+    <string name="result_search">თქვენი ძებნის შედეგი</string>
+    <string name="database_can_not_open_write">მონაცემთა ბაზა ვერ გაიხსნება ჩაწერისთვის</string>
+    <string name="time_frame">დროის ჩარჩო</string>
+    <string name="show_chart">გრაფიკის ჩვენება</string>
+    <string name="add_transaction">ტრანზაქციის დამატება</string>
+    <string name="welcome_header">მოგესალმებით MoneyManagerEx-ში!</string>
+    <string name="configure_sync">სინქრონიზაციის კონფიგურაცია</string>
+    <string name="withdrawal_from">თანხის გამოტანა %1$s-დან</string>
+    <string name="deposit_to">თანხის შეტანა %1$s-ში</string>
+    <string name="mmex_website">MoneyManagerEx-ში</string>
+    <string name="tools">ხელსაწყოები</string>
+    <string name="entities">იურიდიული პირები</string>
+    <string name="loading">იტვირთება&#8230;</string>
+    <string name="grand_total">სულ</string>
+    <string name="change_status">სტატუსის შეცვლა</string>
+    <!-- languages -->
+    <string name="action_settings">პარამეტრები</string>
+    <string name="to_date">ბოლო თარიღი</string>
+    <string name="from_date">საწყისი თარიღი</string>
+    <string name="pref_transaction_sort_by_type_title">ტრანზაქციების დალაგება ტიპის მიხედვით</string>
+    <string name="warning">გაფრთხილება</string>
+    <string name="qif_export">Qif -ის ექსპორტი</string>
+    <string name="update_prices">ფასების განახლება</string>
+    <string name="update_price">ფასის განახლება</string>
+    <string name="download_price">ფასის გადმოტვირთვა</string>
+    <string name="edit_price">ფასის რედაქტირება</string>
+    <string name="price_updated">ფასი განახლებულია</string>
+    <string name="all_prices_updated">ყველა ფასი განახლებულია.</string>
+    <string name="download_complete">გადმოტვირთვა დასრულებულია.</string>
+    <string name="starting_price_update">ფასების გადმოტვირთვა, გთხოვთ მოიცადოთ&#8230;</string>
+    <string name="database_migrate_14_to_20_explanation">ნაპოვნია ძველი მონაცემი. დააჭირეთ აქ ძველი მონაცემთა ბაზის გამოსაყენებლად.</string>
+    <string name="database_migrate_14_to_20_success">მონაცემთა ბაზის მიგრაცია წარმატებით დასრულდა.</string>
+    <string name="database_migrate_14_to_20_complete">მიგრაცია დასრულებულია. გთხოვთ დახუროთ პარამეტრები მონაცემთა ბაზის გამოსაყენებლად.</string>
+    <string name="clear_recent_files_list">ბოლო ფაილების წაშლა</string>
+    <string name="export_prices">ფასების ექსპორტი</string>
+    <string name="purge_history">ფასების ისტორიის გაწმენდა</string>
+    <string name="purge_history_confirmation">გსურთ ყველა ფასის ისტორიის წაშლა ყველა ანგარიშისთვის?</string>
+    <string name="purge_history_complete">ფასების ისტორია გაიწმინდა.</string>
+    <string name="purge_history_failed">ფასების ისტორია ვერ იწმინდება.</string>
+    <string name="create_db">მონაცემთა ბაზის შექმნა</string>
+    <string name="create_db_summary">ახალი მონაცემთა ბაზის ფაილის შექმნა</string>
+    <string name="create_db_hint">გთხოვთ შეიყვანოთ ფაილის სახელი</string>
+    <string name="create_db_success">მონაცემთა ბაზა წარმატებით შეიქმნა</string>
+    <string name="create_db_error">მონაცემთა ბაზის ფაილი ვერ შეიქმნა</string>
+    <string name="create_db_exists">მონაცემთა ბაზა ამ სახელით უკვე არსებობს!</string>
+    <string name="db_check_integrity_success">მონაცემთა ბაზამ მთლოანობის შემოწმება წარმატებით გაიარა.</string>
+    <string name="db_check_integrity_error">შეცდომა: მონაცემთა ბაზის ფაილი დაზიანებულია!</string>
+    <string name="db_check_schema">შეამოწმეთ მონაცემთა ბაზის სქემა</string>
+    <string name="split_amount_negative">სრული თანხა ვერ იქნება უარყოფითი.</string>
+    <string name="select_all">ყველას მონიშვნა</string>
+    <string name="choose_type">ტიპის შერჩევა</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <string name="purchase_date">შენაძენის თარიღი</string>
+    <string name="symbol">სიმბოლო</string>
+    <string name="purchase_price">შენაძენის ფასი</string>
+    <string name="current_price">მიმდინარე ფასი</string>
+    <string name="price_date">ფასის თარიღი</string>
+    <string name="commission">საკომისიო</string>
+    <string name="value">ღირებულება</string>
+    <string name="view_transactions">ტრანზაქციის ნახვა</string>
+    <string name="error_updating_rates">შეცდომა კურსის განახლებისას</string>
+    <string name="error_no_price_found_for_symbol">სიმვოლოსთვის ფასი ვერ მოიძებნა</string>
+    <string name="other">სხვა</string>
+    <string name="cleared">გასუფთავებულია</string>
+    <string name="delete_success">ობიექტი წაშლილია</string>
+    <!-- asset allocation -->
+    <string name="asset_allocation">აქტივების განაწილება</string>
+    <string name="title_activity_asset_class_edit">აქტივების კლასის რედაქტირება</string>
+    <string name="asset_class_name">აქტივების კლასის სახელი</string>
+    <string name="asset_class">აქტივის კლასი</string>
+    <string name="allocation">ლოკაცია</string>
+    <string name="current_allocation">მიმდინარე განაწილება</string>
+    <string name="move_up">ზემოთ გადაადგილება</string>
+    <string name="move_down">ქვემოთ გადაადგილება</string>
+    <string name="securities">ფასიანი ქაღალდები</string>
+    <string name="no_records_found_create">ჩანაწერები არ მოიძებნა. შესაქმნელად დააჭირეთ მწვანე პლიუსიან ღილაკს.</string>
+    <string name="current_value">მიმდინარე ფასი</string>
+    <string name="current">მიმდინარე</string>
+    <string name="parent">მშობელი</string>
+    <string name="name">სახელი</string>
+    <string name="stock">მარაგი</string>
+    <string name="records">ჩანაწერები</string>
+    <!-- db password entry -->
+    <string name="success">ოპერაცია წარმატებით დასრულდა</string>
+    <string name="overview">მიმოხილვა</string>
+    <string name="title_activity_asset_allocation_overview">აქტივების განაწილების მიმოხილვა</string>
+    <string name="error_saving_record">შეცდომა ჩანაწერის შენახვისას</string>
+    <string name="error_loading_currency">შეცდომა ვალუტის ჩატვირთვისას</string>
+    <string name="symbol_required">სიმბოლო სავალდებულოა</string>
+    <string name="account_not_found">ანგარიში ვერ მოიძებნა</string>
+    <string name="favourite">რჩეული</string>
+    <string name="split_reset_notice">გაითვალისწინეთ, რომ ამ ტრანზაქციაში არის ორზე მეტი გაყოფილი ტრანზაქცია. თქვენ უნდა წაშალოთ ისინი ცალცალკე.</string>
+    <!-- budgets -->
+    <string name="add_budget">ბიუჯეტის დამატება</string>
+    <string name="budget_name">ბიუჯეტის სახელი</string>
+    <string name="budget_year">ბიუჯეტის წელი</string>
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <string name="dropbox_file_summary_all">ფაილი ნებისმიერ ადგილას Dropbox-ში</string>
+    <!-- Synchronization -->
+    <string name="synchronization">სინქრონიზაცია</string>
+    <string name="sync_enabled">სინქრონიზაცია ჩართულია</string>
+    <string name="sync_provider">პროვაიდერი</string>
+    <string name="please_wait">გთხოვთ მოიცადოთ</string>
+    <string name="sync_downloading">მონაცემთა ბაზის გადმოწერა. გთხოვთ მოიცადოთ&#8230;</string>
+    <string name="sync_uploading">მონაცემთა ბაზის ატვირთვა. გთხოვთ დაიცადოთ&#8230;</string>
+    <string name="syncProgress">ფაილის სინქრონიზაცია. გთხოვთ დაიცადოთ&#8230;</string>
+    <string name="database_is_synchronized">მონაცემთა ბაზა განახლებულია</string>
+    <string name="upload_file_complete">მონაცემთა ბაზა წარმატებით აიტვირთა</string>
+    <string name="every_5_minutes">ყოველ 5 წუთში</string>
+    <string name="every_10_minutes">ყოველ 10 წუთში</string>
+    <string name="every_15_minutes">ყოველ 15 წუთში</string>
+    <string name="every_30_minutes">ყოველ 30 წუთში</string>
+    <string name="every_hour">ყოველ საათში</string>
+    <string name="every_2_hours">ყოველ 2 საათში</string>
+    <string name="every_3_hours">ყოველ 3 საათში</string>
+    <string name="every_6_hours">ყოველ 6 საათში</string>
+    <string name="every_12_hours">ყოველ 12 საათში</string>
+    <string name="never">არასოდეს</string>
+    <string name="title_sync_upload_immediate">მონაცემთა ბაზის განახლება ცვლილებისთანავე</string>
+    <string name="file_exists">ფაილი არსებობს</string>
+    <string name="synchronization_disabled">სინქრონიზაცია გათიშულია.</string>
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <string name="per_database_settings">ყოველ მონაცემთა ბაზაზე</string>
+    <!-- Notification Setting -->
+    <!-- Builder button -->
+</resources>

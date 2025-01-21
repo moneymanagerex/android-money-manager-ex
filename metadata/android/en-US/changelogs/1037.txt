@@ -1,0 +1,3 @@
+- Scheduled transactions refinement
+- ORM refine, incl. Category, Payee
+- Update i18n on 2024-08-13 from Crowdin, major on Dutch

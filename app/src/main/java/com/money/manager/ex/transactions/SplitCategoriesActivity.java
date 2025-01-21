@@ -17,25 +17,25 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
@@ -47,9 +47,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -74,7 +71,7 @@ public class SplitCategoriesActivity
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
     private SplitCategoriesAdapter mAdapter;
-    @BindView(R.id.splitsRecyclerView) RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private final int amountRequestOffset = 1000; // used to offset the request number for Amounts.
 
     @Override
@@ -97,11 +94,14 @@ public class SplitCategoriesActivity
         }
 
         setContentView(R.layout.activity_split_categories);
-        ButterKnife.bind(this);
+
+        mRecyclerView = findViewById(R.id.splitsRecyclerView);
 
         setDisplayHomeAsUpEnabled(true);
 
         initRecyclerView();
+
+        findViewById(R.id.fab).setOnClickListener(view -> addSplitTransaction());
     }
 
     @Override
@@ -128,9 +128,8 @@ public class SplitCategoriesActivity
         if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
         if (requestCode == REQUEST_PICK_CATEGORY) {
-            int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-            int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-            int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
+            long categoryId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+            int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET_INT);
 
             ISplitTransaction split = mAdapter.splitTransactions.get(location);
             split.setCategoryId(categoryId);
@@ -187,11 +186,6 @@ public class SplitCategoriesActivity
         }
     }
 
-    @OnClick(R.id.fab)
-    protected void onFabClick() {
-        addSplitTransaction();
-    }
-
     /*
         Events
      */
@@ -238,10 +232,10 @@ public class SplitCategoriesActivity
 
         this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
 
-        int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-        mAdapter.transactionType = TransactionTypes.values()[transactionType];
+        long transactionType = intent.getLongExtra(KEY_TRANSACTION_TYPE, 0);
+        mAdapter.transactionType = TransactionTypes.values()[(int)transactionType];
 
-        mAdapter.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+        mAdapter.currencyId = intent.getLongExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
         List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
         if (splits != null) {
@@ -260,12 +254,6 @@ public class SplitCategoriesActivity
         // layout manager - LinearLayoutManager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // item animator
-        // RecyclerView.ItemAnimator
-
-        // optimizations
-        mRecyclerView.setHasFixedSize(true);
-
         // Support for swipe-to-dismiss
         ItemTouchHelper.Callback swipeCallback = new SplitItemTouchCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
@@ -273,20 +261,18 @@ public class SplitCategoriesActivity
     }
 
     private void onAmountEntered(int requestId, Money amount) {
-        if (amount.toDouble() <= 0) {
+        if (amount.toDouble() < 0) {
             showInvalidAmountDialog();
             return;
         }
         // The amount is always positive, ensured by the validation above.
 
-//        int position = Integer.parseInt(requestId);
-        int position = requestId;
-        ISplitTransaction split = mAdapter.splitTransactions.get(position);
+        ISplitTransaction split = mAdapter.splitTransactions.get(requestId);
 
         Money adjustedAmount = CommonSplitCategoryLogic.getStorageAmount(mAdapter.transactionType, amount, split);
         split.setAmount(adjustedAmount);
 
-        mAdapter.notifyItemChanged(position);
+        mAdapter.notifyItemChanged(requestId);
     }
 
     private void onRemoveItem(ISplitTransaction splitTransaction) {
@@ -314,10 +300,13 @@ public class SplitCategoriesActivity
     }
 
     private void showInvalidAmountDialog() {
-        new MaterialDialog.Builder(this)
-            .title(R.string.error)
-            .content(R.string.error_amount_must_be_positive)
-            .positiveText(android.R.string.ok)
-            .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error)
+                .setMessage(R.string.error_amount_must_be_positive)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Handle positive button click if needed
+                    dialog.dismiss();
+                })
+                .show();
     }
 }

@@ -16,39 +16,26 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.content.ContentResolver;
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.PayeeService;
 
-import org.robolectric.fakes.BaseCursor;
-import org.robolectric.shadows.ShadowContentResolver;
-
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Database manipulation. Used for test preparation.
@@ -63,7 +50,7 @@ public class DataHelpers {
         // Bahraini dinar
         Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
                 true, 17);
-        int accountId = accountRepository.add(account);
+        long accountId = accountRepository.add(account);
         account.setId(accountId);
 //        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
 
@@ -73,7 +60,7 @@ public class DataHelpers {
         for (int i = 0; i < 3; i++) {
             Payee payee = new Payee();
             payee.setName("payee" + i);
-            int payeeId = repo.add(payee);
+            long payeeId = repo.add(payee);
 //            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
         }
 
@@ -85,13 +72,13 @@ public class DataHelpers {
         }
     }
 
-    public static void createTransaction(int accountId, int payeeId, TransactionTypes type,
-                                         int categoryId, Money amount) {
+    public static void createTransaction(long accountId, long payeeId, TransactionTypes type,
+                                         long categoryId, Money amount) {
         AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
 
         AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
                 categoryId, amount);
-        int txId = txRepo.add(tx);
+        long txId = txRepo.add(tx);
 //        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
 
     }
@@ -116,12 +103,12 @@ public class DataHelpers {
             TransactionTypes.Withdrawal, 1, amount);
         txRepo.insert(tx);
         // split categories
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
-        SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1,
-                tx.getTransactionType(), MoneyFactory.fromDouble(25));
+        SplitCategoryRepository splitRepo = new SplitCategoryRepository(context);
+        SplitCategory split1 = SplitCategory.create(tx.getId(), 1,
+                tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 1");
         splitRepo.insert(split1);
-        SplitCategory split2 = SplitCategory.create(tx.getId(), 1, -1,
-                tx.getTransactionType(), MoneyFactory.fromDouble(25));
+        SplitCategory split2 = SplitCategory.create(tx.getId(), 1,
+                tx.getTransactionType(), MoneyFactory.fromDouble(25), "Note 2");
         splitRepo.insert(split2);
     }
 
@@ -132,35 +119,4 @@ public class DataHelpers {
 //        BaseCursor cursor = new AccountCursor();
 //        shadow.setCursor(cursor);
 //    }
-
-    public static void createAllocation() {
-        Context context = UnitTestHelper.getContext();
-        AssetClassRepository repo = new AssetClassRepository(context);
-        AssetClassStockRepository linkRepo = new AssetClassStockRepository(context);
-        StockRepository stockRepo = new StockRepository(context);
-        AccountRepository accountRepo = new AccountRepository(context);
-
-        // Currency
-        CurrencyService currencyService = new CurrencyService(context);
-        Currency eur = currencyService.getCurrency("EUR");
-
-        // Investment account
-        Account account = Account.create("investment", AccountTypes.INVESTMENT, AccountStatuses.OPEN,
-            true, eur.getCurrencyId());
-        accountRepo.save(account);
-        int accountId = account.getId();
-
-        // Stock symbols
-        Stock stock = Stock.create();
-        stock.setSymbol("VHY.ax");
-        stock.setHeldAt(accountId);
-        stockRepo.insert(stock);
-
-        AssetClass stocks = AssetClass.create("stocks");
-        stocks.setAllocation(MoneyFactory.fromString("70"));
-        repo.insert(stocks);
-
-        AssetClassStock link = AssetClassStock.create(stocks.getId(), stock.getSymbol());
-        linkRepo.insert(link);
-    }
 }

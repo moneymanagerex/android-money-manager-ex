@@ -61,7 +61,7 @@ public class InvestmentSettings
         String value = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
 
         if (TextUtils.isEmpty(value)) {
-            value = Integer.toString(Constants.NOT_SET); // "-1";
+            value = Long.toString(Constants.NOT_SET); // "-1";
         }
         return MoneyFactory.fromString(value);
     }
@@ -114,5 +114,4 @@ public class InvestmentSettings
         InfoService service = new InfoService(getContext());
         service.setInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER, value.name());
     }
-
 }

@@ -1,0 +1,18 @@
+<p>Een eenvoudige en makkelijk te gebruiken toepassing om persoonlijke financiën, bankrekeningen, gezinsbudget en meer te beheren. The main goal is to provide a mobile implementation for an application we love to use on our desktop, Money Manager EX.</p>
+
+<b>Functies</b>
+
+<ul>
+  <li>Management of single transactions</li>
+  <li>Account, payee, category, and currency management</li>
+  <li>Cloudopslag gebaseerde synchronisatie, waaronder:
+    <ul>
+      <li>Cloud-opslag zoals Google Drive en Nextcloud</li>
+      <li>Sync services like Syncthing</li>
+    </ul>
+  </li>
+  <li>Support for SQLCipher encryption</li>
+  <li>Compatibility with Desktop MMEX</li>
+  <li>Repeating transactions</li>
+  <li>Charts for reports</li>
+</ul>

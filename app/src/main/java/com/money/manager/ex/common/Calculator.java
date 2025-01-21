@@ -20,7 +20,6 @@ package com.money.manager.ex.common;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import info.javaperformance.money.Money;
@@ -83,7 +82,7 @@ public final class Calculator {
         }
     }
 
-    public Calculator currency(int currencyId) {
+    public Calculator currency(long currencyId) {
         intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
         return this;
     }

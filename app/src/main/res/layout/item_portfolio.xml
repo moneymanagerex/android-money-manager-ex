@@ -23,7 +23,9 @@
     android:layout_margin="@dimen/mmx_margin"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:gravity="center_vertical" >
+    android:gravity="center_vertical"
+    android:paddingEnd="@dimen/mmx_list_item_padding_side"
+    android:paddingStart="@dimen/mmx_list_item_padding_side">
 
         <!-- symbol -->
         <com.money.manager.ex.view.RobotoTextView
@@ -43,7 +45,9 @@
             android:layout_marginRight="@dimen/mmx_margin"
             android:gravity="end"
             android:ellipsize="end"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:layout_marginEnd="@dimen/mmx_margin"
+            android:layout_marginStart="@dimen/mmx_margin" />
 
         <!-- price -->
         <com.money.manager.ex.view.RobotoTextView

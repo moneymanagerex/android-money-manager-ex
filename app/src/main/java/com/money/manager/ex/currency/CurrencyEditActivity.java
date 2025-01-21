@@ -54,7 +54,7 @@ public class CurrencyEditActivity
     private static final String KEY_CONVERSION_TO_BASE = "CurrencyEditActivity:ConversionToBaseRate";
     private static final String KEY_ACTION = "CurrencyEditActivity:Action";
 
-    private Integer mCurrencyId;
+    private Long mCurrencyId;
     // type of action
     private String mIntentAction = "";
     CurrencyEditViewHolder holder;
@@ -92,9 +92,9 @@ public class CurrencyEditActivity
         // manage intent
         if (getIntent() != null) {
             if (savedInstanceState == null) {
-                mCurrencyId = getIntent().getIntExtra(KEY_CURRENCY_ID, -1);
+                mCurrencyId = getIntent().getLongExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    mCurrencyId = getIntent().getIntExtra(KEY_CURRENCY_ID, -1);
+                    mCurrencyId = getIntent().getLongExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
                     // load existing data
                     loadData(mCurrencyId);
                 }
@@ -124,7 +124,7 @@ public class CurrencyEditActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
+        outState.putLong(KEY_CURRENCY_ID, mCurrencyId);
         outState.putString(KEY_CURRENCY_NAME, holder.edtCurrencyName.getText().toString());
         if (holder.spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             outState.putString(KEY_CURRENCY_SYMBOL, getResources()
@@ -140,12 +140,12 @@ public class CurrencyEditActivity
         outState.putString(KEY_CONVERSION_TO_BASE, holder.edtConversion.getText().toString());
     }
 
-    private boolean loadData(int currencyId) {
+    private boolean loadData(long currencyId) {
         CurrencyRepository repo = new CurrencyRepository(this);
         Cursor cursor = getContentResolver().query(repo.getUri(),
                 repo.getAllColumns(),
                 Currency.CURRENCYID + "=?",
-                new String[]{Integer.toString(currencyId)}, null);
+                new String[]{Long.toString(currencyId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
@@ -169,7 +169,7 @@ public class CurrencyEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+        mCurrencyId = savedInstanceState.getLong(KEY_CURRENCY_ID);
 
         holder.edtCurrencyName.setText(savedInstanceState.getString(KEY_CURRENCY_NAME));
         holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
@@ -225,11 +225,12 @@ public class CurrencyEditActivity
         currency.setDecimalPoint(holder.edtDecimal.getText().toString().trim());
         currency.setGroupSeparator(holder.edtGroup.getText().toString().trim());
 
-        int scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
+        long scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
         currency.contentValues.put(Currency.SCALE, scale);
 
         BigDecimal rate = new BigDecimal(holder.edtConversion.getText().toString().trim());
         currency.contentValues.put(Currency.BASECONVRATE, rate.doubleValue());
+        currency.contentValues.put(Currency.CURRENCY_TYPE, "Crypto");
 //        currency.setConversionRate();
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());

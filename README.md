@@ -2,54 +2,56 @@
 
 See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.org/) for more user-oriented information.
 
-Dev [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=dev)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
+## Badges
+[![GitHub License](https://img.shields.io/github/license/moneymanagerex/android-money-manager-ex)](https://github.com/wolfsolver/android-money-manager-ex/tree/master?tab=License-1-ov-file)
+[![GitHub Release](https://img.shields.io/github/v/release/moneymanagerex/android-money-manager-ex?include_prereleases&label=github%20release)](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
+[![F-Droid Version](https://img.shields.io/f-droid/v/com.money.manager.ex?include_prereleases&label=f-droid%20release)](https://f-droid.org/it/packages/com.money.manager.ex/)
+[![GPlay Version](https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.money.manager.ex.android%26gl%3DUS%26hl%3Den%26l%3DAndroid%26m%3D%24version)](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)<img alt="GitHub Downloads (all assets, latest release)" src="https://img.shields.io/github/downloads-pre/moneymanagerex/android-money-manager-ex/latest/total">
 
-Stable [![Build Status](https://travis-ci.org/moneymanagerex/android-money-manager-ex.svg?branch=master)](https://travis-ci.org/moneymanagerex/android-money-manager-ex)
+[![Build status](https://ci.appveyor.com/api/projects/status/bn231orqqh7bi6um?svg=true)](https://ci.appveyor.com/project/moneymanagerex/android-money-manager-ex)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/moneymanagerex/android-money-manager-ex)](https://github.com/moneymanagerex/android-money-manager-ex/issues)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/moneymanagerex/android-money-manager-ex)](https://github.com/moneymanagerex/android-money-manager-ex/pulls)
+[![Crowdin](https://badges.crowdin.net/android-money-manager-ex/localized.svg)](https://crowdin.com/project/android-money-manager-ex)
+
 
 #### Basic information
 
 Money Manager Ex for Android is a mobile companion to PC/desktop personal finance applications currently available for Windows, Mac OSX and LINUX. It can be used with the same database used by MoneyManagerEx Desktop, or as an addition to GnuCash or other applications that import transactions via .qif files.
+
+#### Download
+[<img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="240">](https://f-droid.org/packages/com.money.manager.ex)
+[<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
+[<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" width="240">](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)
+
+#### Documentation
+- [User Manual](docs/usermanual/index.md)
+
 
 #### Contributing
 
 There are several ways you can contribute to the project:
 
 - code
-- translation
-- beta testing
+- translation via [MMEX4Android on Crowdin](https://crowdin.net/project/android-money-manager-ex)
+- beta testing via [Google Play Open Testing](https://play.google.com/apps/testing/com.money.manager.ex.android)
 - donations
 
 #### Translate
 
-If you want to join our translation team: [MoneyManagerEx for Android on Crowdin.net](https://crowdin.net/project/android-money-manager-ex)
+If you want to join our translation team: [MMEX4Android on Crowdin](https://crowdin.net/project/android-money-manager-ex)
 
 # Build
 
 To build the project, the following settings are recommended:
 
 - current stable version of Android Studio,
-- use embedded JDK,
+- use embedded JDK (now compatible with JDK17+),
 - use gradle wrapper.
 
 ## Continuous Integration
 
 // TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
 
-# License
+## Star History
 
-    Copyright 2012-2018 The Android Money Manager Ex Project Team
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 3
-    of the License, or (at your option) any later version.
-
-    https://www.gnu.org/licenses/gpl-2.0.html
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+[![Star History Chart](https://api.star-history.com/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.com/#moneymanagerex/android-money-manager-ex&Date)

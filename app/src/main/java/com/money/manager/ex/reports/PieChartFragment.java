@@ -84,7 +84,7 @@ public class PieChartFragment
         ArrayList<Entry> yVals1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
-        int length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
+        long length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
 
         for (int i = 0; i < length; i++) {
             Entry e = new Entry((float) mPieCharts.get(i).getValue(), i);

@@ -130,11 +130,11 @@ public class BudgetsActivity
     }
 
     private void showBudgetDetails(long id, String budgetName) {
-        String tag = BudgetDetailFragment.class.getName() + "_" + id;
+        String tag = BudgetEntryFragment.class.getName() + "_" + id;
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
 
         if (fragment == null) {
-            fragment = BudgetDetailFragment.newInstance(id, budgetName);
+            fragment = BudgetEntryFragment.newInstance(id, budgetName);
         }
 
         showFragment(fragment, tag);

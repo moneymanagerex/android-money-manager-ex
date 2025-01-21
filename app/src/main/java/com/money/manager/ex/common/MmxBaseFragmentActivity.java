@@ -17,10 +17,18 @@
 package com.money.manager.ex.common;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+
+import android.provider.DocumentsContract;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,19 +42,21 @@ import com.money.manager.ex.settings.AppSettings;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import icepick.Icepick;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-//import net.sqlcipher.database.SQLiteDatabase;
-
 public abstract class MmxBaseFragmentActivity
     extends AppCompatActivity {
+    private ActivityResultLauncher<Intent> openDocumentLauncher;
+    private ActivityResultLauncher<Intent> directoryPickerLauncher;
 
     public CompositeSubscription compositeSubscription;
 
     private Toolbar mToolbar;
     private boolean mDisplayHomeAsUpEnabled = false;
+
+    private BaseListFragment listFragment;
+    private String FRAGMENTTAG = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +75,26 @@ public abstract class MmxBaseFragmentActivity
 
         this.compositeSubscription = new CompositeSubscription();
 
-        Icepick.restoreInstanceState(this, savedInstanceState);
-
         super.onCreate(savedInstanceState);
+        // Initialize the ActivityResultLauncher
+        openDocumentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        // Permission granted, handle the selected content URI here
+                        Uri uri = result.getData().getData();
+                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    }
+                });
+        // Initialize the ActivityResultLauncher
+        directoryPickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri treeUri = result.getData().getData();
+                        // Handle the selected directory URI
+                        // Perform actions using the selected directory URI
+                        getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    }
+                });
     }
 
     @Override
@@ -126,8 +153,6 @@ public abstract class MmxBaseFragmentActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        Icepick.saveInstanceState(this, outState);
     }
 
     @Override
@@ -236,4 +261,56 @@ public abstract class MmxBaseFragmentActivity
             Timber.e(e, "setting theme");
         }
     }
+
+    public void onPermissionGranted(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setData(uri);
+        intent.setType("image/*") ;
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+        openDocumentLauncher.launch(intent);
+    }
+
+    public void openDirectoryPicker(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+       // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+        directoryPickerLauncher.launch(intent);
+    }
+
+    protected void inizializeCommon(BaseListFragment mListFragment, String mFragmentTAG) {
+        setContentView(R.layout.base_toolbar_activity);
+        listFragment = mListFragment;
+        FRAGMENTTAG = mFragmentTAG;
+
+        // enable home button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // process intent
+        FragmentManager fm = getSupportFragmentManager();
+        // attach fragment activity
+        if (fm.findFragmentById(R.id.content) == null) {
+            // todo: use .replace
+            fm.beginTransaction()
+                    .add(R.id.content, listFragment, FRAGMENTTAG)
+                    .commit();
+        }
+
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (FRAGMENTTAG == null) return super.onKeyUp(keyCode, event);
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // set result
+            BaseListFragment fragment = (BaseListFragment) getSupportFragmentManager()
+                    .findFragmentByTag(FRAGMENTTAG);
+            if (fragment != null) {
+                fragment.getActivity().setResult(RESULT_CANCELED);
+                fragment.getActivity().finish();
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 }

@@ -51,7 +51,7 @@ public class SyncSchedulerBroadcastReceiver
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_PERIODIC_SYNC,
-                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
         AlarmManager alarmManager = getAlarmManager(context);
@@ -72,19 +72,16 @@ public class SyncSchedulerBroadcastReceiver
     }
 
     private void startHeartbeat(Context context, AlarmManager alarmManager, PendingIntent pendingIntent) {
-        SyncManager sync = new SyncManager(context);
-        if (!sync.isSyncEnabled()) return;
-
         // get frequency in minutes.
         SyncPreferences preferences = new SyncPreferences(context);
-        int minutes = preferences.getSyncInterval();
+        long minutes = preferences.getSyncInterval();
         // If the period is 0, do not schedule the alarm.
         if (minutes <= 0) return;
 
         MmxDate now = new MmxDate();
-        int secondsInMinute = 60;
+        long secondsInMinute = 60;
 
-        Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toString(), minutes);
+        Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toIsoString(), minutes);
 
         // Schedule the alarm for synchronization. Run immediately and then in the given interval.
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,

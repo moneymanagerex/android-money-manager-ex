@@ -70,8 +70,8 @@ public class UnitTestHelper {
         return fragment;
     }
 
-    public static Intent getSelectCategoryResult(int categoryId, String categoryName,
-        int subCategId, String subCategoryName) {
+    public static Intent getSelectCategoryResult(long categoryId, String categoryName,
+        long subCategId, String subCategoryName) {
         Intent result = new Intent();
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categoryId);
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME, categoryName);
@@ -121,11 +121,11 @@ public class UnitTestHelper {
     public static void setDefaultCurrency(String symbol) {
         CurrencyRepository repo = new CurrencyRepository(getContext());
         Currency currency = repo.loadCurrency(symbol);
-        int id = currency.getCurrencyId();
+        long id = currency.getCurrencyId();
         setDefaultCurrency(id);
     }
 
-    public static void setDefaultCurrency(int currencyId) {
+    public static void setDefaultCurrency(long currencyId) {
         CurrencyService currencyService = new CurrencyService(getContext());
         currencyService.setBaseCurrencyId(currencyId);
     }

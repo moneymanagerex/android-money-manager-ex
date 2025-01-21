@@ -18,7 +18,6 @@ package com.money.manager.ex.servicelayer.qif;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -47,11 +46,7 @@ public class QifHeader {
 
         // Line separator.
         String separator;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            separator = System.getProperty("line.separator");
-        } else {
-            separator = System.lineSeparator();
-        }
+        separator = System.lineSeparator();
 
         Account account = loadAccount(cursor);
 
@@ -143,8 +138,8 @@ L5,000.00
     }
 
     private Account loadAccount(Cursor cursor) {
-//        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
-        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+//        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
         AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.load(accountId);
         return account;

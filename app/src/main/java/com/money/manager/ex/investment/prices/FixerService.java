@@ -20,7 +20,6 @@ package com.money.manager.ex.investment.prices;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -49,7 +48,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 import timber.log.Timber;
 
 /**

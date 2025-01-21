@@ -84,6 +84,8 @@
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="5dp" />
+        android:dividerHeight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp" />
 
 </LinearLayout>

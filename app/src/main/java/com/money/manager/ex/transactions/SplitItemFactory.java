@@ -19,7 +19,6 @@ package com.money.manager.ex.transactions;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 
@@ -36,10 +35,10 @@ public class SplitItemFactory {
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {
             entity = SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, parentTransactionType, MoneyFactory.fromDouble(0));
+                    parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
         } else {
             entity = SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, parentTransactionType, MoneyFactory.fromDouble(0));
+                    parentTransactionType, MoneyFactory.fromDouble(0), Constants.EMPTY_STRING);
         }
 
         return entity;

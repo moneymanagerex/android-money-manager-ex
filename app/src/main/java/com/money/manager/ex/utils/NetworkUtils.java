@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,22 +18,23 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 
 /**
  * Network utility functions
  */
 public class NetworkUtils {
 
-    public static boolean isOnline(Context context) {
-        return new NetworkUtils(context).isOnline();
-    }
+    private final Context mContext;
 
     public NetworkUtils(Context context) {
         mContext = context;
     }
 
-    private final Context mContext;
+    public static boolean isOnline(Context context) {
+        return new NetworkUtils(context).isOnline();
+    }
 
     public Context getContext() {
         return mContext;
@@ -46,24 +47,25 @@ public class NetworkUtils {
      */
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-        return netInfo != null && netInfo.isConnected();
-        // isConnectedOrConnecting
+        if (cm != null) {
+            Network network = cm.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+                return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            }
+        }
+        return false;
     }
 
     public boolean isOnWiFi() {
-        ConnectivityManager connManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        // check connManager.getAllNetworks()
-
-        // deprecated as of API 23.
-//        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-        if (networkInfo == null) return false;  // no network
-        if (!networkInfo.isConnected()) return false;
-
-        return networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            Network network = cm.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+                return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+            }
+        }
+        return false;
     }
 }

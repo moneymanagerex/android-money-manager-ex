@@ -1,0 +1,15 @@
+Features:
+- Add financial year support in reports and transaction lists.
+- Unify Deposit/Withdrawal AS transfer, not counted in Income vs Expenses.
+- Refine Notification & Autopost switch logic.
+
+Refactors:
+- Moved DBPref into SharedPreference for unified preference management.
+- Upgrade JDK17
+
+Bug Fixes:
+- Minor cleanups across various files and logic.
+- Updated minSdkVersion to 23.
+
+Doc Updates:
+- Updated documentation for nested categories, recurring transactions, and JDK17 reference.

@@ -49,7 +49,7 @@ public class RecurringTransactionBootReceiver
     private void setAlarm(Context context) {
         BehaviourSettings settings = new BehaviourSettings(context);
 
-        boolean notify = settings.getNotificationRecurringTransaction();
+        boolean notify = settings.getProcessRecurringTransaction();
         if (!notify) return;
 
         // compose intent

@@ -15,8 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.money.manager.ex">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
 
@@ -24,8 +23,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- sync authenticator -->
     <!--<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />-->
     <!-- sync adapter -->
@@ -33,16 +30,15 @@
     <!--<uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />-->
     <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />-->
 
-    <!-- SMS Interface -->
-    <!--<uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
-
     <!-- Fingerprint Interface -->
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <!-- for compatibility of Job Scheduler with Android versions prior to 8. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- new post notification management -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
@@ -58,7 +54,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Splash"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        android:supportsRtl="true">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
@@ -133,7 +130,7 @@
 
         <activity
                 android:name=".home.MainActivity"
-                android:label="@string/application_name" android:exported="true">
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -187,8 +184,16 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PayeeActivity"
+                android:name=".payee.PayeeActivity"
                 android:label="@string/payee" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".tag.TagActivity"
+            android:label="@string/tag" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.EDIT" />
@@ -231,9 +236,9 @@
                 <action android:name="android.intent.action.INSERT" />
             </intent-filter>
         </activity>
-        <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
+        <activity android:name=".scheduled.ScheduledTransactionListActivity" />
         <activity
-                android:name=".recurring.transactions.RecurringTransactionEditActivity"
+                android:name=".scheduled.ScheduledTransactionEditActivity"
                 android:label="@string/new_edit_repeating_transaction" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -277,7 +282,7 @@
                 <data android:scheme="com.money.manager.ex" />
             </intent-filter>
         </activity>
-        <activity android:name=".PasscodeActivity" android:exported="true">
+        <activity android:name=".passcode.PasscodeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
@@ -298,9 +303,6 @@
             android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
         <activity
-            android:name=".DonateActivity"
-            android:label="@string/donate" />
-        <activity
                 android:name=".HelpActivity"
                 android:label="@string/help" android:exported="true">
             <intent-filter>
@@ -316,7 +318,6 @@
         <activity
             android:name=".tutorial.TutorialActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/application_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
@@ -338,37 +339,18 @@
             android:name=".common.WebViewActivity"
             android:label="@string/donate" />
         <activity
-            android:name=".assetallocation.editor.AssetAllocationEditorActivity"
-            android:label="@string/asset_allocation" />
-        <activity
-            android:name=".assetallocation.AssetClassEditActivity"
-            android:label="@string/title_activity_asset_class_edit"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".assetallocation.SecurityListActivity"
-            android:label="@string/securities" />
-        <activity
             android:name=".database.PasswordActivity"
             android:label="@string/enter_password" />
         <activity
             android:name=".investment.PortfolioActivity"
             android:label="@string/portfolio" />
-        <activity
-            android:name=".assetallocation.AssetAllocationReportActivity"
-            android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
-        <activity android:name=".assetallocation.list.AssetClassListActivity" />
-        <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
-        <activity android:name=".assetallocation.overview.AssetAllocationOverviewActivity">
-
             <!-- android:parentActivityName=".home.MainActivity" -->
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value=".home.MainActivity" /> -->
-        </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
-        <activity android:name=".home.CreateDatabaseActivity" />
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
@@ -378,7 +360,7 @@
         <provider
             android:name=".MmxContentProvider"
             android:authorities="${applicationId}.provider"
-            android:exported="false" />
+            android:exported="true" />
         <!-- used for qif export -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -399,51 +381,8 @@
         <!-- services -->
 
         <service
-            android:name=".notifications.RecurringTransactionIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
             android:name=".widget.AccountBillsWidgetService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-                android:name=".widget.SummaryDashExtension"
-                android:icon="@drawable/ic_stat_notification"
-                android:label="@string/widget_summary"
-                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-                tools:ignore="MissingClass" android:exported="true"> <!-- TODO: Add SummaryDashExtension Widget class -->
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
-            </intent-filter>
-
-            <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary" />
-        </service>
-        <service
-                android:name=".widget.AccountBillsDashExtension"
-                android:icon="@drawable/ic_stat_notification"
-                android:label="@string/widget_all_accounts"
-                android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
-                android:exported="true" tools:ignore="IntentFilterExportedReceiver"> <!-- TODO: Add AccountBillsDashExtension Widget class -->
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
-            </intent-filter>
-
-            <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary_all_account" />
-        </service>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
             android:name=".sync.SyncService"
             android:exported="false"
@@ -500,7 +439,7 @@
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:resource="@dimen/app_minimumsize_h" />
 
-        <activity android:name=".investment.PriceEditActivity"></activity>
+        <activity android:name=".investment.PriceEditActivity" />
     </application>
 
 </manifest>

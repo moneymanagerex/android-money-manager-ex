@@ -1,0 +1,4 @@
+- Improved password entry hints for encrypted database files.
+- Enhanced fingerprint detection for devices running API 28 and above.
+- Refined attachment preview by setting the Attachment Folder.
+- Fixed subcategory update issue (revisited).

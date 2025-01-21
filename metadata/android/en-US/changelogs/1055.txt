@@ -1,0 +1,5 @@
+• UI/UX: Enhanced tag management with edit mode and added tags in search transactions.
+• Build Updates: Raised minSdkVersion to 28 (Android 9.0).
+• Translations: Added new Crowdin translations and cleaned up integration scripts.
+• Error Handling: Improved conflict resolution and fixed NullPointerExceptions.
+• Xmas version: switch to SQLite3MC from SQLCipher

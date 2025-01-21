@@ -29,7 +29,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -51,8 +50,8 @@ public class ExpandableListFragment
         implements OnCreateContextMenuListener, ExpandableListView.OnChildClickListener,
         ExpandableListView.OnGroupCollapseListener, ExpandableListView.OnGroupExpandListener {
 
-    static final int INTERNAL_EMPTY_ID = 0x00ff0001;
-    static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
+    static final long INTERNAL_EMPTY_ID = 0x00ff0001;
+    static final long INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
 
     final private Handler mHandler = new Handler();
 
@@ -225,7 +224,7 @@ public class ExpandableListFragment
      * <p>Applications do not normally need to use this themselves.  The default
      * behavior of ListFragment is to start with the list not being shown, only
      * showing it once an adapter is given with ListAdapter}.
-     * If the list at that point had not been shown, when it does get shown
+     * If the list at that polong had not been shown, when it does get shown
      * it will be do without the user ever seeing the hidden state.
      * @param shown If true, the list view is shown; if false, the progress
      *              indicator.  The initial value is true.

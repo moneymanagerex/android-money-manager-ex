@@ -18,12 +18,15 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.home.MainActivity;
-
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
+
+import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
+
 import timber.log.Timber;
 
 /**
@@ -52,64 +55,67 @@ public class GeneralSettingsFragment
 
         // Application Locale
 
-        final ListPreference lstLocaleApp = (ListPreference) findPreference(getString(R.string.pref_locale));
+        final ListPreference lstLocaleApp = findPreference(getString(R.string.pref_locale));
         if (lstLocaleApp != null) {
             String summary = settings.getGeneralSettings().getApplicationLanguage();
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
-            lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String language = String.valueOf(newValue);
-                    setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
+            lstLocaleApp.setOnPreferenceChangeListener((preference, newValue) -> {
+                String language = String.valueOf(newValue);
+                setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
 
-                    restartActivity();
+                restartActivity();
 
-                    return true;
-                }
+                return true;
             });
         }
 
         // Theme
 
-        final ListPreference lstTheme = (ListPreference) findPreference(getString(R.string.pref_theme));
+        final ListPreference lstTheme = findPreference(getString(R.string.pref_theme));
         if (lstTheme != null) {
-            lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Timber.d("setting theme: %s", newValue.toString());
+            String summary = settings.getGeneralSettings().getTheme();
+            lstTheme.setSummary(summary);
+            lstTheme.setOnPreferenceChangeListener((preference, newValue) -> {
+                Timber.d("setting theme: %s", newValue.toString());
+                lstTheme.setSummary(newValue.toString());
 
-                    restartActivity();
+                restartActivity();
 
-                    return true;
-                }
+                return true;
             });
         }
 
         // default status
 
-        final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_STATUS));
+        final ListPreference lstDefaultStatus = findPreference(getString(PreferenceConstants.PREF_DEFAULT_STATUS));
         if (lstDefaultStatus != null) {
             setSummaryListPreference(lstDefaultStatus, lstDefaultStatus.getValue(), R.array.status_values, R.array.status_items);
-            lstDefaultStatus.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    setSummaryListPreference(lstDefaultStatus, newValue.toString(), R.array.status_values, R.array.status_items);
-                    return true;
-                }
+            lstDefaultStatus.setOnPreferenceChangeListener((preference, newValue) -> {
+                setSummaryListPreference(lstDefaultStatus, newValue.toString(), R.array.status_values, R.array.status_items);
+                return true;
             });
         }
 
         //default payee
 
-        final ListPreference lstDefaultPayee = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_PAYEE));
+        final ListPreference lstDefaultPayee = findPreference(getString(PreferenceConstants.PREF_DEFAULT_PAYEE));
         if (lstDefaultPayee != null) {
             setSummaryListPreference(lstDefaultPayee, lstDefaultPayee.getValue(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
-            lstDefaultPayee.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    setSummaryListPreference(lstDefaultPayee, newValue.toString(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
-                    return true;
-                }
+            lstDefaultPayee.setOnPreferenceChangeListener((preference, newValue) -> {
+                setSummaryListPreference(lstDefaultPayee, newValue.toString(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
+                return true;
+            });
+        }
+
+        // send anonymous usage data
+        final SwitchPreferenceCompat sPreference = findPreference(getString(R.string.pref_anonymous_usage));
+        if (sPreference != null) {
+            sPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                // Handle the switch state change
+                boolean isChecked = (Boolean) newValue;
+                MmexApplication.getAmplitude().getConfiguration().setOptOut(!isChecked);
+                // Add your logic here based on the switch state
+                return true; // Return true to persist the preference change
             });
         }
     }
@@ -127,6 +133,6 @@ public class GeneralSettingsFragment
     private void restartActivity() {
         MainActivity.setRestartActivity(true);
 
-        getActivity().recreate();
+        requireActivity().recreate();
     }
 }

@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.recycler.CurrencyListItemViewHolder;
 import com.money.manager.ex.domainmodel.Currency;
 
 import androidx.cursoradapter.widget.CursorAdapter;

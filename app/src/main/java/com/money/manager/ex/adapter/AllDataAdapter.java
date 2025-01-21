@@ -26,7 +26,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
@@ -48,6 +47,7 @@ import java.util.Locale;
 import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Adapter for all_data query. The list of transactions (account/recurring).
@@ -76,25 +76,26 @@ public class AllDataAdapter
     }
 
     // type cursor
-    private TypeCursor mTypeCursor = TypeCursor.ALLDATA;
+    private final TypeCursor mTypeCursor;
 
     // define cursor field
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
-        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, SUBCATEGORY, NOTES,
-        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME;
+        ATTACHMENTCOUNT,
+        CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
+        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS;
 
     private final LayoutInflater mInflater;
     // hash map for group
-    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final HashMap<Long, Integer> mHeadersAccountIndex;
     private final SparseBooleanArray mCheckedPosition;
     // account and currency
-    private int mAccountId = Constants.NOT_SET;
-    private int mCurrencyId = Constants.NOT_SET;
+    private long mAccountId = Constants.NOT_SET;
+    private long mCurrencyId = Constants.NOT_SET;
     // show account name and show balance
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private final Context mContext;
-    private HashMap<Integer, Money> balances;
+    private HashMap<Long, Money> balances;
     private final ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
@@ -108,6 +109,7 @@ public class AllDataAdapter
         holder.txtDay = view.findViewById(R.id.textViewDay);
         holder.txtMonth = view.findViewById(R.id.textViewMonth);
         holder.txtYear = view.findViewById(R.id.textViewYear);
+        holder.txtAttachment = view.findViewById(R.id.textViewAttachment);
         holder.txtStatus = view.findViewById(R.id.textViewStatus);
         holder.txtAmount = view.findViewById(R.id.textViewAmount);
         holder.txtPayee = view.findViewById(R.id.textViewPayee);
@@ -115,6 +117,8 @@ public class AllDataAdapter
         holder.txtCategorySub = view.findViewById(R.id.textViewCategorySub);
         holder.txtNotes = view.findViewById(R.id.textViewNotes);
         holder.txtBalance = view.findViewById(R.id.textViewBalance);
+        holder.textTags = view.findViewById(R.id.textViewTags);
+
         // set holder to view
         view.setTag(holder);
 
@@ -130,7 +134,7 @@ public class AllDataAdapter
         boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
@@ -162,15 +166,32 @@ public class AllDataAdapter
             holder.txtDay.setText(day);
         }
 
-        // Amount
+        boolean hasAttachment = cursor.getLong(cursor.getColumnIndex(ATTACHMENTCOUNT)) > 0;
+        // Show attachment status if applicable
+        if (hasAttachment) {
+// in view            holder.txtAttachment.setText("\uD83D\uDCCE "); // unicode Attachment icon
+            holder.txtAttachment.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtAttachment.setVisibility(View.GONE);
+        }
 
+        // tags
+        String tags = cursor.getString(cursor.getColumnIndex(TAGS));
+        if (!TextUtils.isEmpty(tags)) {
+// in view            holder.textTags.setText(" \uD83C\uDFF7 "); // Tag icon
+            holder.textTags.setVisibility(View.VISIBLE);
+        } else {
+            holder.textTags.setVisibility(View.GONE);
+        }
+
+        // Amount
         double amount;
         if (useDestinationValues(isTransfer, cursor)) {
             amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
-            setCurrencyId(cursor.getInt(cursor.getColumnIndex(TOCURRENCYID)));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndex(TOCURRENCYID)));
         } else {
             amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-            setCurrencyId(cursor.getInt(cursor.getColumnIndex(CURRENCYID)));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndex(CURRENCYID)));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
@@ -179,7 +200,7 @@ public class AllDataAdapter
         // text color amount
         int amountTextColor;
         if (isTransfer) {
-            amountTextColor = ContextCompat.getColor(mContext, R.color.material_grey_700);
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_blue_700); // gray is not well-visible in dark
         } else if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             amountTextColor = ContextCompat.getColor(mContext, R.color.material_green_700);
         } else {
@@ -208,12 +229,9 @@ public class AllDataAdapter
         String categorySub;
         if (!isTransfer) {
             categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
-            // check sub category
-            if (!(TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(SUBCATEGORY))))) {
-                categorySub += " : <i>" + cursor.getString(cursor.getColumnIndex(SUBCATEGORY)) + "</i>";
-            }
+            boolean isSplited = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED)) == 1;
             // write category/subcategory format html
-            if (!TextUtils.isEmpty(categorySub)) {
+            if (!isSplited) {
                 // Display category/sub-category.
                 categorySub = Html.fromHtml(categorySub).toString();
             } else {
@@ -262,28 +280,28 @@ public class AllDataAdapter
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public long getAccountId() {
         return mAccountId;
     }
 
     /**
      * @param mAccountId the accountId to set
      */
-    public void setAccountId(int mAccountId) {
+    public void setAccountId(long mAccountId) {
         this.mAccountId = mAccountId;
     }
 
     /**
      * @return the mCurrencyId
      */
-    public int getCurrencyId() {
+    public long getCurrencyId() {
         return mCurrencyId;
     }
 
     /**
      * @param mCurrencyId the mCurrencyId to set
      */
-    public void setCurrencyId(int mCurrencyId) {
+    public void setCurrencyId(long mCurrencyId) {
         this.mCurrencyId = mCurrencyId;
     }
 
@@ -322,10 +340,10 @@ public class AllDataAdapter
     public void setFieldFromTypeCursor() {
         ID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ID : QueryBillDeposits.BDID;
         DATE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Date : QueryBillDeposits.NEXTOCCURRENCEDATE;
-        ACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ACCOUNTID : QueryBillDeposits.TOACCOUNTID;
-        STATUS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Status : QueryBillDeposits.STATUS;
-        AMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Amount : QueryBillDeposits.AMOUNT;
-        PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Payee : QueryBillDeposits.PAYEENAME;
+        ACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ACCOUNTID : QueryBillDeposits.ACCOUNTID;
+        STATUS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.STATUS : QueryBillDeposits.STATUS;
+        AMOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AMOUNT : QueryBillDeposits.AMOUNT;
+        PAYEE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.PAYEENAME : QueryBillDeposits.PAYEENAME;
         TRANSACTIONTYPE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TransactionType : QueryBillDeposits.TRANSCODE;
         CURRENCYID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CURRENCYID : QueryBillDeposits.CURRENCYID;
         TOACCOUNTID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TOACCOUNTID : QueryBillDeposits.TOACCOUNTID;
@@ -334,11 +352,12 @@ public class AllDataAdapter
         TOACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ToAccountName : QueryBillDeposits.TOACCOUNTNAME;
         ACCOUNTNAME = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.AccountName : QueryBillDeposits.TOACCOUNTNAME;
         CATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Category : QueryBillDeposits.CATEGNAME;
-        SUBCATEGORY = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Subcategory : QueryBillDeposits.SUBCATEGNAME;
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
+        ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
+        TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
     }
 
-    public void setBalances(HashMap<Integer, Money> balances) {
+    public void setBalances(HashMap<Long, Money> balances) {
         this.balances = balances;
 
         // update the balances on visible elements.
@@ -361,7 +380,7 @@ public class AllDataAdapter
 //                calculateBalanceAmount(cursor, holder);
 
                 // Save transaction Id.
-                int txId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ID));
+                long txId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ID));
                 holder.txtBalance.setTag(txId);
 
                 requestBalanceDisplay(holder.txtBalance);
@@ -370,12 +389,14 @@ public class AllDataAdapter
                 holder.txtBalance.setVisibility(View.GONE);
             }
         } else {
-            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            long daysLeft = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
-                holder.txtBalance.setText(Math.abs(daysLeft) + " " +
-                        context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue));
+                boolean hasNumber = context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue).indexOf("%d") >= 0;
+                holder.txtBalance.setText(
+                        String.format((hasNumber ? context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) : "%d " + context.getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue)),
+                                Math.abs(daysLeft)));
             }
             holder.txtBalance.setVisibility(View.VISIBLE);
         }
@@ -404,7 +425,7 @@ public class AllDataAdapter
                 // Account transactions
 
                 // See which value to use.
-                result = getAccountId() == cursor.getInt(cursor.getColumnIndex(TOACCOUNTID));
+                result = getAccountId() == cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
             }
         } else {
             result = false;
@@ -432,7 +453,7 @@ public class AllDataAdapter
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
-                    int cursorAccountId = cursor.getInt(cursor.getColumnIndex(ACCOUNTID));
+                    long cursorAccountId = cursor.getLong(cursor.getColumnIndex(ACCOUNTID));
                     if (mAccountId != cursorAccountId) {
                         // This is in account transactions list where we display transfers to and from.
                         accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
@@ -464,7 +485,7 @@ public class AllDataAdapter
         Object tag = textView.getTag();
         if (tag == null) return;
 
-        int txId = (int) tag;
+        long txId = (long)tag;
         if (!this.balances.containsKey(txId)) return;
 
         CurrencyService currencyService = new CurrencyService(mContext);

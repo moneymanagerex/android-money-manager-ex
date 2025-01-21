@@ -39,7 +39,7 @@ public class CloudItemViewHolder
         initialize(itemView);
     }
 
-    public int itemPosition;
+    public long itemPosition;
     public String itemPath;
     // view elements
     public RobotoTextView nameTextView;

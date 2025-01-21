@@ -54,7 +54,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/category" />
+                    android:text="@string/category"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewCategory"
@@ -80,7 +82,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/amount" />
+                    android:text="@string/amount"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextTotAmount"
@@ -93,6 +97,46 @@
                     android:hint="@string/amount"
                     android:textStyle="bold"
                     android:gravity="end" />
+           </TableRow>         
+
+            <!-- Notes -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/notes"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp" />
+
+                <!--<com.money.manager.ex.view.RobotoTextView-->
+                <!--android:id="@+id/editTextNotesSplit"-->
+                <!--style="?attr/holoSpinnerStyle"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:focusable="false"-->
+                <!--android:focusableInTouchMode="false"-->
+                <!--android:gravity="end"-->
+                <!--android:hint="@string/notes"-->
+                <!--android:textStyle="bold"-->
+                <!--android:visibility="visible" />-->
+
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/notesEditSplit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="top|start"
+                    android:hint="@string/notes_hint"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null" />
             </TableRow>
         </TableLayout>
 

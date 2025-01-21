@@ -29,25 +29,19 @@ public class PreferenceConstants {
     public static final Integer PREF_DATABASE = R.string.pref_database;
 
 //    public static final Integer PREF_LAST_VERSION_KEY = R.string.pref_last_version_key;
-    public static final Integer PREF_DONATE_LAST_VERSION_KEY = R.string.pref_donate_last_version_key;
     public static final Integer PREF_LAST_DB_PATH_SHOWN = R.string.pref_last_db_path_shown;
 
     // General
-    public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
-    public static final Integer PREF_FINANCIAL_YEAR_STARTMONTH = R.string.pref_financial_year_startmonth;
+    public static final Integer PREF_FINANCIAL_YEAR_START_DATE = R.string.pref_financial_year_start_date;
+    public static final Integer PREF_FINANCIAL_YEAR_START_MONTH = R.string.pref_financial_year_start_month;
     public static final Integer PREF_BASE_CURRENCY = R.string.pref_base_currency;
 
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;
     public static final Integer PREF_DISABLE_PASSCODE = R.string.pref_disable_passcode;
     public static final Integer PREF_ACTIVE_PASSCODE = R.string.pref_active_passcode;
-//    public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
-//    public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
-    public static final Integer PREF_DONATE = R.string.pref_donate;
     public static final Integer PREF_VERSION_NAME = R.string.pref_version_name;
 
-
     public static final Integer PREF_SQLITE_VERSION = R.string.pref_sqlite_version;
-//    public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
     public static final Integer PREF_TRANSACTION_SHOWN_BALANCE = R.string.pref_transaction_shown_balance;
     public static final Integer PREF_DATABASE_BACKUP = R.string.pref_database_backup;
     public static final Integer PREF_APPLICATION_FONT = R.string.pref_application_font;
@@ -57,10 +51,9 @@ public class PreferenceConstants {
     public static final Integer PREF_TEXT_SEARCH_TYPE = R.string.pref_text_search_type;
 
     // others preference setting don't display
-    public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
 
-    // check repeating transaction
-    public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;
+    // check scheduled transaction
+    public static final Integer PREF_REPEATING_TRANSACTION_PROCESS = R.string.pref_repeating_transaction_notifications;
     public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
 
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;

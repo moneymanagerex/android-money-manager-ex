@@ -34,6 +34,10 @@
         android:title="@string/preferences_behaviour" />
     <Preference
         android:icon="@null"
+        android:key="@string/pref_synchronization"
+        android:title="@string/synchronization" />
+    <Preference
+        android:icon="@null"
         android:key="pref_investment"
         android:title="@string/investment" />
     <Preference

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,15 +17,16 @@
 
 package com.money.manager.ex.budget;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 
-import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
-import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -35,33 +36,35 @@ import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDate;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
-public class BudgetEditActivity
-    extends MmxBaseFragmentActivity {
+public class BudgetEditActivity extends MmxBaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
     private BudgetViewModel mModel;
     private BudgetEditViewHolder viewHolder;
 
+    private TextView budgetYearTextView;
+    private TextView budgetMonthTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_edit);
 
-        ButterKnife.bind(this);
+        // Initialize views using findViewById()
+        budgetYearTextView = findViewById(R.id.budgetYearTextView);
+        budgetMonthTextView = findViewById(R.id.budgetMonthTextView);
 
         initializeToolbar();
 
         initializeModel();
         showModel();
+
+        // Set up click listeners for views
+        budgetYearTextView.setOnClickListener(this::onSelectYear);
+        budgetMonthTextView.setOnClickListener(this::onSelectMonth);
     }
 
     public boolean onActionDoneClick() {
@@ -88,7 +91,7 @@ public class BudgetEditActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // cancel clicked. Prompt to confirm?
+                // Cancel clicked. Prompt to confirm?
                 Timber.d("going back");
                 break;
             case MenuHelper.save:
@@ -97,71 +100,55 @@ public class BudgetEditActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.budgetYearTextView)
-    public void onSelectYear(View v) {
+    private void onSelectYear(View v) {
         int currentYear = new MmxDate().getYear();
-        int year;
-        if (mModel.year != 0) {
-            year = mModel.year;
-        } else {
-            year = currentYear;
-        }
+        int year = (mModel.year != 0) ? mModel.year : currentYear;
 
-        new NumberPickerBuilder()
-            .setFragmentManager(getSupportFragmentManager())
-            .setStyleResId(R.style.BetterPickersDialogFragment)
-            .setLabelText(getString(R.string.year))
-            .setPlusMinusVisibility(View.INVISIBLE)
-            .setDecimalVisibility(View.INVISIBLE)
-            .setMinNumber(BigDecimal.valueOf(currentYear - 10))
-            .setMaxNumber(BigDecimal.valueOf(currentYear + 10))
-            .setCurrentNumber(year)
-            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                @Override
-                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                    mModel.setYear(number.intValue());
+        NumberPicker numberPicker = new NumberPicker(this);
+        numberPicker.setMinValue(currentYear - 10);
+        numberPicker.setMaxValue(currentYear + 10);
+        numberPicker.setValue(year);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.year))
+                .setView(numberPicker)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedYear = numberPicker.getValue();
+                    mModel.setYear(selectedYear);
                     viewHolder.refreshYear();
                     viewHolder.refreshName();
-                }
-            })
-            .show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
-    @OnClick(R.id.budgetMonthTextView)
-    public void onSelectMonth(View v) {
-        int month;
-        if (mModel.month != 0) {
-            month = mModel.month;
-        } else {
-            month = new MmxDate().getMonthOfYear();
-        }
+    private void onSelectMonth(View v) {
+        int month = (mModel.month != 0) ? mModel.month : new MmxDate().getMonthOfYear();
 
-        new NumberPickerBuilder()
-            .setFragmentManager(getSupportFragmentManager())
-            .setStyleResId(R.style.BetterPickersDialogFragment)
-            .setLabelText(getString(R.string.month))
-            .setPlusMinusVisibility(View.INVISIBLE)
-            .setDecimalVisibility(View.INVISIBLE)
-            .setMinNumber(BigDecimal.ONE)
-            .setMaxNumber(BigDecimal.valueOf(12))
-            .setCurrentNumber(month)
-            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                @Override
-                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                    mModel.setMonth(number.intValue());
+        NumberPicker numberPicker = new NumberPicker(this);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(12);
+        numberPicker.setValue(month);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.month))
+                .setView(numberPicker)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedMonth = numberPicker.getValue();
+                    mModel.setMonth(selectedMonth);
                     viewHolder.refreshMonth();
                     viewHolder.refreshName();
-                }
-            })
-            .show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     /*
         Private
     */
 
-    private int getBudgetId() {
-        return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
+    private long getBudgetId() {
+        return getIntent().getLongExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
     private void initializeModel() {
@@ -172,12 +159,11 @@ public class BudgetEditActivity
         if (TextUtils.isEmpty(action)) return;
 
         if (action.equals(Intent.ACTION_INSERT)) {
-            // new record
+            // New record
             budget = new Budget();
-        }
-        if (action.equals(Intent.ACTION_EDIT)) {
-            // existing record
-            int budgetId = getBudgetId();
+        } else if (action.equals(Intent.ACTION_EDIT)) {
+            // Existing record
+            long budgetId = getBudgetId();
             BudgetRepository repo = new BudgetRepository(this);
             budget = repo.load(budgetId);
         }
@@ -195,7 +181,7 @@ public class BudgetEditActivity
     }
 
     private boolean save() {
-        int budgetId = getBudgetId();
+        long budgetId = getBudgetId();
         Budget budget = new Budget();
         budget.setId(budgetId);
         mModel.saveTo(budget);

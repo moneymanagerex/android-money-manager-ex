@@ -22,7 +22,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.StockFields;
@@ -47,7 +46,7 @@ public class PortfolioCursorAdapter
     }
 
     private final LayoutInflater mInflater;
-    private final HashMap<Integer, Integer> mHeadersAccountIndex;
+    private final HashMap<Long, Integer> mHeadersAccountIndex;
     private final SparseBooleanArray mCheckedPosition;
 
     @Override
@@ -73,7 +72,7 @@ public class PortfolioCursorAdapter
         PortfolioItemDataViewHolder holder = (PortfolioItemDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
+        long accountId = cursor.getLong(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }

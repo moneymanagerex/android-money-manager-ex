@@ -26,6 +26,8 @@ public class AllDataViewHolder {
     public TextView txtDay;
     public TextView txtMonth;
     public TextView txtYear;
+    public TextView txtAttachment;
+    public TextView textTags;
     public TextView txtStatus;
     public TextView txtAmount;
     public TextView txtPayee;

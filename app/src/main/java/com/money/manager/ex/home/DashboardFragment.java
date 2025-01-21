@@ -20,7 +20,6 @@ package com.money.manager.ex.home;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -50,9 +49,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.MmxDate;
@@ -219,53 +218,45 @@ public class DashboardFragment
     //@SuppressWarnings("deprecation")
     private String prepareQueryTopWithdrawals() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id", ViewMobileData.CATEGID, ViewMobileData.Category, ViewMobileData.SubcategID,
-                ViewMobileData.Subcategory, "SUM(" + ViewMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
+        String[] projectionIn = new String[]{"ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
+                "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL", "COUNT(*) AS NUM"};
 
-        String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType + " IN ('Withdrawal')"
-                + " AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+        String selection = QueryMobileData.Status + "<>'V' AND " + QueryMobileData.TransactionType + " IN ('Withdrawal')"
+                + " AND (julianday(date('now')) - julianday(" + QueryMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.CATEGID + ", " + ViewMobileData.Category + ", " + ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
-        String having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
-        String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
+        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category + ", ";
+        String having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
+        String sortOrder = "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
         // compose builder
         builder.setTables(mobileData.getSource());
         // return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
     @SuppressWarnings("deprecation")
     private String prepareQueryTopPayees() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(getContext());
+        QueryMobileData mobileData = new QueryMobileData(getContext());
         // data to compose builder
-        String[] projectionIn = new String[]{"ROWID AS _id",
-                ViewMobileData.PAYEEID, ViewMobileData.Payee,
-                "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) AS TOTAL",
+        String[] projectionIn = new String[]{"ID AS _id",
+                QueryMobileData.PAYEEID, QueryMobileData.PAYEENAME,
+                "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) AS TOTAL",
                 "COUNT(*) AS NUM"};
 
-        String selection = ViewMobileData.Status + "<>'V' AND " + ViewMobileData.TransactionType
-                + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
+        String selection = QueryMobileData.Status + "<>'V' AND " + QueryMobileData.TransactionType
+                + " IN ('Withdrawal', 'Deposit') AND (julianday(date('now')) - julianday(" + QueryMobileData.Date + ") <= 30)";
 
-        String groupBy = ViewMobileData.PAYEEID + ", " + ViewMobileData.Payee;
+        String groupBy = QueryMobileData.PAYEEID + ", " + QueryMobileData.PAYEENAME;
         String having = null;
-        String sortOrder = "ABS(SUM(" + ViewMobileData.AmountBaseConvRate + ")) DESC";
+        String sortOrder = "ABS(SUM(" + QueryMobileData.AmountBaseConvRate + ")) DESC";
         String limit = "10";
         // compose builder
         builder.setTables(mobileData.getSource());
         // return query
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-        } else {
-            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-        }
+        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
     }
 
     /*
@@ -338,12 +329,9 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String category = "<b>" + cursor.getString(cursor.getColumnIndex(ViewMobileData.Category)) + "</b>";
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory)))) {
-                category += " : " + cursor.getString(cursor.getColumnIndex(ViewMobileData.Subcategory));
-            }
+            String category = "<b>" + cursor.getString(cursor.getColumnIndex(QueryMobileData.Category)) + "</b>";
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -373,9 +361,9 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee));
+            String payee = cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME));
             double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            int num = cursor.getInt(cursor.getColumnIndex("NUM"));
+            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -407,9 +395,12 @@ public class DashboardFragment
             String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
             double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
             int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
-            int currencyId = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
+            long currencyId = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
             String daysLeftText = "";
-            daysLeftText = Math.abs(daysLeft) + " " + getString(daysLeft >= 0 ? R.string.days_remaining : R.string.days_overdue);
+            boolean hasNumber = getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue).indexOf("%d") >= 0;
+            daysLeftText = String.format( (hasNumber ? getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) : "%d " + getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) ),
+                    Math.abs(daysLeft));
+
             TableRow row = createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small>" + currencyService.getCurrencyFormatted(currencyId, MoneyFactory.fromDouble(total)) + "</small>",
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},

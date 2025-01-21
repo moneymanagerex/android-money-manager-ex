@@ -18,6 +18,8 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import com.money.manager.ex.Constants;
+
 import org.parceler.Parcel;
 
 /**
@@ -31,6 +33,7 @@ public class Category
     public static final String CATEGNAME = "CATEGNAME";
     public static final String ACTIVE = "ACTIVE";
     public static final String PARENTID = "PARENTID";
+    public static final String BASENAME = "BASENAME";
 
     public Category() {
         super();
@@ -40,20 +43,23 @@ public class Category
         super(contentValues);
     }
 
-    public int getId() {
-        return getInt(CATEGID);
+    public Long getId() {
+        return getLong(CATEGID);
     }
 
-    public void setId(Integer value) {
-        setInt(CATEGID, value);
+    public void setId(Long value) {
+        setLong(CATEGID, value);
     }
 
-    public int getParentId() {
-        return getInt(PARENTID);
+    public long getParentId() {
+        if (getLong(PARENTID) != null && getLong(PARENTID) > 0 && getLong(PARENTID) != getId()) {
+            return getLong(PARENTID);
+        }
+        return Constants.NOT_SET;
     }
 
-    public void setParentId(Integer value) {
-        setInt(PARENTID, value);
+    public void setParentId(Long value) {
+        setLong(PARENTID, value);
     }
 
     public String getName() {
@@ -63,4 +69,10 @@ public class Category
     public void setName(String value) {
         setString(CATEGNAME, value);
     }
+
+    public String getBasename() { return getString(BASENAME);}
+
+    public void setBasename(String value) { setString(BASENAME, value);}
 }
+
+

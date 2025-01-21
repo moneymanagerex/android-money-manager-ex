@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_definition">Ett enkelt och användarvänligt program för att hantera den personliga ekonomin, bankkonton, familjebudget med mera.</string>
+    <!-- database -->
+    <string name="db_delete_failed">Radering av data misslyckades</string>
+    <string name="db_update_failed">Uppdatering av data misslyckades</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">Hantera</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_behaviour">Beteende</string>
+    <string name="base_currency">Basvaluta</string>
+    <string name="base_currency_changed">Basvaluta ändrad</string>
+    <string name="view_accounts_opened">Visa öppna konton</string>
+    <string name="if_not_selected_willShowAllAccounts">om ej vald visas alla konton</string>
+    <string name="view_accounts_favorites">Visa favoritkonto</string>
+    <string name="version">Version</string>
+    <string name="path">Sökväg databas</string>
+    <string name="database_version">Databasversion</string>
+    <string name="auto_sync_via_wifi_summary">Synkronisera automatiskt endast när WiFi-anslutningen är aktiverad.</string>
+    <string name="sync_on_app_start">Synkronisera vid start</string>
+    <string name="sync_on_start">Synkronisering vid start</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">Konto</string>
+    <string name="account_reconciled_balance">Avstämd balans</string>
+    <string name="delete_account">Radera konto</string>
+    <string name="account_name">Kontonamn</string>
+    <string name="account_type">Kontotyp</string>
+    <string name="account_number">Kontonummer</string>
+    <string name="favourite_account">Favoritkonto</string>
+    <string name="select_currency">Välj valuta</string>
+    <string name="investment">Investering</string>
+    <string name="investment_accounts">Investeringskonto</string>
+    <string name="db_account_insert_failed">Fel vid skapandet av konto</string>
+    <string name="db_account_update_failed">Fel vid uppdatering av konto</string>
+    <string name="error_currency_not_selected">Valuta krävs</string>
+    <string name="error_accountname_empty">Kontonamn krävs</string>
+    <string name="error_accounttype_empty">Kontotyp krävs</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <!-- transaction -->
+    <string name="amount">Belopp</string>
+    <string name="total_amount">Totalt belopp</string>
+    <string name="deposit">Insättning</string>
+    <string name="status">Status</string>
+    <string name="status_duplicate">Duplicera</string>
+    <string name="transfer">Överföring</string>
+    <string name="transfer_amount">Överför belopp</string>
+    <string name="transaction_status">Status</string>
+    <string name="home">Hushåll</string>
+    <string name="refresh">Uppdatera</string>
+    <string name="search">Sök</string>
+    <string name="settings">Inställningar</string>
+    <string name="summary">Summering</string>
+    <string name="sync">Synk</string>
+    <string name="synchronize">Synkronisera</string>
+    <string name="open">Öppna</string>
+    <string name="user">Användare</string>
+    <string name="upload">Ladda upp</string>
+    <string name="username">Användarnamn</string>
+    <string name="to">Till</string>
+    <string name="website">Hemsida</string>
+    <string name="contact">Kontakt</string>
+    <string name="access_info">Åtkomstinfo:</string>
+    <string name="initial_balance">Ursprungligt saldo</string>
+    <string name="notes">Anteckningar</string>
+    <!-- 20120906 -->
+    <!-- transaction list periods -->
+    <string name="widget_summary">Summering</string>
+    <!-- TAG -->
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="once">En gång</string>
+    <string name="weekly">Veckovis</string>
+    <string name="bi_weekly">Varannan vecka</string>
+    <string name="monthly">Månadsvis</string>
+    <string name="bi_monthly">Varannan månad</string>
+    <string name="quaterly">Kvartalsvis</string>
+    <string name="half_year">Halvårsvis</string>
+    <string name="yearly">Årsvis</string>
+    <string name="four_months">Fyra månader</string>
+    <string name="four_weeks">Fyra veckor</string>
+    <string name="daily">Dagligen</string>
+    <string name="in_x_days">Om (x) dagar</string>
+    <string name="in_x_months">Om (x) månader</string>
+    <string name="every_x_days">Varje (x) dagar</string>
+    <string name="every_x_months">Var (x) månad</string>
+    <string name="inactive">Inaktiv</string>
+    <string name="activates">Aktivera</string>
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <!-- 20121217 -->
+    <!--<string name="option">Option</string>-->
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <!-- 20130108 -->
+    <!-- Split Categories -->
+    <!-- languages -->
+    <string name="action_settings">Inställningar</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <!-- Notification Setting -->
+    <!-- Builder button -->
+</resources>

@@ -1,0 +1,1 @@
+- Couple of bug fixes for SUID and Integer to Long

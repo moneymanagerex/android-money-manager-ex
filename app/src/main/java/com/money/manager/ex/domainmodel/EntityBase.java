@@ -24,7 +24,6 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -40,18 +39,18 @@ import info.javaperformance.money.MoneyFactory;
 public class EntityBase
     implements IEntity {
 
+    public ContentValues contentValues;
+
     /**
      * Default constructor.
      */
-    protected EntityBase() {
+    public EntityBase() {
         contentValues = new ContentValues();
     }
 
-    protected EntityBase(ContentValues contentValues) {
+    public EntityBase(ContentValues contentValues) {
         this.contentValues = contentValues;
     }
-
-    public ContentValues contentValues;
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
@@ -111,7 +110,15 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
-    protected String getString(String fieldName) {
+    protected Long getLong(String column) {
+        return contentValues.getAsLong(column);
+    }
+
+    protected void setLong(String fieldName, Long value) {
+        contentValues.put(fieldName, value);
+    }
+
+    public String getString(String fieldName) {
         return contentValues.getAsString(fieldName);
     }
 
@@ -119,11 +126,19 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
-    protected Double getDouble(String column) {
+    public Double getDouble(String column) {
         return contentValues.getAsDouble(column);
     }
 
     protected void setDouble(String column, Double value) {
         contentValues.put(column, value);
+    }
+
+    // Abstract method (must be implemented by subclasses)
+    public void setId(Long id) {
+        throw new UnsupportedOperationException("Subclasses must override this method");
+    }
+    public Long getId() {
+        throw new UnsupportedOperationException("Subclasses must override this method");
     }
 }

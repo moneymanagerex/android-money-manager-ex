@@ -41,8 +41,6 @@ public class BudgetQuery
     public static String BUDGETYEARID = "BUDGETYEARID";
     public static String CATEGID = "CATEGID";
     public static String CATEGNAME = "CATEGNAME";
-    public static String SUBCATEGID = "SUBCATEGID";
-    public static String SUBCATEGNAME = "SUBCATEGNAME";
     public static String PERIOD = "PERIOD";
     public static String AMOUNT = "AMOUNT";
 
@@ -56,8 +54,6 @@ public class BudgetQuery
                 BUDGETYEARID,
                 CATEGID,
                 CATEGNAME,
-                SUBCATEGID,
-                SUBCATEGNAME,
                 PERIOD,
                 AMOUNT
         };

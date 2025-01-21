@@ -18,6 +18,7 @@
 package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
+import com.money.manager.ex.about.AboutFragment;
 import com.money.manager.ex.budget.BudgetAdapter;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.Core;
@@ -37,8 +38,8 @@ import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.PriceEditModel;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
+import com.money.manager.ex.scheduled.ScheduledTransactionEditActivity;
+import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
 import com.money.manager.ex.search.SearchParametersFragment;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -73,7 +74,7 @@ public interface MmxComponent {
     void inject(InvestmentTransactionEditActivity activity);
     void inject(MainActivity activity);
     void inject(PriceEditActivity activity);
-    void inject(RecurringTransactionEditActivity activity);
+    void inject(ScheduledTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
     void inject(SettingsActivity activity);
 
@@ -82,9 +83,10 @@ public interface MmxComponent {
     void inject(CurrencyListFragment fragment);
     void inject(DatabaseSettingsFragment fragment);
     void inject(HomeFragment fragment);
-    void inject(RecurringTransactionListFragment fragment);
+    void inject(ScheduledTransactionListFragment fragment);
     void inject(SearchParametersFragment fragment);
     void inject(SyncPreferenceFragment fragment);
+    void inject(AboutFragment aboutFragment);
 
     // Dialogs
     void inject(EditPriceDialog dialog);
@@ -121,4 +123,5 @@ public interface MmxComponent {
 
     // Adapters
     void inject(BudgetAdapter adapter);
+
 }

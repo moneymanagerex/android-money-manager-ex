@@ -50,6 +50,9 @@
                     android:id="@+id/menu_current_year"
                     android:title="@string/current_year"/>
                 <item
+                    android:id="@+id/menu_current_fin_year"
+                    android:title="@string/current_fin_year"/>
+                <item
                     android:id="@+id/menu_future_transactions"
                     android:title="@string/future_transactions" />
                 <item

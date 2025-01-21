@@ -18,7 +18,9 @@
 package com.money.manager.ex.database;
 
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.domainmodel.Taglink;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -42,19 +44,19 @@ public interface ITransactionEntity {
     String TRANSDATE = "TRANSDATE";
     String FOLLOWUPID = "FOLLOWUPID";
 
-    Integer getId();
-    void setId(Integer value);
+    Long getId();
+    void setId(Long value);
     boolean hasId();
 
-    Integer getAccountId();
-    void setAccountId(Integer value);
+    Long getAccountId();
+    void setAccountId(Long value);
 
-    Integer getAccountToId();
-    void setAccountToId(Integer value);
+    Long getAccountToId();
+    void setAccountToId(Long value);
     boolean hasAccountTo();
 
-    Integer getCategoryId();
-    void setCategoryId(Integer value);
+    Long getCategoryId();
+    void setCategoryId(Long value);
     boolean hasCategory();
 
     /**
@@ -76,8 +78,8 @@ public interface ITransactionEntity {
     String getNotes();
     void setNotes(String value);
 
-    Integer getPayeeId();
-    void setPayeeId(Integer value);
+    Long getPayeeId();
+    void setPayeeId(Long value);
     boolean hasPayee();
 
     String getStatus();
@@ -86,6 +88,12 @@ public interface ITransactionEntity {
     String getTransactionNumber();
     void setTransactionNumber(String value);
 
+    public String getTransactionCode();
     TransactionTypes getTransactionType();
     void setTransactionType(TransactionTypes value);
+
+    public String getTransactionModel();
+
+    public void setTags(ArrayList<Taglink> tags) ;
+    public ArrayList<Taglink> getTags() ;
 }

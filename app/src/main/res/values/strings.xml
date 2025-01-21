@@ -20,7 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">A simple and easy-to-use application to manage personal finances, bank accounts, family budget, and so on.</string>
-    <string name="application_credits">MoneyManagerEx for Android Project uses ActionBarSherlock library</string>
+    <string name="application_credits">Money Manager Ex for Android Project uses ActionBarSherlock library</string>
     <string name="application_license">Open source licenses</string>
 
     <!-- database -->
@@ -82,7 +82,7 @@
     <string name="revoke_receive_sms_access">Go to Settings >> Apps >> Money Manager Ex >> Permissions and deny the access for SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transaction Status Notification</string>
     <string name="summary_sms_trans_status_notification">Enable to show the status of bank transaction sms process in the notification area in place of showing them as a Toast msg or New Transaction screen</string>
-    <string name="notification_click_to_edit_transaction">Touch to edit the transaction...</string>
+    <string name="notification_click_to_edit_transaction">Touch to edit the transaction&#8230;</string>
     <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
 
@@ -133,6 +133,7 @@
     <string name="add_subcategory">Add Subcategory</string>
     <string name="edit_categoryName">Edit Category</string>
     <string name="delete_category">Delete Category</string>
+    <string name="search_sub_category">Include sub category</string>
 
     <!-- currency -->
     <string name="currency_name">Currency name</string>
@@ -148,6 +149,7 @@
     <string name="conversion_to_base_rate">Conversion</string>
     <string name="currency_name_empty">Currency name is required</string>
     <string name="new_edit_currency">New/Edit Currency</string>
+    <string name="missing_default_currency">Missing Default Currency in setting</string>
 
     <!-- transaction -->
     <string name="amount">Amount</string>
@@ -200,6 +202,7 @@
     <string name="access_info">Access info</string>
     <string name="initial_balance">Initial balance</string>
     <string name="notes">Notes</string>
+    <string name="notes_hint">Insert a note</string>
     <string name="closed">Closed</string>
     <string name="theme_application">Theme</string>
     <string name="theme_holo">Material Dark</string>
@@ -230,7 +233,19 @@
     <string name="widget_all_accounts">All Accounts</string>
     <string name="widget_add_transaction">Add Transaction</string>
 
-    <!-- Recurring Transactions -->
+    <!-- TAG -->
+    <string name="tag">Tag/Label</string>
+    <string name="tagsList_transactions">Tags for transaction</string>
+    <string name="tag_name">Tag name</string>
+    <string name="edit_tagName">Edit Tag</string>
+    <string name="delete_tag">Delete Tag</string>
+    <string name="select_tag">Select Tag</string>
+    <string name="tag_empty_list">No Tag has been found. To create one, tap the green plus button.</string>
+    <string name="tag_can_not_deleted">The selected tag can not be deleted because it is referenced</string>
+    <string name="db_tag_update_failed">Updating Tag failed</string>
+    <string name="space_replaced_with__">Space, &amp; and | was replaced with "_"</string>
+
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">None</string>
     <string name="once">Once</string>
     <string name="weekly">Weekly</string>
@@ -247,12 +262,12 @@
     <string name="in_x_months">In (x) Months</string>
     <string name="every_x_days">Every (x) Days</string>
     <string name="every_x_months">Every (x) Months</string>
-    <string name="repeating_empty_transaction">No recurring transactions have been found. To create one, tap the green plus button.</string>
+    <string name="repeating_empty_transaction">No scheduled transactions have been found. To create one, tap the green plus button.</string>
     <string name="inactive">Inactive</string>
     <string name="activates">Activates</string>
-    <string name="days_overdue">days overdue!</string>
-    <string name="days_remaining">days remaining</string>
-    <string name="new_edit_repeating_transaction">New/Edit Recurring Transaction</string>
+    <string name="days_overdue">%d days overdue!</string>
+    <string name="days_remaining">%d days remaining</string>
+    <string name="new_edit_repeating_transaction">New/Edit Scheduled Transaction</string>
     <string name="due_date">Due Date</string>
     <string name="next_occurrence">Next Occurrence</string>
     <string name="payment_date">Payment Date</string>
@@ -265,12 +280,18 @@
     <string name="enter_next_occurrence">Enter Next Occurrence</string>
     <string name="skip_next_occurrence">Skip Next Occurrence</string>
     <string name="skip_next_occurrence_confirmation">Do you want to skip the next occurrence?</string>
-    <string name="notification_repeating_transaction_expired">There are expired recurring transactions</string>
+    <string name="notification_repeating_transaction_expired">There are expired scheduled transactions</string>
     <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
-    <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
+    <string name="num_repeating_transaction_expired">%1$d scheduled transaction overdue</string>
     <string name="skip">Skip</string>
     <string name="enter">Enter</string>
     <string name="enter_amount">Enter Amount</string>
+
+    <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Auto Transaction</string>
+    <string name="manual">Manual entry</string>
+    <string name="prompt">Prompt for entry</string>
+    <string name="auto">Automatic entry</string>
 
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
@@ -305,6 +326,8 @@
     <string name="last_month">Previous Month</string>
     <string name="last30days">Last 30 Days</string>
     <string name="last_year">Previous Year</string>
+    <string name="current_fin_year">Current Financial Year</string>
+    <string name="last_fin_year">Previous Financial Year</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Number of transactions found: %1$d</string>
@@ -370,7 +393,7 @@
     <string name="menu_report_where_money_goes">Where the Money Goes</string>
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
     <string name="title_check_repeating_transaction">Notification time</string>
-    <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
+    <string name="summary_check_repeating_transaction">What time would you check if there are scheduled transactions overdue? (default 08:00)</string>
     <string name="credits">Credits</string>
     <string name="libraries">Libraries</string>
     <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>
@@ -383,7 +406,7 @@
     <string name="empty_category">Empty Category</string>
     <string name="empty_payee">Empty Payee</string>
     <string name="help">Help</string>
-    <string name="delete_repeating_transaction">Delete Recurring Transaction</string>
+    <string name="delete_repeating_transaction">Delete Scheduled Transaction</string>
     <string name="last">Last</string>
     <string name="accounts">Accounts</string>
     <string name="to_account">To Account</string>
@@ -395,7 +418,7 @@
     <string name="delete_others_selected_transaction">Are you sure you want delete the %d selected transactions?</string>
     <string name="categories">Categories</string>
     <string name="payees">Payees</string>
-    <string name="recurring_transactions">Recurring Transactions</string>
+    <string name="recurring_transactions">Scheduled Transactions</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">New Account</string>
     <string name="create_new_account">Create new account</string>
@@ -405,8 +428,8 @@
     <string name="amount_to">Amount to</string>
     <string name="reset">Reset</string>
     <string name="result_search">Result of your search</string>
-    <string name="new_repeating_transaction">New Recurring Transaction</string>
-    <string name="edit_repeating_transaction">Edit Recurring Transaction</string>
+    <string name="new_repeating_transaction">New Scheduled Transaction</string>
+    <string name="edit_repeating_transaction">Edit Scheduled Transaction</string>
     <string name="path_database_not_exists">Database path not exists</string>
     <string name="database_can_not_open_write">The database can not be opened for writing</string>
     <string name="time_frame">Time Frame</string>
@@ -426,8 +449,12 @@
     <string name="donate_in_app_already_donate">You already supported the development of MoneyManagerEx for Android with your donation!\n\nThank you from development team!</string>
     <string name="donate_in_app_retrieving_status">Retrieving status of your donations from Google Play. Please wait…</string>
     <string name="donate_in_app_error">Cannot use the in-app billing. Check whether the latest version of the Play Store application is installed.</string>
-    <string name="title_notifications_repeating_transaction">Notification Recurring Transaction overdue </string>
-    <string name="summary_notifications_repeating_transaction">Show notification for recurring transaction overdue</string>
+    <string name="title_repeating_transaction_process">Process Scheduled Transaction</string>
+    <string name="summary_repeating_transaction_process">Process scheduled transaction overdue (Post, Prompt, Manual)</string>
+
+    <string name="title_use_nested_category">Use new nested category model</string>
+    <string name="summary_use_nested_category">Use new nested category model instead of category:subcategory model</string>
+
     <string name="tools">Tools</string>
     <string name="entities">Entities</string>
     <string name="loading">Loading…</string>
@@ -458,7 +485,7 @@
     <string name="locale_es" translatable="false">Español</string>
     <string name="locale_fr" translatable="false">Français</string>
     <string name="locale_he" translatable="false">עברית</string>
-    <string name="locale_hu" translatable="false">Magyar</string>
+    <string name="locale_hu" translatable="false">magyar</string>
     <string name="locale_id" translatable="false">bahasa Indonesia</string>
     <string name="locale_it" translatable="false">Italiano</string>
     <string name="locale_ja" translatable="false">日本語</string>
@@ -492,7 +519,7 @@
     <string name="tutorial_global_1">Multiple currencies and languages. Open Source. Join our translation team.</string>
     <string name="tutorial_sync_1">Support for multiple platforms, synchronization via multiple cloud services. Import and export of your data to other applications.</string>
     <string name="transactions">Transactions</string>
-    <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
+    <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Scheduled transactions with reminders.</string>
     <string name="split_category">-Split Category-</string>
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
     <string name="sort_by_ascending">Sort by year and month ascending</string>
@@ -603,6 +630,7 @@
     <string name="value">Value</string>
 
     <string name="view_transactions">View transactions</string>
+    <string name="view_transactions_sub">View transactions with subcategories</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="error_updating_rates">Error updating rates</string>
     <string name="error_no_price_found_for_symbol">No price found for symbol</string>
@@ -631,7 +659,8 @@
     <string name="all_accounts">All Accounts</string>
     <string name="records">records</string>
     <!-- db password entry -->
-    <string name="enter_password">Enter password</string>
+    <string name="enter_password">Enter password (optional)</string>
+    <string name="password_hint">Just for .emb file</string>
 
     <string name="success">Operation successful</string>
     <string name="overview">Overview</string>
@@ -754,6 +783,7 @@
     <string name="remote_file_not_found">Remote file not found</string>
     <string name="error_checking_remote">Error checking for remote changes.</string>
     <string name="no_remote_change_date">The remote change date not found in the metadata.</string>
+    <string name="remote_unavailable">Remote file is unavailable</string>
 
     <!-- Select database screen -->
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
@@ -772,6 +802,11 @@
 
     <string name="title_budget_show_simple_view">Show simple budget view</string>
     <string name="summary_budget_show_simple_view">If checked budgets use the simplified view</string>
+
+    <string name="title_pref_budget_financial_year">Use financial year in budget</string>
+    <string name="summary_pref_budget_financial_year">If checked budgets use financial year instead of calendar year</string>
+
+
     <string name="shares">Shares</string>
     <string name="loan">Loan</string>
     <string name="loan_account">Loan Accounts</string>
@@ -779,4 +814,33 @@
     <string name="currency">Currency</string>
     <string name="menu_create_database">Create Database</string>
     <string name="create_database">Create Database</string>
+    <string name="pref_anonymous_usage">prefanonymoususage</string>
+    <string name="summary_anonymous_usage">Enable to help us sending anonymous data about MMEX usage</string>
+    <string name="title_anonymous_usage">Send anonymous usage data</string>
+    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
+    <string name="title_auto_transaction_number">Auto populate transaction number</string>
+
+    <!-- Notification Setting -->
+    <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
+    <string name="summary_notifications_repeating_transaction">Show notification for scheduled transaction overdue</string>
+    <string name="notification_channel_recurring">Scheduled Transaction Notification</string>
+    <string name="notification_channel_recurring__description">Overdue Scheduled Transaction Notification</string>
+
+    <string name="notification_channel_remotefile">Remote File Operation</string>
+    <string name="notification_channel_remotefile__description">Remote File Operation Notification</string>
+
+    <string name="notification_channel_fileoperation_downloadin">Mmex Downloading</string>
+    <string name="notification_channel_fileoperation_uploadin">Mmex Uploading</string>
+    <string name="notification_channel_fileoperation_complete">Mmex Upload Complete</string>
+    <string name="notification_channel_fileoperation_conflict">Mmex Sync Conflict</string>
+    <string name="show">Show</string>
+    <string name="attachment_folder">Attachment Folder</string>
+    <string name="attachment_folder_summary">Select the folder where attachments will be saved</string>
+    <string name="pref_attachment_folder">Attachment Folder</string>
+    <string name="version_copied_to_clipboard">Version number copied to cliboard</string>
+    <string name="issue_open">"Open issue on GitHub "</string>
+
+    <!-- Builder button -->
+    <string name="CLEAR_ALL">Clear all</string>
+
 </resources>

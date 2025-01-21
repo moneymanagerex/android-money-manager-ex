@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.parceler.Parcel;
 
@@ -88,8 +87,8 @@ public class Stock
 
     // properties
 
-    public Integer getId() {
-        return getInt(StockFields.STOCKID);
+    public Long getId() {
+        return getLong(StockFields.STOCKID);
     }
 
     public Money getCommission() {
@@ -109,12 +108,12 @@ public class Stock
         contentValues.put(StockFields.CURRENTPRICE, currentPrice.toString());
     }
 
-    public int getHeldAt() {
-        return getInt(StockFields.HELDAT);
+    public long getHeldAt() {
+        return getLong(StockFields.HELDAT);
     }
 
-    public void setHeldAt(int value) {
-        setInt(StockFields.HELDAT, value);
+    public void setHeldAt(long value) {
+        setLong(StockFields.HELDAT, value);
     }
 
     public String getNotes() {

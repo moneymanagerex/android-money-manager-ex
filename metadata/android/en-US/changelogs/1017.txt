@@ -1,0 +1,2 @@
+## What's Changed
+* Fixed Crash in Report income/expense.  by @wolfsolver

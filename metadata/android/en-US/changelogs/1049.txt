@@ -1,0 +1,3 @@
+- Fixed category usage checks.
+- Resolved NetworkOnMainThreadException for NextCloud Client.
+- Addressed Integer2Long bug with invalid ID search handling.

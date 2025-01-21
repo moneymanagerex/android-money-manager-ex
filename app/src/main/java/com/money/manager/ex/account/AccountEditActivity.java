@@ -17,6 +17,7 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,9 +28,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -41,9 +40,9 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
@@ -56,7 +55,6 @@ import org.parceler.Parcels;
 import java.util.Arrays;
 import java.util.Date;
 
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -84,12 +82,12 @@ public class AccountEditActivity
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
 
     // Activity members
-    @State String mCurrencyName;
+    String mCurrencyName;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
 
     private AccountEditViewHolder mViewHolder;
-    @State boolean mIsDefault;
+    boolean mIsDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +105,7 @@ public class AccountEditActivity
         if (getIntent() != null && savedInstanceState == null) {
             mIntentAction = getIntent().getAction();
             if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                int accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
+                long accountId = getIntent().getLongExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
                 if (accountId != Constants.NOT_SET) {
                     // Load account or exit if one not found
                     if (!loadAccount(accountId)) {
@@ -131,7 +129,7 @@ public class AccountEditActivity
 
         // Default account
         AppSettings settings = new AppSettings(this);
-        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
         mIsDefault = mAccount.getId().equals(defaultAccountId);
 
         // Compose layout
@@ -152,7 +150,7 @@ public class AccountEditActivity
         switch (requestCode) {
             case RequestCodes.CURRENCY:
                 if (data == null) return;
-                int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
+                long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
                 mAccount.setCurrencyId(currencyId);
 
                 mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
@@ -203,8 +201,8 @@ public class AccountEditActivity
 
         outState.putParcelable(KEY_ACCOUNT_ENTITY, Parcels.wrap(mAccount));
 
-//        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
-//        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
+        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
+        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
         outState.putString(KEY_ACTION, mIntentAction);
     }
 
@@ -298,15 +296,10 @@ public class AccountEditActivity
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         mViewHolder.spinSymbolInitialBalance.setAdapter(adapterSymbol);
 
-        mViewHolder.txtInitialBalance.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calculator.forActivity(AccountEditActivity.this)
-                        .currency(mAccount.getCurrencyId())
-                        .amount(mAccount.getInitialBalance())
-                        .show(RequestCodes.AMOUNT);
-            }
-        });
+        mViewHolder.txtInitialBalance.setOnClickListener(v -> Calculator.forActivity(AccountEditActivity.this)
+                .currency(mAccount.getCurrencyId())
+                .amount(mAccount.getInitialBalance())
+                .show(RequestCodes.AMOUNT));
 
         // Account Type adapters and values
 
@@ -387,57 +380,46 @@ public class AccountEditActivity
         // Favourite
         initializeFavouriteAccountControls();
 
-        mViewHolder.txtSelectCurrency.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.CURRENCY);
-            }
+        mViewHolder.txtSelectCurrency.setOnClickListener(v -> {
+            Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(intent, RequestCodes.CURRENCY);
         });
 
         //Date picker
         mViewHolder.txtInitialDate.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateTimeUtils.from(year, monthOfYear, dayOfMonth);
-                    mAccount.setInitialDate(dateTime);
-                    showDate(dateTime);
-                }
+            final DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                Date dateTime = dateTimeUtils.from(year, month, dayOfMonth);
+                mAccount.setInitialDate(dateTime);
+                showDate(dateTime);
             };
 
             @Override
             public void onClick(View v) {
                 MmxDate dateTime = new MmxDate(mAccount.getInitialDate());
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setOnDateSetListener(listener)
-                        .setFirstDayOfWeek(dateTimeUtils.getFirstDayOfWeek())
-                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                if (new UIHelper(getApplicationContext()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getSupportFragmentManager(), "datepicker");
+                DatePickerDialog datePicker = new DatePickerDialog(
+                        AccountEditActivity.this,
+                        listener,
+                        dateTime.getYear(),
+                        dateTime.getMonthOfYear(),
+                        dateTime.getDayOfMonth()
+                );
+                // Customize the DatePickerDialog if needed
+                datePicker.show();
             }
         });
 
-        mViewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(mAccount.getInitialDate()).minusDays(1).toDate();
-                mAccount.setInitialDate(dateTime);
-                showDate(dateTime);
-            }
+        mViewHolder.previousDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(mAccount.getInitialDate()).minusDays(1).toDate();
+            mAccount.setInitialDate(dateTime);
+            showDate(dateTime);
         });
 
-        mViewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(mAccount.getInitialDate()).plusDays(1).toDate();
-                mAccount.setInitialDate(dateTime);
-                showDate(dateTime);
-            }
+        mViewHolder.nextDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(mAccount.getInitialDate()).plusDays(1).toDate();
+            mAccount.setInitialDate(dateTime);
+            showDate(dateTime);
         });
 
         // Notes
@@ -511,33 +493,23 @@ public class AccountEditActivity
     }
 
     private void initializeDefaultAccountControls() {
-        mViewHolder.defaultAccountCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mIsDefault = isChecked;
+        mViewHolder.defaultAccountCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mIsDefault = isChecked;
 
-                displayDefaultAccount();
-            }
+            displayDefaultAccount();
         });
 
-        mViewHolder.defaultAccountText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIsDefault = !mIsDefault;
+        mViewHolder.defaultAccountText.setOnClickListener(v -> {
+            mIsDefault = !mIsDefault;
 
-                displayDefaultAccount();
-            }
+            displayDefaultAccount();
         });
     }
 
     private void initializeFavouriteAccountControls() {
-        OnClickListener listener = new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                mAccount.setFavorite(!mAccount.getFavorite());
-                displayFavouriteStatus();
-            }
+        OnClickListener listener = v -> {
+            mAccount.setFavorite(!mAccount.getFavorite());
+            displayFavouriteStatus();
         };
         mViewHolder.imageViewAccountFav.setOnClickListener(listener);
         mViewHolder.favouriteAccountTextView.setOnClickListener(listener);
@@ -574,7 +546,7 @@ public class AccountEditActivity
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
      */
-    private boolean loadAccount(int accountId) {
+    private boolean loadAccount(long accountId) {
         AccountRepository repository = new AccountRepository(getApplicationContext());
         mAccount = repository.load(accountId);
         if (mAccount == null) return false;
@@ -595,8 +567,8 @@ public class AccountEditActivity
             }
         }
 
-//        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
-//        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
+        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
+        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 
@@ -605,7 +577,7 @@ public class AccountEditActivity
      * @param currencyId Id of the currency to select
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */
-    private boolean selectCurrencyName(int currencyId) {
+    private boolean selectCurrencyName(long currencyId) {
         boolean result;
         CurrencyRepository repository = new CurrencyRepository(getApplicationContext());
         Currency currency = repository.loadCurrency(currencyId);
@@ -628,7 +600,7 @@ public class AccountEditActivity
             settings.getGeneralSettings().setDefaultAccountId(mAccount.getId());
         } else {
             // Check if this was the default account and is now being unset.
-            Integer currentDefaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+            Long currentDefaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
             if (currentDefaultAccountId != null && currentDefaultAccountId.equals(mAccount.getId())) {
                 // Reset default account.
                 settings.getGeneralSettings().setDefaultAccountId(null);

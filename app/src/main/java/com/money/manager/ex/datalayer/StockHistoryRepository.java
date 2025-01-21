@@ -56,10 +56,10 @@ public class StockHistoryRepository
         Online(1),
         Manual(2);
 
-        UpdateType(int i) {
+        UpdateType(long i) {
             this.type = i;
         }
-        public int type;
+        public long type;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class StockHistoryRepository
                 null);
         if (cursor == null) return false;
 
-        int records = cursor.getCount();
+        long records = cursor.getCount();
         result = records > 0;
 
         cursor.close();
@@ -138,7 +138,7 @@ public class StockHistoryRepository
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = getContext().getContentResolver().update(getUri(),
+        long records = getContext().getContentResolver().update(getUri(),
                 values,
                 where, whereArgs);
 
@@ -189,9 +189,9 @@ public class StockHistoryRepository
         return history;
     }
 
-    public int deleteAutomaticPriceHistory() {
+    public long deleteAutomaticPriceHistory() {
         // Delete all automatically downloaded prices.
-        int deleted = getContext().getContentResolver().delete(getUri(),
+        long deleted = getContext().getContentResolver().delete(getUri(),
             StockHistory.UPDTYPE + "=?",
             new String[] { "1" });
 
@@ -202,8 +202,8 @@ public class StockHistoryRepository
      * deletes all automatic price history
      * @return number of deleted records
      */
-    public int deleteAllPriceHistory() {
-        int deleted = getContext().getContentResolver().delete(getUri(),
+    public long deleteAllPriceHistory() {
+        long deleted = getContext().getContentResolver().delete(getUri(),
             "1",
             null);
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- default category -->
+    <string name="category_1">Bollette</string>
+    <string name="category_2">Vitto</string>
+    <string name="category_3">Tempo libero</string>
+    <string name="category_4">Automobile</string>
+    <string name="category_5">Istruzione</string>
+    <string name="category_6">Manutenzione della Casa</string>
+    <string name="category_7">Salute</string>
+    <string name="category_8">Assicurazione</string>
+    <string name="category_9">Vacanze</string>
+    <string name="category_10">Tasse</string>
+    <string name="category_11">Varie</string>
+    <string name="category_12">Regali</string>
+    <string name="category_13">Entrate</string>
+    <string name="category_14">Altre Entrate</string>
+    <string name="category_15">Altre Spese</string>
+    <string name="category_16">Trasferimento</string>
+    <!-- default subcategory -->
+    <string name="subcategory_1">Telefono</string>
+    <string name="subcategory_2">Elettricità</string>
+    <string name="subcategory_3">Gas</string>
+    <string name="subcategory_4">Internet</string>
+    <string name="subcategory_5">Affitto</string>
+    <string name="subcategory_6">Pay TV</string>
+    <string name="subcategory_7">Acqua</string>
+    <string name="subcategory_8">Alimentari</string>
+    <string name="subcategory_9">Ristorante</string>
+    <string name="subcategory_10">Film</string>
+    <string name="subcategory_11">Video Noleggio</string>
+    <string name="subcategory_12">Riviste</string>
+    <string name="subcategory_13">Manutenzione</string>
+    <string name="subcategory_14">Gas</string>
+    <string name="subcategory_15">Parcheggio</string>
+    <string name="subcategory_16">Iscrizioni</string>
+    <string name="subcategory_17">Libri</string>
+    <string name="subcategory_18">Tasse scolastiche</string>
+    <string name="subcategory_19">Altro</string>
+    <string name="subcategory_20">Abbigliamento</string>
+    <string name="subcategory_21">Arredamento</string>
+    <string name="subcategory_22">Altro</string>
+    <string name="subcategory_23">Salute</string>
+    <string name="subcategory_24">Dentista</string>
+    <string name="subcategory_25">Oculista</string>
+    <string name="subcategory_26">Medico</string>
+    <string name="subcategory_27">Farmaci</string>
+    <string name="subcategory_28">Auto</string>
+    <string name="subcategory_29">Vita</string>
+    <string name="subcategory_30">Casa</string>
+    <string name="subcategory_31">Salute</string>
+    <string name="subcategory_32">Viaggi</string>
+    <string name="subcategory_33">Alloggio</string>
+    <string name="subcategory_34">giro turistico</string>
+    <string name="subcategory_35">Imposta Sul Reddito</string>
+    <string name="subcategory_36">Tasse sugli Immobili</string>
+    <string name="subcategory_37">Tasse sull\'Acqua</string>
+    <string name="subcategory_38">Altro</string>
+    <string name="subcategory_39">Stipendio</string>
+    <string name="subcategory_40">Restituzioni/Rimborsi</string>
+    <string name="subcategory_41">Reddito Dagli Investimenti</string>
+</resources>

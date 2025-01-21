@@ -42,7 +42,6 @@ public class QueryBillDeposits
     public static String ACCOUNTID = "ACCOUNTID";
     public static String ACCOUNTNAME = "ACCOUNTNAME";
     public static String CURRENCYID = "CURRENCYID";
-    public static String CATEGSUBCATEGNAME = "CATEGSUBCATEGNAME";
     public static String CATEGNAME = "CATEGNAME";
     public static String SUBCATEGNAME = "SUBCATEGNAME";
     public static String TRANSCODE = "TRANSCODE";
@@ -57,15 +56,16 @@ public class QueryBillDeposits
     public static String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
     public static String TRANSDATE = "TRANSDATE";
     public static String AMOUNT = "AMOUNT";
-    public static String USERNEXTOCCURRENCEDATE = "USERNEXTOCCURRENCEDATE";
+    public static String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
+    public static String TAGS = "TAGS";
 
     // get all columns
     @Override
     public String[] getAllColumns() {
-        return new String[]{BDID + " AS _id", BDID, PAYEEID, PAYEENAME, TOACCOUNTID, TOACCOUNTNAME,
-                ACCOUNTID, ACCOUNTNAME, CURRENCYID, CATEGSUBCATEGNAME,
+        return new String[]{BDID + " AS _id", BDID, PAYEEID, PAYEENAME, TOACCOUNTID, TOACCOUNTNAME, ATTACHMENTCOUNT,
+                ACCOUNTID, ACCOUNTNAME, CURRENCYID,
                 CATEGNAME, SUBCATEGNAME, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
-                TRANSACTIONNUMBER, TRANSDATE, AMOUNT, USERNEXTOCCURRENCEDATE};
+                TRANSACTIONNUMBER, TRANSDATE, AMOUNT, TAGS};
     }
 }

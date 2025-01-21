@@ -16,8 +16,14 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -30,12 +36,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.PayeeActivity;
+import com.money.manager.ex.datalayer.TagRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.Tag;
+import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.Calculator;
@@ -55,14 +69,19 @@ import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.BehaviourSettings;
+import com.money.manager.ex.settings.PerDatabaseFragment;
+import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.parceler.Parcels;
 
@@ -73,14 +92,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+import android.content.SharedPreferences;
+
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -88,7 +105,9 @@ import timber.log.Timber;
 public class EditTransactionCommonFunctions {
 
     private static final String DATEPICKER_TAG = "datepicker";
-
+    // to get database uri
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
     public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
                                           ITransactionEntity transactionEntity, BriteDatabase database) {
         super();
@@ -110,6 +129,10 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransaction> mSplitTransactions;
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
+    public ArrayList<Attachment> mAttachments;
+
+    public ArrayList<Taglink> mTaglinks;
+
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -121,9 +144,9 @@ public class EditTransactionCommonFunctions {
 
     private List<Account> AccountList;
     private final ArrayList<String> mAccountNameList = new ArrayList<>();
-    private final ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private final ArrayList<Long> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
-    private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
+    private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
 
     public boolean deleteMarkedSplits(IRepository repository) {
@@ -141,6 +164,18 @@ public class EditTransactionCommonFunctions {
         }
 
         return true;
+    }
+
+    // issue #1961
+    public void displayNotes() {
+        if( this.viewHolder.edtNotes == null ) return;
+        this.viewHolder.edtNotes.setText(transactionEntity.getNotes());
+    }
+
+    public void displayTags() {
+        if( this.viewHolder.tagsListTextView == null ) return;
+        TaglinkRepository repo = new TaglinkRepository(getContext());
+        this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
     }
 
     public void displayCategoryName() {
@@ -167,11 +202,11 @@ public class EditTransactionCommonFunctions {
         this.viewHolder = new EditTransactionViewHolder(view);
     }
 
-    public Integer getAccountCurrencyId(int accountId) {
+    public Long getAccountCurrencyId(long accountId) {
         if (accountId == Constants.NOT_SET) return Constants.NOT_SET;
 
         AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(accountId);
+        Long currencyId = repo.loadCurrencyIdFor(accountId);
         if (currencyId == null) {
             new UIHelper(getContext()).showToast(R.string.error_loading_currency);
 
@@ -192,8 +227,8 @@ public class EditTransactionCommonFunctions {
         return getActivity().findViewById(R.id.depositButtonIcon);
     }
 
-    public Integer getDestinationCurrencyId() {
-        Integer accountId = this.transactionEntity.getAccountToId();
+    public Long getDestinationCurrencyId() {
+        Long accountId = this.transactionEntity.getAccountToId();
         // The destination account/currency is hidden by default and may be uninitialized.
         if (!transactionEntity.hasAccountTo() && !mAccountIdList.isEmpty()) {
             accountId = mAccountIdList.get(0);
@@ -216,8 +251,8 @@ public class EditTransactionCommonFunctions {
         return mDirty;
     }
 
-    public Integer getSourceCurrencyId() {
-        Integer accountId = this.transactionEntity.getAccountId();
+    public Long getSourceCurrencyId() {
+        Long accountId = this.transactionEntity.getAccountId();
 
         //if (!transactionEntity.has)
         if (accountId == null && !mAccountIdList.isEmpty()) {
@@ -245,6 +280,10 @@ public class EditTransactionCommonFunctions {
         return !getSplitTransactions().isEmpty();
     }
 
+    public boolean hasAttachments() {
+        return !getAttachments().isEmpty();
+    }
+
     /**
      * Initialize account selectors.
      */
@@ -265,13 +304,13 @@ public class EditTransactionCommonFunctions {
         }
 
         AccountRepository accountRepository = new AccountRepository(getContext());
-        Integer accountId = transactionEntity.getAccountId();
+        Long accountId = transactionEntity.getAccountId();
         if (accountId != null) {
             addMissingAccountToSelectors(accountRepository, accountId);
         }
         addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountToId());
         // add the default account, if any.
-        Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
+        Long defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
         if ((accountId != null && accountId == Constants.NOT_SET) && (defaultAccount != null && defaultAccount != Constants.NOT_SET)) {
             accountId = defaultAccount;
@@ -302,10 +341,10 @@ public class EditTransactionCommonFunctions {
 
                 boolean isSource = parent == viewHolder.spinAccount;
                 boolean isTransfer = transactionEntity.getTransactionType() == TransactionTypes.Transfer;
-                Integer accountId = mAccountIdList.get(position);
+                Long accountId = mAccountIdList.get(position);
 
                 if (isSource) {
-                    int originalCurrencyId = getSourceCurrencyId();
+                    long originalCurrencyId = getSourceCurrencyId();
 
                     transactionEntity.setAccountId(accountId);
 
@@ -326,7 +365,7 @@ public class EditTransactionCommonFunctions {
                         displayAmountFrom();
                     }
                 } else {
-                    int originalCurrencyId = getDestinationCurrencyId();
+                    long originalCurrencyId = getDestinationCurrencyId();
 
                     transactionEntity.setAccountToId(accountId);
 
@@ -378,7 +417,7 @@ public class EditTransactionCommonFunctions {
 //            @Override
 //            public void onClick(View v) {
 //                // Get currency id from the account for which the amount has been modified.
-//                Integer currencyId;
+//                Long currencyId;
 //                Money amount;
 //
 //                if (v.equals(viewHolder.txtAmountTo)) {
@@ -400,35 +439,29 @@ public class EditTransactionCommonFunctions {
 
         // amount
         displayAmountFrom();
-        viewHolder.txtAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currencyId = getSourceCurrencyId();
-                Money amount = transactionEntity.getAmount();
+        viewHolder.txtAmount.setOnClickListener(view -> {
+            long currencyId = getSourceCurrencyId();
+            Money amount = transactionEntity.getAmount();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
-                Calculator.forActivity(getActivity())
-                        .currency(currencyId)
-                        .amount(amount)
-                        .show(RequestCodes.AMOUNT);
-            }
+            Calculator.forActivity(getActivity())
+                    .currency(currencyId)
+                    .amount(amount)
+                    .show(RequestCodes.AMOUNT);
         });
 
         // amount to
         displayAmountTo();
-        viewHolder.txtAmountTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currencyId = getDestinationCurrencyId();
-                Money amount = transactionEntity.getAmountTo();
+        viewHolder.txtAmountTo.setOnClickListener(view -> {
+            long currencyId = getDestinationCurrencyId();
+            Money amount = transactionEntity.getAmountTo();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
-                Calculator.forActivity(getActivity())
-                        .amount(amount).currency(currencyId)
-                        .show(RequestCodes.AMOUNT_TO);
-            }
+            Calculator.forActivity(getActivity())
+                    .amount(amount).currency(currencyId)
+                    .show(RequestCodes.AMOUNT_TO);
         });
     }
 
@@ -440,21 +473,18 @@ public class EditTransactionCommonFunctions {
         // keep the dataset name for later.
         this.mSplitCategoryEntityName = datasetName;
 
-        this.viewHolder.categoryTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isSplitSelected()) {
-                    // select first category.
-                    Intent intent = new Intent(getActivity(), CategoryListActivity.class);
-                    intent.setAction(Intent.ACTION_PICK);
-                    getActivity().startActivityForResult(intent, RequestCodes.CATEGORY);
-                } else {
-                    // select split categories.
-                    showSplitCategoriesForm(mSplitCategoryEntityName);
-                }
-
-                // results are handled in onActivityResult.
+        this.viewHolder.categoryTextView.setOnClickListener(v -> {
+            if (!isSplitSelected()) {
+                // select first category.
+                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                getActivity().startActivityForResult(intent, RequestCodes.CATEGORY);
+            } else {
+                // select split categories.
+                showSplitCategoriesForm(mSplitCategoryEntityName);
             }
+
+            // results are handled in onActivityResult.
         });
     }
 
@@ -469,44 +499,34 @@ public class EditTransactionCommonFunctions {
         }
         showDate(date);
 
-        viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
-            final CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear, dayOfMonth);
-                    setDate(dateTime);
-                }
+        viewHolder.dateTextView.setOnClickListener(v -> {
+            MmxDate dateTime = new MmxDate(transactionEntity.getDate());
+
+            DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                Date selectedDate = dateTimeUtilsLazy.get().from(year, month, dayOfMonth);
+                setDate(selectedDate);
             };
 
-            @Override
-            public void onClick(View v) {
-                MmxDate dateTime = new MmxDate(transactionEntity.getDate());
+            DatePickerDialog datePicker = new DatePickerDialog(
+                    getContext(),
+                    listener,
+                    dateTime.getYear(),
+                    dateTime.getMonthOfYear(),
+                    dateTime.getDayOfMonth()
+            );
 
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                    .setOnDateSetListener(listener)
-                    .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
-                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
-                if (new UIHelper(getContext()).isUsingDarkTheme()) {
-                    datePicker.setThemeDark();
-                }
-                datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
-            }
+            // Customize the DatePickerDialog if needed
+            datePicker.show();
         });
 
-        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
-                setDate(dateTime);
-            }
+        viewHolder.previousDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
+            setDate(dateTime);
         });
 
-        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
-                setDate(dateTime);
-            }
+        viewHolder.nextDayButton.setOnClickListener(view -> {
+            Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
+            setDate(dateTime);
         });
     }
 
@@ -552,28 +572,116 @@ public class EditTransactionCommonFunctions {
         });
     }
 
-    public void initPayeeControls() {
-        this.viewHolder.txtSelectPayee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                getActivity().startActivityForResult(intent, RequestCodes.PAYEE);
+    public void initTagsControls() {
+        if( this.viewHolder.tagsListTextView == null ) return;
 
-                // the result is handled in onActivityResult
+        if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
+
+        this.viewHolder.tagsListTextView.setOnClickListener(v -> {
+            // inizialize display
+            TaglinkRepository repo = new TaglinkRepository(getContext());
+            this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
+
+            TagRepository tagRepository = new TagRepository(getContext());
+            ArrayList<Tag> tagsList = tagRepository.getAllActiveTag();
+            boolean[] tagsFlag = new boolean[tagsList.size()];
+            String[] tagsListString = new String[tagsList.size()];
+            for (int i = 0; i < tagsList.size(); i++) {
+                tagsListString[i] = tagsList.get(i).getName();
+                // set default from mTagLink
+                long tagId = tagsList.get(i).getId().intValue();
+                if ( mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
+                    tagsFlag[i] = true;
+                };
             }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            // set title
+            builder.setTitle(R.string.tagsList_transactions);
+            builder.setCancelable(false);
+            builder.setMultiChoiceItems(tagsListString, tagsFlag,  new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                    tagsFlag[i] = b;
+                }
+            });
+
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Initialize string builder
+                    // Save also taglink, loop at mtaglink to check actual record
+                    for (int j = 0; j < tagsList.size(); j++) {
+                        long tagId = tagsList.get(j).getId().intValue();
+                        Taglink taglink ;
+                        try {
+                            taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
+                        } catch ( Exception e) {
+                            taglink = null;
+                        }
+                        if (taglink == null ) {
+                            if ( ! tagsFlag[j] ) {
+                                // flag off and mlink not present, nothing to do
+                            } else {
+                                // flag on and mlink not present, create
+                                taglink = new Taglink();
+                                taglink.setRefType(transactionEntity.getTransactionModel());
+                                taglink.setRefId(transactionEntity.getId());
+                                taglink.setTagId(tagId);
+                                mTaglinks.add(taglink);
+                            }
+                        } else {
+                            if ( ! tagsFlag[j] ) {
+                                // flag off and mlink is present, delete
+                                mTaglinks.remove(taglink);
+                            } else {
+                                // flag on and mlink present  nothing
+                            }
+                        }
+                    }
+                    // update UI field
+                    displayTags();
+                }
+            });
+
+            builder.setNegativeButton(android.R.string.cancel,new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // dismiss dialog
+                    dialogInterface.dismiss();
+                }
+            });
+
+            builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mTaglinks.clear();
+                    displayTags();
+                }
+            });
+
+            // show dialog
+            builder.show();
+    });
+
+    }
+
+    public void initPayeeControls() {
+        this.viewHolder.txtSelectPayee.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), PayeeActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            getActivity().startActivityForResult(intent, RequestCodes.PAYEE);
+
+            // the result is handled in onActivityResult
         });
 
-        viewHolder.removePayeeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDirty(true);
+        viewHolder.removePayeeButton.setOnClickListener(v -> {
+            setDirty(true);
 
-                transactionEntity.setPayeeId(Constants.NOT_SET);
-                payeeName = "";
+            transactionEntity.setPayeeId(Constants.NOT_SET);
+            payeeName = "";
 
-                showPayeeName();
-            }
+            showPayeeName();
         });
     }
 
@@ -581,28 +689,25 @@ public class EditTransactionCommonFunctions {
      * Initialize Split Categories button & controls.
      */
     public void initSplitCategories() {
-        viewHolder.splitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean splitting = !isSplitSelected();
+        viewHolder.splitButton.setOnClickListener(v -> {
+            boolean splitting = !isSplitSelected();
 
-                if (splitting) {
-                    showSplitCategoriesForm(mSplitCategoryEntityName);
-                } else {
-                    // User wants to remove split.
-                    int splitCount = getSplitTransactions().size();
-                    switch (splitCount) {
-                        case 0:
-                            // just remove split
-                            setSplit(false);
-                            break;
-                        case 1:
-                            convertOneSplitIntoRegularTransaction();
-                            break;
-                        default:
-                            showSplitResetNotice();
-                            break;
-                    }
+            if (splitting) {
+                showSplitCategoriesForm(mSplitCategoryEntityName);
+            } else {
+                // User wants to remove split.
+                int splitCount = getSplitTransactions().size();
+                switch (splitCount) {
+                    case 0:
+                        // just remove split
+                        setSplit(false);
+                        break;
+                    case 1:
+                        convertOneSplitIntoRegularTransaction();
+                        break;
+                    default:
+                        showSplitResetNotice();
+                        break;
                 }
             }
         });
@@ -611,12 +716,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initStatusSelector() {
-        mStatusItems = activity.getResources().getStringArray(R.array.status_items);
+        String[] statusItems = activity.getResources().getStringArray(R.array.status_items);
         mStatusValues = activity.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, mStatusItems);
+                android.R.layout.simple_spinner_item, statusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinStatus.setAdapter(adapterStatus);
 
@@ -673,51 +778,114 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        viewHolder.btnTransNumber.setOnClickListener(v -> {
+            AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-                String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                    repo.getSource() + " WHERE " +
-                    ITransactionEntity.ACCOUNTID + "=?";
+            String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                repo.getSource() + " WHERE " +
+                ITransactionEntity.ACCOUNTID + "=?";
 
-                String accountId = transactionEntity.getAccountId().toString();
-                Cursor cursor = mDatabase.query(sql, accountId);
-                if (cursor == null) return;
+            String accountId = transactionEntity.getAccountId().toString();
+            Cursor cursor = mDatabase.query(sql, accountId);
+            if (cursor == null) return;
 
-                if (cursor.moveToFirst()) {
-                    String transNumber = cursor.getString(0);
-                    if (TextUtils.isEmpty(transNumber)) {
-                        transNumber = "0";
-                    }
-                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        try {
-                            // Use Money type to support very large numbers.
-                            Money transactionNumber = MoneyFactory.fromString(transNumber);
-                            viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
-                                .toString());
-                        } catch (Exception e) {
-                            Timber.e(e, "increasing transaction number");
-                        }
+            if (cursor.moveToFirst()) {
+                String transNumber = cursor.getString(0);
+                if (TextUtils.isEmpty(transNumber)) {
+                    transNumber = "0";
+                }
+                if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+                    try {
+                        // Use Money type to support very large numbers.
+                        Money transactionNumber = MoneyFactory.fromString(transNumber);
+                        viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                            .toString());
+                    } catch (Exception e) {
+                        Timber.e(e, "increasing transaction number");
                     }
                 }
-                cursor.close();
             }
+            cursor.close();
         });
+
+        if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
+            viewHolder.btnTransNumber.callOnClick();
+        }
+    }
+
+    public void initAttachmentControls() {
+        if (!hasAttachments()) return;
+
+        List<String> attachmentList = new ArrayList<>();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String baseUriString = preferences.getString("attachment_folder_uri", null);
+
+        if (baseUriString == null) {
+            // Automatically redirect the user to the settings page
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, PerDatabaseFragment.class.getSimpleName());
+            getActivity().startActivity(intent);
+            return; // Exit early if base URI is not set
+        }
+
+        // Parse baseUri from stored preferences
+        Uri baseUri = Uri.parse(baseUriString);
+        DocumentFile baseFolder = DocumentFile.fromTreeUri(getContext(), baseUri);
+
+        if (baseFolder == null || !baseFolder.exists()) {
+            Timber.d("Base folder not found or invalid");
+            return; // Exit if the base folder is invalid or doesn't exist
+        }
+
+        // Access the 'Transaction' subfolder within the base folder
+        DocumentFile transactionFolder = baseFolder.findFile("Transaction");
+        if (transactionFolder == null || !transactionFolder.exists()) {
+            Timber.d("Transaction folder not found");
+            return; // Exit if the transaction folder is missing
+        }
+
+        // Loop through the list of attachments and check for their existence
+        for (Attachment att : getAttachments()) {
+            DocumentFile attFile = transactionFolder.findFile(att.getFilename());
+
+            if (attFile != null && attFile.exists()) {
+                Uri fileUri = attFile.getUri();
+
+                // Check if we have the necessary read permission for the file
+                if (getContext().checkUriPermission(fileUri, Binder.getCallingPid(), Binder.getCallingUid(),
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+                    // Add the full URI to the list
+                    attachmentList.add(fileUri.toString());
+                    Timber.d("File found and added to list: %s", fileUri.toString());
+                } else {
+                    // Handle missing permission (log, notify, or request permission)
+                    Timber.d("No read permission for file: %s", fileUri.toString());
+                }
+            } else {
+                // Handle the case where the file is not found
+                Timber.d("File not found: %s", att.getFilename());
+            }
+        }
+
+        // Update UI: show/hide attachments section based on the list size
+        if (attachmentList.isEmpty()) {
+            viewHolder.textViewAttachments.setVisibility(View.GONE);
+        } else {
+            viewHolder.textViewAttachments.setVisibility(View.VISIBLE);
+            viewHolder.recyclerAttachments.setAdapter(new AttachmentAdapter(attachmentList));
+            viewHolder.recyclerAttachments.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
     }
 
     public void initTransactionTypeSelector() {
         // Handle click events.
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDirty(true);
+        View.OnClickListener onClickListener = v -> {
+            setDirty(true);
 
-                // find which transaction type this is.
-                TransactionTypes type = (TransactionTypes) v.getTag();
-                changeTransactionTypeTo(type);
-            }
+            // find which transaction type this is.
+            TransactionTypes type = (TransactionTypes) v.getTag();
+            changeTransactionTypeTo(type);
         };
 
         if (viewHolder.withdrawalButton != null) {
@@ -756,21 +924,26 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean loadCategoryName() {
+        this.categoryName = ""; // set default #2041. There is case with empty category?
         if(!this.transactionEntity.hasCategory()) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
-            // TODO parent category : category
-            if (category.getParentId() > 0)
+            Timber.d("Determine Recursive Category Name.\n  categoryName: " + this.categoryName);
+            // Done handled nested category
+            int limit = 0;
+            while ( limit < 15 && category != null && category.getParentId() > 0)
             {
-                Category parentCategory = categoryRepository.load(category.getParentId());
-                if (parentCategory != null)
-                    this.categoryName = parentCategory.getName() + " : " + category.getName();
+                limit++;
+                category = categoryRepository.load(category.getParentId());
+                if (category != null) {
+                    Timber.d("  [%d] Recursive call for id = %d ", limit, category.getId());
+                    this.categoryName = category.getName() + ":" + this.categoryName;
+                    Timber.d("     new name = [%s]", this.categoryName);
+                }
             }
-        } else {
-            this.categoryName = null;
         }
 
         return true;
@@ -778,20 +951,13 @@ public class EditTransactionCommonFunctions {
 
     public boolean onActionCancelClick() {
         if (getDirty()) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                .title(android.R.string.cancel)
-                .content(R.string.transaction_cancel_confirm)
-                .positiveText(R.string.discard)
-                .negativeText(R.string.keep_editing)
-                .cancelable(false)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        cancelActivity();
-                    }
-                })
-                .build();
-            dialog.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(android.R.string.cancel)
+                    .setMessage(R.string.transaction_cancel_confirm)
+                    .setPositiveButton(R.string.discard, (dialog, which) -> cancelActivity())
+                    .setNegativeButton(R.string.keep_editing, (dialog, which) -> dialog.dismiss())
+                    .setCancelable(false)
+                    .show();
         } else {
             // Just close activity
             cancelActivity();
@@ -804,11 +970,9 @@ public class EditTransactionCommonFunctions {
 
         setDirty(true);
 
-        String stringExtra;
-
         switch (requestCode) {
             case RequestCodes.PAYEE:
-                this.transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                this.transactionEntity.setPayeeId(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
                 if (!isSplitSelected() && !this.transactionEntity.hasCategory() ) {
@@ -821,7 +985,7 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case RequestCodes.ACCOUNT:
-                transactionEntity.setAccountToId(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
+                transactionEntity.setAccountToId(data.getLongExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
@@ -834,7 +998,7 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case RequestCodes.CATEGORY:
-                this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
+                this.transactionEntity.setCategoryId(data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
                 // refresh UI category
                 displayCategoryName();
@@ -876,8 +1040,8 @@ public class EditTransactionCommonFunctions {
 
         // Handle currency exchange on Transfers.
         if (isTransfer) {
-            Integer fromCurrencyId = getSourceCurrencyId();
-            Integer toCurrencyId = getDestinationCurrencyId();
+            Long fromCurrencyId = getSourceCurrencyId();
+            Long toCurrencyId = getDestinationCurrencyId();
             if (fromCurrencyId.equals(toCurrencyId)) {
                 // Same currency. Update both values if the transfer is in the same currency.
                 this.transactionEntity.setAmount(amount);
@@ -1012,7 +1176,7 @@ public class EditTransactionCommonFunctions {
      * @param payeeId id payee
      * @return true if the data selected
      */
-    public boolean loadPayeeName(int payeeId) {
+    public boolean loadPayeeName(long payeeId) {
         PayeeRepository repo = new PayeeRepository(getContext());
         Payee payee = repo.load(payeeId);
         if (payee != null) {
@@ -1029,7 +1193,7 @@ public class EditTransactionCommonFunctions {
      * @param payeeId Identify of payee
      * @return true if category set
      */
-    public boolean setCategoryFromPayee(int payeeId) {
+    public boolean setCategoryFromPayee(long payeeId) {
         if (payeeId == Constants.NOT_SET) return false;
 
         PayeeRepository repo = new PayeeRepository(getContext());
@@ -1052,7 +1216,7 @@ public class EditTransactionCommonFunctions {
 
     /**
      * Select, or change, the type of transaction (withdrawal, deposit, transfer).
-     * Entry point and the handler for the type selector input control.
+     * Entry polong and the handler for the type selector input control.
      * @param transactionType The type to set the transaction to.
      */
     public void changeTransactionTypeTo(TransactionTypes transactionType) {
@@ -1112,15 +1276,22 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            if (this.transactionEntity.getAmountTo().toDouble() <= 0) {
+            if (this.transactionEntity.getAmountTo().toDouble() < 0) {
                 core.alert(R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        if (transactionEntity.getAmount().toDouble() <= 0) {
+        if (transactionEntity.getAmount().toDouble() < 0) {
             core.alert(R.string.error_amount_must_be_positive);
+            return false;
+        }
+
+        // Payee is required if tx is not transfer
+        if (!transactionEntity.hasPayee() && !isTransfer)
+        {
+            core.alert(R.string.error_payee_not_selected);
             return false;
         }
 
@@ -1175,7 +1346,7 @@ public class EditTransactionCommonFunctions {
             // How do we get this?
             //if (split == null) continue;
 
-            int id = split.getId();
+            long id = split.getId();
             ArrayList<ISplitTransaction> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {
@@ -1210,6 +1381,10 @@ public class EditTransactionCommonFunctions {
         loadCategoryName();
 //        displayCategoryName();
 
+        // issue #1961
+        transactionEntity.setNotes(splitTransaction.getNotes());
+        displayNotes();
+
         // reset split indicator & display category
         setSplit(false);
 
@@ -1224,7 +1399,7 @@ public class EditTransactionCommonFunctions {
         Private
     */
 
-    private void addMissingAccountToSelectors(AccountRepository accountRepository, Integer accountId) {
+    private void addMissingAccountToSelectors(AccountRepository accountRepository, Long accountId) {
         if (accountId == null || accountId <= 0) return;
 
         // #316. In case the account from recurring transaction is not in the visible list,
@@ -1313,7 +1488,7 @@ public class EditTransactionCommonFunctions {
         displayAmountFormatted(viewHolder.txtAmountTo, amount, getDestinationCurrencyId());
     }
 
-    private void displayAmountFormatted(TextView view, Money amount, Integer currencyId) {
+    private void displayAmountFormatted(TextView view, Money amount, Long currencyId) {
         if (amount == null) return;
         if (currencyId == null || currencyId == Constants.NOT_SET) return;
 
@@ -1338,6 +1513,20 @@ public class EditTransactionCommonFunctions {
             mSplitTransactions = new ArrayList<>();
         }
         return mSplitTransactions;
+    }
+
+    private ArrayList<Attachment> getAttachments() {
+        if (mAttachments == null) {
+            mAttachments = new ArrayList<>();
+        }
+        return mAttachments;
+    }
+
+    private ArrayList<Taglink> getTaglinks() {
+        if (mTaglinks == null) {
+            mTaglinks = new ArrayList<>();
+        }
+        return mTaglinks;
     }
 
     private String getUserDateFormat() {
@@ -1408,12 +1597,15 @@ public class EditTransactionCommonFunctions {
 
         // Set the destination account, if not already.
         if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
-            if (mAccountIdList.size() == 0) {
+            if (mAccountIdList.isEmpty()) {
                 // notify the user and exit.
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.warning)
-                        .content(R.string.no_accounts_available_for_selection)
-                        .positiveText(android.R.string.ok)
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.no_accounts_available_for_selection)
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            // Handle positive button click if needed
+                            dialog.dismiss();
+                        })
                         .show();
                 return;
             } else {
@@ -1437,7 +1629,6 @@ public class EditTransactionCommonFunctions {
     private void showDate(Date dateTime) {
         // Constants.LONG_DATE_MEDIUM_DAY_PATTERN
         String format = "EEE, " + getUserDateFormat();
-        //String display = dateTime.toString(format);
         String display = dateTimeUtilsLazy.get().format(dateTime, format);
         viewHolder.dateTextView.setText(display);
     }
@@ -1456,7 +1647,7 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(splitsToShow));
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
-        Integer fromCurrencyId = getSourceCurrencyId();
+        Long fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         getActivity().startActivityForResult(intent, RequestCodes.SPLIT_TX);
@@ -1467,10 +1658,13 @@ public class EditTransactionCommonFunctions {
      * that the records must be adjusted manually.
      */
     private void showSplitResetNotice() {
-        new MaterialDialog.Builder(getContext())
-                .title(R.string.split_transaction)
-                .content(R.string.split_reset_notice)
-                .positiveText(android.R.string.ok)
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.split_transaction)
+                .setMessage(R.string.split_reset_notice)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Handle positive button click if needed
+                    dialog.dismiss();
+                })
                 .show();
     }
 
@@ -1499,4 +1693,16 @@ public class EditTransactionCommonFunctions {
         viewHolder.splitButton.setTextColor(ContextCompat.getColor(getContext(), buttonColour));
         viewHolder.splitButton.setBackgroundColor(ContextCompat.getColor(getContext(), buttonBackground));
     }
+
+    public void saveTags() {
+        // save TagLinks
+        TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
+        if (mTaglinks != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), mTaglinks);
+        } else {
+            taglinkRepository.deleteForTransaction(transactionEntity.getId());
+        }
+
+    }
+
 }

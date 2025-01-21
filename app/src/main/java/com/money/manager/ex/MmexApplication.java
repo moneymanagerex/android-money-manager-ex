@@ -16,13 +16,20 @@
  */
 package com.money.manager.ex;
 
+import static timber.log.Timber.plant;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.TextView;
-import com.evernote.android.job.JobManager;
+
+import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
+
+import com.amplitude.android.Amplitude;
+import com.amplitude.android.AmplitudeKt;
+import com.amplitude.android.TrackingOptions;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -40,7 +47,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.sync.jobmanager.SyncJobCreator;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
@@ -49,10 +55,11 @@ import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
 
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import androidx.multidex.MultiDexApplication;
 import info.javaperformance.money.Money;
+import kotlin.Unit;
 import timber.log.Timber;
 
 /**
@@ -66,14 +73,23 @@ import timber.log.Timber;
 public class MmexApplication
     extends MultiDexApplication {
 
+    static private Amplitude mAmplitude;
     private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
+    private String mPassword = "";
 
     public static MmexApplication getApp() {
         return appInstance;
     }
 
+    public static Amplitude getAmplitude()
+    {
+        return mAmplitude;
+    }
+
+    public String getPassword () {return this.mPassword;}
+    public void setPassword(String password) { this.mPassword = password ;}
     public static float getTextSize() {
         return MmexApplication.mTextSize;
     }
@@ -118,17 +134,25 @@ public class MmexApplication
 
         // Loggers
         if (BuildConfig.DEBUG) {
-            Timber.plant(new DebugTree());
+            plant(new DebugTree());
         } else {
-            //Timber.plant(new CrashReportingTree());
-            Timber.plant(new ScreenTree());
-            Timber.plant(new SysLogTree());
+            plant(new ScreenTree());
+            plant(new SysLogTree());
         }
 
         initializeDependencyInjection();
 
         // Job Manager initialization.
         initializeJobManager();
+
+        mAmplitude = AmplitudeKt.Amplitude("1e1fbc10354400d9c3392a89558d693d"
+                , getApplicationContext()
+                , configuration -> {
+                    configuration.setTrackingOptions(new TrackingOptions());
+                    configuration.setOptOut(!new AppSettings(this).getGeneralSettings().getSendUsage());
+                    return Unit.INSTANCE;
+                }
+        );
     }
 
     /**
@@ -136,8 +160,7 @@ public class MmexApplication
      * Implemented as a separate method so that it can be overridden in unit tests.
      */
     public void initializeJobManager() {
-        JobManager.create(this)
-            .addJobCreator(new SyncJobCreator());
+        // TODO
     }
 
     /**
@@ -179,7 +202,7 @@ public class MmexApplication
             openHelperAtomicReference = new AtomicReference<>(db);
         } else {
             // close existing db
-            openHelperAtomicReference.get().close();
+           // openHelperAtomicReference.get().close();
             openHelperAtomicReference.set(db);
         }
     }
@@ -321,5 +344,4 @@ public class MmexApplication
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), iconFontPath);
     }
-
 }

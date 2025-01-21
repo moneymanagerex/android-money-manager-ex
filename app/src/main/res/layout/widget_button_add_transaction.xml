@@ -27,4 +27,5 @@
     android:src="@drawable/drawable_widget_add_transaction_flat"
     android:background="#00000000"
     android:scaleType="centerInside"
-    android:cropToPadding="false" />
+    android:cropToPadding="false"
+    android:layout_alignParentEnd="true" />

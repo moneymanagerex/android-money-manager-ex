@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -29,25 +30,21 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
+import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dagger.Lazy;
 import timber.log.Timber;
 
 /**
  * Activity for selecting a database in the initial setup of the app.
  */
-public class SelectDatabaseActivity
-    extends MmxBaseFragmentActivity {
+public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
 
-    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
-
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +53,20 @@ public class SelectDatabaseActivity
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        ButterKnife.bind(this);
+        // Initialize views using findViewById()
+        Toolbar mToolbar = findViewById(R.id.toolbar);
+        Button createDatabaseButton = findViewById(R.id.createDatabaseButton);
+        Button openDatabaseButton = findViewById(R.id.openDatabaseButton);
 
         // Request external storage permissions for Android 6+.
         MmxFileUtils fileUtils = new MmxFileUtils(this);
         fileUtils.requestExternalStoragePermissions(this);
 
         setSupportActionBar(mToolbar);
+
+        // Set up click listeners for buttons
+        createDatabaseButton.setOnClickListener(v -> onCreateDatabaseClick());
+        openDatabaseButton.setOnClickListener(v -> onOpenDatabaseClick());
     }
 
     @Override
@@ -73,53 +77,36 @@ public class SelectDatabaseActivity
             Timber.w("The activity result is not OK");
             return;
         }
-
-        //            case RequestCodes.SELECT_FILE:
-        //                //if (resultCode != RESULT_OK) return;
-        //                String selectedPath = UIHelper.getSelectedFile(data);
-        //                if(TextUtils.isEmpty(selectedPath)) {
-        //                    new UIHelper(this).showToast(R.string.invalid_database);
-        //                    return;
-        //                }
-        //
-        //                onDatabaseSelected(selectedPath);
-        //                break;
-        if (requestCode == RequestCodes.SELECT_DOCUMENT) {// file selected at a Storage Access Framework.
+        if (requestCode == RequestCodes.SELECT_DOCUMENT) {
+            // file selected at a Storage Access Framework.
             FileStorageHelper storageHelper = new FileStorageHelper(this);
             storageHelper.selectDatabase(data);
+            onDatabaseSelected();
+        } else if (requestCode == RequestCodes.CREATE_DOCUMENT) {
+            FileStorageHelper storageHelper = new FileStorageHelper(this);
+            storageHelper.createDatabase(data);
             onDatabaseSelected();
         }
     }
 
-    // Permissions
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        // cancellation
-        //if (permissions.length == 0) return;
-        Timber.d("returning from permissions request"); // permissions
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Timber.d("returning from permissions request");
     }
 
-    @OnClick(R.id.createDatabaseButton)
-    void onCreateDatabaseClick() {
-        // show the create database screen
-        Intent intent = new Intent(this, CreateDatabaseActivity.class);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        startActivity(intent);
+    private void onCreateDatabaseClick() {
+        startActivity(new Intent(this, PasswordActivity.class));
+        FileStorageHelper helper = new FileStorageHelper(this);
+        helper.showCreateFilePicker();
     }
 
-    @OnClick(R.id.openDatabaseButton)
-    void onOpenDatabaseClick() {
+    private void onOpenDatabaseClick() {
+        startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
         helper.showStorageFilePicker();
     }
-
-//    @OnClick(R.id.setupSyncButton)
-//    void onSetupSyncClick() {
-//        Intent intent = new Intent(this, SyncPreferencesActivity.class);
-//        startActivity(intent);
-//    }
 
     private void onDatabaseSelected() {
         // open the main activity

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">MoneyManagerEx</string>
+    <!-- application -->
+    <string name="application_name">Money Manager Ex</string>
+    <string name="application_definition">Jednostavan i lagan za korištenje program za upravljanje ličnim finansijama, bankovnim računima, porodičnim budžetom, i tako dalje.</string>
+    <string name="application_license">Licence otvorenog koda</string>
+    <!-- database -->
+    <string name="db_insert_failed">Ubacivanje podataka nije uspelo</string>
+    <string name="db_delete_failed">Brisanje podataka nije uspelo</string>
+    <string name="db_update_failed">Ažuriranje podataka nije uspelo</string>
+    <!-- menu -->
+    <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">Izlaz</string>
+    <!--<string name="menu_import_export">Import/Export</string>-->
+    <!--<string name="menu_sync">Synchronize</string>-->
+    <!--<string name="menu_import_from_storage">Import from storage</string>-->
+    <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">Uredi</string>
+    <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+    <!--<string name="menu_tools">Tools</string>-->
+    <!--<string name="menu_use_external_db">Use External Database</string>-->
+    <!-- import / export database -->
+    <!--<string name="emptyFolder">Empty folder</string>-->
+    <!--<string name="upLevel">Up level</string>-->
+    <!--<string name="import_export">Import / Export</string>-->
+    <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+    <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+    <!--<string name="import_export_failed">Import / Export failed</string>-->
+    <!-- preferences -->
+    <string name="preferences_general">Opšte</string>
+    <string name="preferences_perdatabase">Po bazi podataka</string>
+    <string name="preferences_dispaly">Opšta podešavanja</string>
+    <string name="preferences_behaviour">Ponašanje</string>
+    <string name="base_currency">Osnovna valuta</string>
+    <string name="base_currency_changed">Osnovna valuta promenjena</string>
+    <string name="base_currency_change_notification">Osnovna valuta je promenjena. Osvežite kursnu listu valuta da biste dobili ispravno preračunate iznose u baznoj valuti.</string>
+    <string name="view_accounts_opened">Prikaži otvorene račune</string>
+    <string name="if_not_selected_willShowAllAccounts">Ako nije odabrano, svi računi će biti prikazati</string>
+    <string name="view_accounts_favorites">Prikaži omiljene račune</string>
+    <string name="version">Verzija</string>
+    <string name="build">Verzija</string>
+    <string name="path">Lokacija baze podataka</string>
+    <string name="database_version">Verzija baze podataka</string>
+    <string name="title_show_tutorial">Prikaži uputstvo</string>
+    <string name="summary_show_tutorial">Prikaži Uputstvo pri sledećem pokretanju?</string>
+    <string name="preferences_behaviour_focus_filter_title">Filter u odabranome</string>
+    <string name="preferences_behaviour_focus_filter_summary">Postavi fokus na filter u izabranome. Inače listaj.</string>
+    <string name="auto_sync_via_wifi">Auto-sinhronizacija samo preko WiFi-a</string>
+    <string name="auto_sync_via_wifi_summary">Auto-sinhronizacija samo ako postoji WiFi konekcija.</string>
+    <string name="sync_on_app_start">Sinhronizacija pri pokretanju aplikacije.</string>
+    <string name="sync_on_start">Sinhronizacija pri startu</string>
+    <!-- Receive SMS strings -->
+    <!-- account -->
+    <string name="account">Račun</string>
+    <string name="account_list">Lista računa</string>
+    <string name="account_empty_list">Nemate računa. Da biste napravili jedan, kliknite na zeleno plus dugme.</string>
+    <string name="account_balance">Saldo računa</string>
+    <string name="account_reconciled_balance">Poravnati bilans</string>
+    <string name="delete_account">Izbriši račun</string>
+    <string name="account_name">Ime računa</string>
+    <string name="account_type">Vrsta računa</string>
+    <string name="account_number">Broj računa</string>
+    <string name="account_held_at">Kreiran kod</string>
+    <string name="account_status">Status računa</string>
+    <string name="favourite_account">Omiljeni račun</string>
+    <string name="select_currency">Odaberite valutu</string>
+    <string name="checking">Provera</string>
+    <string name="investment">Investicija</string>
+    <string name="investment_accounts">Investicioni računi</string>
+    <string name="term">Uslovi</string>
+    <string name="db_account_insert_failed">Greška pri kreiranju računa</string>
+    <!-- payee -->
+    <!-- category / subcategory -->
+    <!-- currency -->
+    <!-- transaction -->
+    <string name="status_none">Ništa</string>
+    <string name="transfer">Pošalji</string>
+    <string name="transfer_amount">Pošali količinu</string>
+    <string name="withdrawal">Podigni</string>
+    <string name="db_checking_insert_failed">Unos transakcije nije uspeo</string>
+    <string name="db_checking_update_failed"> Ažuriranje transakcije neuspešno</string>
+    <string name="delete_transaction">Obriši transakciju</string>
+    <string name="new_transaction">Nova transakcija</string>
+    <string name="error_payee_not_selected">Primalac je neophodan</string>
+    <string name="error_toaccount_not_selected">Na račun je neophodno</string>
+    <string name="error_category_not_selected">Kategorija je neophodna</string>
+    <string name="error_totamount_empty">Ukupan iznos je neophodan</string>
+    <string name="error_transfer_to_same_account">Dva računa za prenos moraju biti različita</string>
+    <string name="about">Opis</string>
+    <string name="add">Dodaj</string>
+    <string name="confirmDelete">Da li ste sigurni da želite izbrisati unos?</string>
+    <string name="date">Datum</string>
+    <string name="delete">Obriši</string>
+    <string name="download">Preuzmi</string>
+    <string name="edit">Izmeni</string>
+    <string name="logo">Logo</string>
+    <string name="new_edit_transaction">Nova/Izmeni transakcija(u)</string>
+    <string name="refresh">Osveži</string>
+    <string name="search">Pronađi</string>
+    <string name="settings">Podešavanja</string>
+    <string name="summary">Pregled</string>
+    <string name="sync">Sinhron.</string>
+    <string name="synchronize">Sinhronizacija</string>
+    <string name="open">Otvori</string>
+    <string name="user">Korisnik</string>
+    <string name="upload">Otpremanje</string>
+    <string name="username">Korisničko Ime</string>
+    <string name="to">Za</string>
+    <string name="website">Vebsajt</string>
+    <string name="contact">Kontakt</string>
+    <string name="access_info">Informacije o pristupu</string>
+    <string name="initial_balance">Početni balans</string>
+    <string name="notes">Beleške</string>
+    <string name="closed">Zatvoreno</string>
+    <string name="theme_application">Tema</string>
+    <string name="theme_holo">Materijal tamna</string>
+    <string name="theme_light">Materijal svetla</string>
+    <!-- 20120906 -->
+    <string name="close_application">Zatvori aplikaciju</string>
+    <string name="question_close_application">Želite li da zatvorite aplikaciju?</string>
+    <string name="error_intent_pick_file">Nije pronađena operacija za  \'odabir datoteke\'</string>
+    <string name="attention">Pažnja</string>
+    <string name="payee_can_not_deleted">Odabrani primalac se ne može obrisati jer je povezan</string>
+    <string name="account_can_not_deleted">Odabrani račun se ne može obrisati jer je povezan</string>
+    <string name="currency_can_not_deleted">Izabrana valuta ne može biti obrisana jer je povezana</string>
+    <string name="category_can_not_deleted">Odabrana kategorija se ne može obrisati jer je povezana</string>
+    <!-- transaction list periods -->
+    <string name="all_transaction">Sve Transakcije</string>
+    <string name="today">Danas</string>
+    <string name="last7days">Poslednjih 7 dana</string>
+    <string name="last15days">Poslednje 2 nedelje</string>
+    <string name="widget_summary">Pregled</string>
+    <!-- TAG -->
+    <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">Ništa</string>
+    <string name="once">Jednom</string>
+    <string name="weekly">Nedeljno</string>
+    <string name="bi_weekly">Dvonedeljno</string>
+    <string name="monthly">Mjesečno</string>
+    <string name="bi_monthly">Dvomjesečno</string>
+    <string name="quaterly">Kvartalno</string>
+    <string name="half_year">Polugodišnje</string>
+    <string name="yearly">Godišnje</string>
+    <string name="four_months">Četvoro-mjesečno</string>
+    <string name="daily">Dnevno</string>
+    <string name="inactive">Neaktivno</string>
+    <string name="skip">Preskoči</string>
+    <string name="enter">Unesi</string>
+    <string name="enter_amount">Unesi količinu</string>
+    <!-- EP Recurring mode recurring_mode -->
+    <!-- 20121121 -->
+    <string name="send_feedback">Pošalji Povratnu Informaciju</string>
+    <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+    <!-- 20121122 -->
+    <string name="preferences_info_application">Informacije</string>
+    <string name="preferences_security">Sigurnost</string>
+    <string name="enter_your_passcode">Unesite lozinku</string>
+    <string name="reinsert_your_passcode">Ponovi lozinku</string>
+    <string name="passocde_no_macth">Lozinke se ne poklapaju</string>
+    <string name="preferences_edit_passcode">Uredi lozinku</string>
+    <string name="preferences_disable_passcode">Onemogući lozinku</string>
+    <string name="enter_your_previous_passcode">Unesi staru lozinku</string>
+    <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">Lozinka nije ažurirana</string>
+    <!-- 20121217 -->
+    <!--<string name="option">Option</string>-->
+    <!-- 20130106 -->
+    <!--<string name="result">Result</string>-->
+    <!-- 20130108 -->
+    <!-- Split Categories -->
+    <!-- languages -->
+    <string name="action_settings">Podešavanja</string>
+    <!-- Password entry activity -->
+    <!-- edit investment transaction -->
+    <!-- asset allocation -->
+    <!-- db password entry -->
+    <!-- budgets -->
+    <!-- Currencies -->
+    <!-- Investment -->
+    <!-- deprecated / Dropbox -->
+    <!-- Synchronization -->
+    <!-- Warnings -->
+    <!-- Errors -->
+    <!-- Select database screen -->
+    <!-- Create Database screen -->
+    <!-- Settings -->
+    <string name="per_database_settings">Po bazi podataka</string>
+    <!-- Notification Setting -->
+    <!-- Builder button -->
+</resources>

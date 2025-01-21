@@ -1,0 +1,5 @@
+Fix rate to the base currency
+Sync: restore progress dialog for better UEX
+Sync: disable delayed upload
+Sync: avoid un-wanted database modification during app start and database switch
+Reports: add back arrow for Payee report

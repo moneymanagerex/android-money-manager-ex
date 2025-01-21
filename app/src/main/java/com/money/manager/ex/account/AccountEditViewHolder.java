@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,37 +28,51 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * ViewHolder pattern for the account edit screen.
  */
 public class AccountEditViewHolder {
+    public EditText edtAccountHeldAt;
+    public Spinner accountTypeSpinner;
+    public CheckBox defaultAccountCheckbox;
+    public RobotoTextView defaultAccountText;
+    public FontIconView imageViewAccountFav;
+    public RobotoTextView favouriteAccountTextView;
+    public EditText webSiteEditText;
+    public EditText edtAccountName;
+    public EditText edtAccountNumber;
+    public EditText edtContact;
+    public EditText edtAccessInfo;
+    public Spinner spinAccountStatus;
+    public EditText edtNotes;
+    public Spinner spinSymbolInitialBalance;
+    public TextView txtSelectCurrency;
+    public TextView txtInitialBalance;
+    public TextView txtInitialDate;
+    public IconicsImageView previousDayButton;
+    public IconicsImageView nextDayButton;
+
     public AccountEditViewHolder(AppCompatActivity parent) {
-        ButterKnife.bind(this, parent);
+        edtAccountHeldAt = parent.findViewById(R.id.editTextAccountHeldAt);
+        accountTypeSpinner = parent.findViewById(R.id.spinnerAccountType);
+        defaultAccountCheckbox = parent.findViewById(R.id.defaultAccountCheckbox);
+        defaultAccountText = parent.findViewById(R.id.defaultAccountText);
+        imageViewAccountFav = parent.findViewById(R.id.imageViewAccountFav);
+        favouriteAccountTextView = parent.findViewById(R.id.favouriteAccountTextView);
+        webSiteEditText = parent.findViewById(R.id.editTextWebsite);
+        edtAccountName = parent.findViewById(R.id.editTextAccountName);
+        edtAccountNumber = parent.findViewById(R.id.editTextAccountNumber);
+        edtContact = parent.findViewById(R.id.editTextContact);
+        edtAccessInfo = parent.findViewById(R.id.editTextAccessInfo);
+        spinAccountStatus = parent.findViewById(R.id.spinnerAccountStatus);
+        edtNotes = parent.findViewById(R.id.editTextNotes);
+        spinSymbolInitialBalance = parent.findViewById(R.id.spinnerSymbolInitialBalance);
+        txtSelectCurrency = parent.findViewById(R.id.textViewSelectCurrency);
+        txtInitialBalance = parent.findViewById(R.id.editTextInitialBalance);
+        txtInitialDate = parent.findViewById(R.id.textViewDate);
+        previousDayButton = parent.findViewById(R.id.previousDayButton);
+        nextDayButton = parent.findViewById(R.id.nextDayButton);
     }
-
-    @BindView(R.id.editTextAccountHeldAt) EditText edtAccountHeldAt;
-
-    @BindView(R.id.spinnerAccountType) Spinner accountTypeSpinner;
-    @BindView(R.id.defaultAccountCheckbox) CheckBox defaultAccountCheckbox;
-    @BindView(R.id.defaultAccountText) RobotoTextView defaultAccountText;
-    @BindView(R.id.imageViewAccountFav) FontIconView imageViewAccountFav;
-    @BindView(R.id.favouriteAccountTextView) RobotoTextView favouriteAccountTextView;
-    @BindView(R.id.editTextWebsite) EditText webSiteEditText;
-
-    @BindView(R.id.editTextAccountName) EditText edtAccountName;
-    @BindView(R.id.editTextAccountNumber) EditText edtAccountNumber;
-    @BindView(R.id.editTextContact) EditText edtContact;
-    @BindView(R.id.editTextAccessInfo) EditText edtAccessInfo;
-    @BindView(R.id.spinnerAccountStatus) Spinner spinAccountStatus;
-    @BindView(R.id.editTextNotes) EditText edtNotes;
-    @BindView(R.id.spinnerSymbolInitialBalance) Spinner spinSymbolInitialBalance;
-    @BindView(R.id.textViewSelectCurrency) TextView txtSelectCurrency;
-    @BindView(R.id.editTextInitialBalance) TextView txtInitialBalance;
-    @BindView(R.id.textViewDate) TextView txtInitialDate;
-    @BindView(R.id.previousDayButton) IconicsImageView previousDayButton;
-    @BindView(R.id.nextDayButton) IconicsImageView nextDayButton;
-
 }
+

@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.reports;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -31,7 +33,14 @@ import android.widget.AdapterView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import com.money.manager.ex.R;
@@ -39,9 +48,9 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
@@ -52,13 +61,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -138,8 +140,8 @@ public class IncomeVsExpensesListFragment
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_YEARS:
-                ViewMobileData mobileData = new ViewMobileData(getContext());
-                selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
+                QueryMobileData mobileData = new QueryMobileData(getContext());
+                selection = "SELECT DISTINCT Year as Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
                 query = new Select().where(selection);
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
@@ -168,6 +170,9 @@ public class IncomeVsExpensesListFragment
                 double income = 0, expenses = 0;
                 if (data == null) return;
 
+                // move to first record #1539
+                data.moveToPosition(-1);
+
                 while (data.moveToNext()) {
                     if (data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                         income += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
@@ -193,8 +198,9 @@ public class IncomeVsExpensesListFragment
 
             case ID_LOADER_YEARS:
                 if (data != null && data.moveToFirst()) {
+
                     while (!data.isAfterLast()) {
-                        int year = data.getInt(data.getColumnIndex("Year"));
+                        int year = data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
                         if (!mYearsSelected.get(year, false)) {
                             mYearsSelected.put(year, false);
                         }
@@ -258,41 +264,48 @@ public class IncomeVsExpensesListFragment
     // Other
 
     public void showDialogYears() {
-        ArrayList<String> years = new ArrayList<String>();
-        //Integer[] selected = new Integer[0];
+        // Assuming mYearsSelected is a SparseBooleanArray
+        ArrayList<String> years = new ArrayList<>();
         List<Integer> selected = new ArrayList<>();
 
         for (int i = 0; i < mYearsSelected.size(); i++) {
             years.add(String.valueOf(mYearsSelected.keyAt(i)));
 
             if (mYearsSelected.valueAt(i)) {
-                //selected = ArrayUtils.add(selected, i);
                 selected.add(i);
             }
         }
 
-        Integer[] selectedArray = selected.toArray(new Integer[0]);
+        // Convert years to CharSequence array
+        final CharSequence[] items = years.toArray(new CharSequence[years.size()]);
+        // Convert selected to boolean array
+        final boolean[] checkedItems = new boolean[items.length];
+        for (int i = 0; i < items.length; i++) {
+            checkedItems[i] = selected.contains(i);
+        }
 
-        new MaterialDialog.Builder(getActivity())
-                .items(years.toArray(new String[years.size()]))
-                .itemsCallbackMultiChoice(selectedArray, new MaterialDialog.ListCallbackMultiChoice() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers,
-                                               CharSequence[] charSequences) {
-                        // reset to false all years
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        checkedItems[which] = isChecked;
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Reset all years to false
                         for (int i = 0; i < mYearsSelected.size(); i++) {
                             mYearsSelected.put(mYearsSelected.keyAt(i), false);
                         }
-                        // set year select
-                        for (int index : integers) {
-                            mYearsSelected.put(mYearsSelected.keyAt(index), true);
+                        // Set selected years
+                        for (int i = 0; i < checkedItems.length; i++) {
+                            mYearsSelected.put(mYearsSelected.keyAt(i), checkedItems[i]);
                         }
                         startLoader();
-                        return true;
                     }
                 })
-                        //.alwaysCallMultiChoiceCallback()
-                .positiveText(android.R.string.ok)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 
@@ -356,7 +369,7 @@ public class IncomeVsExpensesListFragment
                 // show the details for the selected month/year.
                 MmxDate dateTime = new MmxDate();
                 dateTime.setYear(entity.getYear());
-                int month = entity.getMonth();
+                long month = entity.getMonth();
                 if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     dateTime.setMonth(entity.getMonth() - 1);
                 } else {

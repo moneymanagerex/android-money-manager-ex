@@ -1,0 +1,7 @@
+## What's Changed
+Restore notification management by @wolfsolver
+hide upload immediately as still premature by @guanlisheng
+hide cloud storage providers in sync perf by @guanlisheng
+adjustment for search in subcategory by @wolfsolver
+Fix total in report after going in detail view. by @wolfsolver
+update i18n from crowdin on 2023-01-22 by @guanlisheng

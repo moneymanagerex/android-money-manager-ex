@@ -80,7 +80,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp">
             <!--android:layout_weight="40"-->
 
             <ImageButton

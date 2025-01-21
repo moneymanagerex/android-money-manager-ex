@@ -23,4 +23,5 @@
     android:layout_height="match_parent"
     android:paddingRight="@dimen/mmx_margin"
     app:typeface="roboto_medium" 
-    style="@android:style/TextAppearance.Large"/>
+    style="@android:style/TextAppearance.Large"
+    android:paddingEnd="@dimen/mmx_margin" />

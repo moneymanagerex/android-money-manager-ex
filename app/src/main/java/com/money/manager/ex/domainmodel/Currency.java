@@ -36,6 +36,7 @@ public class Currency
     public static final String SCALE = "SCALE";
     public static final String BASECONVRATE = "BASECONVRATE";
     public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
+    public static final String CURRENCY_TYPE = "CURRENCY_TYPE";
 
     public static Currency fromCursor(Cursor c) {
         Currency currency = new Currency();
@@ -71,12 +72,12 @@ public class Currency
         return getString(CURRENCY_SYMBOL);
     }
 
-    public int getCurrencyId() {
-        return getInt(CURRENCYID);
+    public long getCurrencyId() {
+        return getLong(CURRENCYID);
     }
 
-    public void setCurrencyid(int value) {
-        setInt(CURRENCYID, value);
+    public void setCurrencyid(long value) {
+        setLong(CURRENCYID, value);
     }
 
     public String getDecimalSeparator() {

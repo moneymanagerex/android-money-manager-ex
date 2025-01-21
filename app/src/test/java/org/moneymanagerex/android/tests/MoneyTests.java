@@ -16,16 +16,13 @@
  */
 package org.moneymanagerex.android.tests;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.math.BigDecimal;
 

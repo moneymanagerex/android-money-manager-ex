@@ -59,7 +59,8 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
                         android:text="@string/accounts"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        android:paddingStart="10dp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -123,7 +124,9 @@
                 android:layout_marginLeft="@dimen/mmx_margin"
                 android:layout_marginRight="@dimen/mmx_margin"
                 android:padding="@dimen/mmx_padding"
-                android:onClick="onClickCardViewIncomesVsExpenses">
+                android:onClick="onClickCardViewIncomesVsExpenses"
+                android:layout_marginStart="@dimen/mmx_margin"
+                android:layout_marginEnd="@dimen/mmx_margin">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -138,7 +141,9 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:text="@string/income_vs_expenses_current_month"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp" />
 
                     <include layout="@layout/merge_main_footer_income_expenses"/>
                 </LinearLayout>
@@ -155,7 +160,9 @@
             android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
             android:src="@drawable/ic_action_add_dark"
             app:fab_colorNormal="@color/md_accent"
-            app:fab_colorPressed="@color/md_primary_dark"/>
+            app:fab_colorPressed="@color/md_primary_dark"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp" />
 
         <!--<android.support.design.widget.FloatingActionButton-->
             <!--android:id="@+id/fab"-->

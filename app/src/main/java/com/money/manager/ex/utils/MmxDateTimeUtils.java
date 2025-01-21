@@ -28,7 +28,6 @@ import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -129,6 +128,22 @@ public class MmxDateTimeUtils {
                     .firstDayOfMonth();
             dateTo = dateTo.today().lastMonthOfYear()
                     .lastDayOfMonth();
+// Financial year issue #1790
+        } else if (period.equalsIgnoreCase(context.getString(R.string.current_fin_year))) {
+            InfoService infoService = new InfoService(context);
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
+            MmxDate toDay = new MmxDate();
+            dateFrom = dateFrom.setDate(financialYearStartDay);
+            dateTo = dateTo.setDate(financialYearStartDay);
+            dateFrom = dateFrom.setMonth(financialYearStartMonth);
+            dateTo = dateTo.setMonth(financialYearStartMonth);
+            if (dateFrom.toDate().after(toDay.toDate())) {
+                // today is not part of current financial year, so we need to go back on year
+                dateFrom = dateFrom.minusYears(1);
+                dateTo = dateTo.minusYears(1);
+            }
+            dateTo = dateTo.addYear(1).minusDays(1);
         } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
             // Future transactions
             dateFrom = dateFrom.today().plusDays(1);
@@ -207,6 +222,11 @@ public class MmxDateTimeUtils {
      */
 
     private SimpleDateFormat getFormatterFor(String format) {
-        return new SimpleDateFormat(format, _locale);
+        try {
+            return new SimpleDateFormat(format, _locale);
+        } catch (Exception e) {
+            Timber.e(e, "Error formatting date with ["+format+"]");
+            return new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN, _locale);
+        }
     }
 }

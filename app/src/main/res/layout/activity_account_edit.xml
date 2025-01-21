@@ -25,7 +25,9 @@
     android:background="?attr/theme_background_color"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin">
 
     <include layout="@layout/toolbar" />
 
@@ -40,7 +42,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+            android:paddingRight="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding"
+            android:paddingEnd="@dimen/mmx_activity_side_padding">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -78,7 +82,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/mmx_margin"
-                        android:text="@string/default_account" />
+                        android:text="@string/default_account"
+                        android:layout_marginStart="@dimen/mmx_margin" />
                 </LinearLayout>
                 <!-- favourite -->
                 <LinearLayout
@@ -103,7 +108,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/mmx_margin"
-                        android:text="@string/favourite_account" />
+                        android:text="@string/favourite_account"
+                        android:layout_marginStart="@dimen/mmx_margin" />
                 </LinearLayout>
             </LinearLayout>
 

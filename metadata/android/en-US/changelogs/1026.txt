@@ -1,0 +1,2 @@
+- Fix subcategory edit/update bug
+- Update i18n for 2024 April

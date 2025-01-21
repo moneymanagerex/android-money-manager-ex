@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.utils;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -28,6 +29,15 @@ import timber.log.Timber;
  */
 public class DialogUtils {
     public static void closeProgressDialog(ProgressDialog progressDialog) {
+        try {
+            progressDialog.hide();
+            progressDialog.dismiss();
+        } catch (Exception ex) {
+            Timber.e("error closing a binaryDialog");
+        }
+    }
+
+    public static void closeProgressDialog(AlertDialog progressDialog) {
         try {
             progressDialog.hide();
             progressDialog.dismiss();

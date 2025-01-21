@@ -27,32 +27,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="2dp"
-        android:gravity="right"
+        android:gravity="end"
         android:paddingLeft="6dp"
-        android:text="@string/account_balance"/>
+        android:text="@string/account_balance"
+        android:layout_marginEnd="2dp"
+        android:paddingStart="6dp" />
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountBalance"
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginStart="2dp" />
 
     <!-- Reconciled Balance title -->
     <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewAccountReconciledTitle"
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="2dp"
-        android:text="@string/account_reconciled_balance"/>
+        android:text="@string/account_reconciled_balance"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="2dp" />
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountReconciled"
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginStart="2dp" />
 
     <!-- Difference title -->
     <com.money.manager.ex.view.RobotoTextView
@@ -64,7 +71,9 @@
         android:layout_weight="1"
         android:text="@string/difference"
         android:textSize="@dimen/mmx_text_view_size_micro"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp" />
     <!--android:layout_column="0"-->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewDifference"
@@ -75,7 +84,8 @@
         android:layout_weight="1"
         android:textSize="@dimen/mmx_text_view_size_micro"
         android:textStyle="bold"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_marginStart="2dp" />
     <!--android:layout_column="1"-->
 
 </LinearLayout>

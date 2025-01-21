@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,27 +24,25 @@ import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * View Holder pattern for Split Category.
  * Adapter position is provided automatically by .getAdapterPosition().
  */
-public class SplitItemViewHolder
-    extends RecyclerView.ViewHolder {
+public class SplitItemViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.textViewCategory) public TextView txtSelectCategory;
-    @BindView(R.id.editTextTotAmount) public TextView txtAmount;
-    @BindView(R.id.transactionTypeButton) public FontIconView transactionTypeButton;
+    public TextView txtSelectCategory;
+    public TextView txtAmount;
+    public TextView txtNotesSplit;
+    public FontIconView transactionTypeButton;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
 
-//        transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);
-//        txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
-//        txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
-
-        ButterKnife.bind(this, itemView);
+        // Initialize views using findViewById
+        txtSelectCategory = itemView.findViewById(R.id.textViewCategory);
+        txtAmount = itemView.findViewById(R.id.editTextTotAmount);
+        txtNotesSplit = itemView.findViewById(R.id.notesEditSplit);
+        transactionTypeButton = itemView.findViewById(R.id.transactionTypeButton);
     }
 }

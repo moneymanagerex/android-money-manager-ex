@@ -29,21 +29,24 @@ public class Payee
     public static final String PAYEEID = "PAYEEID";
     public static final String PAYEENAME = "PAYEENAME";
     public static final String CATEGID = "CATEGID";
+    public static final String NUMBER = "NUMBER";
+    public static final String ACTIVE = "ACTIVE";
 
     public Payee() {
         super();
+        setLong(Payee.ACTIVE, 1L);
     }
 
     public Payee(ContentValues contentValues) {
         super(contentValues);
     }
 
-    public Integer getId() {
-        return getInt(PAYEEID);
+    public Long getId() {
+        return getLong(PAYEEID);
     }
 
-    public void setId(Integer value) {
-        setInt(Payee.PAYEEID, value);
+    public void setId(Long value) {
+        setLong(Payee.PAYEEID, value);
     }
 
     public String getName() {
@@ -54,12 +57,12 @@ public class Payee
         setString(Payee.PAYEENAME, value);
     }
 
-    public Integer getCategoryId() {
-        return getInt(Payee.CATEGID);
+    public Long getCategoryId() {
+        return getLong(Payee.CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
-        setInt(Payee.CATEGID, value);
+    public void setCategoryId(Long value) {
+        setLong(Payee.CATEGID, value);
     }
 
     public boolean hasCategory() {

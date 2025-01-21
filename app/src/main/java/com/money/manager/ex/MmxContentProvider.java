@@ -16,15 +16,13 @@
  */
 package com.money.manager.ex;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteQueryBuilder;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -36,24 +34,24 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.QueryCategorySubCategory;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.datalayer.AttachmentRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.datalayer.TagRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +61,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -72,7 +72,7 @@ import timber.log.Timber;
  * application data
  */
 public class MmxContentProvider
-    extends ContentProvider {
+        extends ContentProvider {
 
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -84,7 +84,8 @@ public class MmxContentProvider
         super();
     }
 
-    @Inject Lazy<MmxOpenHelper> openHelper;
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;
 
     public static String getAuthority() {
         return mAuthority;
@@ -102,35 +103,37 @@ public class MmxContentProvider
         setAuthority(context.getApplicationContext().getPackageName() + ".provider");
 
         List<Dataset> objMoneyManager = Arrays.asList(
-            new AccountRepository(context),
-            new AccountTransactionRepository(context),
-            new AssetClassRepository(context),
-            new AssetClassStockRepository(context),
-            new BudgetEntryRepository(context),
-            new BudgetRepository(context),
-            new CategoryRepository(context),
-            new CurrencyRepository(context),
+                new AccountRepository(context),
+                new AccountTransactionRepository(context),
+                new BudgetEntryRepository(context),
+                new BudgetRepository(context),
+                new CategoryRepository(context),
+                new CurrencyRepository(context),
 //            new InfoRepositorySql(context),
-            new PayeeRepository(context),
-            new RecurringTransactionRepository(context),
-            new SplitCategoriesRepository(context),
-            new SplitRecurringCategoriesRepository(context),
-            new StockRepository(context),
-            new StockHistoryRepository(context),
-            new QueryAccountBills(context),
-            new QueryCategorySubCategory(context),
-            new QueryAllData(context),
-            new QueryBillDeposits(context),
-            new QueryReportIncomeVsExpenses(context),
-            new BudgetQuery(context),
-            new ViewMobileData(context),
-            new SQLDataSet()
+                new PayeeRepository(context),
+                new AttachmentRepository(context),
+                new ScheduledTransactionRepository(context),
+                new SplitCategoryRepository(context),
+                new SplitScheduledCategoryRepository(context),
+                new StockRepository(context),
+                new StockHistoryRepository(context),
+                new QueryAccountBills(context),
+                new QueryAllData(context),
+                new QueryBillDeposits(context),
+                new QueryReportIncomeVsExpenses(context),
+                new BudgetQuery(context),
+                new QueryMobileData(context),
+                new SQLDataSet(),
+                new QueryNestedCategory(context),
+                new TagRepository(context),
+                new TaglinkRepository(context)
         );
 
-        // Cycle all data sets for the composition of UriMatcher
+        // Cycle all data sets for th
+        // e composition of UriMatcher
         for (int i = 0; i < objMoneyManager.size(); i++) {
             // add URI
-            sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasepath(), i);
+            sUriMatcher.addURI(getAuthority(), objMoneyManager.get(i).getBasePath(), i);
             // put map in the object being added in UriMatcher
             mapContent.put(i, objMoneyManager.get(i));
         }
@@ -140,7 +143,7 @@ public class MmxContentProvider
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         try {
-            return query_internal(uri, projection, selection, selectionArgs, sortOrder);
+            return query_internal(uri, projection, selection, selectionArgs != null ? selectionArgs : new String[0], sortOrder);
         } catch (Exception e) {
             Timber.e(e, "content provider.query %s", uri);
         }
@@ -166,23 +169,18 @@ public class MmxContentProvider
                     initializeDependencies();
 
                     id = openHelper.get().getWritableDatabase()
-                            .insertOrThrow(dataset.getSource(), null, values);
+                            .insert(dataset.getSource(), CONFLICT_IGNORE, values);
                     //database.setTransactionSuccessful();
                 } catch (Exception e) {
                     Timber.e(e, "inserting: %s", "insert");
                 }
-                parse = dataset.getBasepath() + "/" + id;
+                parse = dataset.getBasePath() + "/" + id;
             } else {
                 throw new IllegalArgumentException("Type of dataset not supported for update");
             }
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
-
-        if (id > 0) {
-            notifyChange(uri);
-        }
-
         // return Uri with the primary key of the inserted record.
         return Uri.parse(parse);
     }
@@ -195,7 +193,7 @@ public class MmxContentProvider
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getWritableDatabase();
+        SupportSQLiteDatabase database = openHelper.get().getWritableDatabase();
 
         int rowsUpdate = 0;
 
@@ -205,7 +203,7 @@ public class MmxContentProvider
                 logUpdate(dataset, values, whereClause, whereArgs);
 
                 try {
-                    rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
+                    rowsUpdate = database.update(dataset.getSource(), CONFLICT_IGNORE, values, whereClause, whereArgs);
                 } catch (Exception ex) {
                     Timber.e(ex, "updating: %s", "update");
                 }
@@ -215,11 +213,6 @@ public class MmxContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
-
-        if (rowsUpdate > 0) {
-            notifyChange(uri);
-        }
-
         // return rows modified
         return rowsUpdate;
     }
@@ -262,18 +255,16 @@ public class MmxContentProvider
             throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
-        if (rowsDelete > 0) notifyChange(uri);
-
         return rowsDelete;
     }
 
     /**
      * Prepare statement SQL from data set object
      *
-     * @param query SQL query
+     * @param query      SQL query
      * @param projection ?
-     * @param selection ?
-     * @param sortOrder field name for sort order
+     * @param selection  ?
+     * @param sortOrder  field name for sort order
      * @return statement
      */
     public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
@@ -346,7 +337,7 @@ public class MmxContentProvider
 
     public void resetDatabase() {
         if (openHelper != null) {
-            openHelper.get().close();
+            //       openHelper.get().close();
         }
 
         openHelper = null;
@@ -370,15 +361,16 @@ public class MmxContentProvider
     }
 
     private Cursor query_internal(Uri uri, String[] projection, String selection,
-                                  String[] selectionArgs, String sortOrder){
+                                  @NonNull String[] selectionArgs, String sortOrder) {
         Timber.v("Querying URI: %s", uri);
+        Timber.v("Querying selection: %s", selection);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
 
         initializeDependencies();
 
-        SQLiteDatabase database = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase database = openHelper.get().getReadableDatabase();
         if (database == null) {
             Timber.e("Database could not be opened");
             return null;
@@ -389,22 +381,20 @@ public class MmxContentProvider
         // check type of instance data set
         if (sourceObject instanceof Dataset) {
             Dataset dataset = ((Dataset) sourceObject);
-
-//            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
+            String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
 
             switch (dataset.getType()) {
                 case QUERY:
-                    String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
-                    cursor = database.rawQuery(query, selectionArgs);
-                    break;
-                case SQL:
-                    cursor = database.rawQuery(selection, selectionArgs);
-                    break;
                 case TABLE:
                 case VIEW:
-                    SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-                    queryBuilder.setTables(dataset.getSource());
-                    cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
+                    if (selectionArgs == null) {
+                        cursor = database.query(query);
+                    } else {
+                        cursor = database.query(query, selectionArgs);
+                    }
+                    break;
+                case SQL:
+                    cursor = database.query(selection, selectionArgs);
                     break;
                 default:
                     throw new IllegalArgumentException("Type of dataset not defined");
@@ -480,14 +470,5 @@ public class MmxContentProvider
         }
         // open transaction
         Timber.d(log);
-    }
-
-    private void notifyChange(Uri uri) {
-        if (getContext() == null) return;
-
-        // notify update. todo Do this also after changes via sqlite.
-        getContext().getContentResolver().notifyChange(uri, null);
-        // notify the sync that database has changed.
-        new SyncManager(getContext()).dataChanged();
     }
 }

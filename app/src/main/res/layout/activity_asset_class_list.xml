@@ -23,7 +23,9 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/mmx_activity_side_margin"
     android:layout_marginRight="@dimen/mmx_activity_side_margin"
-    tools:context=".assetallocation.list.AssetClassListActivity">
+    tools:context=".assetallocation.list.AssetClassListActivity"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"

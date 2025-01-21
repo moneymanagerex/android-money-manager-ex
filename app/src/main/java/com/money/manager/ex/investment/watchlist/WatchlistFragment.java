@@ -16,13 +16,11 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,36 +30,37 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvExport;
 import com.money.manager.ex.investment.QuoteProviders;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
+import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
+import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.InvestmentSettings;
-import com.money.manager.ex.sync.SyncManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -73,8 +72,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -92,10 +89,10 @@ public class WatchlistFragment
      * @param accountId ID Account to be display
      * @return instance of Watchlist fragment with transactions for the given account.
      */
-    public static WatchlistFragment newInstance(int accountId) {
+    public static WatchlistFragment newInstance(long accountId) {
         WatchlistFragment fragment = new WatchlistFragment();
         Bundle args = new Bundle();
-        args.putInt(KEY_ACCOUNT_ID, accountId);
+        args.putLong(KEY_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
         fragment.setFragmentName(WatchlistFragment.class.getSimpleName() + "_" + accountId);
@@ -109,8 +106,8 @@ public class WatchlistFragment
     private Account mAccount;
 
     // price update counter. Used to know when all the prices are done downloading.
-    private int mUpdateCounter;
-    private int mToUpdateTotal;
+    private long mUpdateCounter;
+    private long mToUpdateTotal;
     private WatchlistViewHolder viewHolder;
 
     @Override
@@ -163,7 +160,7 @@ public class WatchlistFragment
         mDataFragment = WatchlistItemsFragment.newInstance();
         // set arguments and preferences of fragment
         Bundle arguments = new Bundle();
-        arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
+        arguments.putLong(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
         mDataFragment.setArguments(arguments);
 
         mDataFragment.setListHeader(this.viewHolder.mListHeader);
@@ -383,21 +380,22 @@ public class WatchlistFragment
         QuoteProviders currentProvider = settings.getQuoteProvider();
         int currentIndex = QuoteProviders.indexOf(currentProvider);
 
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.quote_provider)
-                .items(QuoteProviders.names())
-                .itemsCallbackSingleChoice(currentIndex, new MaterialDialog.ListCallbackSingleChoice() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.quote_provider)
+                .setSingleChoiceItems(QuoteProviders.names(), currentIndex, new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        //change provider
-                        QuoteProviders newProvider = QuoteProviders.valueOf(text.toString());
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Change provider
+                        QuoteProviders newProvider = QuoteProviders.valueOf(QuoteProviders.names()[which].toString());
 
                         InvestmentSettings settings = new InvestmentSettings(getActivity());
                         settings.setQuoteProvider(newProvider);
-                        return true;
+
+                        dialog.dismiss();
                     }
                 })
                 .show();
+
     }
 
     private void completePriceUpdate() {
@@ -407,9 +405,6 @@ public class WatchlistFragment
             public void run() {
                 // refresh the data.
                 mDataFragment.reloadData();
-
-                // notify about db file change.
-                new SyncManager(getActivity()).dataChanged();
             }
         });
     }
@@ -457,40 +452,35 @@ public class WatchlistFragment
     private void confirmPriceUpdate() {
         UIHelper ui = new UIHelper(getContext());
 
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.download)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirm_price_download)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.download)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
+                .setMessage(R.string.confirm_price_download)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        // get the list of symbols
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Get the list of symbols
                         String[] symbols = getAllShownSymbols();
                         mToUpdateTotal = symbols.length;
                         mUpdateCounter = 0;
 
-                        // update security prices
+                        // Update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                                 .getUpdaterInstance(getContext());
                         updater.downloadPrices(Arrays.asList(symbols));
-                        // results received via event
-
-                        dialog.dismiss();
+                        // Results received via event
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-            .build()
-            .show();
+                .show();
     }
 
-    private int getAccountId() {
+    private long getAccountId() {
         if (mAccount == null) {
             return Constants.NOT_SET;
         }
@@ -540,7 +530,7 @@ public class WatchlistFragment
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
                 Account account = Account.from(cursor);
 
-                int accountId = account.getId();
+                long accountId = account.getId();
                 switchAccount(accountId);
             }
 
@@ -610,46 +600,43 @@ public class WatchlistFragment
         if (args == null) return;
         if (!args.containsKey(KEY_ACCOUNT_ID)) return;
 
-        int accountId = args.getInt(KEY_ACCOUNT_ID);
+        long accountId = args.getLong(KEY_ACCOUNT_ID);
         this.mAccount = new AccountRepository(getActivity()).load(accountId);
     }
 
     private void purgePriceHistory() {
         UIHelper ui = new UIHelper(getContext());
 
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.purge_history)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.purge_history_confirmation)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.purge_history)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
+                .setMessage(R.string.purge_history_confirmation)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         StockHistoryRepository history = new StockHistoryRepository(getActivity());
-                        int deleted = history.deleteAllPriceHistory();
+                        long deleted = history.deleteAllPriceHistory();
 
                         if (deleted > 0) {
-                            new SyncManager(getActivity()).dataChanged();
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                                     .show();
                         } else {
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                                            getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
                                     .show();
                         }
 
                         dialog.dismiss();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();                    }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
                 })
-            .build()
-            .show();
+                .show();
     }
 
     /**
@@ -664,12 +651,12 @@ public class WatchlistFragment
         if (adapter == null) return;
 
         Cursor cursor = adapter.getCursor();
-        int position = Constants.NOT_SET;
+        int position = Constants.NOT_SET_INT;
 
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
-            int accountId = Integer.parseInt(accountIdString);
+            long accountId = Integer.parseInt(accountIdString);
             if (accountId == getAccountId()) {
                 position = i;
                 break;
@@ -679,7 +666,7 @@ public class WatchlistFragment
         spinner.setSelection(position);
     }
 
-    private void switchAccount(int accountId) {
+    private void switchAccount(long accountId) {
         if (accountId == getAccountId()) return;
 
         // switch account. Reload transactions.

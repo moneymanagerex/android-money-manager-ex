@@ -1,9 +1,5 @@
 package com.money.manager.ex.passcode;
 
-/**
- * Created by velmurug on 2018-04-15.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.Manifest;
@@ -13,11 +9,9 @@ import android.os.CancellationSignal;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
-import com.money.manager.ex.PasscodeActivity;
 
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
-    private CancellationSignal cancellationSignal;
     private final Context context;
 
     public FingerprintHandler(Context mContext) {
@@ -25,7 +19,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     }
 
     public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject) {
-        cancellationSignal = new CancellationSignal();
+        CancellationSignal cancellationSignal = new CancellationSignal();
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
             return;
         }

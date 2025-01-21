@@ -22,7 +22,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.currency.CurrencyService;
@@ -31,6 +30,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class SummaryWidgetProvider
     extends AppWidgetProvider {
@@ -45,7 +45,7 @@ public class SummaryWidgetProvider
 
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, SummaryWidgetProvider.class));
 
-        for (int i = 0; i < allWidgetIds.length; ++i) {
+        for (int allWidgetId : allWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_summary);
             remoteViews.setTextViewText(R.id.textViewUserName, app.loadUserNameFromDatabase(context));
             remoteViews.setTextViewText(R.id.textViewTotalAccounts, context.getString(R.string.summary) + ": "
@@ -53,20 +53,20 @@ public class SummaryWidgetProvider
 
             // register on click in icon launch application
             Intent intentApplication = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentApplication, PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.imageButtonLogoWidget, pendingIntent);
 
             Intent intentRefresh = new Intent(context, SummaryWidgetProvider.class);
             intentRefresh.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intentRefresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, 0, intentRefresh, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.imageButtonRefresh, pendingRefresh);
 
             // update widget
             try {
-                appWidgetManager.updateAppWidget(allWidgetIds[i], remoteViews);
+                appWidgetManager.updateAppWidget(allWidgetId, remoteViews);
             } catch (Exception e) {
-                Log.e(SummaryWidgetProvider.class.getSimpleName(), e.getMessage());
+                Timber.tag(SummaryWidgetProvider.class.getSimpleName()).e(e);
             }
         }
     }

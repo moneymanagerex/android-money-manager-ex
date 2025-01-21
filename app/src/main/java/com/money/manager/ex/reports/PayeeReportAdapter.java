@@ -29,7 +29,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.database.QueryAllData;
 
 import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.MoneyFactory;
@@ -55,8 +55,8 @@ public class PayeeReportAdapter
         TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-        if (cursor.getColumnIndex(ViewMobileData.Payee) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)))) {
-            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(ViewMobileData.Payee)));
+        if (cursor.getColumnIndex(QueryAllData.PAYEENAME) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.PAYEENAME)))) {
+            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.PAYEENAME)));
         } else {
             txtColumn1.setText(context.getString(R.string.empty_payee));
         }

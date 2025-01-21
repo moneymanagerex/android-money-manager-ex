@@ -26,8 +26,12 @@ If applicable, add screenshots to help explain your problem.
 **Device Information:**
  - Device: [e.g. LG G7 ThinQ]
  - OS: [e.g. Android 8.1]
- - Cloud Storage: [e.g. Dropbox 354.2.2]
- - App Version: [e.g. 2023.12.06]
+ - Storage: [e.g. Phone storage + Syncthing]
+ - Synchronization: [e.g. 5min interval and Sync on Start]
+ - Encrypted: [e.g. Yes with password]
+ - Security: [e.g. Actived with passcode or fingerprint]
+ - App Version: [e.g. 2025.01.14]
 
 **Additional context**
 Add any other context about the problem here.
+Great if you can try [the latest beta version](https://play.google.com/apps/testing/com.money.manager.ex.android)

@@ -366,6 +366,11 @@ public class MmxDate {
         return format.format(toDate());
     }
 
+    public String toIsoCombinedString() {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.IOS_8601_COMBINED, Locale.ENGLISH);
+        return format.format(toDate());
+    }
+
     public String toIsoDateShortTimeString() {
         SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_SHORT_TIME_FORMAT, Locale.ENGLISH);
         return format.format(toDate());

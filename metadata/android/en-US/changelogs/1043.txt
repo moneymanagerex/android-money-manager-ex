@@ -1,0 +1,4 @@
+- Target SDK Update: Upgraded to target SDK 34 to comply with Google Play requirements.
+- Android 13+ Compatibility: Enhanced support for Android 13 and higher.
+- Gradle Update: Upgraded to Gradle version 8.5.
+- Update i18n on 2024-11-01 from Crowdin

@@ -1,0 +1,5 @@
+- UX Enhancements: Added password hint and the ability to copy the version to the clipboard or open issues on GitHub directly.
+- Stability Improvements: Fixed crashes reported by Google Play, protected background Toasts, and paused SUID to allow more time for desktop integration.
+- Bug Fixes: Restored currency management in account editing (int2long).
+- Refactor: Code formatting and cleanup.
+- Update i18n on 2024-11-30 from Crowdin

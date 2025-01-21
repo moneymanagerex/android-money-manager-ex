@@ -34,8 +34,8 @@ public class Info
         return entity;
     }
 
-    public int getId() {
-        return getInt(INFOID);
+    public Long getId() {
+        return getLong(INFOID);
     }
 
     public String getName() {

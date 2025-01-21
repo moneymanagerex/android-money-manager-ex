@@ -1,0 +1,2 @@
+- Refine f-droid desc 
+- Fix transaction status update shortcut 

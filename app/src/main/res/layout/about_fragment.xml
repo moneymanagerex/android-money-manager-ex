@@ -78,6 +78,14 @@
             android:text="@string/send_feedback"/>
 
         <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textOpenIssues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/issue_open"/>
+
+        <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewIssuesTracker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,13 +105,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewGooglePlus"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                app:srcCompat="@drawable/ic_social_google_plus"/>
 
             <ImageView
                 android:id="@+id/imageViewGithub"
@@ -128,7 +129,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="4dp"
             android:text="@string/application_credits"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewLicense"
@@ -139,14 +142,18 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="4dp"
-            android:text="@string/application_license"/>
+            android:text="@string/application_license"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/divider_ice_cream_sandwich"/>
+            android:background="@drawable/divider_ice_cream_sandwich"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:layout_width="wrap_content"
@@ -156,7 +163,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="@string/donate_header"/>
+            android:text="@string/donate_header"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
         <com.money.manager.ex.view.RobotoButton
             android:id="@+id/buttonDonateInApp"
@@ -182,7 +191,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
-                android:text="@string/about_logcat_header"/>
+                android:text="@string/about_logcat_header"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp" />
 
             <com.money.manager.ex.view.RobotoButton
                 android:id="@+id/sendLogcatButton"

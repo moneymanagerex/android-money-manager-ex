@@ -28,18 +28,21 @@ import info.javaperformance.money.Money;
 public interface ISplitTransaction
     extends IEntity {
 
-    Integer getId();
-    void setId(int splitTransId);
+    Long getId();
+    void setId(long splitTransId);
     boolean hasId();
 
-    Integer getAccountId();
-    void setAccountId(int value);
+    Long getAccountId();
+    void setAccountId(long value);
 
     Money getAmount();
     void setAmount(Money splitTransAmount);
 
-    Integer getCategoryId();
-    void setCategoryId(int categoryId);
+    String getNotes();
+    void setNotes(String value);
+
+    Long getCategoryId();
+    void setCategoryId(long categoryId);
 
     TransactionTypes getTransactionType(TransactionTypes parentTransactionType);
     void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType);

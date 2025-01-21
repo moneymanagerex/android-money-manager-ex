@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,12 +18,17 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
+
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
+// import com.money.manager.ex.sqlite3mc.SupportFactory;
+import net.sqlcipher.database.SupportFactory;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -32,7 +37,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.io.File;
@@ -44,13 +48,13 @@ import timber.log.Timber;
 /**
  * Actual helper class for accessing an SQLite database.
  */
-public class MmxOpenHelper
-    extends SQLiteOpenHelper {
+public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     /**
      * Database schema version.
      */
-    private static final int databaseVersion = 19;
+    private static final int DATABASE_VERSION = 19;
+    private String dbPath;
 
     // Dynamic
 
@@ -59,9 +63,13 @@ public class MmxOpenHelper
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
-        super(context, dbPath, null, databaseVersion);
+        super(DATABASE_VERSION);
         this.mContext = context;
+        this.dbPath = dbPath;
+        this.mPassword = MmexApplication.getApp().getPassword();
 
+        // Load the sqlite3mc native library.
+        // System.loadLibrary("sqliteX");
     }
 
     private final Context mContext;
@@ -69,6 +77,10 @@ public class MmxOpenHelper
 
     public Context getContext() {
         return this.mContext;
+    }
+
+    public String getDbPath() {
+        return this.dbPath;
     }
 
 //    @Override
@@ -81,30 +93,26 @@ public class MmxOpenHelper
      * Called when the database is being created.
      * @param db Database instance.
      */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SupportSQLiteDatabase db) {
         Timber.d("OpenHelper onCreate");
 
         try {
             executeRawSql(db, R.raw.tables_v1);
-            db.disableWriteAheadLogging();
             initDatabase(db);
         } catch (Exception e) {
             Timber.e(e, "initializing database");
         }
     }
 
-    @Override
-    public void onOpen(SQLiteDatabase db) {
+    public void onOpen(SupportSQLiteDatabase db) {
         db.disableWriteAheadLogging();
-        super.onOpen(db);
+   //     super.onOpen(db);
 
-//        int version = db.getVersion();
+//        long version = db.getVersion();
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Timber.d("Upgrading from %1$d  to %2$d", oldVersion, newVersion);
+    public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+        Timber.d("Upgrading from version %d to %d", oldVersion, newVersion);
 
         try {
             String currentDbFile = db.getPath();
@@ -118,114 +126,60 @@ public class MmxOpenHelper
 
         // update databases
         updateDatabase(db, oldVersion, newVersion);
-
-        // notify sync about the db update.
-        new SyncManager(getContext()).dataChanged();
     }
 
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // nothing to do for now.
-//        Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
-//    }
-
-//    @Override
-//    public synchronized void close() {
-//        super.close();
-//
-//        mInstance = null;
-//    }
-
-    @Override
-    public SQLiteDatabase getReadableDatabase() {
-        SQLiteDatabase db = null;
-        try {
-            db = super.getReadableDatabase();
-        } catch (Exception ex) {
-            Timber.e(ex, "opening readable database");
-        }
-        return db;
+    private SupportSQLiteDatabase getDatabase(boolean writable) {
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
+        SupportSQLiteOpenHelper.Configuration configuration =
+                SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                        .name(this.dbPath)
+                        .callback(this)
+                        .build();
+        SupportSQLiteDatabase sqLiteDatabase = writable
+                ? factory.create(configuration).getWritableDatabase()
+                : factory.create(configuration).getReadableDatabase();
+        return sqLiteDatabase;
     }
 
-//    public SQLiteDatabase getReadableDatabase() {
-//        return this.getReadableDatabase(this.mPassword);
-//    }
-//    @Override
-//    public SQLiteDatabase getReadableDatabase(String password) {
-//        SQLiteDatabase db = null;
-//        try {
-//            db = super.getReadableDatabase(password);
-//        } catch (Exception ex) {
-//            Timber.e(ex, "opening readable database");
-//        }
-//        return db;
-//    }
-
-    @Override
-    public SQLiteDatabase getWritableDatabase() {
-        try {
-            //return getWritableDatabase_Internal();
-            return super.getWritableDatabase();
-        } catch (Exception ex) {
-            Timber.e(ex, "opening writable database");
-        }
-        return null;
+    public SupportSQLiteDatabase getReadableDatabase() {
+        return getDatabase(false);
     }
 
-//    public SQLiteDatabase getWritableDatabase() {
-//        return getWritableDatabase(this.mPassword);
-//    }
-//    @Override
-//    public SQLiteDatabase getWritableDatabase(String password) {
-//        try {
-//            return getWritableDatabase_Internal(password);
-//        } catch (Exception ex) {
-//            Timber.e(ex, "opening writable database");
-//        }
-//        return null;
-//    }
+    public SupportSQLiteDatabase getWritableDatabase() {
+        return getDatabase(true);
+    }
 
     public void setPassword(String password) {
         this.mPassword = password;
     }
+    public String getPassword() { return this.mPassword;}
 
-//    public boolean hasPassword() {
-//        return !TextUtils.isEmpty(this.mPassword);
-//    }
-
-//    private SQLiteDatabase getWritableDatabase_Internal() {
-//        // String password
-////
-////        SQLiteDatabase db = super.getWritableDatabase(password);
-//        SQLiteDatabase db = super.getWritableDatabase();
-//
-//        if (db != null) {
-//            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-//        }
-//
-//        return db;
-//    }
+    public boolean hasPassword() {
+        return !TextUtils.isEmpty(this.mPassword);
+    }
 
     /**
      * @param db    SQLite database to execute raw SQL
      * @param rawId id raw resource
      */
-    private void executeRawSql(SQLiteDatabase db, int rawId) {
+    private void executeRawSql(SupportSQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
         String[] sqlStatement = sqlRaw.split(";");
 
         // process all statements
-        for (String aSqlStatment : sqlStatement) {
-            Timber.d(aSqlStatment);
+        for (String aSqlStatement : sqlStatement) {
+            if (aSqlStatement.trim().isEmpty())
+                continue;
+            Timber.d(aSqlStatement);
 
             try {
-                db.execSQL(aSqlStatment);
+                db.execSQL(aSqlStatement);
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
                 if (e instanceof SQLiteException && errorMessage != null && errorMessage.contains("not an error (code 0)")) {
                     Timber.w(errorMessage);
                 } else {
-                    Timber.e(e, "executing raw sql: %s", aSqlStatment);
+                    Timber.e(e, "executing raw sql: %s", aSqlStatement);
                 }
             }
         }
@@ -240,7 +194,7 @@ public class MmxOpenHelper
         Cursor cursor = null;
         try {
             if (getReadableDatabase() != null) {
-                cursor = getReadableDatabase().rawQuery("select sqlite_version() AS sqlite_version", null);
+                cursor = getReadableDatabase().query("select sqlite_version() AS sqlite_version");
                 if (cursor != null && cursor.moveToFirst()) {
                     sqliteVersion = cursor.getString(0);
                 }
@@ -254,7 +208,7 @@ public class MmxOpenHelper
         return sqliteVersion;
     }
 
-    private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateDatabase(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             int resourceId = mContext.getResources()
@@ -266,7 +220,7 @@ public class MmxOpenHelper
         }
     }
 
-    private boolean initDatabase(SQLiteDatabase database) {
+    private boolean initDatabase(SupportSQLiteDatabase database) {
         try {
             initBaseCurrency(database);
         } catch (Exception e) {
@@ -274,8 +228,6 @@ public class MmxOpenHelper
         }
 
         initDateFormat(database);
-    //    initCategories(database);
-
         return true;
     }
 
@@ -284,7 +236,7 @@ public class MmxOpenHelper
      * Here we only update the record to the current system's date format.
      * @param database Database being initialized.
      */
-    private void initDateFormat(SQLiteDatabase database) {
+    private void initDateFormat(SupportSQLiteDatabase database) {
         try {
             Core core = new Core(getContext());
             String pattern = core.getDefaultSystemDateFormat();
@@ -297,7 +249,7 @@ public class MmxOpenHelper
         }
     }
 
-    private void initBaseCurrency(SQLiteDatabase db) {
+    private void initBaseCurrency(SupportSQLiteDatabase db) {
         // currencies
         CurrencyService currencyService = new CurrencyService(getContext());
         Currency systemCurrency = currencyService.getSystemDefaultCurrency();
@@ -312,14 +264,14 @@ public class MmxOpenHelper
 //                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)
 //                .toString();
 
-        Cursor currencyCursor = db.rawQuery(
+        Cursor currencyCursor = db.query(
             "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
             " WHERE " + Info.INFONAME + "=?",
             new String[]{ InfoKeys.BASECURRENCYID});
         if (currencyCursor == null) return;
 
         // Get id of the base currency record.
-        int recordId = Constants.NOT_SET;
+        long recordId = Constants.NOT_SET;
         boolean recordExists = currencyCursor.moveToFirst();
         if (recordExists) {
             recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
@@ -327,7 +279,7 @@ public class MmxOpenHelper
         currencyCursor.close();
 
         // Use the system default currency.
-        int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
+        long currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
         if (currencyId == Constants.NOT_SET) {
             // Use Euro by default.
             currencyId = 2;
@@ -348,12 +300,6 @@ public class MmxOpenHelper
                 Timber.e("error updating base currency on init");
             }
         }
-
-        // Can't use provider here as the database is not ready.
-//            int currencyId = currencyService.loadCurrencyIdFromSymbol(systemCurrency.getCurrencyCode());
-//            String baseCurrencyId = infoService.getInfoValue(InfoService.BASECURRENCYID);
-//            if (!StringUtils.isEmpty(baseCurrencyId)) return;
-//            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
     }
 
     @Override
@@ -361,7 +307,18 @@ public class MmxOpenHelper
         super.finalize();
     }
 
-    public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
+    public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
+        SupportSQLiteOpenHelper.Configuration configuration =
+                SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                        .name(this.dbPath)
+                        .callback(this)
+                        .build();
+
+        return factory.create(configuration);
+    }
+
+    public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
         File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
 

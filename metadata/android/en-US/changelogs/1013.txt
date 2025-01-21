@@ -1,0 +1,7 @@
+Update doc for asset by @wolfsolver in #1496
+fix remoteLastChangedDate bug when triggering pollNewRemoteTimestamp by @guanlisheng in #1497
+fill the change log fragment with the release page by @guanlisheng in #1509
+Support Opt users out of tracking by @guanlisheng in #1510
+auto transaction number per behavior settings by @guanlisheng in #1514
+Update doc for asset by @wolfsolver in #1496
+fix remoteLastChangedDate bug when triggering pollNewRemoteTimestamp by @guanlisheng in #1497

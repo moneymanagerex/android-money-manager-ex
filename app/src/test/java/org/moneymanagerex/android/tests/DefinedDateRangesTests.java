@@ -18,7 +18,6 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
@@ -28,7 +27,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -82,7 +80,7 @@ public class DefinedDateRangesTests {
 
     //@Test
     public void testGetByMenuId() {
-        int menuId = R.id.menu_today;
+        long menuId = R.id.menu_today;
         String expectedName = DefinedDateRangeName.TODAY.toString();
 
         DefinedDateRange actual = this.testObject.getByMenuId(menuId);
@@ -94,7 +92,7 @@ public class DefinedDateRangesTests {
 
     //@Test
     public void testGetByNameId() {
-        int nameId = R.string.last3months;
+        long nameId = R.string.last3months;
         String expectedName = DefinedDateRangeName.LAST_3_MONTHS.toString();
 
         DefinedDateRange actual = this.testObject.getByNameId(nameId);

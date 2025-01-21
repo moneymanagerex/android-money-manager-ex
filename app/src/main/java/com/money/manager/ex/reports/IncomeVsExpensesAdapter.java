@@ -65,7 +65,7 @@ public class IncomeVsExpensesAdapter
         month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);
-        double income = 0, expenses = 0;
+        double income, expenses;
         expenses = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
         income = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
         // attach data

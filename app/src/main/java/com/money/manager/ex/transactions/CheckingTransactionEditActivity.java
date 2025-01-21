@@ -37,10 +37,14 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.Tag;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -48,8 +52,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
@@ -57,7 +61,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
@@ -66,7 +70,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import icepick.State;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -78,10 +81,10 @@ import static java.lang.Integer.parseInt;
 public class CheckingTransactionEditActivity
     extends MmxBaseFragmentActivity {
 
-    @State public String mIntentAction;
+    public String mIntentAction;
 
     // bill deposits
-    public int mRecurringTransactionId = Constants.NOT_SET;
+    public long mScheduledTransactionId = Constants.NOT_SET;
 
     @Inject
     BriteDatabase database;
@@ -124,7 +127,7 @@ public class CheckingTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
-
+        mCommon.displayTags();
         mCommon.setDirty(false);
     }
 
@@ -174,7 +177,7 @@ public class CheckingTransactionEditActivity
                 Parcels.wrap(mCommon.mSplitTransactions));
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
                 Parcels.wrap(mCommon.mSplitTransactionsDeleted));
-        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
+        outState.putLong(EditTransactionActivityConstants.KEY_BDID_ID, mScheduledTransactionId);
 
 //        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
@@ -186,7 +189,9 @@ public class CheckingTransactionEditActivity
 
     @Override
     public void onBackPressed() {
-        onActionCancelClick();
+        if (!onActionCancelClick()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -234,7 +239,7 @@ public class CheckingTransactionEditActivity
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
-        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
+        RecurringTransactionService recurringTransaction = new RecurringTransactionService(mScheduledTransactionId, this);
         ArrayList<ISplitTransaction> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mCommon.mSplitTransactions == null) mCommon.mSplitTransactions = new ArrayList<>();
 
@@ -245,6 +250,7 @@ public class CheckingTransactionEditActivity
             SplitCategory newSplit = new SplitCategory();
             newSplit.setAmount(record.getAmount());
             newSplit.setCategoryId(record.getCategoryId());
+            newSplit.setNotes(record.getNotes());
 
             mCommon.mSplitTransactions.add(newSplit);
         }
@@ -331,7 +337,7 @@ public class CheckingTransactionEditActivity
             // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null && !parameters.categoryName.isEmpty()) {
                 CategoryService newCategory = new CategoryService(this);
-                mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
+                mCommon.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName, Constants.NOT_SET));
                 mCommon.categoryName = parameters.categoryName;
             } else {
                 // try to resolve the category from the payee
@@ -377,11 +383,17 @@ public class CheckingTransactionEditActivity
         // Transaction Number
         mCommon.initTransactionNumberControls();
 
+        // Attachments
+        mCommon.initAttachmentControls();
+
         // notes
         mCommon.initNotesControls();
+
+        // Tag
+        mCommon.initTagsControls();
     }
 
-    private boolean loadTransaction(int transId) {
+    private boolean loadTransaction(long transId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = repo.load(transId);
         if (tx == null) return false;
@@ -390,8 +402,19 @@ public class CheckingTransactionEditActivity
 
         // Load Split Categories.
         if (mCommon.mSplitTransactions == null) {
-            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+            SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
             mCommon.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
+        }
+        // Load Attachments
+        if (mCommon.mAttachments == null) {
+            AttachmentRepository attachmentRepository = new AttachmentRepository(this);
+            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, mCommon.transactionEntity.getTransactionModel());
+        }
+
+        // load Tags
+        if (mCommon.mTaglinks == null ) {
+            TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel());
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -403,9 +426,9 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
-    private boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadScheduledTransaction(long scheduledTransactionId) {
         try {
-            return loadRecurringTransactionInternal(recurringTransactionId);
+            return loadScheduledTransactionInternal(scheduledTransactionId);
         } catch (RuntimeException ex) {
             Timber.e(ex, "loading recurring transaction");
             return false;
@@ -414,22 +437,19 @@ public class CheckingTransactionEditActivity
 
     /**
      * Loads a recurring transaction data when entering a recurring transaction.
-     * @param recurringTransactionId Id of the recurring transaction.
+     * @param scheduledTransactionId Id of the recurring transaction.
      * @return A boolean indicating whether the operation was successful.
      */
-    private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        RecurringTransaction recurringTx = repo.load(recurringTransactionId);
+    private boolean loadScheduledTransactionInternal(long scheduledTransactionId) {
+        ScheduledTransactionRepository repo = new ScheduledTransactionRepository(this);
+        RecurringTransaction recurringTx = repo.load(scheduledTransactionId);
         if (recurringTx == null) return false;
 
         // Copy properties from recurring transaction
-
         mCommon.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
         mCommon.transactionEntity.setAccountToId(recurringTx.getToAccountId());
-
-        String transCode = recurringTx.getTransactionCode();
-        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
+        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(recurringTx.getTransactionCode()));
         mCommon.transactionEntity.setStatus(recurringTx.getStatus());
         mCommon.transactionEntity.setAmount(recurringTx.getAmount());
         mCommon.transactionEntity.setAmountTo(recurringTx.getAmountTo());
@@ -446,6 +466,10 @@ public class CheckingTransactionEditActivity
 
         // e splits
         createSplitCategoriesFromRecurringTransaction();
+
+        // tags
+        TaglinkRepository taglinkRepository = new TaglinkRepository(this);
+        mCommon.mTaglinks = Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel()));
 
         return true;
     }
@@ -465,7 +489,7 @@ public class CheckingTransactionEditActivity
         }
 
         if (savedInstanceState == null) {
-            int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
+            long accountId = intent.getLongExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
             if (accountId != Constants.NOT_SET) {
                 mCommon.transactionEntity.setAccountId(accountId);
             }
@@ -473,7 +497,7 @@ public class CheckingTransactionEditActivity
             // Edit transaction.
 
             if (mIntentAction != null) {
-                int transactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
+                long transactionId = intent.getLongExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
 
                 switch (mIntentAction) {
                     case Intent.ACTION_EDIT:
@@ -485,9 +509,9 @@ public class CheckingTransactionEditActivity
                         duplicateTransaction();
                         break;
                     case Intent.ACTION_INSERT:
-                        mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
-                        if (mRecurringTransactionId > Constants.NOT_SET) {
-                            loadRecurringTransaction(mRecurringTransactionId);
+                        mScheduledTransactionId = intent.getLongExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
+                        if (mScheduledTransactionId > Constants.NOT_SET) {
+                            loadScheduledTransaction(mScheduledTransactionId);
                         }
                 }
             }
@@ -509,7 +533,7 @@ public class CheckingTransactionEditActivity
                 executor.execute(() -> {
                     try {
                         Core core = new Core(getApplicationContext());
-                        Payee payee = core.getLastPayeeUsed();
+                        Payee payee = core.getLastPayeeUsed(mCommon.transactionEntity.getAccountId());
                         if (payee != null && mCommon.transactionEntity.getPayeeId() == Constants.NOT_SET) {
                             // get id payee and category
                             mCommon.transactionEntity.setPayeeId(payee.getId());
@@ -550,8 +574,8 @@ public class CheckingTransactionEditActivity
 
                         if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
                         {
-                            mCommon.transactionEntity.setAccountId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
-                            mCommon.transactionEntity.setAccountToId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setAccountToId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
                             //convert the to amount from the both currency details
                             CurrencyService currencyService = new CurrencyService(this);
@@ -575,7 +599,7 @@ public class CheckingTransactionEditActivity
                             if("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getString(getString(PreferenceConstants.PREF_DEFAULT_PAYEE), "N"))) {
                                 Core core = new Core(this);
-                                Payee payee = core.getLastPayeeUsed();
+                                Payee payee = core.getLastPayeeUsed(mCommon.transactionEntity.getAccountId());
 
                                 if (payee != null) {
                                     mCommon.transactionEntity.setPayeeId(payee.getId());
@@ -586,7 +610,7 @@ public class CheckingTransactionEditActivity
                         }
                         else
                         {
-                            mCommon.transactionEntity.setPayeeId(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                            mCommon.transactionEntity.setPayeeId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
                             mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
                             mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
                         }
@@ -595,7 +619,7 @@ public class CheckingTransactionEditActivity
                         if(mCommon.payeeName.isEmpty())
                         {
                             String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
-                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseInt(catID)); }
+                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(Long.parseLong(catID)); }
 
                             mCommon.loadCategoryName();
                         }
@@ -613,10 +637,10 @@ public class CheckingTransactionEditActivity
             }
 
             // Select the default account if none set.
-            Integer account = mCommon.transactionEntity.getAccountId();
+            Long account = mCommon.transactionEntity.getAccountId();
             if (account == null || account == Constants.NOT_SET) {
                 AppSettings settings = new AppSettings(this);
-                Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+                Long defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
                 if (defaultAccountId == null) {
                     // Show toast message.
                     new UIHelper(this).showToast(getString(R.string.default_account_not_set));
@@ -650,7 +674,7 @@ public class CheckingTransactionEditActivity
         mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
                 EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
 
-        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
+        mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
 
         // action
 //        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
@@ -689,8 +713,8 @@ public class CheckingTransactionEditActivity
         saveDefaultPayee(isTransfer);
 
         // Process recurring transaction.
-        if (mRecurringTransactionId != Constants.NOT_SET) {
-            RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
+        if (mScheduledTransactionId != Constants.NOT_SET) {
+            RecurringTransactionService service = new RecurringTransactionService(mScheduledTransactionId, this);
             service.moveNextOccurrence();
         }
 
@@ -718,8 +742,8 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveSplitCategories() {
-        Integer transactionId = mCommon.transactionEntity.getId();
-        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+        Long transactionId = mCommon.transactionEntity.getId();
+        SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
         ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
 
         // deleted old split transaction
@@ -782,6 +806,9 @@ public class CheckingTransactionEditActivity
                 return false;
             }
         }
+
+        mCommon.saveTags();
+
         return true;
     }
 }

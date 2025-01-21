@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -49,22 +48,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.amplitude.android.Amplitude;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.PasscodeActivity;
+import com.money.manager.ex.tag.TagListFragment;
+import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
+import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
-import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -77,7 +74,8 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.fragment.PayeeListFragment;
+import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.payee.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -86,8 +84,8 @@ import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
-import com.money.manager.ex.notifications.RecurringTransactionNotifications;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
+import com.money.manager.ex.notifications.RecurringTransactionProcess;
+import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
@@ -109,13 +107,15 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import icepick.State;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -124,11 +124,11 @@ import timber.log.Timber;
  * Main activity of the application.
  */
 public class MainActivity
-    extends MmxBaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-    private FirebaseAnalytics mFirebaseAnalytics;
+
     /**
      * @return the mRestart
      */
@@ -148,15 +148,16 @@ public class MainActivity
     // state if restart activity
     private static boolean mRestartActivity = false;
 
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabases;
 
-    @State boolean dbUpdateCheckDone = false;
-    @State boolean mIsSynchronizing = false;
-    @State boolean isAuthenticated = false;
-    @State int deviceOrientation = Constants.NOT_SET;
+    boolean dbUpdateCheckDone = false;
+    boolean mIsSynchronizing = false;
+    boolean isAuthenticated = false;
+    long deviceOrientation = Constants.NOT_SET;
 
     private boolean isInAuthentication = false;
-    private boolean isRecurringTransactionStarted = false;
+    private boolean isScheduledTransactionStarted = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
@@ -179,9 +180,7 @@ public class MainActivity
             finish();
             return;
         }
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        // todo: remove this after the users upgrade the recent files list.
-        migrateRecentDatabases();
+        Amplitude amplitude = MmexApplication.getAmplitude();
 
         // Reset the request for restart. If we are in onCreate, we are restarting already.
         setRestartActivity(false);
@@ -216,38 +215,27 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
-        onceSynchronize();
-
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(this);
 
         String uid = infoService.getInfoValue(InfoKeys.UID);
         if (uid == null || uid.isEmpty()) {
-            // TODO create a new one
-        } else {
-            mFirebaseAnalytics.setUserId(uid);
+            uid = "android_" + Instant.now()
+                    .atZone(ZoneId.of("UTC"))
+                    .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+            infoService.setInfoValue(InfoKeys.UID, uid);
         }
+        amplitude.setUserId(uid);
+
         // fragments
         initHomeFragment();
-
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
-        }
-
-        // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
-        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         initializeDrawer();
 
         initializeSync();
+
+        populateScheduledTransactions();
+
     }
 
     @Override
@@ -304,21 +292,36 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) return;
+        // don't accidentally bypass passcode (failures), e.g. pressing physical back button
+        // see old merge #1338 and issue #1293
+        if (resultCode != RESULT_OK && requestCode != RequestCodes.PASSCODE) return;
 
         switch (requestCode) {
+            case RequestCodes.REQUEST_PASSWORD:
+                String path = data.getStringExtra(MainActivity.EXTRA_DATABASE_PATH);
+                DatabaseMetadata selectedDatabase = getDatabases().get(path);
+                onOpenDatabaseClick(selectedDatabase);
+                break;
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
-                changeDatabase(db);
+                if (db.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                    changeDatabase(db);
+                }
                 break;
-
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                changeDatabase(db2);
+                if (db2.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                    changeDatabase(db2);
+                }
                 break;
-
             case RequestCodes.PASSCODE:
                 isAuthenticated = false;
                 isInAuthentication = false;
@@ -328,14 +331,13 @@ public class MainActivity
                         Passcode passcode = new Passcode(getApplicationContext());
                         String passDb = passcode.getPasscode();
 
-                        if (passIntent != null && passDb != null) {
+                        if (passDb != null) {
                             isAuthenticated = passIntent.equals(passDb);
                             if (!isAuthenticated) {
                                 Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                             }
                         }
-                    }
-                    else {
+                    } else {
                         isAuthenticated = true;
                     }
                 }
@@ -348,7 +350,7 @@ public class MainActivity
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRestartActivity(true);
     }
@@ -409,7 +411,7 @@ public class MainActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
-        outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
+        outState.putBoolean(KEY_RECURRING_TRANSACTION, isScheduledTransactionStarted);
 
         super.onSaveInstanceState(outState);
     }
@@ -425,13 +427,15 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         } else {
             try {
                 super.onBackPressed();
             } catch (IllegalStateException e) {
-                Timber.e(e, "on back pressed");
+                Timber.e(e, "IllegalStateException in onBackPressed");
+            } catch (NullPointerException e) {
+                Timber.e(e, "NullPointerException in onBackPressed");
             }
         }
     }
@@ -471,17 +475,15 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync started event.
      */
     @Subscribe
     public void onEvent(SyncStartingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = true;
-                invalidateOptionsMenu();
-                return null;
-            }
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = true;
+            invalidateOptionsMenu();
+            return null;
         })
                 .subscribeOn(AndroidSchedulers.mainThread())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -490,21 +492,19 @@ public class MainActivity
 
     /**
      * Force execution on the main thread as the event can be received on the service thread.
+     *
      * @param event Sync stopped event.
      */
     @Subscribe
     public void onEvent(SyncStoppingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = false;
-                invalidateOptionsMenu();
-                return null;
-            }
+        Single.fromCallable((Callable<Void>) () -> {
+            mIsSynchronizing = false;
+            invalidateOptionsMenu();
+            return null;
         })
-            .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
 //            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe();
+                .subscribe();
     }
 
     /**
@@ -529,13 +529,16 @@ public class MainActivity
         }
 
         try {
-            new MmxDatabaseUtils(this).useDatabase(database);
+            MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+            dbUtils.useDatabase(database);
+            dbUtils.checkIntegrity();
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
-                Timber.w(e.getMessage());
+                Timber.w(e);
             } else {
                 Timber.e(e, "changing the database");
             }
+            showSelectDatabaseActivity();
             return;
         }
 
@@ -567,111 +570,91 @@ public class MainActivity
 
     /**
      * Handle the drawer item click. Invoked by the actual click handler.
+     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
-        Intent intent;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
-                onOpenDatabaseClick(selectedDatabase);
+                // TODO request password 1/3 upon testing instead of extension
+                if (key.endsWith(".emb")) {
+                    Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+                    intent.putExtra(EXTRA_DATABASE_PATH, key);
+                    startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
+                } else {
+                    MmexApplication.getApp().setPassword(""); // reset password
+                    onOpenDatabaseClick(selectedDatabase);
+                }
+
+                return result;
             }
         }
         if (item.getId() == null) return false;
 
-        switch (item.getId()) {
-            case R.id.menu_home:
-                showFragment(HomeFragment.class);
-                break;
-            case R.id.menu_sync:
-                onceSynchronize();
-                break;
+        long itemId = item.getId();
 
-            case R.id.menu_open_database:
-                FileStorageHelper helper = new FileStorageHelper(this);
-                helper.showStorageFilePicker();
-                break;
-
-            case R.id.menu_create_database:
-                (new FileStorageHelper(this)).showCreateFilePicker();
-                break;
-
-            case R.id.menu_account:
-                showFragment(AccountListFragment.class);
-                break;
-
-            case R.id.menu_category:
-                showFragment(CategoryListFragment.class);
-                break;
-
-            case R.id.menu_currency:
-                // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-                break;
-            case R.id.menu_payee:
-                showFragment(PayeeListFragment.class);
-                break;
-            case R.id.menu_recurring_transaction:
-                showFragment(RecurringTransactionListFragment.class);
-                break;
-            case R.id.menu_budgets:
-                intent = new Intent(this, BudgetsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_asset_allocation:
-                intent = new Intent(this, AssetAllocationOverviewActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_search_transaction:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-            case R.id.menu_report_categories:
-                startActivity(new Intent(this, CategoriesReportActivity.class));
-                break;
-            case R.id.menu_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
-            case R.id.menu_reports:
-                showReportsSelector(item.getText());
-                break;
-            case R.id.menu_report_payees:
-                startActivity(new Intent(this, PayeesReportActivity.class));
-                break;
-            case R.id.menu_report_where_money_goes:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_where_money_comes_from:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_income_vs_expenses:
-                startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_asset_allocation_overview:
-                startActivity(new Intent(this, AssetAllocationReportActivity.class));
-                break;
-            case R.id.menu_help:
-                startActivity(new Intent(MainActivity.this, HelpActivity.class));
-                break;
-            case R.id.menu_about:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            default:
-                // if no match, return false
-                result = false;
+        if (itemId == R.id.menu_home) {
+            showFragment(HomeFragment.class);
+        } else if (itemId == R.id.menu_sync) {
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization();
+        } else if (itemId == R.id.menu_open_database) {
+            FileStorageHelper helper = new FileStorageHelper(this);
+            helper.showStorageFilePicker();
+            // TODO request password 2/3
+        } else if (itemId == R.id.menu_create_database) {
+            (new FileStorageHelper(this)).showCreateFilePicker();
+            // TODO request password 3/3
+        } else if (itemId == R.id.menu_account) {
+            showFragment(AccountListFragment.class);
+        } else if (itemId == R.id.menu_category) {
+            showFragment(NestedCategoryListFragment.class);
+        } else if (itemId == R.id.menu_currency) {
+            Intent intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_payee) {
+            showFragment(PayeeListFragment.class);
+        } else if (itemId == R.id.menu_tag) {
+            showFragment(TagListFragment.class);
+        } else if (itemId == R.id.menu_recurring_transaction) {
+            showFragment(ScheduledTransactionListFragment.class);
+        } else if (itemId == R.id.menu_budgets) {
+            Intent intent = new Intent(this, BudgetsActivity.class);
+            startActivity(intent);
+        } else if (itemId == R.id.menu_search_transaction) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        } else if (itemId == R.id.menu_report_categories) {
+            startActivity(new Intent(this, CategoriesReportActivity.class));
+        } else if (itemId == R.id.menu_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (itemId == R.id.menu_report_payees) {
+            startActivity(new Intent(this, PayeesReportActivity.class));
+        } else if (itemId == R.id.menu_report_where_money_goes) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_where_money_comes_from) {
+            Intent intent = new Intent(this, CategoriesReportActivity.class);
+            intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
+            intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
+            startActivity(intent);
+        } else if (itemId == R.id.menu_report_income_vs_expenses) {
+            startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        } else if (itemId == R.id.menu_help) {
+            startActivity(new Intent(MainActivity.this, HelpActivity.class));
+        } else if (itemId == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        } else {
+            // if no match, return false
+            result = false;
         }
 
         return result;
@@ -743,8 +726,8 @@ public class MainActivity
     /**
      * Displays the fragment and associate the tag
      *
-     * @param fragment    Fragment to display
-     * @param tag Tag/name to search for.
+     * @param fragment Fragment to display
+     * @param tag      Tag/name to search for.
      */
     public void showFragment(Fragment fragment, String tag) {
         try {
@@ -760,7 +743,7 @@ public class MainActivity
      *
      * @param accountId id of the account for which to show the transactions
      */
-    public void showAccountFragment(int accountId) {
+    public void showAccountFragment(long accountId) {
         String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + accountId;
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
@@ -769,7 +752,7 @@ public class MainActivity
         showFragment(fragment, tag);
     }
 
-    public void showPortfolioFragment(int accountId) {
+    public void showPortfolioFragment(long accountId) {
         String tag = PortfolioFragment.class.getSimpleName() + "_" + accountId;
         PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
@@ -778,7 +761,7 @@ public class MainActivity
         showFragment(fragment, tag);
     }
 
-    public void showWatchlistFragment(int accountId) {
+    public void showWatchlistFragment(long accountId) {
         String tag = WatchlistFragment.class.getSimpleName() + "_" + accountId;
         WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getContentId()) {
@@ -838,9 +821,6 @@ public class MainActivity
         childItems.add(null);
 
         // Synchronization
-//        if (new SyncManager(this).isActive()) {
-//            childItems.add(null);
-//        }
         childItems.add(null);
 
         // Entities
@@ -859,11 +839,16 @@ public class MainActivity
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)
-                    .color(iconColor)));
+                        .color(iconColor)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_group)
+                        .color(iconColor)));
+        // manage: Tags
+        childTools.add(new DrawerMenuItem().withId(R.id.menu_tag)
+                .withText(getString(R.string.tag))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_label)
                         .color(iconColor)));
         childItems.add(childTools);
 
@@ -873,20 +858,39 @@ public class MainActivity
         // Budgets
         childItems.add(null);
 
-        // Asset Allocation
-        //if (BuildConfig.DEBUG) <- this was used to hide the menu item while testing.
-        childItems.add(null);
-
         // Search transaction
         childItems.add(null);
 
         // reports
-        childItems.add(null);
+        ArrayList<DrawerMenuItem> childReports = new ArrayList<>();
+        // payee
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
+                .withText(getString(R.string.payees))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money goes
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
+                .withText(getString(R.string.menu_report_where_money_goes))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money comes from
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
+                .withText(getString(R.string.menu_report_where_money_comes_from))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // where money comes from
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
+                .withText(getString(R.string.categories))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(iconColor)));
+        // income vs. expenses
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
+                .withText(getString(R.string.menu_report_income_vs_expenses))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor)));
+        childItems.add(childReports);
 
         // Settings
-        childItems.add(null);
-
-        // Donate
         childItems.add(null);
 
         // Help
@@ -898,55 +902,41 @@ public class MainActivity
         drawerList.setAdapter(adapter);
 
         // set listener on item click
-        drawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (mDrawer == null) return false;
-                // if the group has child items, do not e.
-                ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
-                if (children != null) return false;
+        drawerList.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (mDrawer == null) return false;
+            // if the group has child items, do not e.
+            ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
+            if (children != null) return false;
 
-                // Highlight the selected item, update the title, and close the drawer
-                drawerList.setItemChecked(groupPosition, true);
+            // Highlight the selected item, update the title, and close the drawer
+            drawerList.setItemChecked(groupPosition, true);
 
-                // You should reset item counter
-                mDrawer.closeDrawer(mDrawerLayout);
-                // check item selected
-                final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
-                        .getGroup(groupPosition);
-                if (item != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // execute operation
-                            onDrawerMenuAndOptionMenuSelected(item);
-                        }
-                    }, 200);
-                }
-                return true;
+            // You should reset item counter
+            mDrawer.closeDrawer(mDrawerLayout);
+            // check item selected
+            final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
+                    .getGroup(groupPosition);
+            if (item != null) {
+                new Handler().postDelayed(() -> {
+                    // execute operation
+                    onDrawerMenuAndOptionMenuSelected(item);
+                }, 200);
             }
+            return true;
         });
 
-        drawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (mDrawer == null) return false;
+        drawerList.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (mDrawer == null) return false;
 
-                mDrawer.closeDrawer(mDrawerLayout);
+            mDrawer.closeDrawer(mDrawerLayout);
 
-                ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
-                final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
-                if (selectedItem != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onDrawerMenuAndOptionMenuSelected(selectedItem);
-                        }
-                    }, 200);
-                    return true;
-                } else {
-                    return false;
-                }
+            ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
+            final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
+            if (selectedItem != null) {
+                new Handler().postDelayed(() -> onDrawerMenuAndOptionMenuSelected(selectedItem), 200);
+                return true;
+            } else {
+                return false;
             }
         });
     }
@@ -958,29 +948,29 @@ public class MainActivity
 
         // We will use the sync button for uploading the database to the storage.
         //if (new SyncManager(this).isActive()) {
-            // add rotating icon
-            if (menu.findItem(id) == null) {
-                boolean hasAnimation = false;
+        // add rotating icon
+        if (menu.findItem(id) == null) {
+            boolean hasAnimation = false;
 
-                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
-                    hasAnimation = true;
-                    // There is a running animation. Clear it on the old reference.
-                    stopSyncIconRotation(mSyncMenuItem);
-                }
-
-                // create (new) menu item.
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_item_sync_progress, menu);
-                mSyncMenuItem = menu.findItem(id);
-                UIHelper ui = new UIHelper(this);
-                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
-                mSyncMenuItem.setIcon(syncIcon);
-
-                if (hasAnimation) {
-                    // continue animation.
-                    startSyncIconRotation(mSyncMenuItem);
-                }
+            if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
+                hasAnimation = true;
+                // There is a running animation. Clear it on the old reference.
+                stopSyncIconRotation(mSyncMenuItem);
             }
+
+            // create (new) menu item.
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_item_sync_progress, menu);
+            mSyncMenuItem = menu.findItem(id);
+            UIHelper ui = new UIHelper(this);
+            Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
+            mSyncMenuItem.setIcon(syncIcon);
+
+            if (hasAnimation) {
+                // continue animation.
+                startSyncIconRotation(mSyncMenuItem);
+            }
+        }
 //        } else {
 //            if (mSyncMenuItem != null) {
 //                stopSyncIconRotation(mSyncMenuItem);
@@ -1033,7 +1023,7 @@ public class MainActivity
 
         // Cloud synchronize
 //        if (new SyncManager(this).isActive()) {
-            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
                         .color(iconColor)));
@@ -1048,7 +1038,7 @@ public class MainActivity
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.recurring_transactions))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_schedule)
                         .color(iconColor)));
 
         // Budgets
@@ -1056,12 +1046,6 @@ public class MainActivity
                 .withText(getString(R.string.budgets))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
                         .color(iconColor)));
-
-        // Asset Allocation
-        // menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-        //        .withText(getString(R.string.asset_allocation))
-        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-        //                .color(iconColor)));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
@@ -1072,8 +1056,8 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
-                        .color(iconColor))
-                .withDivider(true));
+                        .color(iconColor)));
+        // .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
@@ -1089,8 +1073,8 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
 //                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)))
-            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
-                    .color(iconColor)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
+                        .color(iconColor)));
 
         return menuItems;
     }
@@ -1107,14 +1091,7 @@ public class MainActivity
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
                 item.setTag(entry.localPath);
-
-                if (entry.isSynchronised()) {
-                    item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
-                        .color(iconColor));
-                } else {
-                    item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
-                        .color(iconColor));
-                }
+                item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud).color(iconColor));
                 childDatabases.add(item);
             }
         }
@@ -1123,7 +1100,7 @@ public class MainActivity
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
                 .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared)
-                    .color(iconColor))
+                        .color(iconColor))
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
@@ -1139,7 +1116,7 @@ public class MainActivity
 
     private void handleDeviceRotation() {
         // Remove items from back stack on device rotation.
-        int currentOrientation = getResources().getConfiguration().orientation;
+        long currentOrientation = getResources().getConfiguration().orientation;
         boolean isTablet = new Core(this).isTablet();
 
         if (isTablet && deviceOrientation != currentOrientation) {
@@ -1166,6 +1143,11 @@ public class MainActivity
 
                 // Open this database.
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
+                if (db.localPath.endsWith(".emb")) {
+                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+                } else {
+                    MmexApplication.getApp().setPassword("");
+                }
                 changeDatabase(db);
                 return;
             } catch (Exception e) {
@@ -1173,29 +1155,45 @@ public class MainActivity
             }
         }
 
-        boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
-        this.dbUpdateCheckDone = skipRemoteCheck;
+        this.dbUpdateCheckDone = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
     }
 
     private void initializeSync() {
         SyncManager sync = new SyncManager(this);
-        if (!sync.isActive()) return;
-
         SyncPreferences preferences = new SyncPreferences(this);
-
         // Start the sync timer in case it was stopped for whatever reason.
         if (preferences.getSyncInterval() != 0) {
             sync.startSyncServiceHeartbeat();
         }
 
         // Check cloud storage for updates?
-        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, true);
+        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, false);
         if (syncOnStart && !this.dbUpdateCheckDone) {
             sync.triggerSynchronization();
 
             // This is to avoid checking for online updates on every device rotation.
             dbUpdateCheckDone = true;
         }
+    }
+
+    private void populateScheduledTransactions() {
+        // start notification & execution for scheduled transaction
+        boolean processRecurringTransaction;
+        if (!isScheduledTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            processRecurringTransaction = settings.getBehaviourSettings().getProcessRecurringTransaction();
+            if (processRecurringTransaction) {
+                RecurringTransactionProcess notifications = new RecurringTransactionProcess(this);
+                notifications.processRepeatingTransaction();
+                isScheduledTransactionStarted = true;
+            }
+        }
+
+        // notification send broadcast
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
+        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+
+        // TODO persist
     }
 
     private void initializeDrawer() {
@@ -1252,6 +1250,10 @@ public class MainActivity
         String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
         if (TextUtils.isEmpty(dbPath)) return false;
 
+        // force to re select the file and input password
+        if (dbPath.endsWith(".emb") && MmexApplication.getApp().getPassword().isEmpty())
+            return false;
+
         // Does the database file exist?
         File dbFile = new File(dbPath);
         return dbFile.exists();
@@ -1263,6 +1265,7 @@ public class MainActivity
 
     /**
      * called when quick-switching the recent databases from the navigation menu.
+     *
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
@@ -1290,7 +1293,7 @@ public class MainActivity
         if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
             isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
         if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
-            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+            isScheduledTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
         }
     }
 
@@ -1302,14 +1305,14 @@ public class MainActivity
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new LinearInterpolator());
-        animation.setDuration(1200);
+        animation.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
 //        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
         animation.setRepeatCount(Animation.INFINITE);
 
         ImageView imageView = new ImageView(this);
         UIHelper uiHelper = new UIHelper(this);
         imageView.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
-            .color(uiHelper.getToolbarItemColor()));
+                .color(uiHelper.getToolbarItemColor()));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
@@ -1329,6 +1332,7 @@ public class MainActivity
 
     /**
      * Shown database path with toast message
+     *
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
@@ -1343,30 +1347,13 @@ public class MainActivity
 //                    .commit();
             try {
                 Toast.makeText(context,
-                        Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
-                        Toast.LENGTH_LONG)
-                    .show();
+                                Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>"), Html.FROM_HTML_MODE_LEGACY),
+                                Toast.LENGTH_LONG)
+                        .show();
             } catch (Exception e) {
                 Timber.e(e, "showing the current database path");
             }
         }
-    }
-
-    private void onceSynchronize() {
-        FileStorageHelper storage = new FileStorageHelper(this);
-        DatabaseMetadata current = mDatabases.get().getCurrent();
-        storage.synchronize(current);
-
-        logSynchronize(current);
-    }
-
-    private void logSynchronize(DatabaseMetadata metadata) {
-        Uri uri = Uri.parse(metadata.remotePath);
-        String authority = uri.getAuthority();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("authority", authority);
-        mFirebaseAnalytics.logEvent("synchronize", bundle);
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {
@@ -1398,6 +1385,7 @@ public class MainActivity
     /**
      * display any screens that need to be shown before the app actually runs.
      * This usually happens only on the first run of the app.
+     *
      * @return Indicator if another screen is showing. This means that this activity should close
      * and not proceed with initialisation.
      */
@@ -1425,85 +1413,10 @@ public class MainActivity
         return false;
     }
 
-    private void showReportsSelector(String text) {
-        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        UIHelper uiHelper = new UIHelper(this);
-        int iconColor = uiHelper.getSecondaryTextColor();
-
-        // payee
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
-                .withText(getString(R.string.payees))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                    .color(iconColor)));
-
-        // where money goes
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
-                .withText(getString(R.string.menu_report_where_money_goes))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // where money comes from
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
-                .withText(getString(R.string.menu_report_where_money_comes_from))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // where money comes from
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
-                .withText(getString(R.string.categories))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
-                        .color(iconColor)));
-
-        // income vs. expenses
-        adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
-                .withText(getString(R.string.menu_report_income_vs_expenses))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                        .color(iconColor)));
-
-        // Asset Allocation Overview
-        // adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
-        //        .withText(getString(R.string.asset_allocation))
-        //        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
-        //                .color(iconColor)));
-
-        new MaterialDialog.Builder(this)
-                .title(text)
-                .adapter(adapter, new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
-                        dialog.dismiss();
-                    }
-                })
-                .build()
-                .show();
-    }
-
     private void showSelectDatabaseActivity() {
         Intent intent = new Intent(this, SelectDatabaseActivity.class);
         // make top-level so there's no going back.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-
-    /**
-     * New migration - all entries must have the Remote Url as we are now using
-     * storage access framework.
-     */
-    private void migrateRecentDatabases() {
-        RecentDatabasesProvider databases = getDatabases();
-        // if there are entries with empty remote location, migrate:
-        // - clean up the list
-        // - create the default entry
-        // - save the default entry.
-        for (DatabaseMetadata entry : databases.map.values()) {
-            if (TextUtils.isEmpty(entry.remotePath)) {
-                databases.clear();
-                // create & save the default entry.
-                DatabaseMetadata currentEntry = databases.getCurrent();
-
-                return;
-            }
-        }
     }
 }

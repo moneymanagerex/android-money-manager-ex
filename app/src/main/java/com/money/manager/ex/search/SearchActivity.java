@@ -19,7 +19,6 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +34,9 @@ import com.money.manager.ex.database.QueryAllData;
 
 import org.parceler.Parcels;
 
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentTransaction;
+
+import timber.log.Timber;
 
 public class SearchActivity
     extends MmxBaseFragmentActivity {
@@ -96,7 +96,7 @@ public class SearchActivity
         // Add Search icon.
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.searchMenuItem);
-        MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_search));
         // show this menu item last
 
@@ -157,7 +157,7 @@ public class SearchActivity
         SearchParameters searchParameters = Parcels.unwrap(searchParcel);
 
         if (searchParameters != null) {
-            Log.d("SearchActivity", "-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
+            Timber.d("-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
             getSearchFragment().setSearchParameters(searchParameters);
             performSearch();
         }
@@ -180,13 +180,20 @@ public class SearchActivity
                     .commit();
         }
 
-        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
+        //search parameters
+        SearchParameters searchParameters = getSearchFragment().getSearchParameters();
+        if (searchParameters != null && searchParameters.accountId != null )
+            searchResultsFragment = AllDataListFragment.newInstance(searchParameters.accountId, false);
+        else
+            searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
+
 
         searchResultsFragment.showTotalsFooter();
 
         //create parameter bundle
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
+
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +

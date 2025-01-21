@@ -21,7 +21,7 @@ package com.money.manager.ex.core;
  */
 public class NumericPatternGenerator {
 
-    public static String getPattern(int decimals) {
+    public static String getPattern(long decimals) {
         //String pattern = "###G###G###G###D####";
 //        String pattern = "###G###G###G###";
 //        pattern = pattern.replace("G", groupSeparator);

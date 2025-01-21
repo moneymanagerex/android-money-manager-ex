@@ -18,7 +18,6 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -27,10 +26,8 @@ import com.money.manager.ex.domainmodel.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.*;
 
@@ -56,18 +53,18 @@ public class AccountTests {
 
     //@Test
     public void testPropertySetting() {
-        final int id = 3;
+        final long id = 3;
 
         this.account.setId(id);
 
-        int actual = this.account.getId();
+        long actual = this.account.getId();
 
         assertEquals(id, actual);
     }
 
     //@Test
     public void testThrowException() {
-        Integer actual = this.account.getId();
+        Long actual = this.account.getId();
 
         assertNull(actual);
     }
@@ -86,7 +83,7 @@ public class AccountTests {
         // When
 
         repo.save(account);
-        Integer id = account.getId();
+        Long id = account.getId();
 
         Account loaded = repo.load(id);
         loaded.setAccountNumber(accountNumber);

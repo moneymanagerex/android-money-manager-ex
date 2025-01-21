@@ -22,11 +22,10 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.MmxContentProvider;
@@ -66,8 +65,8 @@ public class MmxDatabaseUtils {
         c.close();
     }
 
-    public static String[] getArgsForId(int id) {
-        String[] result = new String[] { Integer.toString(id) };
+    public static String[] getArgsForId(Long id) {
+        String[] result = new String[] { Long.toString(id) };
         return result;
     }
 
@@ -80,7 +79,7 @@ public class MmxDatabaseUtils {
 
         if (!dbFile.exists()) return false;
         // extension
-        if (!dbFile.getName().endsWith(".mmb")) return false;
+        if (!(dbFile.getName().endsWith(".mmb") || dbFile.getName().endsWith(".emb"))) return false;
         // also add .emb in the future.
 
         if (!dbFile.canRead()) return false;
@@ -161,10 +160,10 @@ public class MmxDatabaseUtils {
 
         if (results.size() > 1) {
             // delete them, leaving only the first one
-            int keepId = results.get(0).getId();
+            long keepId = results.get(0).getId();
 
             for(Info toBeDeleted : results) {
-                int idToDelete = toBeDeleted.getId();
+                long idToDelete = toBeDeleted.getId();
                 if (idToDelete != keepId) {
                     repo.delete(idToDelete);
                 }
@@ -279,7 +278,7 @@ public class MmxDatabaseUtils {
         }
 
         // close connection
-        openHelper.get().close();
+    //    openHelper.get().close();
 
         // store as the current database in preferences
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(newFilePath);
@@ -336,9 +335,9 @@ public class MmxDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SQLiteDatabase db = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        Cursor c = db.query("SELECT name FROM sqlite_master WHERE type='table'");
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
         while (c.moveToNext()) {
@@ -361,10 +360,6 @@ public class MmxDatabaseUtils {
         assert provider != null;
         provider.resetDatabase();
 
-        if (Build.VERSION.SDK_INT >= 24) {
-            client.close();
-        } else {
-            client.release();
-        }
+        client.close();
     }
 }

@@ -17,7 +17,6 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,17 +61,13 @@ public class DrawerMenuItemAdapter
             holder.textViewItem.setText(item.getText());
             holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                if (item.getIcon() != null) {
-                    holder.imageViewIcon.setBackgroundResource(item.getIcon());
-                }
-                if (item.getIconDrawable() != null) {
-                    holder.imageViewIcon.setBackground(item.getIconDrawable());
-                }
-            } else {
-                holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
+            if (item.getIcon() != null) {
+                holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
-		}
+            if (item.getIconDrawable() != null) {
+                holder.imageViewIcon.setBackground(item.getIconDrawable());
+            }
+        }
 		
 		return view;
 	}

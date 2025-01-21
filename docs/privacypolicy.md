@@ -14,10 +14,6 @@ We use your Personal Information only for providing and improving the App. By us
 
 While using the App, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Pesonally identifiable information may include, but is not limited to your name ("Personal Information").
 
-### Dropbox
-
-Personal Data: User's database, potentially including account numbers with financial institutions.
-
 ### Google Analytics
 
 Personal Data: Cookie and Usage data
@@ -69,24 +65,6 @@ If you have any questions about this Privacy Policy, please contact us.
 ## Detailed information on the processing of Personal Data
 
 Personal Data is collected for the following purposes and using the following services:
-
-### Google Analytics
-
-The services contained in this section enable the Owner to monitor and analyze web traffic and can be used to keep track of User behavior.
-Google Analytics (Google Inc.)
-
-Google Analytics is a web analysis service provided by Google Inc. (“Google”). Google utilizes the Data collected to track and examine the use of this Application, to prepare reports on its activities and share them with other Google services.
-Google may use the Data collected to contextualize and personalize the ads of its own advertising network.
-
-Personal Data collected: Cookie and Usage data.
-
-Place of processing: USA – [Privacy Policy](http://www.google.com/intl/en/policies/privacy/) – [Opt Out](http://tools.google.com/dlpage/gaoptout?hl=en)
-
-No data is collected by MoneyManagerEx project that can identify a user. All the data is collected anonymously to track the usage patterns inside the App.
-
-### Dropbox
-
-We register for access to only a specific application folder in your Dropbox account and use this to store a copy of your database, if you link the app to your Dropbox account. 
 
 ## Additional information about Data collection and processing
 

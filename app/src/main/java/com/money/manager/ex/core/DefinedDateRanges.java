@@ -40,14 +40,14 @@ public class DefinedDateRanges {
         return this.dateRanges.get(name);
     }
 
-    public DefinedDateRange getByMenuId(int menuResourceId) {
+    public DefinedDateRange getByMenuId(long menuResourceId) {
         for (DefinedDateRange range : this.dateRanges.values()) {
             if (range.menuResourceId == menuResourceId) return range;
         }
         return null;
     }
 
-    public DefinedDateRange getByNameId(int nameResourceId) {
+    public DefinedDateRange getByNameId(long nameResourceId) {
         for (DefinedDateRange range : this.dateRanges.values()) {
             if (range.nameResourceId == nameResourceId) return range;
         }
@@ -146,6 +146,11 @@ public class DefinedDateRanges {
         // CURRENT_YEAR,
         range = create(DefinedDateRangeName.CURRENT_YEAR, R.string.current_year, R.id.menu_current_year);
         dateRanges.put(range.key, range);
+
+        // menu_current_fin_year
+        range = create(DefinedDateRangeName.CURRENT_FIN_YEAR, R.string.current_fin_year, R.id.menu_current_fin_year);
+        dateRanges.put(range.key, range);
+
 
         // FUTURE_TRANSACTIONS,
         range = create(DefinedDateRangeName.FUTURE_TRANSACTIONS, R.string.future_transactions,

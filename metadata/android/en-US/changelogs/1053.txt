@@ -1,0 +1,6 @@
+• UI/UX: Added attachment marker in transactions, refined Google Play UI issues, and improved tag management (read mode).
+• Build Updates: Fixed Gradle library version issues and upgraded libraries.
+• Translations: New Crowdin translations.
+• Budget: Added budget financial year feature.
+• Recurring Transactions: Handled exceptions and copied notes from single-split transactions.
+• Error Handling: Fixed date format errors.

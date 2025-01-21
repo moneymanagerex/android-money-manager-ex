@@ -24,7 +24,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
-import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
 import java.util.HashMap;
 
@@ -49,7 +50,7 @@ public class BudgetEntryRepository
                 BudgetEntry.PERIOD};
     }
 
-    public BudgetEntry load(int id) {
+    public BudgetEntry load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -66,11 +67,11 @@ public class BudgetEntryRepository
     /**
      * Returns a string value which is used as a key in the budget entry thread cache
      * @param categoryId
-     * @param subCategoryId
      * @return
      */
-    public static String getKeyForCategories(int categoryId, int subCategoryId) {
-        return categoryId + "_" + subCategoryId;
+    public static String getKeyForCategories(long categoryId) {
+        // Wolfsolver - adapt budget for category & sub category.
+        return "_" + categoryId;
     }
 
     public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {
@@ -88,19 +89,17 @@ public class BudgetEntryRepository
 
         HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
 
-        CategoryRepository categoryRepository = new CategoryRepository(getContext());
-
+        // use nested category
+        QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
         while (cursor.moveToNext()) {
             BudgetEntry budgetEntry = new BudgetEntry();
             budgetEntry.loadFromCursor(cursor);
 
-            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetEntry.CATEGID));
-            Category category = categoryRepository.load(categoryId);
-            if (category.getParentId() > 0) {
-                budgetEntryHashMap.put(getKeyForCategories(categoryId, category.getParentId()), budgetEntry);
-            } else {
-                budgetEntryHashMap.put(getKeyForCategories(categoryId, categoryId), budgetEntry);
+            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
+            if (nestedCategory == null) {
+                continue;
             }
+            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getCategoryId()), budgetEntry);
         }
         cursor.close();
 

@@ -62,8 +62,8 @@ public class PayeeService
         return payee;
     }
 
-    public int loadIdByName(String name) {
-        int result = Constants.NOT_SET;
+    public long loadIdByName(String name) {
+        long result = Constants.NOT_SET;
 
         if(TextUtils.isEmpty(name)) return result;
 
@@ -93,9 +93,9 @@ public class PayeeService
 
         Payee payee = new Payee();
         payee.setName(name);
-        payee.setCategoryId(-1);
+        payee.setCategoryId(Constants.NOT_SET);
 
-        int id = this.payeeRepository.add(payee);
+        long id = this.payeeRepository.add(payee);
 
         payee.setId(id);
 
@@ -109,13 +109,13 @@ public class PayeeService
         return (payee != null);
     }
 
-    public boolean isPayeeUsed(int payeeId) {
+    public boolean isPayeeUsed(long payeeId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
+        long links = repo.count(ITransactionEntity.PAYEEID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(payeeId)});
         return links > 0;
     }
 
-    public int update(int id, String name) {
+    public long update(long id, String name) {
         if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
@@ -125,7 +125,16 @@ public class PayeeService
 
         return getContext().getContentResolver().update(payeeRepository.getUri(),
                 values,
-                Payee.PAYEEID + "=" + id,
-                null);
+                Payee.PAYEEID + "=?",
+                new String[]{Long.toString(id)});
+    }
+
+    /**
+     * Method, which returns the last payee used
+     * @return last payee used
+     */
+    public Payee getLastPayeeUsed() {
+        // TODO
+        return null;
     }
 }

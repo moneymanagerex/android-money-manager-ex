@@ -19,7 +19,8 @@ package com.money.manager.ex;
 public class Constants {
     // Java
     public static final String EMPTY_STRING = "";
-    public static final int NOT_SET = -1;
+    public static final long NOT_SET = -1;
+    public static final int NOT_SET_INT = -1;
 
     // The number of decimals used for parsing numbers in Money type.
     public static final int DEFAULT_PRECISION = 4;
@@ -29,6 +30,7 @@ public class Constants {
     public static final String ISO_DATE_SHORT_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     //public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String IOS_8601_COMBINED = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String LONG_DATE_PATTERN = "EEEE, dd MMMM yyyy";
     public static final String LONG_DATE_MEDIUM_DAY_PATTERN = "EEE, dd MMMM yyyy";
 
@@ -48,8 +50,4 @@ public class Constants {
 
     // Amount formats
     public static final String PRICE_FORMAT = "0.00##";
-
-    // UI
-    public static final int NotificationIconSize = 25;
-    public static final int NotificationBigIconSize = 48;
 }

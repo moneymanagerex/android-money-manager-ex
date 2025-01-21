@@ -46,14 +46,16 @@ public class SplitRecurringCategory
     public static final String CATEGID = "CATEGID";
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
+    public static final String NOTES = "NOTES";
 
-    public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                                TransactionTypes parentTransactionType, Money amount) {
+    public static SplitRecurringCategory create(long transactionId, long categoryId,
+                                                TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
+        entity.setNotes(notes);
 
         TransactionTypes splitType;
         if (amount.isZero() || amount.compareTo(MoneyFactory.fromDouble(0)) == -1) {
@@ -69,13 +71,13 @@ public class SplitRecurringCategory
     TransactionTypes transactionType;
 
     @Override
-    public Integer getId() {
-        return getInt(SPLITTRANSID);
+    public Long getId() {
+        return getLong(SPLITTRANSID);
     }
 
     @Override
-    public void setId(int value) {
-        setInt(SPLITTRANSID, value);
+    public void setId(long value) {
+        setLong(SPLITTRANSID, value);
     }
 
     @Override
@@ -84,18 +86,18 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public Integer getAccountId() {
-        return getInt(ITransactionEntity.ACCOUNTID);
+    public Long getAccountId() {
+        return getLong(ITransactionEntity.ACCOUNTID);
     }
 
     @Override
-    public void setAccountId(int value) {
-        setInt(ITransactionEntity.ACCOUNTID, value);
+    public void setAccountId(long value) {
+        setLong(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
-    public Integer getCategoryId() {
-        return getInt(CATEGID);
+    public Long getCategoryId() {
+        return getLong(CATEGID);
     }
 
     @Override
@@ -104,8 +106,8 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public void setCategoryId(int categId) {
-        setInt(CATEGID, categId);
+    public void setCategoryId(long categId) {
+        setLong(CATEGID, categId);
     }
 
     @Override
@@ -113,6 +115,15 @@ public class SplitRecurringCategory
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
     }
 
+	@Override
+    public String getNotes() {
+        return getString(NOTES);
+    }
+
+    @Override
+    public void setNotes(String value) {
+        setString(NOTES, value);
+    }
     @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
@@ -120,12 +131,12 @@ public class SplitRecurringCategory
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SPLITTRANSAMOUNT);
     }
 
-    public Integer getTransId() {
-        return getInt(TRANSID);
+    public Long getTransId() {
+        return getLong(TRANSID);
     }
 
-    public void setTransId(int value) {
-        setInt(TRANSID, value);
+    public void setTransId(long value) {
+        setLong(TRANSID, value);
     }
 
     public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {

@@ -23,7 +23,9 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/mmx_list_item_padding_side"
     android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:animateLayoutChanges="true" >
+    android:animateLayoutChanges="true"
+    android:paddingEnd="@dimen/mmx_list_item_padding_side"
+    android:paddingStart="@dimen/mmx_list_item_padding_side">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="horizontal"

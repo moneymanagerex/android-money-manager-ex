@@ -1,0 +1,2 @@
+Beta: Encryption with SQLCipher v4 cipher (a.k.a AES256CBC)
+Note: MMEX4Desktop is still AES128CBC

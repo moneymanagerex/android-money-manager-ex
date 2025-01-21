@@ -27,6 +27,8 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
 import java.util.List;
 
@@ -42,22 +44,23 @@ public class CategoryService
 
     private CategoryRepository mRepository;
 
-    public int loadIdByName(String name) {
+    public long loadIdByName(String name) {
         return getRepository().loadIdByName(name);
     }
 
-    public int loadIdByName(String name, int parentId) {
+    public long loadIdByName(String name, long parentId) {
         return getRepository().loadIdByName(name, parentId);
     }
 
-    public int createNew(String name) {
+    public long createNew(String name, long parentId) {
         if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
-        values.put(Category.PARENTID, -1);
+        values.put(Category.ACTIVE, 1);
+        values.put(Category.PARENTID, parentId);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
@@ -65,28 +68,10 @@ public class CategoryService
                 .insert(repo.getUri(), values);
         long id = ContentUris.parseId(result);
 
-        return ((int) id);
+        return id;
     }
 
-    public int createNewSubcategory(String name, int categoryId) {
-        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
-
-        name = name.trim();
-
-        ContentValues values = new ContentValues();
-        values.put(Category.CATEGNAME, name);
-        values.put(Category.PARENTID, categoryId);
-
-        CategoryRepository repo = new CategoryRepository(getContext());
-
-        Uri result = getContext().getContentResolver()
-                .insert(repo.getUri(), values);
-        long id = ContentUris.parseId(result);
-
-        return ((int) id);
-    }
-
-    public String getCategorySubcategoryName(int categoryId) {
+    public String getCategorySubcategoryName(long categoryId) {
         String categoryName = "";
 
         if (categoryId != Constants.NOT_SET) {
@@ -118,19 +103,20 @@ public class CategoryService
         return getRepository().query(Category.class, query);
     }
 
-    public int update(int id, String name) {
+    public long update(long id, String name, long parentId) {
         if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
 
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
+        values.put(Category.PARENTID, parentId);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
-        int result = getContext().getContentResolver().update(repo.getUri(),
+        long result = getContext().getContentResolver().update(repo.getUri(),
                 values,
-                Category.CATEGID + "=" + id, null);
+                Category.CATEGID + "=?", new String[]{Long.toString(id)});
 
         return result;
     }
@@ -140,9 +126,22 @@ public class CategoryService
      * @param categoryId Id of the category for which to check.
      * @return A boolean indicating if the category is in use.
      */
-    public boolean isCategoryUsed(int categoryId) {
+    public boolean isCategoryUsed(long categoryId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
+        long links = repo.count(Category.CATEGID + "=?", new String[]{Long.toString(categoryId)});
+        return links > 0;
+    }
+
+    public boolean isCategoryUsedWithChildren( long categoryId ) {
+        // First if list has more than 1 record category is used
+        QueryNestedCategory query = new QueryNestedCategory(getContext());
+        List<NestedCategoryEntity> ids = query.getChildrenNestedCategoryEntities(categoryId);
+        assert ids != null;
+        if (ids.size() > 1 ) {return true;}
+
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+        long links = repo.count("( " + Category.CATEGID + "=? AND DELETEDTIME IS NULL )",
+                new String[]{Long.toString(categoryId)});
         return links > 0;
     }
 

@@ -24,4 +24,11 @@
         android:summary="@string/summary_budget_show_simple_view"
         android:title="@string/title_budget_show_simple_view" />
 
+    <SwitchPreferenceCompat
+        android:icon="@null"
+        android:defaultValue="false"
+        android:key="@string/pref_budget_financial_year"
+        android:summary="@string/summary_pref_budget_financial_year"
+        android:title="@string/title_pref_budget_financial_year" />
+
 </PreferenceScreen>

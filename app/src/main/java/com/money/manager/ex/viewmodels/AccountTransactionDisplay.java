@@ -22,9 +22,9 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.Date;
 
@@ -44,16 +44,16 @@ public class AccountTransactionDisplay
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.Amount, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.AMOUNT, this.contentValues);
         DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
     }
 
-    public Integer getId() {
-        return getInt(QueryAllData.ID);
+    public Long getId() {
+        return getLong(QueryAllData.ID);
     }
 
-    public Integer getAccountId() {
-        return getInt(QueryAllData.ACCOUNTID);
+    public Long getAccountId() {
+        return getLong(QueryAllData.ACCOUNTID);
     }
 
     public String getAccountName() {
@@ -61,7 +61,7 @@ public class AccountTransactionDisplay
     }
 
     public Money getAmount() {
-        return getMoney(QueryAllData.Amount);
+        return getMoney(QueryAllData.AMOUNT);
     }
 
     public String getCategory() {
@@ -85,16 +85,16 @@ public class AccountTransactionDisplay
     }
 
     public boolean getIsSplit() {
-        int split = getInt(QueryAllData.SPLITTED);
+        long split = getLong(QueryAllData.SPLITTED);
         return split > 0;
     }
 
     public String getPayee() {
-        return getString(QueryAllData.Payee);
+        return getString(QueryAllData.PAYEENAME);
     }
 
     public String getStatusCode() {
-        return getString(QueryAllData.Status);
+        return getString(QueryAllData.STATUS);
     }
 
     public TransactionStatuses getStatus() {
@@ -102,12 +102,8 @@ public class AccountTransactionDisplay
         return TransactionStatuses.get(code);
     }
 
-    public String getSubcategory() {
-        return getString(QueryAllData.Subcategory);
-    }
-
-    public int getToAccountId() {
-        return getInt(QueryAllData.TOACCOUNTID);
+    public long getToAccountId() {
+        return getLong(QueryAllData.TOACCOUNTID);
     }
 
     public Money getToAmount() {
@@ -123,5 +119,9 @@ public class AccountTransactionDisplay
 
         TransactionTypes transactionType = TransactionTypes.valueOf(typeName);
         return transactionType;
+    }
+
+    public String getTags() {
+        return getString(QueryMobileData.TAGS);
     }
 }

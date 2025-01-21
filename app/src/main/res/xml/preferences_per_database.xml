@@ -35,17 +35,25 @@
 
     <ListPreference
         android:icon="@null"
+        android:defaultValue="%y-%m-%d"
+        android:entries="@array/date_format"
+        android:entryValues="@array/date_format_mask"
         android:key="@string/pref_date_format"
         android:title="@string/date_format" />
 
     <EditTextPreference
         android:icon="@null"
-        android:key="@string/pref_financial_year_startdate"
+        android:key="@string/pref_financial_year_start_date"
         android:title="@string/financial_year_start_day" />
 
     <ListPreference
         android:icon="@null"
-        android:key="@string/pref_financial_year_startmonth"
+        android:key="@string/pref_financial_year_start_month"
         android:title="@string/financial_year_start_month" />
 
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_attachment_folder"
+        android:title="@string/attachment_folder"
+        android:summary="@string/attachment_folder_summary" />
 </PreferenceScreen>

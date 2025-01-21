@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.common;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,14 +28,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.fragment.app.DialogFragment;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
@@ -41,11 +42,8 @@ import com.shamanland.fonticon.FontIconView;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.greenrobot.eventbus.EventBus;
+import org.parceler.Parcels;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import icepick.Icepick;
-import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -55,12 +53,13 @@ public class AmountInputDialog
 
     private static final String KEY_REQUEST_ID = "AmountInputDialog:Id";
     private static final String KEY_AMOUNT = "AmountInputDialog:Amount";
+    private static final String KEY_AMOUNT2 = "AmountInputDialog:Amount2";
     private static final String KEY_CURRENCY_ID = "AmountInputDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "AmountInputDialog:Expression";
     private static final String ARG_ROUNDING = "AmountInputDialog:Rounding";
 
-    public static AmountInputDialog getInstance(int requestId, Money amount) {
-        String requestIdString = Integer.toString(requestId);
+    public static AmountInputDialog getInstance(long requestId, Money amount) {
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, null, false);
     }
 
@@ -68,22 +67,22 @@ public class AmountInputDialog
         return getInstance(requestId, amount, null, false);
     }
 
-    public static AmountInputDialog getInstance(int requestId, Money amount, int currencyId) {
-        String requestIdString = Integer.toString(requestId);
+    public static AmountInputDialog getInstance(long requestId, Money amount, long currencyId) {
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, true);
     }
 
-    public static AmountInputDialog getInstance(String requestId, Money amount, int currencyId) {
+    public static AmountInputDialog getInstance(String requestId, Money amount, long currencyId) {
         return getInstance(requestId, amount, currencyId, true);
     }
 
-    public static AmountInputDialog getInstance(int requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(long requestId, Money amount, Long currencyId,
                                                 boolean roundToCurrencyDecimals) {
-        String requestIdString = Integer.toString(requestId);
+        String requestIdString = Long.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, roundToCurrencyDecimals);
     }
 
-    public static AmountInputDialog getInstance(String requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(String requestId, Money amount, Long currencyId,
                                                 boolean roundToCurrencyDecimals) {
         Bundle args = new Bundle();
         args.putString(KEY_REQUEST_ID, requestId);
@@ -91,7 +90,7 @@ public class AmountInputDialog
         args.putString(KEY_AMOUNT, amountString);
 
         if (currencyId == null) currencyId = Constants.NOT_SET;
-        args.putInt(KEY_CURRENCY_ID, currencyId);
+        args.putLong(KEY_CURRENCY_ID, currencyId);
         args.putBoolean(ARG_ROUNDING, roundToCurrencyDecimals);
 
         AmountInputDialog dialog = new AmountInputDialog();
@@ -119,8 +118,8 @@ public class AmountInputDialog
     };
 
     private String mRequestId;
-    @State(MoneyBundler.class) Money mAmount;
-    private Integer mCurrencyId;
+    Money mAmount;
+    private Long mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
     private CurrencyService mCurrencyService;
@@ -249,31 +248,30 @@ public class AmountInputDialog
         evalExpression();
 
         // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!evalExpression()) return;
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-            .customView(view, false)
-            .cancelable(false)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    if (!evalExpression()) return;
+                        EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
 
-                    EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
-                    dialog.dismiss();
-                }
-            })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            })
-            .autoDismiss(false)
-            .negativeText(android.R.string.cancel)
-            .positiveText(android.R.string.ok);
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
-        return builder.show();
+        return dialog;
     }
 
     @Override
@@ -286,13 +284,12 @@ public class AmountInputDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
+        if (mCurrencyId != null) savedInstanceState.putLong(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putString(KEY_REQUEST_ID, mRequestId);
 
         mExpression = txtMain.getText().toString();
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
-
-        Icepick.saveInstanceState(this, savedInstanceState);
+        savedInstanceState.putParcelable(KEY_AMOUNT2, Parcels.wrap(mAmount));
     }
 
     // methods
@@ -409,13 +406,12 @@ public class AmountInputDialog
 //            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
 //        }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID)) {
-            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+            mCurrencyId = savedInstanceState.getLong(KEY_CURRENCY_ID);
         }
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
-
-        Icepick.restoreInstanceState(this, savedInstanceState);
+        mAmount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_AMOUNT2));
     }
 
     /**
@@ -499,7 +495,7 @@ public class AmountInputDialog
         Bundle args = getArguments();
 
         this.mRequestId = args.getString(KEY_REQUEST_ID);
-        this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
+        this.mCurrencyId = args.getLong(KEY_CURRENCY_ID);
         this.roundToCurrencyDecimals = args.getBoolean(ARG_ROUNDING);
     }
 

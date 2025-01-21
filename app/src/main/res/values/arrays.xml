@@ -103,7 +103,7 @@
     <!-- context menu options for currency list -->
     <string-array name="context_menu_currencies">
         <item>@string/edit</item>
-        <item>@string/show_chart</item>
+    <!--    <item>@string/show_chart</item> -->
         <item>@string/update_menu_currency_exchange_rates</item>
         <item>@string/delete</item>
     </string-array>
@@ -201,6 +201,14 @@
         <item>@string/montly_last_days</item>
         <item>@string/montly_last_bussines_day</item>
     </string-array>
+
+    <!-- EP recurring mode -->
+    <string-array name="recurring_mode">
+        <item>@string/manual</item>
+        <item>@string/prompt</item>
+        <item>@string/auto</item>
+    </string-array>
+
 
     <!-- Define font entries and values -->
     <string-array name="application_font_entries">
@@ -362,23 +370,5 @@
     <string-array name="new_asset_class_type">
         <item>@string/asset_class</item>
         <item>@string/stock</item>
-    </string-array>
-
-    <!-- sync providers -->
-    <string-array name="cloud_provider_names">
-        <!--<item>None</item>-->
-        <item>PCloud</item>
-        <item>Dropbox</item>
-        <item>OneDrive</item>
-        <item>Google Drive</item>
-        <item>Box</item>
-    </string-array>
-    <string-array name="cloud_provider_values">
-        <!--<item>0</item>-->
-        <item>PCLOUD</item>
-        <item>DROPBOX</item>
-        <item>ONEDRIVE</item>
-        <item>GOOGLEDRIVE</item>
-        <item>BOX</item>
     </string-array>
 </resources>

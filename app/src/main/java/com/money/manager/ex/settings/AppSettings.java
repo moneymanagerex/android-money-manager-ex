@@ -101,7 +101,6 @@ public class AppSettings
     // Individual preferences.
 
     public int getPayeeSort() {
-        int sort = get(R.string.pref_sort_payee, 0);
-        return sort;
+        return get(R.string.pref_sort_payee, 0);
     }
 }

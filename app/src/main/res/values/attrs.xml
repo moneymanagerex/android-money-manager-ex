@@ -104,6 +104,8 @@
 
         <!-- MPAndroidChart -->
         <attr name="chartTextColor" format="reference"/>
+
+        <attr name="md_dark_theme" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="RobotoTextView">

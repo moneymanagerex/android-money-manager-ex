@@ -24,7 +24,9 @@
     android:background="?attr/theme_background_color"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/mmx_activity_side_margin"
+    android:layout_marginEnd="@dimen/mmx_activity_side_margin">
 
     <include layout="@layout/toolbar" />
 
@@ -40,7 +42,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding">
+            android:paddingRight="@dimen/mmx_activity_side_padding"
+            android:paddingEnd="@dimen/mmx_activity_side_padding"
+            android:paddingStart="@dimen/mmx_activity_side_padding">
 
             <!-- Due Date -->
             <com.money.manager.ex.view.RobotoTextView
@@ -100,14 +104,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/paymentPreviousDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackground"
-                    android:text="@string/ic_chevron_left"
-                    android:textSize="@dimen/fonticon_drawer" />
+                    app:iiv_icon="gmd-keyboard-arrow-left"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/paymentDateTextView"
@@ -117,16 +122,18 @@
                     android:layout_weight="1"
                     android:drawablePadding="@dimen/mmx_padding"
                     android:hint="@string/date"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center" />
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/paymentNextDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackground"
-                    android:text="@string/ic_chevron_right"
-                    android:textSize="@dimen/fonticon_drawer" />
+                    app:iiv_icon="gmd-keyboard-arrow-right"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
 
                 <!--<com.mikepenz.iconics.view.IconicsImageView-->
                     <!--android:layout_width="72dp"-->
@@ -232,6 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:prompt="@string/status" />
+
             </LinearLayout>
 
             <!-- repeats, headers -->
@@ -286,6 +294,41 @@
                     android:inputType="number"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <!-- EP Manual / Prompt / Auto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal">
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/recurringModeLabel"
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/recurringModeLabel" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/recurringMode"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/recurring_mode"
+                />
+
+        </LinearLayout>
+
 
             <!-- Account / from -->
             <LinearLayout
@@ -400,7 +443,8 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
                         android:gravity="end"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="?attr/ic_calculator" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -432,7 +476,8 @@
                         android:layout_weight="1"
                         android:drawableLeft="?attr/ic_users"
                         android:hint="@string/payee"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:drawableStart="?attr/ic_users" />
 
                     <ImageButton
                         android:id="@+id/removePayeeButton"
@@ -463,7 +508,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_label_outline"
-                    android:hint="@string/category" />
+                    android:hint="@string/category"
+                    android:drawableStart="?attr/ic_label_outline" />
 
                 <!-- Split button -->
                 <com.shamanland.fonticon.FontIconView
@@ -519,6 +565,59 @@
                     app:srcCompat="@drawable/ic_action_plusone_dark"
                     android:contentDescription="@string/transaction_number" />
             </LinearLayout>
+
+            <!-- Add a section for Tags -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/mmx_avatar_item_height"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd_label"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" >
+                    <com.money.manager.ex.view.RobotoEditText
+                        android:id="@+id/tagsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:hint="@string/tagsList_transactions"
+                        android:inputType="textCapSentences"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        />
+                </com.google.android.material.textfield.TextInputLayout >
+            </LinearLayout>
+
+            <!-- Add a section for attachments -->
+            <TextView
+                android:id="@+id/textViewAttachments"
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Attachments"
+                android:textColor="#43A047" />
+
+            <!-- RecyclerView to display attachments -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAttachments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
         </LinearLayout>
     </ScrollView>
 

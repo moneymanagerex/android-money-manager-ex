@@ -17,15 +17,10 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.loader.app.LoaderManager;
-
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;
@@ -33,8 +28,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
@@ -48,8 +45,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
-
-import static androidx.core.content.ContextCompat.startActivity;
 
 /**
  * List of accounts.
@@ -76,13 +71,13 @@ public class AccountListFragment
 
         int layout = Intent.ACTION_PICK.equals(mAction)
                 ? android.R.layout.simple_list_item_multiple_choice
-                : android.R.layout.simple_list_item_1;
+                : android.R.layout.simple_list_item_2;
 
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null,
-                new String[]{ Account.ACCOUNTNAME },
-                new int[]{android.R.id.text1}, 0);
+                new String[]{ Account.ACCOUNTNAME, Account.ACCOUNTTYPE },
+                new int[]{android.R.id.text1, android.R.id.text2}, 0);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
@@ -91,7 +86,7 @@ public class AccountListFragment
 
         setListShown(false);
         // start loader
-        getLoaderManager().initLoader(LOADER_ACCOUNT, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_ACCOUNT, null, this);
 
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
@@ -122,7 +117,7 @@ public class AccountListFragment
         if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int accountId = (int) info.id;
+        long accountId = info.id;
         int itemId = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(itemId);
         if (menuId == null) return false;
@@ -135,18 +130,13 @@ public class AccountListFragment
             case DELETE:
                 AccountService service = new AccountService(getActivity());
                 if (service.isAccountUsed(accountId)) {
-                    new MaterialDialog.Builder(getContext())
-                            .title(R.string.attention)
-                            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                            .content(R.string.account_can_not_deleted)
-                            .positiveText(android.R.string.ok)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .build().show();
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.attention)
+                            .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
+                            .setMessage(R.string.account_can_not_deleted)
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .create()
+                            .show();
                 } else {
                     showDeleteConfirmationDialog(accountId);
                 }
@@ -217,7 +207,7 @@ public class AccountListFragment
     @Override
     public boolean onQueryTextChange(String newText) {
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
+        LoaderManager.getInstance(this).restartLoader(LOADER_ACCOUNT, null, this);
         return true;
     }
 
@@ -263,33 +253,24 @@ public class AccountListFragment
         getActivity().openContextMenu(v);
     }
 
-    private void showDeleteConfirmationDialog(final int accountId) {
+    private void showDeleteConfirmationDialog(final long accountId) {
         UIHelper ui = new UIHelper(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        new MaterialDialog.Builder(getContext())
-            .title(R.string.delete_account)
-            .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-            .content(R.string.confirmDelete)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        builder.setTitle(R.string.delete_account)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     AccountRepository repo = new AccountRepository(getActivity());
                     if (!repo.delete(accountId)) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
                     // restart loader
                     getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.cancel();
-                }
-            })
-            .build().show();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                .create()
+                .show();
     }
 
     /**
@@ -304,7 +285,7 @@ public class AccountListFragment
      *
      * @param accountId is null for a new account, not null for editing accountId account
      */
-    private void startAccountListEditActivity(Integer accountId) {
+    private void startAccountListEditActivity(Long accountId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), AccountEditActivity.class);
         // check accountId not null

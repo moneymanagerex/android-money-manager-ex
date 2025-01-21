@@ -48,10 +48,11 @@ public class CurrencyRepository
             Currency.PFX_SYMBOL, Currency.SFX_SYMBOL, Currency.DECIMAL_POINT,
             Currency.GROUP_SEPARATOR, Currency.UNIT_NAME, Currency.CENT_NAME,
             Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
+                , Currency.CURRENCY_TYPE
         };
     }
 
-    public Currency load(int id) {
+    public Currency load(long id) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Currency.CURRENCYID, "=", id);
 
@@ -63,7 +64,7 @@ public class CurrencyRepository
     }
 
     public boolean update(Currency value) {
-        int id = value.getCurrencyId();
+        long id = value.getCurrencyId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Currency.CURRENCYID, "=", id);
@@ -71,8 +72,8 @@ public class CurrencyRepository
         return update(value, where);
     }
 
-    public boolean delete(int id) {
-        int result = delete(Currency.CURRENCYID + "=?", new String[]{Integer.toString(id)});
+    public boolean delete(long id) {
+        long result = delete(Currency.CURRENCYID + "=?", new String[]{ Long.toString(id) });
         return result > 0;
     }
 
@@ -80,10 +81,10 @@ public class CurrencyRepository
 //        delete(currency);
 //    }
 
-    public Currency loadCurrency(int currencyId) {
+    public Currency loadCurrency(long currencyId) {
         return loadCurrency(
             Currency.CURRENCYID + "=?",
-            new String[]{Integer.toString(currencyId)});
+            new String[]{Long.toString(currencyId)});
     }
 
     public Currency loadCurrency(String code) {
@@ -92,16 +93,14 @@ public class CurrencyRepository
             new String[] { code });
     }
 
-    public int saveExchangeRate(int currencyId, Money exchangeRate) {
+    public long saveExchangeRate(long currencyId, Money exchangeRate) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Currency.BASECONVRATE, exchangeRate.toString());
 
-        int result = getContext().getContentResolver().update(this.getUri(),
+        return getContext().getContentResolver().update(this.getUri(),
             contentValues,
             Currency.CURRENCYID + "=?",
-            new String[] { Integer.toString(currencyId) });
-
-        return result;
+            new String[] { Long.toString(currencyId) });
     }
 
     // private methods

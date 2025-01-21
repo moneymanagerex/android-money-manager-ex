@@ -44,8 +44,8 @@
     <!-- -->
     <string name="pref_user_name">username</string>
     <string name="pref_date_format">dateformat</string>
-    <string name="pref_financial_year_startdate">financial_year_startday</string>
-    <string name="pref_financial_year_startmonth">financial_year_startmonth</string>
+    <string name="pref_financial_year_start_date">financial_year_startday</string>
+    <string name="pref_financial_year_start_month">financial_year_startmonth</string>
     <string name="pref_base_currency">basecurrency</string>
     <string name="pref_account_open_visible">accountsopenvisible</string>
     <string name="pref_account_fav_visible">accountsfavoritevisible</string>
@@ -80,12 +80,13 @@
     <string name="pref_behaviour">prefbehaviour</string>
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
     <string name="pref_show_introduction">prefshowintroduction</string>
-    <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
+    <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionprocess</string>
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
     <string name="pref_sms_auto_trans">pref_sms_automatic_transactions</string>
     <string name="pref_sms_trans_status_notification">pref_sms_trans_status_notification</string>
+    <string name="pref_use_nested_category">prefusenestedcategory</string>
 
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
@@ -95,6 +96,7 @@
     <string name="pref_budget">pref_budgets</string>
     <string name="pref_budget_show_simple_view">pref_budget_show_simple_view</string>
     <string name="pref_budget_load_current">pref_budget_load_current</string>
+    <string name="pref_budget_financial_year">pref_budget_financial_year</string>
 
     <!-- dropbox / deprecated -->
     <string name="pref_dropbox_download">dropbox2download</string>

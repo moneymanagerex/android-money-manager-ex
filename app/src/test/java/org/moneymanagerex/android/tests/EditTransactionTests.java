@@ -19,7 +19,6 @@ package org.moneymanagerex.android.tests;
 
 import android.content.Context;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
@@ -28,11 +27,9 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 
 /**
  * Tests for edit transaction activity.

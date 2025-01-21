@@ -41,7 +41,7 @@ public class WhereStatementGenerator {
         this.statements.add(statement);
     }
 
-    public void addStatement(String field, String operator, Integer argument) {
+    public void addStatement(String field, String operator, Long argument) {
         this.statements.add(getStatement(field, operator, argument));
     }
 
@@ -65,7 +65,7 @@ public class WhereStatementGenerator {
         return where;
     }
 
-    public String getStatement(String field, String operator, Integer argument) {
+    public String getStatement(String field, String operator, Long argument) {
 
         String sb = field +
                 operator +

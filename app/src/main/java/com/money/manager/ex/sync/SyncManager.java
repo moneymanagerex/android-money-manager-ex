@@ -18,16 +18,22 @@
 package com.money.manager.ex.sync;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Messenger;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
-import com.evernote.android.job.JobManager;
-import com.google.common.io.ByteStreams;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -44,24 +50,14 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.money.manager.ex.utils.NotificationUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
 import dagger.Lazy;
-import rx.Single;
-import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -69,14 +65,15 @@ import timber.log.Timber;
  */
 public class SyncManager {
 
-    public static int scheduledJobId = Constants.NOT_SET;
+//    public static long scheduledJobId = Constants.NOT_SET;
+
+    private boolean isRemoteFileAccessibleExist = false;
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @Inject
     public SyncManager(Context context) {
         mContext = context;
-        //mStorageClient = new CloudStorageClient(context);
 
         MmexApplication.getApp().iocComponent.inject(this);
     }
@@ -84,20 +81,18 @@ public class SyncManager {
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     private final Context mContext;
-    //CloudStorageClient mStorageClient;
     private SyncPreferences mPreferences;
-    // Used to temporarily disable auto-upload while performing batch updates.
-    private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
-        Timber.d("Aborting scheduled download");
+        Timber.d("Aborting scheduled sync");
 
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
-
+/*
         if (scheduledJobId != Constants.NOT_SET) {
-            JobManager.instance().cancel(scheduledJobId);
+            WorkManager.getInstance(getContext()).cancelWorkById(scheduledJobId);
         }
+*/
     }
 
     public Context getContext() {
@@ -110,7 +105,9 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
-        // check if enabled.
+        if (isPhoneStorage()) return true;
+
+        // check if online
         if (!isActive()) return false;
 
         // should we sync only on wifi?
@@ -124,106 +121,55 @@ public class SyncManager {
                 return false;
             }
         }
-
         return true;
     }
 
-//    public boolean isRemoteFileModified(CloudMetaData remoteFile) {
-//        String dateString = getDatabases().getCurrent().remoteLastChangedDate;
-//        if (TextUtils.isEmpty(dateString)) {
-//            // no remote file-change information found!
-//            throw new RuntimeException(getContext().getString(R.string.no_remote_change_date));
-//        }
-//
-//        Date cachedLastModified = MmxDate.fromIso8601(dateString).toDate();
-//        Date remoteLastModified = getModificationDateFrom(remoteFile);
-//
-//        return !remoteLastModified.equals(cachedLastModified);
-//    }
-
-    public void disableAutoUpload() {
-        mAutoUploadDisabled = true;
-    }
-
-//    /**
-//     * Download the remote file into the local path.
-//     * @param remoteFile The remote file metadata.
-//     * @param localFile Local file path. Normally a temp file.
-//     * @return RxJava Single
-//     */
-//    public Single<Void> downloadSingle(final CloudMetaData remoteFile, final File localFile) {
-//        return Single.fromCallable(new Callable<Void>() {
-//            @Override
-//            public Void call() throws Exception {
-//                // todo downloadFile(remoteFile, localFile);
-//                return null;
-//            }
-//        })
-//        .doOnSuccess(new Action1<Void>() {
-//            @Override
-//            public void call(Void aVoid) {
-//                // clear local changes
-//                resetLocalChanges();
-//
-//                // update any renewed tokens
-////                mStorageClient.cacheCredentials();
-//
-//                abortScheduledUpload();
-//            }
-//        });
-//    }
-
-    /**
-     * Called whenever the database has changed and should be uploaded.
-     * (Re-)Sets the timer for delayed sync of the database.
-     */
-    public void dataChanged() {
-        if (!isSyncEnabled()) return;
-
-        // Check if the current database is linked to a cloud service.
+    public boolean isRemoteFileAccessible(boolean showAlert) {
+        // check if remote file is accessible
+        isRemoteFileAccessibleExist = false;
         String remotePath = getRemotePath();
-        if (TextUtils.isEmpty(remotePath)) return;
 
-        // Mark local file as changed.
-        markLocalFileChanged(true);
-
-        // Should we upload automatically?
-        if (mAutoUploadDisabled) return;
-        if (!canSync()) {
-            Timber.i("No network connection. Not synchronizing.");
-            return;
+        Thread thread = new Thread(() -> {
+            try {
+                InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(remotePath));
+                inputStream.close();
+                isRemoteFileAccessibleExist = true;
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            isRemoteFileAccessibleExist = false;
         }
 
-        // Should we schedule an upload?
-        SyncPreferences preferences = new SyncPreferences(getContext());
-        if (preferences.getUploadImmediately()) {
-            scheduleDelayedUpload();
+        if (!isRemoteFileAccessibleExist) {
+            if (showAlert) {
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
+                Timber.i("Remote file is no longer available.");
+                NotificationManager notificationManager = (NotificationManager) getContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                NotificationUtils.createNotificationChannel(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NotificationUtils.CHANNEL_ID_REMOTEFILE)
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentTitle(getContext().getString(R.string.remote_unavailable))
+                        .setContentText(remotePath);
+
+                Notification notification = builder.build();
+                notificationManager.notify(1, notification);
+
+            }
+            return false;
         }
+        return true;
     }
 
-    public void enableAutoUpload() {
-        mAutoUploadDisabled = false;
-    }
-
-    /**
-     * Assembles the path where the local synchronised file is expected to be found.
-     * @return The path of the local cached copy of the remote database.
-     */
-    public String getDefaultLocalPath() {
-        String remoteFile = getRemotePath();
-        // now get only the file name
-        String remoteFileName = new File(remoteFile).getName();
-
-        String localPath = getExternalStorageDirectoryForSync().getPath();
-        if (!localPath.endsWith(File.separator)) {
-            localPath += File.separator;
-        }
-        return localPath + remoteFileName;
-    }
-
-//    public Single<List<CloudMetaData>> getRemoteFolderContentsSingle(String folder) {
-//        return mStorageClient.getContents(folder);
-//    }
 
     /**
      * Gets last saved datetime of the remote file modification from the preferences.
@@ -239,16 +185,20 @@ public class SyncManager {
         return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
     }
 
-//    public Date getModificationDateFrom(CloudMetaData remoteFile) {
-//        return new MmxDate(remoteFile.getModifiedAt()).toDate();
-//    }
-
     public String getRemotePath() {
         DatabaseMetadata db = getDatabases().getCurrent();
         if (db == null) return null;
 
-        String fileName = db.remotePath;
-        return fileName;
+        return db.remotePath;
+    }
+
+    private boolean isPhoneStorage() {
+        String remotePath = getRemotePath();
+        if (TextUtils.isEmpty(remotePath)) {
+            return false;
+        }
+
+        return Uri.parse(remotePath).getAuthority().startsWith("com.android");
     }
 
     public void invokeSyncService(String action) {
@@ -259,97 +209,57 @@ public class SyncManager {
 
         // Action
 
-        ProgressDialog progressDialog = null;
+        AlertDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
         if ((getContext() instanceof AppCompatActivity)) {
-            //progress dialog shown only when downloading an updated db file.
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-            progressDialog.setIndeterminate(true);
-//            progressDialog.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext()); // Replace with 'getContext()' if in fragment
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+
+            // Inflate the custom layout
+            View view = inflater.inflate(R.layout.progress_dialog, null);
+            builder.setView(view);
+            builder.setCancelable(false);  // Disable cancel if needed
+
+            progressDialog = builder.create();
+
+            progressDialog.show();
         }
 
-        String localFile = getDatabases().getCurrent().localPath;
+        DatabaseMetadata current = mDatabases.get().getCurrent();
         Messenger messenger = null;
         if (getContext() instanceof AppCompatActivity) {
             // Messenger handles received messages from the sync service. Can run only in a looper thread.
-            messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
+            messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog));
         }
 
-        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
-                localFile, remoteFile, messenger);
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, current.localPath, current.remotePath, messenger);
         // start service
         SyncService.enqueueWork(getContext(), syncServiceIntent);
-
-        // Reset any other scheduled uploads as the current operation will modify the files.
-        abortScheduledUpload();
-
-        // The messages from the service are received via messenger.
     }
 
     /**
-     * Indicates whether synchronization can be performed, meaning all of the criteria must be
-     * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online,
+     * Indicates whether synchronization service can be performed
      * remote file is set.
-     * @return A boolean indicating that sync can be performed.
+     * @return A boolean indicating that sync service can be performed.
      */
-    public boolean isActive() {
-        if (!isSyncEnabled()) return false;
-
+    private boolean isActive() {
         // network is online.
         NetworkUtils networkUtils = new NetworkUtils(getContext());
-        if (!networkUtils.isOnline()) return false;
-
-        // wifi preferences
-        if (getPreferences().shouldSyncOnlyOnWifi()) {
-            if (!networkUtils.isOnWiFi()) return false;
+        if (!networkUtils.isOnline()) {
+            Timber.i("Not online.");
+            return false;
         }
 
         // Remote file must be set.
         return !TextUtils.isEmpty(getRemotePath());
-
-        // check if a provider is selected? Default is Dropbox, so no need.
     }
-
-    boolean isSyncEnabled() {
-        return getPreferences().isSyncEnabled();
-    }
-
-    /**
-     * Retrieves the remote metadata. Retries once on fail to work around #957.
-     * @return Remote file metadata.
-     */
-//    public CloudMetaData loadMetadata(String remotePath) {
-//        return mStorageClient.loadMetadata(remotePath);
-//    }
-
-//    public Single<Void> login() {
-//        return mStorageClient.login();
-//    }
-
-//    public Single<Void> logout() {
-//        return mStorageClient.logout();
-//    }
 
     /**
      * Resets the synchronization preferences and cache.
      */
     void resetPreferences() {
         getPreferences().clear();
-
-        // reset provider cache
-//        mStorageClient.createProviders();
-//        mStorageClient.cacheCredentials();
     }
-
-    public void setEnabled(boolean enabled) {
-        getPreferences().setSyncEnabled(enabled);
-    }
-
-//    public void setProvider(CloudStorageProviderEnum provider) {
-//        mStorageClient.setProvider(provider);
-//    }
 
     public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
@@ -380,47 +290,8 @@ public class SyncManager {
         // todo use JobManager.
     }
 
-    /**
-     * Synchronization using job manager.
-     */
-//    public void triggerSyncJob() {
-//        // validations
-//
-//        if (!isActive())  return;
-//
-//        // Make sure that the current database is also the one linked in the cloud.
-//        String localPath = new DatabaseManager(getContext()).getDatabasePath();
-//        if (TextUtils.isEmpty(localPath)) {
-//            new UIHelper(getContext()).showToast(R.string.filenames_differ);
-//            return;
-//        }
-//
-//        String remotePath = getRemotePath();
-//        if (TextUtils.isEmpty(remotePath)) {
-//            Toast.makeText(getContext(), R.string.select_remote_file, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        // easy comparison, just by the file name.
-//        if (!areFileNamesSame(localPath, remotePath)) {
-//            // The current file was probably opened through Open Database.
-//            Toast.makeText(getContext(), R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//
-//        // action
-//
-//        new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
-//            .setExecutionWindow(500, 1000)
-//            .build()
-//            .schedule();
-//
-//        // todo sync
-//        // todo abort scheduled job, if any.
-//    }
-
     public void triggerSynchronization() {
-        if (!isActive())  return;
+        if (!canSync())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = new DatabaseManager(getContext()).getDatabasePath();
@@ -435,96 +306,20 @@ public class SyncManager {
             return;
         }
 
-        // easy comparison, just by the file name.
-        if (!areFileNamesSame(localPath, remotePath)) {
-            // The current file was probably opened through Open Database.
-            Toast.makeText(getContext(), R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
-            return;
-        }
-
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
+        Uri uri = Uri.parse(remotePath);
+        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
+            put("authority", uri.getAuthority());
+            put("result", "triggerSynchronization");
+        }});
     }
 
     public void triggerDownload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
-
-        //todo migrate
-//        int jobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_DOWNLOAD)
-//                .setExecutionWindow(50, 5000)
-//                .build()
-//                .schedule();
     }
 
     public void triggerUpload() {
-        DatabaseMetadata db = getDatabases().getCurrent();
-        if (db == null) {
-            throw new RuntimeException("Cannot upload: local database not set.");
-        }
-        String localFile = db.localPath;
-        String remoteFile = db.remotePath;
-
-        // trigger upload
-        Intent intent = new Intent(getContext(), SyncService.class);
-        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
-        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
-
-        // start service
-        SyncService.enqueueWork(getContext(), intent);
-    }
-
-    /**
-     * Upload the file to cloud storage.
-     * @param localPath The path to the file to upload.
-     * @param remoteFile The remote path.
-     */
-    public boolean upload(String localPath, String remoteFile) {
-        File localFile = new File(localPath);
-        if (!localFile.exists()) return false;
-
-        FileInputStream input;
-        try {
-            input = new FileInputStream(localFile);
-        } catch (FileNotFoundException e) {
-            Timber.e(e, "opening local file for upload");
-            return false;
-        }
-
-        // Transfer the file.
-        try {
-            long length = localFile.length();
-            // todo mStorageClient.upload(remoteFile, input, length, true);
-        } catch (Exception e) {
-            Timber.e(e, "uploading database file");
-            return false;
-        }
-
-        try {
-            input.close();
-        } catch (IOException e) {
-            Timber.e(e, "closing input stream after upload");
-        }
-
-        // set last modified date
-//        CloudMetaData remoteFileMetadata = loadMetadata(remoteFile);
-//        if (remoteFileMetadata == null) {
-//            Timber.w("Could not retrieve metadata after upload! Aborting.");
-//            return false;
-//        }
-//        todo saveRemoteLastModifiedDate(localPath, remoteFileMetadata);
-
-        // Reset local changes indicator. todo this must handle changes made during the upload!
-        resetLocalChanges();
-
-//        // set remote file, if not set (setLinkedRemoteFile)
-//        if (TextUtils.isEmpty(getRemotePath())) {
-//            setRemotePath(remoteFile);
-//        }
-
-        // update any renewed tokens
-//        mStorageClient.cacheCredentials();
-
-        return true;
+        invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
     }
 
     /**
@@ -554,89 +349,8 @@ public class SyncManager {
         getContext().startActivity(intent);
     }
 
-    /*
-        Private
-     */
-
-    /**
-     * Compares the local and remote db filenames. Use for safety check before synchronization.
-     * @return A boolean indicating if the filenames are the same.
-     */
-    private boolean areFileNamesSame(String localPath, String remotePath) {
-        if (TextUtils.isEmpty(localPath)) return false;
-        if (TextUtils.isEmpty(remotePath)) return false;
-
-        File localFile = new File(localPath);
-        String localName = localFile.getName();
-
-        File remoteFile = new File(remotePath);
-        String remoteName = remoteFile.getName();
-
-        return localName.equalsIgnoreCase(remoteName);
-    }
-
     private RecentDatabasesProvider getDatabases() {
         return mDatabases.get();
-    }
-
-//    /**
-//     * Save the last modified datetime of the remote file into Settings for comparison during
-//     * the synchronization.
-//     * @param file file name
-//     */
-//    void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
-//        MmxDate date = new MmxDate(file.getModifiedAt());
-//
-//        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
-//
-//        DatabaseMetadata currentDb = getDatabases().get(localPath);
-//        String newChangedDate = date.toString(Constants.ISO_8601_FORMAT);
-//
-//        // Do not save if the date has not changed.
-//        if (!TextUtils.isEmpty(currentDb.remoteLastChangedDate) && currentDb.remoteLastChangedDate.equals(newChangedDate)) {
-//            return;
-//        }
-//
-//        // Save.
-//        currentDb.setRemoteLastChangedDate(date);
-//        getDatabases().save();
-//    }
-
-//    /**
-//     * Downloads the file from the storage service.
-//     * @param remoteFile Remote file entry
-//     * @param localFile Local file reference
-//     * @return Indicator whether the download was successful.
-//     */
-//    private void downloadFile(CloudMetaData remoteFile, File localFile) throws IOException {
-//        InputStream inputStream = mStorageClient.download(remoteFile.getPath());
-//        OutputStream outputStream = new FileOutputStream(localFile, false);
-//
-//        //IOUtils.copy(inputStream, outputStream);
-//        ByteStreams.copy(inputStream, outputStream);
-//
-//        inputStream.close();
-//        outputStream.close();
-//    }
-
-    private File getExternalStorageDirectoryForSync() {
-        // todo check this after refactoring the database utils.
-        //MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        DatabaseManager dbManager = new DatabaseManager(getContext());
-        File folder = new File(dbManager.getDefaultDatabaseDirectory());
-
-        // manage folder
-        if (folder.exists() && folder.isDirectory() && folder.canWrite()) {
-            // create a folder for remote files
-            File folderSync = new File(folder + "/sync");
-            // check if folder exists otherwise create
-            if (!folderSync.exists()) {
-                if (!folderSync.mkdirs()) return getContext().getFilesDir();
-            }
-            return folderSync;
-        } else {
-            return mContext.getFilesDir();
-        }
     }
 
     private SyncPreferences getPreferences() {
@@ -654,10 +368,6 @@ public class SyncManager {
 
         currentDbEntry.isLocalFileChanged = changed;
         getDatabases().save();
-    }
-
-    private void resetLocalChanges() {
-        markLocalFileChanged(false);
     }
 
     /**
@@ -685,7 +395,7 @@ public class SyncManager {
 
         return PendingIntent.getService(getContext(),
                 SyncConstants.REQUEST_DELAYED_SYNC,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                intent, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_IMMUTABLE);
     }
 
     private AlarmManager getAlarmManager() {

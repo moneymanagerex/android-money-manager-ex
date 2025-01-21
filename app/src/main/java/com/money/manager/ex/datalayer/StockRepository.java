@@ -58,8 +58,8 @@ public class StockRepository
         return result;
     }
 
-    public boolean delete(int id) {
-        int result = super.delete(StockFields.STOCKID + "=?", new String[] { Integer.toString(id)});
+    public boolean delete(long id) {
+        long result = super.delete(StockFields.STOCKID + "=?", new String[] { Long.toString(id)});
         return result > 0;
     }
 
@@ -74,13 +74,13 @@ public class StockRepository
         return names;
     }
 
-    public Stock load(int id) {
+    public Stock load(long id) {
         if (id == Constants.NOT_SET) return null;
 
         return first(Stock.class,
                 null,
                 StockFields.STOCKID + "=?",
-                new String[] { Integer.toString(id) },
+                new String[] { Long.toString(id) },
                 null);
     }
 
@@ -158,7 +158,7 @@ public class StockRepository
     }
 
     public boolean save(Stock stock) {
-        int id = stock.getId();
+        long id = stock.getId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(StockFields.STOCKID, "=", id);
@@ -176,7 +176,7 @@ public class StockRepository
 
         // recalculate value
 
-        for (int id : ids) {
+        for (long id : ids) {
             Stock stock = load(id);
             stock.setCurrentPrice(price);
             // recalculate & assign the value

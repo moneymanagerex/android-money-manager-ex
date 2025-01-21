@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Copyright (C) 2013 The Android Money Manager Ex Project
- * 
+ * <p>
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -89,25 +89,4 @@ public class RobotoCheckBox
     	RobotoView.parseAttributes(context, this, attrs);
     }
 
-//    /**
-//     * Adjust the margin between the checkbox and the text.
-//     * A fix for displaying on JellyBean.
-//     * Reference: http://stackoverflow.com/questions/4037795/android-spacing-between-checkbox-and-text
-//     * Android version codes: http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
-//     * @return Left padding for the text component.
-//     */
-//    @Override
-//    public int getCompoundPaddingLeft() {
-//        int result = super.getCompoundPaddingLeft();
-//
-//        // fix for padding on Jelly Bean (4.2 and lower)
-//        // Build.VERSION_CODES.KITKAT = 4.4
-//        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            final float scale = this.getResources().getDisplayMetrics().density;
-//            //result = (super.getCompoundPaddingLeft() + (int) (10.0f * scale + 0.5f));
-//            result = (super.getCompoundPaddingLeft() + (int) (30.0f * scale + 0.5f));
-//        }
-//
-//        return result;
-//    }
 }

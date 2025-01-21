@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2024 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,6 +38,9 @@ public class InvestmentTransactionViewHolder {
         notesEdit = view.findViewById(R.id.notesEdit);
         previousDayButton = view.findViewById(R.id.previousDayButton);
         nextDayButton = view.findViewById(R.id.nextDayButton);
+        purchasePriceView = view.findViewById(R.id.purchasePriceView);
+        commissionView = view.findViewById(R.id.commissionView);
+        currentPriceView = view.findViewById(R.id.currentPriceView);
     }
 
     public Spinner accountSpinner;
@@ -48,4 +51,7 @@ public class InvestmentTransactionViewHolder {
     public RobotoEditText notesEdit;
     public FontIconView previousDayButton;
     public FontIconView nextDayButton;
+    public RobotoTextView purchasePriceView;
+    public RobotoTextView commissionView;
+    public RobotoTextView currentPriceView;
 }

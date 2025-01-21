@@ -17,18 +17,18 @@
 
 package com.money.manager.ex.account;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.fragment.app.DialogFragment;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsButton;
@@ -110,23 +110,36 @@ public class FilterDialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 //        Dialog binaryDialog = super.onCreateDialog(savedInstanceState);
-        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-            .title(getActivity().getString(R.string.account))
-            .customView(R.layout.fragment_filter_dialog, true)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    // todo: notify parent, send the filter back?
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .build();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        initializeControls(dialog.getCustomView());
-        displayInfo(dialog.getCustomView());
+// Inflate the custom view
+        View customView = inflater.inflate(R.layout.fragment_filter_dialog, null);
+        builder.setView(customView);
 
-        return dialog;
+        builder.setTitle(getActivity().getString(R.string.account))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // todo: notify parent, send the filter back?
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+// Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+// Initialize controls and display info
+        initializeControls(customView);
+        displayInfo(customView);
+
+        return alertDialog;
     }
 
     private void displayInfo(View view) {
@@ -136,7 +149,7 @@ public class FilterDialogFragment
         // Default Account
 //        CheckBox defaultAccountCheckbox = (CheckBox) view.findViewById(R.id.defaultAccountCheckbox);
 //        AppSettings preferences = new AppSettings(getActivity());
-//        Integer defaultAccountId = preferences.getGeneralSettings().getDefaultAccountId();
+//        Long defaultAccountId = preferences.getGeneralSettings().getDefaultAccountId();
 //        defaultAccountCheckbox.setChecked(mAccount.getId().equals(defaultAccountId));
 
         // Number of records
@@ -163,7 +176,7 @@ public class FilterDialogFragment
         });
 
         UIHelper ui = new UIHelper(getActivity());
-        editButton.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_pencil), null, null, null);
+        editButton.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_pencil_alt), null, null, null);
 
         // Favourite account
 
@@ -194,7 +207,7 @@ public class FilterDialogFragment
         UIHelper ui = new UIHelper(getActivity());
         IconicsDrawable icon = mAccount.getFavorite()
                 ? ui.getIcon(FontAwesome.Icon.faw_star)
-                : ui.getIcon(FontAwesome.Icon.faw_star_o);
+                : ui.getIcon(FontAwesome.Icon.faw_star);
         favouriteButton.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
     }
 }

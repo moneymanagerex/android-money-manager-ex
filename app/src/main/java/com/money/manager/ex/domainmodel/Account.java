@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
@@ -61,7 +60,7 @@ public class Account
     }
 
     public static Account create(String name, AccountTypes type, AccountStatuses status,
-                                 boolean favorite, int currencyId) {
+                                 boolean favorite, long currencyId) {
         Account account = new Account();
 
         account.setName(name);
@@ -89,20 +88,20 @@ public class Account
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
     }
 
-    public Integer getId() {
-        return getInt(Account.ACCOUNTID);
+    public Long getId() {
+        return getLong(Account.ACCOUNTID);
     }
 
-    public void setId(Integer value) {
-        setInt(Account.ACCOUNTID, value);
+    public void setId(Long value) {
+        setLong(Account.ACCOUNTID, value);
     }
 
-    public Integer getCurrencyId() {
-        return getInt(Account.CURRENCYID);
+    public Long getCurrencyId() {
+        return getLong(Account.CURRENCYID);
     }
 
-    public void setCurrencyId(Integer currencyId) {
-        setInt(Account.CURRENCYID, currencyId);
+    public void setCurrencyId(Long currencyId) {
+        setLong(Account.CURRENCYID, currencyId);
     }
 
     public String getName() {
@@ -204,7 +203,7 @@ public class Account
 
     public Date getInitialDate() {
         String dateString = getString(Account.INITIALDATE);
-        return dateString != null
+        return (dateString != null && !dateString.isEmpty())
                 ? new MmxDate(dateString).toDate()
                 : null;
     }

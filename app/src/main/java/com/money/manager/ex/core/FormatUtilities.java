@@ -62,7 +62,7 @@ public class FormatUtilities {
      * @param amount     to be formatted
      * @param currencyId Id currency to be formatted
      */
-    public void formatAmountTextView(TextView view, Money amount, Integer currencyId) {
+    public void formatAmountTextView(TextView view, Money amount, Long currencyId) {
         if (amount == null) {
             Timber.w("Amount for formatting is null.");
             return;
@@ -114,7 +114,7 @@ public class FormatUtilities {
         }
 
         int scale = baseCurrency.getScale();
-//        int decimals = this.numericHelper.getNumberOfDecimals(scale);
+//        long decimals = this.numericHelper.getNumberOfDecimals(scale);
         return scale;
     }
 
@@ -180,7 +180,7 @@ public class FormatUtilities {
         return format(value, true, currency);
     }
 
-    public String format(Money value, int currencyId) {
+    public String format(Money value, long currencyId) {
         CurrencyService currencyService = getCurrencyService();
         Currency currency = currencyService.getCurrency(currencyId);
         
@@ -278,7 +278,7 @@ public class FormatUtilities {
      * @param currencyId
      * @return
      */
-    public String formatNumberIgnoreDecimalCount(Money amount, int currencyId) {
+    public String formatNumberIgnoreDecimalCount(Money amount, long currencyId) {
         if (currencyId == Constants.NOT_SET) {
             // use locale values?
             return formatWithLocale(amount);

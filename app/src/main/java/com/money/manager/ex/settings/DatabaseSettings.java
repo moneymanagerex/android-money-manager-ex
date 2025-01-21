@@ -30,8 +30,7 @@ public class DatabaseSettings {
     private final AppSettings mAppSettings;
 
     public String getDatabasePath() {
-        String path = mAppSettings.get(R.string.pref_database_path, "");
-        return path;
+        return mAppSettings.get(R.string.pref_database_path, "");
     }
 
     public void setDatabasePath(String path) {

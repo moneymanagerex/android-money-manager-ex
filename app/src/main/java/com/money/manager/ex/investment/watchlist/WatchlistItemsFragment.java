@@ -16,7 +16,9 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -29,8 +31,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -60,16 +66,8 @@ import com.money.manager.ex.utils.MmxDate;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -94,7 +92,7 @@ public class WatchlistItemsFragment
 
     // non-static
 
-    public Integer accountId;
+    public Long accountId;
 
     private Account mAccount;
     private boolean mAutoStarLoader = true;
@@ -110,9 +108,9 @@ public class WatchlistItemsFragment
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
             // get data from saved instance state
-            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+            this.accountId = savedInstanceState.getLong(KEY_ACCOUNT_ID);
         } else {
-            this.accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+            this.accountId = getArguments().getLong(KEY_ACCOUNT_ID);
         }
     }
 
@@ -222,7 +220,7 @@ public class WatchlistItemsFragment
 //        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) ;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-//        long packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
+//        int packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
@@ -241,7 +239,7 @@ public class WatchlistItemsFragment
 
             case EditPrice:
                 // Edit price
-                int accountId = stock.getHeldAt();
+                long accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
                 Intent intent = IntentFactory.getPriceEditIntent(getActivity());
@@ -249,7 +247,7 @@ public class WatchlistItemsFragment
                 intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
                 intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
                 getAccount();
-                intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
+                intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, ( mAccount != null ? mAccount.getCurrencyId() : Constants.NOT_SET));
                 String dateString = new MmxDate().toIsoDateString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
                 startActivityForResult(intent, RequestCodes.PRICE);
@@ -351,7 +349,7 @@ public class WatchlistItemsFragment
     public void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
 
-        saveInstanceState.putInt(KEY_ACCOUNT_ID, this.accountId);
+        saveInstanceState.putLong(KEY_ACCOUNT_ID, this.accountId);
     }
 
     @Override
@@ -471,31 +469,29 @@ public class WatchlistItemsFragment
         startActivity(intent);
     }
 
-    private void showDeleteConfirmationDialog(final int id) {
+    private void showDeleteConfirmationDialog(final long id) {
         UIHelper ui = new UIHelper(getContext());
 
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.delete_transaction)
-                .icon(ui.getIcon(FontAwesome.Icon.faw_question_circle_o))
-                .content(R.string.confirmDelete)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.delete_transaction)
+                .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
                             new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
                         }
 
-                        // restart loader
+                        // Restart loader
                         reloadData();
                     }
                 })
-                .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        // close binaryDialog
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close dialog
                         dialog.cancel();
                     }
                 })

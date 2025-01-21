@@ -42,12 +42,12 @@ public class QueryAccountBills
     public static final String TOTALBASECONVRATE = "TOTALBASECONVRATE";
     public static final String RECONCILEDBASECONVRATE = "RECONCILEDBASECONVRATE";
 
-    private int accountId;
+    private long accountId;
     private String accountName;
     private String status;
     private String favoriteAcct;
     private String accountType;
-    private int currencyId;
+    private long currencyId;
     private double total;
     private double reconciled;
     private double totalBaseConvRate;
@@ -89,14 +89,14 @@ public class QueryAccountBills
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
     /**
      * @param accountId the accountId to set
      */
-    public void setAccountId(int accountId) {
+    public void setAccountId(long accountId) {
         this.accountId = accountId;
     }
 
@@ -124,14 +124,14 @@ public class QueryAccountBills
     /**
      * @return the currencyId
      */
-    public int getCurrencyId() {
+    public long getCurrencyId() {
         return currencyId;
     }
 
     /**
      * @param currencyId the currencyId to set
      */
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(long currencyId) {
         this.currencyId = currencyId;
     }
 

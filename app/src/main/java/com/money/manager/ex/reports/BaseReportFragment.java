@@ -16,23 +16,30 @@
  */
 package com.money.manager.ex.reports;
 
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.database.SQLDataSet;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -40,10 +47,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import dagger.Lazy;
+import timber.log.Timber;
 
 public abstract class BaseReportFragment
     extends BaseListFragment
@@ -153,59 +158,65 @@ public abstract class BaseReportFragment
 //        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
         MmxDate dateTime = MmxDate.newDate();
 
-        switch (item.getItemId()) {
-            case R.id.menu_current_month:
-                mDateFrom = dateTime.firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastDayOfMonth().toDate();
-                break;
+        int itemId = item.getItemId();
 
-            case R.id.menu_last_month:
-                mDateFrom = dateTime.minusMonths(1)
-                        .firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastDayOfMonth().toDate();
-                break;
-
-            case R.id.menu_last_30_days:
-                mDateTo = dateTime.toDate();
-                mDateFrom = dateTime.minusDays(30).toDate();
-                break;
-
-            case R.id.menu_current_year:
-                mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
-                mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-                break;
-
-            case R.id.menu_last_year:
-                mDateFrom = dateTime.minusYears(1)
-                        .firstMonthOfYear()
-                        .firstDayOfMonth()
-                        .toDate();
-                mDateTo = dateTime
-                        .lastMonthOfYear()
-                        .lastDayOfMonth()
-                        .toDate();
-                break;
-
-            case R.id.menu_all_time:
-                mDateFrom = null;
-                mDateTo = null;
-                break;
-            case R.id.menu_custom_dates:
-                //check item
-                item.setChecked(true);
-                mItemSelected = item.getItemId();
-                //show binaryDialog
-                showDialogCustomDates();
-                return true;
-//                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (itemId == R.id.menu_current_month) {
+            mDateFrom = dateTime.firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_month) {
+            mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_30_days) {
+            mDateTo = dateTime.toDate();
+            mDateFrom = dateTime.minusDays(30).toDate();
+        } else if (itemId == R.id.menu_current_year) {
+            mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_year) {
+            mDateFrom = dateTime.minusYears(1)
+                    .firstMonthOfYear()
+                    .firstDayOfMonth()
+                    .toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+// issue #1790 - handling financial year
+        } else if (itemId == R.id.menu_current_fin_year ||
+                   itemId == R.id.menu_last_fin_year) {
+            InfoService infoService = new InfoService(getActivity());
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1"))-1;
+            if (financialYearStartMonth < 0) financialYearStartMonth = 0;
+            MmxDate newDate = MmxDate.newDate();
+            newDate.setDate(financialYearStartDay);
+            newDate.setMonth(financialYearStartMonth);
+            if (newDate.toDate().after(dateTime.toDate())) {
+                // today is not part of current financial year, so we need to go back on year
+                newDate.minusYears(1);
+            }
+            // right now newDAte is start of current fiscal year
+            if (itemId == R.id.menu_last_fin_year) {
+                newDate.minusYears(1);
+            }
+            mDateFrom = newDate.toDate();
+            mDateTo = newDate.addYear(1).minusDays(1).toDate();
+            Timber.v("FISCAL YEAR from: " + mDateFrom.toString() + " to: " + mDateTo.toString());
+        } else if (itemId == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+        } else if (itemId == R.id.menu_custom_dates) {
+            // Check item
+            item.setChecked(true);
+            mItemSelected = itemId;
+            // Show custom dates dialog
+            showDialogCustomDates();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
-                "' AND " + ViewMobileData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
+            whereClause = QueryAllData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
+                "' AND " + QueryAllData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
         }
 
         //check item
@@ -257,7 +268,7 @@ public abstract class BaseReportFragment
      * @param args
      */
     protected void startLoader(Bundle args) {
-        getLoaderManager().restartLoader(ID_LOADER, args, this);
+        LoaderManager.getInstance(this).restartLoader(ID_LOADER, args, this);
     }
 
     protected String getWhereClause() {
@@ -265,40 +276,34 @@ public abstract class BaseReportFragment
     }
 
     private void showDialogCustomDates() {
-        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-            .customView(R.layout.dialog_choose_date_report, false)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                    View view = materialDialog.getCustomView();
-                    DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
-                    DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
+        // Assuming mDateFrom, mDateTo, and KEY_WHERE_CLAUSE are class variables
 
+        // Inflate the custom view
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_choose_date_report, null);
+        DatePicker fromDatePicker = dialogView.findViewById(R.id.datePickerFromDate);
+        DatePicker toDatePicker = dialogView.findViewById(R.id.datePickerToDate);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
                     mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
 
                     String whereClause =
-                        ViewMobileData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
-                                "' AND " +
-                        ViewMobileData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
+                            QueryAllData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
+                                    "' AND " +
+                                    QueryAllData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
 
                     Bundle args = new Bundle();
                     args.putString(KEY_WHERE_CLAUSE, whereClause);
 
                     startLoader(args);
-
-                    //super.onPositive(binaryDialog);
-                }
-            })
-            .show();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
         // set date if is null
         if (mDateFrom == null) mDateFrom = new MmxDate().today().toDate();
         if (mDateTo == null) mDateTo = new MmxDate().today().toDate();
-
-        View view = dialog.getCustomView();
-        DatePicker fromDatePicker = view.findViewById(R.id.datePickerFromDate);
-        DatePicker toDatePicker = view.findViewById(R.id.datePickerToDate);
 
         dateTimeUtilsLazy.get().setDatePicker(mDateFrom, fromDatePicker);
         dateTimeUtilsLazy.get().setDatePicker(mDateTo, toDatePicker);

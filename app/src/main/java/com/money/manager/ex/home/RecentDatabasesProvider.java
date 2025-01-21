@@ -124,18 +124,13 @@ public class RecentDatabasesProvider {
             return map.get(dbPath);
         }
 
-        // otherwise create the default entry for the existing path.
-        DatabaseMetadata defaultDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
-        // and save it to the list
-        add(defaultDb);
-
-        return defaultDb;
+        return null;
     }
 
     public boolean remove(String localPath) {
         DatabaseMetadata existing = get(localPath);
         if (existing != null) {
-            this.map.remove(existing);
+            this.map.remove(localPath);
             return true;
         }
         return false;
@@ -178,9 +173,7 @@ public class RecentDatabasesProvider {
     public String toJson() {
         Gson gson = new Gson();
 
-        String value = gson.toJson(this.map);
-
-        return value;
+        return gson.toJson(this.map);
     }
 
     public void removeOldest() {
@@ -200,16 +193,13 @@ public class RecentDatabasesProvider {
      */
 
     private SharedPreferences getRecentDbPreferences() {
-        SharedPreferences prefs = getContext().getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
-        return prefs;
+        return getContext().getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
     }
 
     private LinkedHashMap<String, DatabaseMetadata> parseStorageContent(String value) {
         Type listType = new TypeToken<LinkedHashMap<String, DatabaseMetadata>>() {}.getType();
         Gson gson = new Gson();
 
-        LinkedHashMap<String, DatabaseMetadata> map = gson.fromJson(value, listType);
-        return map;
+        return gson.fromJson(value, listType);
     }
-
 }

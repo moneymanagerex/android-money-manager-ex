@@ -20,7 +20,7 @@ package com.money.manager.ex.datalayer;
 import android.database.Cursor;
 
 import com.money.manager.ex.domainmodel.Info;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class InfoRepositorySql
         return results;
     }
 
-    public int delete(long id) {
+    public long delete(long id) {
         String idString = String.valueOf(id);
         return this.delete(Info.INFOID + "=?", idString);
     }

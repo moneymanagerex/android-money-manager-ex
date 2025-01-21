@@ -17,14 +17,16 @@
 
 package com.money.manager.ex.core.ioc;
 
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.MmxOpenHelper;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+import com.squareup.sqlbrite3.BriteDatabase;
+import com.squareup.sqlbrite3.SqlBrite;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -46,7 +48,8 @@ public final class DbModule {
         return app.openHelperAtomicReference.get();
     }
 
-    @Provides SqlBrite provideSqlBrite() {
+    @Provides
+    SqlBrite provideSqlBrite() {
         return new SqlBrite.Builder().logger(new SqlBrite.Logger() {
             @Override public void log(String message) {
                 Timber.tag("Database").v(message);
@@ -54,9 +57,9 @@ public final class DbModule {
         }).build();
     }
 
-    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
-        BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
-        db.setLoggingEnabled(true);
-        return db;
+    @Provides
+    BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
+        SupportSQLiteOpenHelper supportHelper = helper.provideSupportSQLiteOpenHelper();
+        return sqlBrite.wrapDatabaseHelper(supportHelper, Schedulers.io());
     }
 }

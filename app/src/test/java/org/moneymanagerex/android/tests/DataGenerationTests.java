@@ -16,17 +16,13 @@
  */
 package org.moneymanagerex.android.tests;
 
-import com.money.manager.ex.BuildConfig;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
-import org.moneymanagerex.android.testhelpers.TestApplication;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 /**
  * Test creation of records in the database.

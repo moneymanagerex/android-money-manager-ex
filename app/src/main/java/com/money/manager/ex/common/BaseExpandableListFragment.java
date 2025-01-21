@@ -18,7 +18,6 @@ package com.money.manager.ex.common;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -39,7 +38,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
+
 import timber.log.Timber;
 
 public abstract class BaseExpandableListFragment
@@ -73,9 +72,7 @@ public abstract class BaseExpandableListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // set animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getExpandableListView().setLayoutTransition(new LayoutTransition());
-        }
+        getExpandableListView().setLayoutTransition(new LayoutTransition());
         // saved instance
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
@@ -122,7 +119,7 @@ public abstract class BaseExpandableListFragment
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
 
-            MenuItemCompat.setShowAsAction(itemSearch, MenuItem.SHOW_AS_ACTION_ALWAYS);
+            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //            AppCompatActivity activity = (AppCompatActivity) getActivity();
 
@@ -140,7 +137,7 @@ public abstract class BaseExpandableListFragment
                     }
                 });
                 searchView.setIconified(isMenuItemSearchIconified());
-                MenuItemCompat.setActionView(itemSearch, searchView);
+                itemSearch.setActionView(searchView);
 
                 SearchViewFormatter formatter = new SearchViewFormatter();
 
@@ -164,8 +161,6 @@ public abstract class BaseExpandableListFragment
                 this.setResultAndFinish();
                 return true; // consumed here
             case R.id.menu_query_mode:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-                    onMenuItemSearchClick(item);
                 return true; // consumed here
             default:
                 return super.onOptionsItemSelected(item);
@@ -183,7 +178,7 @@ public abstract class BaseExpandableListFragment
             edtSearch.requestFocus();
             // rendo visibile la keyboard
             imm.showSoftInput(edtSearch, 0);
-            MenuItemCompat.setActionView(item, searchView);
+            item.setActionView(searchView);
             // aggiorno lo stato
             mDisplayShowCustomEnabled = true;
         } else {
@@ -192,7 +187,7 @@ public abstract class BaseExpandableListFragment
                 // nascondo la keyboard
                 imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
                 // tolgo la searchview
-                MenuItemCompat.setActionView(item, null);
+                item.setActionView(null);
                 // aggiorno lo stato
                 mDisplayShowCustomEnabled = false;
             } else {
