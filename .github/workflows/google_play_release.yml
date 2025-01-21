@@ -12,4 +12,4 @@ jobs:
           packageName: com.money.manager.ex.android
           releaseFiles: app/gplay/release/ammx-*-gplay-release.aab
           track: beta
-          status: inProgress
+          status: completed
