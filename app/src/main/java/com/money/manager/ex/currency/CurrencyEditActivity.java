@@ -228,27 +228,30 @@ public class CurrencyEditActivity
         long scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
         currency.contentValues.put(Currency.SCALE, scale);
 
-        BigDecimal rate = new BigDecimal(holder.edtConversion.getText().toString().trim());
-        currency.contentValues.put(Currency.BASECONVRATE, rate.doubleValue());
-        currency.contentValues.put(Currency.CURRENCY_TYPE, "Crypto");
+        boolean success;
+        try  {
+            BigDecimal rate = new BigDecimal(holder.edtConversion.getText().toString().trim());
+            currency.contentValues.put(Currency.BASECONVRATE, rate.doubleValue());
+            currency.contentValues.put(Currency.CURRENCY_TYPE, "Crypto");
 //        currency.setConversionRate();
 
-        CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
+            CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
 
-        // update data
-        boolean success;
-        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
-            success = repo.insert(currency);
+            // update data
+            if (mIntentAction.equals(Intent.ACTION_INSERT)) {
+                success = repo.insert(currency);
 
-            // todo: use ACTION_EDIT explicitly.
-        } else {// Add Id value only when updating.
-            if (mCurrencyId != Constants.NOT_SET) {
-                currency.setCurrencyid(mCurrencyId);
+                // todo: use ACTION_EDIT explicitly.
+            } else {// Add Id value only when updating.
+                if (mCurrencyId != Constants.NOT_SET) {
+                    currency.setCurrencyid(mCurrencyId);
+                }
+
+                success = repo.update(currency);
             }
-
-            success = repo.update(currency);
+        } catch (Exception e) {
+            success = false;
         }
-
         return success;
     }
 }
