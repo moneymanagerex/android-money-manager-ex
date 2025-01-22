@@ -631,6 +631,7 @@
 
     <string name="view_transactions">View transactions</string>
     <string name="view_transactions_sub">View transactions with subcategories</string>
+    <string name="switch_active">Switch Active/Inactive</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="error_updating_rates">Error updating rates</string>
     <string name="error_no_price_found_for_symbol">No price found for symbol</string>

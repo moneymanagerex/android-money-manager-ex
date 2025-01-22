@@ -119,7 +119,10 @@ public class NestedCategoryListFragment
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                     TextView textView = (TextView) aView;
                     boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
-                    String text = aCursor.getString(aColumnIndex);
+                    CharSequence text = aCursor.getString(aColumnIndex);
+                    if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                        text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                    }
                     if (!active) {
                         textView.setText( Html.fromHtml( "<i>"+text+ " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
                     } else {
@@ -190,6 +193,7 @@ public class NestedCategoryListFragment
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS_SUB.getId(), Menu.NONE, getString(R.string.view_transactions_sub));
+        menu.add(Menu.NONE, ContextMenuIds.SWITCH_ACTIVE.getId(), Menu.NONE, getString(R.string.switch_active));
     }
 
     @Override
@@ -246,6 +250,13 @@ public class NestedCategoryListFragment
                 }
 
                 showSearchActivityFor(parameters);
+                break;
+            case SWITCH_ACTIVE:
+                category.setActive(!category.getActive());
+                CategoryService service = new CategoryService(getActivity());
+                service.update(category);
+                restartLoader();
+                break;
         }
         return false;
     }
@@ -261,7 +272,10 @@ public class NestedCategoryListFragment
             String whereClause = "";
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause += " AND " + QueryNestedCategory.CATEGNAME + " LIKE ?";
+                if (!TextUtils.isEmpty(whereClause)) {
+                    whereClause += " AND ";
+                }
+                whereClause += QueryNestedCategory.CATEGNAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + "%"};
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
