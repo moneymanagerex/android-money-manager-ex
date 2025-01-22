@@ -264,12 +264,7 @@ public class AllDataAdapter
         displayBalanceAmountOrDaysLeft(holder, cursor, context);
 
         // color
-        int color;
-        try {
-            color = cursor.getInt(cursor.getColumnIndex(COLOR));
-        } catch (Exception e) {
-            color = -1;
-        }
+        int color = cursor.getInt(cursor.getColumnIndex(COLOR));
         if (color > 0 ) {
             InfoService infoService = new InfoService(context);
             holder.viewColor.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
