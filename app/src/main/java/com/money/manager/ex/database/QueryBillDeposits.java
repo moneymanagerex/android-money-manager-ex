@@ -43,7 +43,7 @@ public class QueryBillDeposits
     public static String ACCOUNTNAME = "ACCOUNTNAME";
     public static String CURRENCYID = "CURRENCYID";
     public static String CATEGNAME = "CATEGNAME";
-    public static String CATEGID = "CATEDID";
+    public static String CATEGID = "CATEGID";
     public static String TRANSCODE = "TRANSCODE";
     public static String TRANSAMOUNT = "TRANSAMOUNT";
     public static String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
@@ -68,6 +68,6 @@ public class QueryBillDeposits
                 ACCOUNTID, ACCOUNTNAME, CURRENCYID,
                 CATEGNAME, CATEGID, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
-                TRANSACTIONNUMBER, TRANSDATE, AMOUNT, TAGS, SPLITTED};
+                TRANSACTIONNUMBER, TRANSDATE, AMOUNT, TAGS, SPLITTED, COLOR};
     }
 }
