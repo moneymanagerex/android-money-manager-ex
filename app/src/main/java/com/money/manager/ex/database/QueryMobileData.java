@@ -57,7 +57,7 @@ public class QueryMobileData
 	public static final String AmountBaseConvRate = "AmountBaseConvRate";
 	public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
 	public static final String TAGS = "TAGS";
-	public static final String COLOR = "Color";
+	public static final String COLOR = "COLOR";
 
 	public QueryMobileData(Context context) {
 		super("", DatasetType.VIEW, "mobiledata");
