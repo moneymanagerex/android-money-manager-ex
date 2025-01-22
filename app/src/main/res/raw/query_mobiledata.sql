@@ -38,7 +38,7 @@ SELECT     TX.TransID AS ID,
 	  ( CASE ifnull( st.CATEGID, -1) WHEN -1 THEN TX.TRANSAMOUNT ELSE st.splittransamount END) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate,
 	Tags.Tags as TAGS,
-	TX.Color AS COLOR,
+	TX.Color AS COLOR
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID

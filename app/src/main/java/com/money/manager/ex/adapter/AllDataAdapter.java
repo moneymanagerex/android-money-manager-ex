@@ -48,7 +48,6 @@ import java.util.Locale;
 import androidx.cursoradapter.widget.CursorAdapter;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /**
  * Adapter for all_data query. The list of transactions (account/recurring).
@@ -83,7 +82,8 @@ public class AllDataAdapter
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
-        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR;
+        TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR,
+        SPLITTED;
 
     private final LayoutInflater mInflater;
     // hash map for group
@@ -231,11 +231,11 @@ public class AllDataAdapter
         String categorySub;
         if (!isTransfer) {
             categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
-            boolean isSplited = cursor.getInt(cursor.getColumnIndex(QueryAllData.SPLITTED)) == 1;
+            boolean isSplited = cursor.getInt(cursor.getColumnIndex(SPLITTED)) == 1;
             // write category/subcategory format html
             if (!isSplited) {
                 // Display category/sub-category.
-                categorySub = Html.fromHtml(categorySub).toString();
+                categorySub = Html.fromHtml(categorySub, Html.FROM_HTML_MODE_LEGACY).toString();
             } else {
                 // It is either a Transfer or a split category.
                 // then it is a split? todo: improve this check to make it explicit.
@@ -248,7 +248,7 @@ public class AllDataAdapter
 
         // notes
         if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
-            holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>"));
+            holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>", Html.FROM_HTML_MODE_LEGACY));
             holder.txtNotes.setVisibility(View.VISIBLE);
         } else {
             holder.txtNotes.setVisibility(View.GONE);
@@ -368,6 +368,7 @@ public class AllDataAdapter
         ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
         COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
+        SPLITTED = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.SPLITTED : QueryBillDeposits.SPLITTED;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {
