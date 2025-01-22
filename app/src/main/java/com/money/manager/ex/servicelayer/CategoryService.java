@@ -104,6 +104,10 @@ public class CategoryService
     }
 
     public long update(long id, String name, long parentId) {
+        return update(id, name, parentId, true);
+    }
+
+    public long update(long id, String name, long parentId, boolean active) {
         if(TextUtils.isEmpty(name)) return Constants.NOT_SET;
 
         name = name.trim();
@@ -111,6 +115,7 @@ public class CategoryService
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
         values.put(Category.PARENTID, parentId);
+        values.put(Category.ACTIVE, active ? 1L : 0L);
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
@@ -120,6 +125,12 @@ public class CategoryService
 
         return result;
     }
+
+
+    public long update(Category category) {
+        return update(category.getId(), category.getBasename(), category.getParentId(),category.getActive());
+    }
+
 
     /**
      * Checks account transactions to find any that use given category

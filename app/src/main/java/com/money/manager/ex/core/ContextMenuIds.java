@@ -32,7 +32,8 @@ public enum ContextMenuIds {
     SaveAsHtml(8),
     Portfolio(9),
     ADD_SUB(10),
-    VIEW_TRANSACTIONS_SUB(11);
+    VIEW_TRANSACTIONS_SUB(11),
+    SWITCH_ACTIVE(12);
 
     public static ContextMenuIds get(int id) {
         for (ContextMenuIds itemId : ContextMenuIds.values()) {
