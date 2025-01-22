@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -112,6 +114,22 @@ public class NestedCategoryListFragment
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null, new String[] { QueryNestedCategory.CATEGNAME },
                 new int[]{android.R.id.text1}, 0);
+
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                    TextView textView = (TextView) aView;
+                    boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
+                    String text = aCursor.getString(aColumnIndex);
+                    if (!active) {
+                        textView.setText( Html.fromHtml( "<i>"+text+ " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
+                    } else {
+                        textView.setText(text);
+                    }
+                    return true;
+            }
+        });
+
+
         // set adapter
         setListAdapter(adapter);
 
@@ -239,7 +257,8 @@ public class NestedCategoryListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_NESTEDCATEGORY) {// update id selected
             // load data
-            String whereClause = "ACTIVE <> 0";
+//            String whereClause = "ACTIVE <> 0";
+            String whereClause = "";
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
                 whereClause += " AND " + QueryNestedCategory.CATEGNAME + " LIKE ?";
