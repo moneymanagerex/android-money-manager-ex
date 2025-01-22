@@ -45,6 +45,10 @@ public class MoneySimpleCursorAdapter
         mContext = context;
     }
 
+    public Core getCore() {
+        return mCore;
+    }
+
     @Override
     public void setViewText(TextView v, String text) {
         if (v != null) {

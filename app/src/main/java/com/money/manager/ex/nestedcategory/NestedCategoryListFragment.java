@@ -119,7 +119,10 @@ public class NestedCategoryListFragment
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                     TextView textView = (TextView) aView;
                     boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
-                    String text = aCursor.getString(aColumnIndex);
+                    CharSequence text = aCursor.getString(aColumnIndex);
+                    if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                        text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                    }
                     if (!active) {
                         textView.setText( Html.fromHtml( "<i>"+text+ " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
                     } else {
@@ -261,7 +264,10 @@ public class NestedCategoryListFragment
             String whereClause = "";
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause += " AND " + QueryNestedCategory.CATEGNAME + " LIKE ?";
+                if (!TextUtils.isEmpty(whereClause)) {
+                    whereClause += " AND ";
+                }
+                whereClause += QueryNestedCategory.CATEGNAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + "%"};
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
