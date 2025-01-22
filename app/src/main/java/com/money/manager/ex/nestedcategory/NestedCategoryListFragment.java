@@ -117,7 +117,6 @@ public class NestedCategoryListFragment
 
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-//                if (aColumnIndex == 1) {
                     TextView textView = (TextView) aView;
                     boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
                     String text = aCursor.getString(aColumnIndex);
@@ -127,8 +126,6 @@ public class NestedCategoryListFragment
                         textView.setText(text);
                     }
                     return true;
-//                }
-//                return false;
             }
         });
 
