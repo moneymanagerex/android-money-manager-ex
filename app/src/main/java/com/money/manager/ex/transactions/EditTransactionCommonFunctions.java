@@ -34,6 +34,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -926,26 +928,28 @@ public class EditTransactionCommonFunctions {
         this.viewHolder.colorTextView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.empty_color_message);
-            Spanned[] colorList = new Spanned[8] ;
-            colorList[0] = Html.fromHtml("No Color", Html.FROM_HTML_MODE_LEGACY);
+            LinearLayout mainLayout       = new LinearLayout(getContext());
+            mainLayout.setOrientation(LinearLayout.VERTICAL);
             InfoService info = new InfoService(getContext());
-            for( int i = 1; i <= 7; i++ ) {
-                String[] color = info.getColorArrayFromInfoKey(i);
-                if (color == null ) {
-                    colorList[i] = Html.fromHtml(String.format("Color %d",i),Html.FROM_HTML_MODE_LEGACY);
+            for( int i = 0; i<= 7; i++ ) {
+                LinearLayout layout       = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.HORIZONTAL);
+                RadioButton rb = new RadioButton(getContext());
+                rb.setTag(i);
+                if (i == 0 ) {
+                    rb.setText("No Color");
                 } else {
-//                    colorList[i] = Html.fromHtml(String.format("<font style=\"background-color:rgb(%s,%s,%s);\">Color %d</font>", color[0],color[1],color[2],  i), Html.FROM_HTML_MODE_COMPACT);
-                    colorList[i] = Html.fromHtml(String.format("<font color=\"rgb(%s,%s,%s);\">Color %d</font>", color[0],color[1],color[2],  i), Html.FROM_HTML_MODE_LEGACY);
+                    rb.setText(String.format("Color %d", i));
+                    layout.setBackgroundColor(info.getColorNumberFromInfoKey(i));
                 }
+                rb.setOnClickListener(v1 -> {
+                    transactionEntity.setColor((int)v1.getTag());
+                } );
+                layout.addView(rb);
+                layout.setMinimumHeight(50);
+                mainLayout.addView(layout);
             }
-            builder.setSingleChoiceItems(colorList, 0, (dialog, which) -> {
-                Timber.d("Click item %d", which);
-                if (which == 0 ) {
-                    transactionEntity.setColor((int)Constants.NOT_SET);
-                } else {
-                    transactionEntity.setColor(which);
-                }
-                    });
+            builder.setView(mainLayout);
             builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
   //              Timber.d("Select item %d", which);
                 setDirty(true);
