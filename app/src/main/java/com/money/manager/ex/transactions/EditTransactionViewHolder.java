@@ -54,6 +54,7 @@ public class EditTransactionViewHolder {
     public ViewGroup tableRowAmountTo;
     public ViewGroup tableRowAccountTo;
     public TextView accountFromLabel;
+    public IconicsImageView swapAccountButton; //added by velmuruganc
     public TextView txtToAccount;
     public TextView amountHeaderTextView;
     public TextView amountToHeaderTextView;
@@ -79,6 +80,7 @@ public class EditTransactionViewHolder {
         txtSelectPayee = activity.findViewById(R.id.textViewPayee);
         spinStatus = activity.findViewById(R.id.spinnerStatus);
         spinAccount = activity.findViewById(R.id.spinnerAccount);
+        swapAccountButton = activity.findViewById(R.id.swapAccountButton); //added by velmuruganc
         spinAccountTo = activity.findViewById(R.id.spinnerToAccount);
         txtAmountTo = activity.findViewById(R.id.textViewToAmount);
         txtAmount = activity.findViewById(R.id.textViewAmount);

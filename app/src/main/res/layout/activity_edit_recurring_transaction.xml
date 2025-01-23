@@ -353,6 +353,18 @@
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
 
+                <!-- added by velmuruganc -->
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/swapAccountButton"
+                    app:iiv_icon="mmx-temple"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
                 <Spinner
                     android:id="@+id/spinnerAccount"
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined"
