@@ -168,14 +168,20 @@ public class InfoService
     }
 
     public int getColorNumberFromInfoKey(int n) {
+        String[] colors = getColorArrayFromInfoKey(n);
+        if ( colors == null ) return Color.TRANSPARENT;
+        return Color.rgb(Integer.parseInt(colors[0]), Integer.parseInt(colors[1]), Integer.parseInt(colors[2]));
+    }
+
+    public String[] getColorArrayFromInfoKey(int n) {
         if ( n <= 0 ) {
-            return Color.TRANSPARENT;
+            return null;
         }
         String colorList = getInfoValue(String.format("USER_COLOR%d",n),"");
         if ( colorList.isEmpty() ) {
-            return  Color.TRANSPARENT;
+            return  null;
         }
-        String[] colors = colorList.split(",");
-        return Color.rgb(Integer.parseInt(colors[0]), Integer.parseInt(colors[1]), Integer.parseInt(colors[2]));
+        return colorList.split(",");
     }
+
 }

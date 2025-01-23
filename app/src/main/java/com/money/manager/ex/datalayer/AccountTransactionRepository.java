@@ -52,7 +52,9 @@ public class AccountTransactionRepository
                 ITransactionEntity.CATEGID,
                 ITransactionEntity.TRANSDATE,
                 ITransactionEntity.FOLLOWUPID,
-                ITransactionEntity.TOTRANSAMOUNT};
+                ITransactionEntity.TOTRANSAMOUNT,
+                ITransactionEntity.COLOR
+        };
     }
 
     public AccountTransaction load(long id) {

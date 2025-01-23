@@ -843,5 +843,6 @@
 
     <!-- Builder button -->
     <string name="CLEAR_ALL">Clear all</string>
+    <string name="empty_color_message">choose a color</string>
 
 </resources>

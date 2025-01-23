@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -74,6 +75,7 @@ import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.settings.PerDatabaseFragment;
@@ -132,6 +134,7 @@ public class EditTransactionCommonFunctions {
     public ArrayList<Attachment> mAttachments;
 
     public ArrayList<Taglink> mTaglinks;
+    public String mColor;
 
     // Controls
     public EditTransactionViewHolder viewHolder;
@@ -910,6 +913,51 @@ public class EditTransactionCommonFunctions {
                 : transactionEntity.getTransactionType();
         changeTransactionTypeTo(current);
     }
+
+    public void initColorControls() {
+        if (transactionEntity.getColor() <= 0) {
+            viewHolder.colorTextView.setHint( getContext().getString(R.string.empty_color_message));
+        } else {
+            viewHolder.colorTextView.setHint("");
+            InfoService info = new InfoService(getContext());
+            viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
+        }
+
+        this.viewHolder.colorTextView.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(R.string.empty_color_message);
+            Spanned[] colorList = new Spanned[8] ;
+            colorList[0] = Html.fromHtml("No Color", Html.FROM_HTML_MODE_LEGACY);
+            InfoService info = new InfoService(getContext());
+            for( int i = 1; i <= 7; i++ ) {
+                String[] color = info.getColorArrayFromInfoKey(i);
+                if (color == null ) {
+                    colorList[i] = Html.fromHtml(String.format("Color %d",i),Html.FROM_HTML_MODE_LEGACY);
+                } else {
+//                    colorList[i] = Html.fromHtml(String.format("<font style=\"background-color:rgb(%s,%s,%s);\">Color %d</font>", color[0],color[1],color[2],  i), Html.FROM_HTML_MODE_COMPACT);
+                    colorList[i] = Html.fromHtml(String.format("<font color=\"rgb(%s,%s,%s);\">Color %d</font>", color[0],color[1],color[2],  i), Html.FROM_HTML_MODE_LEGACY);
+                }
+            }
+            builder.setSingleChoiceItems(colorList, 0, (dialog, which) -> {
+                Timber.d("Click item %d", which);
+                if (which == 0 ) {
+                    transactionEntity.setColor((int)Constants.NOT_SET);
+                } else {
+                    transactionEntity.setColor(which);
+                }
+                    });
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+  //              Timber.d("Select item %d", which);
+                setDirty(true);
+                viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
+                dialog.dismiss();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
+    }
+
 
     /**
      * Indicate whether the Split Categories is selected/checked.

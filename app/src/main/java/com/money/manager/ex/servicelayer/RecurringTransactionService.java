@@ -480,6 +480,7 @@ public class RecurringTransactionService
                 Taglink.clearCrossReference(
                         taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
+        accountTrx.setColor(scheduledTrx.getColor());
         return  accountTrx;
     }
 

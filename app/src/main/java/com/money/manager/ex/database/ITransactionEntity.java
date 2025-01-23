@@ -43,6 +43,7 @@ public interface ITransactionEntity {
     String TRANSACTIONNUMBER = "TRANSACTIONNUMBER";
     String TRANSDATE = "TRANSDATE";
     String FOLLOWUPID = "FOLLOWUPID";
+    String COLOR = "COLOR";
 
     Long getId();
     void setId(Long value);
@@ -96,4 +97,8 @@ public interface ITransactionEntity {
 
     public void setTags(ArrayList<Taglink> tags) ;
     public ArrayList<Taglink> getTags() ;
+
+    public void setColor(int value) ;
+    public int getColor() ;
+
 }
