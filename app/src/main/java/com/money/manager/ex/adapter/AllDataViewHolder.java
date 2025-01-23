@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.adapter;
 
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,4 +36,5 @@ public class AllDataViewHolder {
     public TextView txtCategorySub;
     public TextView txtNotes;
     public TextView txtBalance;
+    public View viewColor;
 }
