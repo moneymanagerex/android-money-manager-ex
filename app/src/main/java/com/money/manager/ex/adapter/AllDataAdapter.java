@@ -82,7 +82,9 @@ public class AllDataAdapter
     public String ID, DATE, ACCOUNTID, STATUS, AMOUNT, TRANSACTIONTYPE,
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
+
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR,
+
         SPLITTED;
 
     private final LayoutInflater mInflater;
@@ -367,7 +369,9 @@ public class AllDataAdapter
         NOTES = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.Notes : QueryBillDeposits.NOTES;
         ATTACHMENTCOUNT = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.ATTACHMENTCOUNT : QueryBillDeposits.ATTACHMENTCOUNT;
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
+
         COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
+
         SPLITTED = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.SPLITTED : QueryBillDeposits.SPLITTED;
     }
 

@@ -58,7 +58,9 @@ public class QueryBillDeposits
     public static String AMOUNT = "AMOUNT";
     public static String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
     public static String TAGS = "TAGS";
+
     public static String COLOR = "COLOR";
+
     public static String SPLITTED = "SPLITTED";
 
     // get all columns
@@ -68,6 +70,9 @@ public class QueryBillDeposits
                 ACCOUNTID, ACCOUNTNAME, CURRENCYID,
                 CATEGNAME, CATEGID, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
+
+
                 TRANSACTIONNUMBER, TRANSDATE, AMOUNT, TAGS, SPLITTED, COLOR};
+
     }
 }
