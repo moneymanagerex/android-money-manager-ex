@@ -37,10 +37,6 @@ public class TaglinkRepository extends  RepositoryBase {
         return result > 0;
     }
 
-    public boolean deleteForTransaction ( Long refId ) {
-        return deleteForType(refId, Taglink.REFTYPE_TRANSACTION);
-    }
-
     public boolean deleteForType( Long refId, String reftype ) {
         if (refId == Constants.NOT_SET) return false;
         long result = delete(Taglink.REFID + "=? AND " + Taglink.REFTYPE + "=?", new String[] { Long.toString(refId), reftype });
