@@ -31,14 +31,10 @@ public class CategorySub implements Parcelable {
 
     public long categId;
     public String categName;
-    public long subCategId;
-    public String subCategName;
 
     protected CategorySub(Parcel in) {
         categId = in.readLong();
         categName = in.readString();
-        subCategId = in.readLong();
-        subCategName = in.readString();
     }
 
     public static final Creator<CategorySub> CREATOR = new Creator<CategorySub>() {
@@ -62,8 +58,5 @@ public class CategorySub implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(categId);
         parcel.writeString(categName);
-
-        parcel.writeLong(subCategId);
-        parcel.writeString(subCategName);
     }
 }

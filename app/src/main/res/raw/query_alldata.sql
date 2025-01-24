@@ -24,7 +24,7 @@ SELECT
     ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
     TX.ToTransAmount AS ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyID,
-    ( CASE ifnull( TX.CATEGID, -1 ) WHEN -1 THEN 1 ELSE 0 END ) AS SPLITTED,
+    ( CASE ifnull( splitCounter.counter, 0 ) WHEN 0 THEN 0 ELSE 1 END ) AS SPLITTED,
     TX.CATEGID AS CategID,
     ifnull( PAYEE.PayeeName, '') AS PayeeName,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
@@ -57,4 +57,9 @@ FROM CHECKINGACCOUNT_V1 TX
               ORDER BY REFID, TAGNAME)
         GROUP BY TRANSACTIONID)
     ) as TAGS on TX.TransID = TAGS.Transid
+	Left join (
+	   select TransId, count( * ) as counter
+	   from splittransactions_v1
+	   group by TransId
+	) as splitCounter on splitCounter.Transid = TX.TransID
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
