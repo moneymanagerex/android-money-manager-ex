@@ -1030,10 +1030,14 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case RequestCodes.CATEGORY:
-                this.transactionEntity.setCategoryId(data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
-                categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                // refresh UI category
-                displayCategoryName();
+                long selectId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                if ( selectId != -1) {
+                    // data is selected
+                    this.transactionEntity.setCategoryId(selectId);
+                    categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                    // refresh UI category
+                    displayCategoryName();
+                }
                 break;
 
             case RequestCodes.SPLIT_TX:

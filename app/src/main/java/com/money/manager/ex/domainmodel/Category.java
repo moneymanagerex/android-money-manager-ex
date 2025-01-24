@@ -73,6 +73,16 @@ public class Category
     public String getBasename() { return getString(BASENAME);}
 
     public void setBasename(String value) { setString(BASENAME, value);}
+
+    public boolean getActive() {
+        if (getLong(ACTIVE) == null ) return false;
+        return (getLong(ACTIVE) != 0);
+    }
+
+    public void setActive(boolean value) {
+        setLong(ACTIVE, (value ? 1L : 0L));
+    }
+
 }
 
 

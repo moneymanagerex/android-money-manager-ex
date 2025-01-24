@@ -117,6 +117,7 @@ public class NestedCategoryEntity
         category.setName(getCategoryName());
         category.setParentId(getParentId());
         category.setBasename(getBasename());
+        category.setActive(getActive() != NOT_ACTIVE);
         return category;
     }
 
