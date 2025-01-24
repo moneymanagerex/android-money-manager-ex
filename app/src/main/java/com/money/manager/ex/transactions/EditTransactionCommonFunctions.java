@@ -86,6 +86,7 @@ import com.money.manager.ex.settings.PerDatabaseFragment;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.TransactionColorUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite3.BriteDatabase;
 
@@ -918,59 +919,14 @@ public class EditTransactionCommonFunctions {
         changeTransactionTypeTo(current);
     }
 
-    private AlertDialog mDialog;
-    private void setMDialog(AlertDialog a) {
-        this.mDialog = a;
-    }
-    private AlertDialog getMDialog() {
-        return mDialog;
-    };
-
     public void initColorControls() {
-        if (transactionEntity.getColor() <= 0) {
-            viewHolder.colorTextView.setHint( getContext().getString(R.string.empty_color_message));
-        } else {
-            viewHolder.colorTextView.setHint("");
-            InfoService info = new InfoService(getContext());
-            viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
-        }
-
-        this.viewHolder.colorTextView.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle(R.string.empty_color_message);
-            LinearLayout mainLayout       = new LinearLayout(getContext());
-            mainLayout.setOrientation(LinearLayout.VERTICAL);
-            InfoService info = new InfoService(getContext());
-            for( int i = 0; i<= 7; i++ ) {
-                LinearLayout layout       = new LinearLayout(getContext());
-                layout.setOrientation(LinearLayout.HORIZONTAL);
-                layout.setGravity(Gravity.CENTER);
-                Button rb = new Button(getContext());
-                rb.setGravity(Gravity.CENTER);
-                if (i == 0 ) {
-                    rb.setTag(-1);
-                    rb.setText("No Color");
-                } else {
-                    rb.setTag(i);
-                    rb.setText(String.format("Color %d", i));
-                    layout.setBackgroundColor(info.getColorNumberFromInfoKey(i));
-                }
-                rb.setOnClickListener(v1 -> {
-                    transactionEntity.setColor((int)v1.getTag());
+        TransactionColorUtils tsc = new TransactionColorUtils( getContext() );
+        tsc.initColorControls( viewHolder.colorTextView,
+                transactionEntity.getColor(),
+                color -> {
+                    transactionEntity.setColor(color);
                     setDirty(true);
-                    viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
-                    if (getMDialog() != null ) getMDialog().dismiss();
-                } );
-                layout.addView(rb);
-                layout.setMinimumHeight(50);
-                mainLayout.addView(layout);
-            }
-            builder.setView(mainLayout);
-            AlertDialog dialog = builder.create();
-            setMDialog(dialog);
-            dialog.show();
-        });
-
+                });
     }
 
 
