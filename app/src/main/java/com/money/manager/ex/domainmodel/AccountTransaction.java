@@ -239,7 +239,7 @@ public class AccountTransaction
 
     @Override
     public String getTransactionModel() {
-        return "Transaction";
+        return Taglink.REFTYPE_TRANSACTION;
     }
 
     @Override
