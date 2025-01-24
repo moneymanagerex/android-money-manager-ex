@@ -16,6 +16,10 @@ public class Taglink extends EntityBase  {
         )
      */
     public static final String REFTYPE_TRANSACTION = "Transaction";
+    public static final String REFTYPE_RECURRING_TRANSACTION = "RecurringTransaction";
+    public static final String REFTYPE_TRANSACTION_SPLIT = "TransactionSplit";
+    public static final String REFTYPE_RECURRING_TRANSACTION_SPLIT = "RecurringTransactionSplit";
+
     public static final String TAGLINKID = "TAGLINKID";
     public static final String REFTYPE = "REFTYPE";
     public static final String REFID = "REFID";
