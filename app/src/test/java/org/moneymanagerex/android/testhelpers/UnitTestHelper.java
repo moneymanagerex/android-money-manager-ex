@@ -75,7 +75,6 @@ public class UnitTestHelper {
         Intent result = new Intent();
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categoryId);
         result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME, categoryName);
-
         return result;
     }
 

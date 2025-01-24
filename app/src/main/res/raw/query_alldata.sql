@@ -6,7 +6,7 @@ WITH RECURSIVE categories(categid, categname, parentid) AS
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
-SELECT 
+SELECT
     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
@@ -33,7 +33,8 @@ SELECT
     round( strftime( '%d', TX.transdate ) ) AS day,
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year,
-	Tags.Tags as TAGS
+	Tags.Tags as TAGS,
+	TX.Color AS COLOR
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
