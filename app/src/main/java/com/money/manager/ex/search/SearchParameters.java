@@ -73,4 +73,6 @@ public class SearchParameters {
 
     public Long tagId;
     public String tagName;
+
+    public int color; // can be -1, [1-7]
 }
