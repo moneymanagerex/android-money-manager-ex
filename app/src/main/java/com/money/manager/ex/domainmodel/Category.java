@@ -75,7 +75,7 @@ public class Category
     public void setBasename(String value) { setString(BASENAME, value);}
 
     public boolean getActive() {
-        if (getLong(ACTIVE) == null ) return true;
+        if (getLong(ACTIVE) == null ) return false;
         return (getLong(ACTIVE) != 0);
     }
 
