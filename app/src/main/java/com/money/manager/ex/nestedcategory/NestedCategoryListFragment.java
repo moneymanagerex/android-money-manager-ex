@@ -161,6 +161,12 @@ public class NestedCategoryListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // we wont to invalidate cursor, so if back is pressed no item is select
+            Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+            cursor.moveToPosition(-1);
+            // and continue with super
+        }
         if (item.getItemId() == R.id.menu_sort_name ||
             item.getItemId() == R.id.menu_sort_usage) {
             if (item.getItemId() == R.id.menu_sort_name )  {
@@ -268,9 +274,11 @@ public class NestedCategoryListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_NESTEDCATEGORY) {// update id selected
             // load data
-//            String whereClause = "ACTIVE <> 0";
             String whereClause = "";
             String[] selectionArgs = null;
+            if (mAction == Intent.ACTION_PICK) {
+                whereClause = "ACTIVE <> 0";
+            }
             if (!TextUtils.isEmpty(mCurFilter)) {
                 if (!TextUtils.isEmpty(whereClause)) {
                     whereClause += " AND ";
@@ -333,10 +341,14 @@ public class NestedCategoryListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
-            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
-
-            sendResultToActivity(id, name);
+            if (cursor.getCount() ==0 || cursor.getPosition() == -1) {
+                // no record or no record selected
+                sendResultToActivity(-1,null);
+            } else {
+                @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
+                sendResultToActivity(id, name);
+            }
 
             return;
         }
