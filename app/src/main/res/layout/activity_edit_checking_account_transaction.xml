@@ -221,7 +221,6 @@
 
                 <!-- added by velmuruganc -->
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:id="@+id/swapAccountButton"
                     app:iiv_icon="mmx-temple"
                     app:iiv_color="?android:textColorSecondary"
                     app:iiv_size="@dimen/mmx_icon_size"
@@ -313,7 +312,8 @@
                     android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        app:iiv_icon="mmx-temple"
+                        android:id="@+id/swapAccountButton"
+                        app:iiv_icon="gmd-swap_vert"
                         app:iiv_color="?android:textColorSecondary"
                         app:iiv_size="@dimen/mmx_icon_size"
                         android:layout_width="@dimen/mmx_side_icon_size"
