@@ -267,8 +267,6 @@ public class SearchParametersFragment
                 CategorySub categorySub = new CategorySub();
                 categorySub.categId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                categorySub.subCategId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 //update into button
                 displayCategory(categorySub);
                 break;
@@ -489,16 +487,8 @@ public class SearchParametersFragment
         // category
 
         if (searchParameters.category != null) {
-            // Issue 1532 need to check subcategory first
-            long categId;
-            if  ( searchParameters.category.subCategId > 0 ) {
-                categId = searchParameters.category.subCategId;
-            } else {
-                categId = searchParameters.category.categId;
-            }
+            long categId = searchParameters.category.categId;
             // Category. Also check the splits.
-
-            // todo add search in sub category if flag is on
             if (searchParameters.searchSubCategory) {
                 // build where also for sub category
                 String whereSubCategory = null;
@@ -686,8 +676,7 @@ public class SearchParametersFragment
             txtSelectCategory.setText("");
             txtSelectCategory.setTag(null);
         } else {
-            txtSelectCategory.setText(categorySub.categName +
-                    (!TextUtils.isEmpty(categorySub.subCategName) ? " : " + categorySub.subCategName : ""));
+            txtSelectCategory.setText(categorySub.categName);
             txtSelectCategory.setTag(categorySub);
         }
     }

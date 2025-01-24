@@ -37,8 +37,6 @@ public class CategoryListActivity
     public static final String KEY_REQUEST_ID = "CategorySubCategory:RequestId";
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
     public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
-    public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
-    public static final String INTENT_RESULT_SUBCATEGNAME = "CategorySubCategory:SubCategName";
 
     public static final String FRAGMENTTAG = CategoryListActivity.class.getSimpleName() + "_Fragment";
 
