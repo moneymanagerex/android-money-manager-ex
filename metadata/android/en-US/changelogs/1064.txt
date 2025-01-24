@@ -1,0 +1,3 @@
+Fix category active = null
+Add category filter active in selection from transaction
+Fix back pressed with no category selected and leave transaction category untouch
