@@ -1,0 +1,3 @@
+* Fix some ANR
+* Show both ACTIVE and INACTIVE categories and relative menu item
+* Restore category search with bold
