@@ -42,8 +42,8 @@ public class QueryBillDeposits
     public static String ACCOUNTID = "ACCOUNTID";
     public static String ACCOUNTNAME = "ACCOUNTNAME";
     public static String CURRENCYID = "CURRENCYID";
-    public static String CATEGNAME = "CATEGNAME";
     public static String CATEGID = "CATEGID";
+    public static String CATEGNAME = "CATEGNAME";
     public static String TRANSCODE = "TRANSCODE";
     public static String TRANSAMOUNT = "TRANSAMOUNT";
     public static String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
@@ -66,7 +66,7 @@ public class QueryBillDeposits
     public String[] getAllColumns() {
         return new String[]{BDID + " AS _id", BDID, PAYEEID, PAYEENAME, TOACCOUNTID, TOACCOUNTNAME, ATTACHMENTCOUNT,
                 ACCOUNTID, ACCOUNTNAME, CURRENCYID,
-                CATEGNAME, CATEGID, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
+                CATEGID, CATEGNAME, TRANSCODE, TRANSAMOUNT, NEXTOCCURRENCEDATE, REPEATS,
                 DAYSLEFT, NOTES, STATUS, NUMOCCURRENCES, TOTRANSAMOUNT,
                 TRANSACTIONNUMBER, TRANSDATE, AMOUNT, TAGS, SPLITTED, COLOR};
 
