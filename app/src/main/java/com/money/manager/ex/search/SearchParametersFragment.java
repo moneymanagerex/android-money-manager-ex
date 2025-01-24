@@ -57,13 +57,14 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.tag.TagActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.TransactionColorUtils;
 
 import org.parceler.Parcels;
 
@@ -200,7 +201,7 @@ public class SearchParametersFragment
             }
         });
 
-        //Payee
+        //tag
         viewHolder.txtSelectTag.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -536,6 +537,11 @@ public class SearchParametersFragment
             where.addStatement(QueryAllData.TAGS + " LIKE '%" + searchParameters.tagName +"%'");
         }
 
+        // color
+        if (searchParameters.color != -1) {
+            where.addStatement(QueryAllData.COLOR, "=", searchParameters.color);
+        }
+
         return where.getWhere();
     }
 
@@ -746,6 +752,15 @@ public class SearchParametersFragment
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);
         // Notes
         txtNotes.setText(searchParameters.notes);
+
+        // color
+        TransactionColorUtils tsc = new TransactionColorUtils(getContext());
+        tsc.initColorControls(viewHolder.viewTextColor,
+                searchParameters.color,
+                color -> {
+                    searchParameters.color = color;
+                });
+
     }
 
     private void initializeUiControlVariables(View view) {
