@@ -31,9 +31,11 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -916,6 +918,14 @@ public class EditTransactionCommonFunctions {
         changeTransactionTypeTo(current);
     }
 
+    private AlertDialog mDialog;
+    private void setMDialog(AlertDialog a) {
+        this.mDialog = a;
+    }
+    private AlertDialog getMDialog() {
+        return mDialog;
+    };
+
     public void initColorControls() {
         if (transactionEntity.getColor() <= 0) {
             viewHolder.colorTextView.setHint( getContext().getString(R.string.empty_color_message));
@@ -934,29 +944,30 @@ public class EditTransactionCommonFunctions {
             for( int i = 0; i<= 7; i++ ) {
                 LinearLayout layout       = new LinearLayout(getContext());
                 layout.setOrientation(LinearLayout.HORIZONTAL);
-                RadioButton rb = new RadioButton(getContext());
-                rb.setTag(i);
+                layout.setGravity(Gravity.CENTER);
+                Button rb = new Button(getContext());
+                rb.setGravity(Gravity.CENTER);
                 if (i == 0 ) {
+                    rb.setTag(-1);
                     rb.setText("No Color");
                 } else {
+                    rb.setTag(i);
                     rb.setText(String.format("Color %d", i));
                     layout.setBackgroundColor(info.getColorNumberFromInfoKey(i));
                 }
                 rb.setOnClickListener(v1 -> {
                     transactionEntity.setColor((int)v1.getTag());
+                    setDirty(true);
+                    viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
+                    if (getMDialog() != null ) getMDialog().dismiss();
                 } );
                 layout.addView(rb);
                 layout.setMinimumHeight(50);
                 mainLayout.addView(layout);
             }
             builder.setView(mainLayout);
-            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-  //              Timber.d("Select item %d", which);
-                setDirty(true);
-                viewHolder.colorTextView.setBackgroundColor(info.getColorNumberFromInfoKey(transactionEntity.getColor()));
-                dialog.dismiss();
-            });
             AlertDialog dialog = builder.create();
+            setMDialog(dialog);
             dialog.show();
         });
 
