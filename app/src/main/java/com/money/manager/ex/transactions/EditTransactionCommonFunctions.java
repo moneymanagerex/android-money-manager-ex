@@ -115,16 +115,6 @@ public class EditTransactionCommonFunctions {
     // to get database uri
     @Inject
     Lazy<RecentDatabasesProvider> mDatabases;
-    public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
-                                          ITransactionEntity transactionEntity, BriteDatabase database) {
-        super();
-
-        activity = parentActivity;
-        this.transactionEntity = transactionEntity;
-        this.mDatabase = database;
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
@@ -139,7 +129,6 @@ public class EditTransactionCommonFunctions {
     public ArrayList<Attachment> mAttachments;
 
     public ArrayList<Taglink> mTaglinks;
-    public String mColor;
 
     // Controls
     public EditTransactionViewHolder viewHolder;
@@ -156,6 +145,18 @@ public class EditTransactionCommonFunctions {
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
+
+
+    public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
+                                          ITransactionEntity transactionEntity, BriteDatabase database) {
+        super();
+
+        activity = parentActivity;
+        this.transactionEntity = transactionEntity;
+        this.mDatabase = database;
+
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
 
     public boolean deleteMarkedSplits(IRepository repository) {
         for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {

@@ -32,11 +32,6 @@ public class SearchParameters {
 
     public static final String STRING_NULL_VALUE = "null";
 
-    public SearchParameters() {
-        // explicitly set the null value
-        this.status = STRING_NULL_VALUE;
-    }
-
     // Account
     public Long accountId;
 
@@ -62,9 +57,6 @@ public class SearchParameters {
     public Long payeeId = null;
     public String payeeName;
 
-    // TODO Remove CategorySub and replace with Category
-    //  and with a flag for search in subcategory.
-    //  flag must be driven also by the UI
     public CategorySub category;
     public boolean searchSubCategory = false;
 
@@ -75,4 +67,11 @@ public class SearchParameters {
     public String tagName;
 
     public int color; // can be -1, [1-7]
+
+    public SearchParameters() {
+        // explicitly set the null value
+        this.status = STRING_NULL_VALUE;
+    }
+
+
 }
