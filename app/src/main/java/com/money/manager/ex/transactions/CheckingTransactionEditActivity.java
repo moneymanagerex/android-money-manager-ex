@@ -127,7 +127,7 @@ public class CheckingTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
-        mCommon.displayTags();
+//        mCommon.displayTags();  already in init
         mCommon.setDirty(false);
     }
 
@@ -416,9 +416,9 @@ public class CheckingTransactionEditActivity
         }
 
         // load Tags
-        if (mCommon.mTaglinks == null ) {
+        if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel());
+            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel()));
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -473,7 +473,7 @@ public class CheckingTransactionEditActivity
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-        mCommon.mTaglinks = Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel()));
+        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel())));
 
         return true;
     }

@@ -19,6 +19,9 @@ package com.money.manager.ex.database;
 
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.IEntity;
+import com.money.manager.ex.domainmodel.Taglink;
+
+import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
 
@@ -46,4 +49,9 @@ public interface ISplitTransaction
 
     TransactionTypes getTransactionType(TransactionTypes parentTransactionType);
     void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType);
+
+    void setTags(ArrayList<Taglink> tags);
+    ArrayList<Taglink> getTags();
+
+    String getTransactionModel();
 }

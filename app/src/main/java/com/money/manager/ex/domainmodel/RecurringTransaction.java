@@ -330,7 +330,7 @@ public class RecurringTransaction
 
     @Override
     public String getTransactionModel() {
-        return "RecurringTransaction";
+        return Taglink.REFTYPE_RECURRING_TRANSACTION;
     }
 
     @Override
