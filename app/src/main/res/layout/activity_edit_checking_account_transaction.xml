@@ -219,6 +219,7 @@
                 android:layout_height="@dimen/mmx_avatar_item_height"
                 android:orientation="horizontal">
 
+                <!-- added by velmuruganc -->
                 <com.mikepenz.iconics.view.IconicsImageView
                     app:iiv_icon="mmx-temple"
                     app:iiv_color="?android:textColorSecondary"
@@ -311,7 +312,8 @@
                     android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        app:iiv_icon="mmx-temple"
+                        android:id="@+id/swapAccountButton"
+                        app:iiv_icon="gmd-swap_vert"
                         app:iiv_color="?android:textColorSecondary"
                         app:iiv_size="@dimen/mmx_icon_size"
                         android:layout_width="@dimen/mmx_side_icon_size"
@@ -430,7 +432,7 @@
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewCategory"
                     style="@style/Money.TextView.Widget.EditText"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:hint="@string/category" />

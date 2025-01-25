@@ -395,6 +395,38 @@ public class EditTransactionCommonFunctions {
             }
         };
 
+        //added by velmuruganc
+        viewHolder.swapAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //enable swap only if it is type of transfer
+                if(transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
+                    //get the account id
+                    long fromAccountId = transactionEntity.getAccountId();
+                    long toAccountId = transactionEntity.getAccountToId();
+
+                    //get the account index
+                    int fromAccountIndex = mAccountIdList.indexOf(fromAccountId);
+                    int toAccountIndex = mAccountIdList.indexOf(toAccountId);
+
+                    //Swap From Account to To Account
+                    if (fromAccountIndex >= 0) {
+                        viewHolder.spinAccountTo.setSelection(fromAccountIndex, true);
+                    }
+                    viewHolder.spinAccountTo.setOnItemSelectedListener(listener);
+
+                    //Swap To Account to From Account
+                    if (toAccountIndex >= 0) {
+                        viewHolder.spinAccount.setSelection(toAccountIndex, true);
+                    }
+                    viewHolder.spinAccount.setOnItemSelectedListener(listener);
+
+                    setDirty(true);
+                }
+            }
+        });
+
         // Account
 
         int accountIndex = mAccountIdList.indexOf(accountId);
