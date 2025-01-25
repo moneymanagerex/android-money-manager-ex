@@ -138,7 +138,7 @@ public class ScheduledTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
-        mCommon.displayTags();
+//        mCommon.displayTags(); allready in init
 
         showPaymentsLeft();
 
@@ -492,9 +492,9 @@ public class ScheduledTransactionEditActivity
         mCommon.loadCategoryName();
 
         // load Tags
-        if (mCommon.mTaglinks == null ) {
+        if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel());
+            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
         }
 
 

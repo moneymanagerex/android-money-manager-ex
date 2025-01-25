@@ -80,6 +80,7 @@ import com.money.manager.ex.settings.PerDatabaseFragment;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.TagLinkUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite3.BriteDatabase;
 
@@ -131,8 +132,6 @@ public class EditTransactionCommonFunctions {
 
     public ArrayList<Attachment> mAttachments;
 
-    public ArrayList<Taglink> mTaglinks;
-
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -170,12 +169,6 @@ public class EditTransactionCommonFunctions {
     public void displayNotes() {
         if( this.viewHolder.edtNotes == null ) return;
         this.viewHolder.edtNotes.setText(transactionEntity.getNotes());
-    }
-
-    public void displayTags() {
-        if( this.viewHolder.tagsListTextView == null ) return;
-        TaglinkRepository repo = new TaglinkRepository(getContext());
-        this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
     }
 
     public void displayCategoryName() {
@@ -573,96 +566,13 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initTagsControls() {
-        if( this.viewHolder.tagsListTextView == null ) return;
-
-        if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
-
-        this.viewHolder.tagsListTextView.setOnClickListener(v -> {
-            // inizialize display
-            TaglinkRepository repo = new TaglinkRepository(getContext());
-            this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
-
-            TagRepository tagRepository = new TagRepository(getContext());
-            ArrayList<Tag> tagsList = tagRepository.getAllActiveTag();
-            boolean[] tagsFlag = new boolean[tagsList.size()];
-            String[] tagsListString = new String[tagsList.size()];
-            for (int i = 0; i < tagsList.size(); i++) {
-                tagsListString[i] = tagsList.get(i).getName();
-                // set default from mTagLink
-                long tagId = tagsList.get(i).getId().intValue();
-                if ( mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
-                    tagsFlag[i] = true;
-                };
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            // set title
-            builder.setTitle(R.string.tagsList_transactions);
-            builder.setCancelable(false);
-            builder.setMultiChoiceItems(tagsListString, tagsFlag,  new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                    tagsFlag[i] = b;
-                }
-            });
-
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // Initialize string builder
-                    // Save also taglink, loop at mtaglink to check actual record
-                    for (int j = 0; j < tagsList.size(); j++) {
-                        long tagId = tagsList.get(j).getId().intValue();
-                        Taglink taglink ;
-                        try {
-                            taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
-                        } catch ( Exception e) {
-                            taglink = null;
-                        }
-                        if (taglink == null ) {
-                            if ( ! tagsFlag[j] ) {
-                                // flag off and mlink not present, nothing to do
-                            } else {
-                                // flag on and mlink not present, create
-                                taglink = new Taglink();
-                                taglink.setRefType(transactionEntity.getTransactionModel());
-                                taglink.setRefId(transactionEntity.getId());
-                                taglink.setTagId(tagId);
-                                mTaglinks.add(taglink);
-                            }
-                        } else {
-                            if ( ! tagsFlag[j] ) {
-                                // flag off and mlink is present, delete
-                                mTaglinks.remove(taglink);
-                            } else {
-                                // flag on and mlink present  nothing
-                            }
-                        }
-                    }
-                    // update UI field
-                    displayTags();
-                }
-            });
-
-            builder.setNegativeButton(android.R.string.cancel,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // dismiss dialog
-                    dialogInterface.dismiss();
-                }
-            });
-
-            builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    mTaglinks.clear();
-                    displayTags();
-                }
-            });
-
-            // show dialog
-            builder.show();
-    });
+        (new TagLinkUtils(getContext())).initTagControls(viewHolder.tagsListTextView,
+                transactionEntity.getTags(),
+                transactionEntity.getId(),
+                transactionEntity.getTransactionModel(),
+                tagLinks -> {
+                    transactionEntity.setTags(tagLinks);
+                } );
 
     }
 
@@ -1526,13 +1436,6 @@ public class EditTransactionCommonFunctions {
         return mAttachments;
     }
 
-    private ArrayList<Taglink> getTaglinks() {
-        if (mTaglinks == null) {
-            mTaglinks = new ArrayList<>();
-        }
-        return mTaglinks;
-    }
-
     private String getUserDateFormat() {
         if (TextUtils.isEmpty(mUserDateFormat)) {
             mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern(getContext());
@@ -1701,8 +1604,8 @@ public class EditTransactionCommonFunctions {
     public void saveTags() {
         // save TagLinks
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
-        if (mTaglinks != null) {
-            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), mTaglinks);
+        if (transactionEntity.getTags() != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTags());
         } else {
             taglinkRepository.deleteForType(transactionEntity.getId(), transactionEntity.getTransactionModel() );
         }
