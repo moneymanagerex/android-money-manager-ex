@@ -94,6 +94,10 @@ public class BehaviourSettings
         return get(R.string.pref_auto_transaction_number, false);
     }
 
+    public boolean getTimeStampTransactionNumber() {
+        return get(R.string.pref_timestamp_as_transaction_number, false);
+    }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }
