@@ -23,6 +23,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
@@ -252,7 +253,22 @@ public class AccountTransaction
         return taglinks;
     }
 
+    @Override
+    public void setColor(int value) {
+        setInt(ITransactionEntity.COLOR, value);
+    }
+
+    @Override
+    public int getColor() {
+        if (getInt(ITransactionEntity.COLOR) == null) {
+            return (int)Constants.NOT_SET;
+        }
+        return getInt(ITransactionEntity.COLOR);
+    }
+
     public void setLastUpdatedTime(String value) {
         setString(LASTUPDATEDTIME, value);
     }
+
+
 }

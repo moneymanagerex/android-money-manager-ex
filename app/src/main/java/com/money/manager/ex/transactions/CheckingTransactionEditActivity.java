@@ -391,6 +391,10 @@ public class CheckingTransactionEditActivity
 
         // Tag
         mCommon.initTagsControls();
+
+        // color
+        mCommon.initColorControls();
+
     }
 
     private boolean loadTransaction(long transId) {

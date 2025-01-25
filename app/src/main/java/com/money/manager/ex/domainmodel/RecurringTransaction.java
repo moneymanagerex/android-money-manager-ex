@@ -357,4 +357,14 @@ public class RecurringTransaction
         return (this.getRecurrenceInt() >= 200 );
     }
 
+    @Override
+    public void setColor(int value) {
+        setInt(ITransactionEntity.COLOR, value);
+    }
+
+    @Override
+    public int getColor() {
+        return getInt(ITransactionEntity.COLOR);
+    }
+
 }

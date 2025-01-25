@@ -348,17 +348,28 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mmx_avatar_item_height"
                 android:orientation="horizontal">
+
+                <!-- added by velmuruganc -->
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="mmx-temple"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
 
                 <Spinner
                     android:id="@+id/spinnerAccount"
                     style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:focusable="true"
                     android:focusableInTouchMode="true" />
             </LinearLayout>
@@ -404,21 +415,43 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
+                    <!-- Account To header -->
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewToAccount"
                         style="@style/Money.TextView.Header.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
+                        android:layout_marginStart="@dimen/mmx_avatar_left_margin_56"
+                        android:layout_marginLeft="@dimen/mmx_avatar_left_margin_56"
+                        android:maxLines="1"
                         android:text="@string/to_account" />
 
-                    <Spinner
-                        android:id="@+id/spinnerToAccount"
-                        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    <!-- Account To -->
+                    <LinearLayout
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true" />
+                        android:layout_height="@dimen/mmx_avatar_item_height"
+                        android:orientation="horizontal">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:id="@+id/swapAccountButton"
+                            app:iiv_icon="gmd-swap_vert"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_size="@dimen/mmx_icon_size"
+                            android:layout_width="@dimen/mmx_side_icon_size"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                            android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                            android:layout_gravity="center_vertical"/>
+
+                        <Spinner
+                            android:id="@+id/spinnerToAccount"
+                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- Amount To -->
@@ -602,6 +635,42 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout >
             </LinearLayout>
+
+            <!-- Add a section for Color -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/mmx_avatar_item_height"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-format_color_fill"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" >
+                    <com.money.manager.ex.view.RobotoEditText
+                        android:id="@+id/colorView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        />
+                </com.google.android.material.textfield.TextInputLayout >
+            </LinearLayout>
+
 
             <!-- Add a section for attachments -->
             <TextView

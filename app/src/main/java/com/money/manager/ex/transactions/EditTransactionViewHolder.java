@@ -54,6 +54,7 @@ public class EditTransactionViewHolder {
     public ViewGroup tableRowAmountTo;
     public ViewGroup tableRowAccountTo;
     public TextView accountFromLabel;
+    public IconicsImageView swapAccountButton; //added by velmuruganc
     public TextView txtToAccount;
     public TextView amountHeaderTextView;
     public TextView amountToHeaderTextView;
@@ -68,6 +69,7 @@ public class EditTransactionViewHolder {
     public TextView textViewAttachments;
     public RecyclerView recyclerAttachments;
     public TextView tagsListTextView;
+    public TextView colorTextView;
 
     public EditTransactionViewHolder(AppCompatActivity activity) {
         // Initialize views using findViewById
@@ -79,6 +81,7 @@ public class EditTransactionViewHolder {
         txtSelectPayee = activity.findViewById(R.id.textViewPayee);
         spinStatus = activity.findViewById(R.id.spinnerStatus);
         spinAccount = activity.findViewById(R.id.spinnerAccount);
+        swapAccountButton = activity.findViewById(R.id.swapAccountButton); //added by velmuruganc
         spinAccountTo = activity.findViewById(R.id.spinnerToAccount);
         txtAmountTo = activity.findViewById(R.id.textViewToAmount);
         txtAmount = activity.findViewById(R.id.textViewAmount);
@@ -103,6 +106,8 @@ public class EditTransactionViewHolder {
         recyclerAttachments = activity.findViewById(R.id.recyclerViewAttachments);
 
         tagsListTextView = activity.findViewById(R.id.tagsList);
+
+        colorTextView = activity.findViewById(R.id.colorView);
 
         // Add custom icons
         UIHelper uiHelper = new UIHelper(activity);
