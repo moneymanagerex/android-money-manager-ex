@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.core;
 
+import java.util.ArrayList;
+
 /**
  *
  */

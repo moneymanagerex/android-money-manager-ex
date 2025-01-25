@@ -112,6 +112,17 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
+                <View
+                    android:id="@+id/viewColor"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/black"
+                    android:gravity="center"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:visibility="visible" />
+
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewAttachment"
                     android:text="📎"
@@ -124,7 +135,6 @@
                     android:textSize="@dimen/mmx_text_view_size_micro"
                     app:typeface="roboto_light"
                     android:visibility="visible" /> <!-- Hidden by default -->
-
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewTags"
