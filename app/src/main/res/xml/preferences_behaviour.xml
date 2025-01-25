@@ -83,13 +83,6 @@
 
     <SwitchPreference
         android:icon="@null"
-        android:defaultValue="false"
-        android:key="@string/pref_timestamp_as_transaction_number"
-        android:summary="@string/summary_timestamp_as_transaction_number"
-        android:title="@string/title_timestamp_as_transaction_number" />
-
-    <SwitchPreference
-        android:icon="@null"
         android:defaultValue="true"
         android:key="@string/pref_show_tutorial"
         android:title="@string/title_show_tutorial"

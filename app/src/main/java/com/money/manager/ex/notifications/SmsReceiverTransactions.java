@@ -23,7 +23,6 @@
 
 package com.money.manager.ex.notifications;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.*;
 
@@ -66,7 +65,6 @@ import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
 
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -774,12 +772,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
-
         String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\sno(:)?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)"};
-
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 4,
@@ -787,10 +783,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         try
         {
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
-            // Use Money type to support very large numbers.
-            reqMatch = MoneyFactory.fromString(timeStamp).toString();
-
             for(int i=0; i<=searchFor.length-1; i++)
             {
                 Pattern p = Pattern.compile(searchFor[i]);
@@ -1121,5 +1113,4 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 Timber.e(e, "showing notification for sms transaction");
             }
     }
-
 }

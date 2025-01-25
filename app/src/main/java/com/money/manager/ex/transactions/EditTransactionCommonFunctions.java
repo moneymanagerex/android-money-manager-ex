@@ -85,7 +85,6 @@ import com.squareup.sqlbrite3.BriteDatabase;
 
 import org.parceler.Parcels;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -812,44 +811,33 @@ public class EditTransactionCommonFunctions {
         });
 
         viewHolder.btnTransNumber.setOnClickListener(v -> {
-            //added by velmuruganc
-            if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getTimeStampTransactionNumber())) {
-                try {
-                    String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
-                    // Use Money type to support very large numbers.
-                    viewHolder.edtTransNumber.setText(MoneyFactory.fromString(timeStamp).toString());
-                } catch (Exception e) {
-                    Timber.e(e, " getting transaction number from current time stamp");
+            AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
+
+            String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                repo.getSource() + " WHERE " +
+                ITransactionEntity.ACCOUNTID + "=?";
+
+            String accountId = transactionEntity.getAccountId().toString();
+            Cursor cursor = mDatabase.query(sql, accountId);
+            if (cursor == null) return;
+
+            if (cursor.moveToFirst()) {
+                String transNumber = cursor.getString(0);
+                if (TextUtils.isEmpty(transNumber)) {
+                    transNumber = "0";
                 }
-            } else { // increase txn number by 1 from last txn number
-                AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-
-                String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                        repo.getSource() + " WHERE " +
-                        ITransactionEntity.ACCOUNTID + "=?";
-
-                String accountId = transactionEntity.getAccountId().toString();
-                Cursor cursor = mDatabase.query(sql, accountId);
-                if (cursor == null) return;
-
-                if (cursor.moveToFirst()) {
-                    String transNumber = cursor.getString(0);
-                    if (TextUtils.isEmpty(transNumber)) {
-                        transNumber = "0";
-                    }
-                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                        try {
-                            // Use Money type to support very large numbers.
-                            Money transactionNumber = MoneyFactory.fromString(transNumber);
-                            viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
-                                    .toString());
-                        } catch (Exception e) {
-                            Timber.e(e, "increasing transaction number");
-                        }
+                if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+                    try {
+                        // Use Money type to support very large numbers.
+                        Money transactionNumber = MoneyFactory.fromString(transNumber);
+                        viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                            .toString());
+                    } catch (Exception e) {
+                        Timber.e(e, "increasing transaction number");
                     }
                 }
-                cursor.close();
             }
+            cursor.close();
         });
 
         if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
