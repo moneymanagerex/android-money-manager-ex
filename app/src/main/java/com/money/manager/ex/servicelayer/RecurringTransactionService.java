@@ -473,6 +473,7 @@ public class RecurringTransactionService
         accountTrx.setCategoryId(scheduledTrx.getCategoryId());
         accountTrx.setTransactionNumber(scheduledTrx.getTransactionNumber());
         accountTrx.setNotes(scheduledTrx.getNotes());
+        accountTrx.setColor(scheduledTrx.getColor());
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
