@@ -49,7 +49,7 @@ public class QifHeader {
         separator = System.lineSeparator();
 
         Account account = loadAccount(cursor);
-
+        if (account == null) return "";
         /* header from mmex desktop:
 !Account
 NCash (EUR)
@@ -138,8 +138,13 @@ L5,000.00
     }
 
     private Account loadAccount(Cursor cursor) {
-//        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
         long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+        if (accountId == -1) {
+            accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+        }
+        if (accountId == -1) {
+            return null;
+        }
         AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.load(accountId);
         return account;
