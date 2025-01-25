@@ -66,9 +66,10 @@ public class TagLinkUtils {
             mTaglinks = tagLink;
         }
 
+        // inizialize display
+        displayTags(tagTextView);
+
         tagTextView.setOnClickListener(v -> {
-            // inizialize display
-            displayTags(tagTextView);
 
             boolean[] tagsFlag = new boolean[mTagsList.size()];
             String[] tagsListString = new String[mTagsList.size()];
