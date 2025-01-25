@@ -200,7 +200,8 @@ public class ScheduledTransactionEditActivity
 
     @Override
     public void onBackPressed() {
-        onActionCancelClick();
+        if (!onActionCancelClick())
+            super.onBackPressed();
     }
 
     @Override
@@ -370,6 +371,10 @@ public class ScheduledTransactionEditActivity
 
         // Tag
         mCommon.initTagsControls();
+
+        // color
+        mCommon.initColorControls();
+
     }
 
     private void initializePaymentDateSelector() {
