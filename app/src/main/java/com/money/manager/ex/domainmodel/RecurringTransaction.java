@@ -364,6 +364,9 @@ public class RecurringTransaction
 
     @Override
     public int getColor() {
+        if (getInt(ITransactionEntity.COLOR) == null) {
+            return (int)Constants.NOT_SET;
+        }
         return getInt(ITransactionEntity.COLOR);
     }
 

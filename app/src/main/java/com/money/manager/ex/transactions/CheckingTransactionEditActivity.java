@@ -461,6 +461,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setCategoryId(recurringTx.getCategoryId());
         mCommon.transactionEntity.setTransactionNumber(recurringTx.getTransactionNumber());
         mCommon.transactionEntity.setNotes(recurringTx.getNotes());
+        mCommon.transactionEntity.setColor(recurringTx.getColor());
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
