@@ -38,6 +38,7 @@ public class SearchParametersViewHolder {
     public TextView txtDateTo;
     public EditText edtNotes;
     public TextView txtSelectTag;
+    public TextView viewTextColor;
 
     public SearchParametersViewHolder(View view) {
         // Initialize views using findViewById
@@ -50,5 +51,6 @@ public class SearchParametersViewHolder {
         txtDateTo = view.findViewById(R.id.textViewToDate);
         edtNotes = view.findViewById(R.id.editTextNotes);
         txtSelectTag = view.findViewById(R.id.textViewSelectTag);
+        viewTextColor = view.findViewById(R.id.colorView);
     }
 }

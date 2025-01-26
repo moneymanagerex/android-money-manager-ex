@@ -28,11 +28,16 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,12 +79,14 @@ import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.settings.PerDatabaseFragment;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.TransactionColorUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite3.BriteDatabase;
 
@@ -108,16 +115,6 @@ public class EditTransactionCommonFunctions {
     // to get database uri
     @Inject
     Lazy<RecentDatabasesProvider> mDatabases;
-    public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
-                                          ITransactionEntity transactionEntity, BriteDatabase database) {
-        super();
-
-        activity = parentActivity;
-        this.transactionEntity = transactionEntity;
-        this.mDatabase = database;
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
@@ -148,6 +145,18 @@ public class EditTransactionCommonFunctions {
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
+
+
+    public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
+                                          ITransactionEntity transactionEntity, BriteDatabase database) {
+        super();
+
+        activity = parentActivity;
+        this.transactionEntity = transactionEntity;
+        this.mDatabase = database;
+
+        MmexApplication.getApp().iocComponent.inject(this);
+    }
 
     public boolean deleteMarkedSplits(IRepository repository) {
         for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
@@ -942,6 +951,17 @@ public class EditTransactionCommonFunctions {
                 : transactionEntity.getTransactionType();
         changeTransactionTypeTo(current);
     }
+
+    public void initColorControls() {
+        TransactionColorUtils tsc = new TransactionColorUtils( getContext() );
+        tsc.initColorControls( viewHolder.colorTextView,
+                transactionEntity.getColor(),
+                color -> {
+                    transactionEntity.setColor(color);
+                    setDirty(true);
+                });
+    }
+
 
     /**
      * Indicate whether the Split Categories is selected/checked.
