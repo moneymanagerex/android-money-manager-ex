@@ -104,6 +104,7 @@ public class RecurringTransactionProcess {
                 accountTransactionRepository.insert(accountTrx);
                 TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
                 taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
+                // TODO copy split
                 service.moveNextOccurrence();
 
             }
