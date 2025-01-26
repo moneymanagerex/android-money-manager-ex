@@ -327,6 +327,7 @@ public class RecurringTransactionService
      */
     public ArrayList<ISplitTransaction> loadSplitTransactions() {
         ArrayList<ISplitTransaction> result = new ArrayList<>();
+        TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
 
         Cursor cursor = this.getCursorForSplitTransactions();
         if (cursor == null) return result;
@@ -334,6 +335,9 @@ public class RecurringTransactionService
         while (cursor.moveToNext()) {
             SplitRecurringCategory entity = new SplitRecurringCategory();
             entity.loadFromCursor(cursor);
+
+            // load tag for split
+            entity.setTags(taglinkRepository.loadTaglinksFor(entity.getId(), entity.getTransactionModel()));
 
             result.add(entity);
         }

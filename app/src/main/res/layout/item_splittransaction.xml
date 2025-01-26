@@ -138,6 +138,33 @@
                     android:scrollHorizontally="false"
                     android:textCursorDrawable="@null" />
             </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/tag"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp" />
+
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/tagsList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="top|start"
+                    android:hint="@string/tagsList_transactions"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    />
+            </TableRow>
         </TableLayout>
 
     </LinearLayout>

@@ -1,10 +1,15 @@
 package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class Taglink extends EntityBase  {
+public class Taglink extends EntityBase
+        implements Parcelable {
 
     /* Table
     CREATE TABLE TAGLINK_V1(
@@ -30,6 +35,18 @@ public class Taglink extends EntityBase  {
         super(contentValues);
     }
 
+    public static final Creator<Taglink> CREATOR = new Creator<Taglink>() {
+        @Override
+        public Taglink createFromParcel(Parcel in) {
+            return new Taglink(in);
+        }
+
+        @Override
+        public Taglink[] newArray(int size) {
+            return new Taglink[size];
+        }
+    };
+
     @Override
     public Long getId() { return getLong(TAGLINKID); }
 
@@ -42,8 +59,8 @@ public class Taglink extends EntityBase  {
     public Long getRefId() { return getLong(REFID); }
     public void setRefId(Long value) { setLong(REFID, value); }
 
-    public long getTagId() { return getLong(TAGID); }
-    public void setTagId(long value) { setLong(TAGID, value); }
+    public Long getTagId() { return getLong(TAGID); }
+    public void setTagId(Long value) { setLong(TAGID, value); }
 
     public boolean inTaglinkList(ArrayList<Taglink> list ) {
         for( Taglink entity : list ) {
@@ -60,5 +77,31 @@ public class Taglink extends EntityBase  {
           entity.setId(null);
         }
         return list;
+    }
+
+    protected Taglink(Parcel in) {
+        setId(nullLong(in.readLong()));
+        setRefType(in.readString());
+        setRefId(nullLong(in.readLong()));
+        setTagId(nullLong(in.readLong()));
+    }
+
+    private Long nullLong(long value) {
+        if (value == -1)
+            return null;
+        return value;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeLong((getId() == null ? -1 : getId()));
+        dest.writeString((getRefType() == null ? "" : getRefType()));
+        dest.writeLong((getRefId() == null ? -1 : getRefId()));
+        dest.writeLong((getTagId() == null ? -1 : getTagId()));
     }
 }

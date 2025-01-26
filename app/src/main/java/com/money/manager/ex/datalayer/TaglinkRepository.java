@@ -28,7 +28,9 @@ public class TaglinkRepository extends  RepositoryBase {
     }
 
     public long add(Taglink entity) {
-        return insert(entity.contentValues);
+        long id =  insert(entity.contentValues);
+        entity.setId(id);
+        return id;
     }
 
     public boolean delete(Long id) {
