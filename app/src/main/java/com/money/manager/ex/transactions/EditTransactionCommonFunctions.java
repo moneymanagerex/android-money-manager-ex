@@ -159,6 +159,8 @@ public class EditTransactionCommonFunctions {
                 Timber.w("Delete split transaction failed!");
                 return false;
             }
+            TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
+            taglinkRepository.deleteForType(splitToDelete.getId(), splitToDelete.getTransactionModel());
         }
 
         return true;
@@ -1420,6 +1422,10 @@ public class EditTransactionCommonFunctions {
 
         if (this.transactionEntity.hasCategory()) {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
+        }
+
+        if (this.transactionEntity.getTags() != null ) {
+            entity.setTags(this.transactionEntity.getTags());
         }
 
         return entity;

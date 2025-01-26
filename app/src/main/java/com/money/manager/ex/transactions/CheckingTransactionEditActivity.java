@@ -252,6 +252,8 @@ public class CheckingTransactionEditActivity
             newSplit.setCategoryId(record.getCategoryId());
             newSplit.setNotes(record.getNotes());
 
+            newSplit.setTags(Taglink.clearCrossReference(record.getTags()));
+
             mCommon.mSplitTransactions.add(newSplit);
         }
 
@@ -748,6 +750,7 @@ public class CheckingTransactionEditActivity
     private boolean saveSplitCategories() {
         Long transactionId = mCommon.transactionEntity.getId();
         SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
+        TaglinkRepository taglinkRepository = new TaglinkRepository(this);
         ArrayList<ISplitTransaction> deletedSplits = mCommon.getDeletedSplitCategories();
 
         // deleted old split transaction
@@ -783,6 +786,12 @@ public class CheckingTransactionEditActivity
                         return false;
                     }
                 }
+
+                // at this point entity has id
+                taglinkRepository.saveAllFor(entity.getTransactionModel(),
+                        entity.getId(),
+                        entity.getTags());
+
             }
         }
 

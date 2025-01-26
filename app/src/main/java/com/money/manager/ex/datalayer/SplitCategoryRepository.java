@@ -62,9 +62,13 @@ public class SplitCategoryRepository
 
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
+        TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
         while (curSplit.moveToNext()) {
             SplitCategory splitCategory = new SplitCategory();
             splitCategory.loadFromCursor(curSplit);
+
+            // load tags from table
+            splitCategory.setTags(taglinkRepository.loadTaglinksFor(splitCategory.getId(), splitCategory.getTransactionModel()));
 
             listSplitTrans.add(splitCategory);
         }

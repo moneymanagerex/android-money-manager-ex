@@ -615,6 +615,7 @@ public class ScheduledTransactionEditActivity
         // has split transaction
         boolean hasSplitCategories = mCommon.hasSplitCategories();
         if (hasSplitCategories) {
+            TaglinkRepository taglinkRepository = new TaglinkRepository(this);
             for (ISplitTransaction item : mCommon.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
@@ -635,6 +636,11 @@ public class ScheduledTransactionEditActivity
                         return false;
                     }
                 }
+
+                // save tag for split
+                taglinkRepository.saveAllFor(splitEntity.getTransactionModel(),
+                        splitEntity.getId(),
+                        splitEntity.getTags());
             }
         }
 
