@@ -863,8 +863,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initColorControls() {
-        TransactionColorUtils tsc = new TransactionColorUtils( getContext() );
-        tsc.initColorControls( viewHolder.colorTextView,
+        (new TransactionColorUtils( getContext() )).initColorControls( viewHolder.colorTextView,
                 transactionEntity.getColor(),
                 color -> {
                     transactionEntity.setColor(color);
