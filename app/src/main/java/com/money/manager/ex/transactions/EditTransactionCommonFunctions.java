@@ -18,7 +18,6 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -45,10 +44,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
-import com.money.manager.ex.domainmodel.Tag;
-import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
@@ -74,7 +70,6 @@ import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.settings.PerDatabaseFragment;
@@ -858,7 +853,8 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initColorControls() {
-        (new TransactionColorUtils( getContext() )).initColorControls( viewHolder.colorTextView,
+        TransactionColorUtils tsc = new TransactionColorUtils( getContext() );
+        tsc.initColorControls( viewHolder.colorTextView,
                 transactionEntity.getColor(),
                 color -> {
                     transactionEntity.setColor(color);
