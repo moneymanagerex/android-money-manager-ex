@@ -138,7 +138,7 @@ public class ScheduledTransactionEditActivity
         mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
         mCommon.showPayeeName();
         mCommon.displayCategoryName();
-        mCommon.displayTags();
+//        mCommon.displayTags(); allready in init
 
         showPaymentsLeft();
 
@@ -497,9 +497,9 @@ public class ScheduledTransactionEditActivity
         mCommon.loadCategoryName();
 
         // load Tags
-        if (mCommon.mTaglinks == null ) {
+        if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.mTaglinks = taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel());
+            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
         }
 
 
@@ -615,6 +615,7 @@ public class ScheduledTransactionEditActivity
         // has split transaction
         boolean hasSplitCategories = mCommon.hasSplitCategories();
         if (hasSplitCategories) {
+            TaglinkRepository taglinkRepository = new TaglinkRepository(this);
             for (ISplitTransaction item : mCommon.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
@@ -635,6 +636,11 @@ public class ScheduledTransactionEditActivity
                         return false;
                     }
                 }
+
+                // save tag for split
+                taglinkRepository.saveAllFor(splitEntity.getTransactionModel(),
+                        splitEntity.getId(),
+                        splitEntity.getTags());
             }
         }
 

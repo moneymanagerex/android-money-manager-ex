@@ -35,6 +35,7 @@ public class SplitItemViewHolder extends RecyclerView.ViewHolder {
     public TextView txtAmount;
     public TextView txtNotesSplit;
     public FontIconView transactionTypeButton;
+    public TextView txtTagsList;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
@@ -44,5 +45,6 @@ public class SplitItemViewHolder extends RecyclerView.ViewHolder {
         txtAmount = itemView.findViewById(R.id.editTextTotAmount);
         txtNotesSplit = itemView.findViewById(R.id.notesEditSplit);
         transactionTypeButton = itemView.findViewById(R.id.transactionTypeButton);
+        txtTagsList = itemView.findViewById(R.id.tagsList);
     }
 }
