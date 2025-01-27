@@ -22,8 +22,8 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
@@ -46,6 +46,7 @@ public class AccountTransaction
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
     private ArrayList<Taglink> taglinks = null;
+    private ArrayList<ISplitTransaction> splitTransactions = null;
 
     /**
      * Creates default, empty transaction.
@@ -266,9 +267,40 @@ public class AccountTransaction
         return getInt(ITransactionEntity.COLOR);
     }
 
+    @Override
+    public void setSplit(ArrayList<ISplitTransaction> split) {
+        splitTransactions = split;
+    }
+
+    @Override
+    public ArrayList<ISplitTransaction> getSplit() {
+        return splitTransactions;
+    }
+
     public void setLastUpdatedTime(String value) {
         setString(LASTUPDATEDTIME, value);
     }
 
-
+//    public void createSplitFromRecurring(ArrayList<SplitRecurringCategory> source) {
+    public void createSplitFromRecurring(ArrayList<ISplitTransaction> source) {
+        if ( source == null ) {
+            splitTransactions = null;
+            return;
+        }
+        if (splitTransactions == null ) {
+            splitTransactions = new ArrayList<>();
+        } else {
+            splitTransactions.clear();
+        }
+        for ( ISplitTransaction split : source ) {
+            SplitCategory scat = new SplitCategory();
+            scat.setId(Constants.NOT_SET);
+            scat.setTransId(getId());
+            scat.setCategoryId(split.getCategoryId());
+            scat.setAmount(split.getAmount());
+            scat.setNotes(split.getNotes());
+            scat.setTags(Taglink.clearCrossReference(split.getTags()));// clear cros reference for tag
+            splitTransactions.add(scat);
+        }
+    }
 }

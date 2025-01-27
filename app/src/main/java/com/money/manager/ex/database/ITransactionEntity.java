@@ -101,4 +101,7 @@ public interface ITransactionEntity {
     public void setColor(int value) ;
     public int getColor() ;
 
+    public void setSplit(ArrayList<ISplitTransaction> split);
+    public ArrayList<ISplitTransaction> getSplit();
+
 }
