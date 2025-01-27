@@ -41,7 +41,9 @@ import timber.log.Timber;
  * Access and manipulation of the info in the Info Table
  */
 public class InfoService
-    extends ServiceBase {
+    extends ServiceBase { // from master repo
+    String[] defaultColor = new String[]{"246,144,144", "229,196,146", "245,237,149",
+            "186,226,185", "135,190,219", "172,167,239", "212,138,215"};
 
     public InfoService(Context context) {
         super(context);
@@ -179,7 +181,7 @@ public class InfoService
         }
         String colorList = getInfoValue(String.format("USER_COLOR%d",n),"");
         if ( colorList.isEmpty() ) {
-            return  null;
+            colorList = defaultColor[n-1];
         }
         return colorList.split(",");
     }
