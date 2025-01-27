@@ -315,7 +315,6 @@
     <string name="open_database">Otvori bazu podataka</string>
     <string name="synchronization_interval">Interval sinhronizacije</string>
     <string name="summary_synchronization_interval">Koliko često treba sinhronizovati?</string>
-    <string name="tips_new_version_dropbox">Od verzije 1.2.0 Money Manager Ex za Android je promijenio upravljanje sinhronizacijom sa Dropbox-om. Korisnici koji već koriste sinhronizaciju sa Dropbox-om moraju ponovo uraditi konfiguraciju.\nKonfiguracija sinhronizacije sa Dropbox-om i odabir baze podataka se nalaze u podešavanjima\nOd verzije 1.2.0 Money Manager Ex za Android može automatski sinhronizovati bazu podataka sa Dropbox-om</string>
     <string name="title_transaction_shown_balance">Pokazuje saldo za svaku transakciju</string>
     <string name="summary_transaction_shown_balance">Prikazuje saldo za svaku transakciju. Prikaz salda može usporiti rad programa</string>
     <string name="menu_open_database">Otvori bazu podataka</string>

@@ -353,7 +353,6 @@
     <string name="open_database">Datenbank öffnen</string>
     <string name="synchronization_interval">Synchronisierungsintervall</string>
     <string name="summary_synchronization_interval">Wie oft soll synchronisiert werden?</string>
-    <string name="tips_new_version_dropbox">Beginnend mit Version 1.2.0 hat MoneyManager Ex für Android die DropBox syncronization engine geändert. Benutzer, die bereits Dropbox sync verwenden müssen die Konfigurationsdatei anpassen.\nDie Zugangsdaten und Auswahl der Datenbank befinden sich in den Einstellungen.\nVon Version 1.2.0 an kann MoneyManagerEx für Android die Datenbank automatisch synchronisieren.</string>
     <string name="title_transaction_shown_balance">Zeige den Saldo für jede Transaktion</string>
     <string name="summary_transaction_shown_balance">Zeige das Saldo für jede Transaktion. Die Darstellung des Saldos kann die Anwendung verlangsamen</string>
     <string name="menu_open_database">Datenbank öffnen</string>

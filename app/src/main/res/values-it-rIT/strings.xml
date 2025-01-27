@@ -63,7 +63,7 @@
     <string name="title_show_tutorial">Visualizza tutorial</string>
     <string name="summary_show_tutorial">Visualizzare il tutorial al prossimo avvio?</string>
     <string name="preferences_behaviour_focus_filter_title">Filtro nelle selezioni</string>
-    <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni utilizza il filtro. Diversamente scorre fra le selezioni disponibili.</string>
+    <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni si focalizza sul filtro. Diversamente scorre fra le selezioni disponibili.</string>
     <string name="auto_sync_via_wifi">Sincronizzazione automatica solo su WiFi</string>
     <string name="auto_sync_via_wifi_summary">Sincronizza automaticamente solo con collegamento WiFi attivo.</string>
     <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
@@ -228,6 +228,7 @@
     <string name="tag_empty_list">Nessuna Etichetta è stato trovata. Per crearne una, tocca il pulsante verde più.</string>
     <string name="tag_can_not_deleted">L\'Etichetta selezionata non può essere eliminata perché è utilizzata.</string>
     <string name="db_tag_update_failed">Aggiornamento Etichetta non riuscito</string>
+    <string name="space_replaced_with__">Spazio, &amp; e | sono stati sostituiti con \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nessuna</string>
     <string name="once">Una volta</string>
@@ -352,7 +353,6 @@
     <string name="open_database">Apri Database</string>
     <string name="synchronization_interval">Intervallo di sincronizzazione</string>
     <string name="summary_synchronization_interval">Con quale frequenza vuoi sincronizzare?</string>
-    <string name="tips_new_version_dropbox">Dalla versione 1.2.0 di Money Manager Ex for Android è cambiata la gestione della sincronizzazione con Dropbox. Per gli utenti che stanno già utilizzando la sincronizzazione con Dropbox, è necessario rifare la configurazione.\nLa configurazione della sincronizzazione con Dropbox e la selezione del database, si trova nelle impostazioni.\nDalla versione 1.2.0 di Money Manager Ex for Android, l\'applicazione è in grado di sincronizzare automaticamente il database con Dropbox.</string>
     <string name="title_transaction_shown_balance">Mostra il saldo per ogni operazione</string>
     <string name="summary_transaction_shown_balance">Visualizza il saldo per ogni operazione. La visualizzazione del saldo per ogni transazione potrebbe rallentare l\'applicazione</string>
     <string name="menu_open_database">Apri Database</string>
@@ -425,7 +425,7 @@
     <string name="android_website">MMEx for Android sito Web </string>
     <string name="donate_in_app_already_donate">Hai già sostenuto lo sviluppo di MoneyManagerEx per Android con una donazione! \n\nGrazie mille dal team di sviluppo!</string>
     <string name="donate_in_app_retrieving_status">Recupero dello stato delle vostre donazioni da Google Play. Attendere prego&#8230;</string>
-    <string name="donate_in_app_error">Non è possibile utilizzare il pagamento in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
+    <string name="donate_in_app_error">Non è possibile utilizzare la fatturazione in-app. Verifica se è installata l\'ultima versione dell\'applicazione Play Store.</string>
     <string name="title_repeating_transaction_process">Processa transazioni pianificate</string>
     <string name="summary_repeating_transaction_process">Processa transazioni pianificate scadute (Automatica, Chiedi, Manuale)</string>
     <string name="title_use_nested_category">Usa un nuovo modello di categoria annidato</string>
@@ -558,7 +558,7 @@
     <string name="fingerprint_check_permission">Attivare l\'autorizzazione per l\'impronta digitale</string>
     <string name="fingerprint_has_enrolled">Nessuna impronta digitale configurata. Registrare almeno un\'impronta digitale nelle impostazioni del dispositivo.</string>
     <string name="fingerprint_is_keyguard_secure">Attiva la protezione della schermata di blocco nelle impostazioni del tuo dispositivo.</string>
-    <string name="income_expense_period">Entrate/Uscite periodo</string>
+    <string name="income_expense_period">Periodo di entrata/uscite</string>
     <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
     <string name="appwidget_text">ESEMPIO</string>
     <string name="configure">Configura</string>
@@ -577,6 +577,7 @@
     <string name="value">Valore</string>
     <string name="view_transactions">Visualizza transazioni</string>
     <string name="view_transactions_sub">Visualizza transazioni con sottocategorie</string>
+    <string name="switch_active">Attiva/Disattiva</string>
     <string name="error_downloading_symbol">Errore nell\'aggiornamento del prezzo per il simbolo</string>
     <string name="error_updating_rates">Errore nell\'aggiornamento dei tassi</string>
     <string name="error_no_price_found_for_symbol">Nessun prezzo trovato per il simbolo</string>
@@ -762,4 +763,5 @@
     <string name="issue_open">"Apri segnalazione su GitHub "</string>
     <!-- Builder button -->
     <string name="CLEAR_ALL">Cancella tutto</string>
+    <string name="empty_color_message">Scegli un colore</string>
 </resources>
