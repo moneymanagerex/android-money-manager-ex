@@ -332,7 +332,6 @@
     <string name="open_database">Відкрити базу даних</string>
     <string name="synchronization_interval">Інтервал синхронізації</string>
     <string name="summary_synchronization_interval">Як часто слід виконувати синхронізацію?</string>
-    <string name="tips_new_version_dropbox">Починаючи з версії 1.2.0 Money Manager Ex для Android змінився обробник синхронізації Dropbox. Користувачам, які вже використовують синхронізацію Dropbox потрібно оновити конфігурацію.\n Аутентифікація і вибір бази даних розташовані у налаштуваннях.\n Починаючи з версії 1.2.0 Money Manager Ex для Android можна автоматично синхронізувати базу даних.</string>
     <string name="title_transaction_shown_balance">Показувати баланс для кожної транзакції</string>
     <string name="summary_transaction_shown_balance">Показувати баланс для кожної транзакції. Відображення балансу може уповільнити роботу</string>
     <string name="menu_open_database">Відкрити базу даних</string>

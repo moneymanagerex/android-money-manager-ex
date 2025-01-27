@@ -336,7 +336,6 @@
     <string name="open_database">فتح قاعدة البيانات</string>
     <string name="synchronization_interval">المزامنة كل...</string>
     <string name="summary_synchronization_interval">كل كم تجب المُزامنة؟</string>
-    <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the Dropbox sync need to update the configuration. The authentication and the selection of the database is located in the Settings. ofversion 1.2.0, Money Manager Ex for Android can automatically synchronize the database.</string>
     <string name="title_transaction_shown_balance">عرض الرصيد لكل مُعاملة</string>
     <string name="summary_transaction_shown_balance">يتم إظهار الرصيد بعد كل عملية. قد يجعل التطبيق أبطئ.</string>
     <string name="menu_open_database">فتح قاعدة البيانات</string>

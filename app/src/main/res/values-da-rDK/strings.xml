@@ -332,7 +332,6 @@
     <string name="open_database">Åbn database</string>
     <string name="synchronization_interval">Synkroniseringsinterval</string>
     <string name="summary_synchronization_interval">Hvor ofte skal der synkroniseres?</string>
-    <string name="tips_new_version_dropbox">Siden version 1.2.0 har MoneyManagerEx til Android skiftet Dropbox synkroniseringsprogram. Brugere der allerede bruger Dropboxsynkronisering skal opdatere deres konfiguration.\nSikkerhedsgodkendelsen og databasevalget findes i Indstillinger.\nFra version 1.2.0 kan MoneyManagerEx til Android automatisk synkronisere databasen.</string>
     <string name="title_transaction_shown_balance">Viser balancen for efter hver overførsel</string>
     <string name="summary_transaction_shown_balance">Viser balancen for hver overførsel. Dette kan gøre programmet langsomere</string>
     <string name="menu_open_database">Åbn database</string>

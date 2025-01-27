@@ -338,7 +338,6 @@
     <string name="open_database">打开数据库</string>
     <string name="synchronization_interval">同步时间间隔</string>
     <string name="summary_synchronization_interval">设置自动同步的时间间隔</string>
-    <string name="tips_new_version_dropbox">Money Manager Ex for Android 1.2.0版修改了同步 Dropbox 的方式，已使用同步 Dropbox 的使用者必须重新设置。\nDropbox 与数据库的設定，在设置选项中。\n自 Money Manager Ex for Android 1.2.0版开始能自动和 Dropbox 同步数据库。</string>
     <string name="title_transaction_shown_balance">显示每笔交易金额</string>
     <string name="summary_transaction_shown_balance">显示每笔交易金额，这可能导致程序运行减慢</string>
     <string name="menu_open_database">打开数据库</string>

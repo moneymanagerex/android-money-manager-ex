@@ -318,7 +318,6 @@
     <string name="open_database">Otwórz bazę danych</string>
     <string name="synchronization_interval">Interwał synchronizacji</string>
     <string name="summary_synchronization_interval">Jak często synchronizować?</string>
-    <string name="tips_new_version_dropbox">Od wersji 1.2.0 Money Manager Ex dla Androida zmienił sposób zarządzania synchronizacją z Dropboxem. Użytkownicy, którzy używali wcześniej synchronizacji z Dropboxem, muszą ponownie przeprowadzić konfigurację.\nKonfiguracja synchronizacji z Dropboxem jest dostępna w ustawieniach.\nOd wersji 1.2.0 Money Manager Ex dla Androida może automatycznie synchronizować bazę danych z Dropboxem.</string>
     <string name="title_transaction_shown_balance">Pokazuj saldo każdej transakcji</string>
     <string name="summary_transaction_shown_balance">Wyświetla saldo dla każdej transakcji. Włączenie tej opcji może spowolnić działanie aplikacji</string>
     <string name="menu_open_database">Otwórz bazę danych</string>

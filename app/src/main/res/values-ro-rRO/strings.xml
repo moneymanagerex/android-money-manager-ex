@@ -315,7 +315,6 @@
     <string name="open_database">Deschide baza de date</string>
     <string name="synchronization_interval">Interval de sincronizare</string>
     <string name="summary_synchronization_interval">Cât de des să sincronizez?</string>
-    <string name="tips_new_version_dropbox">Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android s-a schimbat managementul sincronizării cu Dropbox. Utilizatorii care deja folosesc sincronizarea cu Dropbox trebuie să reconfigureze setările.\n Configurarea sincronizării cu Dropbox și selectarea bazei de date este localizată în setări.\n Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android sincronizarea se poate face automat în baza de date cu Dropbox</string>
     <string name="title_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție</string>
     <string name="summary_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție. Afișarea soldului poate încetini aplicația</string>
     <string name="menu_open_database">Deschide baza de date</string>

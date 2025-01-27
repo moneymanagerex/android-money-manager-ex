@@ -322,7 +322,6 @@
     <string name="open_database">Open databank</string>
     <string name="synchronization_interval">Synchronisatie-interval</string>
     <string name="summary_synchronization_interval">Hoe vaak moet worden gesynchroniseerd ?</string>
-    <string name="tips_new_version_dropbox">Vanaf versie 1.2.0 van Money Manager EX voor Android is het management van de synchronisatie met Dropbox veranderd. Gebruikers welke al gebruik maken van de synchronisatie met Dropbox zullen dit opnieuw in moeten stellen.\n De configuratie van de synchronisatie met Dropbox en de database is te vinden in de instellingen.\n Vanaf versie 1.2.0 van Money Manager EX voor Android zult u automatisch kunnen synchroniseren door middel van Dropbox</string>
     <string name="title_transaction_shown_balance">Laat het saldo voor elke transactie zien</string>
     <string name="summary_transaction_shown_balance">Laat het saldo voor elke transactie zien. Om het rekeningssaldo te bekijken kan de app trager reageren</string>
     <string name="menu_open_database">Open databank</string>

@@ -353,7 +353,6 @@
     <string name="open_database">Adatbázis megnyitása</string>
     <string name="synchronization_interval">Összehangolási időköz</string>
     <string name="summary_synchronization_interval">Milyen gyakran kell összehangolni?</string>
-    <string name="tips_new_version_dropbox">Az 1.2.0 verziótól kezdve megváltozott a Money Manager Ex for Android alkalmazás Dropbox összehangolás kezelése. Azon felhasználóknak, akik már használták ezt a funkciót, újra el kell végezni a konfigurálást.\nA Dropbox összehangolás konfigurálása és az adatbázis kiválasztása a Beállítások menüben található.\nAz 1.2.0 verziótól kezdve a program képes az automatikus Dropbox összehangolásra</string>
     <string name="title_transaction_shown_balance">Tranzakciónkénti egyenleg</string>
     <string name="summary_transaction_shown_balance">Mutatja az egyenleget tranzakciónként is. Ez a megjelenítés lassíthatja a program működését</string>
     <string name="menu_open_database">Adatbázis megnyitása</string>

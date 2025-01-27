@@ -315,7 +315,6 @@
     <string name="open_database">Άνοιγμα βάσης δεδομένων</string>
     <string name="synchronization_interval">Διάστημα συγχρονισμού</string>
     <string name="summary_synchronization_interval">Πόσο συχνά πρέπει να συγχρονίζει;</string>
-    <string name="tips_new_version_dropbox">Από την έκδοση 1.2.0 του Money Manager Ex  για το Android έχει αλλάξει η διαχείριση συγχρονισμού με Dropbox. Για τους χρήστες που ήδη χρησιμοποιούν τον συγχρονισμό με Dropbox, πρέπει να ξανακάνουν τη διαμόρφωση παραμέτρων. \n Ο συγχρονισμός με Dropbox και η επιλογή της βάσης δεδομένων, βρίσκεται στις ρυθμίσεις. \n Από την έκδοση 1.2.0 του Money Manager Ex για Android μπορεί αυτόματα να συγχρονίσει τη βάση δεδομένων με Dropbox</string>
     <string name="title_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή</string>
     <string name="summary_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή. Η επίδειξη της ισορροπίας θα μπορούσε να κάνει την εφαρμογή πιο αργή</string>
     <string name="menu_open_database">Άνοιγμα βάσης δεδομένων</string>

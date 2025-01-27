@@ -315,7 +315,6 @@
     <string name="open_database">Mở Cơ sở dữ liệu</string>
     <string name="synchronization_interval">Thời gian đồng bộ</string>
     <string name="summary_synchronization_interval">Tần suất đồng bộ là bao lâu ?</string>
-    <string name="tips_new_version_dropbox">Từ phiên bản 1.2.0 của Money Manager Ex cho Android đã thay đổi quản lý đồng bộ hoá với Dropbox. Cho người dùng những người đã sử dụng đồng bộ với Dropbox, bạn phải thực hiện cấu hình lại. \nCấu hình  của đồng bộ với Dropbox và lựa chọn cơ sở dữ liệu, được nằm trong thiết đặt. \nTừ phiên bản 1.2.0 của Money Manager Ex cho Android có thể tự động đồng bộ cơ sở dữ liệu với Dropbox</string>
     <string name="title_transaction_shown_balance">Hiện số dư cho mỗi giao dịch</string>
     <string name="summary_transaction_shown_balance">Hiện số dư cho cho mỗi giao dịch. Hiển thị số dư có thể làm ứng dụng chậm hơn</string>
     <string name="menu_open_database">Mở Cơ sở dữ liệu</string>

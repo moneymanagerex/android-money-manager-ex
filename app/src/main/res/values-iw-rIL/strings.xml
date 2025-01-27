@@ -315,7 +315,6 @@
     <string name="open_database">פתח מסד נתונים</string>
     <string name="synchronization_interval">מחזור סינכרון</string>
     <string name="summary_synchronization_interval">באיזו תכיפות לסנכרן?</string>
-    <string name="tips_new_version_dropbox">מגירסה 1.2.0 Money Manager Ex עבור אנדרואיד ניהול סינכרון עם Dropbox השתנה. עבור משתמשים שכבר משתמשים בסינכרון עם Dropbox, נדרש להגדיר מחדש את התצורה. \nThe הגדרת תצורת הסינכרון עם Dropbox, בחירת מסד הנתונים, ממוקם בהגדרות. \n מגירסה  1.2.0 Money Manager Ex עבור אנדרואיד יכול לסנכרן באופן אוטומטי את מסד הנתונים עם Dropbox</string>
     <string name="title_transaction_shown_balance">מציג יתרה  לכל תנועה</string>
     <string name="summary_transaction_shown_balance">מציג את יתרה לכל תנועה. הצגת יתרות עשויה להאט את היישום</string>
     <string name="menu_open_database">מסד נתונים פתוחה</string>

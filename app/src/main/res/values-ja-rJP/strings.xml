@@ -315,7 +315,6 @@
     <string name="open_database">データベースを開く</string>
     <string name="synchronization_interval">同期間隔</string>
     <string name="summary_synchronization_interval">同期の頻度は?</string>
-    <string name="tips_new_version_dropbox">Money Manager Ex for Android のバージョン 1.2.0 から Dropbox との同期の管理が変更されました。Dropbox で既に同期を使用しているユーザーは、構成をやり直す必要があります。\nDropbox との同期の構成とデータベースの選択は設定で行います\nMoney Manager Ex for Android のバージョン 1.2.0 から Dropbox とデータベースは自動的に同期することができます。</string>
     <string name="title_transaction_shown_balance">各取引の残高を表示</string>
     <string name="summary_transaction_shown_balance">各取引の残高を表示します。残高を表示するとアプリケーションの動作が遅くなります。</string>
     <string name="menu_open_database">データベースを開く</string>
