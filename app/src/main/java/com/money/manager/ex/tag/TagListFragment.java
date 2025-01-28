@@ -50,7 +50,7 @@ public class TagListFragment     extends BaseListFragment
     private static final int ID_LOADER_TAG = 0;
 
     private static final String SORT_BY_NAME = "UPPER(" + Tag.TAGNAME + ")";
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE TAG_V1.TAGID = TAGLINK_V1.TAGID ) DESC";
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE TAGID = TAGLINK_V1.TAGID ) DESC";
 
     private Context mContext;
     private String mCurFilter;
