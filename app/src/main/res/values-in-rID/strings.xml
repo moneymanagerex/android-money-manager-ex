@@ -315,7 +315,6 @@
     <string name="open_database">Buka Basis Data</string>
     <string name="synchronization_interval">Jangka waktu sinkronisasi</string>
     <string name="summary_synchronization_interval">Seberapa sering harus menyinkronkan?</string>
-    <string name="tips_new_version_dropbox">Sejak versi 1.2.0, Money Manager Ex telah mengubah mesin sinkronisasi Dropbox. Pengguna yang sudah menggunakan Dropbox sync harus memperbarui konfigurasi. \nOtentikasi dan pemilihan basis data terletak di pengaturan. \nSejak versi 1.2.0, Money Manager Ex untuk Android dapat mensinkronkan basis data secara otomatis.</string>
     <string name="title_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi</string>
     <string name="summary_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi. Tampilan saldo bisa membuat aplikasi lebih lambat</string>
     <string name="menu_open_database">Buka Basis Data</string>

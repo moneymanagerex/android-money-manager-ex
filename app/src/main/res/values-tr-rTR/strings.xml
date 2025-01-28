@@ -315,7 +315,6 @@
     <string name="open_database">Veritabanı Aç</string>
     <string name="synchronization_interval">Eşitleme Aralığı</string>
     <string name="summary_synchronization_interval">Ne sıklıkla eşitlenmesini istersiniz?</string>
-    <string name="tips_new_version_dropbox">1.2.0 versiyonundan itibaren Android için Money Manager Ex\'in Dropbox eşitleme yönetimi değişti. Halihazırda Dropbox ile eşitlenmiş veritabanı kullanan kullanıcıların Dropbox yapılandırmasını tekrar yapmaları gerekmektedir.\nSeçilen bir veritabanını Dropbox ile eşitlemek yapılandırma Ayarlar menüsünde yer almaktadır.\nAndroid için Money Manager Ex\'in 1.2.0 sürümünden sonraki sürümleri veritabanını Dropbox ile otomatik olarak eşitlemektedir</string>
     <string name="title_transaction_shown_balance">Her işlemde bakiye görüntüle</string>
     <string name="summary_transaction_shown_balance">Her işlemde bakiyeyi gösterir. Her işlemde bakiye göstermek uygulamanın yavaş çalışmasına neden olur</string>
     <string name="menu_open_database">Veritabanı aç</string>

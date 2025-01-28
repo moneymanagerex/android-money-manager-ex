@@ -322,7 +322,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="open_database">Abrir Banco de dados</string>
     <string name="synchronization_interval">Intervalo de Sincronização</string>
     <string name="summary_synchronization_interval">Quando deve sincronizar?</string>
-    <string name="tips_new_version_dropbox">O motor de sincronização com a Dropbox foi alterado com a versão 1.2.0, Money Manager Ex para Android. Quem já utiliza este sincronismo deve atualizar a configuração.\nA autenticação e a escolha do banco de dados está em \"Configurações\".\nComo na versão 1.2.0, Money Manager Ex para Android sincroniza automaticamente o banco de dados.</string>
     <string name="title_transaction_shown_balance">Mostra o saldo em cada operação</string>
     <string name="summary_transaction_shown_balance">Mostra o saldo em cada operação. A apresentação do saldo pode tornar a aplicação mais lenta</string>
     <string name="menu_open_database">Abrir banco de dados</string>

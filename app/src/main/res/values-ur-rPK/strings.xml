@@ -315,7 +315,6 @@
     <string name="open_database">ڈاٹا بیس کھولیں</string>
     <string name="synchronization_interval">ہم وقت سازی وقفہ</string>
     <string name="summary_synchronization_interval">کتنی بار ہم وقت سازی کرنا چاہئے?</string>
-    <string name="tips_new_version_dropbox">فلحال مونییمانگر 2.0.1 ورژن نے ڈراپبکس ہم وقت سازی انجن تبدیل کیا ہے. وہ صارفین جو پہلے سے ڈراپبکس ہمءوقت سازی استعمال کر رہے ہیں انہیں کنفگریشن تازہ کرنے کی ضرورت ہے. ڈاٹا بیس کی توثیق کاری اور اسے منتخب کرنا سٹنگ میں موجود ہے. فلحال مونییمانگر 2.0.1 ورژن ڈاٹا بیس کو خود بخود سنکرانایز کرتا ہے.</string>
     <string name="title_transaction_shown_balance">ہر لین دین کے لئے پقایاجات کو ظاہر کرتا ہے</string>
     <string name="summary_transaction_shown_balance">ہر ایک لین دین کا بقایات دکھاییں. بقایات کو دکھانا اپلیکیشن کی رفتار کم کر سکتا ہے</string>
     <string name="menu_open_database">ڈاٹا بیس کھولیں</string>

@@ -328,7 +328,6 @@
     <string name="open_database">Odpri zbirko podatkov</string>
     <string name="synchronization_interval">Interval sihnronizacije</string>
     <string name="summary_synchronization_interval">Kako pogosto naj se sinhronizira?</string>
-    <string name="tips_new_version_dropbox">Od različice 1.2.0 je Money Manager Ex za Android spremenil mehanizem za sinhronizacijo Dropbox. Uporabniki, ki že uporabljajo sinhronizacijo Dropbox, morajo posodobiti konfiguracijo.\nPreverjanje pristnosti in izbor baze podatkov se nahaja v nastavitvah.\nOd različice 1.2.0 lahko Money Manager Ex za Android samodejno sinhronizira bazo podatkov.</string>
     <string name="title_transaction_shown_balance">Prikazuje stanje za vsako transakcijo</string>
     <string name="summary_transaction_shown_balance">Prikazuje stanje za vsako transakcijo. Prikaz ravnovesja lahko aplikacijo upočasni</string>
     <string name="menu_open_database">Odprta zbirka podatkov</string>

@@ -314,7 +314,6 @@
     <string name="open_database">Otvoriť databázu</string>
     <string name="synchronization_interval">Interval synchronizácie</string>
     <string name="summary_synchronization_interval">Ako často synchronizovať?</string>
-    <string name="tips_new_version_dropbox">Od verzie 1.2.0 Money Manager Ex pre Android sa zmenila správa synchronizácie s Dropboxom. Užívatelia, ktorí už využívajú synchronizáciu s Dropboxom, musia zopakovať konfiguráciu. \nKonfigurácia synchronizácie s Dropboxom a výber databáze sa nachádza v nastavení. \nOd verzie 1.2.0 Money Manager Ex pre Android môže automaticky synchronizovať databázu s Dropboxom</string>
     <string name="title_transaction_shown_balance">Zobraziť zostatok pre každú transakciu</string>
     <string name="summary_transaction_shown_balance">Zobraziť zostatok pre každú transakciu. Zobrazenie zostatku môže spomaliť aplikáciu</string>
     <string name="menu_open_database">Otvoriť databázu</string>
