@@ -231,7 +231,11 @@ public class AllDataAdapter
         String categorySub;
         if (!isTransfer) {
             categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
-            categorySub = (categorySub == null ? "" : categorySub);
+
+            categorySub = (categorySub == null ? "--not available--" : categorySub);  // in case of transaction with split created without category
+
+
+
             boolean isSplited = cursor.getInt(cursor.getColumnIndex(SPLITTED)) == 1;
             // write category/subcategory format html
             if (!isSplited) {

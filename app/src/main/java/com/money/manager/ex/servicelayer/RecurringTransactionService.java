@@ -486,6 +486,13 @@ public class RecurringTransactionService
                         taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         accountTrx.setColor(scheduledTrx.getColor());
+
+        // split
+        SplitScheduledCategoryRepository splitRepo = new SplitScheduledCategoryRepository( getContext() );
+        // now we have scheuletrx.getTAgs that is SplitRecurring isntace
+        // and we nee to setup new model for SplitTransaaction
+        accountTrx.createSplitFromRecurring(splitRepo.loadSplitCategoriesFor(scheduledTrx.getId()));
+
         return  accountTrx;
     }
 

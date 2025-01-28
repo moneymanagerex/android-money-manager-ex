@@ -77,6 +77,19 @@ public class SplitCategoryRepository
         return listSplitTrans;
     }
 
+    public void saveAllFor(Long transId, ArrayList<ISplitTransaction> split) {
+        SplitCategoryRepository splitCategoryRepository = new SplitCategoryRepository(getContext());
+        TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
+        if (split == null) return;
+        for (ISplitTransaction item : split) {
+            SplitCategory scat = (SplitCategory) item;
+            scat.setTransId(transId);
+            splitCategoryRepository.insertOrUpdate(scat);
+            taglinkRepository.saveAllFor(scat.getTransactionModel(), scat.getId(), scat.getTags());
+        }
+    }
+
+
     public boolean insert(SplitCategory item) {
         // Remove any existing id value.
         item.contentValues.remove(SplitCategory.SPLITTRANSID);
@@ -94,6 +107,14 @@ public class SplitCategoryRepository
         return update(entity, where.getWhere());
     }
 
+    public boolean insertOrUpdate(SplitCategory entity) {
+        if (entity.getId() > 0) {
+            return update(entity);
+        } else {
+            return insert(entity);
+        }
+    }
+
     public boolean delete(ISplitTransaction entity) {
         long deleted = super.delete(SplitCategory.SPLITTRANSID + "=?",
                 new String[]{ Long.toString(entity.getId()) });
@@ -103,4 +124,5 @@ public class SplitCategoryRepository
     public boolean delete(IEntity entity) {
         return delete((ISplitTransaction) entity);
     }
+
 }
