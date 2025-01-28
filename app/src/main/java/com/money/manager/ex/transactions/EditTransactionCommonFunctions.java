@@ -18,6 +18,7 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -780,6 +781,10 @@ public class EditTransactionCommonFunctions {
             Timber.d("Base folder not found or invalid");
             return; // Exit if the base folder is invalid or doesn't exist
         }
+
+        // Notify observers of changes if any new attachment is added
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(baseUri, null);
 
         // Access the 'Transaction' subfolder within the base folder
         DocumentFile transactionFolder = baseFolder.findFile("Transaction");
