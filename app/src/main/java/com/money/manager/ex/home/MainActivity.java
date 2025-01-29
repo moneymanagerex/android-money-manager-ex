@@ -107,6 +107,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -305,22 +306,12 @@ public class MainActivity
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
-                if (db.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                    changeDatabase(db);
-                }
+                changeDatabase(db);
                 break;
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                if (db2.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                    changeDatabase(db2);
-                }
+                changeDatabase(db2);
                 break;
             case RequestCodes.PASSCODE:
                 isAuthenticated = false;
@@ -583,14 +574,9 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3 upon testing instead of extension
-                if (key.endsWith(".emb")) {
-                    Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
-                    intent.putExtra(EXTRA_DATABASE_PATH, key);
-                    startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
-                } else {
-                    MmexApplication.getApp().setPassword(""); // reset password
-                    onOpenDatabaseClick(selectedDatabase);
-                }
+                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+                intent.putExtra(EXTRA_DATABASE_PATH, key);
+                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
 
                 return result;
             }
@@ -605,10 +591,12 @@ public class MainActivity
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
         } else if (itemId == R.id.menu_open_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
         } else if (itemId == R.id.menu_account) {
@@ -1138,16 +1126,12 @@ public class MainActivity
             String pathFile = getIntent().getData().getEncodedPath();
             // decode
             try {
-                String filePath = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                String filePath = URLDecoder.decode(pathFile, StandardCharsets.UTF_8); // decode file path
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
-                if (db.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                }
                 changeDatabase(db);
                 return;
             } catch (Exception e) {
