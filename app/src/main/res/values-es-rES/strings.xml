@@ -226,6 +226,7 @@
     <string name="delete_tag">Eliminar Etiqueta</string>
     <string name="select_tag">Seleccionar Etiqueta</string>
     <string name="tag_empty_list">No se ha encontrado ninguna etiqueta. Para crear una, toque el botón verde con el signo más.</string>
+    <string name="tag_can_not_deleted">La etiqueta seleccionada no se puede eliminar porque está referenciada</string>
     <string name="db_tag_update_failed">Error al actualizar la Etiqueta</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Ninguno</string>
@@ -716,8 +717,20 @@
     <string name="loan_account">Loan Accounts</string>
     <string name="shares_accounts">Shares Accounts</string>
     <string name="currency">Moneda</string>
+    <string name="title_anonymous_usage">Enviar datos de uso anónimos</string>
     <!-- Notification Setting -->
+    <string name="notification_channel_remotefile__description">Notificación de Operación Remota de Archivos</string>
     <string name="notification_channel_fileoperation_downloadin">Descargando Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Cargando Mmex</string>
+    <string name="notification_channel_fileoperation_complete">Carga de Mmex Completa</string>
+    <string name="notification_channel_fileoperation_conflict">Conflicto de sincronización de Mmex</string>
+    <string name="show">Mostrar</string>
+    <string name="attachment_folder">Carpeta de Adjuntos</string>
+    <string name="attachment_folder_summary">Seleccione la carpeta donde se guardarán los adjuntos</string>
+    <string name="pref_attachment_folder">Carpeta de Adjuntos</string>
+    <string name="version_copied_to_clipboard">Número de versión copiado al portapapeles</string>
+    <string name="issue_open">"Abrir problema en GitHub "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Borrar todo</string>
+    <string name="empty_color_message">elige un color</string>
 </resources>
