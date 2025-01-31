@@ -534,7 +534,7 @@ public class SearchParametersFragment
         }
 
         // color
-        if (searchParameters.color != -1) {
+        if (searchParameters.color > 0) {
             where.addStatement(QueryAllData.COLOR, "=", searchParameters.color);
         }
 
