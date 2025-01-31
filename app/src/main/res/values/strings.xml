@@ -465,6 +465,7 @@
     <string name="sort_order">Sort Order</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_usage">Sort by usage</string>
+    <string name="sort_by_recent">Sort by recent</string>
     <string name="choose_sorting">Choose sorting</string>
     <string name="credit_card">Credit Card</string>
     <string name="cash_accounts">Cash Accounts</string>
