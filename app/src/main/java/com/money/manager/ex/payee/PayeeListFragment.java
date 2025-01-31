@@ -151,7 +151,7 @@ public class PayeeListFragment
             case R.id.menu_sort_name:
                 mSort = 0;
                 item.setChecked(true);
-                settings.set(R.string.pref_sort_payee, mSort);
+                settings.setPayeeSort(mSort);
                 // restart search
                 restartLoader();
                 return true;
@@ -159,7 +159,7 @@ public class PayeeListFragment
             case R.id.menu_sort_usage:
                 mSort = 1;
                 item.setChecked(true);
-                settings.set(R.string.pref_sort_payee, mSort);
+                settings.setPayeeSort(mSort);
                 // restart search
                 restartLoader();
                 return true;
