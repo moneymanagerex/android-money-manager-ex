@@ -70,8 +70,12 @@ public class PayeeListFragment
     private static final int ID_LOADER_PAYEE = 0;
 
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
-//    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
+    private static final String SORT_BY_RECENT =
+            "(SELECT max( TRANSDATE ) \n" +
+                    " FROM CHECKINGACCOUNT_V1 \n" +
+                    " WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID \n" +
+                    "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
     private Context mContext;
     private String mCurFilter;
@@ -123,7 +127,7 @@ public class PayeeListFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_payee, menu);
+        inflater.inflate(R.menu.menu_sort, menu);
 
         AppSettings settings = new AppSettings(mContext);
         int payeeSort = settings.getPayeeSort();
@@ -138,6 +142,10 @@ public class PayeeListFragment
                 break;
             case 1:
                 item = menu.findItem(R.id.menu_sort_usage);
+                item.setChecked(true);
+                break;
+            case 2:
+                item = menu.findItem(R.id.menu_sort_recent);
                 item.setChecked(true);
                 break;
         }
@@ -158,6 +166,14 @@ public class PayeeListFragment
 
             case R.id.menu_sort_usage:
                 mSort = 1;
+                item.setChecked(true);
+                settings.setPayeeSort(mSort);
+                // restart search
+                restartLoader();
+                return true;
+
+            case R.id.menu_sort_recent:
+                mSort = 2;
                 item.setChecked(true);
                 settings.setPayeeSort(mSort);
                 // restart search
@@ -254,7 +270,7 @@ public class PayeeListFragment
             PayeeRepository repo = new PayeeRepository(getActivity());
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(mSort == 1 ? SORT_BY_USAGE : (mSort == 2 ? SORT_BY_RECENT : SORT_BY_NAME ));
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }

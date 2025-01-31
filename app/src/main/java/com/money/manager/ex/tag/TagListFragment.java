@@ -110,6 +110,10 @@ public class TagListFragment     extends BaseListFragment
                 item = menu.findItem(R.id.menu_sort_usage);
                 item.setChecked(true);
                 break;
+            case TagRepository.SORT_BY_RECENT:
+                item = menu.findItem(R.id.menu_sort_recent);
+                item.setChecked(true);
+                break;
         }
     }
 
@@ -128,6 +132,14 @@ public class TagListFragment     extends BaseListFragment
 
             case R.id.menu_sort_usage:
                 mSort = TagRepository.SORT_BY_FREQUENCY;
+                item.setChecked(true);
+                settings.setTagSort(mSort);
+                // restart search
+                restartLoader();
+                return true;
+
+            case R.id.menu_sort_recent:
+                mSort = TagRepository.SORT_BY_RECENT;
                 item.setChecked(true);
                 settings.setTagSort(mSort);
                 // restart search

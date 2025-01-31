@@ -79,14 +79,20 @@ public class TagRepository extends  RepositoryBase {
     public static final int SORT_BY_FREQUENCY = 1;
     public static final int SORT_BY_RECENT = 2;
     private static final String ORDER_BY_NAME = "UPPER(" + Tag.TAGNAME + ")";
-    private static final String ORDER_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE TAGID = TAGLINK_V1.TAGID ) DESC";
+    private static final String ORDER_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE T.TAGID = TAGLINK_V1.TAGID ) DESC";
+    private static final String ORDER_BY_RECENT =
+            "( SELECT max( TRANSDATE ) \n" +
+            "            FROM TAGLINK_V1\n" +
+            "\t\t\tINNER join CHECKINGACCOUNT_V1 on CHECKINGACCOUNT_V1.TRANSID = TAGLINK_V1.REFID\n" +
+            "            WHERE T.TAGID = TAGLINK_V1.TAGID\n" +
+            "            ) DESC";
 
     public String getOrderByFromCode(int sort) {
         switch(sort) {
             case SORT_BY_FREQUENCY:
                 return ORDER_BY_USAGE;
-//            case SORT_BY_RECENT:
-//                return ORDER_BY_RECENT
+            case SORT_BY_RECENT:
+                return ORDER_BY_RECENT;
             default: // SORT_BY_NAME
                 return ORDER_BY_NAME;
         }
