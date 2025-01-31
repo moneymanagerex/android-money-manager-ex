@@ -106,6 +106,9 @@ public class NestedCategoryListFragment
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
 
+        // restore sort from local setting
+        mSort = settings.getCategorySort();
+
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
         int layout = android.R.layout.simple_list_item_1;
@@ -161,6 +164,7 @@ public class NestedCategoryListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AppSettings settings = new AppSettings(getActivity());
         if (item.getItemId() == android.R.id.home) {
             // we wont to invalidate cursor, so if back is pressed no item is select
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
@@ -174,7 +178,7 @@ public class NestedCategoryListFragment
             } else {
                 mSort = 1;
             }
-
+            settings.setCategorySort(mSort);
             item.setChecked(true);
             // restart search
             restartLoader();

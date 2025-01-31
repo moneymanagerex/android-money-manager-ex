@@ -49,9 +49,6 @@ public class TagListFragment     extends BaseListFragment
 
     private static final int ID_LOADER_TAG = 0;
 
-    private static final String SORT_BY_NAME = "UPPER(" + Tag.TAGNAME + ")";
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE TAGID = TAGLINK_V1.TAGID ) DESC";
-
     private Context mContext;
     private String mCurFilter;
     private int mSort = 0;
@@ -67,6 +64,8 @@ public class TagListFragment     extends BaseListFragment
         AppSettings settings = new AppSettings(mContext);
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
+
+        mSort = settings.getTagSort();
 
         setEmptyText(getActivity().getResources().getString(R.string.tag_empty_list));
         setHasOptionsMenu(true);
@@ -84,7 +83,6 @@ public class TagListFragment     extends BaseListFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         setListShown(false);
-        mSort = 0;
 
         // start loader
         getLoaderManager().initLoader(ID_LOADER_TAG, null, this);
@@ -100,18 +98,15 @@ public class TagListFragment     extends BaseListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
-
-        int sort = 0;
-        
         //Check the default sort order
         final MenuItem item;
         // PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_tag), 0)
-        switch (sort) {
-            case 0:
+        switch (mSort) {
+            case TagRepository.SORT_BY_NAME:
                 item = menu.findItem(R.id.menu_sort_name);
                 item.setChecked(true);
                 break;
-            case 1:
+            case TagRepository.SORT_BY_FREQUENCY:
                 item = menu.findItem(R.id.menu_sort_usage);
                 item.setChecked(true);
                 break;
@@ -120,18 +115,21 @@ public class TagListFragment     extends BaseListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AppSettings settings = new AppSettings(getActivity());
 
         switch (item.getItemId()) {
             case R.id.menu_sort_name:
-                mSort = 0;
+                mSort = TagRepository.SORT_BY_NAME;
                 item.setChecked(true);
+                settings.setTagSort(mSort);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_usage:
-                mSort = 1;
+                mSort = TagRepository.SORT_BY_FREQUENCY;
                 item.setChecked(true);
+                settings.setTagSort(mSort);
                 // restart search
                 restartLoader();
                 return true;
@@ -226,7 +224,7 @@ public class TagListFragment     extends BaseListFragment
             TagRepository repo = new TagRepository(getActivity());
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(repo.getOrderByFromCode(mSort));
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
