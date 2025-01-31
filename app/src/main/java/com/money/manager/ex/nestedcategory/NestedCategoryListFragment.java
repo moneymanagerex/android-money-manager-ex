@@ -88,6 +88,10 @@ public class NestedCategoryListFragment
             "FROM CHECKINGACCOUNT_V1 \n" +
             "WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID\n" +
             "  AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '')) DESC";
+    private static final String SORT_BY_RECENT = "(SELECT max( TRANSDATE ) \n" +
+            " FROM CHECKINGACCOUNT_V1 \n" +
+            " WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID \n" +
+            "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
 //    private Context mContext;
     private String mCurFilter;
@@ -171,12 +175,16 @@ public class NestedCategoryListFragment
             cursor.moveToPosition(-1);
             // and continue with super
         }
+
         if (item.getItemId() == R.id.menu_sort_name ||
-            item.getItemId() == R.id.menu_sort_usage) {
-            if (item.getItemId() == R.id.menu_sort_name )  {
-                mSort = 0;
-            } else {
+            item.getItemId() == R.id.menu_sort_usage ||
+            item.getItemId() == R.id.menu_sort_recent ) {
+            if (item.getItemId() == R.id.menu_sort_usage )  {
                 mSort = 1;
+            } else if (item.getItemId() == R.id.menu_sort_recent ) {
+                mSort = 2;
+            } else {
+                mSort = 0;
             }
             settings.setCategorySort(mSort);
             item.setChecked(true);
@@ -293,7 +301,7 @@ public class NestedCategoryListFragment
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(mSort == 1 ? SORT_BY_USAGE : (mSort == 2 ? SORT_BY_RECENT : SORT_BY_NAME ));
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
