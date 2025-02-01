@@ -11,30 +11,33 @@ SELECT
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     CAT.categName AS Category,
+    TX.CATEGID AS CategID,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
-    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount AS Amount,
-    FromAcc.CurrencyID AS CurrencyID,
     cf.currency_symbol AS currency,
+    ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *  TX.TransAmount AS Amount,
+
+    FromAcc.CurrencyID AS CurrencyID,
     FromAcc.AccountID AS AccountID,
     FromAcc.AccountName AS AccountName,
-    -- Destination
     ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountID,
     ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
     TX.ToTransAmount AS ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyID,
     ( CASE ifnull( splitCounter.counter, 0 ) WHEN 0 THEN 0 ELSE 1 END ) AS SPLITTED,
-    TX.CATEGID AS CategID,
-    ifnull( PAYEE.PayeeName, '') AS PayeeName,
     ifnull( PAYEE.PayeeID, -1 ) AS PayeeID,
+    ifnull( PAYEE.PayeeName, '') AS PayeeName,
     TX.TRANSACTIONNUMBER AS TransactionNumber,
-    ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
     round( strftime( '%d', TX.transdate ) ) AS day,
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year,
+    ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
 	Tags.Tags as TAGS,
-	TX.Color AS COLOR
+	TX.Color AS COLOR,
+    ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
+	  ( TX.TRANSAMOUNT ) , 2 )
+        * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
