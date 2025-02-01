@@ -26,12 +26,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
+import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
 import androidx.cursoradapter.widget.CursorAdapter;
+
+import java.util.List;
+
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -43,16 +52,24 @@ public class CategoriesReportAdapter
     private final LayoutInflater mInflater;
     private final Context mContext;
 
-//    @SuppressWarnings("deprecation")
+    //    @SuppressWarnings("deprecation")
     public CategoriesReportAdapter(Context context, Cursor c) {
         super(context, c, false);
 
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
+
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        long categoryId = cursor.getLong(cursor.getColumnIndex(QueryMobileData.CATEGID));
+        boolean isActive = true;
+        if (categoryId != Constants.NOT_SET) {
+            CategoryRepository categoryRepository = new CategoryRepository(context);
+            Category category = categoryRepository.load(categoryId);
+            isActive = category.getActive();
+        }
         TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
 
@@ -60,11 +77,15 @@ public class CategoriesReportAdapter
         String column1;
         String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
         if (!TextUtils.isEmpty(category)) {
-            column1 = "<b>" + category + "</b>";
+            if ( !isActive ) {
+                column1 = "<i>" + category + " " + context.getString(R.string.inactive) + "</i>";
+            } else {
+                column1 = "<b>" + category + "</b>";
+            }
         } else {
             column1 = "<i>" + context.getString(R.string.empty_category);
         }
-        txtColumn1.setText(Html.fromHtml(column1));
+        txtColumn1.setText(Html.fromHtml(column1, Html.FROM_HTML_MODE_LEGACY));
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
