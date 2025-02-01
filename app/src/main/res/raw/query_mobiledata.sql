@@ -13,7 +13,7 @@ SELECT
     TX.TransCode AS TransactionType,
     date( TX.TransDate ) AS Date,
     COALESCE( SCAT.categname, CAT.categname, "" ) AS Category,
-	coalesce( st.CategId, TX.CategId, -1 ) AS CATEGID,
+	coalesce( st.CategId, TX.CategId, -1 ) AS CategID,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
