@@ -69,6 +69,10 @@ public class PayeeListFragment
 //    private static final long MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
 
+    private static final int ORDER_BY_NAME = 0;
+    private static final int ORDER_BY_USAGE = 1;
+    private static final int ORDER_BY_RECENT = 2;
+
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
     private static final String SORT_BY_RECENT =
@@ -79,7 +83,7 @@ public class PayeeListFragment
 
     private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
+//    private int mSort = 0;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -112,7 +116,7 @@ public class PayeeListFragment
         // init sort
 //        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
 //                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
-        mSort = settings.getPayeeSort();
+//        mSort = settings.getPayeeSort();
 
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
@@ -157,25 +161,22 @@ public class PayeeListFragment
 
         switch (item.getItemId()) {
             case R.id.menu_sort_name:
-                mSort = 0;
                 item.setChecked(true);
-                settings.setPayeeSort(mSort);
+                settings.setPayeeSort(ORDER_BY_NAME);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_usage:
-                mSort = 1;
                 item.setChecked(true);
-                settings.setPayeeSort(mSort);
+                settings.setPayeeSort(ORDER_BY_USAGE);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_recent:
-                mSort = 2;
                 item.setChecked(true);
-                settings.setPayeeSort(mSort);
+                settings.setPayeeSort(ORDER_BY_RECENT);
                 // restart search
                 restartLoader();
                 return true;
@@ -268,9 +269,21 @@ public class PayeeListFragment
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             PayeeRepository repo = new PayeeRepository(getActivity());
+            String orderBy;
+            switch ((new AppSettings(getContext())).getPayeeSort()) {
+                case ORDER_BY_USAGE:
+                    orderBy = SORT_BY_USAGE;
+                    break;
+                case ORDER_BY_RECENT:
+                    orderBy = SORT_BY_RECENT;
+                    break;
+                default:
+                    orderBy = SORT_BY_NAME;
+                    break;
+            }
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : (mSort == 2 ? SORT_BY_RECENT : SORT_BY_NAME ));
+                    .orderBy(orderBy);
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }

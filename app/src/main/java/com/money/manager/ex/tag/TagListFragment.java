@@ -51,7 +51,6 @@ public class TagListFragment     extends BaseListFragment
 
     private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -64,8 +63,6 @@ public class TagListFragment     extends BaseListFragment
         AppSettings settings = new AppSettings(mContext);
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
-
-        mSort = settings.getTagSort();
 
         setEmptyText(getActivity().getResources().getString(R.string.tag_empty_list));
         setHasOptionsMenu(true);
@@ -101,11 +98,7 @@ public class TagListFragment     extends BaseListFragment
         //Check the default sort order
         final MenuItem item;
         // PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_tag), 0)
-        switch (mSort) {
-            case TagRepository.SORT_BY_NAME:
-                item = menu.findItem(R.id.menu_sort_name);
-                item.setChecked(true);
-                break;
+        switch ((new AppSettings(getContext())).getTagSort()) {
             case TagRepository.SORT_BY_FREQUENCY:
                 item = menu.findItem(R.id.menu_sort_usage);
                 item.setChecked(true);
@@ -114,6 +107,11 @@ public class TagListFragment     extends BaseListFragment
                 item = menu.findItem(R.id.menu_sort_recent);
                 item.setChecked(true);
                 break;
+            default:
+                item = menu.findItem(R.id.menu_sort_name);
+                item.setChecked(true);
+                break;
+
         }
     }
 
@@ -123,25 +121,22 @@ public class TagListFragment     extends BaseListFragment
 
         switch (item.getItemId()) {
             case R.id.menu_sort_name:
-                mSort = TagRepository.SORT_BY_NAME;
                 item.setChecked(true);
-                settings.setTagSort(mSort);
+                settings.setTagSort(TagRepository.SORT_BY_NAME);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_usage:
-                mSort = TagRepository.SORT_BY_FREQUENCY;
                 item.setChecked(true);
-                settings.setTagSort(mSort);
+                settings.setTagSort(TagRepository.SORT_BY_FREQUENCY);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_recent:
-                mSort = TagRepository.SORT_BY_RECENT;
                 item.setChecked(true);
-                settings.setTagSort(mSort);
+                settings.setTagSort(TagRepository.SORT_BY_RECENT);
                 // restart search
                 restartLoader();
                 return true;
@@ -236,7 +231,7 @@ public class TagListFragment     extends BaseListFragment
             TagRepository repo = new TagRepository(getActivity());
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(repo.getOrderByFromCode(mSort));
+                    .orderBy(repo.getOrderByFromCode());
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }

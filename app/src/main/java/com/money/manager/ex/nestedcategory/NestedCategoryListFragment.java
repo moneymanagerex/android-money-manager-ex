@@ -82,6 +82,9 @@ public class NestedCategoryListFragment
 
     private static final int ID_LOADER_NESTEDCATEGORY = 0;
 
+    private static final int ORDER_BY_NAME = 0;
+    private static final int ORDER_BY_USAGE = 1;
+    private static final int ORDER_BY_RECENT = 2;
     private static final String SORT_BY_NAME = "UPPER(" + QueryNestedCategory.CATEGNAME + ")";
 // note use T. for resovle name from dinamic from
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) \n" +
@@ -95,7 +98,6 @@ public class NestedCategoryListFragment
 
 //    private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
 
 
     @Override
@@ -109,9 +111,6 @@ public class NestedCategoryListFragment
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
         setMenuItemSearchIconified(!focusOnSearch);
-
-        // restore sort from local setting
-        mSort = settings.getCategorySort();
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
@@ -180,13 +179,12 @@ public class NestedCategoryListFragment
             item.getItemId() == R.id.menu_sort_usage ||
             item.getItemId() == R.id.menu_sort_recent ) {
             if (item.getItemId() == R.id.menu_sort_usage )  {
-                mSort = 1;
+                settings.setCategorySort(ORDER_BY_USAGE);
             } else if (item.getItemId() == R.id.menu_sort_recent ) {
-                mSort = 2;
+                settings.setCategorySort(ORDER_BY_RECENT);
             } else {
-                mSort = 0;
+                settings.setCategorySort(ORDER_BY_NAME);
             }
-            settings.setCategorySort(mSort);
             item.setChecked(true);
             // restart search
             restartLoader();
@@ -299,9 +297,21 @@ public class NestedCategoryListFragment
                 selectionArgs = new String[]{mCurFilter + "%"};
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
+            String sort;
+            switch ((new AppSettings(getContext())).getCategorySort()) {
+                case ORDER_BY_USAGE:
+                    sort = SORT_BY_USAGE;
+                    break;
+                case ORDER_BY_RECENT:
+                    sort = SORT_BY_RECENT;
+                    break;
+                default:
+                    sort = SORT_BY_NAME;
+                    break;
+            }
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : (mSort == 2 ? SORT_BY_RECENT : SORT_BY_NAME ));
+                    .orderBy(sort);
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
