@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +39,9 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.domainmodel.Tag;
+import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -73,6 +77,25 @@ public class TagListFragment     extends BaseListFragment
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null, new String[] { Tag.TAGNAME },
                 new int[]{android.R.id.text1}, 0);
+
+        // overwrite to set inactive
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                TextView textView = (TextView) aView;
+                boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Tag.ACTIVE))) != 0);
+                CharSequence text = aCursor.getString(aColumnIndex);
+                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                }
+                if (!active) {
+                    textView.setText( Html.fromHtml( "<i>"+text+ " ["+mContext.getString(R.string.inactive)+"]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
+                } else {
+                    textView.setText(text);
+                }
+                return true;
+            }
+        });
+
         // set adapter
         setListAdapter(adapter);
 
@@ -163,6 +186,7 @@ public class TagListFragment     extends BaseListFragment
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.SWITCH_ACTIVE.getId(), Menu.NONE, getString(R.string.switch_active));
     }
 
     @Override
@@ -213,7 +237,13 @@ public class TagListFragment     extends BaseListFragment
                 parameters.tagName = tag.getName();
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
-        }
+                break;
+            case SWITCH_ACTIVE:
+                tag.setActive(!tag.getActive());
+                service = new TagService(getActivity());
+                service.update(tag);
+                restartLoader();
+                break;        }
         return false;
     }
 
@@ -222,10 +252,14 @@ public class TagListFragment     extends BaseListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_TAG) {
-            String whereClause = "ACTIVE = 1";
+            String whereClause = ""; // we don't filter inactive by default
+            if (mAction == Intent.ACTION_PICK) {
+                whereClause = "ACTIVE <> 0";
+            }
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause += " AND " + Tag.TAGNAME + " LIKE ?";
+                if (!whereClause.isEmpty()) whereClause += " AND ";
+                whereClause += Tag.TAGNAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             TagRepository repo = new TagRepository(getActivity());

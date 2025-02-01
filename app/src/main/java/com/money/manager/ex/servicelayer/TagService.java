@@ -129,4 +129,19 @@ public class TagService
                 new String[]{Long.toString(id)});
     }
 
+    public long update(Tag tag) {
+        if (tag == null) return  Constants.NOT_SET;
+        if(TextUtils.isEmpty(tag.getName())) return Constants.NOT_SET;
+        if(tag.getId() == null) return Constants.NOT_SET;
+
+        tag.setName(tag.getName().trim());
+        ContentValues values = tag.getContentValues();
+        values.remove("_id");
+
+        return getContext().getContentResolver().update(tagRepository.getUri(),
+                values,
+                Tag.TAGID + "=?",
+                new String[]{Long.toString(tag.getId())});
+    }
+
 }
