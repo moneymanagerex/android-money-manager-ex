@@ -275,6 +275,9 @@ public class CheckingTransactionEditActivity
             }
         }
 
+        // copy tag
+        mCommon.transactionEntity.setTags(Taglink.clearCrossReference(mCommon.transactionEntity.getTags()));
+
     }
 
     /**
