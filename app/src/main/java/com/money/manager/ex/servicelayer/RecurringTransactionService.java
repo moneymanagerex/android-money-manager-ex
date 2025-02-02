@@ -269,6 +269,10 @@ public class RecurringTransactionService
         // Exit if the deletion of splits failed.
         if(!result) return false;
 
+        // delete tags
+        TaglinkRepository tagLinkRepo = new TaglinkRepository(getContext());
+        tagLinkRepo.deleteForType(this.recurringTransactionId, Taglink.REFTYPE_RECURRING_TRANSACTION);
+
         // Delete recurring transactions.
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
         long deleteResult = repo.delete(this.recurringTransactionId);
