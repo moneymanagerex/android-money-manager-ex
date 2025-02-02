@@ -24,10 +24,10 @@ public class TagRepository extends  RepositoryBase {
     private static final String ORDER_BY_USAGE = "(SELECT COUNT(*) FROM TAGLINK_V1 WHERE T.TAGID = TAGLINK_V1.TAGID ) DESC";
     private static final String ORDER_BY_RECENT =
             "( SELECT max( TRANSDATE ) \n" +
-                    "            FROM TAGLINK_V1\n" +
-                    "\t\t\tINNER join CHECKINGACCOUNT_V1 on CHECKINGACCOUNT_V1.TRANSID = TAGLINK_V1.REFID\n" +
-                    "            WHERE T.TAGID = TAGLINK_V1.TAGID\n" +
-                    "            ) DESC";
+                    "FROM TAGLINK_V1\n" +
+                    "INNER join CHECKINGACCOUNT_V1 on CHECKINGACCOUNT_V1.TRANSID = TAGLINK_V1.REFID\n" +
+                    "WHERE T.TAGID = TAGLINK_V1.TAGID\n" +
+                    ") DESC";
 
 
     @Override
