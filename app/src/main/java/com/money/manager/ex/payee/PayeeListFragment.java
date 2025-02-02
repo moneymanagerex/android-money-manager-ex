@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,8 +54,10 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
+import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
 /**
@@ -106,6 +110,26 @@ public class PayeeListFragment
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null, new String[] { Payee.PAYEENAME },
                 new int[]{android.R.id.text1}, 0);
+
+        // overwrite to set inactive
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                TextView textView = (TextView) aView;
+                boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))) != 0);
+                CharSequence text = aCursor.getString(aColumnIndex);
+                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                }
+                if (!active) {
+                    textView.setText( Html.fromHtml( "<i>"+text+ " ["+mContext.getString(R.string.inactive)+"]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
+                } else {
+                    textView.setText(text);
+                }
+                return true;
+            }
+        });
+
+
         // set adapter
         setListAdapter(adapter);
 
@@ -202,6 +226,7 @@ public class PayeeListFragment
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.SWITCH_ACTIVE.getId(), Menu.NONE, getString(R.string.switch_active));
     }
 
     @Override
@@ -253,6 +278,12 @@ public class PayeeListFragment
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
+            case SWITCH_ACTIVE:
+                payee.setActive(!payee.getActive());
+                PayeeRepository payeeRepository = new PayeeRepository(getActivity());
+                payeeRepository.save(payee);
+                restartLoader();
+                break;
         }
         return false;
     }
@@ -262,10 +293,14 @@ public class PayeeListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_PAYEE) {
-            String whereClause = null;
+            String whereClause = ""; // we don't filter inactive by default
+            if (mAction == Intent.ACTION_PICK) {
+                whereClause = "ACTIVE <> 0";
+            }
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = Payee.PAYEENAME + " LIKE ?";
+                if (!whereClause.isEmpty()) whereClause += " AND ";
+                whereClause += Payee.PAYEENAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             PayeeRepository repo = new PayeeRepository(getActivity());

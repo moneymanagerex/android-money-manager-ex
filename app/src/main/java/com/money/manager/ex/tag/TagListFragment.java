@@ -243,7 +243,8 @@ public class TagListFragment     extends BaseListFragment
                 service = new TagService(getActivity());
                 service.update(tag);
                 restartLoader();
-                break;        }
+                break;
+        }
         return false;
     }
 

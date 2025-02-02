@@ -3,3 +3,4 @@ fix for frequency order in tag, category and payee
 new sorting by recent usage in tag, category and payee
 evidence of inactive category in report (transaction with inactive category is still shown in list)
 sort criteria for tag, category and payee is persistent after app close
+ability to Activate/Deactivate Tag and Payee

@@ -68,4 +68,10 @@ public class Payee
     public boolean hasCategory() {
         return this.getCategoryId() != null && this.getCategoryId() != Constants.NOT_SET;
     }
+
+    public Boolean getActive() {
+        return getLong(ACTIVE) == null || getLong(ACTIVE) != 0L;
+    }
+    public void setActive(Boolean value) { setLong(ACTIVE, value ? 1L : 0L); }
+
 }
