@@ -147,6 +147,12 @@ public class DatabaseSettingsFragment
 
         DatabaseMetadata db = mDatabases.get().getCurrent();
         final Preference preference = findPreference(getActivity().getString(R.string.pref_database_path));
+
+        // issue 2199
+        if (preference == null || db == null || db.localPath == null) {
+            Timber.e("db path is null");
+            return;
+        }
         preference.setSummary(db.localPath);
 
         final Preference remotePreference = findPreference(getActivity().getString(R.string.pref_remote_path));
