@@ -53,7 +53,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     /**
      * Database schema version.
      */
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 20;
     private String dbPath;
 
     // Dynamic
