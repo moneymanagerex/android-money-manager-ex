@@ -579,6 +579,7 @@ public class NestedCategoryListFragment
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Long> categoryIds = new ArrayList<>();
+        // todo add -1 and "<root>" for moving at top level
         for (NestedCategoryEntity category1 : categories) {
             // do not include category itself and all children form parent list
             if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
@@ -612,8 +613,8 @@ public class NestedCategoryListFragment
                         // check position
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
-                        // get parent category id
-                        long parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
+                        // get parent category id from list of categories in spin
+                        long parentID = categoryIds.get(spnCategory.getSelectedItemPosition());
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
@@ -625,6 +626,8 @@ public class NestedCategoryListFragment
                                 }
                                 break;
                             case UPDATE:
+                                // TODO: issue 2187. move sometime create id = parentid
+                                assert category.getId() != parentID;
                                 long updateResult = service.update(category.getId(), name, parentID);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
