@@ -225,7 +225,13 @@ public class CurrencyEditActivity
         currency.setDecimalPoint(holder.edtDecimal.getText().toString().trim());
         currency.setGroupSeparator(holder.edtGroup.getText().toString().trim());
 
-        long scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
+        long scale;
+        try {
+             scale = Integer.parseInt(holder.edtScale.getText().toString().trim());
+        } catch (Exception e) {
+            scale = 1;
+            holder.edtScale.setText("1");
+        }
         currency.contentValues.put(Currency.SCALE, scale);
 
         boolean success;
