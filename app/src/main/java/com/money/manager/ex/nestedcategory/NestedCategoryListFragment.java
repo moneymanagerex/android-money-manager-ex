@@ -249,13 +249,8 @@ public class NestedCategoryListFragment
                         newCat);
                 break;
             case EDIT:
-                if (category.getParentId() <= 0) {
-                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE,
-                            category);
-                } else {
-                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE,
-                            category);
-                }
+                showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE,
+                        category);
                 break;
 
             case DELETE:
@@ -410,7 +405,7 @@ public class NestedCategoryListFragment
         String search = !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "";
         Category category = new Category();
         category.setName(search);
-        showDialogEditCategoryName(SQLTypeTransaction.INSERT, category);
+        showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, category);
     }
 
     @Override
@@ -502,65 +497,6 @@ public class NestedCategoryListFragment
     /**
      * Show alter binaryDialog, for create or edit new category
      */
-    private void showDialogEditCategoryName(final SQLTypeTransaction type, Category category) {
-        // inflate view
-        View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
-
-        final EditText edtCategName = viewDialog.findViewById(R.id.editTextCategName);
-        // set category description
-        edtCategName.setText(category.getBasename());
-        if (!TextUtils.isEmpty(category.getBasename())) {
-            edtCategName.setSelection(category.getBasename().length());
-        }
-
-        int titleId = type.equals(SQLTypeTransaction.INSERT)
-                ? R.string.add_category
-                : R.string.edit_categoryName;
-
-        UIHelper ui = new UIHelper(getActivity());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(viewDialog)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_tags))
-                .setTitle(titleId)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // get category description
-                        String name = edtCategName.getText().toString();
-                        CategoryService service = new CategoryService(getActivity());
-
-                        switch (type) {
-                            case INSERT:
-                                long insertResult = service.createNew(name, Constants.NOT_SET);
-
-                                if (insertResult <= 0) {
-                                    Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case UPDATE:
-                                long updateResult = service.update(category.getId(), name, Constants.NOT_SET);
-                                if (updateResult <= 0) {
-                                    Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                        }
-                        // restart loader
-                        restartLoader();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    /**
-     * Show alter binaryDialog, for create or edit new category
-     */
     private void showDialogEditSubCategoryName(final SQLTypeTransaction type, Category category) {
 
         // inflate view
@@ -580,9 +516,12 @@ public class NestedCategoryListFragment
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Long> categoryIds = new ArrayList<>();
         // todo add -1 and "<root>" for moving at top level
+        categoryNames.add("<root>");
+        categoryIds.add(Constants.NOT_SET);
         for (NestedCategoryEntity category1 : categories) {
-            // do not include category itself and all children form parent list
-            if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
+            // if edit do not include category itself and all children form parent list
+            if (type.equals(SQLTypeTransaction.INSERT) ||
+                    category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
                 categoryIds.add(category1.getCategoryId());
                 categoryNames.add(category1.getCategoryName());
             }
