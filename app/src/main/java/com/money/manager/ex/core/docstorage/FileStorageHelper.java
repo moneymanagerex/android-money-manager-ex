@@ -283,7 +283,13 @@ public class FileStorageHelper {
             public void run() {
                 // Fetch the remote metadata until it has reflected the upload.
                 Uri uri = Uri.parse(metadata.remotePath);
-                DocFileMetadata remote = DocFileMetadata.fromUri(_host, uri);
+                DocFileMetadata remote;
+                try {
+                     remote = DocFileMetadata.fromUri(_host, uri);
+                } catch (Exception e) {
+                    Timber.e(e, "Error fetching remote metadata");
+                    return;
+                }
                 Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
