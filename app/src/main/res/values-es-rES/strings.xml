@@ -561,6 +561,7 @@
     <string name="commission">Comisión</string>
     <string name="value">Valor</string>
     <string name="view_transactions">Ver transacciones</string>
+    <string name="switch_active">Cambiar Activo/Inactivo</string>
     <string name="error_downloading_symbol">Error descargando precio para símbolo</string>
     <string name="error_updating_rates">Error al actualizar las tasas</string>
     <string name="error_no_price_found_for_symbol">No hay resultados para símbolo de precio</string>
@@ -587,6 +588,8 @@
     <string name="all_accounts">Todas las cuentas</string>
     <string name="records">registros</string>
     <!-- db password entry -->
+    <string name="enter_password">Introduzca contraseña (opcional)</string>
+    <string name="password_hint">Sólo para archivos .emb</string>
     <string name="success">Operación exitosa</string>
     <string name="overview">Resumen</string>
     <string name="title_activity_asset_allocation_overview">Visión de asignación de activos</string>
@@ -719,6 +722,7 @@
     <string name="currency">Moneda</string>
     <string name="title_anonymous_usage">Enviar datos de uso anónimos</string>
     <!-- Notification Setting -->
+    <string name="notification_channel_remotefile">Operación Remota de Archivos</string>
     <string name="notification_channel_remotefile__description">Notificación de Operación Remota de Archivos</string>
     <string name="notification_channel_fileoperation_downloadin">Descargando Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Cargando Mmex</string>
