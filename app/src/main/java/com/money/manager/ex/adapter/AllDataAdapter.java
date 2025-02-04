@@ -389,7 +389,7 @@ public class AllDataAdapter
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
         COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
         SPLITTED = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.SPLITTED : QueryBillDeposits.SPLITTED;
-        CATEGID = mTypeCursor == mTypeCursor.ALLDATA ? QueryAllData.CATEGID : QueryBillDeposits.CATEGID;
+        CATEGID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CATEGID : QueryBillDeposits.CATEGID;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {
