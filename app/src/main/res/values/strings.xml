@@ -320,6 +320,7 @@
     <string name="year">Year</string>
     <string name="menu_reports">Reports</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
+    <string name="menu_report_cashflow">Cash Flow</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">All Time</string>
