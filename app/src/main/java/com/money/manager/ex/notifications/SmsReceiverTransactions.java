@@ -43,6 +43,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -63,6 +64,7 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
@@ -140,6 +142,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         // Promotional sms will have sender like AT-012345
                         // Not sure how this format will be in out side of India. I may need to update if I get sample
 
+                        // Db setup
+                        MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
+                        db = MmxHelper.getReadableDatabase();
+
                         ITransactionEntity model = AccountTransaction.create();
                         mCommon = new EditTransactionCommonFunctions(null, model, database);
 
@@ -198,10 +204,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                             //Create the intent that’ll fire when the user taps the notification//
                             Intent t_intent = new Intent(mContext, CheckingTransactionEditActivity.class);
-
-                            // Db setup
-                            MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
-                            db = MmxHelper.getReadableDatabase();
 
                             baseCurencyID = gen_settings.getBaseCurrencyId();
                             baseAccountID = gen_settings.getDefaultAccountId();
@@ -362,7 +364,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         + "Trans Amt = " + fromAccCurrencySymbl + " " + transAmount + ",\n"
                                         + "Payyee Name= " + transPayee[1] + "\n"
                                         + "Category ID = " + transPayee[2] + "\n"
-                                        + "Sub Category ID = " + transPayee[3] + "\n"
                                         + "Trans Ref No. = " + transRefNo + "\n"
                                         + "Trans Type = " + transType + "\n";
 
@@ -380,8 +381,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
-                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
-                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommon.transactionEntity.getDate());
+ //                               t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
 
                                 // validate and save the transaction
                                 if(!skipSaveTrans) {
@@ -819,14 +820,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     @SuppressLint("Range")
     private static String[] getPayeeDetails(String payeeName)
     {
-        String[] payeeDetails = new String[]{"", payeeName.trim(), "", ""};
+        String[] payeeDetails = new String[]{"", payeeName.trim(), ""};
 
         try
         {
             if(!payeeName.trim().isEmpty()) {
 
-                String sql = "SELECT PAYEEID, PAYEENAME, CATEGID, SUBCATEGID " +
-                                "FROM PAYEE_V1 " +
+                String sql = "SELECT PAYEEID, PAYEENAME, CATEGID FROM PAYEE_V1 " +
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
 
@@ -837,8 +837,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     payeeDetails = new String[] {
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEEID")),
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEENAME")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("CATEGID")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("SUBCATEGID"))
+                            payeeCursor.getString(payeeCursor.getColumnIndex("CATEGID"))
                     };
                 }
 
@@ -897,26 +896,27 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             if(!searchName.trim().isEmpty()) {
 
                 String sql =
-                        "SELECT c.CATEGID, c.CATEGNAME, s.SUBCATEGID, s.SUBCATEGNAME " +
-                                "FROM CATEGORY_V1 c  " +
-                                "INNER JOIN SUBCATEGORY_V1 s ON s.CATEGID=c.CATEGID " +
-                                "WHERE s.SUBCATEGNAME = '" + searchName + "' " +
-                                "ORDER BY s.SUBCATEGID  LIMIT 1";
+                        "SELECT CATEGID, CATEGNAME, PARENTID FROM CATEGORY_V1  " +
+                                "WHERE CATEGNAME = '" + searchName + "' " +
+                                "AND PARENTID >0 " +
+                                "ORDER BY CATEGNAME  LIMIT 1";
 
+                Log.d("SQL", sql);
                 Cursor cCursor = db.query(sql);
 
                 if(cCursor.moveToFirst())
                 {
                     cTran = new String[]{
                             cCursor.getString(cCursor.getColumnIndex("CATEGID")),
-                            cCursor.getString(cCursor.getColumnIndex("SUBCATEGID"))
+                            cCursor.getString(cCursor.getColumnIndex("PARENTID"))
                     };
                 } else{ //search in only catogery
 
                     sql =
-                            "SELECT c.CATEGID, c.CATEGNAME " +
+                            "SELECT c.CATEGID, c.CATEGNAME, PARENTID " +
                                     "FROM CATEGORY_V1 c  " +
                                     "WHERE c.CATEGNAME = '" + searchName + "' " +
+                                    "AND AND PARENTID =-1 " +
                                     "ORDER BY c.CATEGID  LIMIT 1";
 
                     cCursor = db.query(sql);
@@ -1003,13 +1003,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         Core core = new Core(mContext);
 
-        if (mCommon.transactionEntity.getAccountId() == Constants.NOT_SET) {
+        Log.d("Vels Tag Equals : ", String.valueOf(mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)));
+        if (mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)) {
             //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
             return false;
         }
 
         if (isTransfer) {
-            if (mCommon.transactionEntity.getAccountToId() == Constants.NOT_SET) {
+            if (mCommon.transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
                 //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -1083,7 +1084,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             String GROUP_KEY_AMMEX = "com.android.example.MoneyManagerEx";
             int ID_NOTIFICATION =  (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
             NotificationManager notificationManager = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);
