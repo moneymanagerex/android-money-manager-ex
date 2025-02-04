@@ -124,6 +124,7 @@
     <string name="add_subcategory">Добавить подкатегорию</string>
     <string name="edit_categoryName">Редактировать категорию</string>
     <string name="delete_category">Удалить категорию</string>
+    <string name="search_sub_category">Включая подкатегории</string>
     <!-- currency -->
     <string name="currency_name">Название валюты</string>
     <string name="currency_symbol">Символ валюты</string>
@@ -135,8 +136,10 @@
     <string name="decimal_char">Разделитель целой и дробной части</string>
     <string name="group_char">Разделитель групп</string>
     <string name="scale">Дробных</string>
+    <string name="conversion_to_base_rate">Конвертация</string>
     <string name="currency_name_empty">Требуется указать название валюты</string>
     <string name="new_edit_currency">Создать/Редактировать валюту</string>
+    <string name="missing_default_currency">В настройках не задана валюта по умолчанию </string>
     <!-- transaction -->
     <string name="amount">Сумма</string>
     <string name="total_amount">Итоговая сумма</string>
@@ -216,6 +219,16 @@
     <string name="widget_all_accounts">Все счета</string>
     <string name="widget_add_transaction">Добавить транзакцию</string>
     <!-- TAG -->
+    <string name="tag">Теги/метки</string>
+    <string name="tagsList_transactions">Теги проводки</string>
+    <string name="tag_name">Имя тега</string>
+    <string name="edit_tagName">Изменить тег</string>
+    <string name="delete_tag">Удалить тег</string>
+    <string name="select_tag">Выбрать тег</string>
+    <string name="tag_empty_list">Теги не найдены. Чтобы создать тег, нажмите на зеленую кнопку.</string>
+    <string name="tag_can_not_deleted">Тег не может быть удален, т.к. на него есть ссылки из проводок</string>
+    <string name="db_tag_update_failed">Не удалось обновить тег</string>
+    <string name="space_replaced_with__">Пробел, &amp; и \"|\" были заменены на \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Нет</string>
     <string name="once">Однократно</string>
@@ -236,6 +249,8 @@
     <string name="repeating_empty_transaction">Запланированные транзакции отсутствуют. Для создания нажмите кнопку \"+\".</string>
     <string name="inactive">Неактивна</string>
     <string name="activates">Активировать</string>
+    <string name="days_overdue">%d дней просрочено!</string>
+    <string name="days_remaining">Осталось %d дней</string>
     <string name="new_edit_repeating_transaction">Создать/Изменить запланированную транзакцию</string>
     <string name="due_date">Дата платежа</string>
     <string name="next_occurrence">Следующее начисление</string>
@@ -256,6 +271,7 @@
     <string name="enter">Ввод</string>
     <string name="enter_amount">Введите сумму</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Автовыполнение</string>
     <string name="manual">Выполнение вручную</string>
     <string name="prompt">По запросу</string>
     <string name="auto">Выполнить автоматически</string>
@@ -292,6 +308,8 @@
     <string name="last_month">Предыдущий месяц</string>
     <string name="last30days">Последние 30 дней</string>
     <string name="last_year">Предыдущий год</string>
+    <string name="current_fin_year">Текущий финансовый год</string>
+    <string name="last_fin_year">Предыдущий финансовый год</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Найдено проводок: %1$d</string>
@@ -335,6 +353,7 @@
     <string name="open_database">Открыть БД</string>
     <string name="synchronization_interval">Интервал синхронизации</string>
     <string name="summary_synchronization_interval">Как часто требуется синхронизация?</string>
+    <string name="tips_new_version_dropbox">Начиная с версии 1.2.0, Money Manager Ex для Android изменил механизм синхронизации с Dropbox. Пользователи, уже использующие такую синхронизацию, должны обновить конфигурацию.\nАутентификацию и выбор базы данных можно выполнить в Настройках.\nНачиная с версии 1.2.0, Money Manager Ex для Android может автоматически синхронизировать базу данных.</string>
     <string name="title_transaction_shown_balance">Баланс для каждой транзакции</string>
     <string name="summary_transaction_shown_balance">Показывать баланс для каждой транзакции. Это может замедлить работу приложения</string>
     <string name="menu_open_database">Открыть Базу данных</string>
@@ -408,6 +427,8 @@
     <string name="donate_in_app_already_donate">Вы уже поддержали разработчиков MoneyManagerEx для Android внеся пожертвование!\n\nБольшое спасибо от группы разработчиков!</string>
     <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
     <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
+    <string name="title_repeating_transaction_process">Обработать запланированную проводку</string>
+    <string name="summary_repeating_transaction_process">Обработка запланированных проводок (авто, по запросу, вручную)</string>
     <string name="title_use_nested_category">(BETA) Использовать новую модель вложенных категорий</string>
     <string name="summary_use_nested_category">Использовать новую вложенную модель категорий вместо схемы \"категория:подкатегория\" (бета, использовать на свой риск)</string>
     <string name="tools">Инструменты</string>
@@ -423,8 +444,8 @@
     <string name="choose_sorting">Выберите способ сортировки</string>
     <string name="credit_card">Кредитная Карта</string>
     <string name="cash_accounts">Наличные Счета</string>
-    <string name="bank_accounts">Банковские Счета</string>
-    <string name="term_accounts">Срочные Депозиты</string>
+    <string name="bank_accounts">Банковские счета</string>
+    <string name="term_accounts">Срочные депозиты</string>
     <string name="credit_card_accounts">Счета Кредитной Карты</string>
     <string name="montly_last_days">Ежемесячно (в последний день)</string>
     <string name="montly_last_bussines_day">Ежемесячно (последний рабочий день)</string>
@@ -440,7 +461,7 @@
     <string name="issues_tracker">Система отслеживания проблем на сайте GitHub</string>
     <string name="action_settings">Настройки</string>
     <string name="close">Закрыть</string>
-    <string name="tutorial_accounts_1">Различные типы счетов: текущий, сберегательный, кредитный, активов и инвестиционный.</string>
+    <string name="tutorial_accounts_1">Различные типы счетов: чековые, сберегательные, кредитные, счета активов и инвестиционные.</string>
     <string name="tutorial_accounts_2">Пролистните влево для продолжения&#8230;</string>
     <string name="financial_overview">Финансовый обзор</string>
     <string name="tutorial_overview_1">Обзорная панель, бюджеты, настраиваемые отчеты.</string>
@@ -556,6 +577,8 @@
     <string name="commission">Комиссия</string>
     <string name="value">Значение</string>
     <string name="view_transactions">Просмотр транзакций</string>
+    <string name="view_transactions_sub">Просмотр проводок в подкатегориях</string>
+    <string name="switch_active">Активировать/деактивировать</string>
     <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
     <string name="error_updating_rates">Ошибка обновление курсов</string>
     <string name="error_no_price_found_for_symbol">Цена для символа не найдена</string>
@@ -582,6 +605,8 @@
     <string name="all_accounts">Все счета</string>
     <string name="records">записей</string>
     <!-- db password entry -->
+    <string name="enter_password">Введите пароль (необязательно)</string>
+    <string name="password_hint">Только для файлов .emb</string>
     <string name="success">Операция выполнена успешно</string>
     <string name="overview">Обзор</string>
     <string name="title_activity_asset_allocation_overview">Обзор распределения активов</string>
@@ -693,6 +718,7 @@
     <string name="remote_file_not_found">Удаленный файл не найден</string>
     <string name="error_checking_remote">Проверка на ошибки удаленных изменений.</string>
     <string name="no_remote_change_date">Дата удаленного изменения не найдена в метаданных.</string>
+    <string name="remote_unavailable">Удаленный файл недоступен</string>
     <!-- Select database screen -->
     <string name="intro_text">Чтобы начать использовать деньги Менеджер Ex, нужно иметь файл базы данных для хранения данных. Выберите один из вариантов ниже.</string>
     <string name="intro_create_db">Можно создать новый файл и начальные настройки.</string>
@@ -707,6 +733,8 @@
     <string name="save">Сохранить</string>
     <string name="title_budget_show_simple_view">Показать простой бюджет</string>
     <string name="summary_budget_show_simple_view">Если выбрано, показывать бюджеты в упрощённой форме</string>
+    <string name="title_pref_budget_financial_year">Использовать финансовый год в бюджете</string>
+    <string name="summary_pref_budget_financial_year">Если выбрано, бюджеты используют финансовый год вместо календарного</string>
     <string name="shares">Акции</string>
     <string name="loan">Заем</string>
     <string name="loan_account">Счета займов</string>
@@ -724,10 +752,19 @@
     <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
     <string name="notification_channel_recurring">Уведомление о запланированной транзакции</string>
     <string name="notification_channel_recurring__description">Уведомление о повторяющейся транзакции</string>
+    <string name="notification_channel_remotefile">Операция с удаленным файлом</string>
+    <string name="notification_channel_remotefile__description">Уведомление об операции с удаленным файлом</string>
     <string name="notification_channel_fileoperation_downloadin">Загрузка Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Выгрузка Mmex</string>
     <string name="notification_channel_fileoperation_complete">Выгрузка Mmex завершена</string>
     <string name="notification_channel_fileoperation_conflict">Конфликт синхронизации Mmex</string>
     <string name="show">Показать</string>
+    <string name="attachment_folder">Папка для вложений</string>
+    <string name="attachment_folder_summary">Выберите папку, в которой будут храниться вложения</string>
+    <string name="pref_attachment_folder">Папка для вложений</string>
+    <string name="version_copied_to_clipboard">Номер версии скопирован в буфер обмена</string>
+    <string name="issue_open">"Сообщить о проблеме на GitHub"</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Очистить все</string>
+    <string name="empty_color_message">Выберите цвет</string>
 </resources>
