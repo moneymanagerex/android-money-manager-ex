@@ -382,7 +382,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommon.transactionEntity.getDate());
- //                               t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
 
                                 // validate and save the transaction
                                 if(!skipSaveTrans) {
