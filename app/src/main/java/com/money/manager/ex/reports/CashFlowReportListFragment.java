@@ -171,7 +171,8 @@ public class CashFlowReportListFragment
 
         // copy to matrix cursor
         for (HashMap<String, Object> rowMap : listRecurring) {
-            totalAmount += (double) rowMap.get(QueryBillDeposits.AMOUNT);
+            if (!rowMap.get(QueryBillDeposits.STATUS).equals("V"))
+                totalAmount += (double) rowMap.get(QueryBillDeposits.AMOUNT);
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
                     .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
