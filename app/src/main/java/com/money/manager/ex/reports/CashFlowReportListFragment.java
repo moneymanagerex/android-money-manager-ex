@@ -195,7 +195,26 @@ public class CashFlowReportListFragment
         super.onActivityCreated(savedInstanceState);
 
                 // Update UI elements here
+                //createCashFlowRecords();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 createCashFlowRecords();
+
+                // here you perform background operation
+                //Update the value background thread to UI thread
+                Handler mHandler = new Handler(Looper.getMainLooper());
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // here you can update ui
+                        adapter.swapCursor(matrixCursor);
+                        adapter.notifyDataSetChanged();
+                        setListShown(true);
+                    }
+                });
+            }
+        }).start();
 
         // create a object query
         setSearchMenuVisible(false);
