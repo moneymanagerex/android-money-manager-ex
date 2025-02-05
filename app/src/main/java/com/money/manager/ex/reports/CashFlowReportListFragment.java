@@ -41,9 +41,13 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -116,16 +120,13 @@ public class CashFlowReportListFragment
                 QueryBillDeposits.NEXTOCCURRENCEDATE);
         if (cursor == null) return;
 
-        // todo calculcate initial balance
-        totalAmount = 0;
+        getTotalAmount();
 
         RecurringTransactionService recurringTransactionService = new RecurringTransactionService(getContext());
 
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
-            long value = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
-            totalAmount = totalAmount + value;
             row = new HashMap<>();
             row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
             row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
@@ -136,8 +137,8 @@ public class CashFlowReportListFragment
             row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
-            row.put(QueryBillDeposits.AMOUNT, value);
-            row.put(BALANCE, totalAmount);
+            row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
+            row.put(BALANCE, 0);
             listRecurring.add(row);
 
             // create recurring transaction
@@ -155,8 +156,8 @@ public class CashFlowReportListFragment
                 row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
                 row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
                 row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
-                row.put(QueryBillDeposits.AMOUNT, value);
-                row.put(BALANCE, totalAmount);
+                row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
+                row.put(BALANCE, 0);
                 listRecurring.add(row);
             }
         }
@@ -170,6 +171,7 @@ public class CashFlowReportListFragment
 
         // copy to matrix cursor
         for (HashMap<String, Object> rowMap : listRecurring) {
+            totalAmount += (double) rowMap.get(QueryBillDeposits.AMOUNT);
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
                     .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
@@ -181,10 +183,41 @@ public class CashFlowReportListFragment
                     .add(QueryBillDeposits.NOTES, rowMap.get(QueryBillDeposits.NOTES))
                     .add(QueryBillDeposits.STATUS, rowMap.get(QueryBillDeposits.STATUS))
                     .add(QueryBillDeposits.AMOUNT, rowMap.get(QueryBillDeposits.AMOUNT))
-                    .add(BALANCE, rowMap.get(BALANCE));
+                    .add(BALANCE, totalAmount);
         }
     }
 
+    private void getTotalAmount() {
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        // compose whereClause
+        String where = "";
+        // check if show only open accounts
+        if (settings.getViewOpenAccounts()) {
+            where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
+        }
+        // check if show fav accounts
+        if (settings.getViewFavouriteAccounts()) {
+            where = "LOWER(" + QueryAccountBills.FAVORITEACCT + ")='true'";
+        }
+
+        QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
+        Select query = new Select(queryAccountBills.getAllColumns())
+                .where(where)
+                .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
+
+        Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
+                null,
+                where,
+                null,
+                null);
+        if (c != null) {
+            totalAmount = 0;
+            while (c.moveToNext()) {
+                totalAmount += c.getDouble(c.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+            }
+            c.close();
+        }
+    }
 
     @Override
     public String getSubTitle() {
