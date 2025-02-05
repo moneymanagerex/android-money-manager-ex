@@ -898,10 +898,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 String sql =
                         "SELECT CATEGID, CATEGNAME, PARENTID FROM CATEGORY_V1  " +
                                 "WHERE CATEGNAME = '" + searchName + "' " +
-                                "AND PARENTID >0 " +
-                                "ORDER BY CATEGNAME  LIMIT 1";
+                                "ORDER BY PARENTID desc, CATEGNAME asc  LIMIT 1";
 
-                Log.d("SQL", sql);
+                //Log.d("SQL", sql);
                 Cursor cCursor = db.query(sql);
 
                 if(cCursor.moveToFirst())
@@ -910,24 +909,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             cCursor.getString(cCursor.getColumnIndex("CATEGID")),
                             cCursor.getString(cCursor.getColumnIndex("PARENTID"))
                     };
-                } else{ //search in only catogery
-
-                    sql =
-                            "SELECT c.CATEGID, c.CATEGNAME, PARENTID " +
-                                    "FROM CATEGORY_V1 c  " +
-                                    "WHERE c.CATEGNAME = '" + searchName + "' " +
-                                    "AND AND PARENTID =-1 " +
-                                    "ORDER BY c.CATEGID  LIMIT 1";
-
-                    cCursor = db.query(sql);
-
-                    if(cCursor.moveToFirst())
-                    {
-                        cTran = new String[]{
-                                cCursor.getString(cCursor.getColumnIndex("CATEGID")),
-                                "-1"
-                        };
-                    }
                 }
 
                 cCursor.close();
