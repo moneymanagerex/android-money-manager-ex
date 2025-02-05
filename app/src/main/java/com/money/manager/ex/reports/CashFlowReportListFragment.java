@@ -18,75 +18,44 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.SparseBooleanArray;
+import android.os.Looper;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.IAllDataMultiChoiceModeListenerCallbacks;
-import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.QueryMobileData;
-import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
-import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Tag;
-import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
-import com.money.manager.ex.log.ExceptionHandler;
-import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /* Master note
    Use AllDataAdapter as master view
@@ -99,92 +68,135 @@ import timber.log.Timber;
  */
 
 public class CashFlowReportListFragment
-        extends BaseListFragment
-{
+        extends BaseListFragment {
 
     private static final int ID_LOADER_REPORT = 1;
-    private String totalAmount = "";
+    private double totalAmount = 0;
+    private static final String ID = "_id";
+    private static final String BALANCE = "BALANCE";
+    private int monthInAdvance = 12;
 
     private MatrixCursor matrixCursor;
     String[] columnNames;
+    CurrencyService currencyService;
+    MmxDateTimeUtils dateUtils;
+    InfoService infoService;
+    MoneySimpleCursorAdapter adapter;
+
+    @SuppressLint("Range")
     private void createCashFlowRecords() {
         // Use MatrixCursor instead
         if (matrixCursor != null) return;
 
+        MmxDate endDate = new MmxDate();
+        endDate.addMonth(monthInAdvance);
+
         // since base report is based on AllDataAdapter, we reuse global variable
-        columnNames = new String[] {
-                "_id",
-                QueryAllData.Date,
-                QueryAllData.ACCOUNTID,
-                QueryAllData.STATUS,
-                QueryAllData.AMOUNT,
-                QueryAllData.TransactionType,
-                QueryAllData.ATTACHMENTCOUNT,
-                QueryAllData.CURRENCYID,
-                QueryAllData.PAYEENAME,
-                QueryAllData.AccountName,
-                QueryAllData.Category,
-                QueryAllData.Notes,
-                QueryAllData.ToCurrencyId,
-                QueryAllData.TOACCOUNTID,
-                QueryAllData.ToAmount,
-                QueryAllData.ToAccountName,
-                QueryAllData.TAGS,
-                QueryAllData.COLOR,
-                QueryAllData.SPLITTED,
-                QueryAllData.CATEGID,
+        columnNames = new String[]{
+                ID,
+                QueryBillDeposits.TRANSDATE,
+                QueryBillDeposits.PAYEENAME,
+                QueryBillDeposits.CATEGNAME,
+                QueryBillDeposits.COLOR,
+                QueryBillDeposits.ATTACHMENTCOUNT,
+                QueryBillDeposits.TAGS,
+                QueryBillDeposits.NOTES,
+                QueryBillDeposits.STATUS,
+                QueryBillDeposits.AMOUNT,
+                BALANCE
         };
         matrixCursor = new MatrixCursor(columnNames);
 
-        matrixCursor.addRow(new String[]{"1", "20250101", "1", "STATUS", "AMOUNT", "TRANSACTIONTYPE", "ATTACHMENTCOUNT", "CURRENCYID", "PAYEE", "ACCOUNTNAME", "CATEGORY", "NOTES", "TOCURRENCYID", "TOACCOUNTID", "TOAMOUNT", "TOACCOUNTNAME", "TAGS", "COLOR", "SPLITTED", "CATEGID"});
-        matrixCursor.addRow(new String[]{"1","45698","2","","55","Withdrawal","","2","Emmanuele","Ing - Conto Corrente","Varie:Tabacchi","","","-1","0","","Evitabile","1","0","70"});
-        matrixCursor.addRow(new String[]{"2","2025-02-11T00:00:00","2","","4300","Deposit","","2","Emmanuele","Ing - Conto Corrente","Entrate:Stipendio","","","-1","4300","","","4","0","63"});
-        matrixCursor.addRow(new String[]{"3","2026-05-11T00:00:00","2","","4000","Deposit","","2","Emmanuele","Ing - Conto Corrente","Entrate Straordinarie:Premio Produzione","","","-1","4000","","","-1","0","101"});
-        matrixCursor.addRow(new String[]{"7","45703","2","","1200","Withdrawal","","2","Anna","Ing - Conto Corrente","Vitto:Trasferimento Anna","","","-1","1200","","","0","0","75"});
-        matrixCursor.addRow(new String[]{"10","45705","5","","6.99","Withdrawal","","2","Anna","Ing - Carta Prepagata","Casa:Bollette:Cellulari","","","-1","6.99","","","-1","0","25"});
-        matrixCursor.addRow(new String[]{"11","45714","5","","9.99","Withdrawal","","2","Casa","Ing - Carta Prepagata","Casa:Abbonamenti","","","-1","0","","Evitabile","3","0","66"});
-        matrixCursor.addRow(new String[]{"12","45705","5","","6.99","Withdrawal","","2","Emmanuele","Ing - Carta Prepagata","Casa:Bollette:Cellulari","","","-1","6.99","","","-1","0","25"});
-        matrixCursor.addRow(new String[]{"13","45700","5","","17.99","Withdrawal","","2","Casa","Ing - Carta Prepagata","Casa:Abbonamenti","","","-1","17.99","","","-1","0","66"});
-        matrixCursor.addRow(new String[]{"15","45719","2","","65.74","Withdrawal","","2","Emmanuele","Ing - Conto Corrente","Casa:Assicurazione","","","-1","65.74","","","-1","0","97"});
-        matrixCursor.addRow(new String[]{"16","2025-09-30T00:00:00","2","","300","Withdrawal","","2","Figli","Ing - Conto Corrente","Sport","","","-1","0","","","0","0","18"});
-        matrixCursor.addRow(new String[]{"18","2025-09-30T00:00:00","2","","300","Withdrawal","","2","Figli","Ing - Conto Corrente","Sport","","","-1","300","","","0","0","18"});
-        matrixCursor.addRow(new String[]{"19","45700","2","","300","Withdrawal","","2","Figli","Ing - Conto Corrente","Sport","","","-1","300","","","-1","0","18"});
-        matrixCursor.addRow(new String[]{"20","45695","5","","5.99","Withdrawal","","2","Figli","Ing - Carta Prepagata","Casa:Bollette:Cellulari","","","-1","5.99","","","-1","0","25"});
-        matrixCursor.addRow(new String[]{"23","2025-05-31T00:00:00","2","V","0","Withdrawal","","2","Anna","Ing - Conto Corrente","Veicoli:Auto:Bolli e Tasse","","","-1","0","","","-1","0","90"});
-        matrixCursor.addRow(new String[]{"24","2025-02-28T00:00:00","2","V","70","Withdrawal","","2","Emmanuele","Ing - Conto Corrente","Veicoli:Moto:Bolli e Tasse","","","-1","70","","","-1","0","93"});
-        matrixCursor.addRow(new String[]{"25","45701","2","","300","Withdrawal","","2","Casa","Ing - Conto Corrente","Casa:Bollette:Elettricità","","","-1","300","","","-1","0","26"});
-        matrixCursor.addRow(new String[]{"26","2025-02-28T00:00:00","2","","90","Withdrawal","","2","Casa","Ing - Conto Corrente","Casa:Bollette:Telefono Fisso","","","-1","90","","","-1","0","28"});
-        matrixCursor.addRow(new String[]{"27","45762","2","","130","Withdrawal","","2","Anna","Ing - Conto Corrente","Tasse:Ordine Medici","","","-1","130","","","-1","0","71"});
-        matrixCursor.addRow(new String[]{"29","2025-12-30T00:00:00","2","","419.72","Withdrawal","","2","Casa","Ing - Conto Corrente","Casa:Condominio:Caldaia","","","-1","419.72","","","-1","0","107"});
-        matrixCursor.addRow(new String[]{"30","2025-05-31T00:00:00","2","","900","Withdrawal","","2","Anna","Ing - Conto Corrente","Veicoli:Auto:Assicurazione","","","-1","900","","","-1","0","94"});
-        matrixCursor.addRow(new String[]{"31","2025-05-31T00:00:00","2","","350","Withdrawal","","2","Casa","Ing - Conto Corrente","Casa:Assicurazione","","","-1","350","","","-1","0","97"});
-        matrixCursor.addRow(new String[]{"32","2025-09-30T00:00:00","2","","600","Withdrawal","","2","Figli","Ing - Conto Corrente","Sport","","","-1","600","","","-1","0","18"});
-        matrixCursor.addRow(new String[]{"33","2026-01-30T00:00:00","2","","500","Withdrawal","","2","Figli","Ing - Conto Corrente","Sport","","","-1","500","","","-1","0","18"});
-        matrixCursor.addRow(new String[]{"34","2025-05-31T00:00:00","2","","1943.75","Withdrawal","","2","Anna","Ing - Conto Corrente","Tasse:Enpav","","","-1","1943.75","","","-1","0","67"});
-        matrixCursor.addRow(new String[]{"37","2025-10-31T00:00:00","2","","1943.75","Withdrawal","","2","Anna","Ing - Conto Corrente","Tasse:Enpav","","","-1","1943.75","","","-1","0","67"});
-        matrixCursor.addRow(new String[]{"38","2025-07-07T00:00:00","2","","210","Withdrawal","","2","Casa","Ing - Conto Corrente","Tasse:Casa","","","-1","210","","","-1","0","61"});
-        matrixCursor.addRow(new String[]{"39","46013","2","","4000","Deposit","","2","Emmanuele","Ing - Conto Corrente","Entrate:Stipendio","","","-1","4000","","","-1","0","63"});
-        matrixCursor.addRow(new String[]{"40","45971","2","","3115","Deposit","","2","Emmanuele","Ing - Conto Corrente","Entrate Straordinarie:Rimborso 730","","","-1","3115","","","-1","0","100"});
-        matrixCursor.addRow(new String[]{"41","45693","2","","150","Withdrawal","","2","Casa","Ing - Conto Corrente","Vitto","","","-1","150","","","-1","0","2"});
-        matrixCursor.addRow(new String[]{"42","46006","4","","500","Withdrawal","","2","Figli","Ing - Carta Credito","Regali","","","-1","500","","","-1","0","12"});
-        matrixCursor.addRow(new String[]{"43","45708","5","","6.99","Withdrawal","","2","Casa","Ing - Carta Prepagata","Casa:Abbonamenti","","","-1","6.99","","","-1","0","66"});
-        matrixCursor.addRow(new String[]{"49","2025-06-03T00:00:00","2","","1000","Withdrawal","","2","Anna","Ing - Conto Corrente","Veicoli:Auto:Manutenzione","","","-1","1000","","","-1","0","91"});
-        matrixCursor.addRow(new String[]{"50","45792","2","","200","Transfer","","2","","Ing - Conto Corrente","Transfer","","","5","200","Ing - Carta Prepagata","","-1","0","16"});
-        matrixCursor.addRow(new String[]{"52","2025-06-30T00:00:00","4","","140","Withdrawal","","2","Figli","Ing - Carta Credito","Scuola","","","-1","140","","","-1","0","20"});
-        matrixCursor.addRow(new String[]{"58","2028-01-17T00:00:00","2","","700","Withdrawal","","2","Figli","Ing - Conto Corrente","Salute:Occhiali e Lenti","","","-1","700","","","-1","0","49"});
-        matrixCursor.addRow(new String[]{"59","45704","5","","6.99","Withdrawal","","2","Figli","Ing - Carta Prepagata","Casa:Bollette:Cellulari","","","-1","6.99","","","-1","0","25"});
-        matrixCursor.addRow(new String[]{"61","2025-10-30T00:00:00","2","","200","Withdrawal","","2","Figli","Ing - Conto Corrente","Veicoli:Trasporti","","","-1","200","","","-1","0","74"});
+        QueryBillDeposits billDeposits = new QueryBillDeposits(getContext());
+
+        Cursor cursor = getContext().getContentResolver().query(billDeposits.getUri(),
+                billDeposits.getAllColumns(),
+                null,
+                null,
+                QueryBillDeposits.NEXTOCCURRENCEDATE);
+        if (cursor == null) return;
+
+        // todo calculcate initial balance
+        totalAmount = 0;
+
+        RecurringTransactionService recurringTransactionService = new RecurringTransactionService(getContext());
+
+        List<HashMap<String, Object>> listRecurring = new ArrayList<>();
+        HashMap<String, Object> row;
+        while (cursor.moveToNext()) {
+            long value = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            totalAmount = totalAmount + value;
+            row = new HashMap<>();
+            row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
+            row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
+            row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
+            row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
+            row.put(QueryBillDeposits.COLOR, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+            row.put(QueryBillDeposits.ATTACHMENTCOUNT, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+            row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+            row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
+            row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
+            row.put(QueryBillDeposits.AMOUNT, value);
+            row.put(BALANCE, totalAmount);
+            listRecurring.add(row);
+
+            // create recurring transaction
+            recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
+            int limit = monthInAdvance * 31;
+            while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getDate().before(endDate.toDate())) {
+                limit -= 1;
+                row = new HashMap<>();
+                row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
+                row.put(QueryBillDeposits.TRANSDATE, recurringTransactionService.getSimulatedTransaction().getPaymentDateString());
+                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
+                row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
+                row.put(QueryBillDeposits.COLOR, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+                row.put(QueryBillDeposits.ATTACHMENTCOUNT, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+                row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+                row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
+                row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
+                row.put(QueryBillDeposits.AMOUNT, value);
+                row.put(BALANCE, totalAmount);
+                listRecurring.add(row);
+            }
+        }
+        cursor.close();
+
+        Collections.sort(listRecurring, new Comparator<HashMap<String, Object>>() {
+            public int compare(HashMap<String, Object> uno, HashMap<String, Object> due) {
+                return uno.get(QueryBillDeposits.TRANSDATE).toString().compareTo(due.get(QueryBillDeposits.TRANSDATE).toString());
+            }
+        });
+
+        // copy to matrix cursor
+        for (HashMap<String, Object> rowMap : listRecurring) {
+            matrixCursor.newRow()
+                    .add(ID, rowMap.get(ID))
+                    .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
+                    .add(QueryBillDeposits.PAYEENAME, rowMap.get(QueryBillDeposits.PAYEENAME))
+                    .add(QueryBillDeposits.CATEGNAME, rowMap.get(QueryBillDeposits.CATEGNAME))
+                    .add(QueryBillDeposits.COLOR, rowMap.get(QueryBillDeposits.COLOR))
+                    .add(QueryBillDeposits.ATTACHMENTCOUNT, rowMap.get(QueryBillDeposits.ATTACHMENTCOUNT))
+                    .add(QueryBillDeposits.TAGS, rowMap.get(QueryBillDeposits.TAGS))
+                    .add(QueryBillDeposits.NOTES, rowMap.get(QueryBillDeposits.NOTES))
+                    .add(QueryBillDeposits.STATUS, rowMap.get(QueryBillDeposits.STATUS))
+                    .add(QueryBillDeposits.AMOUNT, rowMap.get(QueryBillDeposits.AMOUNT))
+                    .add(BALANCE, rowMap.get(BALANCE));
+        }
     }
+
 
     @Override
     public String getSubTitle() {
-        return "CashFlowReport";
+        return "12 month view";
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        createCashFlowRecords();
+                // Update UI elements here
+                createCashFlowRecords();
+
         // create a object query
         setSearchMenuVisible(false);
         // set default text
@@ -192,35 +204,107 @@ public class CashFlowReportListFragment
 
         setHasOptionsMenu(true);
 
+        Locale locale = MmexApplication.getApp().getAppLocale();
+        dateUtils = new MmxDateTimeUtils(locale);
+        currencyService = new CurrencyService(getContext());
+        infoService = new InfoService(getContext());
+
+
         int layout = R.layout.item_alldata_account;
 
-        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+        adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout,
-                matrixCursor,   // normaly is null
-                new String[] {  // set only visible column
-                        QueryAllData.Date,
-                        QueryAllData.Category,
-                        QueryAllData.AMOUNT,
-                        QueryAllData.AMOUNT},
+                matrixCursor,   // filled matrixCursor after
+                new String[]{
+                        ID,
+                        QueryBillDeposits.TRANSDATE, QueryBillDeposits.TRANSDATE, QueryBillDeposits.TRANSDATE,
+                        QueryBillDeposits.PAYEENAME,
+                        QueryBillDeposits.CATEGNAME,
+                        QueryBillDeposits.COLOR,
+                        QueryBillDeposits.ATTACHMENTCOUNT,
+                        QueryBillDeposits.TAGS,
+                        QueryBillDeposits.NOTES,
+                        QueryBillDeposits.STATUS,
+                        QueryBillDeposits.AMOUNT,
+                        BALANCE
+                },
                 new int[]{
+                        R.id.textTransactionId, // for id
+                        R.id.textViewMonth,
+                        R.id.textViewDay,
+                        R.id.textViewYear,
                         R.id.textViewPayee,
                         R.id.textViewCategorySub,
+                        R.id.viewColor,
+                        R.id.textViewAttachment,
+                        R.id.textViewTags,
+                        R.id.textViewNotes,
+                        R.id.textViewStatus,
                         R.id.textViewAmount,
                         R.id.textViewBalance,
-                        }, // todo add list of view element
+                },
                 0);
 
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                aView.setVisibility(View.VISIBLE);
-                TextView textView = (TextView) aView;
-                CharSequence text;
-                if (aView.getId() == R.id.textViewBalance) {
-                    text = totalAmount;
-                } else {
-                    text = aCursor.getString(aColumnIndex);
+                // set non text field
+                switch (aView.getId()) {
+                    case R.id.viewColor:
+                        int color = aCursor.getInt(aColumnIndex);
+                        if (color > 0) {
+                            aView.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
+                            aView.setVisibility(View.VISIBLE);
+                        } else {
+                            aView.setVisibility(View.GONE);
+                        }
+                        return true;
+                    case R.id.textViewAttachment:
+                        if (aCursor.getLong(aColumnIndex) <= 0)
+                            aView.setVisibility(View.GONE);
+                        else
+                            aView.setVisibility(View.VISIBLE);
+                        return true;
+                    case R.id.textViewTags:
+                        if (aCursor.getString(aColumnIndex).isEmpty())
+                            aView.setVisibility(View.GONE);
+                        else
+                            aView.setVisibility(View.VISIBLE);
+                        return true;
+                    case R.id.textTransactionId:
+                        aView.setTag(aCursor.getLong(aColumnIndex));
+                        aView.setVisibility(View.GONE);
+                        return true;
                 }
-                textView.setText(text);
+                TextView textView = (TextView) aView;
+                switch (textView.getId()) {
+                    case R.id.textViewMonth:
+                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "MMM"));
+                        break;
+                    case R.id.textViewDay:
+                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "dd"));
+                        break;
+                    case R.id.textViewYear:
+                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "yyyy"));
+                        break;
+                    case R.id.textViewCategorySub:
+                    case R.id.textViewPayee:
+                    case R.id.textViewNotes:
+                    case R.id.textViewStatus:
+                        textView.setText(aCursor.getString(aColumnIndex));
+                        break;
+                    case R.id.textViewAmount:
+                        textView.setText(getAsAmount(aCursor, aColumnIndex));
+                        break;
+                    case R.id.textViewBalance:
+                        textView.setText(getAsAmount(aCursor, aColumnIndex));
+                        if (aCursor.getDouble(aColumnIndex) <= 0) {
+                            textView.setTextColor(getResources().getColor(R.color.material_red_700));
+                        } else {
+                            textView.setTextColor(getResources().getColor(R.color.material_green_700));
+                        }
+                        break;
+                }
+                aView.setVisibility(View.VISIBLE);
                 return true;
             }
         });
@@ -229,8 +313,7 @@ public class CashFlowReportListFragment
 
         // set list view
         // a good idea is to make fill of matrixCursor async, start with showlist false and when matrixcursor is ready set showlist as true
-//        setListShown(false);
-        setListShown(true);
+        setListShown(false);
 
 //        getLoaderManager().initLoader(ID_LOADER_REPORT, null, this);
 
@@ -239,6 +322,21 @@ public class CashFlowReportListFragment
         // attachFloatingActionButtonToListView();
 
     }
+
+    private Date getAsDate(Cursor aCursor, int aColumnIndex) {
+        return new MmxDate(aCursor.getString(aColumnIndex)).toDate();
+    }
+
+    private String getAsString(Cursor aCursor, int aColumnIndex) {
+        return aCursor.getString(aColumnIndex);
+    }
+
+    private String getAsAmount(Cursor aCursor, int aColumnIndex) {
+        return currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(
+                aCursor.getDouble(aColumnIndex)
+        ));
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -279,5 +377,7 @@ public class CashFlowReportListFragment
         // context menu
         return false;
     }
+
+
 
 }

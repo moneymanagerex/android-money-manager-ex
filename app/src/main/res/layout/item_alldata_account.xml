@@ -38,6 +38,14 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textTransactionId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/linearLayoutDate"
             android:layout_width="52dp"

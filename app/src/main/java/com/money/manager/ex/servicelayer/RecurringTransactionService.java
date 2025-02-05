@@ -500,4 +500,89 @@ public class RecurringTransactionService
         return  accountTrx;
     }
 
+
+    public RecurringTransaction getSimulatedTransaction() {
+        if (recurringTransactionId <= 0) {
+            return null;
+        }
+        RecurringTransaction tx = getRecurringTransaction();
+        if (tx == null) {
+            return null;
+        }
+        return getRecurringTransaction();
+    }
+    /**
+     * @return true transaction is moved next, false transaction was ended
+     */
+    public boolean simulateMoveNext() {
+        RecurringTransaction tx = getRecurringTransaction();
+        if (tx == null) {
+            return false;
+        }
+
+        Integer recurrenceType = tx.getRecurrenceInt();
+        if (recurrenceType == null) {
+            return false;
+        }
+
+        /**
+         * The action will depend on the transaction preferences.
+         */
+        Recurrence recurrence = Recurrence.valueOf(recurrenceType);
+        if (recurrence == null) {
+            return false;
+        }
+
+        switch (recurrence) {
+            // periodical (monthly, weekly)
+            case ONCE:
+                // exit now.
+                return false;
+
+            case WEEKLY:
+            case BIWEEKLY:
+            case MONTHLY:
+            case BIMONTHLY:
+            case QUARTERLY:
+            case SEMIANNUALLY:
+            case ANNUALLY:
+            case FOUR_MONTHS:
+            case FOUR_WEEKS:
+            case DAILY:
+            case MONTHLY_LAST_DAY:
+            case MONTHLY_LAST_BUSINESS_DAY:
+                moveDatesForward();
+                if (tx.getPaymentsLeft() == null || tx.getPaymentsLeft() <= 0) {
+                    // no decrease. next transaction is valid
+                    return true;
+                } else {
+                    decreasePaymentsLeft();
+                    if ( tx.getPaymentsLeft() == 0) {
+                        // no more payments
+                        return false;
+                    } else {
+                        // more payement
+                        return true;
+                    }
+                }
+//                break;
+            // every n periods
+            case EVERY_X_DAYS:
+            case EVERY_X_MONTHS:
+                moveDatesForward();
+                break;
+            // in n periods
+            case IN_X_DAYS:
+            case IN_X_MONTHS:
+                // reset number of periods
+                mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+
 }
