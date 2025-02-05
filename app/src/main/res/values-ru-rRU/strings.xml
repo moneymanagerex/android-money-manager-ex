@@ -69,15 +69,15 @@
     <string name="sync_on_app_start">Синхронизация при запуске приложения.</string>
     <string name="sync_on_start">Синхронизация на старте</string>
     <!-- Receive SMS strings -->
-    <string name="title_sms_auto_trans">Обрабатывать SMS о транзакцях</string>
-    <string name="summary_sms_auto_trans">Читать SMS от банка и автоматически создавать транзакцию</string>
-    <string name="deny_receive_sms_error">Вы запретили чтение SMS, поэтому данные о ваших транзакциях обрабатываться не будут</string>
+    <string name="title_sms_auto_trans">Обрабатывать SMS о платежах</string>
+    <string name="summary_sms_auto_trans">Читать SMS от банка и автоматически создавать проводку</string>
+    <string name="deny_receive_sms_error">Вы запретили чтение SMS, поэтому данные о ваших платежах обрабатываться не будут</string>
     <string name="granted_receive_sms_access">Разрешение на чтение SMS уже предоставлено</string>
     <string name="revoke_receive_sms_access">Перейдите в Настройки &gt;&gt; Приложения &gt;&gt; Money Manager Ex &gt;&gt; Разрешения и запретите доступ к SMS</string>
-    <string name="title_sms_trans_status_notification">SMS с уведомлением о состоянии транзакции</string>
-    <string name="summary_sms_trans_status_notification">Включить отображение статуса обработки SMS о транзакциях в области уведомлений вместо их отображения в виде всплывающего сообщения или экрана новой транзакции.</string>
-    <string name="notification_click_to_edit_transaction">Нажмите, чтобы изменить транзакцию&#8230;</string>
-    <string name="notification_process_sms_transaction_status">Статус обработки SMS о транзакции</string>
+    <string name="title_sms_trans_status_notification">Уведомление об SMS о платежах</string>
+    <string name="summary_sms_trans_status_notification">Включить отображение статуса обработки SMS о платежах в области уведомлений вместо их отображения в виде всплывающего сообщения или экрана новой транзакции.</string>
+    <string name="notification_click_to_edit_transaction">Нажмите, чтобы изменить проводку&#8230;</string>
+    <string name="notification_process_sms_transaction_status">Обрабатывать SMS о платежах</string>
     <string name="notification_process_sms_channel_description">Канал уведомлений по SMS AMMEX</string>
     <!-- account -->
     <string name="account">Счет</string>
@@ -211,13 +211,13 @@
     <string name="last15days">За последние 2 недели</string>
     <string name="current_month">Текущий месяц</string>
     <string name="current_year">Текущий год</string>
-    <string name="future_transactions">Будущие транзакции</string>
-    <string name="show_transaction">Период отображения транзакций</string>
+    <string name="future_transactions">Будущие проводки</string>
+    <string name="show_transaction">Показать проводку</string>
     <string name="changelog">История изменений</string>
     <string name="transaction_number">Номер проводки</string>
     <string name="widget_summary">Сводка</string>
     <string name="widget_all_accounts">Все счета</string>
-    <string name="widget_add_transaction">Добавить транзакцию</string>
+    <string name="widget_add_transaction">Добавить проводку</string>
     <!-- TAG -->
     <string name="tag">Теги/метки</string>
     <string name="tagsList_transactions">Теги проводки</string>
@@ -246,12 +246,12 @@
     <string name="in_x_months">В (x) месяц</string>
     <string name="every_x_days">Каждые (x) дней</string>
     <string name="every_x_months">Каждые (x) месяцев</string>
-    <string name="repeating_empty_transaction">Запланированные транзакции отсутствуют. Для создания нажмите кнопку \"+\".</string>
+    <string name="repeating_empty_transaction">Запланированные проводки отсутствуют. Для создания нажмите кнопку \"+\".</string>
     <string name="inactive">Неактивна</string>
     <string name="activates">Активировать</string>
     <string name="days_overdue">%d дней просрочено!</string>
     <string name="days_remaining">Осталось %d дней</string>
-    <string name="new_edit_repeating_transaction">Создать/Изменить запланированную транзакцию</string>
+    <string name="new_edit_repeating_transaction">Создать/Изменить запланированную проводку</string>
     <string name="due_date">Дата платежа</string>
     <string name="next_occurrence">Следующее начисление</string>
     <string name="payment_date">Дата оплаты</string>
@@ -264,9 +264,9 @@
     <string name="enter_next_occurrence">Ввести следующее начисление</string>
     <string name="skip_next_occurrence">Пропустить следующее начисление</string>
     <string name="skip_next_occurrence_confirmation">Вы хотите пропустить следующее вхождение?</string>
-    <string name="notification_repeating_transaction_expired">Есть просроченные повторяющиеся транзакции</string>
+    <string name="notification_repeating_transaction_expired">Есть просроченные повторяющиеся проводки</string>
     <string name="notification_click_to_check_repeating_transaction">Нажмите чтобы проверить наличие просроченных проводок</string>
-    <string name="num_repeating_transaction_expired">%1$d повторяющихся транзакций просрочено</string>
+    <string name="num_repeating_transaction_expired">%1$d повторяющихся проводок просрочено</string>
     <string name="skip">Пропустить</string>
     <string name="enter">Ввод</string>
     <string name="enter_amount">Введите сумму</string>
@@ -324,7 +324,7 @@
     <!-- Split Categories -->
     <string name="split_transaction">Разделение проводки</string>
     <string name="split">Делить</string>
-    <string name="error_split_transaction_empty">Составная транзакция должна содержать хотя бы одну операцию</string>
+    <string name="error_split_transaction_empty">Составная проводка должна содержать хотя бы одну операцию</string>
     <string name="swipe_to_dismiss">Смахните элементы для удаления.</string>
     <string name="export_data_to_csv">Экспорт данных в CSV файл</string>
     <string name="export_data_in_progress">Экспорт данных. Пожалуйста подождите&#8230;</string>
@@ -354,8 +354,8 @@
     <string name="synchronization_interval">Интервал синхронизации</string>
     <string name="summary_synchronization_interval">Как часто требуется синхронизация?</string>
     <string name="tips_new_version_dropbox">Начиная с версии 1.2.0, Money Manager Ex для Android изменил механизм синхронизации с Dropbox. Пользователи, уже использующие такую синхронизацию, должны обновить конфигурацию.\nАутентификацию и выбор базы данных можно выполнить в Настройках.\nНачиная с версии 1.2.0, Money Manager Ex для Android может автоматически синхронизировать базу данных.</string>
-    <string name="title_transaction_shown_balance">Баланс для каждой транзакции</string>
-    <string name="summary_transaction_shown_balance">Показывать баланс для каждой транзакции. Это может замедлить работу приложения</string>
+    <string name="title_transaction_shown_balance">Баланс для каждой проводки</string>
+    <string name="summary_transaction_shown_balance">Показывать баланс для каждой проводки. Это может замедлить работу приложения</string>
     <string name="menu_open_database">Открыть Базу данных</string>
     <string name="database">База данных</string>
     <string name="tips">Советы</string>
@@ -371,12 +371,12 @@
     <string name="menu_report_where_money_goes">Куда расходуются деньги</string>
     <string name="menu_report_where_money_comes_from">Откуда приходят деньги</string>
     <string name="title_check_repeating_transaction">Время уведомления</string>
-    <string name="summary_check_repeating_transaction">В какое время проверять, есть ли просроченные повторяющиеся транзакции? (по умолчанию 08:00)</string>
+    <string name="summary_check_repeating_transaction">В какое время проверять, есть ли просроченные повторяющиеся проводки? (по умолчанию 08:00)</string>
     <string name="credits">Благодарность</string>
     <string name="libraries">Библиотеки</string>
     <string name="top_withdrawals_last_30_days">Топ снятия: Последние 30 дней</string>
     <string name="top_payees_last_30_days">Топ получателей: Последние 30 дней</string>
-    <string name="upcoming_transactions">Предстоящие транзакции</string>
+    <string name="upcoming_transactions">Запланированные проводки</string>
     <string name="quantity">Количество</string>
     <string name="dashboard">Панель управления</string>
     <string name="last3months">Последние 3 месяца</string>
@@ -384,7 +384,7 @@
     <string name="empty_category">Пустая категория</string>
     <string name="empty_payee">Пустой контрагент</string>
     <string name="help">Справка</string>
-    <string name="delete_repeating_transaction">Удалить запланированную транзакцию</string>
+    <string name="delete_repeating_transaction">Удалить запланированную проводку</string>
     <string name="last">Последний</string>
     <string name="accounts">Счета</string>
     <string name="to_account">На счет</string>
@@ -392,11 +392,11 @@
     <string name="default_status">Статус по умолчанию</string>
     <string name="default_payee">Контрагент по умолчанию</string>
     <string name="edit_transaction">Редактировать проводку</string>
-    <string name="delete_one_selected_transaction">Вы уверены, что хотите удалить выбранную проводку ?</string>
-    <string name="delete_others_selected_transaction">Вы уверены, что хотите удалить %d выбранных проводок ?</string>
+    <string name="delete_one_selected_transaction">Вы уверены, что хотите удалить выбранную проводку?</string>
+    <string name="delete_others_selected_transaction">Вы уверены, что хотите удалить %d выбранных проводок?</string>
     <string name="categories">Категории</string>
     <string name="payees">Контрагенты</string>
-    <string name="recurring_transactions">Расписание транзакций</string>
+    <string name="recurring_transactions">Расписание проводок</string>
     <string name="theme_holo_light">Holo светлая</string>
     <string name="new_account">Новый счет</string>
     <string name="create_new_account">Создать новый счёт</string>
@@ -406,15 +406,15 @@
     <string name="amount_to">Сумма до</string>
     <string name="reset">Сброс</string>
     <string name="result_search">Результат вашего поиска</string>
-    <string name="new_repeating_transaction">Новая запланированная транзакция</string>
-    <string name="edit_repeating_transaction">Редактировать запланированную транзакцию</string>
+    <string name="new_repeating_transaction">Новая запланированная проводка</string>
+    <string name="edit_repeating_transaction">Редактировать запланированную проводку</string>
     <string name="path_database_not_exists">Путь к базе данных не существует</string>
     <string name="database_can_not_open_write">База данных не может быть открыта для записи</string>
     <string name="time_frame">Период времени</string>
     <string name="show_chart">Показать диаграмму</string>
-    <string name="add_transaction">Добавить транзакцию</string>
+    <string name="add_transaction">Добавить проводку</string>
     <string name="welcome_header">Добро пожаловать в MoneyManagerEx</string>
-    <string name="welcome_body">Все транзакции в MoneyManagerEx принадлежат счетам.\n\nУ Вас в настоящее время нет видимых счетов. Или измените фильтр для видимых счетов в настройках, или выберите один их вариантов ниже.</string>
+    <string name="welcome_body">Все проводки в MoneyManagerEx принадлежат счетам.\n\nУ Вас в настоящее время нет видимых счетов. Измените фильтр для видимых счетов в настройках или выберите один их вариантов ниже.</string>
     <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac, синхронизируйте ваши файлы через облачное хранилище</string>
     <string name="configure_sync">Настройка синхронизации</string>
     <string name="search_text_contain_title">Поиск внутри строк</string>
@@ -436,7 +436,7 @@
     <string name="loading">Загрузка&#8230;</string>
     <string name="grand_total">Общий Итог</string>
     <string name="change_status">Изменить статус</string>
-    <string name="duplicate_selected_transactions">Продублировать выделенные транзакции</string>
+    <string name="duplicate_selected_transactions">Продублировать выделенные проводки</string>
     <string name="sort">Сортировать</string>
     <string name="sort_order">Порядок сортировки</string>
     <string name="sort_by_name">Сортировать по имени</string>
@@ -468,8 +468,8 @@
     <string name="global">Глобальная</string>
     <string name="tutorial_global_1">Нескольких языков и валют. Открытый исходный код. Присоединяйтесь к нашей команде перевода.</string>
     <string name="tutorial_sync_1">Поддержка нескольких платформ, синхронизация с помощью множества облачных услуг. Импорт и экспорт данных в другие приложения.</string>
-    <string name="transactions">Транзакции</string>
-    <string name="tutorial_transactions_1">Пополнения, снятия, переводы. Повторяющиеся транзакции с напоминаниями.</string>
+    <string name="transactions">Проводки</string>
+    <string name="tutorial_transactions_1">Пополнения, снятия, переводы. Повторяющиеся проводки с напоминаниями.</string>
     <string name="split_category">-составная-</string>
     <string name="title_activity_currency_chart">Диаграмма обменного курса валюты</string>
     <string name="sort_by_ascending">Сортировка по годам и месяцам по возрастанию</string>
@@ -481,10 +481,10 @@
     <string name="custom_dates">Настраиваемые даты</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Скрыть подтвержденные суммы со счетов на основной панели.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
-    <string name="pref_transaction_sort_by_type_summary">Организовать ежедневных операций по типу транзакции (залог, передача, вывод)</string>
+    <string name="pref_transaction_sort_by_type_summary">Упорядочить ежедневные операции по типу проводки (доход, перевод, расход)</string>
     <string name="pref_transaction_sort_by_type_title">Сортировать операции по типу</string>
     <string name="warning">Предупреждение</string>
-    <string name="no_transfer_splits">Вы выбрали операцию перевода между счетами вместо текущей операции, но в текущей транзакции присутствуют разделенные [Split] категории. Вы хотите продолжить и удалить разделенные [Split] категории ?</string>
+    <string name="no_transfer_splits">Вы переключились на перевод между счетами вместо текущей операции, но текущая проводка разделена. Вы хотите продолжить, удалив разделение?</string>
     <string name="qif_export">QIF экспорт</string>
     <string name="update_prices">Обновление цен</string>
     <string name="update_price">Обновление цен</string>
@@ -549,7 +549,7 @@
     <string name="homepage">Наш сайт: http://android.moneymanagerex.org/</string>
     <string name="current_database">Текущая база данных</string>
     <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
-    <string name="transaction_type_filter">Фильтр по типу транзакции</string>
+    <string name="transaction_type_filter">Фильтр по типу проводки</string>
     <string name="status_filter">Фильтр по статусу</string>
     <string name="filter_options_info">Параметры фильтра и информация</string>
     <!-- Password entry activity -->
@@ -576,8 +576,8 @@
     <string name="price_date">Дата цены</string>
     <string name="commission">Комиссия</string>
     <string name="value">Значение</string>
-    <string name="view_transactions">Просмотр транзакций</string>
-    <string name="view_transactions_sub">Просмотр проводок в подкатегориях</string>
+    <string name="view_transactions">Просмотр проводок</string>
+    <string name="view_transactions_sub">Просмотр разделенных проводок</string>
     <string name="switch_active">Активировать/деактивировать</string>
     <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
     <string name="error_updating_rates">Ошибка обновление курсов</string>
@@ -619,7 +619,7 @@
     <string name="invalid_recurrence_type">Недопустимый тип повторения</string>
     <string name="account_not_found">Аккаунт не найден</string>
     <string name="favourite">Избранный</string>
-    <string name="split_reset_notice">Обратите внимание, что в этой транзакции есть несколько разделенных категорий. Вам нужно удалить их вручную.</string>
+    <string name="split_reset_notice">Обратите внимание, что эта проводка разделена. Вам нужно удалить категории ее частей вручную.</string>
     <!-- budgets -->
     <string name="add_budget">Добавить бюджет</string>
     <string name="budget_name">Название бюджета</string>
@@ -745,13 +745,13 @@
     <string name="pref_anonymous_usage">Анонимная статистика</string>
     <string name="summary_anonymous_usage">Включите, чтобы помочь нам, отправляя анонимные данные об использовании MMEX</string>
     <string name="title_anonymous_usage">Отправлять анонимные данные об использовании</string>
-    <string name="pref_auto_transaction_number">Автонумерация транзакций</string>
-    <string name="title_auto_transaction_number">Автозаполнение номера транзакции</string>
+    <string name="pref_auto_transaction_number">Автонумерация проводок</string>
+    <string name="title_auto_transaction_number">Автозаполнение номера проводки</string>
     <!-- Notification Setting -->
-    <string name="title_notifications_repeating_transaction">Уведомление о просроченной транзакции </string>
-    <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных запланированных транзакций</string>
-    <string name="notification_channel_recurring">Уведомление о запланированной транзакции</string>
-    <string name="notification_channel_recurring__description">Уведомление о повторяющейся транзакции</string>
+    <string name="title_notifications_repeating_transaction">Уведомление о просроченной проводке </string>
+    <string name="summary_notifications_repeating_transaction">Показать уведомления для просроченных проводок</string>
+    <string name="notification_channel_recurring">Уведомление о запланированной проводке</string>
+    <string name="notification_channel_recurring__description">Уведомление о просроченной проводке</string>
     <string name="notification_channel_remotefile">Операция с удаленным файлом</string>
     <string name="notification_channel_remotefile__description">Уведомление об операции с удаленным файлом</string>
     <string name="notification_channel_fileoperation_downloadin">Загрузка Mmex</string>
