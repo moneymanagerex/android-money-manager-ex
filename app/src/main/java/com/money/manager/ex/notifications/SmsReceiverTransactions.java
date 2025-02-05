@@ -135,7 +135,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    //msgSender = "AT-SIBSMS";
+                    msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
@@ -252,7 +252,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 //get the ref no. if doesn't exits
                                 if(transRefNo.isEmpty()){
-                                    transRefNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
+                                    transRefNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                                 }
 
                                 //set the txn no
@@ -784,13 +784,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)",
-                "((?:UPI|IMPS)\\s?:\\s?(\\d+)\\s?)", "(InfoPKT(.*?)(\\d+)\\s?)"};
+                "((?:UPI|IMPS)\\s?:\\s?(\\d+)\\s?)", "([\\*](.*?)(\\d+)\\s?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
 
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 4,
                           4, 3, 2,
-                          2, 3};
+                          2, 3, 3};
 
         try
         {
@@ -982,9 +982,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     public boolean validateData() {
 
         boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        Core core = new Core(mContext);
 
-        Log.d("Vels Tag Equals : ", String.valueOf(mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)));
         if (mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)) {
             //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
             return false;
@@ -1022,9 +1020,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
 
         // Category is required if tx is not a split or transfer.
-        boolean hasCategory = mCommon.transactionEntity.hasCategory();
-        //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
-        return hasCategory || isTransfer;
+        if (!mCommon.transactionEntity.hasCategory()) {
+            //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return isTransfer;
     }
 
     public boolean saveTransaction() {
