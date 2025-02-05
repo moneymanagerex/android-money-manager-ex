@@ -135,7 +135,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    msgSender = "AT-SIBSMS";
+                    //msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
@@ -386,6 +386,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 // validate and save the transaction
                                 if(!skipSaveTrans) {
+
+                                    t_intent.addFlags((Intent.FLAG_ACTIVITY_NEW_TASK)); // Fix for https://github.com/moneymanagerex/android-money-manager-ex/issues/2210
+
                                     if (validateData()) {
                                         if (saveTransaction()) {
 
