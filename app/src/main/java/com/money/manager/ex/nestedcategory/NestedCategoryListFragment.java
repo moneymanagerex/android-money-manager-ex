@@ -82,16 +82,22 @@ public class NestedCategoryListFragment
 
     private static final int ID_LOADER_NESTEDCATEGORY = 0;
 
+    private static final int ORDER_BY_NAME = 0;
+    private static final int ORDER_BY_USAGE = 1;
+    private static final int ORDER_BY_RECENT = 2;
     private static final String SORT_BY_NAME = "UPPER(" + QueryNestedCategory.CATEGNAME + ")";
-// note use T. for resovle name from dinamic from
+    // note use T. for resovle name from dinamic from
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) \n" +
             "FROM CHECKINGACCOUNT_V1 \n" +
             "WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID\n" +
             "  AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '')) DESC";
+    private static final String SORT_BY_RECENT = "(SELECT max( TRANSDATE ) \n" +
+            " FROM CHECKINGACCOUNT_V1 \n" +
+            " WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID \n" +
+            "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
-//    private Context mContext;
+    //    private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
 
 
     @Override
@@ -112,23 +118,23 @@ public class NestedCategoryListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { QueryNestedCategory.CATEGNAME },
+                layout, null, new String[]{QueryNestedCategory.CATEGNAME},
                 new int[]{android.R.id.text1}, 0);
 
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                    TextView textView = (TextView) aView;
-                    boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
-                    CharSequence text = aCursor.getString(aColumnIndex);
-                    if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
-                        text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
-                    }
-                    if (!active) {
-                        textView.setText( Html.fromHtml( "<i>"+text+ " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
-                    } else {
-                        textView.setText(text);
-                    }
-                    return true;
+                TextView textView = (TextView) aView;
+                boolean active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
+                CharSequence text = aCursor.getString(aColumnIndex);
+                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
+                }
+                if (!active) {
+                    textView.setText(Html.fromHtml("<i>" + text + " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT));
+                } else {
+                    textView.setText(text);
+                }
+                return true;
             }
         });
 
@@ -155,26 +161,39 @@ public class NestedCategoryListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
-        final MenuItem item = menu.findItem(R.id.menu_sort_name);
-        item.setChecked(true);
+        switch ((new AppSettings(getActivity())).getCategorySort()) {
+            case ORDER_BY_USAGE:
+                menu.findItem(R.id.menu_sort_usage).setChecked(true);
+                break;
+            case ORDER_BY_RECENT:
+                menu.findItem(R.id.menu_sort_recent).setChecked(true);
+                break;
+            default:
+                menu.findItem(R.id.menu_sort_name).setChecked(true);
+                break;
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AppSettings settings = new AppSettings(getActivity());
         if (item.getItemId() == android.R.id.home) {
             // we wont to invalidate cursor, so if back is pressed no item is select
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
             cursor.moveToPosition(-1);
             // and continue with super
         }
-        if (item.getItemId() == R.id.menu_sort_name ||
-            item.getItemId() == R.id.menu_sort_usage) {
-            if (item.getItemId() == R.id.menu_sort_name )  {
-                mSort = 0;
-            } else {
-                mSort = 1;
-            }
 
+        if (item.getItemId() == R.id.menu_sort_name ||
+                item.getItemId() == R.id.menu_sort_usage ||
+                item.getItemId() == R.id.menu_sort_recent) {
+            if (item.getItemId() == R.id.menu_sort_usage) {
+                settings.setCategorySort(ORDER_BY_USAGE);
+            } else if (item.getItemId() == R.id.menu_sort_recent) {
+                settings.setCategorySort(ORDER_BY_RECENT);
+            } else {
+                settings.setCategorySort(ORDER_BY_NAME);
+            }
             item.setChecked(true);
             // restart search
             restartLoader();
@@ -204,7 +223,7 @@ public class NestedCategoryListFragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info ;
+        AdapterView.AdapterContextMenuInfo info;
         if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         } else {
@@ -221,7 +240,7 @@ public class NestedCategoryListFragment
 
         // manage select menu
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
-        if (menuId == null) return  false;
+        if (menuId == null) return false;
         switch (menuId) {
             case ADD_SUB:
                 Category newCat = new Category();
@@ -287,9 +306,21 @@ public class NestedCategoryListFragment
                 selectionArgs = new String[]{mCurFilter + "%"};
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
+            String sort;
+            switch ((new AppSettings(getContext())).getCategorySort()) {
+                case ORDER_BY_USAGE:
+                    sort = SORT_BY_USAGE;
+                    break;
+                case ORDER_BY_RECENT:
+                    sort = SORT_BY_RECENT;
+                    break;
+                default:
+                    sort = SORT_BY_NAME;
+                    break;
+            }
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(sort);
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
@@ -341,9 +372,9 @@ public class NestedCategoryListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.getCount() ==0 || cursor.getPosition() == -1) {
+            if (cursor.getCount() == 0 || cursor.getPosition() == -1) {
                 // no record or no record selected
-                sendResultToActivity(-1,null);
+                sendResultToActivity(-1, null);
             } else {
                 @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
@@ -552,7 +583,7 @@ public class NestedCategoryListFragment
             // do not include category itself and all children form parent list
             if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
                 categoryIds.add(category1.getCategoryId());
-                categoryNames.add(category1.getCategoryName() );
+                categoryNames.add(category1.getCategoryName());
             }
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);

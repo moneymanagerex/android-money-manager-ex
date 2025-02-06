@@ -47,7 +47,7 @@ public class QueryMobileData
 	public static final String TOTRANSAMOUNT = "ToAmount";
 	public static final String ToCurrencyID = "ToCurrencyID";
 	public static final String Splitted  = "SPLITTED";
-	public static final String CATEGID = "CATEGID";
+	public static final String CATEGID = "CategID";
 	public static final String PAYEENAME = "PayeeName";
 	public static final String PAYEEID = "PayeeID";
 	public static final String TransactionNumber = "TransactionNumber";

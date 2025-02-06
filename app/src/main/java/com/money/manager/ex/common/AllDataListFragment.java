@@ -62,8 +62,11 @@ import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
+import com.money.manager.ex.datalayer.TagRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.search.SearchActivity;
@@ -749,8 +752,11 @@ public class AllDataListFragment
                                 }
                             }
 
-                            // Delete the transaction.
+                            // Delete Tags
+                            TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
+                            tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
 
+                            // Delete the transaction.
                             AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
 
                             long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
