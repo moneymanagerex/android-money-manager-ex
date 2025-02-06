@@ -596,7 +596,7 @@
     <string name="move_up">Поднять выше</string>
     <string name="move_down">Опустить ниже</string>
     <string name="securities">Ценные бумаги</string>
-    <string name="no_records_found_create">Нет ни одной записи. Чтоб создать запись, нажмите на кнопку \"+\".</string>
+    <string name="no_records_found_create">Нет ни одной записи. Чтобы создать запись, нажмите на кнопку \"+\".</string>
     <string name="current_value">Текущее значение</string>
     <string name="current">Текущее</string>
     <string name="parent">Родительское</string>
