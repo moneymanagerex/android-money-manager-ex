@@ -161,7 +161,11 @@ public abstract class MmxBaseFragmentActivity
             compositeSubscription.unsubscribe();
         }
 
-        super.onDestroy();
+        try {
+            super.onDestroy();
+        } catch (Exception e){
+            Timber.e(e.getMessage());
+        }
     }
 
     @Subscribe
