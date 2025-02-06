@@ -54,6 +54,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.reports.CashFlowReportActivity;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -636,6 +637,8 @@ public class MainActivity
             startActivity(intent);
         } else if (itemId == R.id.menu_report_income_vs_expenses) {
             startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        } else if (itemId == R.id.menu_report_cashflow) {
+            startActivity(new Intent(this, CashFlowReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -876,6 +879,12 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                         .color(iconColor)));
+        // CashFlow
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_cashflow)
+                .withText(getString(R.string.menu_report_cashflow))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor)));
+
         childItems.add(childReports);
 
         // Settings
