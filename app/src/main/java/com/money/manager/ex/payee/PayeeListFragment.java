@@ -284,6 +284,7 @@ public class PayeeListFragment
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
+                break; // issue #2217 view make also inactive
             case SWITCH_ACTIVE:
                 payee.setActive(!payee.getActive());
                 PayeeRepository payeeRepository = new PayeeRepository(getActivity());
