@@ -114,5 +114,9 @@ public class AppSettings
     public boolean getShowInactive() {return get("pref_show_inactive", true); }
     public void setShowInactive(boolean value) { set("pref_show_inactive", value); }
 
+    public int getTransactionSort() {return get("getTransactionSort", 0); }
+    public void setTransactionSort(int value) { set("getTransactionSort", value); }
+
+
 }
 
