@@ -302,6 +302,7 @@
     <string name="year">Год</string>
     <string name="menu_reports">Отчеты</string>
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
+    <string name="menu_report_cashflow">Движение средств</string>
     <string name="total">Итого</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Все транзакции</string>
@@ -441,6 +442,7 @@
     <string name="sort_order">Порядок сортировки</string>
     <string name="sort_by_name">Сортировать по имени</string>
     <string name="sort_by_usage">Сортировать по назначению</string>
+    <string name="sort_by_recent">Сортировать по времени</string>
     <string name="choose_sorting">Выберите способ сортировки</string>
     <string name="credit_card">Кредитная Карта</string>
     <string name="cash_accounts">Наличные Счета</string>
@@ -469,7 +471,7 @@
     <string name="tutorial_global_1">Нескольких языков и валют. Открытый исходный код. Присоединяйтесь к нашей команде перевода.</string>
     <string name="tutorial_sync_1">Поддержка нескольких платформ, синхронизация с помощью множества облачных услуг. Импорт и экспорт данных в другие приложения.</string>
     <string name="transactions">Проводки</string>
-    <string name="tutorial_transactions_1">Пополнения, снятия, переводы. Повторяющиеся проводки с напоминаниями.</string>
+    <string name="tutorial_transactions_1">Доходы, расходы, переводы. Повторяющиеся проводки с напоминаниями.</string>
     <string name="split_category">-составная-</string>
     <string name="title_activity_currency_chart">Диаграмма обменного курса валюты</string>
     <string name="sort_by_ascending">Сортировка по годам и месяцам по возрастанию</string>
