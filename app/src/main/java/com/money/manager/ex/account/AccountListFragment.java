@@ -298,4 +298,17 @@ public class AccountListFragment
         // launch activity
         startActivity(intent);
     }
+
+    private void restartLoader() {
+        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        // force reset loader on start. try to fix 2155
+        // becouse normaly was call duble
+        restartLoader();
+    }
+
 }
