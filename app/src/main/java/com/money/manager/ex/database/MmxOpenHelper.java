@@ -54,7 +54,8 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * Database schema version.
      */
     private static final int DATABASE_VERSION = 19;
-    private String dbPath;
+    private static final int DATABASE_VERSION_20 = 20;
+    private final String dbPath;
 
     // Dynamic
 
@@ -130,7 +131,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     public void onDowngrade (SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.d("Downgrading from version %d to %d", oldVersion, newVersion);
-        if (oldVersion == 20 && newVersion == DATABASE_VERSION) return;
+        if (oldVersion == DATABASE_VERSION_20 && newVersion == DATABASE_VERSION) return;
 
         super.onDowngrade(db, oldVersion, newVersion);
     }
