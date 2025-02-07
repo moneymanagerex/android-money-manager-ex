@@ -128,6 +128,13 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         updateDatabase(db, oldVersion, newVersion);
     }
 
+    public void onDowngrade (SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+        Timber.d("Downgrading from version %d to %d", oldVersion, newVersion);
+        if (oldVersion == 20 && newVersion == DATABASE_VERSION) return;
+
+        super.onDowngrade(db, oldVersion, newVersion);
+    }
+
     private SupportSQLiteDatabase getDatabase(boolean writable) {
         SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
