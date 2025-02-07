@@ -315,7 +315,6 @@
     <string name="open_database">Buksan ang Database</string>
     <string name="synchronization_interval">Pagitan ng singkronisasyon</string>
     <string name="summary_synchronization_interval">Gaano kadalas dapat magsingkronis?</string>
-    <string name="tips_new_version_dropbox">Tulad ng bersyon 1.2.0, Ang Money Manager Ex para sa Android ay nagbago ng Dropbox synchronization engine. Ang mga gumagamit na ng Dropbox sync ay kailangang i-update ang configuration. \ N Ang pagpapatunay at ang pagpili ng database ay matatagpuan sa Mga Setting. \ N Ang bersyon 1.2.0, ang Money Manager Ex para sa Android ay maaaring awtomatikong i-synchronize ang database.</string>
     <string name="title_transaction_shown_balance">Nagpapakita ng balanse para sa bawat transaksyon</string>
     <string name="summary_transaction_shown_balance">Nagpapakita ng balanse para sa bawat na transaksyon. Ang pagpakita ng balanse ay maaaring nagpapabagal sa aplikasyon</string>
     <string name="menu_open_database">Buksan ang database</string>

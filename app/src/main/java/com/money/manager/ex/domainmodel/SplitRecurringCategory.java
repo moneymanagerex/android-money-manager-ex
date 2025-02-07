@@ -28,6 +28,8 @@ import com.money.manager.ex.database.ITransactionEntity;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -47,6 +49,8 @@ public class SplitRecurringCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
+
+    private ArrayList<Taglink> taglinks = null;
 
     public static SplitRecurringCategory create(long transactionId, long categoryId,
                                                 TransactionTypes parentTransactionType, Money amount, String notes) {
@@ -155,5 +159,20 @@ public class SplitRecurringCategory
         if (value != currentType) {
             this.setAmount(this.getAmount().negate());
         }
+    }
+
+    @Override
+    public void setTags(ArrayList<Taglink> tags) {
+        taglinks = tags;
+    }
+
+    @Override
+    public ArrayList<Taglink> getTags() {
+        return taglinks;
+    }
+
+    @Override
+    public String getTransactionModel() {
+        return Taglink.REFTYPE_RECURRING_TRANSACTION_SPLIT;
     }
 }

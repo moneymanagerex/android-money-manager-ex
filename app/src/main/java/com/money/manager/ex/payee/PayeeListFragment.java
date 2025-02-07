@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,8 +54,10 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
+import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
 /**
@@ -69,12 +73,21 @@ public class PayeeListFragment
 //    private static final long MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
 
+    private static final int ORDER_BY_NAME = 0;
+    private static final int ORDER_BY_USAGE = 1;
+    private static final int ORDER_BY_RECENT = 2;
+
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
+    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
+    private static final String SORT_BY_RECENT =
+            "(SELECT max( TRANSDATE ) \n" +
+                    " FROM CHECKINGACCOUNT_V1 \n" +
+                    " WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID \n" +
+                    "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
     private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
+//    private int mSort = 0;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -97,6 +110,32 @@ public class PayeeListFragment
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null, new String[] { Payee.PAYEENAME },
                 new int[]{android.R.id.text1}, 0);
+
+        // overwrite to set inactive
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                TextView textView = (TextView) aView;
+                boolean active;
+                if (aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))==null) {
+                    // issue 2216: consider true if active column is not set, backward compatibulity
+                    active = true;
+                } else {
+                    active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))) != 0);
+                }
+                CharSequence text = aCursor.getString(aColumnIndex);
+                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                }
+                if (!active) {
+                    textView.setText( Html.fromHtml( "<i>"+text+ " ["+mContext.getString(R.string.inactive)+"]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
+                } else {
+                    textView.setText(text);
+                }
+                return true;
+            }
+        });
+
+
         // set adapter
         setListAdapter(adapter);
 
@@ -107,7 +146,7 @@ public class PayeeListFragment
         // init sort
 //        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
 //                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
-        mSort = settings.getPayeeSort();
+//        mSort = settings.getPayeeSort();
 
         // start loader
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
@@ -122,7 +161,7 @@ public class PayeeListFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_payee, menu);
+        inflater.inflate(R.menu.menu_sort, menu);
 
         AppSettings settings = new AppSettings(mContext);
         int payeeSort = settings.getPayeeSort();
@@ -139,6 +178,10 @@ public class PayeeListFragment
                 item = menu.findItem(R.id.menu_sort_usage);
                 item.setChecked(true);
                 break;
+            case 2:
+                item = menu.findItem(R.id.menu_sort_recent);
+                item.setChecked(true);
+                break;
         }
     }
 
@@ -148,17 +191,22 @@ public class PayeeListFragment
 
         switch (item.getItemId()) {
             case R.id.menu_sort_name:
-                mSort = 0;
                 item.setChecked(true);
-                settings.set(R.string.pref_sort_payee, mSort);
+                settings.setPayeeSort(ORDER_BY_NAME);
                 // restart search
                 restartLoader();
                 return true;
 
             case R.id.menu_sort_usage:
-                mSort = 1;
                 item.setChecked(true);
-                settings.set(R.string.pref_sort_payee, mSort);
+                settings.setPayeeSort(ORDER_BY_USAGE);
+                // restart search
+                restartLoader();
+                return true;
+
+            case R.id.menu_sort_recent:
+                item.setChecked(true);
+                settings.setPayeeSort(ORDER_BY_RECENT);
                 // restart search
                 restartLoader();
                 return true;
@@ -184,6 +232,7 @@ public class PayeeListFragment
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.SWITCH_ACTIVE.getId(), Menu.NONE, getString(R.string.switch_active));
     }
 
     @Override
@@ -235,6 +284,13 @@ public class PayeeListFragment
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
+                break; // issue #2217 view make also inactive
+            case SWITCH_ACTIVE:
+                payee.setActive(!payee.getActive());
+                PayeeRepository payeeRepository = new PayeeRepository(getActivity());
+                payeeRepository.save(payee);
+                restartLoader();
+                break;
         }
         return false;
     }
@@ -244,16 +300,32 @@ public class PayeeListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_PAYEE) {
-            String whereClause = null;
+            String whereClause = ""; // we don't filter inactive by default
+            if (mAction == Intent.ACTION_PICK) {
+                whereClause = "ACTIVE <> 0";
+            }
             String[] selectionArgs = null;
             if (!TextUtils.isEmpty(mCurFilter)) {
-                whereClause = Payee.PAYEENAME + " LIKE ?";
+                if (!whereClause.isEmpty()) whereClause += " AND ";
+                whereClause += Payee.PAYEENAME + " LIKE ?";
                 selectionArgs = new String[]{mCurFilter + '%'};
             }
             PayeeRepository repo = new PayeeRepository(getActivity());
+            String orderBy;
+            switch ((new AppSettings(getContext())).getPayeeSort()) {
+                case ORDER_BY_USAGE:
+                    orderBy = SORT_BY_USAGE;
+                    break;
+                case ORDER_BY_RECENT:
+                    orderBy = SORT_BY_RECENT;
+                    break;
+                default:
+                    orderBy = SORT_BY_NAME;
+                    break;
+            }
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(orderBy);
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }

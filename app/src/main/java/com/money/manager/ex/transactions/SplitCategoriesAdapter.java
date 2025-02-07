@@ -34,6 +34,7 @@ import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
+import com.money.manager.ex.utils.TagLinkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,6 +80,7 @@ public class SplitCategoriesAdapter
         initCategorySelector(viewHolder);
         initNotesControls(viewHolder);
         initTransactionTypeButton(viewHolder);
+// not here        initTagsControls(viewHolder);
 
         return viewHolder;
     }
@@ -94,6 +96,8 @@ public class SplitCategoriesAdapter
         bindTransactionTypeButton(split, holder);
         bindAmount(split, holder);
         bindNotes(split, holder);
+        initTagsControls(split, holder);
+
     }
 
     @Override
@@ -221,9 +225,21 @@ public class SplitCategoriesAdapter
         });
     }
 
-    /**
-     * Swipe support
-     */
+    public void initTagsControls(ISplitTransaction splitTransaction, SplitItemViewHolder viewHolder) {
+        (new TagLinkUtils(getContext())).initTagControls(
+                viewHolder.txtTagsList,
+                splitTransaction.getTags(),
+                splitTransaction.getId(),
+                splitTransaction.getTransactionModel(),
+                tagLink -> {
+                    splitTransaction.setTags(tagLink);
+                }
+        );
+    }
+
+        /**
+         * Swipe support
+         */
 
     @Override
     public void onItemMove(long fromPosition, long toPosition) {

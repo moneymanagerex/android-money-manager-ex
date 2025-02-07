@@ -103,4 +103,13 @@ public class AppSettings
     public int getPayeeSort() {
         return get(R.string.pref_sort_payee, 0);
     }
+    public void setPayeeSort(int value) { set(R.string.pref_sort_payee, value); }
+
+    public int getCategorySort() { return get("pref_category_sort", 0); }
+    public void setCategorySort(int value) { set("pref_category_sort", value); }
+
+    public int getTagSort() { return get("pref_tag_sort", 0); }
+    public void setTagSort(int value) { set("pref_tag_sort", value); }
+
 }
+

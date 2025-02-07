@@ -1,0 +1,8 @@
+* hotfix for search
+* fix for frequency order in tag, category and payee
+* new sorting by recent usage in tag, category and payee
+* evidence of inactive category in report (transaction with inactive category is still shown in list)
+* sort criteria for tag, category and payee is persistent after app close (with fix)
+* ability to Activate/Deactivate Tag and Payee
+* Fix for Copy Tag in transaction duplicate
+* Fix for delete Tag during deletrion of transaction and schedule transaction

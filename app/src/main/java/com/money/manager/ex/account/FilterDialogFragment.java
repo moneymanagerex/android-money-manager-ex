@@ -201,6 +201,7 @@ public class FilterDialogFragment
 
     private void showFavouriteStatus(View view) {
         if (view == null) return;
+        if (mAccount == null || mAccount.getFavorite() == null || getActivity() == null) return;
 
         IconicsButton favouriteButton = view.findViewById(R.id.favouriteButton);
 

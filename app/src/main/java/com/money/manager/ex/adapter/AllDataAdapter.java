@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import androidx.core.content.ContextCompat;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -35,7 +37,10 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -83,7 +88,7 @@ public class AllDataAdapter
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR,
-        SPLITTED;
+        SPLITTED, CATEGID;
 
     private final LayoutInflater mInflater;
     // hash map for group
@@ -231,11 +236,25 @@ public class AllDataAdapter
         String categorySub;
         if (!isTransfer) {
             categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
+
+            categorySub = (categorySub == null ? "--not available--" : categorySub);  // in case of transaction with split created without category
+
             boolean isSplited = cursor.getInt(cursor.getColumnIndex(SPLITTED)) == 1;
             // write category/subcategory format html
             if (!isSplited) {
+                long categoryId = cursor.getLong(cursor.getColumnIndex(CATEGID));
+                boolean isActive = true;
+                if (categoryId != Constants.NOT_SET) {
+                    CategoryRepository categoryRepository = new CategoryRepository(context);
+                    Category category = categoryRepository.load(categoryId);
+                    isActive = category.getActive();
+                }
                 // Display category/sub-category.
-                categorySub = Html.fromHtml(categorySub, Html.FROM_HTML_MODE_LEGACY).toString();
+                if ( !isActive ) {
+                    categorySub = "<i>" + categorySub + " " + context.getString(R.string.inactive) + "</i>";
+                } else {
+                    categorySub = "<b>" + categorySub + "</b>";
+                }
             } else {
                 // It is either a Transfer or a split category.
                 // then it is a split? todo: improve this check to make it explicit.
@@ -244,7 +263,8 @@ public class AllDataAdapter
         } else {
             categorySub = mContext.getString(R.string.transfer);
         }
-        holder.txtCategorySub.setText(categorySub);
+
+        holder.txtCategorySub.setText(Html.fromHtml(categorySub, Html.FROM_HTML_MODE_LEGACY));
 
         // notes
         if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
@@ -369,6 +389,7 @@ public class AllDataAdapter
         TAGS = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.TAGS : QueryBillDeposits.TAGS;
         COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
         SPLITTED = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.SPLITTED : QueryBillDeposits.SPLITTED;
+        CATEGID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CATEGID : QueryBillDeposits.CATEGID;
     }
 
     public void setBalances(HashMap<Long, Money> balances) {

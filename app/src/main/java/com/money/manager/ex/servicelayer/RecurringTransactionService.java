@@ -269,6 +269,10 @@ public class RecurringTransactionService
         // Exit if the deletion of splits failed.
         if(!result) return false;
 
+        // delete tags
+        TaglinkRepository tagLinkRepo = new TaglinkRepository(getContext());
+        tagLinkRepo.deleteForType(this.recurringTransactionId, Taglink.REFTYPE_RECURRING_TRANSACTION);
+
         // Delete recurring transactions.
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
         long deleteResult = repo.delete(this.recurringTransactionId);
@@ -327,6 +331,7 @@ public class RecurringTransactionService
      */
     public ArrayList<ISplitTransaction> loadSplitTransactions() {
         ArrayList<ISplitTransaction> result = new ArrayList<>();
+        TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
 
         Cursor cursor = this.getCursorForSplitTransactions();
         if (cursor == null) return result;
@@ -334,6 +339,9 @@ public class RecurringTransactionService
         while (cursor.moveToNext()) {
             SplitRecurringCategory entity = new SplitRecurringCategory();
             entity.loadFromCursor(cursor);
+
+            // load tag for split
+            entity.setTags(taglinkRepository.loadTaglinksFor(entity.getId(), entity.getTransactionModel()));
 
             result.add(entity);
         }
@@ -482,7 +490,99 @@ public class RecurringTransactionService
                         taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         accountTrx.setColor(scheduledTrx.getColor());
+
+        // split
+        SplitScheduledCategoryRepository splitRepo = new SplitScheduledCategoryRepository( getContext() );
+        // now we have scheuletrx.getTAgs that is SplitRecurring isntace
+        // and we nee to setup new model for SplitTransaaction
+        accountTrx.createSplitFromRecurring(splitRepo.loadSplitCategoriesFor(scheduledTrx.getId()));
+
         return  accountTrx;
     }
+
+
+    public RecurringTransaction getSimulatedTransaction() {
+        if (recurringTransactionId <= 0) {
+            return null;
+        }
+        RecurringTransaction tx = getRecurringTransaction();
+        if (tx == null) {
+            return null;
+        }
+        return getRecurringTransaction();
+    }
+    /**
+     * @return true transaction is moved next, false transaction was ended
+     */
+    public boolean simulateMoveNext() {
+        RecurringTransaction tx = getRecurringTransaction();
+        if (tx == null) {
+            return false;
+        }
+
+        Integer recurrenceType = tx.getRecurrenceInt();
+        if (recurrenceType == null) {
+            return false;
+        }
+
+        /**
+         * The action will depend on the transaction preferences.
+         */
+        Recurrence recurrence = Recurrence.valueOf(recurrenceType);
+        if (recurrence == null) {
+            return false;
+        }
+
+        switch (recurrence) {
+            // periodical (monthly, weekly)
+            case ONCE:
+                // exit now.
+                return false;
+
+            case WEEKLY:
+            case BIWEEKLY:
+            case MONTHLY:
+            case BIMONTHLY:
+            case QUARTERLY:
+            case SEMIANNUALLY:
+            case ANNUALLY:
+            case FOUR_MONTHS:
+            case FOUR_WEEKS:
+            case DAILY:
+            case MONTHLY_LAST_DAY:
+            case MONTHLY_LAST_BUSINESS_DAY:
+                moveDatesForward();
+                if (tx.getPaymentsLeft() == null || tx.getPaymentsLeft() <= 0) {
+                    // no decrease. next transaction is valid
+                    return true;
+                } else {
+                    decreasePaymentsLeft();
+                    if ( tx.getPaymentsLeft() == 0) {
+                        // no more payments
+                        return false;
+                    } else {
+                        // more payement
+                        return true;
+                    }
+                }
+//                break;
+            // every n periods
+            case EVERY_X_DAYS:
+            case EVERY_X_MONTHS:
+                moveDatesForward();
+                break;
+            // in n periods
+            case IN_X_DAYS:
+            case IN_X_MONTHS:
+                // reset number of periods
+                mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
 
 }

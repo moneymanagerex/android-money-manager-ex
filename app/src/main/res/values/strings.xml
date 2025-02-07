@@ -320,6 +320,7 @@
     <string name="year">Year</string>
     <string name="menu_reports">Reports</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
+    <string name="menu_report_cashflow">Cash Flow</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">All Time</string>
@@ -465,6 +466,7 @@
     <string name="sort_order">Sort Order</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_usage">Sort by usage</string>
+    <string name="sort_by_recent">Sort by recent</string>
     <string name="choose_sorting">Choose sorting</string>
     <string name="credit_card">Credit Card</string>
     <string name="cash_accounts">Cash Accounts</string>

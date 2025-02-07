@@ -23,6 +23,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
@@ -47,6 +48,7 @@ public class RecurringTransaction
     public static final String REPEATS = "REPEATS";
 
     private ArrayList<Taglink> taglinks = null;
+    private ArrayList<ISplitTransaction> splitTransactions;
 
     /**
      * Payment Date
@@ -330,7 +332,7 @@ public class RecurringTransaction
 
     @Override
     public String getTransactionModel() {
-        return "RecurringTransaction";
+        return Taglink.REFTYPE_RECURRING_TRANSACTION;
     }
 
     @Override
@@ -364,7 +366,20 @@ public class RecurringTransaction
 
     @Override
     public int getColor() {
+        if (getInt(ITransactionEntity.COLOR) == null) {
+            return (int)Constants.NOT_SET;
+        }
         return getInt(ITransactionEntity.COLOR);
+    }
+
+    @Override
+    public void setSplit(ArrayList<ISplitTransaction> split) {
+        splitTransactions = split;
+    }
+
+    @Override
+    public ArrayList<ISplitTransaction> getSplit() {
+        return splitTransactions;
     }
 
 }

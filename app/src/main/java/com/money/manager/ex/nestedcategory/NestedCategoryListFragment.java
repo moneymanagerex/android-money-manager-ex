@@ -82,16 +82,22 @@ public class NestedCategoryListFragment
 
     private static final int ID_LOADER_NESTEDCATEGORY = 0;
 
+    private static final int ORDER_BY_NAME = 0;
+    private static final int ORDER_BY_USAGE = 1;
+    private static final int ORDER_BY_RECENT = 2;
     private static final String SORT_BY_NAME = "UPPER(" + QueryNestedCategory.CATEGNAME + ")";
-// note use T. for resovle name from dinamic from
+    // note use T. for resovle name from dinamic from
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) \n" +
             "FROM CHECKINGACCOUNT_V1 \n" +
             "WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID\n" +
             "  AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '')) DESC";
+    private static final String SORT_BY_RECENT = "(SELECT max( TRANSDATE ) \n" +
+            " FROM CHECKINGACCOUNT_V1 \n" +
+            " WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID \n" +
+            "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
-//    private Context mContext;
+    //    private Context mContext;
     private String mCurFilter;
-    private int mSort = 0;
 
 
     @Override
@@ -112,23 +118,23 @@ public class NestedCategoryListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { QueryNestedCategory.CATEGNAME },
+                layout, null, new String[]{QueryNestedCategory.CATEGNAME},
                 new int[]{android.R.id.text1}, 0);
 
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                    TextView textView = (TextView) aView;
-                    boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
-                    CharSequence text = aCursor.getString(aColumnIndex);
-                    if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
-                        text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
-                    }
-                    if (!active) {
-                        textView.setText( Html.fromHtml( "<i>"+text+ " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
-                    } else {
-                        textView.setText(text);
-                    }
-                    return true;
+                TextView textView = (TextView) aView;
+                boolean active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
+                CharSequence text = aCursor.getString(aColumnIndex);
+                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
+                }
+                if (!active) {
+                    textView.setText(Html.fromHtml("<i>" + text + " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT));
+                } else {
+                    textView.setText(text);
+                }
+                return true;
             }
         });
 
@@ -155,26 +161,39 @@ public class NestedCategoryListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
-        final MenuItem item = menu.findItem(R.id.menu_sort_name);
-        item.setChecked(true);
+        switch ((new AppSettings(getActivity())).getCategorySort()) {
+            case ORDER_BY_USAGE:
+                menu.findItem(R.id.menu_sort_usage).setChecked(true);
+                break;
+            case ORDER_BY_RECENT:
+                menu.findItem(R.id.menu_sort_recent).setChecked(true);
+                break;
+            default:
+                menu.findItem(R.id.menu_sort_name).setChecked(true);
+                break;
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AppSettings settings = new AppSettings(getActivity());
         if (item.getItemId() == android.R.id.home) {
             // we wont to invalidate cursor, so if back is pressed no item is select
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
             cursor.moveToPosition(-1);
             // and continue with super
         }
-        if (item.getItemId() == R.id.menu_sort_name ||
-            item.getItemId() == R.id.menu_sort_usage) {
-            if (item.getItemId() == R.id.menu_sort_name )  {
-                mSort = 0;
-            } else {
-                mSort = 1;
-            }
 
+        if (item.getItemId() == R.id.menu_sort_name ||
+                item.getItemId() == R.id.menu_sort_usage ||
+                item.getItemId() == R.id.menu_sort_recent) {
+            if (item.getItemId() == R.id.menu_sort_usage) {
+                settings.setCategorySort(ORDER_BY_USAGE);
+            } else if (item.getItemId() == R.id.menu_sort_recent) {
+                settings.setCategorySort(ORDER_BY_RECENT);
+            } else {
+                settings.setCategorySort(ORDER_BY_NAME);
+            }
             item.setChecked(true);
             // restart search
             restartLoader();
@@ -204,7 +223,7 @@ public class NestedCategoryListFragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info ;
+        AdapterView.AdapterContextMenuInfo info;
         if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         } else {
@@ -221,7 +240,7 @@ public class NestedCategoryListFragment
 
         // manage select menu
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
-        if (menuId == null) return  false;
+        if (menuId == null) return false;
         switch (menuId) {
             case ADD_SUB:
                 Category newCat = new Category();
@@ -230,13 +249,8 @@ public class NestedCategoryListFragment
                         newCat);
                 break;
             case EDIT:
-                if (category.getParentId() <= 0) {
-                    showDialogEditCategoryName(SQLTypeTransaction.UPDATE,
-                            category);
-                } else {
-                    showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE,
-                            category);
-                }
+                showDialogEditSubCategoryName(SQLTypeTransaction.UPDATE,
+                        category);
                 break;
 
             case DELETE:
@@ -287,9 +301,21 @@ public class NestedCategoryListFragment
                 selectionArgs = new String[]{mCurFilter + "%"};
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
+            String sort;
+            switch ((new AppSettings(getContext())).getCategorySort()) {
+                case ORDER_BY_USAGE:
+                    sort = SORT_BY_USAGE;
+                    break;
+                case ORDER_BY_RECENT:
+                    sort = SORT_BY_RECENT;
+                    break;
+                default:
+                    sort = SORT_BY_NAME;
+                    break;
+            }
             Select query = new Select(repo.getAllColumns())
                     .where(whereClause, selectionArgs)
-                    .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                    .orderBy(sort);
 
             return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
@@ -341,9 +367,9 @@ public class NestedCategoryListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.getCount() ==0 || cursor.getPosition() == -1) {
+            if (cursor.getCount() == 0 || cursor.getPosition() == -1) {
                 // no record or no record selected
-                sendResultToActivity(-1,null);
+                sendResultToActivity(-1, null);
             } else {
                 @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
@@ -379,7 +405,7 @@ public class NestedCategoryListFragment
         String search = !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "";
         Category category = new Category();
         category.setName(search);
-        showDialogEditCategoryName(SQLTypeTransaction.INSERT, category);
+        showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, category);
     }
 
     @Override
@@ -471,65 +497,6 @@ public class NestedCategoryListFragment
     /**
      * Show alter binaryDialog, for create or edit new category
      */
-    private void showDialogEditCategoryName(final SQLTypeTransaction type, Category category) {
-        // inflate view
-        View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_category, null);
-
-        final EditText edtCategName = viewDialog.findViewById(R.id.editTextCategName);
-        // set category description
-        edtCategName.setText(category.getBasename());
-        if (!TextUtils.isEmpty(category.getBasename())) {
-            edtCategName.setSelection(category.getBasename().length());
-        }
-
-        int titleId = type.equals(SQLTypeTransaction.INSERT)
-                ? R.string.add_category
-                : R.string.edit_categoryName;
-
-        UIHelper ui = new UIHelper(getActivity());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(viewDialog)
-                .setIcon(ui.getIcon(FontAwesome.Icon.faw_tags))
-                .setTitle(titleId)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // get category description
-                        String name = edtCategName.getText().toString();
-                        CategoryService service = new CategoryService(getActivity());
-
-                        switch (type) {
-                            case INSERT:
-                                long insertResult = service.createNew(name, Constants.NOT_SET);
-
-                                if (insertResult <= 0) {
-                                    Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case UPDATE:
-                                long updateResult = service.update(category.getId(), name, Constants.NOT_SET);
-                                if (updateResult <= 0) {
-                                    Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                        }
-                        // restart loader
-                        restartLoader();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    /**
-     * Show alter binaryDialog, for create or edit new category
-     */
     private void showDialogEditSubCategoryName(final SQLTypeTransaction type, Category category) {
 
         // inflate view
@@ -548,11 +515,15 @@ public class NestedCategoryListFragment
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Long> categoryIds = new ArrayList<>();
+        // todo add -1 and "<root>" for moving at top level
+        categoryNames.add("<root>");
+        categoryIds.add(Constants.NOT_SET);
         for (NestedCategoryEntity category1 : categories) {
-            // do not include category itself and all children form parent list
-            if (category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
+            // if edit do not include category itself and all children form parent list
+            if (type.equals(SQLTypeTransaction.INSERT) ||
+                    category.getName() == null || !category1.getCategoryName().startsWith(category.getName())) {
                 categoryIds.add(category1.getCategoryId());
-                categoryNames.add(category1.getCategoryName() );
+                categoryNames.add(category1.getCategoryName());
             }
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
@@ -581,8 +552,8 @@ public class NestedCategoryListFragment
                         // check position
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
-                        // get parent category id
-                        long parentID = categories.get(spnCategory.getSelectedItemPosition()).getCategoryId();
+                        // get parent category id from list of categories in spin
+                        long parentID = categoryIds.get(spnCategory.getSelectedItemPosition());
                         CategoryService service = new CategoryService(getActivity());
 
                         switch (type) {
@@ -594,6 +565,8 @@ public class NestedCategoryListFragment
                                 }
                                 break;
                             case UPDATE:
+                                // TODO: issue 2187. move sometime create id = parentid
+                                assert category.getId() != parentID;
                                 long updateResult = service.update(category.getId(), name, parentID);
                                 if (updateResult <= 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();

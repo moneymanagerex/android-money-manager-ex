@@ -31,6 +31,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.scheduled.Recurrence;
@@ -104,6 +105,8 @@ public class RecurringTransactionProcess {
                 accountTransactionRepository.insert(accountTrx);
                 TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
                 taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
+                SplitCategoryRepository splitCategoryRepository = new SplitCategoryRepository(getContext());
+                splitCategoryRepository.saveAllFor(accountTrx.getId(), accountTrx.getSplit());
                 service.moveNextOccurrence();
 
             }

@@ -28,17 +28,15 @@ public class TaglinkRepository extends  RepositoryBase {
     }
 
     public long add(Taglink entity) {
-        return insert(entity.contentValues);
+        long id =  insert(entity.contentValues);
+        entity.setId(id);
+        return id;
     }
 
     public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
         long result = delete(Taglink.TAGLINKID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
-    }
-
-    public boolean deleteForTransaction ( Long refId ) {
-        return deleteForType(refId, Taglink.REFTYPE_TRANSACTION);
     }
 
     public boolean deleteForType( Long refId, String reftype ) {

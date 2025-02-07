@@ -48,6 +48,7 @@ public class ScheduledTransactionRepository
                 ITransactionEntity.TRANSACTIONNUMBER,
                 ITransactionEntity.NOTES,
                 ITransactionEntity.CATEGID,
+                ITransactionEntity.COLOR,
                 ITransactionEntity.TRANSDATE,
                 ITransactionEntity.FOLLOWUPID,
                 ITransactionEntity.TOTRANSAMOUNT,

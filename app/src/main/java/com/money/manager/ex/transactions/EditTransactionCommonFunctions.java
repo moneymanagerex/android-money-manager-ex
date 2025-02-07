@@ -18,7 +18,7 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -28,16 +28,11 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +45,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
-import com.money.manager.ex.domainmodel.Tag;
-import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
@@ -79,7 +71,6 @@ import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.settings.PerDatabaseFragment;
@@ -87,6 +78,7 @@ import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.TransactionColorUtils;
+import com.money.manager.ex.utils.TagLinkUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite3.BriteDatabase;
 
@@ -128,8 +120,6 @@ public class EditTransactionCommonFunctions {
 
     public ArrayList<Attachment> mAttachments;
 
-    public ArrayList<Taglink> mTaglinks;
-
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -170,6 +160,8 @@ public class EditTransactionCommonFunctions {
                 Timber.w("Delete split transaction failed!");
                 return false;
             }
+            TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
+            taglinkRepository.deleteForType(splitToDelete.getId(), splitToDelete.getTransactionModel());
         }
 
         return true;
@@ -179,12 +171,6 @@ public class EditTransactionCommonFunctions {
     public void displayNotes() {
         if( this.viewHolder.edtNotes == null ) return;
         this.viewHolder.edtNotes.setText(transactionEntity.getNotes());
-    }
-
-    public void displayTags() {
-        if( this.viewHolder.tagsListTextView == null ) return;
-        TaglinkRepository repo = new TaglinkRepository(getContext());
-        this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
     }
 
     public void displayCategoryName() {
@@ -614,96 +600,13 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initTagsControls() {
-        if( this.viewHolder.tagsListTextView == null ) return;
-
-        if (mTaglinks == null) mTaglinks = new ArrayList<Taglink>();
-
-        this.viewHolder.tagsListTextView.setOnClickListener(v -> {
-            // inizialize display
-            TaglinkRepository repo = new TaglinkRepository(getContext());
-            this.viewHolder.tagsListTextView.setText( repo.loadTagsfor( mTaglinks ) );
-
-            TagRepository tagRepository = new TagRepository(getContext());
-            ArrayList<Tag> tagsList = tagRepository.getAllActiveTag();
-            boolean[] tagsFlag = new boolean[tagsList.size()];
-            String[] tagsListString = new String[tagsList.size()];
-            for (int i = 0; i < tagsList.size(); i++) {
-                tagsListString[i] = tagsList.get(i).getName();
-                // set default from mTagLink
-                long tagId = tagsList.get(i).getId().intValue();
-                if ( mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
-                    tagsFlag[i] = true;
-                };
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            // set title
-            builder.setTitle(R.string.tagsList_transactions);
-            builder.setCancelable(false);
-            builder.setMultiChoiceItems(tagsListString, tagsFlag,  new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                    tagsFlag[i] = b;
-                }
-            });
-
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // Initialize string builder
-                    // Save also taglink, loop at mtaglink to check actual record
-                    for (int j = 0; j < tagsList.size(); j++) {
-                        long tagId = tagsList.get(j).getId().intValue();
-                        Taglink taglink ;
-                        try {
-                            taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
-                        } catch ( Exception e) {
-                            taglink = null;
-                        }
-                        if (taglink == null ) {
-                            if ( ! tagsFlag[j] ) {
-                                // flag off and mlink not present, nothing to do
-                            } else {
-                                // flag on and mlink not present, create
-                                taglink = new Taglink();
-                                taglink.setRefType(transactionEntity.getTransactionModel());
-                                taglink.setRefId(transactionEntity.getId());
-                                taglink.setTagId(tagId);
-                                mTaglinks.add(taglink);
-                            }
-                        } else {
-                            if ( ! tagsFlag[j] ) {
-                                // flag off and mlink is present, delete
-                                mTaglinks.remove(taglink);
-                            } else {
-                                // flag on and mlink present  nothing
-                            }
-                        }
-                    }
-                    // update UI field
-                    displayTags();
-                }
-            });
-
-            builder.setNegativeButton(android.R.string.cancel,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // dismiss dialog
-                    dialogInterface.dismiss();
-                }
-            });
-
-            builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    mTaglinks.clear();
-                    displayTags();
-                }
-            });
-
-            // show dialog
-            builder.show();
-    });
+        (new TagLinkUtils(getContext())).initTagControls(viewHolder.tagsListTextView,
+                transactionEntity.getTags(),
+                transactionEntity.getId(),
+                transactionEntity.getTransactionModel(),
+                tagLinks -> {
+                    transactionEntity.setTags(tagLinks);
+                } );
 
     }
 
@@ -878,6 +781,10 @@ public class EditTransactionCommonFunctions {
             Timber.d("Base folder not found or invalid");
             return; // Exit if the base folder is invalid or doesn't exist
         }
+
+        // Notify observers of changes if any new attachment is added
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(baseUri, null);
 
         // Access the 'Transaction' subfolder within the base folder
         DocumentFile transactionFolder = baseFolder.findFile("Transaction");
@@ -1522,6 +1429,10 @@ public class EditTransactionCommonFunctions {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
         }
 
+        if (this.transactionEntity.getTags() != null ) {
+            entity.setTags(this.transactionEntity.getTags());
+        }
+
         return entity;
     }
 
@@ -1576,13 +1487,6 @@ public class EditTransactionCommonFunctions {
             mAttachments = new ArrayList<>();
         }
         return mAttachments;
-    }
-
-    private ArrayList<Taglink> getTaglinks() {
-        if (mTaglinks == null) {
-            mTaglinks = new ArrayList<>();
-        }
-        return mTaglinks;
     }
 
     private String getUserDateFormat() {
@@ -1753,10 +1657,10 @@ public class EditTransactionCommonFunctions {
     public void saveTags() {
         // save TagLinks
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
-        if (mTaglinks != null) {
-            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), mTaglinks);
+        if (transactionEntity.getTags() != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTags());
         } else {
-            taglinkRepository.deleteForTransaction(transactionEntity.getId());
+            taglinkRepository.deleteForType(transactionEntity.getId(), transactionEntity.getTransactionModel() );
         }
 
     }

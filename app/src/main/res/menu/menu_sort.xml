@@ -32,6 +32,9 @@
                 <item
                     android:id="@+id/menu_sort_usage"
                     android:title="@string/sort_by_usage"/>
+                <item
+                    android:id="@+id/menu_sort_recent"
+                    android:title="@string/sort_by_recent"/>
             </group>
         </menu>
     </item>

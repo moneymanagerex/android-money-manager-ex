@@ -353,7 +353,7 @@
     <string name="open_database">Datenbank öffnen</string>
     <string name="synchronization_interval">Synchronisierungsintervall</string>
     <string name="summary_synchronization_interval">Wie oft soll synchronisiert werden?</string>
-    <string name="tips_new_version_dropbox">Beginnend mit Version 1.2.0 hat MoneyManager Ex für Android die DropBox syncronization engine geändert. Benutzer, die bereits Dropbox sync verwenden müssen die Konfigurationsdatei anpassen.\nDie Zugangsdaten und Auswahl der Datenbank befinden sich in den Einstellungen.\nVon Version 1.2.0 an kann MoneyManagerEx für Android die Datenbank automatisch synchronisieren.</string>
+    <string name="tips_new_version_dropbox">Ab Version 1.2.0 hat Money Manager Ex für Android die Dropbox-Synchronisierungs-Engine geändert. Die Benutzer, die bereits die Dropbox-Synchronisation verwenden, müssen die Konfiguration aktualisieren.\nDie Authentifizierung und die Auswahl der Datenbank befinden sich in den Einstellungen.\nAb Version 1.2.0 kann Money Manager Ex für Android die Datenbank automatisch synchronisieren.</string>
     <string name="title_transaction_shown_balance">Zeige den Saldo für jede Transaktion</string>
     <string name="summary_transaction_shown_balance">Zeige das Saldo für jede Transaktion. Die Darstellung des Saldos kann die Anwendung verlangsamen</string>
     <string name="menu_open_database">Datenbank öffnen</string>
@@ -578,6 +578,7 @@
     <string name="value">Wert</string>
     <string name="view_transactions">Transaktionen anzeigen</string>
     <string name="view_transactions_sub">Transaktionen mit Unterkategorien anzeigen</string>
+    <string name="switch_active">Aktivieren/Inaktiv wechseln</string>
     <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
@@ -765,4 +766,5 @@
     <string name="issue_open">"Offene Themen auf GitHub"</string>
     <!-- Builder button -->
     <string name="CLEAR_ALL">Alle schließen</string>
+    <string name="empty_color_message">wähle eine Farbe</string>
 </resources>

@@ -54,6 +54,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.reports.CashFlowReportActivity;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -107,6 +108,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -305,22 +307,12 @@ public class MainActivity
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
-                if (db.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                    changeDatabase(db);
-                }
+                changeDatabase(db);
                 break;
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                if (db2.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                    changeDatabase(db2);
-                }
+                changeDatabase(db2);
                 break;
             case RequestCodes.PASSCODE:
                 isAuthenticated = false;
@@ -583,14 +575,9 @@ public class MainActivity
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
                 // TODO request password 1/3 upon testing instead of extension
-                if (key.endsWith(".emb")) {
-                    Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
-                    intent.putExtra(EXTRA_DATABASE_PATH, key);
-                    startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
-                } else {
-                    MmexApplication.getApp().setPassword(""); // reset password
-                    onOpenDatabaseClick(selectedDatabase);
-                }
+                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+                intent.putExtra(EXTRA_DATABASE_PATH, key);
+                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
 
                 return result;
             }
@@ -605,10 +592,12 @@ public class MainActivity
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
         } else if (itemId == R.id.menu_open_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
+            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
         } else if (itemId == R.id.menu_account) {
@@ -648,6 +637,8 @@ public class MainActivity
             startActivity(intent);
         } else if (itemId == R.id.menu_report_income_vs_expenses) {
             startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+        } else if (itemId == R.id.menu_report_cashflow) {
+            startActivity(new Intent(this, CashFlowReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -888,6 +879,12 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                         .color(iconColor)));
+        // CashFlow
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_cashflow)
+                .withText(getString(R.string.menu_report_cashflow))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor)));
+
         childItems.add(childReports);
 
         // Settings
@@ -1138,16 +1135,12 @@ public class MainActivity
             String pathFile = getIntent().getData().getEncodedPath();
             // decode
             try {
-                String filePath = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                String filePath = URLDecoder.decode(pathFile, StandardCharsets.UTF_8); // decode file path
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
-                if (db.localPath.endsWith(".emb")) {
-                    startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                } else {
-                    MmexApplication.getApp().setPassword("");
-                }
                 changeDatabase(db);
                 return;
             } catch (Exception e) {

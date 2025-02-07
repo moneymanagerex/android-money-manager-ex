@@ -124,6 +124,7 @@
     <string name="add_subcategory">Agregar Subcategoría</string>
     <string name="edit_categoryName">Editar Categoría</string>
     <string name="delete_category">Borrar categoría</string>
+    <string name="search_sub_category">Incluye subcategoría</string>
     <!-- currency -->
     <string name="currency_name">Nombre de la moneda</string>
     <string name="currency_symbol">Símbolo de la moneda</string>
@@ -135,8 +136,10 @@
     <string name="decimal_char">Separador decimal</string>
     <string name="group_char">Separador de millares</string>
     <string name="scale">Escala</string>
+    <string name="conversion_to_base_rate">Conversión</string>
     <string name="currency_name_empty">El nombre de la moneda es requerido</string>
     <string name="new_edit_currency">Agregar/Editar moneda</string>
+    <string name="missing_default_currency">Falta la moneda predeterminada en la configuración</string>
     <!-- transaction -->
     <string name="amount">Importe</string>
     <string name="total_amount">Importe total</string>
@@ -216,6 +219,15 @@
     <string name="widget_all_accounts">Todas las cuentas</string>
     <string name="widget_add_transaction">Agregar Transacción</string>
     <!-- TAG -->
+    <string name="tag">Etiqueta/Rótulo</string>
+    <string name="tagsList_transactions">Etiquetas para transacciones</string>
+    <string name="tag_name">Nombre de etiqueta</string>
+    <string name="edit_tagName">Editar Etiqueta</string>
+    <string name="delete_tag">Eliminar Etiqueta</string>
+    <string name="select_tag">Seleccionar Etiqueta</string>
+    <string name="tag_empty_list">No se ha encontrado ninguna etiqueta. Para crear una, toque el botón verde con el signo más.</string>
+    <string name="tag_can_not_deleted">La etiqueta seleccionada no se puede eliminar porque está referenciada</string>
+    <string name="db_tag_update_failed">Error al actualizar la Etiqueta</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Ninguno</string>
     <string name="once">Una vez</string>
@@ -236,6 +248,8 @@
     <string name="repeating_empty_transaction">No se encontraron transacciones programadas. Para crear una, pulse el botón verde con el signo Más.</string>
     <string name="inactive">Inactiva</string>
     <string name="activates">Se Activa</string>
+    <string name="days_overdue">¡%d días de retraso!</string>
+    <string name="days_remaining">%d días restantes</string>
     <string name="new_edit_repeating_transaction">Agregar/Editar Transacción Programada</string>
     <string name="due_date">Fecha de vencimiento</string>
     <string name="next_occurrence">Siguiente Ocurrencia</string>
@@ -256,6 +270,9 @@
     <string name="enter">Introducir</string>
     <string name="enter_amount">Ingrese el monto</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Transacción Automática</string>
+    <string name="manual">Entrada manual</string>
+    <string name="auto">Entrada automática</string>
     <!-- 20121121 -->
     <string name="send_feedback">Enviar comentarios</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -289,6 +306,8 @@
     <string name="last_month">Mes anterior</string>
     <string name="last30days">Últimos 30 Días</string>
     <string name="last_year">Año anterior</string>
+    <string name="current_fin_year">Año Financiero Actual</string>
+    <string name="last_fin_year">Ejercicio Financiero Anterior</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Número de transacciónes encontradas: %1$d</string>
@@ -332,7 +351,6 @@
     <string name="open_database">Abrir la Base de Datos</string>
     <string name="synchronization_interval">Intervalo de Sincronización</string>
     <string name="summary_synchronization_interval">¿Con que frecuencia quiere sincronizar?</string>
-    <string name="tips_new_version_dropbox">Desde la version 1.2.0 de Money Manager Ex for Android ha cambiado la gestión de la sincronización con Dropbox. Para los usuarios que ya están utilizando la sincronización con Dropbox, hay que hacer de nuevo la configuración. La configuración de la sincronización con Dropbox y la selección de la base de datos, se encuentran en la configuración.\nDesde la version 1.2.0 Money Manager Ex for Android puede sincronizar automáticamente la base de datos con Dropbox</string>
     <string name="title_transaction_shown_balance">Muestra el balance para cada transacción</string>
     <string name="summary_transaction_shown_balance">Muestra el balance para cada transacción. Mostrar el balance podría hacer más lenta la aplicación</string>
     <string name="menu_open_database">Abrir la Base de Datos</string>
@@ -374,6 +392,7 @@
     <string name="delete_others_selected_transaction">¿Seguro que quieres borrar las %d transacciones seleccionadas?</string>
     <string name="categories">Categorías</string>
     <string name="payees">Beneficiarios</string>
+    <string name="recurring_transactions">Transacciones Programadas</string>
     <string name="theme_holo_light">Holo Claro</string>
     <string name="new_account">Nueva cuenta</string>
     <string name="create_new_account">Crear nueva cuenta</string>
@@ -383,6 +402,7 @@
     <string name="amount_to">Cantidad hasta</string>
     <string name="reset">Restablecer</string>
     <string name="result_search">Resultado de la búsqueda</string>
+    <string name="new_repeating_transaction">Nueva Transacción Programada</string>
     <string name="path_database_not_exists">La Ruta de base de datos no existe</string>
     <string name="database_can_not_open_write">No se puede abrir la base de datos para la escritura</string>
     <string name="time_frame">Intervalo de tiempo</string>
@@ -541,6 +561,7 @@
     <string name="commission">Comisión</string>
     <string name="value">Valor</string>
     <string name="view_transactions">Ver transacciones</string>
+    <string name="switch_active">Cambiar Activo/Inactivo</string>
     <string name="error_downloading_symbol">Error descargando precio para símbolo</string>
     <string name="error_updating_rates">Error al actualizar las tasas</string>
     <string name="error_no_price_found_for_symbol">No hay resultados para símbolo de precio</string>
@@ -567,6 +588,8 @@
     <string name="all_accounts">Todas las cuentas</string>
     <string name="records">registros</string>
     <!-- db password entry -->
+    <string name="enter_password">Introduzca contraseña (opcional)</string>
+    <string name="password_hint">Sólo para archivos .emb</string>
     <string name="success">Operación exitosa</string>
     <string name="overview">Resumen</string>
     <string name="title_activity_asset_allocation_overview">Visión de asignación de activos</string>
@@ -678,6 +701,7 @@
     <string name="remote_file_not_found">No se encontró el archivo remoto</string>
     <string name="error_checking_remote">Error al comprobar cambios en archivo remoto.</string>
     <string name="no_remote_change_date">La fecha del cambio remoto no fue encontrada en la metadata.</string>
+    <string name="remote_unavailable">El archivo remoto no está disponible</string>
     <!-- Select database screen -->
     <string name="intro_text">Para comenzar a usar Money Manager Ex, necesita tener un archivo base de datos para almacenar sus datos. Por favor seleccione una de las opciones disponibles.</string>
     <string name="intro_create_db">Usted puede crear un nuevo archivo y configurar sus preferencias iniciales.</string>
@@ -695,6 +719,22 @@
     <string name="loan">Loan</string>
     <string name="loan_account">Loan Accounts</string>
     <string name="shares_accounts">Shares Accounts</string>
+    <string name="currency">Moneda</string>
+    <string name="title_anonymous_usage">Enviar datos de uso anónimos</string>
     <!-- Notification Setting -->
+    <string name="notification_channel_remotefile">Operación Remota de Archivos</string>
+    <string name="notification_channel_remotefile__description">Notificación de Operación Remota de Archivos</string>
+    <string name="notification_channel_fileoperation_downloadin">Descargando Mmex</string>
+    <string name="notification_channel_fileoperation_uploadin">Cargando Mmex</string>
+    <string name="notification_channel_fileoperation_complete">Carga de Mmex Completa</string>
+    <string name="notification_channel_fileoperation_conflict">Conflicto de sincronización de Mmex</string>
+    <string name="show">Mostrar</string>
+    <string name="attachment_folder">Carpeta de Adjuntos</string>
+    <string name="attachment_folder_summary">Seleccione la carpeta donde se guardarán los adjuntos</string>
+    <string name="pref_attachment_folder">Carpeta de Adjuntos</string>
+    <string name="version_copied_to_clipboard">Número de versión copiado al portapapeles</string>
+    <string name="issue_open">"Abrir problema en GitHub "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Borrar todo</string>
+    <string name="empty_color_message">elige un color</string>
 </resources>

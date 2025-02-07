@@ -1,0 +1,18 @@
+## What's Changed
+
+### New Feature
+* Categories can be deactivated and shown as inactive in the Category list. Long-pressing a category in the Entity Category List will bring up an enable/disable menu.
+* Transactions can have colors, like the desktop version. Colors can be used in transactions and scheduled transactions. Colors are searchable from the search menu. Transactions with colors are shown in the list with a square icon of the respective color. Color settings are not changeable from mobile, but you can easily set them in the Desktop version.
+* In transfer records, the 'from' and 'to' accounts can now be easily switched by clicking the switch button near the "to account" field.
+* Tags and Labels are now fully implemented. They can be used in transactions, scheduled transactions, split transactions, and split recurring transactions. Tags will be copied from schedules to transactions and are searchable.
+* Categories, Payees, and Tags can be sorted by Name or Frequency using the sort icons in the header.
+
+
+### Bugfix
+* Export in QIF from search result are now available again.
+* Password workflow revert, waiting for final solution
+
+## New Contributors
+@velmuruganc made their first contribution in https://github.com/moneymanagerex/android-money-manager-ex/pull/2124
+
+**Full Changelog**: https://github.com/moneymanagerex/android-money-manager-ex/compare/2025.01.27.1065...2025.01.31.1066

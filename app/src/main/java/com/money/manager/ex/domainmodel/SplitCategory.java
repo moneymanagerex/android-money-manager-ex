@@ -29,6 +29,8 @@ import com.money.manager.ex.datalayer.IEntity;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -47,6 +49,8 @@ public class SplitCategory
     public static final String CATEGID = "CATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
+
+    private ArrayList<Taglink> taglinks = null;
 
     public static SplitCategory create(long transactionId, long categoryId, TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitCategory entity = new SplitCategory();
@@ -154,4 +158,20 @@ public class SplitCategory
             this.setAmount(this.getAmount().negate());
         }
     }
+
+    @Override
+    public void setTags(ArrayList<Taglink> tags) {
+        taglinks = tags;
+    }
+
+    @Override
+    public ArrayList<Taglink> getTags() {
+        return taglinks;
+    }
+
+    @Override
+    public String getTransactionModel() {
+        return Taglink.REFTYPE_TRANSACTION_SPLIT;
+    }
+
 }
