@@ -1,12 +1,10 @@
 package com.money.manager.ex.reports;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.webkit.WebView;
 
 public class GeneralReportActivity extends MmxBaseFragmentActivity {
@@ -17,13 +15,12 @@ public class GeneralReportActivity extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_general_report);
 
-        if (getIntent() != null) {
-            if (!TextUtils.isEmpty(getIntent().getStringExtra(GENERAL_REPORT_NAME))) {
-                currentReportName = getIntent().getStringExtra(GENERAL_REPORT_NAME);
-            }
+        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra(GENERAL_REPORT_NAME)) ) {
+            currentReportName = getIntent().getStringExtra(GENERAL_REPORT_NAME);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);

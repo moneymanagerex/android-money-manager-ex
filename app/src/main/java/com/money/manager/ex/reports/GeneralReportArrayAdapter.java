@@ -10,7 +10,6 @@ import java.util.List;
 public class GeneralReportArrayAdapter extends ArrayAdapter<String> {
     private Context context;
     private List<String> items;
-
     public GeneralReportArrayAdapter(Context context, List<String> items) {
         super(context, android.R.layout.simple_list_item_1, items); // Using default simple item layout
         this.context = context;

@@ -32,10 +32,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class GeneralReportFragment extends Fragment {
 
-    public GeneralReportFragment() {
-
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup group,
                              Bundle saved) {
         return inflater.inflate(R.layout.fragment_general_report, group, false);
