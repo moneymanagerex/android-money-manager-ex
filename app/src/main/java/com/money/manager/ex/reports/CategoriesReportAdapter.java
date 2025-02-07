@@ -68,7 +68,11 @@ public class CategoriesReportAdapter
         if (categoryId != Constants.NOT_SET) {
             CategoryRepository categoryRepository = new CategoryRepository(context);
             Category category = categoryRepository.load(categoryId);
-            isActive = category.getActive();
+            if (category == null) {
+                isActive = false;
+            } else {
+                isActive = category.getActive();
+            }
         }
         TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
