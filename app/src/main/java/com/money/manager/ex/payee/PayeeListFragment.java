@@ -96,7 +96,7 @@ public class PayeeListFragment
         mContext = getActivity();
         // mAction is not aways set since PayeeActivity is not call from main #2217
         mAction = getActivity().getIntent().getAction();
-        if (!mAction.equals(Intent.ACTION_PICK)) {
+        if (mAction == null || !mAction.equals(Intent.ACTION_PICK)) {
             mAction = Intent.ACTION_EDIT;
         }
 

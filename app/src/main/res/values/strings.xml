@@ -431,6 +431,7 @@
     <string name="result_search">Result of your search</string>
     <string name="new_repeating_transaction">New Scheduled Transaction</string>
     <string name="edit_repeating_transaction">Edit Scheduled Transaction</string>
+    <string name="no_recurring_transaction">Cashflow report use Schedule Transaction, but no schedule transaction found</string>
     <string name="path_database_not_exists">Database path not exists</string>
     <string name="database_can_not_open_write">The database can not be opened for writing</string>
     <string name="time_frame">Time Frame</string>
