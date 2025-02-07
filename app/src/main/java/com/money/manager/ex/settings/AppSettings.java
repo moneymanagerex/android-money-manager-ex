@@ -117,6 +117,5 @@ public class AppSettings
     public int getTransactionSort() {return get("getTransactionSort", 0); }
     public void setTransactionSort(int value) { set("getTransactionSort", value); }
 
-
 }
 
