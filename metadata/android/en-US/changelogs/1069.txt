@@ -1,0 +1,10 @@
+## What's Changed
+### New/Improvement
+* new Cashflow Report
+* Improve Translations
+* Improve compatibility with desktop version 1.8.1 and 1.9.0
+
+### Fix
+* Fix Payee disappears and Crash after create new payee from transaction
+* Fix Category refresh
+* Fix refresh in account list after new account creation
