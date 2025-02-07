@@ -129,6 +129,14 @@
                     android:title="@string/menu_report_cashflow"/>
             </menu>
         </item>
+        <item
+            android:id="@+id/menu_general_report_group"
+            android:orderInCategory="1021"
+            android:title="@string/menu_general_report_group"/>
+        <item
+            android:id="@+id/menu_general_report"
+            android:orderInCategory="1022"
+            android:title="To be Replaced in run time"/>
     </group>
 
     <item

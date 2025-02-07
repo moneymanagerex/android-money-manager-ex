@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2025 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,9 +23,11 @@
 
 package com.money.manager.ex.notifications;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.*;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -41,6 +43,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -61,6 +64,7 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
@@ -90,6 +94,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     public static String CHANNEL_ID = "SmsTransaction_NotificationChannel";
     private static final long ID_NOTIFICATION = 0x000A;
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context.getApplicationContext();
@@ -130,12 +135,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    //msgSender = "AT-SIBSMS";
+                    msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
                         // Promotional sms will have sender like AT-012345
                         // Not sure how this format will be in out side of India. I may need to update if I get sample
+
+                        // Db setup
+                        MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
+                        db = MmxHelper.getReadableDatabase();
 
                         ITransactionEntity model = AccountTransaction.create();
                         mCommon = new EditTransactionCommonFunctions(null, model, database);
@@ -191,14 +200,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         mCommon.transactionEntity.setStatus("");
                         mCommon.payeeName = "";
 
-                        if (transType != "" && !msgBody.toLowerCase().contains("otp")) { // if not from blank, then nothing to do with sms
+                        if (!transType.isEmpty() && !msgBody.toLowerCase().contains("otp")) { // if not from blank, then nothing to do with sms
 
                             //Create the intent that’ll fire when the user taps the notification//
                             Intent t_intent = new Intent(mContext, CheckingTransactionEditActivity.class);
-
-                            // Db setup
-                            MmxHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
-                            db = MmxHelper.getReadableDatabase();
 
                             baseCurencyID = gen_settings.getBaseCurrencyId();
                             baseAccountID = gen_settings.getDefaultAccountId();
@@ -245,17 +250,20 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                 String transRefNo = extractTransRefNo(msgBody);
 
-                                //set the ref no. if exists
-                                if(!transRefNo.isEmpty()){
-                                    mCommon.transactionEntity.setTransactionNumber(transRefNo);
+                                //get the ref no. if doesn't exits
+                                if(transRefNo.isEmpty()){
+                                    transRefNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                                 }
+
+                                //set the txn no
+                                mCommon.transactionEntity.setTransactionNumber(transRefNo);
 
                                 long txnId = getTxnId(transRefNo.trim(), mCommon.transactionEntity.getDateString());
 
                                 //Update existing transaction
                                 if (txnId == 0) { //add new trnsaction
 
-                                    if (transType == "Transfer") //if it is transfer
+                                    if (transType.equals("Transfer")) //if it is transfer
                                     {
                                         if (!toAccountDetails[0].isEmpty()) // if id exists then considering as account transfer
                                         {
@@ -356,7 +364,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         + "Trans Amt = " + fromAccCurrencySymbl + " " + transAmount + ",\n"
                                         + "Payyee Name= " + transPayee[1] + "\n"
                                         + "Category ID = " + transPayee[2] + "\n"
-                                        + "Sub Category ID = " + transPayee[3] + "\n"
                                         + "Trans Ref No. = " + transRefNo + "\n"
                                         + "Trans Type = " + transType + "\n";
 
@@ -374,11 +381,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_CATEGORY_ID, String.valueOf(mCommon.transactionEntity.getCategoryId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, String.valueOf(mCommon.transactionEntity.getAmount()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_NOTES, mCommon.transactionEntity.getNotes());
-                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, new MmxDate().toDate());
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommon.transactionEntity.getDate());
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommon.transactionEntity.getTransactionNumber());
 
                                 // validate and save the transaction
                                 if(!skipSaveTrans) {
+
+                                    t_intent.addFlags((Intent.FLAG_ACTIVITY_NEW_TASK)); // Fix for https://github.com/moneymanagerex/android-money-manager-ex/issues/2210
+
                                     if (validateData()) {
                                         if (saveTransaction()) {
 
@@ -446,6 +456,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
+    @SuppressLint("Range")
     private static String getCurrencySymbl(long currencyID)
     {
         //Get the currency sysmbl
@@ -453,15 +464,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         String[] reqCurrFields = {"CURRENCYID", "DECIMAL_POINT", "GROUP_SEPARATOR",  "CURRENCY_SYMBOL"};
 
         String tableName = "CURRENCYFORMATS_V1";
-        String[] columns = reqCurrFields;
         String selection = "CURRENCYID = ?";
         String[] selectionArgs = new String[]{String.valueOf(currencyID)};
-        String sortOrder = null;
 
         SupportSQLiteQueryBuilder queryBuilder = SupportSQLiteQueryBuilder.builder(tableName);
         SupportSQLiteQuery query = queryBuilder.selection(selection, selectionArgs)
-                .columns(columns)
-                .orderBy(sortOrder)
+                .columns(reqCurrFields)
+                .orderBy(null)
                 .create();
         try {
             Cursor currencyCursor = db.query(query);
@@ -621,7 +630,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         // - ((\s)using\scard\s(.*?)\s.emaining) added for LBP currency. Request from HussienH
         String[] searchFor =
                 {
-                        "((\\s)?((\\d+)?[X]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[x]+(\\d+))(\\s)?)", "((\\s)?((\\d+)?[\\*]+(\\d+))(\\s)?)",
+                        "((\\s)?((\\d+)?[Xx\\*]+(\\d+))(\\s)?)", "(no\\.(.*?)\\sis)", "(for\\s(.*?)\\son)",
                         "((\\s)?Account\\s?No(.*?)\\s?(\\d+)(\\s)?)", "((\\s)?A/.\\s?No(.*?)\\s?(\\d+)(\\s)?)",
                         "[N-n][O-o](.)?(:)?(\\s)?'(.*?)'", "((\\s)using\\scard\\s(.*?)\\s.emaining)",
                         "([\\(]((.*?)[@](.*?))[\\)])", "(from((.*?)@(.*?))[.])", "(linked((.*?)@(.*?))[.])",
@@ -631,7 +640,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         int[] getGroup =
                 {
-                        5, 5, 5,
+                        5, 2, 2,
                         4, 4,
                         4, 3,
                         2, 2, 2,
@@ -731,14 +740,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     {
         // - ((\s)at\s(.*?)\s+using) added for LBP currency. Request from HussienH
         String[] searchFor = {
-                "((\\s)at\\s(.*?)\\s+on)", "((\\s)favoring\\s(.*?)\\s+is)",
+                "((\\s)at\\s(.*?)\\s+(?:on|for))", "((\\s)favoring\\s(.*?)\\s+is)",
                 "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
                 "((\\s)paid\\s(.*?)\\s)",
-                "((\\s)at\\s(.*?)\\s+using)" };
+                "((\\s)at\\s(.*?)\\s+using)", "(-(.*?)\\son\\s(.*?)[.])", "((\\d+)/(.*)/)",
+                "((\\d)\\s(?:from|FROM)\\s((.*?)\\s(.*?))(\\.))", "(\\d,(.*)(\\s)credited)",
+                "((?:at|on)\\s([a-zA-Z]((.*?)(\\w+)))\\.)", "(\\son(.*?)\\*(.*?)\\.)"};
 
-        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3};
+        int[] getGroup = {3, 3, 3, 3, 3, 2, 3, 2, 2, 3, 3, 3, 3, 3, 2, 2, 3};
         String[] reqMatch = new String[]{"", "", "", ""};
 
         try
@@ -772,14 +783,17 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     private static String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
-        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\sno(:)?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
+        String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s[Nn]o([.:])?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "(Info(:)+(.*?)(\\d+)[:]?[-]?)",
-                "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)"};
+                "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "(\\/+(\\d+)+\\/)",
+                "((?:UPI|IMPS)\\s?:\\s?(\\d+)\\s?)", "([\\*](.*?)(\\d+)\\s?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
+
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 4,
-                          4, 3, 2};
+                          4, 3, 2,
+                          2, 3, 3};
 
         try
         {
@@ -806,16 +820,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
+    @SuppressLint("Range")
     private static String[] getPayeeDetails(String payeeName)
     {
-        String[] payeeDetails = new String[]{"", payeeName.trim(), "", ""};
+        String[] payeeDetails = new String[]{"", payeeName.trim(), ""};
 
         try
         {
             if(!payeeName.trim().isEmpty()) {
 
-                String sql = "SELECT PAYEEID, PAYEENAME, CATEGID, SUBCATEGID " +
-                                "FROM PAYEE_V1 " +
+                String sql = "SELECT PAYEEID, PAYEENAME, CATEGID FROM PAYEE_V1 " +
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
 
@@ -826,8 +840,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     payeeDetails = new String[] {
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEEID")),
                             payeeCursor.getString(payeeCursor.getColumnIndex("PAYEENAME")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("CATEGID")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("SUBCATEGID"))
+                            payeeCursor.getString(payeeCursor.getColumnIndex("CATEGID"))
                     };
                 }
 
@@ -842,6 +855,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return payeeDetails;
     }
 
+    @SuppressLint("Range")
     private static Long getTxnId(String refNumber, String transDate)
     {
         long txnId = 0;
@@ -875,6 +889,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return txnId;
     }
 
+    @SuppressLint("Range")
     private static String[] getCategoryOrSubCategoryByName(String searchName)
     {
         String[] cTran = new String[]{"", ""};
@@ -884,37 +899,19 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             if(!searchName.trim().isEmpty()) {
 
                 String sql =
-                        "SELECT c.CATEGID, c.CATEGNAME, s.SUBCATEGID, s.SUBCATEGNAME " +
-                                "FROM CATEGORY_V1 c  " +
-                                "INNER JOIN SUBCATEGORY_V1 s ON s.CATEGID=c.CATEGID " +
-                                "WHERE s.SUBCATEGNAME = '" + searchName + "' " +
-                                "ORDER BY s.SUBCATEGID  LIMIT 1";
+                        "SELECT CATEGID, CATEGNAME, PARENTID FROM CATEGORY_V1  " +
+                                "WHERE CATEGNAME = '" + searchName + "' " +
+                                "ORDER BY PARENTID desc, CATEGNAME asc  LIMIT 1";
 
+                //Log.d("SQL", sql);
                 Cursor cCursor = db.query(sql);
 
                 if(cCursor.moveToFirst())
                 {
                     cTran = new String[]{
                             cCursor.getString(cCursor.getColumnIndex("CATEGID")),
-                            cCursor.getString(cCursor.getColumnIndex("SUBCATEGID"))
+                            cCursor.getString(cCursor.getColumnIndex("PARENTID"))
                     };
-                } else{ //search in only catogery
-
-                    sql =
-                            "SELECT c.CATEGID, c.CATEGNAME " +
-                                    "FROM CATEGORY_V1 c  " +
-                                    "WHERE c.CATEGNAME = '" + searchName + "' " +
-                                    "ORDER BY c.CATEGID  LIMIT 1";
-
-                    cCursor = db.query(sql);
-
-                    if(cCursor.moveToFirst())
-                    {
-                        cTran = new String[]{
-                                cCursor.getString(cCursor.getColumnIndex("CATEGID")),
-                                "-1"
-                        };
-                    }
                 }
 
                 cCursor.close();
@@ -928,6 +925,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return cTran;
     }
 
+    @SuppressLint("Range")
     private static void getAccountDetails(String[] reqMatch)
     {
         String[] accountDetails = new String[]{"", "", "", "", "", "", ""};
@@ -986,16 +984,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     public boolean validateData() {
 
-        boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        Core core = new Core(mContext);
-
-        if (mCommon.transactionEntity.getAccountId() == Constants.NOT_SET) {
+        if (mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)) {
             //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if (isTransfer) {
-            if (mCommon.transactionEntity.getAccountToId() == Constants.NOT_SET) {
+        if (mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
+            if (mCommon.transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
                 //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -1026,9 +1021,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
 
         // Category is required if tx is not a split or transfer.
-        boolean hasCategory = mCommon.transactionEntity.hasCategory();
-        //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
-        return hasCategory || isTransfer;
+        if (!mCommon.transactionEntity.hasCategory()) {
+            //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 
     public boolean saveTransaction() {
@@ -1069,7 +1067,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             String GROUP_KEY_AMMEX = "com.android.example.MoneyManagerEx";
             int ID_NOTIFICATION =  (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
             NotificationManager notificationManager = (NotificationManager) mContext
                     .getSystemService(Context.NOTIFICATION_SERVICE);
