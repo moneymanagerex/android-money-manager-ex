@@ -54,18 +54,16 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
-import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
 /**
  * List of Payees. Used as a picker/selector also.
  */
 public class PayeeListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static String mAction = Intent.ACTION_EDIT;
 
@@ -113,7 +111,7 @@ public class PayeeListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { Payee.PAYEENAME },
+                layout, null, new String[]{Payee.PAYEENAME},
                 new int[]{android.R.id.text1}, 0);
 
         // overwrite to set inactive
@@ -121,7 +119,7 @@ public class PayeeListFragment
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 TextView textView = (TextView) aView;
                 boolean active;
-                if (aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))==null) {
+                if (aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE)) == null) {
                     // issue 2216: consider true if active column is not set, backward compatibulity
                     active = true;
                 } else {
@@ -129,10 +127,10 @@ public class PayeeListFragment
                 }
                 CharSequence text = aCursor.getString(aColumnIndex);
                 if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
-                    text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
+                    text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
                 }
                 if (!active) {
-                    textView.setText( Html.fromHtml( "<i>"+text+ " ["+mContext.getString(R.string.inactive)+"]</i>", Html.FROM_HTML_MODE_COMPACT ) ) ;
+                    textView.setText(Html.fromHtml("<i>" + text + " [" + mContext.getString(R.string.inactive) + "]</i>", Html.FROM_HTML_MODE_COMPACT));
                 } else {
                     textView.setText(text);
                 }
@@ -163,7 +161,7 @@ public class PayeeListFragment
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // force reset loader on start. try to fix 2217, not the best code
         // becouse normaly was call duble
@@ -197,6 +195,13 @@ public class PayeeListFragment
                 item.setChecked(true);
                 break;
         }
+
+        if (mAction.equals(Intent.ACTION_PICK) ) {
+            menu.findItem(R.id.menu_show_inactive).setVisible(false);
+        } else {
+            menu.findItem(R.id.menu_show_inactive).setVisible(true);
+            menu.findItem(R.id.menu_show_inactive).setChecked(settings.getShowInactive());
+        }
     }
 
     @Override
@@ -221,6 +226,13 @@ public class PayeeListFragment
             case R.id.menu_sort_recent:
                 item.setChecked(true);
                 settings.setPayeeSort(ORDER_BY_RECENT);
+                // restart search
+                restartLoader();
+                return true;
+
+            case R.id.menu_show_inactive:
+                item.setChecked(!item.isChecked());
+                settings.setShowInactive(item.isChecked());
                 // restart search
                 restartLoader();
                 return true;
@@ -315,7 +327,8 @@ public class PayeeListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_PAYEE) {
             String whereClause = ""; // we don't filter inactive by default
-            if (mAction == Intent.ACTION_PICK) {
+            if (mAction == Intent.ACTION_PICK
+                    || !(new AppSettings(getContext())).getShowInactive()) {
                 whereClause = "ACTIVE <> 0";
             }
             String[] selectionArgs = null;

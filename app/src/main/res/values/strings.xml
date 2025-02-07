@@ -847,4 +847,6 @@
     <string name="CLEAR_ALL">Clear all</string>
     <string name="empty_color_message">choose a color</string>
 
+    <string name="menu_show_inactive">Show inactive</string>
+
 </resources>

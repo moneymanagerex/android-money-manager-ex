@@ -28,14 +28,19 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/menu_sort_name"
-                    android:title="@string/sort_by_name"/>
+                    android:title="@string/sort_by_name" />
                 <item
                     android:id="@+id/menu_sort_usage"
-                    android:title="@string/sort_by_usage"/>
+                    android:title="@string/sort_by_usage" />
                 <item
                     android:id="@+id/menu_sort_recent"
-                    android:title="@string/sort_by_recent"/>
+                    android:title="@string/sort_by_recent" />
             </group>
+            <item
+                android:id="@+id/menu_show_inactive"
+                android:checkable="true"
+                android:title="@string/menu_show_inactive"
+                android:visible="false"/>
         </menu>
     </item>
 </menu>
