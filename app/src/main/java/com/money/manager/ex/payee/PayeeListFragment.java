@@ -94,6 +94,11 @@ public class PayeeListFragment
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
+        // mAction is not aways set since PayeeActivity is not call from main #2217
+        mAction = getActivity().getIntent().getAction();
+        if (!mAction.equals(Intent.ACTION_PICK)) {
+            mAction = Intent.ACTION_EDIT;
+        }
 
         setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
@@ -154,10 +159,19 @@ public class PayeeListFragment
         // set floating button visible
         setFloatingActionButtonVisible(true);
         attachFloatingActionButtonToListView();
+
     }
 
-    // Menu
+    @Override
+    public void onResume(){
+        super.onResume();
+        // force reset loader on start. try to fix 2217, not the best code
+        // becouse normaly was call duble
+        restartLoader();
+    }
 
+
+    // Menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
