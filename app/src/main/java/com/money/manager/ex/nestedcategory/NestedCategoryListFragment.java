@@ -594,4 +594,13 @@ public class NestedCategoryListFragment
         startActivity(intent);
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        // force reset loader on start. try to fix 2217, not the best code
+        // becouse normaly was call duble
+        restartLoader();
+    }
+
+
 }
