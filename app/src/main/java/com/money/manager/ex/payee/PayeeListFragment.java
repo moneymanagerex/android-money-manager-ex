@@ -115,7 +115,13 @@ public class PayeeListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 TextView textView = (TextView) aView;
-                boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))) != 0);
+                boolean active;
+                if (aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))==null) {
+                    // issue 2216: consider true if active column is not set, backward compatibulity
+                    active = true;
+                } else {
+                    active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))) != 0);
+                }
                 CharSequence text = aCursor.getString(aColumnIndex);
                 if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
                     text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
@@ -278,6 +284,7 @@ public class PayeeListFragment
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
+                break; // issue #2217 view make also inactive
             case SWITCH_ACTIVE:
                 payee.setActive(!payee.getActive());
                 PayeeRepository payeeRepository = new PayeeRepository(getActivity());
