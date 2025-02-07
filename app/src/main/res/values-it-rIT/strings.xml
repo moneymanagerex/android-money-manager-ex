@@ -302,6 +302,7 @@
     <string name="year">Anno</string>
     <string name="menu_reports">Resoconti</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
+    <string name="menu_report_cashflow">Flusso Di Cassa</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -353,6 +354,7 @@
     <string name="open_database">Apri Database</string>
     <string name="synchronization_interval">Intervallo di sincronizzazione</string>
     <string name="summary_synchronization_interval">Con quale frequenza vuoi sincronizzare?</string>
+    <string name="tips_new_version_dropbox">A partire dalla versione 1.2.0, Money Manager Ex per Android ha cambiato il motore di sincronizzazione di Dropbox. Gli utenti che già utilizzano la sincronizzazione con Dropbox devono aggiornare la configurazione.\nL\'autenticazione e la selezione del database si trovano nelle Impostazioni.\nA partire dalla versione 1.2.0, Money Manager Ex per Android può sincronizzare automaticamente il database.</string>
     <string name="title_transaction_shown_balance">Mostra il saldo per ogni operazione</string>
     <string name="summary_transaction_shown_balance">Visualizza il saldo per ogni operazione. La visualizzazione del saldo per ogni transazione potrebbe rallentare l\'applicazione</string>
     <string name="menu_open_database">Apri Database</string>
@@ -440,6 +442,7 @@
     <string name="sort_order">Ordina per</string>
     <string name="sort_by_name">Ordina per nome</string>
     <string name="sort_by_usage">Ordina per utilizzo</string>
+    <string name="sort_by_recent">Ordina per recente</string>
     <string name="choose_sorting">Scegli l\'ordinamento</string>
     <string name="credit_card">Carta di credito</string>
     <string name="cash_accounts">Contanti</string>
