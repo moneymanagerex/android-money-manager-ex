@@ -1021,12 +1021,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
 
         // Category is required if tx is not a split or transfer.
-        if (!mCommon.transactionEntity.hasCategory()) {
-            //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        return true;
+        return mCommon.transactionEntity.hasCategory();
     }
 
     public boolean saveTransaction() {
