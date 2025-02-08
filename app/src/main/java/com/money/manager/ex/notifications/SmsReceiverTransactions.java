@@ -1022,6 +1022,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         // Category is required if tx is not a split or transfer.
         return mCommon.transactionEntity.hasCategory();
+
     }
 
     public boolean saveTransaction() {
