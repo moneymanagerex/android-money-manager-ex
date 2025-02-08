@@ -302,6 +302,7 @@
     <string name="year">Jahr</string>
     <string name="menu_reports">Berichte</string>
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
+    <string name="menu_report_cashflow">Geldfluss</string>
     <string name="total">Gesamt</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Gesamter Zeitraum</string>
@@ -408,6 +409,7 @@
     <string name="result_search">Suchergebnis</string>
     <string name="new_repeating_transaction">Neue geplante Buchung</string>
     <string name="edit_repeating_transaction">Geplante Buchung bearbeiten</string>
+    <string name="no_recurring_transaction">Geldfluss-Bericht verwendet geplante Transaktionen, aber keine geplante Transaktion gefunden</string>
     <string name="path_database_not_exists">Datenbankpfad existiert nicht</string>
     <string name="database_can_not_open_write">Die Datenbank kann nicht zum Schreiben geöffnet werden</string>
     <string name="time_frame">Zeitrahmen</string>
@@ -441,6 +443,7 @@
     <string name="sort_order">Sortierung</string>
     <string name="sort_by_name">Sortieren nach Name</string>
     <string name="sort_by_usage">Sortierung nach Verwendung</string>
+    <string name="sort_by_recent">Sortierung nach letzter Verwendung</string>
     <string name="choose_sorting">Wähle Sortierung</string>
     <string name="credit_card">Kreditkarte</string>
     <string name="cash_accounts">Geldkonten</string>

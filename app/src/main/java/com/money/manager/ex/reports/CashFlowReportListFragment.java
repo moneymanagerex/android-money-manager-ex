@@ -58,6 +58,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import info.javaperformance.money.MoneyFactory;
 
@@ -134,9 +135,9 @@ public class CashFlowReportListFragment
             row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
             row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
             row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
-            row.put(QueryBillDeposits.COLOR, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
-            row.put(QueryBillDeposits.ATTACHMENTCOUNT, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
-            row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
+            row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)),-1L)); // handle null #2235
+            row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)),0L)); // handle null #2235
+            row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)),"")); // handle null #2235
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
             row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
@@ -148,19 +149,19 @@ public class CashFlowReportListFragment
             int limit = monthInAdvance * 31;
             while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getDate().before(endDate.toDate())) {
                 limit -= 1;
-                row = new HashMap<>();
-                row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
-                row.put(QueryBillDeposits.TRANSDATE, recurringTransactionService.getSimulatedTransaction().getPaymentDateString());
-                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
-                row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
-                row.put(QueryBillDeposits.COLOR, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
-                row.put(QueryBillDeposits.ATTACHMENTCOUNT, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
-                row.put(QueryBillDeposits.TAGS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.COLOR)));
-                row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
-                row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
-                row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
-                row.put(BALANCE, 0);
-                listRecurring.add(row);
+                HashMap<String, Object> row2 = new HashMap<>();
+                row2.put(ID, row.get(ID));
+                row2.put(QueryBillDeposits.TRANSDATE, recurringTransactionService.getSimulatedTransaction().getPaymentDateString());
+                row2.put(QueryBillDeposits.PAYEENAME         , row.get(QueryBillDeposits.PAYEENAME        ));
+                row2.put(QueryBillDeposits.CATEGNAME         , row.get(QueryBillDeposits.CATEGNAME        ));
+                row2.put(QueryBillDeposits.COLOR             , row.get(QueryBillDeposits.COLOR            ));
+                row2.put(QueryBillDeposits.ATTACHMENTCOUNT   , row.get(QueryBillDeposits.ATTACHMENTCOUNT  ));
+                row2.put(QueryBillDeposits.TAGS              , row.get(QueryBillDeposits.TAGS             ));
+                row2.put(QueryBillDeposits.NOTES             , row.get(QueryBillDeposits.NOTES            ));
+                row2.put(QueryBillDeposits.STATUS            , row.get(QueryBillDeposits.STATUS           ));
+                row2.put(QueryBillDeposits.AMOUNT            , row.get(QueryBillDeposits.AMOUNT           ));
+                row2.put(BALANCE, 0);
+                listRecurring.add(row2);
             }
         }
         cursor.close();
