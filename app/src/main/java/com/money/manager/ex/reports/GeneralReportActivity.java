@@ -5,10 +5,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import android.text.TextUtils;
-import android.webkit.WebView;
 
 public class GeneralReportActivity extends MmxBaseFragmentActivity {
-    private WebView mWebView;
+
     public static final String GENERAL_REPORT_NAME = "GeneralReportActivity:ReportName";
     public static final String GENERAL_REPORT_GROUP_NAME = "GeneralReportActivity:GroupName";
     public static String currentReportName = "";

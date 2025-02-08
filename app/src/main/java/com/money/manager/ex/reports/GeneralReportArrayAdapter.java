@@ -8,12 +8,10 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 public class GeneralReportArrayAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> items;
+
     public GeneralReportArrayAdapter(Context context, List<String> items) {
-        super(context, android.R.layout.simple_list_item_1, items); // Using default simple item layout
-        this.context = context;
-        this.items = items;
+        // Using default simple item layout
+        super(context, android.R.layout.simple_list_item_1, items);
     }
 
     // You can override getView if you want to customize the item layout further
