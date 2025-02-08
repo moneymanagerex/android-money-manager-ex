@@ -19,7 +19,6 @@ package com.money.manager.ex.common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -33,8 +32,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -62,7 +59,6 @@ import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
-import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -162,15 +158,11 @@ public class AllDataListFragment
         getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
 
         // e item click
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                    Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
-                    }
+        getListView().setOnItemClickListener((parent, view, position, id) -> {
+            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+                Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
+                if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
+                    startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
             }
         });
@@ -314,13 +306,7 @@ public class AllDataListFragment
 
     // End loader event handlers
 
-    /**
-     * Add options to the action bar of the host activity.
-     * This is not called in ActionBar Activity, i.e. Search.
-     *
-     * @param menu
-     * @param inflater
-     */
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -350,11 +336,11 @@ public class AllDataListFragment
             // add sort menu in transaction list
             inflater.inflate(R.menu.menu_sort_transaction, menu);
             switch (new AppSettings(getContext()).getTransactionSort()) {
-                case SORT_BY_DATE_DESC:
-                    menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
-                    break;
                 case SORT_BY_DATE_ASC:
                     menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
+                    break;
+                default:
+                    menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
                     break;
             }
 
@@ -426,7 +412,7 @@ public class AllDataListFragment
     }
 
     private void restartLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, getLatestArguments(), this);
+        LoaderManager.getInstance(this).restartLoader(ID_LOADER_ALL_DATA_DETAIL, getLatestArguments(), this);
     }
 
     @Override
@@ -585,7 +571,7 @@ public class AllDataListFragment
         // set the current arguments / account id
         setLatestArguments(arguments);
         // reload data with the latest arguments.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
+         LoaderManager.getInstance(this).restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
     }
 
     /**
@@ -775,57 +761,49 @@ public class AllDataListFragment
                 .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
                 .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                         transactionIds.size(), transactionIds.size()))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                        for (long transactionId : transactionIds) {
-                            // First delete any splits. See if there are any split records.
-                            SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
-                            Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                                    SplitCategory.TRANSID + "=" + transactionId,
-                                    null, SplitCategory.SPLITTRANSID);
-                            long splitCount = curSplit.getCount();
-                            curSplit.close();
+                    for (long transactionId : transactionIds) {
+                        // First delete any splits. See if there are any split records.
+                        SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
+                        Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                                SplitCategory.TRANSID + "=" + transactionId,
+                                null, SplitCategory.SPLITTRANSID);
+                        long splitCount = curSplit.getCount();
+                        curSplit.close();
 
-                            if (splitCount > 0) {
-                                long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                                        SplitCategory.TRANSID + "=?",
-                                        new String[]{Long.toString(transactionId)});
-                                if (deleteResult != splitCount) {
-                                    Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-
-                                    return;
-                                }
-                            }
-
-                            // Delete Tags
-                            TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
-                            tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
-
-                            // Delete the transaction.
-                            AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
-
-                            long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
-                                    AccountTransaction.TRANSID + "=?",
+                        if (splitCount > 0) {
+                            long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                                    SplitCategory.TRANSID + "=?",
                                     new String[]{Long.toString(transactionId)});
-                            if (deleteResult == 0) {
+                            if (deleteResult != splitCount) {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                                 return;
                             }
                         }
 
-                        // restart loader
-                        loadData();
+                        // Delete Tags
+                        TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
+                        tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
+
+                        // Delete the transaction.
+                        AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
+                        long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                                AccountTransaction.TRANSID + "=?",
+                                new String[]{Long.toString(transactionId)});
+                        if (deleteResult == 0) {
+                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                            return;
+                        }
                     }
+
+                    // restart loader
+                    loadData();
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .show();
     }
 
@@ -857,7 +835,7 @@ public class AllDataListFragment
         AllDataAdapter adapter = null;
 
         ListAdapter listAdapter = getListAdapter();
-        if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
+        if (listAdapter instanceof AllDataAdapter) {
             adapter = (AllDataAdapter) getListAdapter();
         }
 
@@ -896,9 +874,6 @@ public class AllDataListFragment
 
             for (int i = 0; i < checkedItemsCount; i++) {
                 int position = positionChecked.keyAt(i);
-                // This screws up the selection?
-//                    if (getListHeader() != null)
-//                        position--;
                 if (cursor.moveToPosition(position)) {
                     transIds.add(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
@@ -940,24 +915,21 @@ public class AllDataListFragment
         builder.setTitle(getString(R.string.change_status));
 
         // Set the adapter
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position) {
-                DrawerMenuItem item = adapter.getItem(position);
-                switch (item.getId()) {
-                    case R.id.menu_none:
-                    case R.id.menu_reconciled:
-                    case R.id.menu_follow_up:
-                    case R.id.menu_duplicate:
-                    case R.id.menu_void:
-                        String status = item.getShortcut();
-                        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                            loadData();
-                        }
-                }
-                dialog.dismiss();
+        builder.setAdapter(adapter, (dialog, position) -> {
+            DrawerMenuItem item = adapter.getItem(position);
+            switch (item.getId()) {
+                case R.id.menu_none:
+                case R.id.menu_reconciled:
+                case R.id.menu_follow_up:
+                case R.id.menu_duplicate:
+                case R.id.menu_void:
+                    String status = item.getShortcut();
+                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                        loadData();
+                    }
             }
+            dialog.dismiss();
         });
 
         // Create and show the AlertDialog
@@ -997,14 +969,6 @@ public class AllDataListFragment
         return result;
     }
 
-    /**
-     * Returns the latest-set arguments. This is because the original arguments, when the
-     * fragment was created, can not be altered.
-     * But, when an account changes, we need to modify them. The new arguments are passed
-     * through the call to loadData().
-     *
-     * @return
-     */
     private Bundle getLatestArguments() {
         if (mArguments == null) {
             mArguments = getArguments();
