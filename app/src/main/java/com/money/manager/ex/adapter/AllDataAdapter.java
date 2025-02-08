@@ -247,7 +247,11 @@ public class AllDataAdapter
                 if (categoryId != Constants.NOT_SET) {
                     CategoryRepository categoryRepository = new CategoryRepository(context);
                     Category category = categoryRepository.load(categoryId);
-                    isActive = category.getActive();
+                    if (category == null) {
+                        isActive = false;
+                    } else {
+                        isActive = category.getActive();
+                    }
                 }
                 // Display category/sub-category.
                 if ( !isActive ) {

@@ -118,7 +118,9 @@ public class CashFlowReportListFragment
                 null,
                 null,
                 QueryBillDeposits.NEXTOCCURRENCEDATE);
-        if (cursor == null) return;
+        if (cursor == null ||
+            cursor.getCount() == 0)
+            return;
 
         getTotalAmount();
 
@@ -242,8 +244,12 @@ public class CashFlowReportListFragment
                     @Override
                     public void run() {
                         // here you can update ui
-                        adapter.swapCursor(matrixCursor);
-                        adapter.notifyDataSetChanged();
+                        if (matrixCursor.getCount() == 0) {
+                            setEmptyText(getActivity().getResources().getString(R.string.no_recurring_transaction));
+                        } else {
+                            adapter.swapCursor(matrixCursor);
+                            adapter.notifyDataSetChanged();
+                        }
                         setListShown(true);
                     }
                 });
