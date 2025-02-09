@@ -263,7 +263,6 @@
     <string name="no_stock_data">Nie sú dostupné žiadne dáta pre tento účet.</string>
     <string name="month">Mesiac</string>
     <string name="year">Rok</string>
-    <string name="menu_reports">Zostavy</string>
     <string name="menu_report_income_vs_expenses">Príjmy a výdaje</string>
     <string name="total">Celkom</string>
     <!--<string name="option">Option</string>-->

@@ -300,7 +300,6 @@
     <string name="no_stock_data">Nincs adat ehhez a számlához.</string>
     <string name="month">Hónap</string>
     <string name="year">Év</string>
-    <string name="menu_reports">Jelentések</string>
     <string name="menu_report_income_vs_expenses">Bevételek - Kiadások</string>
     <string name="menu_report_cashflow">Pénzforgalom</string>
     <string name="total">Összesen</string>
@@ -409,6 +408,7 @@
     <string name="result_search">A keresés eredménye</string>
     <string name="new_repeating_transaction">Új ütemezett ügylet</string>
     <string name="edit_repeating_transaction">Ütemezett ügylet szerkesztése</string>
+    <string name="no_recurring_transaction">A pénzforgalmi jelentés az ütemezett ügyleteket használja, de nincsenek található ütemezett ügyletek.</string>
     <string name="path_database_not_exists">Adatbázis elérési út nem létezik</string>
     <string name="database_can_not_open_write">Az adatbázis nem nyitható meg szerkesztésre</string>
     <string name="time_frame">Idő keret</string>
@@ -442,6 +442,7 @@
     <string name="sort_order">Sorrend</string>
     <string name="sort_by_name">Rendezés név szerint</string>
     <string name="sort_by_usage">Rendezés használat szerint</string>
+    <string name="sort_by_recent">Rendezés legutóbbiak szerint</string>
     <string name="choose_sorting">Rendezés módja</string>
     <string name="credit_card">Hitelkártya</string>
     <string name="cash_accounts">Készpénz Számlák</string>
@@ -579,6 +580,7 @@
     <string name="value">Érték</string>
     <string name="view_transactions">Ügyletek megtekintése</string>
     <string name="view_transactions_sub">Ügyletek megtekintése alkategóriákkal</string>
+    <string name="switch_active">Aktív/inaktív váltása</string>
     <string name="error_downloading_symbol">Hiba történt a szimbólum árának letöltése során</string>
     <string name="error_updating_rates">Hiba történt az árfolyamok frissítésekor</string>
     <string name="error_no_price_found_for_symbol">Nem található a szimbólumhoz ár</string>
@@ -766,4 +768,5 @@
     <string name="issue_open">"Hibabejelentés a GitHubon "</string>
     <!-- Builder button -->
     <string name="CLEAR_ALL">Összes törlése</string>
+    <string name="empty_color_message">válasszon színt</string>
 </resources>

@@ -264,7 +264,6 @@
     <string name="no_stock_data">Bu hesap için kullanılabilir birikim hesabı verisi bulunmuyor.</string>
     <string name="month">Ay</string>
     <string name="year">Yıl</string>
-    <string name="menu_reports">Raporlar</string>
     <string name="menu_report_income_vs_expenses">Gelir ve Giderler</string>
     <string name="total">Toplam</string>
     <!--<string name="option">Option</string>-->

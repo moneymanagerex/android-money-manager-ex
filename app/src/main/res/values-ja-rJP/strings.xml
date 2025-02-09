@@ -264,7 +264,6 @@
     <string name="no_stock_data">この口座で使用可能な格納データはありません。</string>
     <string name="month">月</string>
     <string name="year">年</string>
-    <string name="menu_reports">レポート</string>
     <string name="menu_report_income_vs_expenses">収入と支出</string>
     <string name="total">合計</string>
     <!--<string name="option">Option</string>-->

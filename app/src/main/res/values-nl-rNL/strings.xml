@@ -271,7 +271,6 @@
     <string name="no_stock_data">Geen effectengegevens beschikbaar voor deze rekening.</string>
     <string name="month">Maand</string>
     <string name="year">Jaar</string>
-    <string name="menu_reports">Rapportages</string>
     <string name="menu_report_income_vs_expenses">Inkomsten vs Uitgaven</string>
     <string name="total">Totaal</string>
     <!--<string name="option">Option</string>-->

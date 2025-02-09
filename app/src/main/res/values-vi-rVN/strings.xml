@@ -264,7 +264,6 @@
     <string name="no_stock_data">Không có dữ liệu cổ phiếu có sẵn cho tài khoản này.</string>
     <string name="month">Tháng</string>
     <string name="year">Năm</string>
-    <string name="menu_reports">Báo cáo</string>
     <string name="menu_report_income_vs_expenses">Thu nhập Vs Chi phí</string>
     <string name="total">Tổng cộng</string>
     <!--<string name="option">Option</string>-->

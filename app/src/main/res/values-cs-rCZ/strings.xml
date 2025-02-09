@@ -263,7 +263,6 @@
     <string name="no_data">Nenalezeny žádné záznamy. Zkuste změnit nastavení zobrazeného období nebo klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření. </string>
     <string name="month">Měsíc</string>
     <string name="year">Rok</string>
-    <string name="menu_reports">Reporty</string>
     <string name="menu_report_income_vs_expenses">Příjmy a výdaje</string>
     <string name="total">Celkem</string>
     <!--<string name="option">Option</string>-->

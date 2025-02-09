@@ -277,7 +277,6 @@
     <string name="no_stock_data">Ni podatkov o zalogi za ta račun.</string>
     <string name="month">Mesec</string>
     <string name="year">Leto</string>
-    <string name="menu_reports">Poročila</string>
     <string name="menu_report_income_vs_expenses">Prihodki proti stroškom</string>
     <string name="total">Skupaj</string>
     <!--<string name="option">Option</string>-->

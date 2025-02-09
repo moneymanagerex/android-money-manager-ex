@@ -264,7 +264,6 @@
     <string name="no_stock_data">此帳戶的股票資料欠奉。</string>
     <string name="month">月</string>
     <string name="year">年</string>
-    <string name="menu_reports">報表</string>
     <string name="menu_report_income_vs_expenses">損益表</string>
     <string name="total">總計</string>
     <!--<string name="option">Option</string>-->

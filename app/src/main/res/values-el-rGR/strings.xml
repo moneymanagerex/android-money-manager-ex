@@ -264,7 +264,6 @@
     <string name="no_stock_data">∆εν υπάρχουν στοιχεία για αυτόν τον λογαριασμό.</string>
     <string name="month">Μήνας</string>
     <string name="year">Έτος</string>
-    <string name="menu_reports">Αναφορές</string>
     <string name="menu_report_income_vs_expenses">Έσοδα vs  Έξοδα</string>
     <string name="total">Σύνολο </string>
     <!--<string name="option">Option</string>-->
