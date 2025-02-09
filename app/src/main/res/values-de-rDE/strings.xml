@@ -300,7 +300,6 @@
     <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
-    <string name="menu_reports">Berichte</string>
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
     <string name="menu_report_cashflow">Geldfluss</string>
     <string name="total">Gesamt</string>

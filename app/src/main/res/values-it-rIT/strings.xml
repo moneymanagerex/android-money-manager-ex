@@ -300,7 +300,6 @@
     <string name="no_stock_data">Nessun Azione disposibile per questo conto</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
-    <string name="menu_reports">Resoconti</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
     <string name="menu_report_cashflow">Flusso Di Cassa</string>
     <string name="total">Totale</string>

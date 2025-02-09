@@ -298,7 +298,6 @@
     <string name="no_stock_data">No hay datos de la bolsa disponibles para esta cuenta.</string>
     <string name="month">Mes</string>
     <string name="year">Año</string>
-    <string name="menu_reports">Reportes</string>
     <string name="menu_report_income_vs_expenses">Ingresos Vs Gastos</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->

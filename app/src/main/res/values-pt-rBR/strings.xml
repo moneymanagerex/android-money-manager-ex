@@ -284,7 +284,6 @@
     <string name="no_stock_data">Não há dados de ações disponíveis para esta conta.</string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
-    <string name="menu_reports">Relatórios</string>
     <string name="menu_report_income_vs_expenses">Receitas x Despesas</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->

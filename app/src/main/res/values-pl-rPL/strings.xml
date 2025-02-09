@@ -267,7 +267,6 @@
     <string name="no_stock_data">Brak  dostępnych danych o akcjach dla tego konta.</string>
     <string name="month">Miesiąc</string>
     <string name="year">Bieżący rok</string>
-    <string name="menu_reports">Raporty</string>
     <string name="menu_report_income_vs_expenses">Przychody a wydatki</string>
     <string name="total">Łącznie</string>
     <!--<string name="option">Option</string>-->
