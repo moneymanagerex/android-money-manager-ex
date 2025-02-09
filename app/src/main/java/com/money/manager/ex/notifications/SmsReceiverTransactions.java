@@ -135,7 +135,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    //msgSender = "AT-SIBSMS";
+                    msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
@@ -984,14 +984,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     public boolean validateData() {
 
-        boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-
         if (mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)) {
             //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if (isTransfer) {
+        if (mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
             if (mCommon.transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
                 //Toast.makeText(mContext, "MMEX : " + (R.string.error_toaccount_not_selected), Toast.LENGTH_LONG).show();
                 return false;
@@ -1023,12 +1021,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
 
         // Category is required if tx is not a split or transfer.
-        if (!mCommon.transactionEntity.hasCategory()) {
-            //Toast.makeText(mContext, "MMEX : " + (R.string.error_category_not_selected), Toast.LENGTH_LONG).show();
-            return false;
-        }
+        return mCommon.transactionEntity.hasCategory();
 
-        return isTransfer;
     }
 
     public boolean saveTransaction() {

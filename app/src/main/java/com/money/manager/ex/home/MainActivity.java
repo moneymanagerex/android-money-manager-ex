@@ -16,11 +16,16 @@
  */
 package com.money.manager.ex.home;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,9 +39,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +54,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.amplitude.android.Amplitude;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -55,6 +63,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.reports.CashFlowReportActivity;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -88,6 +97,7 @@ import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionProcess;
 import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
+import com.money.manager.ex.reports.GeneralReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
@@ -623,6 +633,8 @@ public class MainActivity
             startActivity(new Intent(this, CategoriesReportActivity.class));
         } else if (itemId == R.id.menu_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (itemId == R.id.menu_general_report_group) {
+            showGeneralReportsSelector(item.getText());
         } else if (itemId == R.id.menu_report_payees) {
             startActivity(new Intent(this, PayeesReportActivity.class));
         } else if (itemId == R.id.menu_report_where_money_goes) {
@@ -887,6 +899,9 @@ public class MainActivity
 
         childItems.add(childReports);
 
+        // general reports
+        childItems.add(getGeneralReportGroupDrawerMenuItems());
+
         // Settings
         childItems.add(null);
 
@@ -1055,6 +1070,14 @@ public class MainActivity
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
                         .color(iconColor)));
         // .withDivider(true));
+
+        // General reports
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                .withText(getString(R.string.menu_general_report_group))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(iconColor)));
+        // .withDivider(true));
+
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
@@ -1066,6 +1089,7 @@ public class MainActivity
         //        .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
         //                .color(iconColor))
         //        .withDivider(Boolean.TRUE));
+
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
@@ -1411,5 +1435,117 @@ public class MainActivity
         // make top-level so there's no going back.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private ArrayList<DrawerMenuItem> getGeneralReportGroupDrawerMenuItems() {
+
+        UIHelper uiHelper = new UIHelper(this);
+        int iconColor = uiHelper.getSecondaryTextColor();
+        ArrayList<DrawerMenuItem> childReportGroup = new ArrayList<>();
+
+        // Db setup
+        MmxOpenHelper MmxHelper = new MmxOpenHelper(this, new AppSettings(this).getDatabaseSettings().getDatabasePath());
+        SupportSQLiteDatabase db = MmxHelper.getReadableDatabase();
+
+        try
+        {
+            Cursor groupCursor = db.query("SELECT DISTINCT GROUPNAME FROM REPORT_V1");
+            int groupIndex = 0;
+
+            if(groupCursor.moveToFirst())
+            {
+                while(!groupCursor.isAfterLast()){
+                    groupIndex = groupCursor.getColumnIndex("GROUPNAME");
+                    childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                            .withText(groupCursor.getString(groupIndex))
+                            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                    .color(iconColor)));
+
+                    groupCursor.moveToNext();
+                }
+            }
+
+            groupCursor.close();
+
+        }
+        catch(Exception e)
+        {
+            //System.err.println("EXCEPTION:"+e);
+        }
+
+        return childReportGroup;
+    }
+
+    @SuppressLint("Range")
+    private void showGeneralReportsSelector(String groupName) {
+
+        //added by velmuruganc
+        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        UIHelper uiHelper = new UIHelper(this);
+        int iconColor = uiHelper.getSecondaryTextColor();
+
+        // Db setup
+        MmxOpenHelper MmxHelper = new MmxOpenHelper(this, new AppSettings(this).getDatabaseSettings().getDatabasePath());
+        SupportSQLiteDatabase db = MmxHelper.getReadableDatabase();
+
+        Cursor menuCursor = db.query("SELECT REPORTNAME FROM REPORT_V1 WHERE GROUPNAME = '"+ groupName +"'");
+        ArrayList<String> reportName = new ArrayList<>();
+
+        if(menuCursor.moveToFirst())
+        {
+            while(!menuCursor.isAfterLast()){
+                reportName.add(menuCursor.getString(menuCursor.getColumnIndex("REPORTNAME")));
+                //custom report for given group
+                adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
+                        .withText(menuCursor.getString(menuCursor.getColumnIndex("REPORTNAME")))
+                        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                .color(iconColor)));
+
+                menuCursor.moveToNext();
+            }
+        }
+
+        menuCursor.close();
+
+        //*********** build custom dialog ************
+        // Inflate the custom dialog layout
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Create a TextView for the title with added space in place of builder.setTitle(groupName)
+        TextView title = new TextView(this);
+        title.setText(groupName);
+        title.setTextSize(20);
+        title.setPadding(40, 20, 0, 20);  // Adds space above and below the title
+
+        builder.setCustomTitle(title);
+        title.setTypeface(null, Typeface.BOLD);  // Makes the title bold
+        title.setTextColor(Color.BLACK);
+
+        // Inflate the custom layout that contains the ListView
+        View customView = getLayoutInflater().inflate(R.layout.dialog_general_report, null);
+        builder.setView(customView);
+
+        // Set up ListView and adapter
+        ListView listView = customView.findViewById(R.id.listView);
+
+        listView.setAdapter(adapter);
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+
+        // Set item click listener for ListView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getApplicationContext(), "Item clicked: " + reportName.get(position), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportName.get(position) );
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

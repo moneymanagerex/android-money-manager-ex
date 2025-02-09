@@ -19,6 +19,13 @@
 
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -60,6 +67,9 @@
         android:theme="@style/Theme.Splash"
         tools:replace="android:label"
         android:supportsRtl="true">
+
+        <activity android:name=".reports.GeneralReportActivity" />
+
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
