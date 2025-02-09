@@ -302,6 +302,7 @@
     <string name="year">Év</string>
     <string name="menu_reports">Jelentések</string>
     <string name="menu_report_income_vs_expenses">Bevételek - Kiadások</string>
+    <string name="menu_report_cashflow">Pénzforgalom</string>
     <string name="total">Összesen</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Mind</string>
@@ -353,6 +354,7 @@
     <string name="open_database">Adatbázis megnyitása</string>
     <string name="synchronization_interval">Összehangolási időköz</string>
     <string name="summary_synchronization_interval">Milyen gyakran kell összehangolni?</string>
+    <string name="tips_new_version_dropbox">Az 1.2.0-s verziótól kezdve az MMEX Androidra megváltoztatta a Dropbox összehangolási motorját. A Dropbox összehangolt már használt felhasználóknak frissíteniük kell a beállításukat.\nA hitelesítés és az adatbázis kiválasztása a Beállításokban található.\nAz 1.2.0 verziótól kezdve az MMEX Androidra képes önműködően összehangolni az adatbázist.</string>
     <string name="title_transaction_shown_balance">Tranzakciónkénti egyenleg</string>
     <string name="summary_transaction_shown_balance">Mutatja az egyenleget tranzakciónként is. Ez a megjelenítés lassíthatja a program működését</string>
     <string name="menu_open_database">Adatbázis megnyitása</string>
@@ -422,7 +424,7 @@
     <string name="withdrawal_from">Kivét innen %1$s</string>
     <string name="deposit_to">Betét ide %1$s</string>
     <string name="mmex_website">MMEX honlap</string>
-    <string name="android_website">MMEx for Android honlap</string>
+    <string name="android_website">MMEX Androidra honlap</string>
     <string name="donate_in_app_already_donate">Ön már támogatta adományával az MMEX Androidra fejlesztését!\n\nKöszönjük a fejlesztő csapattól!</string>
     <string name="donate_in_app_retrieving_status">Támogatási állapotának lekérése a Google Play szerveréről. Kérem, várjon&#8230;</string>
     <string name="donate_in_app_error">Nem tudjuk használni az alkalmazáson belüli számlázást. Ellenőrizze, hogy a Play Áruház legfrissebb verziója van-e telepítve az eszközére.</string>
