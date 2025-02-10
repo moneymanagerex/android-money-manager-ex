@@ -443,7 +443,7 @@ public class InvestmentTransactionEditActivity
         if (mStock.getId() != null) {
             repository.save(mStock);
         } else {
-            repository.insert(mStock);
+            repository.add(mStock);
         }
 
         return true;

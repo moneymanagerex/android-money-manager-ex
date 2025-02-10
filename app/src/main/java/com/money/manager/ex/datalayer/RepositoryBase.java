@@ -169,7 +169,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     /**
      * Generic insert method.
      */
-    protected long insert(ContentValues values) {
+    private long insert(ContentValues values) {
         // sanitize
         values.remove("_id");
 

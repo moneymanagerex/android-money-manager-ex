@@ -153,10 +153,6 @@ public class StockRepository
         return result;
     }
 
-    public boolean insert(Stock stock) {
-        return insert(stock.contentValues) > 0;
-    }
-
     public boolean save(Stock stock) {
         long id = stock.getId();
 

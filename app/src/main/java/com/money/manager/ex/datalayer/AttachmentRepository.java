@@ -48,10 +48,6 @@ public class AttachmentRepository
         };
     }
 
-    public long add(Attachment entity) {
-        return insert(entity.contentValues);
-    }
-
     public boolean delete(long id) {
         if (id == Constants.NOT_SET) return false;
 
