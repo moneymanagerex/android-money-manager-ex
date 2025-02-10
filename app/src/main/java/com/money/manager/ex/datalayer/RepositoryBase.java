@@ -168,6 +168,10 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Generic insert method.
+     * Called only internally.
+     *
+     * @param values The content values to insert (without "_id" field).
+     * @return The ID of the inserted record, or {@link Constants#NOT_SET} if the insertion fails.
      */
     private long insert(ContentValues values) {
         // sanitize
