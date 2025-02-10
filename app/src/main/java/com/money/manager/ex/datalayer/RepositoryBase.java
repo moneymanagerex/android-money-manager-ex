@@ -85,8 +85,8 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public long add(EntityBase entity) {
-//        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
-//            entity.setId(newId());
+        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
+            entity.setId(newId());
         return insert(entity.contentValues);
     }
 
