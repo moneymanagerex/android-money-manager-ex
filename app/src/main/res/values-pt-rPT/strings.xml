@@ -271,7 +271,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="no_stock_data">Sem dados de títulos disponíveis para esta conta.</string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
-    <string name="menu_reports">Relatórios</string>
     <string name="menu_report_income_vs_expenses">Receitas vs Despesas</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->

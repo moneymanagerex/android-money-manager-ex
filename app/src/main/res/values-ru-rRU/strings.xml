@@ -300,7 +300,6 @@
     <string name="no_stock_data">Нет биржевых данных, доступных для этого счета.</string>
     <string name="month">Месяц</string>
     <string name="year">Год</string>
-    <string name="menu_reports">Отчеты</string>
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
     <string name="menu_report_cashflow">Движение средств</string>
     <string name="total">Итого</string>

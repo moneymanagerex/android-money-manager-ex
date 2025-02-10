@@ -270,7 +270,6 @@
     <string name="no_stock_data">Aucune donnée de stock disponible pour ce compte.</string>
     <string name="month">Mois</string>
     <string name="year">Année</string>
-    <string name="menu_reports">Rapports</string>
     <string name="menu_report_income_vs_expenses">Revenus Vs dépenses</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->

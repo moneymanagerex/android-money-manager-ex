@@ -285,7 +285,6 @@
     <string name="no_stock_data">لا توجد بيانات الأسهم المتاحة لهذا الحساب.</string>
     <string name="month">شهر</string>
     <string name="year">السنة</string>
-    <string name="menu_reports">التقارير</string>
     <string name="menu_report_income_vs_expenses">الإيرادات مقابل المصروفات</string>
     <string name="total">المجموع</string>
     <!--<string name="option">Option</string>-->

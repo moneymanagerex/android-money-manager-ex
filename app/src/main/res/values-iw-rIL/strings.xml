@@ -264,7 +264,6 @@
     <string name="no_stock_data">אין נתוני מניות עבור חשבון זה.</string>
     <string name="month">חודש</string>
     <string name="year">השנה</string>
-    <string name="menu_reports">דוחות</string>
     <string name="menu_report_income_vs_expenses">הכנסה לעומת הוצאות</string>
     <string name="total">סך הכל</string>
     <!--<string name="option">Option</string>-->

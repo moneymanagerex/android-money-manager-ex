@@ -281,7 +281,6 @@
     <string name="no_stock_data">Ingen aktie data tilgængelig er tilgængelig for denne konto.</string>
     <string name="month">Måned</string>
     <string name="year">År</string>
-    <string name="menu_reports">Rapporter</string>
     <string name="menu_report_income_vs_expenses">Indtægter og udgifter</string>
     <string name="total">I alt</string>
     <!--<string name="option">Option</string>-->

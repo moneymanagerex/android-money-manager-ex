@@ -232,9 +232,6 @@
     <string name="difference">Difference</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
-    <string name="menu_reports">Build-in Reports</string> -->
-    <string name="menu_general_report_group">General Reports</string>
-    <string name="title_activity_general_report">General Report</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
