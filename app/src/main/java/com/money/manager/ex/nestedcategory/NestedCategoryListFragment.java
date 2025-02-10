@@ -172,6 +172,12 @@ public class NestedCategoryListFragment
                 menu.findItem(R.id.menu_sort_name).setChecked(true);
                 break;
         }
+        if (mAction.equals(Intent.ACTION_PICK) ) {
+            menu.findItem(R.id.menu_show_inactive).setVisible(false);
+        } else {
+            menu.findItem(R.id.menu_show_inactive).setVisible(true);
+            menu.findItem(R.id.menu_show_inactive).setChecked((new AppSettings(getActivity())).getShowInactive());
+        }
     }
 
     @Override
@@ -200,6 +206,13 @@ public class NestedCategoryListFragment
             return true;
         }
 
+        if (item.getItemId() == R.id.menu_show_inactive) {
+            item.setChecked(!item.isChecked());
+            settings.setShowInactive(item.isChecked());
+            // restart search
+            restartLoader();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -290,7 +303,8 @@ public class NestedCategoryListFragment
             // load data
             String whereClause = "";
             String[] selectionArgs = null;
-            if (mAction == Intent.ACTION_PICK) {
+            if (mAction == Intent.ACTION_PICK
+                    || !(new AppSettings(getContext())).getShowInactive()) {
                 whereClause = "ACTIVE <> 0";
             }
             if (!TextUtils.isEmpty(mCurFilter)) {
