@@ -48,7 +48,6 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -64,7 +63,6 @@ import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import javax.inject.Inject;
@@ -135,7 +133,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    msgSender = "AT-SIBSMS";
+                    //Must be commented in released version
+                    //msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender)) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
