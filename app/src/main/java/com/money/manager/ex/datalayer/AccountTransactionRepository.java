@@ -73,7 +73,7 @@ public class AccountTransactionRepository
         entity.contentValues.remove(AccountTransaction.TRANSID);
         entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());
 
-        long id = insert(entity.contentValues);
+        long id = this.add(entity);
 
         entity.setId(id);
 

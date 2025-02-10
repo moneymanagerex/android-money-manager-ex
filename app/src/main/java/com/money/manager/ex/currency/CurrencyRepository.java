@@ -59,10 +59,6 @@ public class CurrencyRepository
         return first(where.getWhere());
     }
 
-    public boolean insert(Currency value) {
-        return this.insert(value.contentValues) > 0;
-    }
-
     public boolean update(Currency value) {
         long id = value.getCurrencyId();
 

@@ -39,10 +39,6 @@ public class TagRepository extends  RepositoryBase {
         };
     }
 
-    public long add(Tag entity) {
-        return insert(entity.contentValues);
-    }
-
     public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
         // TODO: Tag has inactive flag: no delete, but set inactive

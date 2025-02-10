@@ -92,7 +92,7 @@ public class ScheduledTransactionRepository
     public RecurringTransaction insert(RecurringTransaction entity) {
         entity.contentValues.remove(RecurringTransaction.BDID);
 
-        long id = insert(entity.contentValues);
+        long id = this.add(entity);
 
         entity.setId(id);
 

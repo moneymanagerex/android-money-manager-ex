@@ -94,7 +94,7 @@ public class SplitCategoryRepository
         // Remove any existing id value.
         item.contentValues.remove(SplitCategory.SPLITTRANSID);
 
-        long id = this.insert(item.contentValues);
+        long id = this.add(item);
         item.setId(id);
 
         return id > 0;

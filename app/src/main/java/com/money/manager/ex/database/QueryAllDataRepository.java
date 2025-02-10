@@ -52,7 +52,7 @@ public class QueryAllDataRepository
     }
 
     public long add(AccountTransactionDisplay entity) {
-        return insert(entity.contentValues);
+        return this.add(entity);
     }
 
     public Cursor query(String selection, String sort) {
