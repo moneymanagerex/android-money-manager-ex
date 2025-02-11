@@ -54,7 +54,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.amplitude.android.Amplitude;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -140,6 +139,9 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
+
+    @Inject
+    Lazy<MmxOpenHelper> openHelper;//added for General Report //velmuruganc
 
     /**
      * @return the mRestart
@@ -1075,7 +1077,7 @@ public class MainActivity
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
                 .withText(getString(R.string.menu_general_report_group))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                        .color(iconColor)));
+                .color(iconColor)));
         // .withDivider(true));
 
         // Settings
@@ -1443,13 +1445,9 @@ public class MainActivity
         int iconColor = uiHelper.getSecondaryTextColor();
         ArrayList<DrawerMenuItem> childReportGroup = new ArrayList<>();
 
-        // Db setup
-        MmxOpenHelper MmxHelper = new MmxOpenHelper(this, new AppSettings(this).getDatabaseSettings().getDatabasePath());
-        SupportSQLiteDatabase db = MmxHelper.getReadableDatabase();
-
         try
         {
-            Cursor groupCursor = db.query("SELECT DISTINCT GROUPNAME FROM REPORT_V1");
+            Cursor groupCursor = openHelper.get().getReadableDatabase().query("SELECT DISTINCT GROUPNAME FROM REPORT_V1");
             int groupIndex = 0;
 
             if(groupCursor.moveToFirst())
@@ -1484,11 +1482,7 @@ public class MainActivity
         UIHelper uiHelper = new UIHelper(this);
         int iconColor = uiHelper.getSecondaryTextColor();
 
-        // Db setup
-        MmxOpenHelper MmxHelper = new MmxOpenHelper(this, new AppSettings(this).getDatabaseSettings().getDatabasePath());
-        SupportSQLiteDatabase db = MmxHelper.getReadableDatabase();
-
-        Cursor menuCursor = db.query("SELECT REPORTNAME FROM REPORT_V1 WHERE GROUPNAME = '"+ groupName +"'");
+        Cursor menuCursor = openHelper.get().getReadableDatabase().query("SELECT REPORTNAME FROM REPORT_V1 WHERE GROUPNAME = '"+ groupName +"'");
         ArrayList<String> reportName = new ArrayList<>();
 
         if(menuCursor.moveToFirst())
