@@ -85,8 +85,8 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public long add(EntityBase entity) {
-//        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
-//            entity.setId(newId());
+        if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
+            entity.setId(newId());
         return insert(entity.contentValues);
     }
 
@@ -168,8 +168,12 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Generic insert method.
+     * Called only internally.
+     *
+     * @param values The content values to insert (without "_id" field).
+     * @return The ID of the inserted record, or {@link Constants#NOT_SET} if the insertion fails.
      */
-    protected long insert(ContentValues values) {
+    private long insert(ContentValues values) {
         // sanitize
         values.remove("_id");
 

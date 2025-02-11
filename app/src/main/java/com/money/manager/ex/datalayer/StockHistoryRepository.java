@@ -17,13 +17,11 @@
 
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteException;
-import android.net.Uri;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
@@ -88,9 +86,8 @@ public class StockHistoryRepository
 
         // check whether to insert or update.
         if (!recordExists) {
-            ContentValues values = getContentValues(symbol, price, date);
-            Uri insert = getContext().getContentResolver().insert(getUri(), values);
-            long id = ContentUris.parseId(insert);
+            StockHistory stockHistory = getStockHistory(symbol, price, date);
+            long id = this.add(stockHistory);
 
             if (id > 0) {
                 // success
@@ -133,13 +130,13 @@ public class StockHistoryRepository
     public boolean updateHistory(String symbol, Money price, Date date) {
         boolean result;
 
-        ContentValues values = getContentValues(symbol, price, date);
+        StockHistory stockHistory = getStockHistory(symbol, price, date);
         String where = StockHistory.SYMBOL + "=?";
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
-        String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
+        String[] whereArgs = new String[] { symbol, stockHistory.getString(StockHistory.DATE) };
 
         long records = getContext().getContentResolver().update(getUri(),
-                values,
+                stockHistory.contentValues,
                 where, whereArgs);
 
         result = records > 0;
@@ -147,7 +144,7 @@ public class StockHistoryRepository
         return result;
     }
 
-    public ContentValues getContentValues(String symbol, Money price, Date date) {
+    public StockHistory getStockHistory(String symbol, Money price, Date date) {
         String isoDate = new MmxDate(date).toIsoDateString();
 
         ContentValues values = new ContentValues();
@@ -156,7 +153,7 @@ public class StockHistoryRepository
         values.put(StockHistory.VALUE, price.toString());
         values.put(StockHistory.UPDTYPE, UpdateType.Online.type);
 
-        return values;
+        return new StockHistory(values);
     }
 
     public StockHistory getLatestPriceFor(String symbol) {
