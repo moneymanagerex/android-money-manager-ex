@@ -38,6 +38,7 @@ public class StockHistory
     public StockHistory() {
         super();
     }
+    public StockHistory(ContentValues contentValues) { super(contentValues);}
 
     @Override
     public void loadFromCursor(Cursor c) {

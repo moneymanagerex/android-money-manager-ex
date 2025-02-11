@@ -160,7 +160,7 @@ public class AccountRepository
         Long id = value.getId();
 
         if (id == null || id == Constants.NOT_SET) {
-            this.insert(value);
+            this.add(value);
             return true;
         }
 
@@ -189,17 +189,5 @@ public class AccountRepository
         long links = count(Account.CURRENCYID + "=?",
                 MmxDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
-    }
-
-    // private
-
-    private Account insert(Account entity) {
-        entity.contentValues.remove(Account.ACCOUNTID);
-
-        Long id = insert(entity.contentValues);
-
-        entity.setId(id);
-
-        return entity;
     }
 }

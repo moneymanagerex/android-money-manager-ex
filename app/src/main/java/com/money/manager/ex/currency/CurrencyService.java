@@ -358,7 +358,8 @@ public class CurrencyService
 
                 newCurrency.setConversionRate(1.0);
 
-                getContext().getContentResolver().insert(getRepository().getUri(), newCurrency.contentValues);
+                getRepository().add(newCurrency);
+
                 //todo mRepository.insert(newCurrency.contentValues);
             } catch (Exception e) {
                 Timber.e(e, "importing currencies from locale %s", locale.getDisplayName());

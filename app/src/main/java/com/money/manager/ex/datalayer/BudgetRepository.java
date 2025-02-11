@@ -69,7 +69,7 @@ public class BudgetRepository
             entity.contentValues.remove(Budget.BUDGETYEARID);
 
             // new record
-            long id = super.insert(entity.contentValues);
+            long id = super.add(entity);
             result = id != 0;
         } else {
             result = super.update(entity, Budget.BUDGETYEARID + "=?",

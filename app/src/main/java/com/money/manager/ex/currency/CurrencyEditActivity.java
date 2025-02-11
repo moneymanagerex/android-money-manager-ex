@@ -245,7 +245,7 @@ public class CurrencyEditActivity
 
             // update data
             if (mIntentAction.equals(Intent.ACTION_INSERT)) {
-                success = repo.insert(currency);
+                success = repo.add(currency) > 0L;
 
                 // todo: use ACTION_EDIT explicitly.
             } else {// Add Id value only when updating.
