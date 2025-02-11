@@ -604,6 +604,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     if(reqMatch[0].contains(reqMatch[1])) { reqMatch[1] = ""; }
 
                     break;
+
+                default:
+                    Timber.e("extractAccountDetails: Unable to find either UPI or non UPI txns...");
+                    break;
             }
 
             getAccountDetails(reqMatch);
@@ -643,15 +647,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         try
         {
-            for(int i=0; i<=searchFor.length-1; i++)
-            {
+            for(int i=0; i<=searchFor.length-1; i++) {
                 mFound = 1;
 
                 Pattern p = Pattern.compile(searchFor[i]);
                 Matcher m = p.matcher(smsMsg);
 
-                if (m != null && reqMatch.isEmpty())
-                {
+                if (m != null && reqMatch.isEmpty()) {
                     while(m.find()) {
                         if(mFound == mIndx) {
                             // Append X with acc no, bcz start with X for non UPI trans
