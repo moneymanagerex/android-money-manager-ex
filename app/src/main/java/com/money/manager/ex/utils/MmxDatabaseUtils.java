@@ -362,4 +362,8 @@ public class MmxDatabaseUtils {
 
         client.close();
     }
+
+    public List<Info> getLastSyncDate() {
+        return infoRepositorySqlLazy.get().loadAll(InfoKeys.LAST_SYNC_DATE);
+    }
 }

@@ -35,6 +35,7 @@ import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
+import com.money.manager.ex.sync.merge.DataMerger;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -152,6 +153,7 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
+        storage.pullDatabaseToTmpFile(currentDb); // TODO: Why do I need to download the remote file, otherwise the metadata is wrong
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
@@ -169,9 +171,13 @@ public class SyncService
         }
 
         if (isLocalModified && isRemoteModified) {
+            // start merge changes from remote to local
+            DataMerger merger = new DataMerger();
+            merger.merge(currentDb, storage);
             // if both changed, there is a conflict!
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
+
  //           sendStopEvent();
             MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
                 put("authority", uri.getAuthority());
