@@ -122,7 +122,7 @@ public class AccountEditActivity
             Currency baseCurrency = currencyService.getBaseCurrency();
 
             if (baseCurrency != null) {
-                mAccount.setCurrencyId(baseCurrency.getCurrencyId());
+                mAccount.setCurrencyId(baseCurrency.getId());
                 mCurrencyName = baseCurrency.getName();
             }
         }

@@ -92,7 +92,7 @@ public class DataHelpers {
         // account
         AccountService accountService = new AccountService(context);
         Account account = accountService.createAccount("only", AccountTypes.CHECKING, AccountStatuses.OPEN,
-            true, euro.getCurrencyId());
+            true, euro.getId());
         // payee
         PayeeService payeeService = new PayeeService(context);
         Payee payee = payeeService.createNew("zdravko colic");

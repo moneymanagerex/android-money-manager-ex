@@ -77,14 +77,6 @@ public class Currency
         return getString(CURRENCY_SYMBOL);
     }
 
-    public long getCurrencyId() {
-        return getLong(CURRENCYID);
-    }
-
-    public void setCurrencyid(long value) {
-        setLong(CURRENCYID, value);
-    }
-
     public String getDecimalSeparator() {
         return getString(DECIMAL_POINT);
     }

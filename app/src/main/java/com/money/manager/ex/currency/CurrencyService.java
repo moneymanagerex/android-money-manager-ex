@@ -131,9 +131,9 @@ public class CurrencyService
         CurrencyRepository repo = getRepository();
         Currency currency = repo.loadCurrency(code);
 
-        mCurrencyCodes.put(code, currency.getCurrencyId());
+        mCurrencyCodes.put(code, currency.getId());
 
-        Long result = currency.getCurrencyId();
+        Long result = currency.getId();
 
         return result;
     }
@@ -163,7 +163,7 @@ public class CurrencyService
         List<Currency> usedCurrencies = getUsedCurrencies();
         String usedList = "";
         for (Currency currency : usedCurrencies) {
-            usedList += currency.getCurrencyId();
+            usedList += currency.getId();
             usedList += ", ";
         }
         // old trick. Now remove the last separator.
@@ -226,7 +226,7 @@ public class CurrencyService
             if (systemCurrency == null) {
                 // could not get base currency from the system. Use Euro?
                 //Currency euro = repo.loadCurrency("EUR");
-                //result = euro.getCurrencyId();
+                //result = euro.getId();
                 Timber.tag("CurrencyService").w("system default currency is null!");
                 result = 2;
             } else {
@@ -234,7 +234,7 @@ public class CurrencyService
                 Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
 
                 if (defaultCurrency != null) {
-                    result = defaultCurrency.getCurrencyId();
+                    result = defaultCurrency.getId();
                 } else {
                     // currency not found.
                     Timber.tag("CurrencyService").w("currency " + systemCurrency.getCurrencyCode() +
@@ -474,7 +474,7 @@ public class CurrencyService
         CurrencyRepository repo = getRepository();
 
         Currency currency = repo.loadCurrency(symbol);
-        long currencyId = currency.getCurrencyId();
+        long currencyId = currency.getId();
 
         // update value on database
         long updateResult = repo.saveExchangeRate(currencyId, rate);
