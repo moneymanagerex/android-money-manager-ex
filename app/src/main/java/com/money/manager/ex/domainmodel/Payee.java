@@ -41,12 +41,9 @@ public class Payee
         super(contentValues);
     }
 
-    public Long getId() {
-        return getLong(PAYEEID);
-    }
-
-    public void setId(Long value) {
-        setLong(Payee.PAYEEID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return PAYEEID;  // This returns the column name
     }
 
     public String getName() {

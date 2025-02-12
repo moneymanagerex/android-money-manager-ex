@@ -60,7 +60,7 @@ public class AccountTransactionRepository
     public AccountTransaction load(long id) {
         if (id == Constants.NOT_SET) return null;
 
-        AccountTransaction tx = (AccountTransaction) first(AccountTransaction.class,
+        AccountTransaction tx = first(AccountTransaction.class,
                 getAllColumns(),
                 AccountTransaction.TRANSID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),

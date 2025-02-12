@@ -93,12 +93,9 @@ public class AccountTransaction
         DatabaseUtils.cursorDoubleToCursorValues(c, TOTRANSAMOUNT, this.contentValues);
     }
 
-    public Long getId() {
-        return getLong(TRANSID);
-    }
-
-    public void setId(Long id) {
-        setLong(TRANSID, id);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return TRANSID;  // This returns the column name
     }
 
     public boolean hasId() {

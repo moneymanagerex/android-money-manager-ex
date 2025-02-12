@@ -35,8 +35,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
-@Parcel
-public class EntityBase implements IEntity {
+public abstract class EntityBase implements IEntity {
 
     public ContentValues contentValues;
 
@@ -119,14 +118,16 @@ public class EntityBase implements IEntity {
         contentValues.put(column, value);
     }
 
-    // Abstract methods to be implemented by subclasses
     public void setId(Long id) {
-        throw new UnsupportedOperationException("Subclasses must override this method");
+        setLong(this.getPrimaryKeyColumn(), id);
     }
     public Long getId() {
-        throw new UnsupportedOperationException("Subclasses must override this method");
-    }
+        return getLong(this.getPrimaryKeyColumn());
+    };
 
     // Abstract method to return all columns
     // public abstract String[] getAllColumns();
+
+    // Abstract method to get primary key column (overridden by subclasses)
+    public abstract String getPrimaryKeyColumn();
 }

@@ -58,7 +58,7 @@ public class ReportRepository extends RepositoryBase<Report> {
     public Report load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Report report = (Report) super.first(Report.class,
+        Report report = super.first(Report.class,
                 getAllColumns(),
                 Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

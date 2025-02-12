@@ -49,7 +49,7 @@ public class TagRepository extends RepositoryBase <Tag> {
     public Tag load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Tag entity = (Tag) super.first(Tag.class,
+        Tag entity = super.first(Tag.class,
                 getAllColumns(),
                 Tag.TAGID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

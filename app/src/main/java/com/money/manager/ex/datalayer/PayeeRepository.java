@@ -55,7 +55,7 @@ public class PayeeRepository
     public Payee load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Payee payee = (Payee) super.first(Payee.class,
+        Payee payee = super.first(Payee.class,
                 getAllColumns(),
                 Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

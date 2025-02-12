@@ -42,7 +42,7 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
     public Taglink load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Taglink taglink = (Taglink) super.first(Taglink.class,
+        Taglink taglink = super.first(Taglink.class,
                 getAllColumns(),
                 Taglink.TAGLINKID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

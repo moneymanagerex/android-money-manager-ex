@@ -44,6 +44,11 @@ public class NestedCategoryEntity
         setMandatoryField(categoryId, categoryName, parentId);
     }
 
+    @Override
+    public String getPrimaryKeyColumn() {
+        return QueryNestedCategory.CATEGID;  // This returns the column name
+    }
+
     public long getCategoryId() {
         return getLong(QueryNestedCategory.CATEGID);
     }

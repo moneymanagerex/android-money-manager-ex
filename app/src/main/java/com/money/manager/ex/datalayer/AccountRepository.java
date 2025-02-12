@@ -114,7 +114,7 @@ public class AccountRepository
     }
 
     public Long loadCurrencyIdFor(long id) {
-        Account account = (Account) first(Account.class,
+        Account account = first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
             MmxDatabaseUtils.getArgsForId(id),
@@ -148,7 +148,7 @@ public class AccountRepository
     }
 
     public Account first(String selection) {
-        return (Account) super.first(Account.class, null, selection, null, null);
+        return super.first(Account.class, null, selection, null, null);
     }
 
     /**

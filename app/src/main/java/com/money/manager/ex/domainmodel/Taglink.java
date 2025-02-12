@@ -48,10 +48,9 @@ public class Taglink extends EntityBase
     };
 
     @Override
-    public Long getId() { return getLong(TAGLINKID); }
-
-    @Override
-    public void setId(Long id) { setLong(TAGLINKID, id); }
+    public String getPrimaryKeyColumn() {
+        return TAGLINKID;  // This returns the column name
+    }
 
     public String getRefType() { return getString(REFTYPE); }
     public void setRefType(String value) { setString(REFTYPE, value); }

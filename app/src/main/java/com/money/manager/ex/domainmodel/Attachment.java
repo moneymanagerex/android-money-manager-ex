@@ -38,12 +38,9 @@ public class Attachment
         super(contentValues);
     }
 
-    public Long getId() {
-        return getLong(ATTACHMENTID);
-    }
-
-    public void setId(Long value) {
-        setLong(Attachment.ATTACHMENTID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return ATTACHMENTID;  // This returns the column name specific to Report
     }
 
     public String getFilename() {

@@ -58,7 +58,7 @@ public class AttachmentRepository
     public Attachment load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Attachment attachment = (Attachment) super.first(Attachment.class,
+        Attachment attachment = super.first(Attachment.class,
                 getAllColumns(),
                 Attachment.ATTACHMENTID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);
