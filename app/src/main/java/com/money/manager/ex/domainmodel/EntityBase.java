@@ -28,7 +28,9 @@ import com.money.manager.ex.utils.MmxDate;
 import org.parceler.Parcel;
 
 import java.util.Date;
+import java.util.Map;
 
+import androidx.annotation.Nullable;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -41,6 +43,32 @@ public abstract class EntityBase implements IEntity {
 
     public EntityBase() {
         contentValues = new ContentValues();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        // for sync we need a content equals
+        if (obj == null) return false;
+        if (obj instanceof EntityBase) {
+            EntityBase o2 = (EntityBase) obj;
+            if (o2.contentValues != null && this.contentValues != null) {
+                if (o2.contentValues.size() != this.contentValues.size()) return false;
+                for (Map.Entry<String, Object> kvThis : this.contentValues.valueSet()) {
+                    if (kvThis != null) {
+                        if (! o2.getContentValues().containsKey(kvThis.getKey())) return false;
+                        Object ov2 = o2.getContentValues().get(kvThis.getKey());
+                        Object ovThis = this.contentValues.get(kvThis.getKey());
+                        if (ov2 == null) {
+                            if (ovThis != null) return false;
+                        } else {
+                            if (! ov2.equals(ovThis)) return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return super.equals(obj);
     }
 
     public EntityBase(ContentValues contentValues) {
