@@ -118,7 +118,7 @@ public class UnitTestHelper {
     public static void setDefaultCurrency(String symbol) {
         CurrencyRepository repo = new CurrencyRepository(getContext());
         Currency currency = repo.loadCurrency(symbol);
-        long id = currency.getCurrencyId();
+        long id = currency.getId();
         setDefaultCurrency(id);
     }
 

@@ -60,7 +60,7 @@ public class CurrencyRepository
     }
 
     public boolean update(Currency value) {
-        long id = value.getCurrencyId();
+        long id = value.getId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Currency.CURRENCYID, "=", id);

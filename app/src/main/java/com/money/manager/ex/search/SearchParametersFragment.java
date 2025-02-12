@@ -58,7 +58,6 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.tag.TagActivity;
@@ -174,7 +173,7 @@ public class SearchParametersFragment
             for (Currency currency : mCurrencies) {
                 if (currency != null) {
                     mCurrencySymbolList.add(currency.getCode());
-                    mCurrencyIdList.add(currency.getCurrencyId());
+                    mCurrencyIdList.add(currency.getId());
                 } else {
                     mCurrencySymbolList.add("");
                     mCurrencyIdList.add(Constants.NOT_SET);
