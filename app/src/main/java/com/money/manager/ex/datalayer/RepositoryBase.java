@@ -35,6 +35,7 @@ import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import timber.log.Timber;
 
@@ -100,48 +101,42 @@ public abstract class RepositoryBase<T extends EntityBase>
      * @return
      */
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
+        Cursor c = null;
         T entity = null;
 
         try {
-            Cursor c = openCursor(projection, selection, args, sort);
-            if (c == null) return null;
-
-            if (c.moveToNext()) {
-                try {
-                    entity = resultType.newInstance();
-                    //resultType.cast(entity);
-                    entity.loadFromCursor(c);
-                } catch (Exception e) {
-                    Timber.e(e, "creating %s", resultType.getName());
-                }
+            c = openCursor(projection, selection, args, sort);
+            if (c != null && c.moveToNext()) {
+                entity = resultType.getDeclaredConstructor().newInstance();
+                entity.loadFromCursor(c);
             }
-            c.close();
-        } catch (Exception ex) {
-            Timber.e(ex, "fetching first record");
+        } catch (Exception e) {
+            Timber.e(e, "Error fetching first record of %s", resultType.getName());
+        } finally {
+            if (c != null) c.close();
         }
 
         return entity;
     }
 
     public List<T> query(Class<T> resultType, Select query) {
-        // String[] projection, String selection, String[] args, String sort
-        Cursor c = openCursor(query.projection, query.selection, query.selectionArgs, query.sort);
-        if (c == null) return null;
-
         List<T> results = new ArrayList<>();
-        //T entity = null;
+        Cursor c = null;
 
-        while (c.moveToNext()) {
-            try {
-                T entity = resultType.newInstance();
-                entity.loadFromCursor(c);
-
-                results.add(entity);
-            } catch (Exception e) {
-                Timber.e(e, "creating %s", resultType.getName());
+        try {
+            c = openCursor(query.projection, query.selection, query.selectionArgs, query.sort);
+            if (c != null) {
+                while (c.moveToNext()) {
+                    T entity = resultType.getDeclaredConstructor().newInstance();
+                    entity.loadFromCursor(c);
+                    results.add(entity);
+                }
             }
+        } catch (Exception e) {
+            Timber.e(e, "Error querying %s", resultType.getName());
+        } finally {
+            if (c != null) c.close();
         }
-        c.close();
 
         return results;
     }
@@ -152,16 +147,16 @@ public abstract class RepositoryBase<T extends EntityBase>
         return getContext().getContentResolver().bulkInsert(this.getUri(), items);
     }
 
+    private static final AtomicLong lastId = new AtomicLong(0);
+
     long newId() {
-        long ticks =  (System.currentTimeMillis());
+        long now = System.currentTimeMillis() * 1_000;
+        long id;
 
-        long randomSuffix = (long) (Math.random() * 1000);
-
-        long id = (ticks * 1_000) + randomSuffix;
-
-        if (id < 0) {
-            throw new IllegalArgumentException("Generated ID exceeds long range");
-        }
+        do {
+            long last = lastId.get();
+            id = Math.max(now, last + 1);
+        } while (!lastId.compareAndSet(lastId.get(), id));
 
         return id;
     }
@@ -174,15 +169,17 @@ public abstract class RepositoryBase<T extends EntityBase>
      * @return The ID of the inserted record, or {@link Constants#NOT_SET} if the insertion fails.
      */
     private long insert(ContentValues values) {
-        // sanitize
-        values.remove("_id");
+        if (values.containsKey("_id")) {
+            values.remove("_id");
+        }
 
         Uri insertUri = getContext().getContentResolver().insert(this.getUri(), values);
-        if (insertUri == null) return Constants.NOT_SET;
+        if (insertUri == null) {
+            Timber.e("Insert failed for values: %s", values);
+            return Constants.NOT_SET;
+        }
 
-        long id = ContentUris.parseId(insertUri);
-
-        return id;
+        return ContentUris.parseId(insertUri);
     }
 
     protected List<T> query(Class<T> resultType, String selection) {
@@ -201,25 +198,16 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected boolean update(EntityBase entity, String where, String[] selectionArgs) {
-        boolean result = false;
-
         ContentValues values = entity.contentValues;
-        // remove "_id" from the values.
         values.remove("_id");
 
-        long updateResult = getContext().getContentResolver().update(this.getUri(),
-                values,
-                where,
-                selectionArgs
-        );
-
-        if (updateResult != 0) {
-            result = true;
+        int rowsAffected = getContext().getContentResolver().update(this.getUri(), values, where, selectionArgs);
+        if (rowsAffected > 0) {
+            return true;
         } else {
-            Timber.w("update failed, %s, values: %s", this.getUri(), entity.contentValues);
+            Timber.w("Update failed, URI: %s, Values: %s", this.getUri(), values);
+            return false;
         }
-
-        return  result;
     }
 
     /**
@@ -233,14 +221,22 @@ public abstract class RepositoryBase<T extends EntityBase>
     protected ContentProviderResult[] bulkUpdate(EntityBase[] entities) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-        ContentProviderResult[] results = null;
+        for (EntityBase entity : entities) {
+            ContentProviderOperation op = ContentProviderOperation.newUpdate(this.getUri())
+                    .withValues(entity.contentValues)
+                    .build();
+            operations.add(op);
+        }
+
+        if (operations.isEmpty()) return null;
+
         try {
-            results = getContext().getContentResolver()
-                .applyBatch(MmxContentProvider.getAuthority(), operations);
+            return getContext().getContentResolver()
+                    .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             Timber.e(e, "bulk updating");
+            return null;
         }
-        return results;
     }
 
     protected long delete(String where, String[] args) {
@@ -254,13 +250,21 @@ public abstract class RepositoryBase<T extends EntityBase>
     protected ContentProviderResult[] bulkDelete(List<Integer> ids) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
-        ContentProviderResult[] results = null;
-        try {
-            results = getContext().getContentResolver()
-                .applyBatch(MmxContentProvider.getAuthority(), operations);
-        } catch (RemoteException | OperationApplicationException e) {
-            Timber.e(e, "bulk updating");
+        for (Integer id : ids) {
+            ContentProviderOperation op = ContentProviderOperation.newDelete(this.getUri())
+                    .withSelection("_id = ?", new String[]{String.valueOf(id)})
+                    .build();
+            operations.add(op);
         }
-        return results;
+
+        if (operations.isEmpty()) return null;
+
+        try {
+            return getContext().getContentResolver()
+                    .applyBatch(MmxContentProvider.getAuthority(), operations);
+        } catch (RemoteException | OperationApplicationException e) {
+            Timber.e(e, "bulk deleting");
+            return null;
+        }
     }
 }
