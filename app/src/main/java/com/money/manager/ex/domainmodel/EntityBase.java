@@ -36,14 +36,10 @@ import info.javaperformance.money.MoneyFactory;
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
 @Parcel
-public class EntityBase
-    implements IEntity {
+public class EntityBase implements IEntity {
 
     public ContentValues contentValues;
 
-    /**
-     * Default constructor.
-     */
     public EntityBase() {
         contentValues = new ContentValues();
     }
@@ -52,16 +48,16 @@ public class EntityBase
         this.contentValues = contentValues;
     }
 
-    public void loadFromCursor(Cursor c) {
+    public void loadFromCursor(Cursor cursor) {
         this.contentValues.clear();
-
-        DatabaseUtils.cursorRowToContentValues(c, contentValues);
+        DatabaseUtils.cursorRowToContentValues(cursor, contentValues);
     }
 
     public ContentValues getContentValues() {
         return this.contentValues;
     }
 
+    // Helper Methods for common data types
     protected Boolean getBoolean(String column) {
         return contentValues.getAsBoolean(column);
     }
@@ -74,28 +70,17 @@ public class EntityBase
         String value = contentValues.getAsString(fieldName);
         if (value == null || TextUtils.isEmpty(value)) return null;
 
-        Money result = MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
-        return result;
+        return MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
     }
 
     protected void setMoney(String fieldName, Money value) {
         contentValues.put(fieldName, value.toString());
     }
 
-//    protected DateTime getDateTime(String fieldName) {
-//        String dateString = getString(fieldName);
-//        return MmxJodaDateTimeUtils.from(dateString);
-//    }
-
     protected Date getDate(String field) {
         String dateString = getString(field);
         return new MmxDate(dateString).toDate();
     }
-
-//    protected void setDate(String fieldName, DateTime value) {
-//        String dateString = new MmxDate().getIsoStringFrom(value.toDate());
-//        contentValues.put(fieldName, dateString);
-//    }
 
     protected void setDate(String fieldName, Date value) {
         String dateString = new MmxDate(value).toIsoDateString();
@@ -134,11 +119,14 @@ public class EntityBase
         contentValues.put(column, value);
     }
 
-    // Abstract method (must be implemented by subclasses)
+    // Abstract methods to be implemented by subclasses
     public void setId(Long id) {
         throw new UnsupportedOperationException("Subclasses must override this method");
     }
     public Long getId() {
         throw new UnsupportedOperationException("Subclasses must override this method");
     }
+
+    // Abstract method to return all columns
+    // public abstract String[] getAllColumns();
 }
