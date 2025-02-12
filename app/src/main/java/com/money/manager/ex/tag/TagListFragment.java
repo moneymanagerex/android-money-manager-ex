@@ -136,6 +136,13 @@ public class TagListFragment     extends BaseListFragment
                 break;
 
         }
+
+        if (mAction.equals(Intent.ACTION_PICK) ) {
+            menu.findItem(R.id.menu_show_inactive).setVisible(false);
+        } else {
+            menu.findItem(R.id.menu_show_inactive).setVisible(true);
+            menu.findItem(R.id.menu_show_inactive).setChecked((new AppSettings(getContext())).getShowInactive());
+        }
     }
 
     @Override
@@ -160,6 +167,13 @@ public class TagListFragment     extends BaseListFragment
             case R.id.menu_sort_recent:
                 item.setChecked(true);
                 settings.setTagSort(TagRepository.SORT_BY_RECENT);
+                // restart search
+                restartLoader();
+                return true;
+
+            case R.id.menu_show_inactive:
+                item.setChecked(!item.isChecked());
+                settings.setShowInactive(item.isChecked());
                 // restart search
                 restartLoader();
                 return true;
@@ -254,7 +268,8 @@ public class TagListFragment     extends BaseListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_TAG) {
             String whereClause = ""; // we don't filter inactive by default
-            if (mAction == Intent.ACTION_PICK) {
+            if (mAction == Intent.ACTION_PICK
+                    || !(new AppSettings(getContext())).getShowInactive()) {
                 whereClause = "ACTIVE <> 0";
             }
             String[] selectionArgs = null;

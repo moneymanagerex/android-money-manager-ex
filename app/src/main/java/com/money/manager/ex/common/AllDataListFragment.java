@@ -19,7 +19,6 @@ package com.money.manager.ex.common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -33,8 +32,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -62,7 +59,6 @@ import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
-import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -71,6 +67,7 @@ import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.qif.QifExport;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
@@ -85,11 +82,14 @@ import timber.log.Timber;
  * Fragment that displays the transactions.
  */
 public class AllDataListFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+        extends BaseListFragment
+        implements LoaderManager.LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
+
+    private final int SORT_BY_DATE_DESC = 0;
+    private final int SORT_BY_DATE_ASC = 1;
 
     public static AllDataListFragment newInstance(long accountId) {
         return newInstance(accountId, true);
@@ -158,15 +158,11 @@ public class AllDataListFragment
         getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
 
         // e item click
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
-                    Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-                    if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                        startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
-                    }
+        getListView().setOnItemClickListener((parent, view, position, id) -> {
+            if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
+                Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
+                if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
+                    startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
             }
         });
@@ -241,14 +237,24 @@ public class AllDataListFragment
             if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
                 sort = args.getString(KEY_ARGUMENTS_SORT);
             }
+
             // create loader
             Dataset allData;
-            if (args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
+            if (args != null && args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
                 // coming from report, use mobile data
                 allData = new QueryMobileData(getActivity());
             } else {
                 allData = new QueryAllData(getActivity());
             }
+
+            if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
+                sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC";
+            }
+            if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
+                sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC";
+            }
+
+
             Select query = new Select(allData.getAllColumns())
                     .where(selection)
                     .orderBy(sort);
@@ -300,12 +306,7 @@ public class AllDataListFragment
 
     // End loader event handlers
 
-    /**
-     * Add options to the action bar of the host activity.
-     * This is not called in ActionBar Activity, i.e. Search.
-     * @param menu
-     * @param inflater
-     */
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -331,6 +332,19 @@ public class AllDataListFragment
             if (qifExport == null) {
                 inflater.inflate(R.menu.menu_alldata_operations, menu);
             }
+
+            // add sort menu in transaction list
+            inflater.inflate(R.menu.menu_sort_transaction, menu);
+            switch (new AppSettings(getContext()).getTransactionSort()) {
+                case SORT_BY_DATE_ASC:
+                    menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
+                    break;
+                default:
+                    menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
+                    break;
+            }
+
+
         }
     }
 
@@ -354,7 +368,7 @@ public class AllDataListFragment
             MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
             if (activity != null) {
                 ActionBar actionBar = activity.getSupportActionBar();
-                if(actionBar != null) {
+                if (actionBar != null) {
                     View customView = actionBar.getCustomView();
                     if (customView != null) {
                         actionBar.setCustomView(null);
@@ -379,7 +393,26 @@ public class AllDataListFragment
             exportToQif();
         }
 
+        if (itemId == R.id.menu_sort_date_desc) {
+            item.setChecked(true);
+            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_DESC);
+            // restart search
+            restartLoader();
+            return true;
+        }
+        if (itemId == R.id.menu_sort_date_asc) {
+            item.setChecked(true);
+            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_ASC);
+            // restart search
+            restartLoader();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void restartLoader() {
+        LoaderManager.getInstance(this).restartLoader(ID_LOADER_ALL_DATA_DETAIL, getLatestArguments(), this);
     }
 
     @Override
@@ -462,7 +495,7 @@ public class AllDataListFragment
 
     public void displayRunningBalances(HashMap<Long, Money> balances) {
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return;
+        if (adapter == null) return;
 
         adapter.setBalances(balances);
     }
@@ -538,7 +571,7 @@ public class AllDataListFragment
         // set the current arguments / account id
         setLatestArguments(arguments);
         // reload data with the latest arguments.
-        getLoaderManager().restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
+         LoaderManager.getInstance(this).restartLoader(ID_LOADER_ALL_DATA_DETAIL, arguments, this);
     }
 
     /**
@@ -605,7 +638,7 @@ public class AllDataListFragment
         String display;
 
         // number of records
-         display = data.getCount() + " " + getString(R.string.records) + ", ";
+        display = data.getCount() + " " + getString(R.string.records) + ", ";
 
         // sum
 
@@ -641,7 +674,7 @@ public class AllDataListFragment
 
         cursor.moveToPosition(Constants.NOT_SET_INT);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             values.clear();
 
             // Read needed data.
@@ -652,7 +685,7 @@ public class AllDataListFragment
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
 
             DatabaseUtils.cursorStringToContentValues(cursor, adapter.STATUS, values);
-            if ( values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
+            if (values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
                 // void. skip
                 continue;
             }
@@ -665,10 +698,10 @@ public class AllDataListFragment
                 currencyId = values.getAsLong(adapter.TOCURRENCYID);
                 // Issue 2054 adapt sign based on current account and direction
                 // check mArguments(Account)
-                if ( searchForAccount == Constants.NOT_SET ) {
+                if (searchForAccount == Constants.NOT_SET) {
                     // ignore transaction since this as + and -
                     continue;
-                } else if ( searchForAccount == values.getAsLong(adapter.ACCOUNTID) ) {
+                } else if (searchForAccount == values.getAsLong(adapter.ACCOUNTID)) {
                     // source
                     amount = MoneyFactory.fromString(values.getAsString(adapter.AMOUNT));
                 } else {
@@ -728,57 +761,49 @@ public class AllDataListFragment
                 .setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_warning))
                 .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                         transactionIds.size(), transactionIds.size()))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                        for (long transactionId : transactionIds) {
-                            // First delete any splits. See if there are any split records.
-                            SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
-                            Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                                    SplitCategory.TRANSID + "=" + transactionId,
-                                    null, SplitCategory.SPLITTRANSID);
-                            long splitCount = curSplit.getCount();
-                            curSplit.close();
+                    for (long transactionId : transactionIds) {
+                        // First delete any splits. See if there are any split records.
+                        SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
+                        Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                                SplitCategory.TRANSID + "=" + transactionId,
+                                null, SplitCategory.SPLITTRANSID);
+                        long splitCount = curSplit.getCount();
+                        curSplit.close();
 
-                            if (splitCount > 0) {
-                                long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                                        SplitCategory.TRANSID + "=?",
-                                        new String[]{Long.toString(transactionId)});
-                                if (deleteResult != splitCount) {
-                                    Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-
-                                    return;
-                                }
-                            }
-
-                            // Delete Tags
-                            TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
-                            tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
-
-                            // Delete the transaction.
-                            AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
-
-                            long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
-                                    AccountTransaction.TRANSID + "=?",
+                        if (splitCount > 0) {
+                            long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                                    SplitCategory.TRANSID + "=?",
                                     new String[]{Long.toString(transactionId)});
-                            if (deleteResult == 0) {
+                            if (deleteResult != splitCount) {
                                 Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                                 return;
                             }
                         }
 
-                        // restart loader
-                        loadData();
+                        // Delete Tags
+                        TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
+                        tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
+
+                        // Delete the transaction.
+                        AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
+                        long deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                                AccountTransaction.TRANSID + "=?",
+                                new String[]{Long.toString(transactionId)});
+                        if (deleteResult == 0) {
+                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+
+                            return;
+                        }
                     }
+
+                    // restart loader
+                    loadData();
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .show();
     }
 
@@ -810,7 +835,7 @@ public class AllDataListFragment
         AllDataAdapter adapter = null;
 
         ListAdapter listAdapter = getListAdapter();
-        if (listAdapter != null && listAdapter instanceof AllDataAdapter) {
+        if (listAdapter instanceof AllDataAdapter) {
             adapter = (AllDataAdapter) getListAdapter();
         }
 
@@ -819,7 +844,7 @@ public class AllDataListFragment
 
     private void selectAllRecords() {
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return;
+        if (adapter == null) return;
 
         // Clear selection first.
         adapter.clearPositionChecked();
@@ -832,11 +857,11 @@ public class AllDataListFragment
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<Long> getTransactionIds(){
+    private ArrayList<Long> getTransactionIds() {
         final ArrayList<Long> transIds = new ArrayList<>();
 
         AllDataAdapter adapter = getAllDataAdapter();
-        if(adapter == null) return transIds;
+        if (adapter == null) return transIds;
 
         Cursor cursor = adapter.getCursor();
         if (cursor != null) {
@@ -849,9 +874,6 @@ public class AllDataListFragment
 
             for (int i = 0; i < checkedItemsCount; i++) {
                 int position = positionChecked.keyAt(i);
-                // This screws up the selection?
-//                    if (getListHeader() != null)
-//                        position--;
                 if (cursor.moveToPosition(position)) {
                     transIds.add(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
                 }
@@ -861,7 +883,7 @@ public class AllDataListFragment
         return transIds;
     }
 
-    private void changeTransactionStatus(final ArrayList<Long> transIds){
+    private void changeTransactionStatus(final ArrayList<Long> transIds) {
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
 //        final Core core = new Core(getActivity().getApplicationContext());
         final Boolean isDarkTheme = new UIHelper(getActivity()).isUsingDarkTheme();
@@ -893,24 +915,21 @@ public class AllDataListFragment
         builder.setTitle(getString(R.string.change_status));
 
         // Set the adapter
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position) {
-                DrawerMenuItem item = adapter.getItem(position);
-                switch (item.getId()) {
-                    case R.id.menu_none:
-                    case R.id.menu_reconciled:
-                    case R.id.menu_follow_up:
-                    case R.id.menu_duplicate:
-                    case R.id.menu_void:
-                        String status = item.getShortcut();
-                        if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                            ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                            loadData();
-                        }
-                }
-                dialog.dismiss();
+        builder.setAdapter(adapter, (dialog, position) -> {
+            DrawerMenuItem item = adapter.getItem(position);
+            switch (item.getId()) {
+                case R.id.menu_none:
+                case R.id.menu_reconciled:
+                case R.id.menu_follow_up:
+                case R.id.menu_duplicate:
+                case R.id.menu_void:
+                    String status = item.getShortcut();
+                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                        loadData();
+                    }
             }
+            dialog.dismiss();
         });
 
         // Create and show the AlertDialog
@@ -936,7 +955,7 @@ public class AllDataListFragment
 
     // end multi-choice-mode listener callback handlers.
 
-    private void exportToQif(){
+    private void exportToQif() {
         AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
         QifExport qif = new QifExport(getActivity());
         qif.export(adapter);
@@ -950,13 +969,6 @@ public class AllDataListFragment
         return result;
     }
 
-    /**
-     * Returns the latest-set arguments. This is because the original arguments, when the
-     * fragment was created, can not be altered.
-     * But, when an account changes, we need to modify them. The new arguments are passed
-     * through the call to loadData().
-     * @return
-     */
     private Bundle getLatestArguments() {
         if (mArguments == null) {
             mArguments = getArguments();

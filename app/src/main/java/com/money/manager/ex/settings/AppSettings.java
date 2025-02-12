@@ -111,5 +111,11 @@ public class AppSettings
     public int getTagSort() { return get("pref_tag_sort", 0); }
     public void setTagSort(int value) { set("pref_tag_sort", value); }
 
+    public boolean getShowInactive() {return get("pref_show_inactive", true); }
+    public void setShowInactive(boolean value) { set("pref_show_inactive", value); }
+
+    public int getTransactionSort() {return get("getTransactionSort", 0); }
+    public void setTransactionSort(int value) { set("getTransactionSort", value); }
+
 }
 
