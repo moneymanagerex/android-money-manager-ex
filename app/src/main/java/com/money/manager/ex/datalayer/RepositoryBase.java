@@ -45,6 +45,8 @@ import timber.log.Timber;
 public abstract class RepositoryBase<T extends EntityBase>
     extends Dataset {
 
+    private static final AtomicLong lastId = new AtomicLong(0);
+
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
         super(source, type, basePath);
 
@@ -146,8 +148,6 @@ public abstract class RepositoryBase<T extends EntityBase>
     protected long bulkInsert(ContentValues[] items) {
         return getContext().getContentResolver().bulkInsert(this.getUri(), items);
     }
-
-    private static final AtomicLong lastId = new AtomicLong(0);
 
     long newId() {
         long now = System.currentTimeMillis() * 1_000;
