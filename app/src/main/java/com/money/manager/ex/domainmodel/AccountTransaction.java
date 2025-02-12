@@ -303,6 +303,10 @@ public class AccountTransaction
         setString(LASTUPDATEDTIME, value);
     }
 
+    public String getLastUpdatedTime() {
+        return getString(LASTUPDATEDTIME);
+    }
+
 //    public void createSplitFromRecurring(ArrayList<SplitRecurringCategory> source) {
     public void createSplitFromRecurring(ArrayList<ISplitTransaction> source) {
         if ( source == null ) {

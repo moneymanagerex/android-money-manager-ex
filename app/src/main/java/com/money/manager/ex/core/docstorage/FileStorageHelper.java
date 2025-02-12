@@ -166,6 +166,22 @@ public class FileStorageHelper {
     }
 
     /**
+     * Downloads the remote file into a temporary file.
+     *
+     * @param metadata Database file metadata.
+     */
+    public void pullDatabaseToTmpFile(DatabaseMetadata metadata) {
+        // copy the contents into a local database file.
+        Uri uri = Uri.parse(metadata.remotePath);
+        try {
+            this.downloadDatabase(uri, metadata.localTmpPath);
+        } catch (Exception e) {
+            Timber.e(e);
+            return;
+        }
+    }
+
+    /**
      * Pushes the local file to the document provider and updates the metadata.
      * @param metadata Database file metadata.
      */
