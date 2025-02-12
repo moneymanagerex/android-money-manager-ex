@@ -11,7 +11,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
-public class TaglinkRepository extends  RepositoryBase {
+public class TaglinkRepository extends RepositoryBase <Taglink> {
 
     public TaglinkRepository(Context context) {
         super(context, "TAGLINK_V1", DatasetType.TABLE, "taglink");
@@ -42,7 +42,7 @@ public class TaglinkRepository extends  RepositoryBase {
     public Taglink load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Taglink taglink = (Taglink) super.first(Taglink.class,
+        Taglink taglink = super.first(Taglink.class,
                 getAllColumns(),
                 Taglink.TAGLINKID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

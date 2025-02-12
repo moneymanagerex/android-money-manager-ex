@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.domainmodel;
 
+import com.money.manager.ex.datalayer.StockFields;
+
 /**
  * A Budget Entry, part of the budget.
  */
@@ -30,5 +32,10 @@ public class BudgetEntry
 
     public Long getCategId() {
         return getLong(CATEGID);
+    }
+
+    @Override
+    public String getPrimaryKeyColumn() {
+        return BudgetEntry.BUDGETENTRYID;  // This returns the column name specific to Report
     }
 }

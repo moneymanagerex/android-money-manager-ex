@@ -40,7 +40,7 @@ import info.javaperformance.money.MoneyFactory;
 @Parcel
 public class SplitCategory
     extends EntityBase
-    implements ISplitTransaction, IEntity {
+    implements ISplitTransaction {
 
     public static String TABLE_NAME = "SPLITTRANSACTIONS_V1";
 
@@ -73,6 +73,11 @@ public class SplitCategory
     }
 
     TransactionTypes transactionType;
+
+    @Override
+    public String getPrimaryKeyColumn() {
+        return SPLITTRANSID;  // This returns the column name
+    }
 
     public Long getId() {
         return getLong(SPLITTRANSID);

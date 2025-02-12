@@ -42,12 +42,9 @@ public class Report extends EntityBase {
         super(contentValues);
     }
 
-    public Long getId() {
-        return getLong(REPORTID);
-    }
-
-    public void setId(Long value) {
-        setLong(Report.REPORTID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return REPORTID;  // This returns the column name
     }
 
     public String getReportName() {

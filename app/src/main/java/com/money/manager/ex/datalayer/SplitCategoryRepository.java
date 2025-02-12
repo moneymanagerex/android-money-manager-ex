@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Repository for Split Categories (TableSplitTransaction).
  */
 public class SplitCategoryRepository
-    extends RepositoryBase
+    extends RepositoryBase<SplitCategory>
     implements IRepository {
 
     public SplitCategoryRepository(Context context) {

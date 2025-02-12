@@ -27,7 +27,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 /**
  * Report repository
  */
-public class ReportRepository extends RepositoryBase {
+public class ReportRepository extends RepositoryBase<Report> {
 
     public ReportRepository(Context context) {
         super(context, "report_v1", DatasetType.TABLE, "report");
@@ -58,7 +58,7 @@ public class ReportRepository extends RepositoryBase {
     public Report load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
-        Report report = (Report) super.first(Report.class,
+        Report report = super.first(Report.class,
                 getAllColumns(),
                 Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);

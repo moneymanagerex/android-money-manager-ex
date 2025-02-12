@@ -181,7 +181,7 @@ public class AccountService
 
     public String getAccountCurrencyCode(long accountId) {
         AccountRepository repo = new AccountRepository(getContext());
-        Account account = (Account) repo.first(Account.class,
+        Account account = repo.first(Account.class,
             new String[] {Account.CURRENCYID},
             Account.ACCOUNTID + "=?",
             new String[] { Long.toString(accountId)},

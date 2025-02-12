@@ -34,8 +34,9 @@ public class Info
         return entity;
     }
 
-    public Long getId() {
-        return getLong(INFOID);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return INFOID;  // This returns the column name specific to Report
     }
 
     public String getName() {

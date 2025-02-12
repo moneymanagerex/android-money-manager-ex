@@ -33,7 +33,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Repository for Accounts
  */
 public class AccountRepository
-    extends RepositoryBase {
+    extends RepositoryBase<Account> {
 
     public AccountRepository(Context context) {
         super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");
@@ -114,7 +114,7 @@ public class AccountRepository
     }
 
     public Long loadCurrencyIdFor(long id) {
-        Account account = (Account) first(Account.class,
+        Account account = first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
             MmxDatabaseUtils.getArgsForId(id),
@@ -148,7 +148,7 @@ public class AccountRepository
     }
 
     public Account first(String selection) {
-        return (Account) super.first(Account.class, null, selection, null, null);
+        return super.first(Account.class, null, selection, null, null);
     }
 
     /**

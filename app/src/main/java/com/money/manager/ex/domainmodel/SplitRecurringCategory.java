@@ -75,6 +75,11 @@ public class SplitRecurringCategory
     TransactionTypes transactionType;
 
     @Override
+    public String getPrimaryKeyColumn() {
+        return SPLITTRANSID;  // This returns the column name
+    }
+
+    @Override
     public Long getId() {
         return getLong(SPLITTRANSID);
     }
