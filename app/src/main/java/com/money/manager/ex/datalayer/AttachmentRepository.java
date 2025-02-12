@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Attachment repository
  */
 public class AttachmentRepository
-    extends RepositoryBase{
+    extends RepositoryBase<Attachment> {
 
     public AttachmentRepository(Context context) {
         super(context, "attachment_v1", DatasetType.TABLE, "attachment");

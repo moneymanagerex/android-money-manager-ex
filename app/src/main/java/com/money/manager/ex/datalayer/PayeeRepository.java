@@ -27,7 +27,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Payee repository
  */
 public class PayeeRepository
-    extends RepositoryBase{
+    extends RepositoryBase<Payee>{
 
     public PayeeRepository(Context context) {
         super(context, "payee_v1", DatasetType.TABLE, "payee");

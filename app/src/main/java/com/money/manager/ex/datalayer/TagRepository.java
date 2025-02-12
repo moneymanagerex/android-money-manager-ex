@@ -12,7 +12,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
-public class TagRepository extends  RepositoryBase {
+public class TagRepository extends RepositoryBase <Tag> {
     public TagRepository(Context context) {
         super(context, "TAG_V1", DatasetType.TABLE, "tag");
     }

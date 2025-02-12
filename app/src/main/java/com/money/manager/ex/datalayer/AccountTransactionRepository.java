@@ -31,7 +31,7 @@ import com.money.manager.ex.utils.MmxDate;
  * Source: Table Checking Account.
  */
 public class AccountTransactionRepository
-    extends RepositoryBase {
+    extends RepositoryBase<AccountTransaction> {
 
     public AccountTransactionRepository(Context context) {
         super(context, "checkingaccount_v1", DatasetType.TABLE, "checkingaccount");

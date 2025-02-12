@@ -33,7 +33,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  * Repository for Accounts
  */
 public class AccountRepository
-    extends RepositoryBase {
+    extends RepositoryBase<Account> {
 
     public AccountRepository(Context context) {
         super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");

@@ -11,7 +11,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
-public class TaglinkRepository extends  RepositoryBase {
+public class TaglinkRepository extends RepositoryBase <Taglink> {
 
     public TaglinkRepository(Context context) {
         super(context, "TAGLINK_V1", DatasetType.TABLE, "taglink");
