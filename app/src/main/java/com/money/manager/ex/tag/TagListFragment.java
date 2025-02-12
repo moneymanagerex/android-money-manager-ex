@@ -388,7 +388,7 @@ public class TagListFragment     extends BaseListFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // take tag name from the input field.
-                        String name = edtTagName.getText().toString();
+                        String name = edtTagName.getText().toString().trim();
 
                         // issue #2030: PC version does not support space
                         if (name.contains(" ") || name.contains("&") || name.contains("|")) {
