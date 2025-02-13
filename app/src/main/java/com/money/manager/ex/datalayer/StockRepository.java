@@ -65,7 +65,7 @@ public class StockRepository
         return result;
     }
 
-    public String[] tableColumns() {
+    private String[] tableColumns() {
         Field[] fields = StockFields.class.getFields();
         String[] names = new String[fields.length];
 
