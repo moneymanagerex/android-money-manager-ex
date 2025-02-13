@@ -160,6 +160,7 @@
     <string name="delete_transaction">Ügylet törlése</string>
     <string name="new_transaction">Új ügylet</string>
     <string name="error_payee_not_selected">Partner megadása kötelező</string>
+    <string name="error_fromaccount_not_selected">Számláról, kötelező</string>
     <string name="error_toaccount_not_selected">Célszámla megadása kötelező</string>
     <string name="error_category_not_selected">Kategória megadása kötelező</string>
     <string name="error_totamount_empty">Teljes összeg megadása kötelező</string>
@@ -300,6 +301,9 @@
     <string name="no_stock_data">Nincs adat ehhez a számlához.</string>
     <string name="month">Hónap</string>
     <string name="year">Év</string>
+    <string name="menu_reports">Beépített jelentések</string>
+    <string name="menu_general_report_group">Általános jelentések</string>
+    <string name="title_activity_general_report">Általános jelentés</string>
     <string name="menu_report_income_vs_expenses">Bevételek - Kiadások</string>
     <string name="menu_report_cashflow">Pénzforgalom</string>
     <string name="total">Összesen</string>
@@ -443,6 +447,8 @@
     <string name="sort_by_name">Rendezés név szerint</string>
     <string name="sort_by_usage">Rendezés használat szerint</string>
     <string name="sort_by_recent">Rendezés legutóbbiak szerint</string>
+    <string name="sort_date_desc">Rendezés dátum szerint csökkenő sorrendben</string>
+    <string name="sort_date_asc">Rendezés dátum szerint növekvő sorrendben</string>
     <string name="choose_sorting">Rendezés módja</string>
     <string name="credit_card">Hitelkártya</string>
     <string name="cash_accounts">Készpénz Számlák</string>
@@ -769,4 +775,5 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Összes törlése</string>
     <string name="empty_color_message">válasszon színt</string>
+    <string name="menu_show_inactive">Inaktív megjelenítése</string>
 </resources>
