@@ -100,7 +100,7 @@ public class CategoryService
     public List<Category> getList() {
         Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
 
-        return getRepository().query(Category.class, query);
+        return getRepository().query(query);
     }
 
     public long update(long id, String name, long parentId) {

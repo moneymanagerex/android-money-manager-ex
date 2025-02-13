@@ -32,7 +32,6 @@ import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.EntityBase;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
@@ -107,6 +106,10 @@ public abstract class RepositoryBase<T extends EntityBase>
                 null);
     }
 
+    public List<T> loadAll() {
+        return query(new Select(getAllColumns()));
+    }
+
     // CURD - U
     public boolean save(T entity) {
         Long id = entity.getId();
@@ -143,7 +146,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         return entity;
     }
 
-    public List<T> query(Class<T> resultType, Select query) {
+    public List<T> query(Select query) {
         List<T> results = new ArrayList<>();
         Cursor c = null;
 
@@ -157,7 +160,7 @@ public abstract class RepositoryBase<T extends EntityBase>
                 }
             }
         } catch (Exception e) {
-            Timber.e(e, "Error querying %s", resultType.getName());
+            Timber.e(e, "Error querying %s", getUri());
         } finally {
             if (c != null) c.close();
         }
@@ -204,9 +207,9 @@ public abstract class RepositoryBase<T extends EntityBase>
         return ContentUris.parseId(insertUri);
     }
 
-    protected List<T> query(Class<T> resultType, String selection) {
+    protected List<T> query(String selection) {
         Select query = new Select().where(selection);
-        return query(resultType, query);
+        return query(query);
     }
 
     /**

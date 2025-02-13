@@ -19,10 +19,13 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Report;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Report repository
@@ -54,5 +57,21 @@ public class ReportRepository extends RepositoryBase<Report> {
                 Report.TEMPLATECONTENT,
                 Report.DESCRIPTION
         };
+    }
+
+    // custom func
+    public List<Report> loadByName(String groupName) {
+        return query(new Select().where(Report.GROUPNAME + " = ?", groupName));
+    }
+
+    public Map<String, List<Report>> loadGroupedByName() {
+        List<Report> reports = loadAll();
+
+        Map<String, List<Report>> reportMap = new HashMap<>();
+        for (Report report : reports) {
+            String groupName = report.getGroupName();
+            reportMap.computeIfAbsent(groupName, k -> new ArrayList<>()).add(report);
+        }
+        return reportMap;
     }
 }

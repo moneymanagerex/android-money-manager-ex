@@ -173,7 +173,7 @@ public class CurrencyService
             .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")")
             .orderBy(Currency.CURRENCYNAME);
 
-        return getRepository().query(Currency.class, query);
+        return getRepository().query(query);
     }
 
     public Money doCurrencyExchange(Long toCurrencyId, Money amount, Long fromCurrencyId) {
