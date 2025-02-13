@@ -83,8 +83,6 @@ public class TagRepository extends RepositoryBase <Tag> {
 
     public String getOrderByFromCode() {
         AppSettings settings = new AppSettings(getContext());
-        return  getOrderByFromCode(settings.getTagSort());
+        return getOrderByFromCode(settings.getTagSort());
     }
-
-
 }

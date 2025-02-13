@@ -33,7 +33,7 @@ public class ReportRepository extends RepositoryBase<Report> {
     private static final String ID_COLUMN = Report.REPORTID;
 
     public ReportRepository(Context context) {
-        super(context, "report_v1", DatasetType.TABLE, "report", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "report", ID_COLUMN);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class AccountRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+        return new String[] { ID_COLUMN + " AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
@@ -107,41 +107,20 @@ public class AccountRepository
     }
 
     public Long loadCurrencyIdFor(long id) {
-        Account account = first(
-                new String[] { Account.CURRENCYID },
-            Account.ACCOUNTID + "=?",
-            MmxDatabaseUtils.getArgsForId(id),
-            null);
+        Account account = load(id);
 
         if (account == null) {
             return null;
-//            String message = this.getContext().getString(R.string.account_not_found) + " " + id;
-//            throw new IllegalArgumentException(message);
         }
         return account.getCurrencyId();
     }
 
     public String loadName(Long id) {
-        if (id == null) return null;
-
-        String name = null;
-
-        Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},
-            Account.ACCOUNTID + "=?",
-            new String[]{Long.toString(id)}
-        );
-        if (cursor == null) return null;
-
-        if (cursor.moveToFirst()) {
-            name = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME));
+        Account account = load(id);
+        if (account == null) {
+            return null;
         }
-        cursor.close();
-
-        return name;
-    }
-
-    public Account first(String selection) {
-        return super.first(null, selection, null, null);
+        return account.getName();
     }
 
     public Cursor getInvestmentAccountsCursor(boolean openOnly) {
