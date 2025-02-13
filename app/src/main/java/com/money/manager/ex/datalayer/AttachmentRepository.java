@@ -56,22 +56,8 @@ public class AttachmentRepository
     }
 
     public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
-        Cursor curAtt = getContext().getContentResolver().query(getUri(), null,
-                Attachment.REFID + "=? AND " + Attachment.REFTYPE +  "=?",
-                new String[] { Long.toString(refId),  refType},
-                Attachment.ATTACHMENTID);
-        if (curAtt == null) return null;
-
-        ArrayList<Attachment> listAtts = new ArrayList<>();
-
-        while (curAtt.moveToNext()) {
-            Attachment attachment = new Attachment();
-            attachment.loadFromCursor(curAtt);
-
-            listAtts.add(attachment);
-        }
-        curAtt.close();
-
-        return listAtts;
+        return new ArrayList<>(query(new Select(getAllColumns())
+                .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"
+                        , Long.toString(refId), refType)));
     }
 }
