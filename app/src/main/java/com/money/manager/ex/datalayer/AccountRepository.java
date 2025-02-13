@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
@@ -37,9 +36,10 @@ public class AccountRepository
 
     private static final String TABLE_NAME = "accountlist_v1";
     private static final String ID_COLUMN = Account.ACCOUNTID;
+    private static final String NAME_COLUMN = Account.ACCOUNTNAME;
 
     public AccountRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "accountlist", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "accountlist", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

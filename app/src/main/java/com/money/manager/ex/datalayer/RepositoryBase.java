@@ -49,12 +49,14 @@ public abstract class RepositoryBase<T extends EntityBase>
     private static final AtomicLong lastId = new AtomicLong(0);
     private final Context context;
     protected final String idColumn;
+    protected final String nameColumn;
 
-    public RepositoryBase(Context context, String source, DatasetType type, String basePath, String idColumn) {
+    public RepositoryBase(Context context, String source, DatasetType type, String basePath, String idColumn, String nameColumn) {
         super(source, type, basePath);
 
         this.context = context.getApplicationContext();
         this.idColumn = idColumn;
+        this.nameColumn = nameColumn;
     }
 
     public long count(String selection, String[] args) {
@@ -104,6 +106,10 @@ public abstract class RepositoryBase<T extends EntityBase>
                 getAllColumns(),
                 idColumn + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);
+    }
+
+    public T loadByName(String name) {
+        return first(getAllColumns(), nameColumn + " = ?", new String[] { name }, null);
     }
 
     public List<T> loadAll() {

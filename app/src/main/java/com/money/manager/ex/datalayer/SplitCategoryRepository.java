@@ -35,9 +35,10 @@ public class SplitCategoryRepository
 
     private static final String TABLE_NAME = SplitCategory.TABLE_NAME;
     private static final String ID_COLUMN = SplitCategory.SPLITTRANSID;
+    private static final String NAME_COLUMN = "";
 
     public SplitCategoryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "splittransaction", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "splittransaction", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

@@ -42,11 +42,13 @@ public class StockHistoryRepository
 
     private static final String TABLE_NAME = "stockhistory_v1";
     private static final String ID_COLUMN = StockHistory.HISTID;
+    private static final String NAME_COLUMN = StockHistory.SYMBOL;
+
     /**
      * Constructor that is used when instantiating manually.
      */
     public StockHistoryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory", ID_COLUMN, NAME_COLUMN);
 
     }
 

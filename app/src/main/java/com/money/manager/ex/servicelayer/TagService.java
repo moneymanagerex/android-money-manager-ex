@@ -42,49 +42,15 @@ public class TagService
     private final TagRepository tagRepository;
 
     public Tag loadByName(String name) {
-        Tag tag = null;
-        String selection = Tag.TAGNAME + "='" + name + "'";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                this.tagRepository.getUri(),
-                this.tagRepository.getAllColumns(),
-                selection,
-                null,
-                null);
-        if (cursor == null) return null;
-
-        if(cursor.moveToFirst()) {
-            tag = new Tag();
-            tag.loadFromCursor(cursor);
-        }
-
-        cursor.close();
-
-        return tag;
+        return tagRepository.loadByName(name);
     }
 
     public long loadIdByName(String name) {
-        long result = Constants.NOT_SET;
+        Tag tag = loadByName(name);
+        if (tag == null)
+            return Constants.NOT_SET;
 
-        if(TextUtils.isEmpty(name)) return result;
-
-        String selection = Tag.TAGNAME + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                tagRepository.getUri(),
-                new String[]{ Tag.TAGID },
-                selection,
-                new String[] { name },
-                null);
-        if (cursor == null) return Constants.NOT_SET;
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Tag.TAGID));
-        }
-
-        cursor.close();
-
-        return result;
+        return tag.getId();
     }
 
     public Tag createNew(String name) {
