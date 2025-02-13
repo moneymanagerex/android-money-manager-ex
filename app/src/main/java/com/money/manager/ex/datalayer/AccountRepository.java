@@ -35,9 +35,11 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class AccountRepository
     extends RepositoryBase<Account> {
 
-    public AccountRepository(Context context) {
-        super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");
+    private static final String TABLE_NAME = "accountlist_v1";
+    private static final String ID_COLUMN = Account.ACCOUNTID;
 
+    public AccountRepository(Context context) {
+        super(context, TABLE_NAME, DatasetType.TABLE, "accountlist", ID_COLUMN);
     }
 
     @Override
@@ -55,11 +57,6 @@ public class AccountRepository
         where.addStatement(Account.ACCOUNTID, "=", id);
 
         return first(where.getWhere());
-    }
-
-    public boolean delete(long id) {
-        long result = super.delete(Account.ACCOUNTID + "=?", new String[] { Long.toString(id)});
-        return result > 0;
     }
 
     /**

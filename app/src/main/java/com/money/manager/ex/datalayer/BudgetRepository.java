@@ -31,20 +31,16 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class BudgetRepository
     extends RepositoryBase<Budget> {
 
-    public static final String TABLE_NAME = "budgetyear_v1";
+    private static final String TABLE_NAME = "budgetyear_v1";
+    private static final String ID_COLUMN = Budget.BUDGETYEARID;
 
     public BudgetRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear", ID_COLUMN);
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
-    }
-
-    public boolean delete(long id) {
-        long deleted = super.delete(Budget.BUDGETYEARID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return deleted > 0;
+        return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
     public Budget load(long id) {

@@ -30,6 +30,7 @@ public class CurrencyRepositorySql
     extends SqlRepositoryBase<Currency> {
 
     public static final String TABLE_NAME = "currencyformats_v1";
+    private static final String ID_COLUMN = Currency.CURRENCYID;
 
     @Inject
     CurrencyRepositorySql(BriteDatabase db) {

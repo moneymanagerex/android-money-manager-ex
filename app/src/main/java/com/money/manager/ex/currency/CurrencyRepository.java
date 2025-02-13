@@ -35,8 +35,11 @@ import timber.log.Timber;
 public class CurrencyRepository
     extends RepositoryBase<Currency> {
 
+    private static final String TABLE_NAME = "currencyformats_v1";
+    private static final String ID_COLUMN = Currency.CURRENCYID;
+
     public CurrencyRepository(Context context) {
-        super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats");
+        super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats", ID_COLUMN);
 
         //this.TABLENAME = "currencyformats_v1";
     }
@@ -44,7 +47,7 @@ public class CurrencyRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {
-            "CURRENCYID AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
+                ID_COLUMN + " AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
             Currency.PFX_SYMBOL, Currency.SFX_SYMBOL, Currency.DECIMAL_POINT,
             Currency.GROUP_SEPARATOR, Currency.UNIT_NAME, Currency.CENT_NAME,
             Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
@@ -66,11 +69,6 @@ public class CurrencyRepository
         String where = generator.getStatement(Currency.CURRENCYID, "=", id);
 
         return update(value, where);
-    }
-
-    public boolean delete(long id) {
-        long result = delete(Currency.CURRENCYID + "=?", new String[]{ Long.toString(id) });
-        return result > 0;
     }
 
 //    public boolean delete(Currency currency) {

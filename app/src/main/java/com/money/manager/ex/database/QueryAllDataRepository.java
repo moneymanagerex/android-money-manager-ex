@@ -31,9 +31,11 @@ import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 public class QueryAllDataRepository
     extends RepositoryBase {
 
+    private static final String ID_COLUMN = QueryAllData.ID;
+
     public QueryAllDataRepository(Context context) {
         super(context, MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
-            "queryalldata");
+            "queryalldata", ID_COLUMN);
     }
 
     @Override

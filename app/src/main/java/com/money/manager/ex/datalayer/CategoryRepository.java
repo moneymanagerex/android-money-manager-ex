@@ -29,15 +29,16 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class CategoryRepository
     extends RepositoryBase<Category>{
 
-    public static final String tableName = "category_v1";
+    private static final String TABLE_NAME = "category_v1";
+    private static final String ID_COLUMN = Category.CATEGID;
 
     public CategoryRepository(Context context) {
-        super(context, tableName, DatasetType.TABLE, "category");
+        super(context, TABLE_NAME, DatasetType.TABLE, "category", ID_COLUMN);
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"CATEGID AS _id",
+        return new String[] {ID_COLUMN + " AS _id",
                 Category.CATEGID,
                 Category.CATEGNAME,
                 Category.ACTIVE,
