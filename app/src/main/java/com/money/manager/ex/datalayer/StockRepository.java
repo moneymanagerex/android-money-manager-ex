@@ -145,15 +145,6 @@ public class StockRepository
         return result;
     }
 
-    public boolean save(Stock stock) {
-        long id = stock.getId();
-
-        WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(StockFields.STOCKID, "=", id);
-
-        return update(stock, where);
-    }
-
     /**
      * Update price for all the records with this symbol.
      * @param symbol Stock symbol

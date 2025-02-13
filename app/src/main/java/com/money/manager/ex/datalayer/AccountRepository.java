@@ -144,25 +144,6 @@ public class AccountRepository
         return super.first(null, selection, null, null);
     }
 
-    /**
-     * Updates entity.
-     * @param value Account to be updated.
-     * @return  Boolean indicating whether the update was successful.
-     */
-    public boolean save(Account value) {
-        Long id = value.getId();
-
-        if (id == null || id == Constants.NOT_SET) {
-            this.add(value);
-            return true;
-        }
-
-        WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(Account.ACCOUNTID, "=", id);
-
-        return update(value, where);
-    }
-
     public Cursor getInvestmentAccountsCursor(boolean openOnly) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Account.ACCOUNTTYPE, "=", AccountTypes.INVESTMENT.toString());

@@ -55,9 +55,4 @@ public class ReportRepository extends RepositoryBase<Report> {
                 Report.DESCRIPTION
         };
     }
-
-    public boolean save(Report report) {
-        long id = report.getId();
-        return super.update(report, Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id));
-    }
 }

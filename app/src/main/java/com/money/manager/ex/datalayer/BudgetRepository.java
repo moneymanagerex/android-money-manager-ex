@@ -47,21 +47,4 @@ public class BudgetRepository
     public String[] getAllColumns() {
         return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
-
-    public boolean save(Budget entity) {
-        boolean result;
-
-        if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
-            // remove any existing id value
-            entity.contentValues.remove(Budget.BUDGETYEARID);
-
-            // new record
-            long id = super.add(entity);
-            result = id != 0;
-        } else {
-            result = super.update(entity, Budget.BUDGETYEARID + "=?",
-                    MmxDatabaseUtils.getArgsForId(entity.getId()));
-        }
-        return result;
-    }
 }

@@ -41,15 +41,6 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
         return result > 0;
     }
 
-    public boolean save(Taglink taglink) {
-        try {
-            long id = taglink.getId();
-            return update(taglink, Taglink.TAGLINKID + "=" + id);
-        } catch (Exception e) {
-            return ( add(taglink) > 0 ) ;
-        }
-    }
-
     public boolean save(ArrayList<Taglink> taglinks) {
         for (Taglink taglink : taglinks) {
             if ( ! save(taglink) )

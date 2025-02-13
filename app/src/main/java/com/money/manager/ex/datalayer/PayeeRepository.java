@@ -51,9 +51,4 @@ public class PayeeRepository
                 Payee.ACTIVE
         };
     }
-
-    public boolean save(Payee payee) {
-        long id = payee.getId();
-        return super.update(payee, Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
-    }
 }

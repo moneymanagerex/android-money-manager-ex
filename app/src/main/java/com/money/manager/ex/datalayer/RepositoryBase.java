@@ -90,12 +90,14 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
     }
 
+    // CRUD - C
     public long add(EntityBase entity) {
         if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
             entity.setId(newId());
         return insert(entity.contentValues);
     }
 
+    // CRUD - R
     public T load(Long id) {
         if (id == null || id == Constants.NOT_SET) return null;
 
@@ -103,6 +105,14 @@ public abstract class RepositoryBase<T extends EntityBase>
                 getAllColumns(),
                 idColumn + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);
+    }
+
+    // CURD - U
+    public boolean save(T entity) {
+        Long id = entity.getId();
+        if (id == null || id == Constants.NOT_SET)
+            return add(entity) > 0; // upsert?
+        return update(entity, idColumn + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 
     /**

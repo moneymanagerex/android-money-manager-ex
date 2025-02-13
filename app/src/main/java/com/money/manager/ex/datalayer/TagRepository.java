@@ -48,11 +48,6 @@ public class TagRepository extends RepositoryBase <Tag> {
         };
     }
 
-    public boolean save(Tag entity) {
-        long id = entity.getId();
-        return super.update(entity, Tag.TAGID + "=" + id);
-    }
-
     public ArrayList<Tag> getAllActiveTag() {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Tag.ACTIVE, "=", Tag.ACTIVE_TRUE);
