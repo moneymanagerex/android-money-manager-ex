@@ -20,6 +20,7 @@ package com.money.manager.ex.utils;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -131,19 +132,25 @@ public class MmxDateTimeUtils {
 // Financial year issue #1790
         } else if (period.equalsIgnoreCase(context.getString(R.string.current_fin_year))) {
             InfoService infoService = new InfoService(context);
-            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
-            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH))-1;
-            MmxDate toDay = new MmxDate();
-            dateFrom = dateFrom.setDate(financialYearStartDay);
-            dateTo = dateTo.setDate(financialYearStartDay);
-            dateFrom = dateFrom.setMonth(financialYearStartMonth);
-            dateTo = dateTo.setMonth(financialYearStartMonth);
-            if (dateFrom.toDate().after(toDay.toDate())) {
-                // today is not part of current financial year, so we need to go back on year
-                dateFrom = dateFrom.minusYears(1);
-                dateTo = dateTo.minusYears(1);
+            if ( infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY) == null ||
+                    infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH) == null ) {
+                Toast.makeText(context, context.getString(R.string.financial_year_not_set), Toast.LENGTH_LONG).show();
+                return getDateRangeForPeriod(context, context.getString(R.string.current_year));
+            } else {
+                int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
+                int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH)) - 1;
+                MmxDate toDay = new MmxDate();
+                dateFrom = dateFrom.setDate(financialYearStartDay);
+                dateTo = dateTo.setDate(financialYearStartDay);
+                dateFrom = dateFrom.setMonth(financialYearStartMonth);
+                dateTo = dateTo.setMonth(financialYearStartMonth);
+                if (dateFrom.toDate().after(toDay.toDate())) {
+                    // today is not part of current financial year, so we need to go back on year
+                    dateFrom = dateFrom.minusYears(1);
+                    dateTo = dateTo.minusYears(1);
+                }
+                dateTo = dateTo.addYear(1).minusDays(1);
             }
-            dateTo = dateTo.addYear(1).minusDays(1);
         } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
             // Future transactions
             dateFrom = dateFrom.today().plusDays(1);
