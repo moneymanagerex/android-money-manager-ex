@@ -74,9 +74,4 @@ public class AttachmentRepository
 
         return listAtts;
     }
-
-    public boolean save(Attachment attachment) {
-        long id = attachment.getId();
-        return super.update(attachment, Attachment.ATTACHMENTID + "=" + id);
-    }
 }
