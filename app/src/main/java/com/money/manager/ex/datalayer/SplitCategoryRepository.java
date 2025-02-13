@@ -33,13 +33,21 @@ public class SplitCategoryRepository
     extends RepositoryBase<SplitCategory>
     implements IRepository {
 
+    private static final String TABLE_NAME = SplitCategory.TABLE_NAME;
+    private static final String ID_COLUMN = SplitCategory.SPLITTRANSID;
+
     public SplitCategoryRepository(Context context) {
-        super(context, SplitCategory.TABLE_NAME, DatasetType.TABLE, "splittransaction");
+        super(context, TABLE_NAME, DatasetType.TABLE, "splittransaction", ID_COLUMN);
+    }
+
+    @Override
+    protected SplitCategory createEntity() {
+        return new SplitCategory();
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"SPLITTRANSID AS _id",
+        return new String[] {ID_COLUMN + " AS _id",
             SplitCategory.SPLITTRANSID,
             SplitCategory.TRANSID,
             SplitCategory.CATEGID,

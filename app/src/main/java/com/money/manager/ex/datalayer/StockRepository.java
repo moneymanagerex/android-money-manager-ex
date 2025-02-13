@@ -41,26 +41,28 @@ import info.javaperformance.money.Money;
 public class StockRepository
     extends RepositoryBase<Stock> {
 
+    private static final String TABLE_NAME = "stock_v1";
+    private static final String ID_COLUMN = StockFields.STOCKID;
+
     @Inject
     public StockRepository(Context context) {
-        super(context, "stock_v1", DatasetType.TABLE, "stock");
-
+        super(context, TABLE_NAME, DatasetType.TABLE, "stock", ID_COLUMN);
     }
 
-//    @Override
+    @Override
+    protected Stock createEntity() {
+        return new Stock();
+    }
+
+    @Override
     public String[] getAllColumns() {
         String [] idColumn = new String[] {
-                "STOCKID AS _id"
+                ID_COLUMN + " AS _id"
         };
 
         String[] result = ObjectArrays.concat(idColumn, tableColumns(), String.class);
         //String[] result = ArrayUtils.addAll(idColumn, tableColumns());
         return result;
-    }
-
-    public boolean delete(long id) {
-        long result = super.delete(StockFields.STOCKID + "=?", new String[] { Long.toString(id)});
-        return result > 0;
     }
 
     public String[] tableColumns() {
@@ -72,16 +74,6 @@ public class StockRepository
         }
 
         return names;
-    }
-
-    public Stock load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        return first(Stock.class,
-                null,
-                StockFields.STOCKID + "=?",
-                new String[] { Long.toString(id) },
-                null);
     }
 
     /**

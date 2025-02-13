@@ -13,8 +13,12 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import java.util.ArrayList;
 
 public class TagRepository extends RepositoryBase <Tag> {
+
+    private static final String TABLE_NAME = "TAG_V1";
+    private static final String ID_COLUMN = Tag.TAGID;
+
     public TagRepository(Context context) {
-        super(context, "TAG_V1", DatasetType.TABLE, "tag");
+        super(context, TABLE_NAME, DatasetType.TABLE, "tag", ID_COLUMN);
     }
 
     public static final int SORT_BY_NAME = 0;
@@ -31,30 +35,17 @@ public class TagRepository extends RepositoryBase <Tag> {
 
 
     @Override
+    protected Tag createEntity() {
+        return new Tag();
+    }
+
+    @Override
     public String[] getAllColumns() {
-        return new String[] {Tag.TAGID +" AS _id",
+        return new String[] {ID_COLUMN +" AS _id",
                 Tag.TAGID,
                 Tag.TAGNAME,
                 Tag.ACTIVE
         };
-    }
-
-    public boolean delete(Long id) {
-        if (id == Constants.NOT_SET) return false;
-        // TODO: Tag has inactive flag: no delete, but set inactive
-        long result = delete(Tag.TAGID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
-    }
-
-    public Tag load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Tag entity = super.first(Tag.class,
-                getAllColumns(),
-                Tag.TAGID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return entity;
     }
 
     public boolean save(Tag entity) {

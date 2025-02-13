@@ -29,9 +29,16 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class PayeeRepository
     extends RepositoryBase<Payee>{
 
-    public PayeeRepository(Context context) {
-        super(context, "payee_v1", DatasetType.TABLE, "payee");
+    private static final String TABLE_NAME = "payee_v1";
+    private static final String ID_COLUMN = Payee.PAYEEID;
 
+    public PayeeRepository(Context context) {
+        super(context, TABLE_NAME, DatasetType.TABLE, "payee", ID_COLUMN);
+    }
+
+    @Override
+    protected Payee createEntity() {
+        return new Payee();
     }
 
     @Override
@@ -43,24 +50,6 @@ public class PayeeRepository
                 Payee.NUMBER,
                 Payee.ACTIVE
         };
-    }
-
-    public boolean delete(long id) {
-        if (id == Constants.NOT_SET) return false;
-
-        long result = delete(Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
-    }
-
-    public Payee load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Payee payee = super.first(Payee.class,
-                getAllColumns(),
-                Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return payee;
     }
 
     public boolean save(Payee payee) {

@@ -339,6 +339,7 @@
     <string name="date_format">Date Format</string>
     <string name="financial_year_start_day">Financial Year: Start Day</string>
     <string name="financial_year_start_month">Financial Year: Start Month</string>
+    <string name="financial_year_not_set">Set Financial year start date in setting.</string>
     <string name="menu_move_database_to_external_storage">Export database</string>
     <string name="database_has_been_moved">The database has been moved: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>

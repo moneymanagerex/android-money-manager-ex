@@ -29,35 +29,29 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class CategoryRepository
     extends RepositoryBase<Category>{
 
-    public static final String tableName = "category_v1";
+    private static final String TABLE_NAME = "category_v1";
+    private static final String ID_COLUMN = Category.CATEGID;
 
     public CategoryRepository(Context context) {
-        super(context, tableName, DatasetType.TABLE, "category");
+        super(context, TABLE_NAME, DatasetType.TABLE, "category", ID_COLUMN);
+    }
+
+    @Override
+    protected Category createEntity() {
+        return new Category();
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"CATEGID AS _id",
+        return new String[] {ID_COLUMN + " AS _id",
                 Category.CATEGID,
                 Category.CATEGNAME,
                 Category.ACTIVE,
                 Category.PARENTID};
     }
 
-    public Category load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        Category category = first(Category.class,
-                getAllColumns(),
-                Category.CATEGID + "=?",
-                MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return category;
-    }
-
     public long loadIdByName(String name) {
-        Category temp = first(Category.class,
+        Category temp = first(
                 new String[] { Category.CATEGID },
                 Category.CATEGNAME + "=?",
                 new String[] { name },
@@ -69,7 +63,7 @@ public class CategoryRepository
     }
 
     public long loadIdByName(String name, long parentId) {
-        Category temp = first(Category.class,
+        Category temp = first(
                 new String[] { Category.CATEGID },
                 Category.CATEGNAME + "=? AND" + Category.PARENTID + "=?",
                 new String[] { name, Long.toString(parentId)},

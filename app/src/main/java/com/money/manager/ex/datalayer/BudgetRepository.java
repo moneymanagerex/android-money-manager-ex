@@ -31,34 +31,21 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class BudgetRepository
     extends RepositoryBase<Budget> {
 
-    public static final String TABLE_NAME = "budgetyear_v1";
+    private static final String TABLE_NAME = "budgetyear_v1";
+    private static final String ID_COLUMN = Budget.BUDGETYEARID;
 
     public BudgetRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear", ID_COLUMN);
+    }
+
+    @Override
+    protected Budget createEntity() {
+        return new Budget();
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
-    }
-
-    public boolean delete(long id) {
-        long deleted = super.delete(Budget.BUDGETYEARID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return deleted > 0;
-    }
-
-    public Budget load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Budget.BUDGETYEARID, "=", id);
-
-        Budget result = super.first(Budget.class,
-                null,
-                where.getWhere(),
-                null,
-                null);
-        return result;
+        return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
     public boolean save(Budget entity) {

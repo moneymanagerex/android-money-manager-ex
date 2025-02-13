@@ -35,10 +35,16 @@ import java.util.HashMap;
 public class BudgetEntryRepository
         extends RepositoryBase<BudgetEntry> {
 
-    public static final String TABLE_NAME = "budgettable_v1";
+    private static final String TABLE_NAME = "budgettable_v1";
+    private static final String ID_COLUMN = BudgetEntry.BUDGETENTRYID;
 
     public BudgetEntryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable", ID_COLUMN);
+    }
+
+    @Override
+    protected BudgetEntry createEntity() {
+        return new BudgetEntry();
     }
 
     @Override
@@ -48,20 +54,6 @@ public class BudgetEntryRepository
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
                 BudgetEntry.PERIOD};
-    }
-
-    public BudgetEntry load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(BudgetEntry.BUDGETENTRYID, "=", id);
-
-        BudgetEntry result = super.first(BudgetEntry.class,
-                null,
-                where.getWhere(),
-                null,
-                null);
-        return result;
     }
 
     /**

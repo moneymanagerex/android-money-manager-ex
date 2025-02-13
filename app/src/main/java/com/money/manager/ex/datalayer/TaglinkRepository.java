@@ -13,13 +13,21 @@ import java.util.ArrayList;
 
 public class TaglinkRepository extends RepositoryBase <Taglink> {
 
+    private static final String TABLE_NAME = "TAGLINK_V1";
+    private static final String ID_COLUMN = Taglink.TAGLINKID;
+
     public TaglinkRepository(Context context) {
-        super(context, "TAGLINK_V1", DatasetType.TABLE, "taglink");
+        super(context, TABLE_NAME, DatasetType.TABLE, "taglink", ID_COLUMN);
+    }
+
+    @Override
+    protected Taglink createEntity() {
+        return new Taglink();
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { Taglink.TAGLINKID +" AS _id",
+        return new String[] { ID_COLUMN +" AS _id",
                 Taglink.TAGLINKID,
                 Taglink.REFTYPE,
                 Taglink.REFID,
@@ -27,27 +35,10 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
         };
     }
 
-    public boolean delete(Long id) {
-        if (id == Constants.NOT_SET) return false;
-        long result = delete(Taglink.TAGLINKID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
-    }
-
     public boolean deleteForType( Long refId, String reftype ) {
         if (refId == Constants.NOT_SET) return false;
         long result = delete(Taglink.REFID + "=? AND " + Taglink.REFTYPE + "=?", new String[] { Long.toString(refId), reftype });
         return result > 0;
-    }
-
-    public Taglink load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Taglink taglink = super.first(Taglink.class,
-                getAllColumns(),
-                Taglink.TAGLINKID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return taglink;
     }
 
     public boolean save(Taglink taglink) {

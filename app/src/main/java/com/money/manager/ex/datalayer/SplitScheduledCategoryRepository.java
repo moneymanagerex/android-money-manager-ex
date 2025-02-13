@@ -34,13 +34,21 @@ public class SplitScheduledCategoryRepository
     extends RepositoryBase <SplitRecurringCategory>
     implements IRepository {
 
+    private static final String TABLE_NAME = SplitRecurringCategory.TABLE_NAME;
+    private static final String ID_COLUMN = SplitRecurringCategory.SPLITTRANSID;
+
     public SplitScheduledCategoryRepository(Context context) {
-        super(context, SplitRecurringCategory.TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions", ID_COLUMN);
+    }
+
+    @Override
+    protected SplitRecurringCategory createEntity() {
+        return new SplitRecurringCategory();
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"SPLITTRANSID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
             SplitRecurringCategory.SPLITTRANSID,
             SplitRecurringCategory.TRANSID,
             SplitRecurringCategory.CATEGID,
@@ -96,13 +104,6 @@ public class SplitScheduledCategoryRepository
         where.addStatement(SplitRecurringCategory.SPLITTRANSID, "=", entity.getId());
 
         return update(entity, where.getWhere());
-    }
-
-    public boolean delete (long id) {
-        long deleted = super.delete(SplitRecurringCategory.SPLITTRANSID + "=?",
-                new String[]{ Long.toString(id) });
-
-        return deleted == 1;
     }
 
     public boolean delete(ISplitTransaction entity) {

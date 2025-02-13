@@ -160,6 +160,7 @@
     <string name="delete_transaction">Borrar transacción</string>
     <string name="new_transaction">Nueva transacción</string>
     <string name="error_payee_not_selected">Beneficiario es requerido</string>
+    <string name="error_fromaccount_not_selected">Se requiere de una cuenta de origen</string>
     <string name="error_toaccount_not_selected">Una cuenta de destino es requerida</string>
     <string name="error_category_not_selected">La Categoría es requerida</string>
     <string name="error_totamount_empty">Cantidad total es requerida</string>
@@ -228,6 +229,7 @@
     <string name="tag_empty_list">No se ha encontrado ninguna etiqueta. Para crear una, toque el botón verde con el signo más.</string>
     <string name="tag_can_not_deleted">La etiqueta seleccionada no se puede eliminar porque está referenciada</string>
     <string name="db_tag_update_failed">Error al actualizar la Etiqueta</string>
+    <string name="space_replaced_with__">El espacio, &amp; y | fue reemplazado por \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Ninguno</string>
     <string name="once">Una vez</string>
@@ -272,6 +274,7 @@
     <!-- EP Recurring mode recurring_mode -->
     <string name="recurringModeLabel">Transacción Automática</string>
     <string name="manual">Entrada manual</string>
+    <string name="prompt">Solicitud d\'entrada</string>
     <string name="auto">Entrada automática</string>
     <!-- 20121121 -->
     <string name="send_feedback">Enviar comentarios</string>
@@ -298,7 +301,11 @@
     <string name="no_stock_data">No hay datos de la bolsa disponibles para esta cuenta.</string>
     <string name="month">Mes</string>
     <string name="year">Año</string>
+    <string name="menu_reports">Informes integrados</string>
+    <string name="menu_general_report_group">Informes generales</string>
+    <string name="title_activity_general_report">Informe general</string>
     <string name="menu_report_income_vs_expenses">Ingresos Vs Gastos</string>
+    <string name="menu_report_cashflow">Flujo de caja</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tiempo Total</string>
@@ -350,6 +357,7 @@
     <string name="open_database">Abrir la Base de Datos</string>
     <string name="synchronization_interval">Intervalo de Sincronización</string>
     <string name="summary_synchronization_interval">¿Con que frecuencia quiere sincronizar?</string>
+    <string name="tips_new_version_dropbox">Desde la version 1.2.0 de Money Manager Ex for Android ha cambiado la gestión de la sincronización con Dropbox. Para los usuarios que ya están utilizando la sincronización con Dropbox, hay que hacer de nuevo la configuración. La configuración de la sincronización con Dropbox y la selección de la base de datos, se encuentran en la configuración.\nDesde la version 1.2.0 Money Manager Ex for Android puede sincronizar automáticamente la base de datos con Dropbox</string>
     <string name="title_transaction_shown_balance">Muestra el balance para cada transacción</string>
     <string name="summary_transaction_shown_balance">Muestra el balance para cada transacción. Mostrar el balance podría hacer más lenta la aplicación</string>
     <string name="menu_open_database">Abrir la Base de Datos</string>
@@ -380,6 +388,7 @@
     <string name="empty_category">Categoría Vacía</string>
     <string name="empty_payee">Beneficiario Vacío</string>
     <string name="help">Ayuda</string>
+    <string name="delete_repeating_transaction"></string>
     <string name="last">Última</string>
     <string name="accounts">Cuentas</string>
     <string name="to_account">A Cuenta</string>
@@ -402,6 +411,7 @@
     <string name="reset">Restablecer</string>
     <string name="result_search">Resultado de la búsqueda</string>
     <string name="new_repeating_transaction">Nueva Transacción Programada</string>
+    <string name="edit_repeating_transaction"></string>
     <string name="path_database_not_exists">La Ruta de base de datos no existe</string>
     <string name="database_can_not_open_write">No se puede abrir la base de datos para la escritura</string>
     <string name="time_frame">Intervalo de tiempo</string>
