@@ -29,14 +29,17 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
  */
 public class ReportRepository extends RepositoryBase<Report> {
 
+    private static final String TABLE_NAME = "report_v1";
+    private static final String ID_COLUMN = Report.REPORTID;
+
     public ReportRepository(Context context) {
-        super(context, "report_v1", DatasetType.TABLE, "report");
+        super(context, "report_v1", DatasetType.TABLE, "report", ID_COLUMN);
     }
 
     @Override
     public String[] getAllColumns() {
         return new String[] {
-                "REPORTID AS _id",  // Mapping the REPORTID column as _id for SQLite database
+                ID_COLUMN + " AS _id",  // Mapping the REPORTID column as _id for SQLite database
                 Report.REPORTID,
                 Report.REPORTNAME,
                 Report.GROUPNAME,
@@ -46,13 +49,6 @@ public class ReportRepository extends RepositoryBase<Report> {
                 Report.TEMPLATECONTENT,
                 Report.DESCRIPTION
         };
-    }
-
-    public boolean delete(long id) {
-        if (id == Constants.NOT_SET) return false;
-
-        long result = delete(Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
     }
 
     public Report load(Long id) {

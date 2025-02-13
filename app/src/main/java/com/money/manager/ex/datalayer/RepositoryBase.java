@@ -32,6 +32,7 @@ import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +47,23 @@ public abstract class RepositoryBase<T extends EntityBase>
     extends Dataset {
 
     private static final AtomicLong lastId = new AtomicLong(0);
+    private final Context context;
+    protected final String idColumn;
 
+    /*
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
         super(source, type, basePath);
 
         this.context = context.getApplicationContext();
-    }
+        this.idColumn = "ID";
+    } */
 
-    private final Context context;
+    public RepositoryBase(Context context, String source, DatasetType type, String basePath, String idColumn) {
+        super(source, type, basePath);
+
+        this.context = context.getApplicationContext();
+        this.idColumn = idColumn;
+    }
 
     public long count(String selection, String[] args) {
         Cursor c = openCursor(null, selection, args);
@@ -210,6 +220,21 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
     }
 
+    public boolean delete(long id) {
+        if (id == Constants.NOT_SET) return false;
+
+        long result = delete(idColumn + "=?", MmxDatabaseUtils.getArgsForId(id));
+        return result > 0;
+    }
+
+    protected long delete(String where, String[] args) {
+        long result = getContext().getContentResolver().delete(this.getUri(),
+            where,
+            args
+        );
+        return result;
+    }
+
     /**
      * Warning: this works only with Asset Class entities!
      * Ref:
@@ -237,14 +262,6 @@ public abstract class RepositoryBase<T extends EntityBase>
             Timber.e(e, "bulk updating");
             return null;
         }
-    }
-
-    protected long delete(String where, String[] args) {
-        long result = getContext().getContentResolver().delete(this.getUri(),
-            where,
-            args
-        );
-        return result;
     }
 
     protected ContentProviderResult[] bulkDelete(List<Integer> ids) {

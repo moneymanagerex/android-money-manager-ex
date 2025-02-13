@@ -41,12 +41,12 @@ public class StockHistoryRepository
     extends RepositoryBase<StockHistory> {
 
     private static final String TABLE_NAME = "stockhistory_v1";
-
+    private static final String ID_COLUMN = StockHistory.HISTID;
     /**
      * Constructor that is used when instantiating manually.
      */
     public StockHistoryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory");
+        super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory", ID_COLUMN);
 
     }
 
@@ -62,7 +62,7 @@ public class StockHistoryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "HISTID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
                 StockHistory.HISTID,
                 StockHistory.SYMBOL,
                 StockHistory.DATE,

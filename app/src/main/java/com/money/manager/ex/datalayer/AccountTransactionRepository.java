@@ -33,8 +33,11 @@ import com.money.manager.ex.utils.MmxDate;
 public class AccountTransactionRepository
     extends RepositoryBase<AccountTransaction> {
 
+    private static final String TABLE_NAME = "checkingaccount_v1";
+    private static final String ID_COLUMN = AccountTransaction.TRANSID;
+
     public AccountTransactionRepository(Context context) {
-        super(context, "checkingaccount_v1", DatasetType.TABLE, "checkingaccount");
+        super(context, TABLE_NAME, DatasetType.TABLE, "checkingaccount", ID_COLUMN);
     }
 
     @Override

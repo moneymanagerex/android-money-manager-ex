@@ -13,13 +13,16 @@ import java.util.ArrayList;
 
 public class TaglinkRepository extends RepositoryBase <Taglink> {
 
+    private static final String TABLE_NAME = "TAGLINK_V1";
+    private static final String ID_COLUMN = Taglink.TAGLINKID;
+
     public TaglinkRepository(Context context) {
-        super(context, "TAGLINK_V1", DatasetType.TABLE, "taglink");
+        super(context, TABLE_NAME, DatasetType.TABLE, "taglink", ID_COLUMN);
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { Taglink.TAGLINKID +" AS _id",
+        return new String[] { ID_COLUMN +" AS _id",
                 Taglink.TAGLINKID,
                 Taglink.REFTYPE,
                 Taglink.REFID,

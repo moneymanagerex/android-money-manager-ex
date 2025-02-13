@@ -32,9 +32,11 @@ import java.util.ArrayList;
 public class AttachmentRepository
     extends RepositoryBase<Attachment> {
 
-    public AttachmentRepository(Context context) {
-        super(context, "attachment_v1", DatasetType.TABLE, "attachment");
+    private static final String TABLE_NAME = "attachment_v1";
+    private static final String ID_COLUMN = Attachment.ATTACHMENTID;
 
+    public AttachmentRepository(Context context) {
+        super(context, TABLE_NAME, DatasetType.TABLE, "attachment", ID_COLUMN);
     }
 
     @Override
@@ -46,13 +48,6 @@ public class AttachmentRepository
             Attachment.DESCRIPTION,
             Attachment.FILENAME
         };
-    }
-
-    public boolean delete(long id) {
-        if (id == Constants.NOT_SET) return false;
-
-        long result = delete(Attachment.ATTACHMENTID + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
     }
 
     public Attachment load(Long id) {

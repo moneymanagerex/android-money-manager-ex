@@ -35,10 +35,11 @@ import java.util.HashMap;
 public class BudgetEntryRepository
         extends RepositoryBase<BudgetEntry> {
 
-    public static final String TABLE_NAME = "budgettable_v1";
+    private static final String TABLE_NAME = "budgettable_v1";
+    private static final String ID_COLUMN = BudgetEntry.BUDGETENTRYID;
 
     public BudgetEntryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable", ID_COLUMN);
     }
 
     @Override

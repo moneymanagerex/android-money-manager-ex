@@ -275,10 +275,10 @@ public class RecurringTransactionService
 
         // Delete recurring transactions.
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
-        long deleteResult = repo.delete(this.recurringTransactionId);
+        boolean deleteResult = repo.delete(this.recurringTransactionId);
 //        long deleteResult = getContext().getContentResolver().delete(repo.getUri(),
 //                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
-        if (deleteResult == 0) {
+        if (!deleteResult) {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting recurring transaction " +
                     this.recurringTransactionId + " failed.");

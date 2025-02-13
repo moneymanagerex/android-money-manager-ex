@@ -32,13 +32,16 @@ import com.money.manager.ex.domainmodel.RecurringTransaction;
 public class ScheduledTransactionRepository
     extends RepositoryBase<RecurringTransaction>{
 
+    private static final String TABLE_NAME = "billsdeposits_v1";
+    private static final String ID_COLUMN = RecurringTransaction.BDID;
+
     public ScheduledTransactionRepository(Context context) {
-        super(context, "billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
+        super(context, TABLE_NAME, DatasetType.TABLE, "billsdeposits", ID_COLUMN);
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String [] { RecurringTransaction.BDID + " AS _id", RecurringTransaction.BDID,
+        return new String [] { ID_COLUMN + " AS _id", RecurringTransaction.BDID,
                 ITransactionEntity.ACCOUNTID,
                 ITransactionEntity.TOACCOUNTID,
                 ITransactionEntity.PAYEEID,
@@ -55,10 +58,6 @@ public class ScheduledTransactionRepository
                 RecurringTransaction.REPEATS,
                 RecurringTransaction.NEXTOCCURRENCEDATE,
                 RecurringTransaction.NUMOCCURRENCES};
-    }
-
-    public long delete(long id) {
-        return super.delete(RecurringTransaction.BDID + "=?", new String[] { Long.toString(id)});
     }
 
     public RecurringTransaction load(long id) {
