@@ -41,49 +41,15 @@ public class PayeeService
     private final PayeeRepository payeeRepository;
 
     public Payee loadByName(String name) {
-        Payee payee = null;
-        String selection = Payee.PAYEENAME + "='" + name + "'";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                this.payeeRepository.getUri(),
-                this.payeeRepository.getAllColumns(),
-                selection,
-                null,
-                null);
-        if (cursor == null) return null;
-
-        if(cursor.moveToFirst()) {
-            payee = new Payee();
-            payee.loadFromCursor(cursor);
-        }
-
-        cursor.close();
-
-        return payee;
+        return payeeRepository.loadByName(name);
     }
 
     public long loadIdByName(String name) {
-        long result = Constants.NOT_SET;
+        Payee payee = payeeRepository.loadByName(name);
+        if (payee == null)
+            return Constants.NOT_SET;
 
-        if(TextUtils.isEmpty(name)) return result;
-
-        String selection = Payee.PAYEENAME + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                payeeRepository.getUri(),
-                new String[]{ Payee.PAYEEID },
-                selection,
-                new String[] { name },
-                null);
-        if (cursor == null) return Constants.NOT_SET;
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
-        }
-
-        cursor.close();
-
-        return result;
+        return payee.getId();
     }
 
     public Payee createNew(String name) {

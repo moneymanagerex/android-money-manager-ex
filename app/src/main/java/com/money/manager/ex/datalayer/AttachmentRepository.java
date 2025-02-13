@@ -17,12 +17,9 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
-import android.database.Cursor;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
@@ -34,9 +31,10 @@ public class AttachmentRepository
 
     private static final String TABLE_NAME = "attachment_v1";
     private static final String ID_COLUMN = Attachment.ATTACHMENTID;
+    private static final String NAME_COLUMN = Attachment.FILENAME;
 
     public AttachmentRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "attachment", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "attachment", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

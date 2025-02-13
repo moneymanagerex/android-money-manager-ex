@@ -36,9 +36,10 @@ public class SplitScheduledCategoryRepository
 
     private static final String TABLE_NAME = SplitRecurringCategory.TABLE_NAME;
     private static final String ID_COLUMN = SplitRecurringCategory.SPLITTRANSID;
+    private static final String NAME_COLUMN = "";
 
     public SplitScheduledCategoryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

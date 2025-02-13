@@ -1463,7 +1463,7 @@ public class MainActivity
         ArrayList<String> reportName = new ArrayList<>();
         ReportRepository repo = new ReportRepository(this);
 
-        for (Report report : repo.loadByName(groupName)) {
+        for (Report report : repo.loadByGroupName(groupName)) {
             reportName.add(report.getReportName());
             //custom report for given group
             adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)

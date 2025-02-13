@@ -21,9 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.google.common.collect.ObjectArrays;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
@@ -43,10 +41,11 @@ public class StockRepository
 
     private static final String TABLE_NAME = "stock_v1";
     private static final String ID_COLUMN = StockFields.STOCKID;
+    private static final String NAME_COLUMN = StockFields.SYMBOL;
 
     @Inject
     public StockRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "stock", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "stock", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

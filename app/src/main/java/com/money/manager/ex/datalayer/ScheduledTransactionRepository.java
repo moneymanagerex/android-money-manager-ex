@@ -20,7 +20,6 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -34,9 +33,10 @@ public class ScheduledTransactionRepository
 
     private static final String TABLE_NAME = "billsdeposits_v1";
     private static final String ID_COLUMN = RecurringTransaction.BDID;
+    private static final String NAME_COLUMN = "";
 
     public ScheduledTransactionRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "billsdeposits", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "billsdeposits", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

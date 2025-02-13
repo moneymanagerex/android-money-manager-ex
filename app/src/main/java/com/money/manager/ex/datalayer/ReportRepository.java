@@ -34,9 +34,10 @@ public class ReportRepository extends RepositoryBase<Report> {
 
     private static final String TABLE_NAME = "report_v1";
     private static final String ID_COLUMN = Report.REPORTID;
+    private static final String NAME_COLUMN = Report.REPORTNAME;
 
     public ReportRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "report", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "report", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class ReportRepository extends RepositoryBase<Report> {
     }
 
     // custom func
-    public List<Report> loadByName(String groupName) {
+    public List<Report> loadByGroupName(String groupName) {
         return query(new Select().where(Report.GROUPNAME + " = ?", groupName));
     }
 
