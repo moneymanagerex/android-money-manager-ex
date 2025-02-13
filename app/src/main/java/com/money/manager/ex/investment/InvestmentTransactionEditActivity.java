@@ -232,6 +232,7 @@ public class InvestmentTransactionEditActivity
     }
 
     private void onCurrentPriceClick() {
+        if (mAccount == null) return;
         Calculator.forActivity(this)
                 .currency(mAccount.getCurrencyId())
                 .amount(mStock.getCurrentPrice())
