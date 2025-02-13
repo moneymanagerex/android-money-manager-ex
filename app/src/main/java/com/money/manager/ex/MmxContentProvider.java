@@ -44,6 +44,7 @@ import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.AttachmentRepository;
+import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
@@ -125,6 +126,7 @@ public class MmxContentProvider
                 new QueryMobileData(context),
                 new SQLDataSet(),
                 new QueryNestedCategory(context),
+                new ReportRepository(context),
                 new TagRepository(context),
                 new TaglinkRepository(context)
         );

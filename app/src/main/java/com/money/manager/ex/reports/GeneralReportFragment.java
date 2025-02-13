@@ -1,33 +1,22 @@
 package com.money.manager.ex.reports;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.settings.AppSettings;
-import com.squareup.sqlbrite3.BriteDatabase;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 
 public class GeneralReportFragment extends Fragment {
