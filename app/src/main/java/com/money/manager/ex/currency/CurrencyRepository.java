@@ -45,6 +45,11 @@ public class CurrencyRepository
     }
 
     @Override
+    protected Currency createEntity() {
+        return new Currency();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] {
                 ID_COLUMN + " AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
@@ -53,13 +58,6 @@ public class CurrencyRepository
             Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
                 , Currency.CURRENCY_TYPE
         };
-    }
-
-    public Currency load(long id) {
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Currency.CURRENCYID, "=", id);
-
-        return first(where.getWhere());
     }
 
     public boolean update(Currency value) {

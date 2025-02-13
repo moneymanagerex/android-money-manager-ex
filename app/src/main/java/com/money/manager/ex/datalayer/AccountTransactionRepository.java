@@ -41,6 +41,11 @@ public class AccountTransactionRepository
     }
 
     @Override
+    protected AccountTransaction createEntity() {
+        return new AccountTransaction();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] {
                 "TRANSID AS _id", AccountTransaction.TRANSID,
@@ -58,18 +63,6 @@ public class AccountTransactionRepository
                 ITransactionEntity.TOTRANSAMOUNT,
                 ITransactionEntity.COLOR
         };
-    }
-
-    public AccountTransaction load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        AccountTransaction tx = first(AccountTransaction.class,
-                getAllColumns(),
-                AccountTransaction.TRANSID + "=?",
-                MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return tx;
     }
 
     public AccountTransaction insert(AccountTransaction entity) {

@@ -42,6 +42,11 @@ public class SplitScheduledCategoryRepository
     }
 
     @Override
+    protected SplitRecurringCategory createEntity() {
+        return new SplitRecurringCategory();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] { ID_COLUMN + " AS _id",
             SplitRecurringCategory.SPLITTRANSID,

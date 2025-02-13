@@ -61,6 +61,11 @@ public class StockHistoryRepository
     }
 
     @Override
+    protected StockHistory createEntity() {
+        return new StockHistory();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] { ID_COLUMN + " AS _id",
                 StockHistory.HISTID,

@@ -43,20 +43,16 @@ public class AccountRepository
     }
 
     @Override
+    protected Account createEntity() {
+        return new Account();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
-    }
-
-    public Account load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Account.ACCOUNTID, "=", id);
-
-        return first(where.getWhere());
     }
 
     /**
@@ -111,8 +107,8 @@ public class AccountRepository
     }
 
     public Long loadCurrencyIdFor(long id) {
-        Account account = first(Account.class,
-            new String[] { Account.CURRENCYID },
+        Account account = first(
+                new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
             MmxDatabaseUtils.getArgsForId(id),
             null);
@@ -145,7 +141,7 @@ public class AccountRepository
     }
 
     public Account first(String selection) {
-        return super.first(Account.class, null, selection, null, null);
+        return super.first(null, selection, null, null);
     }
 
     /**

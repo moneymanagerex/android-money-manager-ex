@@ -40,6 +40,11 @@ public class ScheduledTransactionRepository
     }
 
     @Override
+    protected RecurringTransaction createEntity() {
+        return new RecurringTransaction();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String [] { ID_COLUMN + " AS _id", RecurringTransaction.BDID,
                 ITransactionEntity.ACCOUNTID,
@@ -58,17 +63,6 @@ public class ScheduledTransactionRepository
                 RecurringTransaction.REPEATS,
                 RecurringTransaction.NEXTOCCURRENCEDATE,
                 RecurringTransaction.NUMOCCURRENCES};
-    }
-
-    public RecurringTransaction load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(RecurringTransaction.BDID, "=", id);
-
-        RecurringTransaction tx = first(null, where.getWhere(), null);
-
-        return tx;
     }
 
     public RecurringTransaction first(String[] projection, String selection, String[] args) {

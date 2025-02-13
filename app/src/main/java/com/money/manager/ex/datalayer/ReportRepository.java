@@ -37,6 +37,11 @@ public class ReportRepository extends RepositoryBase<Report> {
     }
 
     @Override
+    protected Report createEntity() {
+        return new Report();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] {
                 ID_COLUMN + " AS _id",  // Mapping the REPORTID column as _id for SQLite database
@@ -49,17 +54,6 @@ public class ReportRepository extends RepositoryBase<Report> {
                 Report.TEMPLATECONTENT,
                 Report.DESCRIPTION
         };
-    }
-
-    public Report load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Report report = super.first(Report.class,
-                getAllColumns(),
-                Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return report;
     }
 
     public boolean save(Report report) {

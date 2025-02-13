@@ -37,6 +37,11 @@ public class PayeeRepository
     }
 
     @Override
+    protected Payee createEntity() {
+        return new Payee();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] { "PAYEEID AS _id",
                 Payee.PAYEEID,
@@ -45,17 +50,6 @@ public class PayeeRepository
                 Payee.NUMBER,
                 Payee.ACTIVE
         };
-    }
-
-    public Payee load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Payee payee = super.first(Payee.class,
-                getAllColumns(),
-                Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return payee;
     }
 
     public boolean save(Payee payee) {

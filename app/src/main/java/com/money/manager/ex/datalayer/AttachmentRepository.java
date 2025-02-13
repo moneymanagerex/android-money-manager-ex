@@ -40,6 +40,11 @@ public class AttachmentRepository
     }
 
     @Override
+    protected Attachment createEntity() {
+        return new Attachment();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] { "ATTACHMENTID AS _id",
             Attachment.ATTACHMENTID,
@@ -48,17 +53,6 @@ public class AttachmentRepository
             Attachment.DESCRIPTION,
             Attachment.FILENAME
         };
-    }
-
-    public Attachment load(Long id) {
-        if (id == null || id == Constants.NOT_SET) return null;
-
-        Attachment attachment = super.first(Attachment.class,
-                getAllColumns(),
-                Attachment.ATTACHMENTID + "=?", MmxDatabaseUtils.getArgsForId(id),
-                null);
-
-        return attachment;
     }
 
     public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
