@@ -32,6 +32,7 @@ import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
@@ -49,14 +50,6 @@ public abstract class RepositoryBase<T extends EntityBase>
     private static final AtomicLong lastId = new AtomicLong(0);
     private final Context context;
     protected final String idColumn;
-
-    /*
-    public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
-        super(source, type, basePath);
-
-        this.context = context.getApplicationContext();
-        this.idColumn = "ID";
-    } */
 
     public RepositoryBase(Context context, String source, DatasetType type, String basePath, String idColumn) {
         super(source, type, basePath);
@@ -103,27 +96,36 @@ public abstract class RepositoryBase<T extends EntityBase>
         return insert(entity.contentValues);
     }
 
+    public T load(Long id) {
+        if (id == null || id == Constants.NOT_SET) return null;
+
+        return first(
+                getAllColumns(),
+                idColumn + "=?", MmxDatabaseUtils.getArgsForId(id),
+                null);
+    }
+
     /**
      * Fetch only the first result
-     * @param resultType
+     *
      * @param projection
      * @param selection
      * @param args
-     * @param sort Sort order to apply to the query results from which the first will be returned.
+     * @param sort       Sort order to apply to the query results from which the first will be returned.
      * @return
      */
-    public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
+    public T first(String[] projection, String selection, String[] args, String sort) {
         Cursor c = null;
         T entity = null;
 
         try {
             c = openCursor(projection, selection, args, sort);
             if (c != null && c.moveToNext()) {
-                entity = resultType.getDeclaredConstructor().newInstance();
+                entity = createEntity();
                 entity.loadFromCursor(c);
             }
         } catch (Exception e) {
-            Timber.e(e, "Error fetching first record of %s", resultType.getName());
+            Timber.e(e, "Error fetching first record of %s", this.getSource());
         } finally {
             if (c != null) c.close();
         }
@@ -139,7 +141,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             c = openCursor(query.projection, query.selection, query.selectionArgs, query.sort);
             if (c != null) {
                 while (c.moveToNext()) {
-                    T entity = resultType.getDeclaredConstructor().newInstance();
+                    T entity = createEntity();
                     entity.loadFromCursor(c);
                     results.add(entity);
                 }
@@ -220,7 +222,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
     }
 
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
 
         long result = delete(idColumn + "=?", MmxDatabaseUtils.getArgsForId(id));
@@ -284,4 +286,6 @@ public abstract class RepositoryBase<T extends EntityBase>
             return null;
         }
     }
+
+    protected abstract T createEntity();
 }

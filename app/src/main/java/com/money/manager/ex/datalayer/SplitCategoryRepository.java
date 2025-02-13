@@ -41,6 +41,11 @@ public class SplitCategoryRepository
     }
 
     @Override
+    protected SplitCategory createEntity() {
+        return new SplitCategory();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] {ID_COLUMN + " AS _id",
             SplitCategory.SPLITTRANSID,

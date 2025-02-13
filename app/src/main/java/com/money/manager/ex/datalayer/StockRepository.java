@@ -49,7 +49,12 @@ public class StockRepository
         super(context, TABLE_NAME, DatasetType.TABLE, "stock", ID_COLUMN);
     }
 
-//    @Override
+    @Override
+    protected Stock createEntity() {
+        return new Stock();
+    }
+
+    @Override
     public String[] getAllColumns() {
         String [] idColumn = new String[] {
                 ID_COLUMN + " AS _id"
@@ -69,16 +74,6 @@ public class StockRepository
         }
 
         return names;
-    }
-
-    public Stock load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        return first(Stock.class,
-                null,
-                StockFields.STOCKID + "=?",
-                new String[] { Long.toString(id) },
-                null);
     }
 
     /**

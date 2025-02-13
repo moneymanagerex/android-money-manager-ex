@@ -39,22 +39,13 @@ public class BudgetRepository
     }
 
     @Override
-    public String[] getAllColumns() {
-        return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
+    protected Budget createEntity() {
+        return new Budget();
     }
 
-    public Budget load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Budget.BUDGETYEARID, "=", id);
-
-        Budget result = super.first(Budget.class,
-                null,
-                where.getWhere(),
-                null,
-                null);
-        return result;
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
     public boolean save(Budget entity) {

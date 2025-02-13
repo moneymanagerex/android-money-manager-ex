@@ -43,26 +43,17 @@ public class BudgetEntryRepository
     }
 
     @Override
+    protected BudgetEntry createEntity() {
+        return new BudgetEntry();
+    }
+
+    @Override
     public String[] getAllColumns() {
         return new String[] {"BUDGETENTRYID AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
                 BudgetEntry.PERIOD};
-    }
-
-    public BudgetEntry load(long id) {
-        if (id == Constants.NOT_SET) return null;
-
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(BudgetEntry.BUDGETENTRYID, "=", id);
-
-        BudgetEntry result = super.first(BudgetEntry.class,
-                null,
-                where.getWhere(),
-                null,
-                null);
-        return result;
     }
 
     /**
