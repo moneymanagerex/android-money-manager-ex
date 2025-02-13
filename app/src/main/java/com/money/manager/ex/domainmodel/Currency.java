@@ -53,6 +53,11 @@ public class Currency
         DatabaseUtils.cursorDoubleToCursorValues(c, BASECONVRATE, this.contentValues);
     }
 
+    @Override
+    public String getPrimaryKeyColumn() {
+        return CURRENCYID;  // This returns the column name specific to Report
+    }
+
     public Double getBaseConversionRate() {
         return getDouble(BASECONVRATE);
     }
@@ -70,14 +75,6 @@ public class Currency
      */
     public String getCode() {
         return getString(CURRENCY_SYMBOL);
-    }
-
-    public long getCurrencyId() {
-        return getLong(CURRENCYID);
-    }
-
-    public void setCurrencyid(long value) {
-        setLong(CURRENCYID, value);
     }
 
     public String getDecimalSeparator() {

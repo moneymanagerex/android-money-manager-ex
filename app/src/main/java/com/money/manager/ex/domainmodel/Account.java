@@ -88,12 +88,9 @@ public class Account
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
     }
 
-    public Long getId() {
-        return getLong(Account.ACCOUNTID);
-    }
-
-    public void setId(Long value) {
-        setLong(Account.ACCOUNTID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return ACCOUNTID;  // This returns the column name
     }
 
     public Long getCurrencyId() {

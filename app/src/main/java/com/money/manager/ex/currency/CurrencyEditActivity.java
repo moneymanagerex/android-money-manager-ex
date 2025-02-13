@@ -250,7 +250,7 @@ public class CurrencyEditActivity
                 // todo: use ACTION_EDIT explicitly.
             } else {// Add Id value only when updating.
                 if (mCurrencyId != Constants.NOT_SET) {
-                    currency.setCurrencyid(mCurrencyId);
+                    currency.setId(mCurrencyId);
                 }
 
                 success = repo.update(currency);

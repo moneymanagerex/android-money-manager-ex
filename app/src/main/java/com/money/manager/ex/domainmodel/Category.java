@@ -43,12 +43,9 @@ public class Category
         super(contentValues);
     }
 
-    public Long getId() {
-        return getLong(CATEGID);
-    }
-
-    public void setId(Long value) {
-        setLong(CATEGID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return CATEGID;  // This returns the column name
     }
 
     public long getParentId() {

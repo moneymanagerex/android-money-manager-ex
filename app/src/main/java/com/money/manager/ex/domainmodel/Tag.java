@@ -23,9 +23,9 @@ public class Tag extends EntityBase {
     }
 
     @Override
-    public Long getId() { return getLong(TAGID); }
-    @Override
-    public void setId(Long id) { setLong(TAGID, id); }
+    public String getPrimaryKeyColumn() {
+        return TAGID;  // This returns the column name
+    }
 
     public String getName() { return getString(TAGNAME); }
     public void setName(String value) { setString(TAGNAME, value); }

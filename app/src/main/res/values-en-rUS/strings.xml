@@ -135,7 +135,6 @@
     <string name="delete_transaction">Delete Transaction</string>
     <string name="new_transaction">New transaction</string>
     <string name="error_payee_not_selected">Payee is required</string>
-    <string name="error_fromaccount_not_selected">From Account is required</string>
     <string name="error_toaccount_not_selected">To Account is required</string>
     <string name="error_category_not_selected">Category is required</string>
     <string name="error_totamount_empty">Total amount is required</string>

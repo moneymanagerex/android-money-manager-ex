@@ -86,12 +86,9 @@ public class RecurringTransaction
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TOTRANSAMOUNT);
     }
 
-    public Long getId() {
-        return getLong(BDID);
-    }
-
-    public void setId(Long id) {
-        setLong(BDID, id);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return BDID;  // This returns the column name
     }
 
     public boolean hasId() {

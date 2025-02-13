@@ -48,8 +48,9 @@ public class AccountTransactionDisplay
         DatabaseUtils.cursorDoubleToCursorValues(c, QueryAllData.ToAmount, this.contentValues);
     }
 
-    public Long getId() {
-        return getLong(QueryAllData.ID);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return QueryAllData.ID;  // This returns the column name
     }
 
     public Long getAccountId() {

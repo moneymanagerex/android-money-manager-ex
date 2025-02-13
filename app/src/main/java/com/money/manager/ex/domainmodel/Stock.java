@@ -86,9 +86,9 @@ public class Stock
     }
 
     // properties
-
-    public Long getId() {
-        return getLong(StockFields.STOCKID);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return StockFields.STOCKID;  // This returns the column name specific to Report
     }
 
     public Money getCommission() {

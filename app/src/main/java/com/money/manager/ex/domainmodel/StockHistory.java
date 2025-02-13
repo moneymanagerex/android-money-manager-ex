@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
 
+import com.money.manager.ex.datalayer.StockFields;
+
 import java.util.Date;
 
 /**
@@ -52,8 +54,9 @@ public class StockHistory
         contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
-    public long getHistId() {
-        return getLong(HISTID);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return StockHistory.HISTID;  // This returns the column name specific to Report
     }
 
     public Date getDate() {

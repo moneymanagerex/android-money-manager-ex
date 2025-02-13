@@ -32,12 +32,9 @@ public class Budget
 
     public Budget() { }
 
-    public Long getId() {
-        return getLong(BUDGETYEARID);
-    }
-
-    public void setId(Long value) {
-        setLong(BUDGETYEARID, value);
+    @Override
+    public String getPrimaryKeyColumn() {
+        return BUDGETYEARID;  // This returns the column name
     }
 
     public String getName() {

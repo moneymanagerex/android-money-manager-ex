@@ -31,7 +31,7 @@ import com.money.manager.ex.utils.MmxDate;
  * Source: Table Checking Account.
  */
 public class AccountTransactionRepository
-    extends RepositoryBase {
+    extends RepositoryBase<AccountTransaction> {
 
     public AccountTransactionRepository(Context context) {
         super(context, "checkingaccount_v1", DatasetType.TABLE, "checkingaccount");
@@ -60,7 +60,7 @@ public class AccountTransactionRepository
     public AccountTransaction load(long id) {
         if (id == Constants.NOT_SET) return null;
 
-        AccountTransaction tx = (AccountTransaction) first(AccountTransaction.class,
+        AccountTransaction tx = first(AccountTransaction.class,
                 getAllColumns(),
                 AccountTransaction.TRANSID + "=?",
                 MmxDatabaseUtils.getArgsForId(id),

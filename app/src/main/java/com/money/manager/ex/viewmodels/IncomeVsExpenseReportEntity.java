@@ -51,6 +51,11 @@ public class IncomeVsExpenseReportEntity
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, Transfers);
     }
 
+    @Override
+    public String getPrimaryKeyColumn() {
+        return YEAR;  // This returns the column name
+    }
+
     public int getYear() {
         return getLong(YEAR).intValue();
     }

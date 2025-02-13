@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * Repository for Recurring Split Categories (TableBudgetSplitTransactions).
  */
 public class SplitScheduledCategoryRepository
-    extends RepositoryBase
+    extends RepositoryBase <SplitRecurringCategory>
     implements IRepository {
 
     public SplitScheduledCategoryRepository(Context context) {
