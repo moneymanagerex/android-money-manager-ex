@@ -122,6 +122,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -1444,7 +1446,16 @@ public class MainActivity
 
         ReportRepository repo = new ReportRepository(this);
 
-        for (String groupName : repo.loadGroupedByName().keySet()) {
+        // Convert keys to array
+        String[] groupArray = repo.loadGroupedByName().keySet().toArray(new String[0]);
+        Arrays.sort(groupArray);
+
+        for (String groupName : groupArray) {
+            //check if report name has group
+            if (groupName.trim().isEmpty()) {
+                groupName = "<"+this.getString(R.string.no_report_group)+">";
+            }
+
             childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
                     .withText(groupName)
                     .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
@@ -1460,17 +1471,26 @@ public class MainActivity
         UIHelper uiHelper = new UIHelper(this);
         int iconColor = uiHelper.getSecondaryTextColor();
 
-        ArrayList<String> reportName = new ArrayList<>();
+        ArrayList<String> reportNames = new ArrayList<>();
         ReportRepository repo = new ReportRepository(this);
 
-        for (Report report : repo.loadByGroupName(groupName)) {
-            reportName.add(report.getReportName());
-            //custom report for given group
+        //if the group name is "<No Group>", then set to blank
+        String orignalGroupName = groupName;
+        if (groupName.equals("<"+this.getString(R.string.no_report_group)+">")) {
+            groupName="";
+        }
+
+        for (Report report : repo.loadReportByGroupName(groupName)) {
+            reportNames.add(report.getReportName());
+        }
+
+        Collections.sort(reportNames);
+
+        for (String report : reportNames) {
             adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
-                    .withText(report.getReportName())
+                    .withText(report)
                     .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
                             .color(iconColor)));
-
         }
 
         //*********** build custom dialog ************
@@ -1479,7 +1499,7 @@ public class MainActivity
 
         // Create a TextView for the title with added space in place of builder.setTitle(groupName)
         TextView title = new TextView(this);
-        title.setText(groupName);
+        title.setText(orignalGroupName);
         title.setTextSize(20);
         title.setPadding(40, 20, 0, 20);  // Adds space above and below the title
 
@@ -1498,15 +1518,16 @@ public class MainActivity
         // Create and show the dialog
         AlertDialog dialog = builder.create();
 
+        //re-assign
+        String finalGroupName = groupName;
+
         // Set item click listener for ListView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getApplicationContext(), "Item clicked: " + reportName.get(position), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
-                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportName.get(position) );
-                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportNames.get(position) );
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, finalGroupName );
                 startActivity(intent);
                 dialog.dismiss();
             }
