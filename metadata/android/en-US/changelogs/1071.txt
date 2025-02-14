@@ -1,0 +1,3 @@
+Minor fix to 1070:
+* Use Calendar year if Financal year is not set
+* Fix int2long in Investement
