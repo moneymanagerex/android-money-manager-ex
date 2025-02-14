@@ -321,6 +321,7 @@
     <string name="date_format">Dátum formátum</string>
     <string name="financial_year_start_day">Pénzügyi év: Kezdő nap</string>
     <string name="financial_year_start_month">Pénzügyi év: Kezdő hónap</string>
+    <string name="financial_year_not_set">Állítsa be a pénzügyi év kezdő dátumát a Beállításokban.</string>
     <string name="menu_move_database_to_external_storage">Adatbázis export</string>
     <string name="database_has_been_moved">Az adatbázis másolása megtörtént: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Hiba történt az adatbázis külső tárolóra másolásakor.</string>
