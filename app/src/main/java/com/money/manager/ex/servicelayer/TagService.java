@@ -18,12 +18,9 @@ package com.money.manager.ex.servicelayer;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.Tag;
@@ -46,11 +43,7 @@ public class TagService
     }
 
     public long loadIdByName(String name) {
-        Tag tag = loadByName(name);
-        if (tag == null)
-            return Constants.NOT_SET;
-
-        return tag.getId();
+        return tagRepository.loadIdByName(name);
     }
 
     public Tag createNew(String name) {
