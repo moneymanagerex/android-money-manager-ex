@@ -14,7 +14,6 @@ public class GeneralReportActivity extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_general_report);
 
@@ -25,9 +24,10 @@ public class GeneralReportActivity extends MmxBaseFragmentActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            // set actionbar
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setSupportActionBar(getToolbar());
+            showStandardToolbarActions(getToolbar());
+            // enable returning back from toolbar.
+            setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(currentReportName);
         }
 

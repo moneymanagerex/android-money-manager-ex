@@ -61,7 +61,7 @@ public class ReportRepository extends RepositoryBase<Report> {
     }
 
     // custom func
-    public List<Report> loadByGroupName(String groupName) {
+    public List<Report> loadReportByGroupName(String groupName) {
         return query(new Select().where(Report.GROUPNAME + " = ?", groupName));
     }
 
@@ -73,6 +73,7 @@ public class ReportRepository extends RepositoryBase<Report> {
             String groupName = report.getGroupName();
             reportMap.computeIfAbsent(groupName, k -> new ArrayList<>()).add(report);
         }
+
         return reportMap;
     }
 }

@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -52,6 +53,7 @@ public class GeneralReportFragment extends Fragment {
         //Db setup
         MmxOpenHelper MmxHelper = new MmxOpenHelper(getActivity(), new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath());
         SupportSQLiteDatabase mDatabase = MmxHelper.getReadableDatabase();
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
         String sqlQuery = "ss";
         String htmlTable = "<html><head><style>" +
