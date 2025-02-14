@@ -658,7 +658,7 @@ public class WatchlistFragment
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
             long accountId;
             try {
-                accountId = Integer.parseInt(accountIdString);
+                accountId = Long.parseLong(accountIdString);
             } catch (Exception e) {
                 accountId = Constants.NOT_SET;
             }
