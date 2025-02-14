@@ -16,14 +16,23 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">பண மேலாளர் இஎக்ஸ்</string>
     <!-- application -->
+    <string name="application_name">பண மேலாளர் இஎக்ஸ்</string>
+    <string name="application_definition">தனிப்பட்ட நிதிகள், வங்கிக் கணக்குகள், குடும்ப பட்ஜெட் மற்றும் பலவற்றை நிர்வகிக்க எளிய மற்றும் பயன்படுத்த எளிதான பயன்பாடு.</string>
+    <string name="application_license">திறந்த மூல உரிமங்கள்</string>
     <!-- database -->
+    <string name="db_insert_failed">தரவைச் செருகுவது தோல்வியடைந்தது</string>
+    <string name="db_delete_failed">தரவை நீக்குவது தோல்வியடைந்தது</string>
+    <string name="db_update_failed">தரவைப் புதுப்பிக்க முடியவில்லை</string>
     <!-- menu -->
     <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">வெளியேறு</string>
     <!--<string name="menu_import_export">Import/Export</string>-->
     <!--<string name="menu_sync">Synchronize</string>-->
     <!--<string name="menu_import_from_storage">Import from storage</string>-->
     <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">நிர்வகிக்கவும்</string>
     <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
     <!--<string name="menu_tools">Tools</string>-->
     <!--<string name="menu_use_external_db">Use External Database</string>-->
@@ -35,31 +44,211 @@
     <!--<string name="import_export_success">Import / Export completed successfully</string>-->
     <!--<string name="import_export_failed">Import / Export failed</string>-->
     <!-- preferences -->
+    <string name="preferences_general">பொது</string>
+    <string name="preferences_perdatabase">ஒவ்வொரு தரவுத்தளமும்</string>
+    <string name="preferences_dispaly">பார்க்கவும் &amp; உணரவும்</string>
+    <string name="preferences_behaviour">நடத்தை</string>
+    <string name="base_currency">அடிப்படை செலாவணி</string>
+    <string name="base_currency_changed">அடிப்படை செலாவணி மாற்றப்பட்டது</string>
+    <string name="base_currency_change_notification"></string>
+    <string name="view_accounts_opened">திறந்த கணக்குகளைப் பார்க்க</string>
+    <string name="if_not_selected_willShowAllAccounts">தேர்ந்தெடுக்கப்படவில்லை என்றால் அனைத்து கணக்குகளையும் காண்பிக்கும்</string>
+    <string name="view_accounts_favorites">பிடித்த கணக்குகளைப் பார்க்க</string>
+    <string name="version">பதிப்பு</string>
+    <string name="path">தரவுத்தள பாதை</string>
+    <string name="remote_path">தொலை பாதை</string>
+    <string name="database_version">தரவுத்தள பதிப்பு</string>
+    <string name="title_show_tutorial">பயிற்சியை காண்பி</string>
     <!-- Receive SMS strings -->
+    <string name="summary_sms_auto_trans">வங்கி பரிவர்த்தனை புதுப்பிப்பு SMS ஐப் படித்து, தானாகவே பரிவர்த்தனையை உருவாக்கவும்</string>
+    <string name="deny_receive_sms_error">SMS பெறுவதற்கான அனுமதியை நீங்கள் மறுத்துவிட்டீர்கள், எனவே உங்கள் வங்கிப் பரிவர்த்தனை SMS செயலாக்கப்படாது</string>
+    <string name="title_sms_trans_status_notification">SMS பரிவர்த்தனை நிலை அறிவிப்பு</string>
+    <string name="notification_process_sms_transaction_status">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
     <!-- account -->
+    <string name="account">கணக்கு</string>
+    <string name="account_list">கணக்கு பட்டியல்</string>
+    <string name="account_empty_list">கணக்குகள் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பட்டனைத் தட்டவும்.</string>
+    <string name="account_balance">கணக்கு நிலுவை</string>
+    <string name="account_reconciled_balance">சமரசம் செய்யப்பட்ட இருப்பு</string>
+    <string name="delete_account">கணக்கை நீக்கவும்</string>
+    <string name="account_name">கணக்கு பெயர்</string>
+    <string name="account_type">கணக்கு வகைகள்</string>
+    <string name="account_number">வங்கிக் கணக்கு எண்</string>
+    <string name="account_status">கணக்கு நிலை</string>
+    <string name="favourite_account">பிடித்த கணக்கு</string>
+    <string name="select_currency">செலாவணியை தேர்ந்தெடுக்கவும்</string>
+    <string name="investment">முதலீடு</string>
+    <string name="investment_accounts">முதலீட்டு கணக்குகள்</string>
+    <string name="term">கால</string>
+    <string name="error_currency_not_selected">செலாவணி தேவை</string>
     <!-- payee -->
+    <string name="payee_name">பணம் பெறுபவர் பெயர்</string>
+    <string name="edit_payeeName">பணம் பெறுபவரைத் திருத்தவும்</string>
+    <string name="delete_payee">பணம் பெறுபவரை நீக்கு</string>
+    <string name="payee">பணம் பெறுபவர்</string>
+    <string name="select_payee">பணம் செலுத்துபவரைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="payee_empty_list">பணம் பெறுபவர் கண்டுபிடிக்கப்படவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பட்டனைத் தட்டவும்.</string>
+    <string name="from">இருந்து</string>
+    <string name="db_payee_update_failed">பணம் பெறுபவரைப் புதுப்பிக்க முடியவில்லை</string>
     <!-- category / subcategory -->
+    <string name="category">பிரிவு</string>
+    <string name="subcategory">துணைப்பிரிவு</string>
+    <string name="category_empty_list">வகை எதுவும் கண்டறியப்படவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
+    <string name="select_category">வகையைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="add_category">வகையைச் சேர்க்கவும்</string>
+    <string name="search_sub_category">துணை வகையைச் சேர்க்கவும்</string>
     <!-- currency -->
+    <string name="currency_name">செலாவணியின் பெயர்</string>
+    <string name="currency_symbol">செலாவணி சின்னம்</string>
+    <string name="delete_currency">செலாவணியை நீக்கவும்</string>
+    <string name="scale">அளவுகோல்</string>
+    <string name="conversion_to_base_rate">மாற்றம்</string>
+    <string name="currency_name_empty">செலாவணியின் பெயர் தேவை</string>
     <!-- transaction -->
+    <string name="amount">தொகை</string>
+    <string name="total_amount">மொத்த தொகை</string>
+    <string name="deposit">வைப்பு</string>
+    <string name="status">நிலை</string>
+    <string name="status_follow_up">பின்தொடர்தல்</string>
+    <string name="status_duplicate">நகல்</string>
+    <string name="status_none">எதுவும் இல்லை</string>
+    <string name="transfer">பரிமாற்றம்</string>
+    <string name="transfer_amount">பரிமாற்ற தொகை</string>
+    <string name="transaction_type">பரிவர்த்தனை வகை</string>
+    <string name="transaction_status">நிலை</string>
+    <string name="withdrawal">திரும்பப் பெறுதல்</string>
+    <string name="delete_transaction">பரிவர்த்தனையை நீக்கு</string>
+    <string name="new_transaction">புதிய பரிவர்த்தனை</string>
+    <string name="error_payee_not_selected">பணம் பெறுபவர் தேவை</string>
+    <string name="error_category_not_selected">வகை தேவை</string>
+    <string name="error_totamount_empty">மொத்த தொகை தேவை</string>
+    <string name="about">பற்றி</string>
+    <string name="add">சேர்க்க</string>
+    <string name="date">தேதி</string>
+    <string name="delete">நீக்கு</string>
+    <string name="download">பதிவிறக்கவும்</string>
+    <string name="edit">திருத்தவும்</string>
+    <string name="logo">சின்னம்</string>
+    <string name="new_edit_transaction">புதிய/திருத்து பரிவர்த்தனை</string>
+    <string name="refresh">புதுப்பிக்கவும்</string>
+    <string name="search">தேடு</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="summary">சுருக்கம்</string>
+    <string name="open">திற</string>
+    <string name="user">பயனர்</string>
+    <string name="upload">பதிவேற்றம்</string>
+    <string name="username">பயனர் பெயர்</string>
+    <string name="website">இணையதளம்</string>
+    <string name="contact">தொடர்பு கொள்ள</string>
+    <string name="access_info">அணுகல் தகவல்</string>
+    <string name="initial_balance">ஆரம்ப இருப்பு</string>
+    <string name="notes">குறிப்புகள்</string>
+    <string name="notes_hint">குறிப்பைச் செருகவும்</string>
+    <string name="closed">மூடப்பட்டது</string>
+    <string name="theme_application">தீம்</string>
     <!-- 20120906 -->
+    <string name="close_application">பயன்பாட்டை மூடு</string>
+    <string name="question_close_application">பயன்பாட்டை மூட வேண்டுமா?</string>
+    <string name="attention">கவனம்</string>
     <!-- transaction list periods -->
+    <string name="all_transaction">அனைத்து பரிவர்த்தனைகள்</string>
+    <string name="today">இன்று</string>
+    <string name="last7days">கடந்த 7 நாட்கள்</string>
+    <string name="last15days">கடந்த 2 வாரங்கள்</string>
+    <string name="current_month">தற்போதைய மாதம்</string>
+    <string name="current_year">நடப்பு ஆண்டு</string>
+    <string name="future_transactions">எதிர்கால பரிவர்த்தனைகள்</string>
+    <string name="show_transaction">பரிவர்த்தனையைக் காட்டு</string>
+    <string name="transaction_number">பரிவர்த்தனை எண்</string>
+    <string name="widget_summary">சுருக்கம்</string>
+    <string name="widget_all_accounts">அனைத்து கணக்குகளும்</string>
     <!-- TAG -->
+    <string name="tagsList_transactions">பரிவர்த்தனைக்கான குறிச்சொற்கள்</string>
+    <string name="tag_name">குறிச்சொல் பெயர்</string>
+    <string name="edit_tagName">குறியைத் திருத்து</string>
+    <string name="delete_tag">குறிச்சொல்லை நீக்கு</string>
+    <string name="select_tag">குறிச்சொல்லைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="tag_empty_list">குறிச்சொல் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
+    <string name="tag_can_not_deleted">தேர்ந்தெடுக்கப்பட்ட குறிச்சொல் குறிப்பிடப்பட்டிருப்பதால் அதை நீக்க முடியாது</string>
+    <string name="db_tag_update_failed">குறிச்சொல்லைப் புதுப்பிக்க முடியவில்லை</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">எதுவும் இல்லை</string>
+    <string name="once">ஒருமுறை</string>
+    <string name="weekly">வாரந்தோறும்</string>
+    <string name="bi_weekly">இருவாரம்</string>
+    <string name="monthly">மாதாந்திர</string>
+    <string name="bi_monthly">இருமாதம்</string>
+    <string name="quaterly">காலாண்டு</string>
+    <string name="half_year">அரையாண்டு</string>
+    <string name="yearly">ஆண்டுதோறும்</string>
+    <string name="four_months">நான்கு மாதங்கள்</string>
+    <string name="four_weeks">நான்கு வாரங்கள்</string>
+    <string name="daily">தினசரி</string>
+    <string name="in_x_days">(x) நாட்களில்</string>
+    <string name="in_x_months">(x) மாதங்களில்</string>
+    <string name="every_x_days">ஒவ்வொரு (x) நாட்களிலும்</string>
+    <string name="every_x_months">ஒவ்வொரு (x) மாதங்களுக்கும்</string>
+    <string name="inactive">செயலற்றது</string>
+    <string name="next_occurrence">அடுத்த நிகழ்வு</string>
     <!-- EP Recurring mode recurring_mode -->
     <!-- 20121121 -->
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
     <!-- 20121122 -->
     <!--<string name="passcode_update">passcode is updated</string>-->
     <!-- 20121217 -->
+    <string name="income">வருமானம்</string>
+    <string name="expenses">செலவுகள்</string>
+    <string name="difference">வேறுபாடு</string>
+    <string name="month">மாதம்</string>
+    <string name="year">ஆண்டு</string>
+    <string name="menu_reports">உள்ளமைவு அறிக்கைகள்</string>
+    <string name="title_activity_general_report">பொது அறிக்கைகள்</string>
+    <string name="menu_report_income_vs_expenses">பொது அறிக்கை</string>
+    <string name="menu_report_cashflow">பணப்புழக்கம்</string>
+    <string name="total">மொத்தம்</string>
     <!--<string name="option">Option</string>-->
+    <string name="all_time">எல்லா நேரமும்</string>
+    <string name="last_month">முந்தைய மாதம்</string>
+    <string name="last30days">கடந்த 30 நாட்கள்</string>
+    <string name="last_year">முந்தைய ஆண்டு</string>
+    <string name="current_fin_year">நடப்பு நிதியாண்டு</string>
+    <string name="last_fin_year">முந்தைய நிதியாண்டு</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <!-- 20130108 -->
+    <string name="date_format">தேதி வடிவம்</string>
+    <string name="financial_year_start_day">நிதி ஆண்டு: தொடக்க நாள்</string>
+    <string name="financial_year_start_month">நிதி ஆண்டு: தொடக்க மாதம்</string>
+    <string name="financial_year_not_set">நிதியாண்டு தொடக்கத் தேதியை அமைப்பில் அமைக்கவும்.</string>
+    <string name="menu_move_database_to_external_storage">தரவுத்தளத்தைப் பதிவிறக்கவும்</string>
     <!-- Split Categories -->
+    <string name="split_transaction">பிளவு பரிவர்த்தனை</string>
+    <string name="split">பிளவு</string>
+    <string name="error_split_transaction_empty">குறைந்தபட்சம் ஒன்று பிரிக்கப்பட்ட பரிவர்த்தனை தேவை</string>
+    <string name="donate_in_app_spinner_text">நன்கொடைத் தொகையைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="donate_in_app_button">தானம் செய்</string>
+    <string name="donate_thank_you">உங்கள் நன்கொடைக்கு நன்றி!</string>
+    <string name="donate">தானம் செய்</string>
+    <string name="no_thanks">இல்லை, நன்றி</string>
+    <string name="donate_exlamation">தானம் செய்!</string>
+    <string name="donate_button_text">தானம் செய்</string>
+    <string name="homepage_button">முகப்புப் பக்கத்தைத் திற</string>
+    <string name="top_withdrawals_last_30_days">அதிக பணம் திரும்பப் பெறுதல்: கடந்த 30 நாட்கள்</string>
+    <string name="top_payees_last_30_days">அதிகம் பணம் பெறுபவர்கள்: கடந்த 30 நாட்கள்</string>
+    <string name="upcoming_transactions">வரவிருக்கும் பரிவர்த்தனைகள்</string>
+    <string name="quantity">அளவு</string>
+    <string name="dashboard">டாஷ்போர்டு</string>
+    <string name="last3months">கடந்த 3 மாதங்கள்</string>
+    <string name="last6months">கடந்த 6 மாதங்கள்</string>
+    <string name="empty_category">காலி வகை</string>
+    <string name="empty_payee">காலி பணம் பெறுபவர்</string>
+    <string name="help">உதவி</string>
     <!-- languages -->
+    <string name="action_settings">அமைப்புகள்</string>
     <!-- Password entry activity -->
     <!-- edit investment transaction -->
     <!-- asset allocation -->
+    <string name="all_accounts">அனைத்து கணக்குகளும்</string>
     <!-- db password entry -->
     <!-- budgets -->
     <!-- Currencies -->
@@ -70,7 +259,9 @@
     <!-- Errors -->
     <!-- Select database screen -->
     <!-- Create Database screen -->
+    <string name="run">பண மேலாளரை இயக்கவும்</string>
     <!-- Settings -->
+    <string name="per_database_settings">ஒவ்வொரு தரவுத்தளமும்</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
 </resources>

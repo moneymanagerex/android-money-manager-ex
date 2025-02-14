@@ -17,5 +17,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- default category -->
+    <string name="category_13">வருமானம்</string>
+    <string name="category_16">பரிமாற்றம்</string>
     <!-- default subcategory -->
 </resources>

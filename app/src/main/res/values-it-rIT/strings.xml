@@ -160,6 +160,7 @@
     <string name="delete_transaction">Elimina Transazione</string>
     <string name="new_transaction">Nuova transazione</string>
     <string name="error_payee_not_selected">Il beneficiario è richiesto</string>
+    <string name="error_fromaccount_not_selected">Conto di Origine richiesto</string>
     <string name="error_toaccount_not_selected">Il conto di destinazione è richiesto</string>
     <string name="error_category_not_selected">La categoria è richiesta</string>
     <string name="error_totamount_empty">L\'importo totale è richiesto</string>
@@ -300,6 +301,7 @@
     <string name="no_stock_data">Nessun Azione disposibile per questo conto</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
+    <string name="menu_reports">Resoconti Predefiniti</string>
     <string name="menu_general_report_group">Resoconti Generali</string>
     <string name="title_activity_general_report">Resoconto Generale</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
@@ -319,6 +321,7 @@
     <string name="date_format">Formato data</string>
     <string name="financial_year_start_day">Anno Finanziario: Giorno Inizio</string>
     <string name="financial_year_start_month">Anno Finanziario: Mese Inizio</string>
+    <string name="financial_year_not_set">Imposta la data d\'inizio dell\'anno fiscale nelle impostazioni.</string>
     <string name="menu_move_database_to_external_storage">Esportazione del database</string>
     <string name="database_has_been_moved">Il database è stato spostato: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copia del database su archiviazione esterna fallita</string>
@@ -410,6 +413,7 @@
     <string name="result_search">Esito della ricerca</string>
     <string name="new_repeating_transaction">Nuova Transazione Pianificata</string>
     <string name="edit_repeating_transaction">Modifica Transazione Pianificata</string>
+    <string name="no_recurring_transaction">Il resoconto del flusso di cassa utilizza le transazioni pianificate, ma non sono state trovate transazioni pianificate.</string>
     <string name="path_database_not_exists">Percorso del database non esiste</string>
     <string name="database_can_not_open_write">Il database non può essere aperto in scrittura</string>
     <string name="time_frame">Periodo</string>
@@ -444,6 +448,8 @@
     <string name="sort_by_name">Ordina per nome</string>
     <string name="sort_by_usage">Ordina per utilizzo</string>
     <string name="sort_by_recent">Ordina per recente</string>
+    <string name="sort_date_desc">Ordina per data decrescente</string>
+    <string name="sort_date_asc">Ordina per data crescente</string>
     <string name="choose_sorting">Scegli l\'ordinamento</string>
     <string name="credit_card">Carta di credito</string>
     <string name="cash_accounts">Contanti</string>
@@ -768,4 +774,5 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Cancella tutto</string>
     <string name="empty_color_message">Scegli un colore</string>
+    <string name="menu_show_inactive">Mostra inattivo</string>
 </resources>
