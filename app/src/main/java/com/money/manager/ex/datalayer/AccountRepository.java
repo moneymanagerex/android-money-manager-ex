@@ -82,30 +82,6 @@ public class AccountRepository
         return result;
     }
 
-    public long loadIdByName(String name) {
-        long result = -1;
-
-        if(TextUtils.isEmpty(name)) { return result; }
-
-        String selection = Account.ACCOUNTNAME + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                this.getUri(),
-                new String[] { Account.ACCOUNTID },
-                selection,
-                new String[] { name },
-                null);
-        if (cursor == null) return result;
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID));
-        }
-
-        cursor.close();
-
-        return result;
-    }
-
     public Long loadCurrencyIdFor(long id) {
         Account account = load(id);
 

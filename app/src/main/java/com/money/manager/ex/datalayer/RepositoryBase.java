@@ -36,6 +36,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import timber.log.Timber;
@@ -110,6 +111,12 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     public T loadByName(String name) {
         return first(getAllColumns(), nameColumn + " = ?", new String[] { name }, null);
+    }
+
+    public long loadIdByName(String name) {
+        return Optional.ofNullable(loadByName(name))
+                .map(EntityBase::getId)
+                .orElse(Constants.NOT_SET);
     }
 
     public List<T> loadAll() {

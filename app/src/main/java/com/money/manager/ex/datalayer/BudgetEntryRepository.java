@@ -50,7 +50,7 @@ public class BudgetEntryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETENTRYID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,

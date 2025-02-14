@@ -50,18 +50,6 @@ public class CategoryRepository
                 Category.PARENTID};
     }
 
-    public long loadIdByName(String name) {
-        Category temp = first(
-                new String[] { Category.CATEGID },
-                Category.CATEGNAME + "=?",
-                new String[] { name },
-                null);
-
-        if (temp == null) return Constants.NOT_SET;
-
-        return temp.getId();
-    }
-
     public long loadIdByName(String name, long parentId) {
         Category temp = first(
                 new String[] { Category.CATEGID },

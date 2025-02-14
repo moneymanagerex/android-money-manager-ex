@@ -44,7 +44,7 @@ public class AttachmentRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "ATTACHMENTID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
             Attachment.ATTACHMENTID,
             Attachment.REFTYPE,
             Attachment.REFID,
@@ -53,6 +53,7 @@ public class AttachmentRepository
         };
     }
 
+    // custom func
     public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
         return new ArrayList<>(query(new Select(getAllColumns())
                 .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"

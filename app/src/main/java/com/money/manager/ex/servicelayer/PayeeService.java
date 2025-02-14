@@ -18,7 +18,6 @@ package com.money.manager.ex.servicelayer;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -45,11 +44,7 @@ public class PayeeService
     }
 
     public long loadIdByName(String name) {
-        Payee payee = payeeRepository.loadByName(name);
-        if (payee == null)
-            return Constants.NOT_SET;
-
-        return payee.getId();
+        return payeeRepository.loadIdByName(name);
     }
 
     public Payee createNew(String name) {

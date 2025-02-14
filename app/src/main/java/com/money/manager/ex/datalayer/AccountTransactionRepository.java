@@ -47,7 +47,7 @@ public class AccountTransactionRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {
-                "TRANSID AS _id", AccountTransaction.TRANSID,
+                ID_COLUMN + " AS _id", AccountTransaction.TRANSID,
                 ITransactionEntity.ACCOUNTID,
                 ITransactionEntity.TOACCOUNTID,
                 ITransactionEntity.PAYEEID,
