@@ -18,12 +18,9 @@ package com.money.manager.ex.servicelayer;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.Tag;
@@ -42,49 +39,11 @@ public class TagService
     private final TagRepository tagRepository;
 
     public Tag loadByName(String name) {
-        Tag tag = null;
-        String selection = Tag.TAGNAME + "='" + name + "'";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                this.tagRepository.getUri(),
-                this.tagRepository.getAllColumns(),
-                selection,
-                null,
-                null);
-        if (cursor == null) return null;
-
-        if(cursor.moveToFirst()) {
-            tag = new Tag();
-            tag.loadFromCursor(cursor);
-        }
-
-        cursor.close();
-
-        return tag;
+        return tagRepository.loadByName(name);
     }
 
     public long loadIdByName(String name) {
-        long result = Constants.NOT_SET;
-
-        if(TextUtils.isEmpty(name)) return result;
-
-        String selection = Tag.TAGNAME + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                tagRepository.getUri(),
-                new String[]{ Tag.TAGID },
-                selection,
-                new String[] { name },
-                null);
-        if (cursor == null) return Constants.NOT_SET;
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Tag.TAGID));
-        }
-
-        cursor.close();
-
-        return result;
+        return tagRepository.loadIdByName(name);
     }
 
     public Tag createNew(String name) {

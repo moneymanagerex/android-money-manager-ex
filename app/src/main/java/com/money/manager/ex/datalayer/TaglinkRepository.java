@@ -7,7 +7,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
@@ -15,9 +14,10 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
 
     private static final String TABLE_NAME = "TAGLINK_V1";
     private static final String ID_COLUMN = Taglink.TAGLINKID;
+    private static final String NAME_COLUMN = "";
 
     public TaglinkRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "taglink", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "taglink", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -39,15 +39,6 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
         if (refId == Constants.NOT_SET) return false;
         long result = delete(Taglink.REFID + "=? AND " + Taglink.REFTYPE + "=?", new String[] { Long.toString(refId), reftype });
         return result > 0;
-    }
-
-    public boolean save(Taglink taglink) {
-        try {
-            long id = taglink.getId();
-            return update(taglink, Taglink.TAGLINKID + "=" + id);
-        } catch (Exception e) {
-            return ( add(taglink) > 0 ) ;
-        }
     }
 
     public boolean save(ArrayList<Taglink> taglinks) {

@@ -18,12 +18,10 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 
 /**
@@ -35,9 +33,10 @@ public class AccountTransactionRepository
 
     private static final String TABLE_NAME = "checkingaccount_v1";
     private static final String ID_COLUMN = AccountTransaction.TRANSID;
+    private static final String NAME_COLUMN = "";
 
     public AccountTransactionRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "checkingaccount", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "checkingaccount", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class AccountTransactionRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {
-                "TRANSID AS _id", AccountTransaction.TRANSID,
+                ID_COLUMN + " AS _id", AccountTransaction.TRANSID,
                 ITransactionEntity.ACCOUNTID,
                 ITransactionEntity.TOACCOUNTID,
                 ITransactionEntity.PAYEEID,

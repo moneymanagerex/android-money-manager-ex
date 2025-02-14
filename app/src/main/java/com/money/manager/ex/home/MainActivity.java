@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -61,8 +60,9 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.datalayer.ReportRepository;
+import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.reports.CashFlowReportActivity;
-import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -139,9 +139,6 @@ public class MainActivity
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
-
-    @Inject
-    Lazy<MmxOpenHelper> openHelper;//added for General Report //velmuruganc
 
     /**
      * @return the mRestart
@@ -1445,30 +1442,13 @@ public class MainActivity
         int iconColor = uiHelper.getSecondaryTextColor();
         ArrayList<DrawerMenuItem> childReportGroup = new ArrayList<>();
 
-        try
-        {
-            Cursor groupCursor = openHelper.get().getReadableDatabase().query("SELECT DISTINCT GROUPNAME FROM REPORT_V1");
-            int groupIndex = 0;
+        ReportRepository repo = new ReportRepository(this);
 
-            if(groupCursor.moveToFirst())
-            {
-                while(!groupCursor.isAfterLast()){
-                    groupIndex = groupCursor.getColumnIndex("GROUPNAME");
-                    childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
-                            .withText(groupCursor.getString(groupIndex))
-                            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
-                                    .color(iconColor)));
-
-                    groupCursor.moveToNext();
-                }
-            }
-
-            groupCursor.close();
-
-        }
-        catch(Exception e)
-        {
-            //System.err.println("EXCEPTION:"+e);
+        for (String groupName : repo.loadGroupedByName().keySet()) {
+            childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                    .withText(groupName)
+                    .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                            .color(iconColor)));
         }
 
         return childReportGroup;
@@ -1476,30 +1456,22 @@ public class MainActivity
 
     @SuppressLint("Range")
     private void showGeneralReportsSelector(String groupName) {
-
-        //added by velmuruganc
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         UIHelper uiHelper = new UIHelper(this);
         int iconColor = uiHelper.getSecondaryTextColor();
 
-        Cursor menuCursor = openHelper.get().getReadableDatabase().query("SELECT REPORTNAME FROM REPORT_V1 WHERE GROUPNAME = '"+ groupName +"'");
         ArrayList<String> reportName = new ArrayList<>();
+        ReportRepository repo = new ReportRepository(this);
 
-        if(menuCursor.moveToFirst())
-        {
-            while(!menuCursor.isAfterLast()){
-                reportName.add(menuCursor.getString(menuCursor.getColumnIndex("REPORTNAME")));
-                //custom report for given group
-                adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
-                        .withText(menuCursor.getString(menuCursor.getColumnIndex("REPORTNAME")))
-                        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
-                                .color(iconColor)));
+        for (Report report : repo.loadByGroupName(groupName)) {
+            reportName.add(report.getReportName());
+            //custom report for given group
+            adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
+                    .withText(report.getReportName())
+                    .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                            .color(iconColor)));
 
-                menuCursor.moveToNext();
-            }
         }
-
-        menuCursor.close();
 
         //*********** build custom dialog ************
         // Inflate the custom dialog layout

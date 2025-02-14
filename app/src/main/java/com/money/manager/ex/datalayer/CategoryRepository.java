@@ -21,7 +21,6 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * A repository for Categories.
@@ -31,9 +30,10 @@ public class CategoryRepository
 
     private static final String TABLE_NAME = "category_v1";
     private static final String ID_COLUMN = Category.CATEGID;
+    private static final String NAME_COLUMN = Category.CATEGNAME;
 
     public CategoryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "category", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "category", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -48,18 +48,6 @@ public class CategoryRepository
                 Category.CATEGNAME,
                 Category.ACTIVE,
                 Category.PARENTID};
-    }
-
-    public long loadIdByName(String name) {
-        Category temp = first(
-                new String[] { Category.CATEGID },
-                Category.CATEGNAME + "=?",
-                new String[] { name },
-                null);
-
-        if (temp == null) return Constants.NOT_SET;
-
-        return temp.getId();
     }
 
     public long loadIdByName(String name, long parentId) {

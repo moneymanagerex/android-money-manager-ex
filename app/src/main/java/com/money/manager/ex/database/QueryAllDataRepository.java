@@ -22,7 +22,6 @@ import android.database.Cursor;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.RepositoryBase;
-import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
@@ -33,10 +32,11 @@ public class QueryAllDataRepository
     extends RepositoryBase<AccountTransactionDisplay> {
 
     private static final String ID_COLUMN = QueryAllData.ID;
+    private static final String NAME_COLUMN = QueryAllData.AccountName;
 
     public QueryAllDataRepository(Context context) {
         super(context, MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
-            "queryalldata", ID_COLUMN);
+            "queryalldata", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override

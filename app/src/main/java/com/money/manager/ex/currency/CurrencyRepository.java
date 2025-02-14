@@ -37,9 +37,10 @@ public class CurrencyRepository
 
     private static final String TABLE_NAME = "currencyformats_v1";
     private static final String ID_COLUMN = Currency.CURRENCYID;
+    private static final String NAME_COLUMN = Currency.CURRENCYNAME;
 
     public CurrencyRepository(Context context) {
-        super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats", ID_COLUMN);
+        super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats", ID_COLUMN, NAME_COLUMN);
 
         //this.TABLENAME = "currencyformats_v1";
     }

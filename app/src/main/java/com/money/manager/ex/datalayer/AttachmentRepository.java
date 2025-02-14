@@ -17,12 +17,9 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
-import android.database.Cursor;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
@@ -34,9 +31,10 @@ public class AttachmentRepository
 
     private static final String TABLE_NAME = "attachment_v1";
     private static final String ID_COLUMN = Attachment.ATTACHMENTID;
+    private static final String NAME_COLUMN = Attachment.FILENAME;
 
     public AttachmentRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "attachment", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "attachment", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class AttachmentRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "ATTACHMENTID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
             Attachment.ATTACHMENTID,
             Attachment.REFTYPE,
             Attachment.REFID,
@@ -55,28 +53,10 @@ public class AttachmentRepository
         };
     }
 
+    // custom func
     public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
-        Cursor curAtt = getContext().getContentResolver().query(getUri(), null,
-                Attachment.REFID + "=? AND " + Attachment.REFTYPE +  "=?",
-                new String[] { Long.toString(refId),  refType},
-                Attachment.ATTACHMENTID);
-        if (curAtt == null) return null;
-
-        ArrayList<Attachment> listAtts = new ArrayList<>();
-
-        while (curAtt.moveToNext()) {
-            Attachment attachment = new Attachment();
-            attachment.loadFromCursor(curAtt);
-
-            listAtts.add(attachment);
-        }
-        curAtt.close();
-
-        return listAtts;
-    }
-
-    public boolean save(Attachment attachment) {
-        long id = attachment.getId();
-        return super.update(attachment, Attachment.ATTACHMENTID + "=" + id);
+        return new ArrayList<>(query(new Select(getAllColumns())
+                .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"
+                        , Long.toString(refId), refType)));
     }
 }

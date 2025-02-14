@@ -3,12 +3,10 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
 
@@ -16,9 +14,10 @@ public class TagRepository extends RepositoryBase <Tag> {
 
     private static final String TABLE_NAME = "TAG_V1";
     private static final String ID_COLUMN = Tag.TAGID;
+    private static final String NAME_COLUMN = Tag.TAGNAME;
 
     public TagRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "tag", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "tag", ID_COLUMN, NAME_COLUMN);
     }
 
     public static final int SORT_BY_NAME = 0;
@@ -46,11 +45,6 @@ public class TagRepository extends RepositoryBase <Tag> {
                 Tag.TAGNAME,
                 Tag.ACTIVE
         };
-    }
-
-    public boolean save(Tag entity) {
-        long id = entity.getId();
-        return super.update(entity, Tag.TAGID + "=" + id);
     }
 
     public ArrayList<Tag> getAllActiveTag() {
@@ -88,8 +82,6 @@ public class TagRepository extends RepositoryBase <Tag> {
 
     public String getOrderByFromCode() {
         AppSettings settings = new AppSettings(getContext());
-        return  getOrderByFromCode(settings.getTagSort());
+        return getOrderByFromCode(settings.getTagSort());
     }
-
-
 }

@@ -18,10 +18,8 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * Payee repository
@@ -31,9 +29,10 @@ public class PayeeRepository
 
     private static final String TABLE_NAME = "payee_v1";
     private static final String ID_COLUMN = Payee.PAYEEID;
+    private static final String NAME_COLUMN = Payee.PAYEENAME;
 
     public PayeeRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "payee", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "payee", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -50,10 +49,5 @@ public class PayeeRepository
                 Payee.NUMBER,
                 Payee.ACTIVE
         };
-    }
-
-    public boolean save(Payee payee) {
-        long id = payee.getId();
-        return super.update(payee, Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 }

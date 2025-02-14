@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
@@ -37,9 +36,10 @@ public class AccountRepository
 
     private static final String TABLE_NAME = "accountlist_v1";
     private static final String ID_COLUMN = Account.ACCOUNTID;
+    private static final String NAME_COLUMN = Account.ACCOUNTNAME;
 
     public AccountRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "accountlist", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "accountlist", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AccountRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+        return new String[] { ID_COLUMN + " AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
@@ -82,85 +82,21 @@ public class AccountRepository
         return result;
     }
 
-    public long loadIdByName(String name) {
-        long result = -1;
-
-        if(TextUtils.isEmpty(name)) { return result; }
-
-        String selection = Account.ACCOUNTNAME + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(
-                this.getUri(),
-                new String[] { Account.ACCOUNTID },
-                selection,
-                new String[] { name },
-                null);
-        if (cursor == null) return result;
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID));
-        }
-
-        cursor.close();
-
-        return result;
-    }
-
     public Long loadCurrencyIdFor(long id) {
-        Account account = first(
-                new String[] { Account.CURRENCYID },
-            Account.ACCOUNTID + "=?",
-            MmxDatabaseUtils.getArgsForId(id),
-            null);
+        Account account = load(id);
 
         if (account == null) {
             return null;
-//            String message = this.getContext().getString(R.string.account_not_found) + " " + id;
-//            throw new IllegalArgumentException(message);
         }
         return account.getCurrencyId();
     }
 
     public String loadName(Long id) {
-        if (id == null) return null;
-
-        String name = null;
-
-        Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},
-            Account.ACCOUNTID + "=?",
-            new String[]{Long.toString(id)}
-        );
-        if (cursor == null) return null;
-
-        if (cursor.moveToFirst()) {
-            name = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME));
+        Account account = load(id);
+        if (account == null) {
+            return null;
         }
-        cursor.close();
-
-        return name;
-    }
-
-    public Account first(String selection) {
-        return super.first(null, selection, null, null);
-    }
-
-    /**
-     * Updates entity.
-     * @param value Account to be updated.
-     * @return  Boolean indicating whether the update was successful.
-     */
-    public boolean save(Account value) {
-        Long id = value.getId();
-
-        if (id == null || id == Constants.NOT_SET) {
-            this.add(value);
-            return true;
-        }
-
-        WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(Account.ACCOUNTID, "=", id);
-
-        return update(value, where);
+        return account.getName();
     }
 
     public Cursor getInvestmentAccountsCursor(boolean openOnly) {

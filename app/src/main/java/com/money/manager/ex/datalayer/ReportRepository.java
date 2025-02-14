@@ -19,10 +19,13 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Report;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Report repository
@@ -31,9 +34,10 @@ public class ReportRepository extends RepositoryBase<Report> {
 
     private static final String TABLE_NAME = "report_v1";
     private static final String ID_COLUMN = Report.REPORTID;
+    private static final String NAME_COLUMN = Report.REPORTNAME;
 
     public ReportRepository(Context context) {
-        super(context, "report_v1", DatasetType.TABLE, "report", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "report", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -56,8 +60,19 @@ public class ReportRepository extends RepositoryBase<Report> {
         };
     }
 
-    public boolean save(Report report) {
-        long id = report.getId();
-        return super.update(report, Report.REPORTID + "=?", MmxDatabaseUtils.getArgsForId(id));
+    // custom func
+    public List<Report> loadByGroupName(String groupName) {
+        return query(new Select().where(Report.GROUPNAME + " = ?", groupName));
+    }
+
+    public Map<String, List<Report>> loadGroupedByName() {
+        List<Report> reports = loadAll();
+
+        Map<String, List<Report>> reportMap = new HashMap<>();
+        for (Report report : reports) {
+            String groupName = report.getGroupName();
+            reportMap.computeIfAbsent(groupName, k -> new ArrayList<>()).add(report);
+        }
+        return reportMap;
     }
 }

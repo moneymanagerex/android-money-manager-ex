@@ -99,7 +99,7 @@ public class TagLinkUtils {
                     // Initialize string builder
                     // Save also taglink, loop at mtaglink to check actual record
                     for (int j = 0; j < mTagsList.size(); j++) {
-                        long tagId = mTagsList.get(j).getId().intValue();
+                        long tagId = mTagsList.get(j).getId().longValue();
                         Taglink taglink ;
                         try {
                             taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();

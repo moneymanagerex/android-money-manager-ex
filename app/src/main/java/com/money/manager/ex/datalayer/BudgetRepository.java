@@ -19,11 +19,8 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Budget;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * Budget repository.
@@ -33,9 +30,10 @@ public class BudgetRepository
 
     private static final String TABLE_NAME = "budgetyear_v1";
     private static final String ID_COLUMN = Budget.BUDGETYEARID;
+    private static final String NAME_COLUMN = Budget.BUDGETYEARNAME;
 
     public BudgetRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -46,22 +44,5 @@ public class BudgetRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
-    }
-
-    public boolean save(Budget entity) {
-        boolean result;
-
-        if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
-            // remove any existing id value
-            entity.contentValues.remove(Budget.BUDGETYEARID);
-
-            // new record
-            long id = super.add(entity);
-            result = id != 0;
-        } else {
-            result = super.update(entity, Budget.BUDGETYEARID + "=?",
-                    MmxDatabaseUtils.getArgsForId(entity.getId()));
-        }
-        return result;
     }
 }

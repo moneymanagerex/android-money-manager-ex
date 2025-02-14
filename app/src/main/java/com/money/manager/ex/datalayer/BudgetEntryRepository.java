@@ -37,9 +37,10 @@ public class BudgetEntryRepository
 
     private static final String TABLE_NAME = "budgettable_v1";
     private static final String ID_COLUMN = BudgetEntry.BUDGETENTRYID;
+    private static final String NAME_COLUMN = BudgetEntry.BUDGETYEARID;
 
     public BudgetEntryRepository(Context context) {
-        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable", ID_COLUMN);
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgettable", ID_COLUMN, NAME_COLUMN);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class BudgetEntryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"BUDGETENTRYID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
