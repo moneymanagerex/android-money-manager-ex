@@ -65,6 +65,7 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.settings.AppSettings;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -98,12 +99,29 @@ public class NestedCategoryListFragment
 
     //    private Context mContext;
     private String mCurFilter;
+    private int levelMode = -1;
+    private long rootCategoryId = -1;
 
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setSearchMenuVisible(true);
+
+        levelMode = (new AppSettings(getActivity()).getCategoryNavMode());
+        if (levelMode == -1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(R.string.attention)
+                    .setIcon(new UIHelper(getActivity()).getIcon(FontAwesome.Icon.faw_question))
+                    .setMessage("New navigation mode is available under menu")
+                    .setPositiveButton("Remember me Later", (dialog, which) -> {})
+                    .setNegativeButton("Dismiss", (dialog, which) -> {
+                        new AppSettings(getActivity()).setCategoryNavMode(levelMode);
+                    })
+                    .show();
+            levelMode = 0;
+        }
+        rootCategoryId = -1; // reset filter
 
         setHasOptionsMenu(true);
 
@@ -114,28 +132,64 @@ public class NestedCategoryListFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
-        int layout = android.R.layout.simple_list_item_1;
+//        int layout = android.R.layout.simple_list_item_1;
+        int layout = R.layout.simple_list_item_1_with_selector;
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[]{QueryNestedCategory.CATEGNAME},
-                new int[]{android.R.id.text1}, 0);
+                layout, null, new String[]{QueryNestedCategory.CATEGNAME, QueryNestedCategory.ID},
+                new int[]{R.id.text1, R.id.selector}, 0);
 
-        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                TextView textView = (TextView) aView;
-                boolean active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(QueryNestedCategory.ACTIVE))) == 1);
-                CharSequence text = aCursor.getString(aColumnIndex);
-                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
-                    text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
-                }
-                if (!active) {
-                    textView.setText(Html.fromHtml("<i>" + text + " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT));
-                } else {
-                    textView.setText(text);
-                }
-                return true;
+        adapter.setViewBinder((aView, aCursor, aColumnIndex) -> {
+            NestedCategoryEntity nestedCategory = new NestedCategoryEntity();
+            nestedCategory.loadFromCursor(aCursor);
+            if (aView.getId() == R.id.selector ) {
+                    aView.setVisibility(View.GONE); // default
+                    if (levelMode == 0) {
+                        return true;
+                    }
+                    if ( mAction.equals(Intent.ACTION_PICK) ) {
+                        // set visibiloity and action
+                        aView.setVisibility(View.VISIBLE);
+                        aView.setTag(nestedCategory.getId());
+                        aView.setOnClickListener(v -> {
+                            sendResultToActivity(nestedCategory.getId(), nestedCategory.getCategoryName());
+                        });
+                        return true;
+                    }
+
+                    // in normal mode show ">" if has children
+                    if ( nestedCategory.hasChildren() ) {
+                        aView.setVisibility(View.VISIBLE);
+                        aView.setTag(nestedCategory.getId());
+                        aView.setOnClickListener(v -> {
+                            onListItemLongClick(getListView(), v, getListView().getPositionForView(v), nestedCategory.getId());
+                        });
+                    }
+                    return true;
             }
+            TextView textView = (TextView) aView;
+            boolean active = nestedCategory.getActiveAsBoolean();
+            CharSequence text;
+            if ( levelMode != 0 ) {
+                if ( rootCategoryId != nestedCategory.getParentId() || rootCategoryId == -1 ) {
+                    // this is actual root
+                    text = nestedCategory.getCategoryName();
+                } else {
+                    text = "  > " + nestedCategory.getBasename();
+                }
+            } else {
+                text = nestedCategory.getCategoryName();
+            }
+            if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
+            }
+            if (!active) {
+                textView.setText(Html.fromHtml("<i>" + text + " [inactive]</i>", Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                textView.setText(text);
+            }
+            return true;
         });
 
 
@@ -150,7 +204,7 @@ public class NestedCategoryListFragment
         attachFloatingActionButtonToListView();
 
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+        LoaderManager.getInstance(getActivity()).initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
 
         setFloatingActionButtonVisible(true);
         attachFloatingActionButtonToListView();
@@ -161,6 +215,7 @@ public class NestedCategoryListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
+
         switch ((new AppSettings(getActivity())).getCategorySort()) {
             case ORDER_BY_USAGE:
                 menu.findItem(R.id.menu_sort_usage).setChecked(true);
@@ -178,6 +233,19 @@ public class NestedCategoryListFragment
             menu.findItem(R.id.menu_show_inactive).setVisible(true);
             menu.findItem(R.id.menu_show_inactive).setChecked((new AppSettings(getActivity())).getShowInactive());
         }
+
+        // add menu option for navigatio
+        MenuItem menuNavigation = menu.findItem(R.id.menu_sort).getSubMenu().add("Navigation Mode");
+        menuNavigation.setCheckable(true);
+        menuNavigation.setChecked(levelMode != 0);
+        menuNavigation.setOnMenuItemClickListener(item -> {
+            levelMode = 1 - levelMode;
+            new AppSettings(getActivity()).setCategoryNavMode(levelMode);
+            item.setChecked(levelMode != 0);
+            rootCategoryId = -1;
+            restartLoader();
+            return true;
+        });
     }
 
     @Override
@@ -302,17 +370,30 @@ public class NestedCategoryListFragment
         if (id == ID_LOADER_NESTEDCATEGORY) {// update id selected
             // load data
             String whereClause = "";
-            String[] selectionArgs = null;
+            String[] selectionArgs = new String[]{};
+
+            if (levelMode != 0 ) {
+                if (!TextUtils.isEmpty(whereClause)) {
+                    whereClause += " AND ";
+                }
+                whereClause += "(" + QueryNestedCategory.PARENTID + " = ?  OR " + QueryNestedCategory.CATEGID + " = ? )" ;
+                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+            }
+
             if (mAction == Intent.ACTION_PICK
                     || !(new AppSettings(getContext())).getShowInactive()) {
-                whereClause = "ACTIVE <> 0";
+                if (!TextUtils.isEmpty(whereClause)) {
+                    whereClause += " AND ";
+                }
+                whereClause += "ACTIVE <> 0";
             }
             if (!TextUtils.isEmpty(mCurFilter)) {
                 if (!TextUtils.isEmpty(whereClause)) {
                     whereClause += " AND ";
                 }
                 whereClause += QueryNestedCategory.CATEGNAME + " LIKE ?";
-                selectionArgs = new String[]{mCurFilter + "%"};
+                selectionArgs = ArrayUtils.add( selectionArgs, mCurFilter + "%");
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
             String sort;
@@ -425,6 +506,36 @@ public class NestedCategoryListFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+        if (levelMode == 0) {
+            onListItemLongClick(l, v, position, id);
+            return;
+        }
+        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+        if (cursor != null) {
+            if (cursor.moveToPosition(position)) {
+                NestedCategoryEntity nestedCategory = new NestedCategoryEntity();
+                nestedCategory.loadFromCursor(cursor);
+                // if selected item is root level come back
+                if (nestedCategory.getCategoryId() == rootCategoryId) {
+                    rootCategoryId = nestedCategory.getParentId();
+                    restartLoader();
+                    return;
+                }
+
+                // if has children go to level
+                if (nestedCategory.hasChildren()) {
+                    rootCategoryId = nestedCategory.getCategoryId();
+                    restartLoader();
+                    return;
+                }
+                // no special handling. call long item
+                onListItemLongClick(l, v, position, id);
+            }
+        }
+    }
+
+    public void onListItemLongClick(ListView l, View v, int position, long id) {
+        super.onListItemLongClick(l, v, position, id);
 
         // On select go back to the calling activity (if there is one)
         if (getActivity().getCallingActivity() != null) {
@@ -446,7 +557,7 @@ public class NestedCategoryListFragment
      * Restart loader to view data
      */
     private void restartLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+        LoaderManager.getInstance(getActivity()).restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
     }
 
     /**

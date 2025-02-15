@@ -89,12 +89,13 @@ public class NestedCategoryEntity
         setString(QueryNestedCategory.BASENAME, basename);
     }
 
-    public long getActive() {
-        return getLong(QueryNestedCategory.ACTIVE);
-    }
-
+    public long getActive() { return getLong(QueryNestedCategory.ACTIVE); }
     public void setActive(long active) {
         setLong(QueryNestedCategory.ACTIVE, active);
+    }
+    public boolean getActiveAsBoolean() { return getActive() != 0; }
+    public void setActiveFromBoolean(boolean active) {
+        setLong(QueryNestedCategory.ACTIVE, (active ? ACTIVE : NOT_ACTIVE));
     }
 
     public long getLevel() {
@@ -115,6 +116,8 @@ public class NestedCategoryEntity
     public boolean hasParent() {
         return this.getParentId() != Constants.NOT_SET;
     }
+
+    public boolean hasChildren() { return getLong(QueryNestedCategory.CHILDRENCOUNT) > 0; }
 
     public Category asCategory() {
         Category category = new Category();
