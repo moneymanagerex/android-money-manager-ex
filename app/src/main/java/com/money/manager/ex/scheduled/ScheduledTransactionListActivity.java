@@ -27,7 +27,6 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
 
 import com.money.manager.ex.datalayer.TaglinkRepository;
-import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;

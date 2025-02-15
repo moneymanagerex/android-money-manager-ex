@@ -12,7 +12,7 @@ import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.Tag;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 
 import java.util.ArrayList;
 
@@ -20,18 +20,18 @@ public class TagLinkUtils {
     private Context mContext;
     private AlertDialog mDialog;
     private ArrayList<Tag> mTagsList;
-    private ArrayList<Taglink> mTaglinks;
+    private ArrayList<TagLink> mTagLinks;
     private TaglinkRepository taglinkRepository;
     private TagRepository tagRepository;
 
     public interface OnTagSelected {
-        void onTagSelected(ArrayList<Taglink> tagLinks);
+        void onTagSelected(ArrayList<TagLink> tagLinks);
     }
 
     public TagLinkUtils(@NonNull Context context) {
         mContext = context;
         mTagsList = new ArrayList<Tag>();
-        mTaglinks = new ArrayList<Taglink>();
+        mTagLinks = new ArrayList<TagLink>();
         taglinkRepository = new TaglinkRepository(mContext);
         tagRepository = new TagRepository(mContext);
         // load tags for controls
@@ -39,8 +39,8 @@ public class TagLinkUtils {
     }
 
     // set and get method for taglink instance
-    public ArrayList<Taglink> getTagsLink() { return mTaglinks; }
-    public void setTagsLink(ArrayList<Taglink> tagLinks) { mTaglinks = tagLinks; }
+    public ArrayList<TagLink> getTagsLink() { return mTagLinks; }
+    public void setTagsLink(ArrayList<TagLink> tagLinks) { mTagLinks = tagLinks; }
 
     // private method
     private void setMDialog(AlertDialog a) {
@@ -56,15 +56,15 @@ public class TagLinkUtils {
      * @param onTagSelected : call back event after dialog dismiss
      */
     public void initTagControls(TextView tagTextView,
-                                ArrayList<Taglink> tagLink,
+                                ArrayList<TagLink> tagLink,
                                 Long transactionId,
                                 RefType tagRefType,
                                 OnTagSelected onTagSelected ) {
         if( tagTextView == null ) return;
         if (tagLink == null) {
-            mTaglinks = new ArrayList<Taglink>();
+            mTagLinks = new ArrayList<TagLink>();
         } else {
-            mTaglinks = tagLink;
+            mTagLinks = tagLink;
         }
 
         // inizialize display
@@ -78,7 +78,7 @@ public class TagLinkUtils {
                 tagsListString[i] = mTagsList.get(i).getName();
                 // set default from mTagLink
                 long tagId = mTagsList.get(i).getId().intValue();
-                if ( mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
+                if ( mTagLinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
                     tagsFlag[i] = true;
                 };
             }
@@ -101,9 +101,9 @@ public class TagLinkUtils {
                     // Save also taglink, loop at mtaglink to check actual record
                     for (int j = 0; j < mTagsList.size(); j++) {
                         long tagId = mTagsList.get(j).getId().longValue();
-                        Taglink taglink ;
+                        TagLink taglink ;
                         try {
-                            taglink = mTaglinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
+                            taglink = mTagLinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();
                         } catch ( Exception e) {
                             taglink = null;
                         }
@@ -112,16 +112,16 @@ public class TagLinkUtils {
                                 // flag off and mlink not present, nothing to do
                             } else {
                                 // flag on and mlink not present, create
-                                taglink = new Taglink();
+                                taglink = new TagLink();
                                 taglink.setRefType(tagRefType);
                                 taglink.setRefId(transactionId);
                                 taglink.setTagId(tagId);
-                                mTaglinks.add(taglink);
+                                mTagLinks.add(taglink);
                             }
                         } else {
                             if ( ! tagsFlag[j] ) {
                                 // flag off and mlink is present, delete
-                                mTaglinks.remove(taglink);
+                                mTagLinks.remove(taglink);
                             } else {
                                 // flag on and mlink present  nothing
                             }
@@ -146,7 +146,7 @@ public class TagLinkUtils {
             builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    mTaglinks.clear();
+                    mTagLinks.clear();
                     displayTags(tagTextView);
                     callback(onTagSelected);
                 }
@@ -160,11 +160,11 @@ public class TagLinkUtils {
 
     public void displayTags(TextView tagTextView) {
         if( tagTextView == null ) return;
-        tagTextView.setText( taglinkRepository.loadTagsfor( mTaglinks ) );
+        tagTextView.setText( taglinkRepository.loadTagsfor(mTagLinks) );
     }
 
     private void callback(OnTagSelected onTagSelected) {
-        if (onTagSelected != null) { onTagSelected.onTagSelected(mTaglinks); };
+        if (onTagSelected != null) { onTagSelected.onTagSelected(mTagLinks); };
     }
 
     /*
