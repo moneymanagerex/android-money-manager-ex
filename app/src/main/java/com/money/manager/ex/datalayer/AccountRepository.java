@@ -18,7 +18,6 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.TextUtils;
 
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
