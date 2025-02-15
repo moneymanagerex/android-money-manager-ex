@@ -43,6 +43,9 @@ public class AbsListFragment
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             onListItemClick((ListView) parent, v, position, id);
         }
+        public void onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+            onListItemLongClick((ListView) parent, v, position, id);
+        }
     };
     ListAdapter mAdapter;
     ListView mList;
@@ -114,6 +117,10 @@ public class AbsListFragment
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
     }
+
+    public void onListItemLongClick(ListView l, View v, int position, long id) {
+    }
+
 
     /**
      * Set the currently selected list item to the specified
