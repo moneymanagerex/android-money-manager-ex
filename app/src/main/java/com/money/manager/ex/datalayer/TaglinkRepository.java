@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
@@ -72,7 +71,7 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
     public ArrayList<Taglink> loadByRef(long refId, RefType refType) {
 
         return new ArrayList<>(query(new Select(getAllColumns())
-                .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"
+                .where(Taglink.REFID + "= ? AND " + Taglink.REFTYPE +  "= ?"
                         , Long.toString(refId), refType.getValue())
                 .orderBy(ID_COLUMN)));
     }
