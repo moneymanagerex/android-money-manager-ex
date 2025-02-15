@@ -601,11 +601,11 @@ public class EditTransactionCommonFunctions {
 
     public void initTagsControls() {
         (new TagLinkUtils(getContext())).initTagControls(viewHolder.tagsListTextView,
-                transactionEntity.getTags(),
+                transactionEntity.getTagLinks(),
                 transactionEntity.getId(),
                 transactionEntity.getTransactionModel(),
                 tagLinks -> {
-                    transactionEntity.setTags(tagLinks);
+                    transactionEntity.setTagLinks(tagLinks);
                 } );
 
     }
@@ -1429,8 +1429,8 @@ public class EditTransactionCommonFunctions {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
         }
 
-        if (this.transactionEntity.getTags() != null ) {
-            entity.setTagLinks(this.transactionEntity.getTags());
+        if (this.transactionEntity.getTagLinks() != null ) {
+            entity.setTagLinks(this.transactionEntity.getTagLinks());
         }
 
         return entity;
@@ -1657,8 +1657,8 @@ public class EditTransactionCommonFunctions {
     public void saveTags() {
         // save TagLinks
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
-        if (transactionEntity.getTags() != null) {
-            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTags());
+        if (transactionEntity.getTagLinks() != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTagLinks());
         } else {
             taglinkRepository.deleteForType(transactionEntity.getId(), transactionEntity.getTransactionModel() );
         }

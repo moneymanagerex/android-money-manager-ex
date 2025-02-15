@@ -333,12 +333,12 @@ public class RecurringTransaction
     }
 
     @Override
-    public void setTags(ArrayList<TagLink> tags) {
-        tagLinks = tags;
+    public void setTagLinks(ArrayList<TagLink> tagLinks) {
+        this.tagLinks = tagLinks;
     }
 
     @Override
-    public ArrayList<TagLink> getTags() {
+    public ArrayList<TagLink> getTagLinks() {
         return tagLinks;
     }
 
