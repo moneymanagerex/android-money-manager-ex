@@ -22,7 +22,11 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.Attachment;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.utils.MmxDate;
+
+import java.util.ArrayList;
 
 /**
  * Repository for Checking Account records.
@@ -81,7 +85,12 @@ public class AccountTransactionRepository
 
         item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
 
-        boolean saved = super.update(item, where.getWhere());
-        return saved;
+        return super.update(item, where.getWhere());
+    }
+
+    // custom func
+    public ArrayList<Attachment> loadAttachments(long id) {
+        AttachmentRepository repo = new AttachmentRepository(getContext());
+        return repo.loadByRef(id, RefType.TRANSACTION);
     }
 }

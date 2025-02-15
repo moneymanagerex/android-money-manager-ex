@@ -43,7 +43,6 @@ import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -416,8 +415,7 @@ public class CheckingTransactionEditActivity
         }
         // Load Attachments
         if (mCommon.mAttachments == null) {
-            AttachmentRepository attachmentRepository = new AttachmentRepository(this);
-            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, mCommon.transactionEntity.getTransactionModel());
+            mCommon.mAttachments = repo.loadAttachments(transId);
         }
 
         // load Tags

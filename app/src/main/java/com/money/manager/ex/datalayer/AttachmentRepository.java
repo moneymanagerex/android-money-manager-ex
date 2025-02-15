@@ -55,7 +55,7 @@ public class AttachmentRepository
     }
 
     // custom func
-    public ArrayList<Attachment> loadAttachmentsFor(long refId, RefType refType) {
+    public ArrayList<Attachment> loadByRef(long refId, RefType refType) {
         return new ArrayList<>(query(new Select(getAllColumns())
                 .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"
                         , Long.toString(refId), refType.getValue())));
