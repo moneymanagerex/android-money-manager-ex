@@ -42,7 +42,7 @@ public class PayeeRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "PAYEEID AS _id",
+        return new String[] { ID_COLUMN + " AS _id",
                 Payee.PAYEEID,
                 Payee.PAYEENAME,
                 Payee.CATEGID,
