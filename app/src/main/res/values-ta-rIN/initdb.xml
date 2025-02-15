@@ -17,7 +17,52 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- default category -->
+    <string name="category_5">கல்வி</string>
+    <string name="category_6">வீட்டுத் தேவைகள்</string>
+    <string name="category_7">சுகாதாரம்</string>
+    <string name="category_8">காப்பீடு</string>
+    <string name="category_9">விடுமுறை</string>
+    <string name="category_10">வரிகள்</string>
+    <string name="category_11">இதர</string>
     <string name="category_13">வருமானம்</string>
+    <string name="category_14">வேறு வருமானம்</string>
+    <string name="category_15">இதர செலவுகள்</string>
     <string name="category_16">பரிமாற்றம்</string>
     <!-- default subcategory -->
+    <string name="subcategory_1">தொலைபேசி</string>
+    <string name="subcategory_2">மின்சாரம்</string>
+    <string name="subcategory_3">எரிவாயு</string>
+    <string name="subcategory_4">இணையம்</string>
+    <string name="subcategory_5">வாடகை</string>
+    <string name="subcategory_7">நீர்</string>
+    <string name="subcategory_8">மளிகைகள்</string>
+    <string name="subcategory_9">வெளியே சாப்பாடு</string>
+    <string name="subcategory_11">வீடியோ வாடகை</string>
+    <string name="subcategory_13">பராமரிப்பு</string>
+    <string name="subcategory_14">எரிவாயு</string>
+    <string name="subcategory_15">பார்க்கிங்</string>
+    <string name="subcategory_16">பதிவு</string>
+    <string name="subcategory_18">பயிற்சி</string>
+    <string name="subcategory_19">மற்ற</string>
+    <string name="subcategory_21">நிறுவுதல்</string>
+    <string name="subcategory_22">மற்ற</string>
+    <string name="subcategory_23">உடல்நலம்</string>
+    <string name="subcategory_24">பல்</string>
+    <string name="subcategory_25">கண் பராமரிப்பு</string>
+    <string name="subcategory_26">மருத்துவர்</string>
+    <string name="subcategory_27"></string>
+    <string name="subcategory_28">ஆட்டோ</string>
+    <string name="subcategory_29">வாழ்க்கை</string>
+    <string name="subcategory_30">முகப்பு</string>
+    <string name="subcategory_31">உடல்நலம்</string>
+    <string name="subcategory_32">பயணம்</string>
+    <string name="subcategory_33">தங்கும் இடம்</string>
+    <string name="subcategory_34">சுற்றிப்பார்த்தல்</string>
+    <string name="subcategory_35">வருமான வரி</string>
+    <string name="subcategory_36">வீட்டு வரி</string>
+    <string name="subcategory_37">தண்ணீர் வரி</string>
+    <string name="subcategory_38">மற்ற</string>
+    <string name="subcategory_39">சம்பளம்</string>
+    <string name="subcategory_40">திரும்பப் பெறுதல்</string>
+    <string name="subcategory_41">முதலீட்டு வருமானம்</string>
 </resources>

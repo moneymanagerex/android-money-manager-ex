@@ -128,6 +128,7 @@
     <string name="delete">நீக்கு</string>
     <string name="download">பதிவிறக்கவும்</string>
     <string name="edit">திருத்தவும்</string>
+    <string name="home">முகப்பு</string>
     <string name="logo">சின்னம்</string>
     <string name="new_edit_transaction">புதிய/திருத்து பரிவர்த்தனை</string>
     <string name="refresh">புதுப்பிக்கவும்</string>
@@ -162,6 +163,7 @@
     <string name="transaction_number">பரிவர்த்தனை எண்</string>
     <string name="widget_summary">சுருக்கம்</string>
     <string name="widget_all_accounts">அனைத்து கணக்குகளும்</string>
+    <string name="widget_add_transaction">பரிவர்த்தனையைச் சேர்க்கவும்</string>
     <!-- TAG -->
     <string name="tagsList_transactions">பரிவர்த்தனைக்கான குறிச்சொற்கள்</string>
     <string name="tag_name">குறிச்சொல் பெயர்</string>
@@ -233,6 +235,15 @@
     <string name="donate_exlamation">தானம் செய்!</string>
     <string name="donate_button_text">தானம் செய்</string>
     <string name="homepage_button">முகப்புப் பக்கத்தைத் திற</string>
+    <string name="ascending">ஏறுமுகம்</string>
+    <string name="descending">இறங்குதல்</string>
+    <string name="sorting_month">மாதங்களை வரிசைப்படுத்துதல்</string>
+    <string name="last_modified">கடைசியாக மாற்றப்பட்டது</string>
+    <string name="dont_show_again">மீண்டும் காட்டாதே</string>
+    <string name="open_database">தரவுத்தளத்தைத் திறக்கவும்</string>
+    <string name="synchronization_interval">ஒத்திசைவு இடைவெளி</string>
+    <string name="summary_synchronization_interval">எவ்வளவு அடிக்கடி ஒத்திசைக்க வேண்டும்?</string>
+    <string name="tips_new_version_dropbox">பதிப்பு 1.2.0 இன் படி, Android க்கான Money Manager Ex ஆனது டிராப்பாக்ஸ் ஒத்திசைவு இயந்திரத்தை மாற்றியுள்ளது. டிராப்பாக்ஸ் ஒத்திசைவை ஏற்கனவே பயன்படுத்தும் பயனர்கள் உள்ளமைவைப் புதுப்பிக்க வேண்டும்.\nஅங்கீகாரம் மற்றும் தரவுத்தளத்தின் தேர்வு அமைப்புகளில் உள்ளது.\nபதிப்பு 1.2.0 இன் படி, Android க்கான Money Manager Ex தானாகவே தரவுத்தளத்தை ஒத்திசைக்க முடியும்.</string>
     <string name="top_withdrawals_last_30_days">அதிக பணம் திரும்பப் பெறுதல்: கடந்த 30 நாட்கள்</string>
     <string name="top_payees_last_30_days">அதிகம் பணம் பெறுபவர்கள்: கடந்த 30 நாட்கள்</string>
     <string name="upcoming_transactions">வரவிருக்கும் பரிவர்த்தனைகள்</string>
@@ -243,18 +254,89 @@
     <string name="empty_category">காலி வகை</string>
     <string name="empty_payee">காலி பணம் பெறுபவர்</string>
     <string name="help">உதவி</string>
+    <string name="new_account">புதிய கணக்கு</string>
+    <string name="create_new_account">புதிய கணக்கை உருவாக்கவும்</string>
+    <string name="amount_greater_or_equal">அதிக அல்லது சமமான தொகை</string>
+    <string name="amount_less_or_equal">தொகை குறைவாகவோ அல்லது சமமாகவோ</string>
+    <string name="reset">மீட்டமை</string>
+    <string name="result_search">உங்கள் தேடலின் முடிவு</string>
+    <string name="new_repeating_transaction">புதிய திட்டமிட்ட பரிவர்த்தனை</string>
+    <string name="edit_repeating_transaction">திட்டமிடப்பட்ட பரிவர்த்தனையைத் திருத்தவும்</string>
+    <string name="no_recurring_transaction">பணப்பாய்வு அறிக்கை அட்டவணை பரிவர்த்தனையைப் பயன்படுத்துகிறது, ஆனால் அட்டவணை பரிவர்த்தனை எதுவும் இல்லை</string>
+    <string name="path_database_not_exists">தரவுத்தள பாதை இல்லை</string>
+    <string name="database_can_not_open_write">எழுதுவதற்கு தரவுத்தளத்தை திறக்க முடியாது</string>
+    <string name="time_frame">கால கட்டம்</string>
+    <string name="show_chart">விளக்கப்படத்தைக் காட்டு</string>
+    <string name="add_transaction">பரிவர்த்தனையைச் சேர்க்கவும்</string>
+    <string name="configure_sync">ஒத்திசைவை உள்ளமைக்கவும்</string>
+    <string name="rate_application">மென்பொருளை மதிப்பிடவும்</string>
+    <string name="tools">கருவிகள்</string>
+    <string name="entities">நிறுவனங்கள்</string>
+    <string name="loading">ஏற்றுகிறது&#8230;</string>
+    <string name="grand_total">மொத்தம்</string>
+    <string name="change_status">நிலையை மாற்றவும்</string>
+    <string name="duplicate_selected_transactions">தேர்ந்தெடுக்கப்பட்ட பரிவர்த்தனைகளை நகல் செய்யவும்</string>
+    <string name="sort">வரிசைப்படுத்து</string>
+    <string name="sort_order">வரிசை</string>
+    <string name="sort_by_name">பெயரால் வரிசைப்படுத்தவும்</string>
+    <string name="sort_by_usage">பயன்பாட்டின்படி வரிசைப்படுத்தவும்</string>
+    <string name="sort_by_recent">சமீபத்தியபடி வரிசைப்படுத்தவும்</string>
+    <string name="credit_card">கடன் அட்டை</string>
+    <string name="cash_accounts">பண கணக்குகள்</string>
     <!-- languages -->
     <string name="action_settings">அமைப்புகள்</string>
+    <string name="choose_type">வகையைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="default_account">இயல்புநிலை கணக்கு</string>
+    <string name="balance_account">இருப்பு கணக்கு</string>
+    <string name="balance_adjustment">இருப்பு சரிசெய்தல்</string>
+    <string name="cash">பணம்</string>
+    <string name="select_account">கணக்கைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="invalid_transaction_number">தவறான பரிவர்த்தனை எண்</string>
+    <string name="budgets">பட்ஜெட்டுகள்</string>
+    <string name="budget">பட்ஜெட்</string>
+    <string name="budget_list">பட்ஜெட் பட்டியல்</string>
+    <string name="actual">உண்மையான</string>
+    <string name="error">பிழை</string>
+    <string name="unhandled_crash">எதிர்பாராத பிழை. பதிவை எங்களுக்கு அனுப்பவும்.</string>
+    <string name="update_available">புதுப்பிப்பு கிடைக்கிறது</string>
     <!-- Password entry activity -->
+    <string name="appwidget_text">உதாரணம்</string>
+    <string name="configure">கட்டமைக்கவும்</string>
     <!-- edit investment transaction -->
+    <string name="purchase_price">கொள்முதல் விலை</string>
+    <string name="current_price">தற்போதைய விலை</string>
+    <string name="price_date">விலை தேதி</string>
+    <string name="commission">கமிஷன்</string>
+    <string name="value">மதிப்பு</string>
+    <string name="view_transactions">பரிவர்த்தனைகளைப் பார்க்கவும்</string>
     <!-- asset allocation -->
+    <string name="name">பெயர்</string>
+    <string name="stock">இருப்பு</string>
     <string name="all_accounts">அனைத்து கணக்குகளும்</string>
+    <string name="records">பதிவுகள்</string>
     <!-- db password entry -->
+    <string name="success">ஆபரேஷன் வெற்றி</string>
+    <string name="overview">மேற்பார்வை</string>
+    <string name="error_saving_record">பதிவைச் சேமிப்பதில் பிழை</string>
     <!-- budgets -->
     <!-- Currencies -->
     <!-- Investment -->
+    <string name="change_provider">வழங்குநரை மாற்றவும்</string>
     <!-- deprecated / Dropbox -->
+    <string name="dropbox_database_can_be_updted">டிராப்பாக்ஸில் தரவுத்தளத்தின் புதுப்பிப்பு உள்ளது</string>
     <!-- Synchronization -->
+    <string name="please_wait">தயவுசெய்து காத்திருக்கவும்</string>
+    <string name="every_5_minutes">ஒவ்வொரு 5 நிமிடம்</string>
+    <string name="every_10_minutes">ஒவ்வொரு 10 நிமிடம்</string>
+    <string name="every_15_minutes">ஒவ்வொரு 15 நிமிடம்</string>
+    <string name="every_30_minutes">ஒவ்வொரு 30 நிமிடமும்</string>
+    <string name="every_hour">மணிக்கு ஒருமுறை</string>
+    <string name="every_2_hours">ஒவ்வொரு 2 மணிநேரத்திற்கும்</string>
+    <string name="every_3_hours">3 மணிநேரத்திற்கு ஒருமுறை</string>
+    <string name="every_6_hours">3 மணிநேரத்திற்கு ஒருமுறை</string>
+    <string name="every_12_hours">12 மணிநேரத்திற்கு ஒருமுறை</string>
+    <string name="never">ஒருபோதுமில்லை</string>
+    <string name="file_exists">கோப்பு ஏற்க்கனவே உள்ளது</string>
     <!-- Warnings -->
     <!-- Errors -->
     <!-- Select database screen -->
@@ -262,6 +344,14 @@
     <string name="run">பண மேலாளரை இயக்கவும்</string>
     <!-- Settings -->
     <string name="per_database_settings">ஒவ்வொரு தரவுத்தளமும்</string>
+    <string name="loan">கடன்</string>
+    <string name="loan_account">கடன் கணக்குகள்</string>
+    <string name="shares_accounts">பங்கு கணக்குகள்</string>
+    <string name="currency">நாணயம்</string>
+    <string name="menu_create_database">தரவுத்தளத்தை உருவாக்கவும்</string>
+    <string name="create_database">தரவுத்தளத்தை உருவாக்கவும்</string>
+    <string name="title_anonymous_usage">அநாமதேய பயன்பாட்டுத் தரவை அனுப்பவும்</string>
     <!-- Notification Setting -->
+    <string name="show">காட்டு</string>
     <!-- Builder button -->
 </resources>
