@@ -58,6 +58,11 @@ public class SplitScheduledCategoryRepository
             SplitRecurringCategory.NOTES };
     }
 
+    @Override
+    protected RefType refType () {
+        return RefType.RECURRING_TRANSACTION_SPLIT;
+    }
+
     /**
      * Loads split transactions for the given transaction id.
      * @param transId Id of the main transaction for which to load the splits.
@@ -72,16 +77,11 @@ public class SplitScheduledCategoryRepository
 
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
-        TaglinkRepository taglinkRepo = new TaglinkRepository(getContext());
-
         while (curSplit.moveToNext()) {
             SplitRecurringCategory splitRecurringCategory = new SplitRecurringCategory();
             splitRecurringCategory.loadFromCursor(curSplit);
 
-            splitRecurringCategory.setTags(
-                    // array taglinks
-                    taglinkRepo.loadTaglinksFor(splitRecurringCategory.getId(), RefType.RECURRING_TRANSACTION_SPLIT)
-            );
+            splitRecurringCategory.setTags(loadTaglinks(splitRecurringCategory.getId()));
 
             listSplitTrans.add(splitRecurringCategory);
         }

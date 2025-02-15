@@ -37,7 +37,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -421,7 +420,7 @@ public class CheckingTransactionEditActivity
         // load Tags
         if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel()));
+            mCommon.transactionEntity.setTags(taglinkRepository.loadByRef(transId, mCommon.transactionEntity.getTransactionModel()));
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -477,7 +476,7 @@ public class CheckingTransactionEditActivity
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel())));
+        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
 
         return true;
     }

@@ -1,7 +1,6 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
-import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
@@ -55,7 +54,7 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
             deleteForType(refId, refType);
             return true;
         }
-        ArrayList<Taglink> old = loadTaglinksFor(refId, refType);
+        ArrayList<Taglink> old = loadByRef(refId, refType);
         for (Taglink entity : old) {
             if (!entity.inTaglinkList(taglinks))
                 delete(entity.getId());
@@ -69,29 +68,12 @@ public class TaglinkRepository extends RepositoryBase <Taglink> {
         return save(taglinks);
     }
 
-    public ArrayList<Taglink> loadTaglinksFor(long refId, RefType refType) {
-        Cursor cursor = getContext().getContentResolver().query(getUri(), null,
-                Taglink.REFID + "=? AND " + Taglink.REFTYPE +  "=?",
-                new String[] { Long.toString(refId),  refType.getValue()},
-                Taglink.TAGLINKID);
-        if (cursor == null) return null;
+    public ArrayList<Taglink> loadByRef(long refId, RefType refType) {
 
-        ArrayList<Taglink> listEntity = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            Taglink entity = new Taglink();
-            entity.loadFromCursor(cursor);
-
-            listEntity.add(entity);
-        }
-        cursor.close();
-
-        return listEntity;
-    }
-
-    public String loadTagsfor(long refId, RefType refType) {
-        ArrayList<Taglink> listEntity = loadTaglinksFor(refId, refType);
-        return loadTagsfor(listEntity);
+        return new ArrayList<>(query(new Select(getAllColumns())
+                .where(Taglink.REFID + "= ? AND " + Taglink.REFTYPE +  "= ?"
+                        , Long.toString(refId), refType.getValue())
+                .orderBy(ID_COLUMN)));
     }
 
     public String loadTagsfor(ArrayList<Taglink> listEntity) {
