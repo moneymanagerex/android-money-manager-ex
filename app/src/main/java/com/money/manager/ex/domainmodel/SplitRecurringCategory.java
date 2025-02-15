@@ -177,7 +177,7 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public String getTransactionModel() {
-        return Taglink.REFTYPE_RECURRING_TRANSACTION_SPLIT;
+    public RefType getTransactionModel() {
+        return RefType.RECURRING_TRANSACTION_SPLIT;
     }
 }
