@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 
@@ -48,16 +49,16 @@ public class TagLinkUtils {
     private AlertDialog getMDialog() {return mDialog;};
 
     /**
-     * @param tagTextView : TextView to display tags
-     * @param tagLink : List of tags coming from transaction
+     * @param tagTextView   : TextView to display tags
+     * @param tagLink       : List of tags coming from transaction
      * @param transactionId : transaction id
-     * @param tagLinkType : type of transaction (see TagLink.REFTYPE*)
+     * @param tagRefType    : type of transaction (see TagLink.REFTYPE*)
      * @param onTagSelected : call back event after dialog dismiss
      */
     public void initTagControls(TextView tagTextView,
                                 ArrayList<Taglink> tagLink,
                                 Long transactionId,
-                                String tagLinkType ,
+                                RefType tagRefType,
                                 OnTagSelected onTagSelected ) {
         if( tagTextView == null ) return;
         if (tagLink == null) {
@@ -112,7 +113,7 @@ public class TagLinkUtils {
                             } else {
                                 // flag on and mlink not present, create
                                 taglink = new Taglink();
-                                taglink.setRefType(tagLinkType);
+                                taglink.setRefType(tagRefType);
                                 taglink.setRefId(transactionId);
                                 taglink.setTagId(tagId);
                                 mTaglinks.add(taglink);

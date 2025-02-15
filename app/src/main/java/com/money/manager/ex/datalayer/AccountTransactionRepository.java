@@ -22,6 +22,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.utils.MmxDate;
 
 /**
@@ -64,6 +65,11 @@ public class AccountTransactionRepository
         };
     }
 
+    @Override
+    protected RefType refType () {
+        return RefType.TRANSACTION;
+    }
+
     public AccountTransaction insert(AccountTransaction entity) {
         entity.contentValues.remove(AccountTransaction.TRANSID);
         entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());
@@ -81,7 +87,6 @@ public class AccountTransactionRepository
 
         item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
 
-        boolean saved = super.update(item, where.getWhere());
-        return saved;
+        return super.update(item, where.getWhere());
     }
 }

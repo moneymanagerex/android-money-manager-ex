@@ -33,6 +33,7 @@ import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.scheduled.Recurrence;
@@ -271,7 +272,7 @@ public class RecurringTransactionService
 
         // delete tags
         TaglinkRepository tagLinkRepo = new TaglinkRepository(getContext());
-        tagLinkRepo.deleteForType(this.recurringTransactionId, Taglink.REFTYPE_RECURRING_TRANSACTION);
+        tagLinkRepo.deleteForType(this.recurringTransactionId, RefType.RECURRING_TRANSACTION);
 
         // Delete recurring transactions.
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());
@@ -341,7 +342,7 @@ public class RecurringTransactionService
             entity.loadFromCursor(cursor);
 
             // load tag for split
-            entity.setTags(taglinkRepository.loadTaglinksFor(entity.getId(), entity.getTransactionModel()));
+            entity.setTags(taglinkRepository.loadByRef(entity.getId(), entity.getTransactionModel()));
 
             result.add(entity);
         }
@@ -487,7 +488,7 @@ public class RecurringTransactionService
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
         accountTrx.setTags(
                 Taglink.clearCrossReference(
-                        taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
+                        taglinkRepository.loadByRef(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         accountTrx.setColor(scheduledTrx.getColor());
 

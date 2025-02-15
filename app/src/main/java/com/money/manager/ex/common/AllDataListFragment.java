@@ -61,8 +61,8 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.search.SearchActivity;
@@ -785,7 +785,7 @@ public class AllDataListFragment
 
                         // Delete Tags
                         TaglinkRepository tagLinkRepo = new TaglinkRepository(getActivity());
-                        tagLinkRepo.deleteForType(transactionId, Taglink.REFTYPE_TRANSACTION);
+                        tagLinkRepo.deleteForType(transactionId, RefType.TRANSACTION);
 
                         // Delete the transaction.
                         AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());

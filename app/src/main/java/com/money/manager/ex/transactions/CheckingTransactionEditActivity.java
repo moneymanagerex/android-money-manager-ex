@@ -37,13 +37,11 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -416,14 +414,13 @@ public class CheckingTransactionEditActivity
         }
         // Load Attachments
         if (mCommon.mAttachments == null) {
-            AttachmentRepository attachmentRepository = new AttachmentRepository(this);
-            mCommon.mAttachments = attachmentRepository.loadAttachmentsFor(transId, mCommon.transactionEntity.getTransactionModel());
+            mCommon.mAttachments = repo.loadAttachments(transId);
         }
 
         // load Tags
         if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(transId, mCommon.transactionEntity.getTransactionModel()));
+            mCommon.transactionEntity.setTags(taglinkRepository.loadByRef(transId, mCommon.transactionEntity.getTransactionModel()));
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -479,7 +476,7 @@ public class CheckingTransactionEditActivity
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadTaglinksFor(scheduledTransactionId, recurringTx.getTransactionModel())));
+        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
 
         return true;
     }

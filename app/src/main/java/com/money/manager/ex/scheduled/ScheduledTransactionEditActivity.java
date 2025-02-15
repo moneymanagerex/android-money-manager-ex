@@ -499,7 +499,7 @@ public class ScheduledTransactionEditActivity
         // load Tags
         if (mCommon.transactionEntity.getTags() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.transactionEntity.setTags(taglinkRepository.loadTaglinksFor(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
+            mCommon.transactionEntity.setTags(taglinkRepository.loadByRef(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
         }
 
 
