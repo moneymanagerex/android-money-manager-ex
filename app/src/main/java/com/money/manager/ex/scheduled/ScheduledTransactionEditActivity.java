@@ -640,7 +640,7 @@ public class ScheduledTransactionEditActivity
                 // save tag for split
                 taglinkRepository.saveAllFor(splitEntity.getTransactionModel(),
                         splitEntity.getId(),
-                        splitEntity.getTags());
+                        splitEntity.getTagLinks());
             }
         }
 

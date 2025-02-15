@@ -35,7 +35,7 @@ import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.scheduled.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -342,7 +342,7 @@ public class RecurringTransactionService
             entity.loadFromCursor(cursor);
 
             // load tag for split
-            entity.setTags(taglinkRepository.loadByRef(entity.getId(), entity.getTransactionModel()));
+            entity.setTagLinks(taglinkRepository.loadByRef(entity.getId(), entity.getTransactionModel()));
 
             result.add(entity);
         }
@@ -487,7 +487,7 @@ public class RecurringTransactionService
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
         accountTrx.setTags(
-                Taglink.clearCrossReference(
+                TagLink.clearCrossReference(
                         taglinkRepository.loadByRef(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         accountTrx.setColor(scheduledTrx.getColor());

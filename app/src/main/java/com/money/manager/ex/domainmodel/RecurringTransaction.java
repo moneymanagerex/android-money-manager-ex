@@ -47,7 +47,7 @@ public class RecurringTransaction
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
 
-    private ArrayList<Taglink> taglinks = null;
+    private ArrayList<TagLink> tagLinks = null;
     private ArrayList<ISplitTransaction> splitTransactions;
 
     /**
@@ -333,13 +333,13 @@ public class RecurringTransaction
     }
 
     @Override
-    public void setTags(ArrayList<Taglink> tags) {
-        taglinks = tags;
+    public void setTags(ArrayList<TagLink> tags) {
+        tagLinks = tags;
     }
 
     @Override
-    public ArrayList<Taglink> getTags() {
-        return taglinks;
+    public ArrayList<TagLink> getTags() {
+        return tagLinks;
     }
 
     // EP handle recurring mode

@@ -1430,7 +1430,7 @@ public class EditTransactionCommonFunctions {
         }
 
         if (this.transactionEntity.getTags() != null ) {
-            entity.setTags(this.transactionEntity.getTags());
+            entity.setTagLinks(this.transactionEntity.getTags());
         }
 
         return entity;

@@ -34,7 +34,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.RefType;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
@@ -328,7 +328,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         return repo.loadByRef(id, refType());
     }
 
-    public ArrayList<Taglink> loadTaglinks(long id) {
+    public ArrayList<TagLink> loadTaglinks(long id) {
         TaglinkRepository repo = new TaglinkRepository(getContext());
         return repo.loadByRef(id, refType());
     }

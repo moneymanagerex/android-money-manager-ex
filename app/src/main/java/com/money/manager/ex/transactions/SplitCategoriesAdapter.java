@@ -228,11 +228,11 @@ public class SplitCategoriesAdapter
     public void initTagsControls(ISplitTransaction splitTransaction, SplitItemViewHolder viewHolder) {
         (new TagLinkUtils(getContext())).initTagControls(
                 viewHolder.txtTagsList,
-                splitTransaction.getTags(),
+                splitTransaction.getTagLinks(),
                 splitTransaction.getId(),
                 splitTransaction.getTransactionModel(),
                 tagLink -> {
-                    splitTransaction.setTags(tagLink);
+                    splitTransaction.setTagLinks(tagLink);
                 }
         );
     }

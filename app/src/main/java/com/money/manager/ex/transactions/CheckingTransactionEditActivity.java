@@ -42,7 +42,7 @@ import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -250,7 +250,7 @@ public class CheckingTransactionEditActivity
             newSplit.setCategoryId(record.getCategoryId());
             newSplit.setNotes(record.getNotes());
 
-            newSplit.setTags(Taglink.clearCrossReference(record.getTags()));
+            newSplit.setTagLinks(TagLink.clearCrossReference(record.getTagLinks()));
 
             mCommon.mSplitTransactions.add(newSplit);
         }
@@ -274,7 +274,7 @@ public class CheckingTransactionEditActivity
         }
 
         // copy tag
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference(mCommon.transactionEntity.getTags()));
+        mCommon.transactionEntity.setTags(TagLink.clearCrossReference(mCommon.transactionEntity.getTags()));
 
     }
 
@@ -476,7 +476,7 @@ public class CheckingTransactionEditActivity
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
+        mCommon.transactionEntity.setTags(TagLink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
 
         return true;
     }
@@ -791,7 +791,7 @@ public class CheckingTransactionEditActivity
                 // at this point entity has id
                 taglinkRepository.saveAllFor(entity.getTransactionModel(),
                         entity.getId(),
-                        entity.getTags());
+                        entity.getTagLinks());
 
             }
         }
