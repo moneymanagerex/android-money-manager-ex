@@ -656,7 +656,12 @@ public class WatchlistFragment
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
-            long accountId = Integer.parseInt(accountIdString);
+            long accountId;
+            try {
+                accountId = Long.parseLong(accountIdString);
+            } catch (Exception e) {
+                accountId = Constants.NOT_SET;
+            }
             if (accountId == getAccountId()) {
                 position = i;
                 break;
