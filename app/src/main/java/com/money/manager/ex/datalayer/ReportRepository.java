@@ -61,8 +61,12 @@ public class ReportRepository extends RepositoryBase<Report> {
     }
 
     // custom func
-    public List<Report> loadReportByGroupName(String groupName) {
+    public List<Report> loadByGroupName(String groupName) {
         return query(new Select().where(Report.GROUPNAME + " = ?", groupName));
+    }
+
+    public List<Report> loadByReportName(String reportName) {
+        return query(new Select().where(Report.REPORTNAME + " = ?", reportName));
     }
 
     public Map<String, List<Report>> loadGroupedByName() {
