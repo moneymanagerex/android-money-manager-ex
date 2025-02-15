@@ -64,7 +64,14 @@
     <string name="summary_show_tutorial"></string>
     <string name="preferences_behaviour_focus_filter_title">Filter in selectors</string>
     <string name="preferences_behaviour_focus_filter_summary">Focus on filter in selectors. Otherwise browse.</string>
+    <string name="auto_sync_via_wifi"></string>
+    <string name="sync_on_app_start"></string>
+    <string name="sync_on_start"></string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans"></string>
+    <string name="summary_sms_auto_trans"></string>
+    <string name="granted_receive_sms_access"></string>
+    <string name="notification_click_to_edit_transaction"></string>
     <!-- account -->
     <string name="account">Account</string>
     <string name="account_list">Account List</string>
