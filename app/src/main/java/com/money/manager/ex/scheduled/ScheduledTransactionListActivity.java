@@ -27,7 +27,6 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
 
 import com.money.manager.ex.datalayer.TaglinkRepository;
-import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -102,7 +101,7 @@ public class ScheduledTransactionListActivity
                         AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
                         accountTransactionRepository.insert(accountTrx);
                         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-                        taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
+                        taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTagLinks());
                         service.moveNextOccurrence();
                     } else {
                         Intent intent = new Intent(this, CheckingTransactionEditActivity.class);

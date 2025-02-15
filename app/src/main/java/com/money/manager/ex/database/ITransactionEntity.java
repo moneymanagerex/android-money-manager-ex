@@ -19,7 +19,7 @@ package com.money.manager.ex.database;
 
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.domainmodel.RefType;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,8 +96,8 @@ public interface ITransactionEntity {
 
     public RefType getTransactionModel();
 
-    public void setTags(ArrayList<Taglink> tags) ;
-    public ArrayList<Taglink> getTags() ;
+    public void setTagLinks(ArrayList<TagLink> tagLinks) ;
+    public ArrayList<TagLink> getTagLinks() ;
 
     public void setColor(int value) ;
     public int getColor() ;

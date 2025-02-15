@@ -104,7 +104,7 @@ public class RecurringTransactionProcess {
                 AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
                 accountTransactionRepository.insert(accountTrx);
                 TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
-                taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
+                taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTagLinks());
                 SplitCategoryRepository splitCategoryRepository = new SplitCategoryRepository(getContext());
                 splitCategoryRepository.saveAllFor(accountTrx.getId(), accountTrx.getSplit());
                 service.moveNextOccurrence();

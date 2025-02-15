@@ -42,7 +42,7 @@ import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -70,8 +70,6 @@ import javax.inject.Inject;
 
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * Activity for editing Checking Account Transaction
@@ -250,7 +248,7 @@ public class CheckingTransactionEditActivity
             newSplit.setCategoryId(record.getCategoryId());
             newSplit.setNotes(record.getNotes());
 
-            newSplit.setTags(Taglink.clearCrossReference(record.getTags()));
+            newSplit.setTagLinks(TagLink.clearCrossReference(record.getTagLinks()));
 
             mCommon.mSplitTransactions.add(newSplit);
         }
@@ -274,7 +272,7 @@ public class CheckingTransactionEditActivity
         }
 
         // copy tag
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference(mCommon.transactionEntity.getTags()));
+        mCommon.transactionEntity.setTagLinks(TagLink.clearCrossReference(mCommon.transactionEntity.getTagLinks()));
 
     }
 
@@ -418,9 +416,9 @@ public class CheckingTransactionEditActivity
         }
 
         // load Tags
-        if (mCommon.transactionEntity.getTags() == null ) {
+        if (mCommon.transactionEntity.getTagLinks() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.transactionEntity.setTags(taglinkRepository.loadByRef(transId, mCommon.transactionEntity.getTransactionModel()));
+            mCommon.transactionEntity.setTagLinks(taglinkRepository.loadByRef(transId, mCommon.transactionEntity.getTransactionModel()));
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
@@ -476,7 +474,7 @@ public class CheckingTransactionEditActivity
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-        mCommon.transactionEntity.setTags(Taglink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
+        mCommon.transactionEntity.setTagLinks(TagLink.clearCrossReference( taglinkRepository.loadByRef(scheduledTransactionId, recurringTx.getTransactionModel())));
 
         return true;
     }
@@ -791,7 +789,7 @@ public class CheckingTransactionEditActivity
                 // at this point entity has id
                 taglinkRepository.saveAllFor(entity.getTransactionModel(),
                         entity.getId(),
-                        entity.getTags());
+                        entity.getTagLinks());
 
             }
         }

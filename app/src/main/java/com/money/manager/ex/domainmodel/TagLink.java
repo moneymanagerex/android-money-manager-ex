@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class Taglink extends EntityBase
+public class TagLink extends EntityBase
         implements Parcelable {
 
     /* Table
@@ -26,20 +26,20 @@ public class Taglink extends EntityBase
     public static final String REFID = "REFID";
     public static final String TAGID = "TAGID";
 
-    public Taglink() { super(); }
-    public Taglink(ContentValues contentValues) {
+    public TagLink() { super(); }
+    public TagLink(ContentValues contentValues) {
         super(contentValues);
     }
 
-    public static final Creator<Taglink> CREATOR = new Creator<Taglink>() {
+    public static final Creator<TagLink> CREATOR = new Creator<TagLink>() {
         @Override
-        public Taglink createFromParcel(Parcel in) {
-            return new Taglink(in);
+        public TagLink createFromParcel(Parcel in) {
+            return new TagLink(in);
         }
 
         @Override
-        public Taglink[] newArray(int size) {
-            return new Taglink[size];
+        public TagLink[] newArray(int size) {
+            return new TagLink[size];
         }
     };
 
@@ -58,16 +58,16 @@ public class Taglink extends EntityBase
     public Long getTagId() { return getLong(TAGID); }
     public void setTagId(Long value) { setLong(TAGID, value); }
 
-    public boolean inTaglinkList(ArrayList<Taglink> list ) {
-        for( Taglink entity : list ) {
+    public boolean inTaglinkList(ArrayList<TagLink> list ) {
+        for( TagLink entity : list ) {
             if ( entity.getId() == getId() )
                 return true;
         }
         return false;
     }
 
-    public static ArrayList<Taglink> clearCrossReference(ArrayList<Taglink> list) {
-        for (Taglink entity : list) {
+    public static ArrayList<TagLink> clearCrossReference(ArrayList<TagLink> list) {
+        for (TagLink entity : list) {
           entity.setRefType((String) null);
           entity.setRefId(null);
           entity.setId(null);
@@ -75,7 +75,7 @@ public class Taglink extends EntityBase
         return list;
     }
 
-    protected Taglink(Parcel in) {
+    protected TagLink(Parcel in) {
         setId(nullLong(in.readLong()));
         setRefType(in.readString());
         setRefId(nullLong(in.readLong()));
