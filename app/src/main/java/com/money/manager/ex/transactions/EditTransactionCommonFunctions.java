@@ -118,8 +118,6 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransaction> mSplitTransactions;
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
-    public ArrayList<Attachment> mAttachments;
-
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -1483,10 +1481,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private ArrayList<Attachment> getAttachments() {
-        if (mAttachments == null) {
-            mAttachments = new ArrayList<>();
-        }
-        return mAttachments;
+        return this.transactionEntity.getAttachments();
     }
 
     private String getUserDateFormat() {

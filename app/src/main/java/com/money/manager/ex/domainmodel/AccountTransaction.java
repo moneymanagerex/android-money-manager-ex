@@ -45,6 +45,7 @@ public class AccountTransaction
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
+    private ArrayList<Attachment> mAttachments;
     private ArrayList<TagLink> tagLinks = null;
     private ArrayList<ISplitTransaction> splitTransactions = null;
 
@@ -239,6 +240,16 @@ public class AccountTransaction
     @Override
     public RefType getTransactionModel() {
         return RefType.TRANSACTION;
+    }
+
+    @Override
+    public void setAttachments(ArrayList<Attachment> attachments) {
+        this.mAttachments = attachments;
+    }
+
+    @Override
+    public ArrayList<Attachment> getAttachments() {
+        return this.mAttachments;
     }
 
     @Override
