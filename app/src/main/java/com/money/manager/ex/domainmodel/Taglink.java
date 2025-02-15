@@ -20,10 +20,6 @@ public class Taglink extends EntityBase
         , UNIQUE(REFTYPE, REFID, TAGID)
         )
      */
-    public static final String REFTYPE_TRANSACTION = "Transaction";
-    public static final String REFTYPE_RECURRING_TRANSACTION = "RecurringTransaction";
-    public static final String REFTYPE_TRANSACTION_SPLIT = "TransactionSplit";
-    public static final String REFTYPE_RECURRING_TRANSACTION_SPLIT = "RecurringTransactionSplit";
 
     public static final String TAGLINKID = "TAGLINKID";
     public static final String REFTYPE = "REFTYPE";
@@ -54,6 +50,7 @@ public class Taglink extends EntityBase
 
     public String getRefType() { return getString(REFTYPE); }
     public void setRefType(String value) { setString(REFTYPE, value); }
+    public void setRefType(RefType value) { setString(REFTYPE, value.getValue());}
 
     public Long getRefId() { return getLong(REFID); }
     public void setRefId(Long value) { setLong(REFID, value); }
@@ -71,7 +68,7 @@ public class Taglink extends EntityBase
 
     public static ArrayList<Taglink> clearCrossReference(ArrayList<Taglink> list) {
         for (Taglink entity : list) {
-          entity.setRefType(null);
+          entity.setRefType((String) null);
           entity.setRefId(null);
           entity.setId(null);
         }

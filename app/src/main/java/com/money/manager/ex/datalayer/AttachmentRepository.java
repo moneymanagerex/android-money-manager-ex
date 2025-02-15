@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
+import com.money.manager.ex.domainmodel.RefType;
 
 import java.util.ArrayList;
 
@@ -54,9 +55,9 @@ public class AttachmentRepository
     }
 
     // custom func
-    public ArrayList<Attachment> loadAttachmentsFor(long refId, String refType) {
+    public ArrayList<Attachment> loadAttachmentsFor(long refId, RefType refType) {
         return new ArrayList<>(query(new Select(getAllColumns())
                 .where(Attachment.REFID + "= ? AND " + Attachment.REFTYPE +  "= ?"
-                        , Long.toString(refId), refType)));
+                        , Long.toString(refId), refType.getValue())));
     }
 }

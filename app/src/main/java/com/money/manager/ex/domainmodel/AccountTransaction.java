@@ -237,8 +237,8 @@ public class AccountTransaction
     }
 
     @Override
-    public String getTransactionModel() {
-        return Taglink.REFTYPE_TRANSACTION;
+    public RefType getTransactionModel() {
+        return RefType.TRANSACTION;
     }
 
     @Override

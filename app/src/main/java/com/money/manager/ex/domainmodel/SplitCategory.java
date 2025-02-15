@@ -25,7 +25,6 @@ import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.datalayer.IEntity;
 
 import org.parceler.Parcel;
 
@@ -175,8 +174,8 @@ public class SplitCategory
     }
 
     @Override
-    public String getTransactionModel() {
-        return Taglink.REFTYPE_TRANSACTION_SPLIT;
+    public RefType getTransactionModel() {
+        return RefType.TRANSACTION_SPLIT;
     }
 
 }

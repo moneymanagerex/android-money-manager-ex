@@ -33,6 +33,7 @@ import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.scheduled.Recurrence;
@@ -271,7 +272,7 @@ public class RecurringTransactionService
 
         // delete tags
         TaglinkRepository tagLinkRepo = new TaglinkRepository(getContext());
-        tagLinkRepo.deleteForType(this.recurringTransactionId, Taglink.REFTYPE_RECURRING_TRANSACTION);
+        tagLinkRepo.deleteForType(this.recurringTransactionId, RefType.RECURRING_TRANSACTION);
 
         // Delete recurring transactions.
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getContext());

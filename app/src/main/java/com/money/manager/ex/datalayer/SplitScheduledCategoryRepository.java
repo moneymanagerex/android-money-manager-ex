@@ -22,8 +22,8 @@ import android.database.Cursor;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
-import com.money.manager.ex.domainmodel.Taglink;
 
 import java.util.ArrayList;
 
@@ -80,7 +80,7 @@ public class SplitScheduledCategoryRepository
 
             splitRecurringCategory.setTags(
                     // array taglinks
-                    taglinkRepo.loadTaglinksFor(splitRecurringCategory.getId(), Taglink.REFTYPE_RECURRING_TRANSACTION_SPLIT)
+                    taglinkRepo.loadTaglinksFor(splitRecurringCategory.getId(), RefType.RECURRING_TRANSACTION_SPLIT)
             );
 
             listSplitTrans.add(splitRecurringCategory);
