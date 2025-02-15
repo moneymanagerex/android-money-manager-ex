@@ -22,6 +22,7 @@ import android.database.Cursor;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitCategory;
 
 import java.util.ArrayList;
@@ -57,6 +58,11 @@ public class SplitCategoryRepository
             SplitCategory.NOTES};
     }
 
+    @Override
+    protected RefType refType () {
+        return RefType.TRANSACTION_SPLIT;
+    }
+
     /**
      * Loads split transactions for the given transaction id.
      * @param transId Id of the main transaction for which to load the splits.
@@ -71,13 +77,12 @@ public class SplitCategoryRepository
 
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
-        TaglinkRepository taglinkRepository = new TaglinkRepository(getContext());
         while (curSplit.moveToNext()) {
             SplitCategory splitCategory = new SplitCategory();
             splitCategory.loadFromCursor(curSplit);
 
             // load tags from table
-            splitCategory.setTags(taglinkRepository.loadTaglinksFor(splitCategory.getId(), splitCategory.getTransactionModel()));
+            splitCategory.setTags(loadTaglinks(splitCategory.getId()));
 
             listSplitTrans.add(splitCategory);
         }

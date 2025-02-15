@@ -24,6 +24,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
+import com.money.manager.ex.domainmodel.RefType;
 
 /**
  * Recurring transaction repository.
@@ -63,6 +64,11 @@ public class ScheduledTransactionRepository
                 RecurringTransaction.REPEATS,
                 RecurringTransaction.NEXTOCCURRENCEDATE,
                 RecurringTransaction.NUMOCCURRENCES};
+    }
+
+    @Override
+    protected RefType refType () {
+        return RefType.RECURRING_TRANSACTION;
     }
 
     public RecurringTransaction first(String[] projection, String selection, String[] args) {

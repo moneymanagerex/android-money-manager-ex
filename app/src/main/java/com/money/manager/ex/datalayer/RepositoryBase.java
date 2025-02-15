@@ -31,7 +31,10 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.domainmodel.RefType;
+import com.money.manager.ex.domainmodel.Taglink;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.ArrayList;
@@ -81,10 +84,10 @@ public abstract class RepositoryBase<T extends EntityBase>
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
         try {
             Cursor cursor = getContext().getContentResolver().query(getUri(),
-                projection,
-                selection,
-                args,
-                sort);
+                    projection,
+                    selection,
+                    args,
+                    sort);
             return cursor;
         } catch (SQLiteDiskIOException ex) {
             Timber.e(ex, "querying database");
@@ -110,7 +113,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public T loadByName(String name) {
-        return first(getAllColumns(), nameColumn + " = ?", new String[] { name }, null);
+        return first(getAllColumns(), nameColumn + " = ?", new String[]{name}, null);
     }
 
     public long loadIdByName(String name) {
@@ -227,9 +230,10 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Generic update method.
-     * @param entity    Entity values to store.
-     * @param where     Condition for entity selection.
-     * @return  Boolean indicating whether the operation was successful.
+     *
+     * @param entity Entity values to store.
+     * @param where  Condition for entity selection.
+     * @return Boolean indicating whether the operation was successful.
      */
     protected boolean update(EntityBase entity, String where) {
         return update(entity, where, new String[0]);
@@ -256,11 +260,10 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected long delete(String where, String[] args) {
-        long result = getContext().getContentResolver().delete(this.getUri(),
-            where,
-            args
+        return getContext().getContentResolver().delete(this.getUri(),
+                where,
+                args
         );
-        return result;
     }
 
     /**
@@ -268,6 +271,7 @@ public abstract class RepositoryBase<T extends EntityBase>
      * Ref:
      * http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
      * http://www.grokkingandroid.com/android-tutorial-using-content-providers/
+     *
      * @param entities array of entities to update in a transaction
      * @return results of the bulk update
      */
@@ -314,4 +318,18 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected abstract T createEntity();
+
+    protected RefType refType() {
+        throw new UnsupportedOperationException("refType() method is not supported in this subclass.");
+    }
+
+    public ArrayList<Attachment> loadAttachments(long id) {
+        AttachmentRepository repo = new AttachmentRepository(getContext());
+        return repo.loadByRef(id, refType());
+    }
+
+    public ArrayList<Taglink> loadTaglinks(long id) {
+        TaglinkRepository repo = new TaglinkRepository(getContext());
+        return repo.loadByRef(id, refType());
+    }
 }

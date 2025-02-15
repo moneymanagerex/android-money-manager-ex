@@ -342,7 +342,7 @@ public class RecurringTransactionService
             entity.loadFromCursor(cursor);
 
             // load tag for split
-            entity.setTags(taglinkRepository.loadTaglinksFor(entity.getId(), entity.getTransactionModel()));
+            entity.setTags(taglinkRepository.loadByRef(entity.getId(), entity.getTransactionModel()));
 
             result.add(entity);
         }
@@ -488,7 +488,7 @@ public class RecurringTransactionService
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
         accountTrx.setTags(
                 Taglink.clearCrossReference(
-                        taglinkRepository.loadTaglinksFor(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
+                        taglinkRepository.loadByRef(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 
         accountTrx.setColor(scheduledTrx.getColor());
 

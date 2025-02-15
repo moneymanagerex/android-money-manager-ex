@@ -68,6 +68,11 @@ public class AccountTransactionRepository
         };
     }
 
+    @Override
+    protected RefType refType () {
+        return RefType.TRANSACTION;
+    }
+
     public AccountTransaction insert(AccountTransaction entity) {
         entity.contentValues.remove(AccountTransaction.TRANSID);
         entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());
@@ -86,11 +91,5 @@ public class AccountTransactionRepository
         item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
 
         return super.update(item, where.getWhere());
-    }
-
-    // custom func
-    public ArrayList<Attachment> loadAttachments(long id) {
-        AttachmentRepository repo = new AttachmentRepository(getContext());
-        return repo.loadByRef(id, RefType.TRANSACTION);
     }
 }
