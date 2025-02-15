@@ -70,7 +70,7 @@ public class GeneralReportFragment extends Fragment {
         try
         {
             ReportRepository repo = new ReportRepository(getActivity());
-            List<Report> report = repo.loadByReportName(reportName.trim());
+            List<Report> report = repo.loadByName(reportName.trim());
 
             if (!report.isEmpty()) {
                 sqlQuery = report.get(0).getSqlContent();
