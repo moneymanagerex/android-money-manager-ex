@@ -96,8 +96,8 @@ public interface ITransactionEntity {
 
     public RefType getTransactionModel();
 
-    public void setTags(ArrayList<TagLink> tags) ;
-    public ArrayList<TagLink> getTags() ;
+    public void setTagLinks(ArrayList<TagLink> tagLinks) ;
+    public ArrayList<TagLink> getTagLinks() ;
 
     public void setColor(int value) ;
     public int getColor() ;

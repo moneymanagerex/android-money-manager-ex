@@ -486,7 +486,7 @@ public class RecurringTransactionService
 
         // tags
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext() );
-        accountTrx.setTags(
+        accountTrx.setTagLinks(
                 TagLink.clearCrossReference(
                         taglinkRepository.loadByRef(scheduledTrx.getId(), scheduledTrx.getTransactionModel())));
 

@@ -101,7 +101,7 @@ public class ScheduledTransactionListActivity
                         AccountTransaction accountTrx = service.getAccountTransactionFromRecurring();
                         accountTransactionRepository.insert(accountTrx);
                         TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-                        taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTags());
+                        taglinkRepository.saveAllFor(accountTrx.getTransactionModel(), accountTrx.getId(), accountTrx.getTagLinks());
                         service.moveNextOccurrence();
                     } else {
                         Intent intent = new Intent(this, CheckingTransactionEditActivity.class);
