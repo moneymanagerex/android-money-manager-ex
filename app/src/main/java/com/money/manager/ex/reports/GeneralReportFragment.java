@@ -15,9 +15,13 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.MmxOpenHelper;
+import com.money.manager.ex.datalayer.ReportRepository;
+import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.settings.AppSettings;
 
 import androidx.fragment.app.Fragment;
+
+import java.util.List;
 
 
 public class GeneralReportFragment extends Fragment {
@@ -52,10 +56,9 @@ public class GeneralReportFragment extends Fragment {
 
         //Db setup
         MmxOpenHelper MmxHelper = new MmxOpenHelper(getActivity(), new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath());
-        SupportSQLiteDatabase mDatabase = MmxHelper.getReadableDatabase();
-        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+        //CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
-        String sqlQuery = "ss";
+        String sqlQuery = "";
         String htmlTable = "<html><head><style>" +
                "#GeneralReport { font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%;} " +
                "#GeneralReport td, #GeneralReport th { border: 1px solid #ddd; padding: 8px;} " +
@@ -66,30 +69,20 @@ public class GeneralReportFragment extends Fragment {
 
         try
         {
-            if(!reportName.trim().isEmpty()) {
+            ReportRepository repo = new ReportRepository(getActivity());
+            List<Report> report = repo.loadByReportName(reportName.trim());
 
-                String sql = "SELECT SQLCONTENT FROM REPORT_V1 " +
-                        "WHERE REPORTNAME = '" + reportName + "' " +
-                        "ORDER BY REPORTNAME LIMIT 1";
-
-                Cursor sqlCursor = mDatabase.query(sql, null);
-
-                if(sqlCursor.moveToFirst())
-                {
-                    sqlQuery = sqlCursor.getString(sqlCursor.getColumnIndex("SQLCONTENT"));
-                }
-
-                sqlCursor.close();
+            if (!report.isEmpty()) {
+                sqlQuery = report.get(0).getSqlContent();
             }
 
-            // fetch the data and generate the html table
-            Cursor sqlCursor = mDatabase.query(sqlQuery, null);
+            //fetch the data and generate the html table
+            Cursor sqlCursor = MmxHelper.getReadableDatabase().query(sqlQuery, null);
 
             htmlTable = htmlTable + "<table id='GeneralReport'><tr>";
 
             //get the clmns
-            for (int i = 0; i < sqlCursor.getColumnCount(); i++)
-            {
+            for (int i = 0; i < sqlCursor.getColumnCount(); i++) {
                 htmlTable = htmlTable + "<th>" + sqlCursor.getColumnName(i) + "</th>";
             }
 
@@ -113,10 +106,8 @@ public class GeneralReportFragment extends Fragment {
             htmlTable = htmlTable + "</table></body></html>";
 
             sqlCursor.close();
-            mDatabase.close();
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             //System.err.println("EXCEPTION:"+e);
         }
 

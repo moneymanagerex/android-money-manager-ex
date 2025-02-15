@@ -124,6 +124,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -1445,21 +1446,24 @@ public class MainActivity
         ArrayList<DrawerMenuItem> childReportGroup = new ArrayList<>();
 
         ReportRepository repo = new ReportRepository(this);
+        ArrayList<String> groupNames = new ArrayList<>();
 
-        // Convert keys to array
-        String[] groupArray = repo.loadGroupedByName().keySet().toArray(new String[0]);
-        Arrays.sort(groupArray);
+        // get the report name which having blank group name
+        for (Report report : repo.loadByGroupName("")) {
+            groupNames.add(report.getReportName());
+        }
 
-        for (String groupName : groupArray) {
-            //check if report name has group
-            if (groupName.trim().isEmpty()) {
-                groupName = "<"+this.getString(R.string.no_report_group)+">";
+        // get the all report group names
+        Collections.addAll(groupNames, repo.loadGroupedByName().keySet().toArray(new String[0]));
+        Collections.sort(groupNames);
+
+        for (String groupName : groupNames) {
+            if (!groupName.trim().isEmpty()) { // ignore if group is empty
+                childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                        .withText(groupName)
+                        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                .color(iconColor)));
             }
-
-            childReportGroup.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
-                    .withText(groupName)
-                    .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
-                            .color(iconColor)));
         }
 
         return childReportGroup;
@@ -1474,65 +1478,66 @@ public class MainActivity
         ArrayList<String> reportNames = new ArrayList<>();
         ReportRepository repo = new ReportRepository(this);
 
-        //if the group name is "<No Group>", then set to blank
-        String orignalGroupName = groupName;
-        if (groupName.equals("<"+this.getString(R.string.no_report_group)+">")) {
-            groupName="";
+        List<Report> reports = repo.loadByGroupName(groupName);
+
+        if (reports.isEmpty()) { // if it is empty then consider group name as report name
+            Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
+            intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, groupName);
+            intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
+            startActivity(intent);
         }
-
-        for (Report report : repo.loadReportByGroupName(groupName)) {
-            reportNames.add(report.getReportName());
-        }
-
-        Collections.sort(reportNames);
-
-        for (String report : reportNames) {
-            adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
-                    .withText(report)
-                    .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
-                            .color(iconColor)));
-        }
-
-        //*********** build custom dialog ************
-        // Inflate the custom dialog layout
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        // Create a TextView for the title with added space in place of builder.setTitle(groupName)
-        TextView title = new TextView(this);
-        title.setText(orignalGroupName);
-        title.setTextSize(20);
-        title.setPadding(40, 20, 0, 20);  // Adds space above and below the title
-
-        builder.setCustomTitle(title);
-        title.setTypeface(null, Typeface.BOLD);  // Makes the title bold
-        title.setTextColor(Color.BLACK);
-
-        // Inflate the custom layout that contains the ListView
-        View customView = getLayoutInflater().inflate(R.layout.dialog_general_report, null);
-        builder.setView(customView);
-
-        // Set up ListView and adapter
-        ListView listView = customView.findViewById(R.id.listView);
-
-        listView.setAdapter(adapter);
-        // Create and show the dialog
-        AlertDialog dialog = builder.create();
-
-        //re-assign
-        String finalGroupName = groupName;
-
-        // Set item click listener for ListView
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
-                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportNames.get(position) );
-                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, finalGroupName );
-                startActivity(intent);
-                dialog.dismiss();
+        else {
+            for (Report report : reports) {
+                reportNames.add(report.getReportName());
             }
-        });
 
-        dialog.show();
+            Collections.sort(reportNames);
+
+            for (String report : reportNames) {
+                adapter.add(new DrawerMenuItem().withId(R.id.menu_general_report)
+                        .withText(report)
+                        .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_report_page)
+                                .color(iconColor)));
+            }
+
+            //*********** build custom dialog ************
+            // Inflate the custom dialog layout
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            // Create a TextView for the title with added space in place of builder.setTitle(groupName)
+            TextView title = new TextView(this);
+            title.setText(groupName);
+            title.setTextSize(20);
+            title.setPadding(40, 20, 0, 20);  // Adds space above and below the title
+
+            builder.setCustomTitle(title);
+            title.setTypeface(null, Typeface.BOLD);  // Makes the title bold
+            title.setTextColor(Color.BLACK);
+
+            // Inflate the custom layout that contains the ListView
+            View customView = getLayoutInflater().inflate(R.layout.dialog_general_report, null);
+            builder.setView(customView);
+
+            // Set up ListView and adapter
+            ListView listView = customView.findViewById(R.id.listView);
+
+            listView.setAdapter(adapter);
+            // Create and show the dialog
+            AlertDialog dialog = builder.create();
+
+            // Set item click listener for ListView
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
+                    intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportNames.get(position) );
+                    intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
     }
 }
