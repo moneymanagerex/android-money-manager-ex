@@ -33,17 +33,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.settings.AppSettings;
@@ -87,6 +88,7 @@ public class CashFlowReportListFragment
     MmxDateTimeUtils dateUtils;
     InfoService infoService;
     MoneySimpleCursorAdapter adapter;
+    ArrayList<Long> selectedAccounts = new ArrayList<>();
 
     @SuppressLint("Range")
     private void createCashFlowRecords() {
@@ -120,16 +122,42 @@ public class CashFlowReportListFragment
                 null,
                 QueryBillDeposits.NEXTOCCURRENCEDATE);
         if (cursor == null ||
-            cursor.getCount() == 0)
+                cursor.getCount() == 0)
             return;
 
-        getTotalAmount();
+        getTotalAmountAndAccounts();
 
         RecurringTransactionService recurringTransactionService = new RecurringTransactionService(getContext());
 
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
+            // ignore transfert if both is on selected account
+            // create recurring transaction
+            double amount;
+            RecurringTransaction rx = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext()).getSimulatedTransaction();
+            if (rx.getTransactionType() == TransactionTypes.Transfer ) {
+                if (selectedAccounts.contains(rx.getAccountId()) &&
+                        selectedAccounts.contains(rx.getAccountToId())) {
+                    // both in
+                    continue; // skip
+                }
+                if (!selectedAccounts.contains(rx.getAccountId()) &&
+                        !selectedAccounts.contains(rx.getAccountToId())) {
+                    // both out
+                    continue; // skip
+                }
+                if (selectedAccounts.contains(rx.getAccountId()) ) {
+                    // source in
+                    amount = rx.getAmount().toDouble();
+                } else {
+                    // dest in
+                    amount = rx.getAmountTo().toDouble();
+                }
+            } else {
+                amount = rx.getAmount().toDouble();
+            }
+
             row = new HashMap<>();
             row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
             row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
@@ -140,12 +168,10 @@ public class CashFlowReportListFragment
             row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)),"")); // handle null #2235
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
-            row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
+            row.put(QueryBillDeposits.AMOUNT, amount);
             row.put(BALANCE, 0);
             listRecurring.add(row);
 
-            // create recurring transaction
-            recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
             int limit = monthInAdvance * 31;
             while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getDate().before(endDate.toDate())) {
                 limit -= 1;
@@ -191,7 +217,7 @@ public class CashFlowReportListFragment
         }
     }
 
-    private void getTotalAmount() {
+    private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
         // compose whereClause
         String where = "";
@@ -209,6 +235,8 @@ public class CashFlowReportListFragment
                 .where(where)
                 .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
+        selectedAccounts = new ArrayList<>();
+
         Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
                 null,
                 where,
@@ -217,6 +245,7 @@ public class CashFlowReportListFragment
         if (c != null) {
             totalAmount = 0;
             while (c.moveToNext()) {
+                selectedAccounts.add(c.getLong(c.getColumnIndex(QueryAccountBills.ACCOUNTID)));
                 totalAmount += c.getDouble(c.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
             }
             c.close();
@@ -231,8 +260,8 @@ public class CashFlowReportListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-                // Update UI elements here
-                //createCashFlowRecords();
+        // Update UI elements here
+        //createCashFlowRecords();
         new Thread(new Runnable() {
             @Override
             public void run() {
