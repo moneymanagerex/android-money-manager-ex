@@ -17,6 +17,10 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- default category -->
+    <string name="category_1">பில்கள்</string>
+    <string name="category_2">உணவு</string>
+    <string name="category_3">ஓய்வு</string>
+    <string name="category_4">ஆட்டோமொபைல்</string>
     <string name="category_5">கல்வி</string>
     <string name="category_6">வீட்டுத் தேவைகள்</string>
     <string name="category_7">சுகாதாரம்</string>
@@ -34,16 +38,21 @@
     <string name="subcategory_3">எரிவாயு</string>
     <string name="subcategory_4">இணையம்</string>
     <string name="subcategory_5">வாடகை</string>
+    <string name="subcategory_6">கேபிள் டி.வி</string>
     <string name="subcategory_7">நீர்</string>
     <string name="subcategory_8">மளிகைகள்</string>
     <string name="subcategory_9">வெளியே சாப்பாடு</string>
+    <string name="subcategory_10">திரைப்படங்கள்</string>
     <string name="subcategory_11">வீடியோ வாடகை</string>
+    <string name="subcategory_12">இதழ்கள்</string>
     <string name="subcategory_13">பராமரிப்பு</string>
     <string name="subcategory_14">எரிவாயு</string>
     <string name="subcategory_15">பார்க்கிங்</string>
     <string name="subcategory_16">பதிவு</string>
+    <string name="subcategory_17">புத்தகங்கள்</string>
     <string name="subcategory_18">பயிற்சி</string>
     <string name="subcategory_19">மற்ற</string>
+    <string name="subcategory_20">ஆடை</string>
     <string name="subcategory_21">நிறுவுதல்</string>
     <string name="subcategory_22">மற்ற</string>
     <string name="subcategory_23">உடல்நலம்</string>
