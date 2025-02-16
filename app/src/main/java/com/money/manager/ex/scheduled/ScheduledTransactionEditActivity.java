@@ -497,9 +497,9 @@ public class ScheduledTransactionEditActivity
         mCommon.loadCategoryName();
 
         // load Tags
-        if (mCommon.transactionEntity.getTags() == null ) {
+        if (mCommon.transactionEntity.getTagLinks() == null ) {
             TaglinkRepository taglinkRepository = new TaglinkRepository(this);
-            mCommon.transactionEntity.setTags(taglinkRepository.loadByRef(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
+            mCommon.transactionEntity.setTagLinks(taglinkRepository.loadByRef(recurringTransactionId, mCommon.transactionEntity.getTransactionModel()));
         }
 
 
@@ -640,7 +640,7 @@ public class ScheduledTransactionEditActivity
                 // save tag for split
                 taglinkRepository.saveAllFor(splitEntity.getTransactionModel(),
                         splitEntity.getId(),
-                        splitEntity.getTags());
+                        splitEntity.getTagLinks());
             }
         }
 

@@ -82,7 +82,7 @@ public class SplitCategoryRepository
             splitCategory.loadFromCursor(curSplit);
 
             // load tags from table
-            splitCategory.setTags(loadTaglinks(splitCategory.getId()));
+            splitCategory.setTagLinks(loadTaglinks(splitCategory.getId()));
 
             listSplitTrans.add(splitCategory);
         }
@@ -99,7 +99,7 @@ public class SplitCategoryRepository
             SplitCategory scat = (SplitCategory) item;
             scat.setTransId(transId);
             splitCategoryRepository.insertOrUpdate(scat);
-            taglinkRepository.saveAllFor(scat.getTransactionModel(), scat.getId(), scat.getTags());
+            taglinkRepository.saveAllFor(scat.getTransactionModel(), scat.getId(), scat.getTagLinks());
         }
     }
 

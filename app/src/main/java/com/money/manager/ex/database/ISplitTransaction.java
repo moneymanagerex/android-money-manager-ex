@@ -20,7 +20,7 @@ package com.money.manager.ex.database;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.domainmodel.RefType;
-import com.money.manager.ex.domainmodel.Taglink;
+import com.money.manager.ex.domainmodel.TagLink;
 
 import java.util.ArrayList;
 
@@ -51,8 +51,8 @@ public interface ISplitTransaction
     TransactionTypes getTransactionType(TransactionTypes parentTransactionType);
     void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType);
 
-    void setTags(ArrayList<Taglink> tags);
-    ArrayList<Taglink> getTags();
+    void setTagLinks(ArrayList<TagLink> tags);
+    ArrayList<TagLink> getTagLinks();
 
     RefType getTransactionModel();
 }

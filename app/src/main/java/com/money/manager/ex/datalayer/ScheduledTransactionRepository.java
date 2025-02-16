@@ -71,6 +71,17 @@ public class ScheduledTransactionRepository
         return RefType.RECURRING_TRANSACTION;
     }
 
+    // custom func
+    @Override
+    public RecurringTransaction load(Long id) {
+        RecurringTransaction txn = super.load(id);
+
+        txn.setAttachments(loadAttachments(id));
+        /// TODO other associated items
+
+        return txn;
+    }
+
     public RecurringTransaction first(String[] projection, String selection, String[] args) {
         Cursor c = openCursor(projection, selection, args);
 

@@ -118,8 +118,6 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransaction> mSplitTransactions;
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
-    public ArrayList<Attachment> mAttachments;
-
     // Controls
     public EditTransactionViewHolder viewHolder;
 
@@ -601,11 +599,11 @@ public class EditTransactionCommonFunctions {
 
     public void initTagsControls() {
         (new TagLinkUtils(getContext())).initTagControls(viewHolder.tagsListTextView,
-                transactionEntity.getTags(),
+                transactionEntity.getTagLinks(),
                 transactionEntity.getId(),
                 transactionEntity.getTransactionModel(),
                 tagLinks -> {
-                    transactionEntity.setTags(tagLinks);
+                    transactionEntity.setTagLinks(tagLinks);
                 } );
 
     }
@@ -1429,8 +1427,8 @@ public class EditTransactionCommonFunctions {
             entity.setCategoryId(this.transactionEntity.getCategoryId());
         }
 
-        if (this.transactionEntity.getTags() != null ) {
-            entity.setTags(this.transactionEntity.getTags());
+        if (this.transactionEntity.getTagLinks() != null ) {
+            entity.setTagLinks(this.transactionEntity.getTagLinks());
         }
 
         return entity;
@@ -1483,10 +1481,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private ArrayList<Attachment> getAttachments() {
-        if (mAttachments == null) {
-            mAttachments = new ArrayList<>();
-        }
-        return mAttachments;
+        return this.transactionEntity.getAttachments();
     }
 
     private String getUserDateFormat() {
@@ -1657,8 +1652,8 @@ public class EditTransactionCommonFunctions {
     public void saveTags() {
         // save TagLinks
         TaglinkRepository taglinkRepository = new TaglinkRepository( getContext()) ;
-        if (transactionEntity.getTags() != null) {
-            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTags());
+        if (transactionEntity.getTagLinks() != null) {
+            taglinkRepository.saveAllFor(transactionEntity.getTransactionModel(), transactionEntity.getId(), transactionEntity.getTagLinks());
         } else {
             taglinkRepository.deleteForType(transactionEntity.getId(), transactionEntity.getTransactionModel() );
         }

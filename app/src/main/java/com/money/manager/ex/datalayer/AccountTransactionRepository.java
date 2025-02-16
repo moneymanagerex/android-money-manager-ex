@@ -70,6 +70,18 @@ public class AccountTransactionRepository
         return RefType.TRANSACTION;
     }
 
+    // custom func
+
+    @Override
+    public AccountTransaction load(Long id) {
+        AccountTransaction txn = super.load(id);
+
+        txn.setAttachments(loadAttachments(id));
+        /// TODO other associated items
+
+        return txn;
+    }
+
     public AccountTransaction insert(AccountTransaction entity) {
         entity.contentValues.remove(AccountTransaction.TRANSID);
         entity.contentValues.put(AccountTransaction.LASTUPDATEDTIME, (new MmxDate()).toIsoCombinedString());

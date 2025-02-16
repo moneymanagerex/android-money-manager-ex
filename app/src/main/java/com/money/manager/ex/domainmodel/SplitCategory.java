@@ -49,7 +49,7 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
 
-    private ArrayList<Taglink> taglinks = null;
+    private ArrayList<TagLink> tagLinks = null;
 
     public static SplitCategory create(long transactionId, long categoryId, TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitCategory entity = new SplitCategory();
@@ -164,13 +164,13 @@ public class SplitCategory
     }
 
     @Override
-    public void setTags(ArrayList<Taglink> tags) {
-        taglinks = tags;
+    public void setTagLinks(ArrayList<TagLink> tags) {
+        tagLinks = tags;
     }
 
     @Override
-    public ArrayList<Taglink> getTags() {
-        return taglinks;
+    public ArrayList<TagLink> getTagLinks() {
+        return tagLinks;
     }
 
     @Override

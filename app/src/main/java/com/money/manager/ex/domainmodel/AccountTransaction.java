@@ -45,7 +45,8 @@ public class AccountTransaction
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
-    private ArrayList<Taglink> taglinks = null;
+    private ArrayList<Attachment> mAttachments;
+    private ArrayList<TagLink> tagLinks = null;
     private ArrayList<ISplitTransaction> splitTransactions = null;
 
     /**
@@ -242,13 +243,23 @@ public class AccountTransaction
     }
 
     @Override
-    public void setTags(ArrayList<Taglink> tags) {
-        taglinks = tags;
+    public void setAttachments(ArrayList<Attachment> attachments) {
+        this.mAttachments = attachments;
     }
 
     @Override
-    public ArrayList<Taglink> getTags() {
-        return taglinks;
+    public ArrayList<Attachment> getAttachments() {
+        return this.mAttachments;
+    }
+
+    @Override
+    public void setTagLinks(ArrayList<TagLink> tagLinks) {
+        this.tagLinks = tagLinks;
+    }
+
+    @Override
+    public ArrayList<TagLink> getTagLinks() {
+        return tagLinks;
     }
 
     @Override
@@ -296,7 +307,7 @@ public class AccountTransaction
             scat.setCategoryId(split.getCategoryId());
             scat.setAmount(split.getAmount());
             scat.setNotes(split.getNotes());
-            scat.setTags(Taglink.clearCrossReference(split.getTags()));// clear cros reference for tag
+            scat.setTagLinks(TagLink.clearCrossReference(split.getTagLinks()));// clear cros reference for tag
             splitTransactions.add(scat);
         }
     }
