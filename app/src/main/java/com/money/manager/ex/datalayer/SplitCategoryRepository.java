@@ -43,8 +43,13 @@ public class SplitCategoryRepository
     }
 
     @Override
-    protected SplitCategory createEntity() {
+    public SplitCategory createEntity() {
         return new SplitCategory();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

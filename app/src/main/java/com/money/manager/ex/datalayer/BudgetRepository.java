@@ -37,8 +37,13 @@ public class BudgetRepository
     }
 
     @Override
-    protected Budget createEntity() {
+    public Budget createEntity() {
         return new Budget();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

@@ -39,8 +39,13 @@ public class AttachmentRepository
     }
 
     @Override
-    protected Attachment createEntity() {
+    public Attachment createEntity() {
         return new Attachment();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

@@ -32,7 +32,7 @@ import com.money.manager.ex.domainmodel.Payee;
 public class PayeeRepository
     extends RepositoryBase<Payee>{
 
-    private static final String TABLE_NAME = "payee_v1";
+    public static final String TABLE_NAME = "payee_v1";
     private static final String ID_COLUMN = Payee.PAYEEID;
     private static final String NAME_COLUMN = Payee.PAYEENAME;
 
@@ -53,8 +53,13 @@ public class PayeeRepository
     }
 
     @Override
-    protected Payee createEntity() {
+    public Payee createEntity() {
         return new Payee();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

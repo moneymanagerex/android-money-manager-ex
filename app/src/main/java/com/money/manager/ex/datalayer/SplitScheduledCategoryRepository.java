@@ -43,8 +43,13 @@ public class SplitScheduledCategoryRepository
     }
 
     @Override
-    protected SplitRecurringCategory createEntity() {
+    public SplitRecurringCategory createEntity() {
         return new SplitRecurringCategory();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

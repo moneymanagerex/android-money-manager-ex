@@ -21,8 +21,13 @@ public class TaglinkRepository extends RepositoryBase <TagLink> {
     }
 
     @Override
-    protected TagLink createEntity() {
+    public TagLink createEntity() {
         return new TagLink();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

@@ -75,10 +75,10 @@ public class DataMergerTests {
         MmxDate lastLocalSyncDate = new MmxDate();
         StringBuilder log = new StringBuilder();
         // test
-        testee.mergeAccountTransaction(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
         // verify
-        verify(localAccTrans).insert(remoteEntity);
-        verify(localAccTrans, never()).update(remoteEntity);
+        verify(localAccTrans).add(remoteEntity);
+        verify(localAccTrans, never()).save(remoteEntity);
     }
 
     @Test
@@ -134,10 +134,10 @@ public class DataMergerTests {
         MmxDate lastLocalSyncDate = MmxDate.fromIso8601("2020-01-21T18:42:18.000Z");
         StringBuilder log = new StringBuilder();
         // test
-        testee.mergeAccountTransaction(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
         // verify
-        verify(localAccTrans).update(remoteEntity);
-        verify(localAccTrans, never()).insert(remoteEntity);
+        verify(localAccTrans).save(remoteEntity);
+        verify(localAccTrans, never()).add(remoteEntity);
         assertTrue(log.toString().contains(DataMerger.REMOTE_ONLY_WAS_MODIFIED));
     }
 
@@ -153,10 +153,10 @@ public class DataMergerTests {
         MmxDate lastLocalSyncDate = MmxDate.fromIso8601("2020-01-21T18:42:18.000Z");
         StringBuilder log = new StringBuilder();
         // test
-        testee.mergeAccountTransaction(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
         // verify
-        verify(localAccTrans).update(remoteEntity);
-        verify(localAccTrans, never()).insert(remoteEntity);
+        verify(localAccTrans).save(remoteEntity);
+        verify(localAccTrans, never()).add(remoteEntity);
         assertTrue(log.toString().contains(DataMerger.OVERWRITE_LOCAL_CHANGES));
     }
 
@@ -172,9 +172,9 @@ public class DataMergerTests {
         MmxDate lastLocalSyncDate = MmxDate.fromIso8601("2020-01-21T18:42:18.000Z");
         StringBuilder log = new StringBuilder();
         // test
-        testee.mergeAccountTransaction(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
         // verify
-        verify(localAccTrans, never()).update(remoteEntity);
-        verify(localAccTrans, never()).insert(remoteEntity);
+        verify(localAccTrans, never()).save(remoteEntity);
+        verify(localAccTrans, never()).add(remoteEntity);
     }
 }

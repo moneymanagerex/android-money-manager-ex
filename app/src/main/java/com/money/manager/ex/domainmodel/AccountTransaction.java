@@ -24,6 +24,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.IModificationTraceable;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
@@ -41,7 +42,7 @@ import info.javaperformance.money.MoneyFactory;
 @Parcel
 public class AccountTransaction
     extends EntityBase
-    implements ITransactionEntity {
+    implements ITransactionEntity, IModificationTraceable {
 
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";

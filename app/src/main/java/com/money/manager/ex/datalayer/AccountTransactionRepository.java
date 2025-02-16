@@ -41,8 +41,13 @@ public class AccountTransactionRepository
     }
 
     @Override
-    protected AccountTransaction createEntity() {
+    public AccountTransaction createEntity() {
         return new AccountTransaction();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
