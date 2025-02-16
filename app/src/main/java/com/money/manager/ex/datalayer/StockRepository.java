@@ -156,6 +156,7 @@ public class StockRepository
 
         for (long id : ids) {
             Stock stock = load(id);
+            if (stock == null) continue; // this should not happen, but see #2295 -anr-1071-stockrepository
             stock.setCurrentPrice(price);
             // recalculate & assign the value
             Money value = stock.getValue();
