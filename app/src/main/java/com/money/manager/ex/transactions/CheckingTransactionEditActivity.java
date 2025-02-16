@@ -410,10 +410,6 @@ public class CheckingTransactionEditActivity
             SplitCategoryRepository splitRepo = new SplitCategoryRepository(this);
             mCommon.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
         }
-        // Load Attachments
-        if (mCommon.mAttachments == null) {
-            mCommon.mAttachments = repo.loadAttachments(transId);
-        }
 
         // load Tags
         if (mCommon.transactionEntity.getTagLinks() == null ) {

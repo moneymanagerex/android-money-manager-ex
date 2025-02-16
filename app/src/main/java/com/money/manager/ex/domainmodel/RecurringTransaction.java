@@ -47,6 +47,7 @@ public class RecurringTransaction
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
 
+    private ArrayList<Attachment> mAttachments;
     private ArrayList<TagLink> tagLinks = null;
     private ArrayList<ISplitTransaction> splitTransactions;
 
@@ -330,6 +331,16 @@ public class RecurringTransaction
     @Override
     public RefType getTransactionModel() {
         return RefType.RECURRING_TRANSACTION;
+    }
+
+    @Override
+    public void setAttachments(ArrayList<Attachment> attachments) {
+        this.mAttachments = attachments;
+    }
+
+    @Override
+    public ArrayList<Attachment> getAttachments() {
+        return this.mAttachments;
     }
 
     @Override
