@@ -136,39 +136,63 @@ public class NestedCategoryListFragment
         int layout = R.layout.simple_list_item_1_with_selector;
 
         // associate adapter
+//        MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
+//                layout, null, new String[]{QueryNestedCategory.CATEGNAME, QueryNestedCategory.ID},
+//                new int[]{R.id.text1, R.id.selector}, 0);
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[]{QueryNestedCategory.CATEGNAME, QueryNestedCategory.ID},
-                new int[]{R.id.text1, R.id.selector}, 0);
+                layout, null, new String[]{QueryNestedCategory.ID},
+                new int[]{R.id.single_row}, 0);
 
         adapter.setViewBinder((aView, aCursor, aColumnIndex) -> {
             NestedCategoryEntity nestedCategory = new NestedCategoryEntity();
             nestedCategory.loadFromCursor(aCursor);
-            if (aView.getId() == R.id.selector ) {
-                    aView.setVisibility(View.GONE); // default
-                    if (levelMode == 0) {
-                        return true;
-                    }
-                    if ( mAction.equals(Intent.ACTION_PICK) ) {
-                        // set visibiloity and action
-                        aView.setVisibility(View.VISIBLE);
-                        aView.setTag(nestedCategory.getId());
-                        aView.setOnClickListener(v -> {
-                            sendResultToActivity(nestedCategory.getId(), nestedCategory.getCategoryName());
-                        });
-                        return true;
-                    }
 
-                    // in normal mode show ">" if has children
-                    if ( nestedCategory.hasChildren() ) {
-                        aView.setVisibility(View.VISIBLE);
-                        aView.setTag(nestedCategory.getId());
-                        aView.setOnClickListener(v -> {
-                            onListItemLongClick(getListView(), v, getListView().getPositionForView(v), nestedCategory.getId());
-                        });
-                    }
-                    return true;
+            aView.setTag(nestedCategory.getId());
+
+            TextView foldericon = aView.findViewById(R.id.foldericon);
+            TextView textView = aView.findViewById(R.id.text1);
+            TextView selector = aView.findViewById(R.id.selector);
+
+            textView.setVisibility(View.VISIBLE);
+            if (levelMode == 0) {
+                foldericon.setVisibility(View.GONE);
+                selector.setVisibility(View.GONE);
+            } else {
+                foldericon.setVisibility(View.VISIBLE);
+                // set foldericon
+                if ( rootCategoryId == nestedCategory.getId()) {
+                    // this is actual root
+                    foldericon.setText("x"); // <
+                } else if (nestedCategory.hasChildren()) {
+                    foldericon.setText("  C");
+                } else {
+                    foldericon.setText(" ");
+                }
+
+                selector.setVisibility(View.VISIBLE);
+                if ( mAction.equals(Intent.ACTION_PICK)) {
+                    // pick
+                    selector.setText("o");
+                } else {
+                    selector.setText("j");
+                }
+
             }
-            TextView textView = (TextView) aView;
+
+            if (mAction.equals(Intent.ACTION_PICK) ) {
+                selector.setOnClickListener(v -> {
+                    sendResultToActivity(nestedCategory.getId(), nestedCategory.getCategoryName());
+                });
+            } else {
+                selector.setOnClickListener(v -> {
+                    onListItemLongClick(getListView(), v, getListView().getPositionForView(v), nestedCategory.getId());
+                });
+
+            }
+            foldericon.setOnClickListener(v->{
+                onListItemClick(getListView(), v, getListView().getPositionForView(v), nestedCategory.getId());
+            });
+
             boolean active = nestedCategory.getActiveAsBoolean();
             CharSequence text;
             if ( levelMode != 0 ) {
@@ -176,7 +200,7 @@ public class NestedCategoryListFragment
                     // this is actual root
                     text = nestedCategory.getCategoryName();
                 } else {
-                    text = "  > " + nestedCategory.getBasename();
+                    text = "  " + nestedCategory.getBasename();
                 }
             } else {
                 text = nestedCategory.getCategoryName();
@@ -441,7 +465,11 @@ public class NestedCategoryListFragment
                     getFloatingActionButton().show(true);
                 }
             } else {
-                setListShownNoAnimation(true);
+                try {
+                    setListShownNoAnimation(true);
+                } catch (Exception e) {
+
+                }
             }
         }
     }
