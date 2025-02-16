@@ -47,6 +47,7 @@ public class QueryNestedCategory
     public static final String FULLCATID = "FULLCATID";
     public static final String ACTIVE = "ACTIVE";
     public static final String LEVEL = "LEVEL";
+    public static final String CHILDRENCOUNT = "CHILDRENCOUNT";
 
     private Context mContext;
 
@@ -57,7 +58,7 @@ public class QueryNestedCategory
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{ID, CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL};
+        return new String[]{ID, CATEGID, CATEGNAME, PARENTID, PARENTNAME, BASENAME, FULLCATID, ACTIVE, LEVEL, CHILDRENCOUNT};
     }
 
 
