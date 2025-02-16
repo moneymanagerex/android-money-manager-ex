@@ -63,8 +63,13 @@ public class StockHistoryRepository
     }
 
     @Override
-    protected StockHistory createEntity() {
+    public StockHistory createEntity() {
         return new StockHistory();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
