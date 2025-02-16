@@ -70,10 +70,10 @@ public class GeneralReportFragment extends Fragment {
         try
         {
             ReportRepository repo = new ReportRepository(getActivity());
-            List<Report> report = repo.loadByReportName(reportName.trim());
+            Report report = repo.loadByName(reportName.trim());
 
-            if (!report.isEmpty()) {
-                sqlQuery = report.get(0).getSqlContent();
+            if (report != null) {
+                sqlQuery = report.getSqlContent();
             }
 
             //fetch the data and generate the html table
@@ -81,7 +81,7 @@ public class GeneralReportFragment extends Fragment {
 
             htmlTable = htmlTable + "<table id='GeneralReport'><tr>";
 
-            //get the clmns
+            //get the columns
             for (int i = 0; i < sqlCursor.getColumnCount(); i++) {
                 htmlTable = htmlTable + "<th>" + sqlCursor.getColumnName(i) + "</th>";
             }
