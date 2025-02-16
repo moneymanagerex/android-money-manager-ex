@@ -17,23 +17,38 @@
   -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:id="@+id/single_row"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <com.shamanland.fonticon.FontIconView
+        android:id="@+id/foldericon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="C"
+        android:textColor="@color/md_accent"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/text1"
-        android:layout_width="376dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:text="@string/category"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/selector"
-        />
+        app:layout_constraintStart_toEndOf="@+id/foldericon"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.shamanland.fonticon.FontIconView
@@ -44,7 +59,8 @@
         android:gravity="center"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:textSize="15sp"
+        android:textSize="24sp"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         app:layout_constraintTop_toTopOf="@id/text1"
         app:layout_constraintBottom_toBottomOf="@id/text1"
         app:layout_constraintEnd_toEndOf="parent"
