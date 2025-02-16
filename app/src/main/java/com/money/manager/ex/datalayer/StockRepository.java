@@ -44,8 +44,13 @@ public class StockRepository
     }
 
     @Override
-    protected Stock createEntity() {
+    public Stock createEntity() {
         return new Stock();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
