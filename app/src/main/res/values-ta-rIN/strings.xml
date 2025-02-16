@@ -59,10 +59,17 @@
     <string name="remote_path">தொலை பாதை</string>
     <string name="database_version">தரவுத்தள பதிப்பு</string>
     <string name="title_show_tutorial">பயிற்சியை காண்பி</string>
+    <string name="summary_show_tutorial">அடுத்த வருகையில் டுடோரியலைக் காட்டவா?</string>
+    <string name="auto_sync_via_wifi">வைஃபையில் மட்டும் தானியங்கி ஒத்திசைவு</string>
+    <string name="sync_on_app_start">பயன்பாட்டின் தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
+    <string name="sync_on_start">தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
     <string name="summary_sms_auto_trans">வங்கி பரிவர்த்தனை புதுப்பிப்பு SMS ஐப் படித்து, தானாகவே பரிவர்த்தனையை உருவாக்கவும்</string>
     <string name="deny_receive_sms_error">SMS பெறுவதற்கான அனுமதியை நீங்கள் மறுத்துவிட்டீர்கள், எனவே உங்கள் வங்கிப் பரிவர்த்தனை SMS செயலாக்கப்படாது</string>
+    <string name="granted_receive_sms_access">RECEIVE_SMS க்கு ஏற்கனவே அனுமதி வழங்கப்பட்டுள்ளது</string>
     <string name="title_sms_trans_status_notification">SMS பரிவர்த்தனை நிலை அறிவிப்பு</string>
+    <string name="notification_click_to_edit_transaction">பரிவர்த்தனையைத் திருத்த, தொடவும்...</string>
     <string name="notification_process_sms_transaction_status">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
     <!-- account -->
     <string name="account">கணக்கு</string>
@@ -80,7 +87,15 @@
     <string name="investment">முதலீடு</string>
     <string name="investment_accounts">முதலீட்டு கணக்குகள்</string>
     <string name="term">கால</string>
+    <string name="db_account_insert_failed">கணக்கைச் சேர்ப்பதில் பிழை</string>
+    <string name="db_account_update_failed">கணக்கை மேம்படுத்துவதில் பிழை</string>
     <string name="error_currency_not_selected">செலாவணி தேவை</string>
+    <string name="error_saving_default_currency">இயல்புநிலை நாணயத்தைச் சேமிப்பதில் பிழை</string>
+    <string name="error_initialbal_empty">கணக்கின் ஆரம்ப இருப்பு தேவை</string>
+    <string name="error_accountname_empty">கணக்கு பெயர் தேவை</string>
+    <string name="error_accounttype_empty">கணக்கு வகை தேவை</string>
+    <string name="error_status_empty">கணக்கு நிலை தேவை</string>
+    <string name="error_amount_must_be_positive">தொகை நேர்மறையாக இருக்க வேண்டும். பரிவர்த்தனை வகையால் அடையாளம் தீர்மானிக்கப்படுகிறது.</string>
     <!-- payee -->
     <string name="payee_name">பணம் பெறுபவர் பெயர்</string>
     <string name="edit_payeeName">பணம் பெறுபவரைத் திருத்தவும்</string>
@@ -96,11 +111,19 @@
     <string name="category_empty_list">வகை எதுவும் கண்டறியப்படவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
     <string name="select_category">வகையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="add_category">வகையைச் சேர்க்கவும்</string>
+    <string name="add_subcategory">துணைப்பிரிவைச் சேர்க்கவும்</string>
+    <string name="edit_categoryName">வகையை திருத்து</string>
+    <string name="delete_category">வகையை நீக்கு</string>
     <string name="search_sub_category">துணை வகையைச் சேர்க்கவும்</string>
     <!-- currency -->
     <string name="currency_name">செலாவணியின் பெயர்</string>
     <string name="currency_symbol">செலாவணி சின்னம்</string>
     <string name="delete_currency">செலாவணியை நீக்கவும்</string>
+    <string name="unit_name">அலகு பெயர்</string>
+    <string name="cents_name">சென்ட் பெயர்</string>
+    <string name="prefix_symbol">முன் குறியீடு</string>
+    <string name="suffix_symbol">பின் குறியீடு</string>
+    <string name="decimal_char">தசம குறியீடு</string>
     <string name="scale">அளவுகோல்</string>
     <string name="conversion_to_base_rate">மாற்றம்</string>
     <string name="currency_name_empty">செலாவணியின் பெயர் தேவை</string>
@@ -109,6 +132,8 @@
     <string name="total_amount">மொத்த தொகை</string>
     <string name="deposit">வைப்பு</string>
     <string name="status">நிலை</string>
+    <string name="status_reconciled">சரிபார்க்கப்பட்டது</string>
+    <string name="status_void">செல்லாது</string>
     <string name="status_follow_up">பின்தொடர்தல்</string>
     <string name="status_duplicate">நகல்</string>
     <string name="status_none">எதுவும் இல்லை</string>
@@ -117,13 +142,17 @@
     <string name="transaction_type">பரிவர்த்தனை வகை</string>
     <string name="transaction_status">நிலை</string>
     <string name="withdrawal">திரும்பப் பெறுதல்</string>
+    <string name="db_checking_insert_failed">பரிவர்த்தனையைச் செருகுவதில் தோல்வி</string>
+    <string name="db_checking_update_failed">பரிவர்த்தனையைப் புதுப்பிக்க முடியவில்லை</string>
     <string name="delete_transaction">பரிவர்த்தனையை நீக்கு</string>
     <string name="new_transaction">புதிய பரிவர்த்தனை</string>
     <string name="error_payee_not_selected">பணம் பெறுபவர் தேவை</string>
     <string name="error_category_not_selected">வகை தேவை</string>
     <string name="error_totamount_empty">மொத்த தொகை தேவை</string>
+    <string name="error_transfer_to_same_account">பரிமாற்றத்திற்கான இரண்டு கணக்குகளும் வேறுபட்டதாக இருக்க வேண்டும்</string>
     <string name="about">பற்றி</string>
     <string name="add">சேர்க்க</string>
+    <string name="confirmDelete">இந்தப் பதிவை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</string>
     <string name="date">தேதி</string>
     <string name="delete">நீக்கு</string>
     <string name="download">பதிவிறக்கவும்</string>
@@ -135,10 +164,13 @@
     <string name="search">தேடு</string>
     <string name="settings">அமைப்புகள்</string>
     <string name="summary">சுருக்கம்</string>
+    <string name="sync">ஒத்திசை</string>
+    <string name="synchronize">ஒத்திசைவாக்குங்கள்</string>
     <string name="open">திற</string>
     <string name="user">பயனர்</string>
     <string name="upload">பதிவேற்றம்</string>
     <string name="username">பயனர் பெயர்</string>
+    <string name="to">இடத்திற்கு</string>
     <string name="website">இணையதளம்</string>
     <string name="contact">தொடர்பு கொள்ள</string>
     <string name="access_info">அணுகல் தகவல்</string>
@@ -151,6 +183,8 @@
     <string name="close_application">பயன்பாட்டை மூடு</string>
     <string name="question_close_application">பயன்பாட்டை மூட வேண்டுமா?</string>
     <string name="attention">கவனம்</string>
+    <string name="payee_can_not_deleted">தேர்ந்தெடுக்கப்பட்ட பணம் பெறுபவரை நீக்க முடியாது, ஏனெனில் அது பயன்படுத்தப்படுகிறது</string>
+    <string name="account_can_not_deleted">தேர்ந்தெடுக்கப்பட்ட கணக்கை நீக்க முடியாது, ஏனெனில் அது பயன்படுத்தப்படுகிறது</string>
     <!-- transaction list periods -->
     <string name="all_transaction">அனைத்து பரிவர்த்தனைகள்</string>
     <string name="today">இன்று</string>
@@ -160,11 +194,13 @@
     <string name="current_year">நடப்பு ஆண்டு</string>
     <string name="future_transactions">எதிர்கால பரிவர்த்தனைகள்</string>
     <string name="show_transaction">பரிவர்த்தனையைக் காட்டு</string>
+    <string name="changelog">மாற்றங்களின் பதிவு</string>
     <string name="transaction_number">பரிவர்த்தனை எண்</string>
     <string name="widget_summary">சுருக்கம்</string>
     <string name="widget_all_accounts">அனைத்து கணக்குகளும்</string>
     <string name="widget_add_transaction">பரிவர்த்தனையைச் சேர்க்கவும்</string>
     <!-- TAG -->
+    <string name="tag">குறிச்சொல்</string>
     <string name="tagsList_transactions">பரிவர்த்தனைக்கான குறிச்சொற்கள்</string>
     <string name="tag_name">குறிச்சொல் பெயர்</string>
     <string name="edit_tagName">குறியைத் திருத்து</string>
@@ -190,20 +226,59 @@
     <string name="in_x_months">(x) மாதங்களில்</string>
     <string name="every_x_days">ஒவ்வொரு (x) நாட்களிலும்</string>
     <string name="every_x_months">ஒவ்வொரு (x) மாதங்களுக்கும்</string>
+    <string name="repeating_empty_transaction">திட்டமிடப்பட்ட பரிவர்த்தனைகள் எதுவும் கண்டறியப்படவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
     <string name="inactive">செயலற்றது</string>
+    <string name="activates">செயல்படுத்துகிறது</string>
+    <string name="days_overdue">%d நாட்கள் தாமதம்!</string>
+    <string name="days_remaining">%d நாட்கள் மீதமுள்ளன</string>
+    <string name="new_edit_repeating_transaction">திட்டமிடப்பட்ட பரிவர்த்தனையைத் திருத்தவும்</string>
+    <string name="due_date">நிலுவைத் தேதி</string>
     <string name="next_occurrence">அடுத்த நிகழ்வு</string>
+    <string name="payment_date">பணம் செலுத்தும் தேதி</string>
+    <string name="repeats">மறுநிகழ்வுகள்</string>
+    <string name="occurs">நிகழ்வு</string>
+    <string name="payments_left">கொடுப்பனவுகள் மீதமுள்ளன</string>
+    <string name="payments_left_required">கொடுப்பனவுகளுக்கு இடது மதிப்பு தேவை</string>
+    <string name="due_date_required">நிலுவைத் தேதி தேவை</string>
+    <string name="error_next_occurrence_not_populate">அடுத்த நிகழ்வு தேவை</string>
+    <string name="enter_next_occurrence">அடுத்த நிகழ்வு</string>
+    <string name="skip_next_occurrence">அடுத்த நிகழ்வைத் தவிர்க்கவும்</string>
+    <string name="skip_next_occurrence_confirmation">அடுத்த நிகழ்வைத் தவிர்க்க விரும்புகிறீர்களா?</string>
+    <string name="notification_repeating_transaction_expired">காலாவதியான திட்டமிடப்பட்ட பரிவர்த்தனைகள் உள்ளன</string>
+    <string name="notification_click_to_check_repeating_transaction">காலாவதியான பரிவர்த்தனையைச் சரிபார்க்க தொடவும்</string>
+    <string name="num_repeating_transaction_expired">%1$d திட்டமிடப்பட்ட பரிவர்த்தனை தாமதமானது</string>
+    <string name="skip">தவிர்க்க</string>
+    <string name="enter">நுழை</string>
+    <string name="enter_amount">தொகையை உள்ளிடவும்</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">தானியங்கி பரிவர்த்தனை</string>
+    <string name="manual">கைமுறை நுழைவு</string>
+    <string name="auto">தானியங்கி நுழைவு</string>
     <!-- 20121121 -->
+    <string name="send_feedback">கருத்தினை அனுப்பவும்</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
     <!-- 20121122 -->
+    <string name="preferences_info_application">தகவல்</string>
+    <string name="preferences_security">பாதுகாப்பு</string>
+    <string name="preferences_active_passcode"></string>
+    <string name="enter_your_passcode">உங்கள் கடவுக்குறியீட்டை உள்ளிடவும்</string>
+    <string name="reinsert_your_passcode"></string>
+    <string name="passocde_no_macth">கடவுக்குறியீடு பொருந்தவில்லை</string>
+    <string name="preferences_edit_passcode">கடவுக்குறியீட்டைத் திருத்தவும்</string>
+    <string name="preferences_disable_passcode">கடவுக்குறியீட்டை முடக்கு</string>
+    <string name="enter_your_previous_passcode">உங்கள் முந்தைய கடவுக்குறியீட்டை உள்ளிடவும்</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">கடவுக்குறியீடு புதுப்பிக்கப்படவில்லை</string>
     <!-- 20121217 -->
+    <string name="income_vs_expenses_current_month">வருமானம் மற்றும் செலவுகள்: தற்போதைய மாதம்</string>
     <string name="income">வருமானம்</string>
     <string name="expenses">செலவுகள்</string>
     <string name="difference">வேறுபாடு</string>
+    <string name="no_data">பதிவுகள் எதுவும் கிடைக்கவில்லை. காணக்கூடிய காலத்தை சரிசெய்ய முயற்சிக்கவும் அல்லது ஒன்றை உருவாக்க பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
     <string name="month">மாதம்</string>
     <string name="year">ஆண்டு</string>
     <string name="menu_reports">உள்ளமைவு அறிக்கைகள்</string>
+    <string name="menu_general_report_group">பொது அறிக்கைகள்</string>
     <string name="title_activity_general_report">பொது அறிக்கைகள்</string>
     <string name="menu_report_income_vs_expenses">பொது அறிக்கை</string>
     <string name="menu_report_cashflow">பணப்புழக்கம்</string>
@@ -217,22 +292,31 @@
     <string name="last_fin_year">முந்தைய நிதியாண்டு</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
+    <string name="number_transaction_found">கண்டறியப்பட்ட பரிவர்த்தனைகளின் எண்ணிக்கை: %1$d</string>
     <!-- 20130108 -->
     <string name="date_format">தேதி வடிவம்</string>
     <string name="financial_year_start_day">நிதி ஆண்டு: தொடக்க நாள்</string>
     <string name="financial_year_start_month">நிதி ஆண்டு: தொடக்க மாதம்</string>
     <string name="financial_year_not_set">நிதியாண்டு தொடக்கத் தேதியை அமைப்பில் அமைக்கவும்.</string>
     <string name="menu_move_database_to_external_storage">தரவுத்தளத்தைப் பதிவிறக்கவும்</string>
+    <string name="database_has_been_moved">தரவுத்தளம் நகர்த்தப்பட்டது: %1$s</string>
+    <string name="copy_database_on_external_storage_failed">வெளிப்புற சேமிப்பகத்தில் தரவுத்தளத்தை நகலெடுக்க முடியவில்லை</string>
+    <string name="path_database_using">நீங்கள் சேமித்த தரவுத்தளத்தைப் பயன்படுத்துகிறீர்கள்: %1$s</string>
     <!-- Split Categories -->
     <string name="split_transaction">பிளவு பரிவர்த்தனை</string>
     <string name="split">பிளவு</string>
     <string name="error_split_transaction_empty">குறைந்தபட்சம் ஒன்று பிரிக்கப்பட்ட பரிவர்த்தனை தேவை</string>
+    <string name="export_data_in_progress">தரவு ஏற்றுமதி. தயவுசெய்து காத்திருங்கள்&#8230;</string>
+    <string name="export_file_complete">தரவு வெற்றிகரமாக %1$s கோப்புக்கு ஏற்றுமதி செய்யப்பட்டது</string>
+    <string name="export_file_failed">%1$s கோப்பை ஏற்றுமதி செய்ய முடியவில்லை</string>
+    <string name="donate_header">ஆண்ட்ராய்டுக்கான MoneyManagerEx இலவசமாக வழங்கப்படுகிறது. நீங்கள் பயன்பாட்டை விரும்பினால், நன்கொடை மூலம் மேம்பாட்டுக் குழுவை ஆதரிக்கலாம்.</string>
     <string name="donate_in_app_spinner_text">நன்கொடைத் தொகையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="donate_in_app_button">தானம் செய்</string>
     <string name="donate_thank_you">உங்கள் நன்கொடைக்கு நன்றி!</string>
     <string name="donate">தானம் செய்</string>
     <string name="no_thanks">இல்லை, நன்றி</string>
     <string name="donate_exlamation">தானம் செய்!</string>
+    <string name="donate_direct">எங்கள் பயன்பாட்டு இணையப் பக்கத்தில் உள்ள நன்கொடை இணைப்புகளைக் கிளிக் செய்வதன் மூலம் நீங்கள் நேரடியாக நன்கொடை அளிக்கலாம்.</string>
     <string name="donate_button_text">தானம் செய்</string>
     <string name="homepage_button">முகப்புப் பக்கத்தைத் திற</string>
     <string name="ascending">ஏறுமுகம்</string>
@@ -244,6 +328,24 @@
     <string name="synchronization_interval">ஒத்திசைவு இடைவெளி</string>
     <string name="summary_synchronization_interval">எவ்வளவு அடிக்கடி ஒத்திசைக்க வேண்டும்?</string>
     <string name="tips_new_version_dropbox">பதிப்பு 1.2.0 இன் படி, Android க்கான Money Manager Ex ஆனது டிராப்பாக்ஸ் ஒத்திசைவு இயந்திரத்தை மாற்றியுள்ளது. டிராப்பாக்ஸ் ஒத்திசைவை ஏற்கனவே பயன்படுத்தும் பயனர்கள் உள்ளமைவைப் புதுப்பிக்க வேண்டும்.\nஅங்கீகாரம் மற்றும் தரவுத்தளத்தின் தேர்வு அமைப்புகளில் உள்ளது.\nபதிப்பு 1.2.0 இன் படி, Android க்கான Money Manager Ex தானாகவே தரவுத்தளத்தை ஒத்திசைக்க முடியும்.</string>
+    <string name="title_transaction_shown_balance">ஒவ்வொரு பரிவர்த்தனைக்கும் இருப்பைக் காட்டு</string>
+    <string name="summary_transaction_shown_balance">ஒவ்வொரு பரிவர்த்தனைக்கும் இருப்பைக் காட்டுகிறது. சமநிலையின் காட்சி பயன்பாட்டை மெதுவாக்கலாம்</string>
+    <string name="menu_open_database">தரவுத்தளத்தைத் திறக்கவும்</string>
+    <string name="database">தகவல்தளம்</string>
+    <string name="tips">குறிப்புகள்</string>
+    <string name="title_application_font">பயன்பாட்டு எழுத்துரு</string>
+    <string name="title_application_font_size">பயன்பாட்டு எழுத்துரு அளவு</string>
+    <string name="micro">மைக்ரோ</string>
+    <string name="small">சிறிய</string>
+    <string name="Default">இயல்புநிலை</string>
+    <string name="medium">நடுத்தரம்</string>
+    <string name="large">பெரியது</string>
+    <string name="menu_report_where_money_goes">எங்கே தொகை செல்கிறது</string>
+    <string name="menu_report_where_money_comes_from">எங்கிருந்து தொகை வருகிறது</string>
+    <string name="title_check_repeating_transaction">அறிவிப்பு நேரம்</string>
+    <string name="summary_check_repeating_transaction">திட்டமிடப்பட்ட பரிவர்த்தனைகள் காலதாமதமாக உள்ளதா என்பதை எந்த நேரத்தில் சரிபார்க்க வேண்டும்? (இயல்புநிலை 08:00)</string>
+    <string name="credits">பங்களித்தவர்கள்</string>
+    <string name="libraries">நூலகங்கள்</string>
     <string name="top_withdrawals_last_30_days">அதிக பணம் திரும்பப் பெறுதல்: கடந்த 30 நாட்கள்</string>
     <string name="top_payees_last_30_days">அதிகம் பணம் பெறுபவர்கள்: கடந்த 30 நாட்கள்</string>
     <string name="upcoming_transactions">வரவிருக்கும் பரிவர்த்தனைகள்</string>
@@ -254,6 +356,19 @@
     <string name="empty_category">காலி வகை</string>
     <string name="empty_payee">காலி பணம் பெறுபவர்</string>
     <string name="help">உதவி</string>
+    <string name="delete_repeating_transaction">திட்டமிடப்பட்ட பரிவர்த்தனையை நீக்கு</string>
+    <string name="last">கடைசி</string>
+    <string name="accounts">கணக்கு</string>
+    <string name="to_account">கணக்கில்</string>
+    <string name="from_account">கணக்கிலிருந்து</string>
+    <string name="default_status">முன்னிருப்பு நிலை</string>
+    <string name="default_payee">இயல்புநிலை பணம் பெறுபவர்</string>
+    <string name="edit_transaction">பரிவர்த்தனையை திருத்துக</string>
+    <string name="delete_one_selected_transaction">தேர்ந்தெடுத்த பரிவர்த்தனையை நிச்சயமாக நீக்க வேண்டுமா?</string>
+    <string name="delete_others_selected_transaction">தேர்ந்தெடுக்கப்பட்ட %d பரிவர்த்தனைகளை நிச்சயமாக நீக்க வேண்டுமா?</string>
+    <string name="categories">வகைகள்</string>
+    <string name="payees">பணம் பெறுபவர்</string>
+    <string name="recurring_transactions">திட்டமிடப்பட்ட பரிவர்த்தனைகள்</string>
     <string name="new_account">புதிய கணக்கு</string>
     <string name="create_new_account">புதிய கணக்கை உருவாக்கவும்</string>
     <string name="amount_greater_or_equal">அதிக அல்லது சமமான தொகை</string>
@@ -270,6 +385,15 @@
     <string name="add_transaction">பரிவர்த்தனையைச் சேர்க்கவும்</string>
     <string name="configure_sync">ஒத்திசைவை உள்ளமைக்கவும்</string>
     <string name="rate_application">மென்பொருளை மதிப்பிடவும்</string>
+    <string name="deposit_to">%1$s க்கு வைப்பு</string>
+    <string name="mmex_website">MoneyManagerEx இணையதளம்</string>
+    <string name="android_website">ஆண்ட்ராய்டு இணையதளத்திற்கான MMEx</string>
+    <string name="donate_in_app_already_donate">உங்கள் நன்கொடையின் மூலம் Android க்கான MoneyManagerEx இன் மேம்பாட்டை ஏற்கனவே ஆதரித்துள்ளீர்கள்!\n\nமேம்பாடு குழுவிற்கு நன்றி!</string>
+    <string name="donate_in_app_retrieving_status">Google Play இலிருந்து உங்கள் நன்கொடைகளின் நிலையை மீட்டெடுக்கிறது. தயவுசெய்து காத்திருங்கள்&#8230;</string>
+    <string name="title_repeating_transaction_process">திட்டமிடப்பட்ட பரிவர்த்தனை செயல்முறை</string>
+    <string name="summary_repeating_transaction_process">திட்டமிடப்பட்ட பரிவர்த்தனை தாமதமானது (அஞ்சல், உடனடியாக, கையேடு)</string>
+    <string name="title_use_nested_category">புதிய உள்ளமை வகை மாதிரியைப் பயன்படுத்தவும்</string>
+    <string name="summary_use_nested_category">வகை:துணை வகை மாதிரிக்குப் பதிலாக புதிய உள்ளமை வகை மாதிரியைப் பயன்படுத்தவும்</string>
     <string name="tools">கருவிகள்</string>
     <string name="entities">நிறுவனங்கள்</string>
     <string name="loading">ஏற்றுகிறது&#8230;</string>
@@ -281,10 +405,60 @@
     <string name="sort_by_name">பெயரால் வரிசைப்படுத்தவும்</string>
     <string name="sort_by_usage">பயன்பாட்டின்படி வரிசைப்படுத்தவும்</string>
     <string name="sort_by_recent">சமீபத்தியபடி வரிசைப்படுத்தவும்</string>
+    <string name="sort_date_desc">இறங்கு தேதியின்படி வரிசைப்படுத்தவும்</string>
+    <string name="sort_date_asc">ஏறுவரிசையின்படி வரிசைப்படுத்தவும்</string>
+    <string name="choose_sorting">வரிசைப்படுத்துவதைத் தேர்ந்தெடுக்கவும்</string>
     <string name="credit_card">கடன் அட்டை</string>
     <string name="cash_accounts">பண கணக்குகள்</string>
+    <string name="bank_accounts">வங்கி கணக்குகள்</string>
+    <string name="term_accounts">கால கணக்குகள்</string>
+    <string name="credit_card_accounts">கிரெடிட் கார்டு கணக்குகள்</string>
+    <string name="montly_last_days">மாதாந்திர (கடைசி நாள்)</string>
+    <string name="montly_last_bussines_day">மாதாந்திர (கடைசி வணிக நாள்)</string>
     <!-- languages -->
+    <string name="locale_application">மென்பொருள் மொழி</string>
+    <string name="locale_ar">அரபு</string>
+    <string name="transaction_cancel_confirm">இந்தப் பதிவை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</string>
+    <string name="keep_editing">திருத்துவதைத் தொடரவும்</string>
+    <string name="discard">நிராகரி</string>
+    <string name="invalid_expression">தவறான வெளிப்பாடு</string>
+    <string name="send_me_logcat">Logcat</string>
+    <string name="due_today">இன்று நிலுவையில் உள்ளது</string>
     <string name="action_settings">அமைப்புகள்</string>
+    <string name="close">மூடு</string>
+    <string name="financial_overview">நிதி கண்ணோட்டம்</string>
+    <string name="global">எல்லா இடங்களிலும்</string>
+    <string name="transactions">பரிவர்த்தனைகள்</string>
+    <string name="tutorial_transactions_1">வைப்பு, திரும்பப் பெறுதல், இடமாற்றம். நினைவூட்டல்களுடன் திட்டமிடப்பட்ட பரிவர்த்தனைகள்.</string>
+    <string name="sort_by_ascending">ஆண்டு மற்றும் மாதம் ஏறுவரிசைப்படி வரிசைப்படுத்தவும்</string>
+    <string name="sort_by_desceding">ஆண்டு மற்றும் மாதத்தின் படி வரிசைப்படுத்தவும்</string>
+    <string name="years">ஆண்டு</string>
+    <string name="select_the_years_to_be_displayed">காண்பிக்கப்பட வேண்டிய ஆண்டுகளைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="to_date">தேதி வரை</string>
+    <string name="from_date">தேதியிலிருந்து</string>
+    <string name="custom_dates">விருப்ப தேதிகள்</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">சரிசெய்யப்பட்ட தொகைகளை மறை</string>
+    <string name="pref_transaction_sort_by_type_summary">பரிவர்த்தனை வகையின்படி தினசரி பரிவர்த்தனைகளை ஏற்பாடு செய்யுங்கள் (வைப்பு, பரிமாற்றம், திரும்பப் பெறுதல்)</string>
+    <string name="pref_transaction_sort_by_type_title">வகையின்படி பரிவர்த்தனைகளை வரிசைப்படுத்தவும்</string>
+    <string name="warning">எச்சரிக்கை</string>
+    <string name="no_transfer_splits">பரிமாற்றத்திற்கு மாற நீங்கள் தேர்வு செய்துள்ளீர்கள் ஆனால் பரிவர்த்தனையில் பிரிவு வகைகள் உள்ளன. பிளவு வகைகளைத் தொடரவும் அகற்றவும் விரும்புகிறீர்களா?</string>
+    <string name="update_prices">விலைகளைப் புதுப்பிக்கவும்</string>
+    <string name="update_price">விலையைப் புதுப்பிக்கவும்</string>
+    <string name="download_price">பதிவிறக்க விலை</string>
+    <string name="all_prices_updated">அனைத்து விலைகளும் புதுப்பிக்கப்பட்டுள்ளன.</string>
+    <string name="download_complete">பதிவிறக்கம் முடிந்தது.</string>
+    <string name="confirm_price_download">ஆன்லைனில் பாதுகாப்பு விலைகளைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
+    <string name="starting_price_update">விலைகளைப் பதிவிறக்குகிறது, காத்திருக்கவும்&#8230;</string>
+    <string name="database_migrate_14_to_20_success">தரவுத்தள இடம்பெயர்வு வெற்றியடைந்தது.</string>
+    <string name="purge_history_confirmation">அனைத்து கணக்குகளின் விலை வரலாற்றை முழுமையாக நீக்க விரும்புகிறீர்களா?</string>
+    <string name="create_db">தரவுத்தளத்தை உருவாக்கவும்</string>
+    <string name="create_db_summary">புதிய தரவுத்தள கோப்பை உருவாக்கவும்</string>
+    <string name="create_db_hint">கோப்பின் பெயரை வழங்கவும்</string>
+    <string name="create_db_dialog_content">தரவுத்தளம் இயல்புநிலை தரவுத்தள கோப்பகத்தில் உருவாக்கப்படும். நீங்கள் கோப்பு நீட்டிப்பை (.mmb) தவிர்க்கலாம்.</string>
+    <string name="create_db_success">தரவுத்தளம் வெற்றிகரமாக உருவாக்கப்பட்டது</string>
+    <string name="create_db_error">புதிய தரவுத்தள கோப்பை உருவாக்க முடியவில்லை</string>
+    <string name="db_check_integrity">db ஒருமைப்பாட்டை சரிபார்க்கவும்</string>
+    <string name="select_all">அனைத்தையும் தேர்ந்தெடுக்கவும்</string>
     <string name="choose_type">வகையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="default_account">இயல்புநிலை கணக்கு</string>
     <string name="balance_account">இருப்பு கணக்கு</string>
@@ -300,6 +474,13 @@
     <string name="unhandled_crash">எதிர்பாராத பிழை. பதிவை எங்களுக்கு அனுப்பவும்.</string>
     <string name="update_available">புதுப்பிப்பு கிடைக்கிறது</string>
     <!-- Password entry activity -->
+    <string name="title_activity_password">தரவுத்தள கடவுச்சொல்லை உள்ளிடவும்</string>
+    <string name="fingerprint_info">திறக்க உங்கள் கைரேகையை ஸ்கேன் செய்யவும்</string>
+    <string name="fingerprint_no_hardware">உங்கள் சாதனம் கைரேகை அங்கீகாரத்தை ஆதரிக்கவில்லை</string>
+    <string name="fingerprint_check_permission">கைரேகை அனுமதியை இயக்கவும்</string>
+    <string name="fingerprint_has_enrolled">கைரேகை கட்டமைக்கப்படவில்லை. உங்கள் சாதன அமைப்புகளில் குறைந்தது ஒரு கைரேகையைப் பதிவு செய்யவும்</string>
+    <string name="fingerprint_is_keyguard_secure">உங்கள் சாதன அமைப்புகளில் பூட்டுத் திரை பாதுகாப்பை இயக்கவும்</string>
+    <string name="income_expense_period_summary">முகப்புத் திரை அடிக்குறிப்பில் வருமானம்/செலவு மேலோட்டத்திற்கான காலம்.</string>
     <string name="appwidget_text">உதாரணம்</string>
     <string name="configure">கட்டமைக்கவும்</string>
     <!-- edit investment transaction -->
@@ -309,23 +490,51 @@
     <string name="commission">கமிஷன்</string>
     <string name="value">மதிப்பு</string>
     <string name="view_transactions">பரிவர்த்தனைகளைப் பார்க்கவும்</string>
+    <string name="cleared">அழிக்கப்பட்டது</string>
     <!-- asset allocation -->
+    <string name="asset_class_name">சொத்து வகுப்பின் பெயர்</string>
+    <string name="asset_class">சொத்து வகுப்பு</string>
+    <string name="allocation">ஒதுக்கீடு</string>
+    <string name="current_allocation">தற்போதைய ஒதுக்கீடு</string>
+    <string name="move_up">மேலே செல்லவும்</string>
+    <string name="move_down">கீழே நகர்த்தவும்</string>
+    <string name="no_records_found_create">பதிவுகள் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
+    <string name="current_value">தற்போதைய மதிப்பு</string>
+    <string name="current">தற்போதைய</string>
     <string name="name">பெயர்</string>
     <string name="stock">இருப்பு</string>
     <string name="all_accounts">அனைத்து கணக்குகளும்</string>
     <string name="records">பதிவுகள்</string>
     <!-- db password entry -->
+    <string name="enter_password">கடவுச்சொல்லை உள்ளிடவும் (விரும்பினால்)</string>
     <string name="success">ஆபரேஷன் வெற்றி</string>
     <string name="overview">மேற்பார்வை</string>
     <string name="error_saving_record">பதிவைச் சேமிப்பதில் பிழை</string>
+    <string name="symbol_required">சின்னம் தேவை</string>
+    <string name="recurrence_type_not_set">மறுநிகழ்வு வகை அமைக்கப்படவில்லை</string>
+    <string name="invalid_recurrence_type">தவறான மறுநிகழ்வு வகை</string>
+    <string name="account_not_found">கணக்கு கிடைக்கவில்லை</string>
+    <string name="favourite">பிடித்தது</string>
+    <string name="split_reset_notice">இந்த பரிவர்த்தனையில் பல பிரிவுகள் உள்ளன என்பதை நினைவில் கொள்ளவும். நீங்கள் அவற்றை கைமுறையாக அகற்ற வேண்டும்.</string>
     <!-- budgets -->
+    <string name="add_budget">பட்ஜெட்டைச் சேர்க்கவும்</string>
+    <string name="budget_name">பட்ஜெட் பெயர்</string>
+    <string name="budget_year">பட்ஜெட் ஆண்டு</string>
+    <string name="budget_month">பட்ஜெட் மாதம்</string>
+    <string name="copy">நகலெடுக்கவும்</string>
+    <string name="app_restart">மாற்றங்களைப் பயன்படுத்த, பயன்பாடு இப்போது மூடப்படும். தயவுசெய்து மீண்டும் தொடங்கவும்.</string>
+    <string name="print">அச்சிடுக</string>
+    <string name="no_network">நெட்வொர்க் எதுவும் இல்லை.</string>
     <!-- Currencies -->
     <!-- Investment -->
     <string name="change_provider">வழங்குநரை மாற்றவும்</string>
     <!-- deprecated / Dropbox -->
     <string name="dropbox_database_can_be_updted">டிராப்பாக்ஸில் தரவுத்தளத்தின் புதுப்பிப்பு உள்ளது</string>
     <!-- Synchronization -->
+    <string name="sync_provider">வழங்குபவர்</string>
     <string name="please_wait">தயவுசெய்து காத்திருக்கவும்</string>
+    <string name="database_is_synchronized">தரவுத்தளம் புதுப்பித்த நிலையில் உள்ளது</string>
+    <string name="upload_file_complete">உங்கள் தரவுத்தளம் வெற்றிகரமாக பதிவேற்றப்பட்டது</string>
     <string name="every_5_minutes">ஒவ்வொரு 5 நிமிடம்</string>
     <string name="every_10_minutes">ஒவ்வொரு 10 நிமிடம்</string>
     <string name="every_15_minutes">ஒவ்வொரு 15 நிமிடம்</string>
@@ -336,6 +545,10 @@
     <string name="every_6_hours">3 மணிநேரத்திற்கு ஒருமுறை</string>
     <string name="every_12_hours">12 மணிநேரத்திற்கு ஒருமுறை</string>
     <string name="never">ஒருபோதுமில்லை</string>
+    <string name="checking_remote_for_changes">தரவுத்தள மாற்றங்களுக்கான தொலை சேமிப்பகத்தை சரிபார்க்கிறது.</string>
+    <string name="title_sync_upload_immediate">தரவுத்தளத்தை மாற்றிய உடனேயே பதிவேற்றவும்</string>
+    <string name="summary_sync_upload_immediate">இந்த விருப்பம் நீங்கள் தரவுத்தளத்தை மாற்றியவுடன் தானாகவே பதிவேற்ற அனுமதிக்கிறது</string>
+    <string name="select_remote_file">மேகக்கணி சேமிப்பகத்திலிருந்து தொலைநிலைக் கோப்பைத் தேர்ந்தெடுக்கவும்</string>
     <string name="file_exists">கோப்பு ஏற்க்கனவே உள்ளது</string>
     <!-- Warnings -->
     <!-- Errors -->
