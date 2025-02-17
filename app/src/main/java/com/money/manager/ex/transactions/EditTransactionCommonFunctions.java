@@ -274,7 +274,8 @@ public class EditTransactionCommonFunctions {
     }
 
     public boolean hasAttachments() {
-        return !getAttachments().isEmpty();
+        if (getAttachments() == null ) return false;
+        return  !getAttachments().isEmpty();
     }
 
     /**
