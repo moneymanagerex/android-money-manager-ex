@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /* Master note
@@ -110,6 +111,7 @@ public class CashFlowReportListFragment
                 QueryBillDeposits.NOTES,
                 QueryBillDeposits.STATUS,
                 QueryBillDeposits.AMOUNT,
+                "transCurrency",
                 BALANCE
         };
         matrixCursor = new MatrixCursor(columnNames);
@@ -134,7 +136,7 @@ public class CashFlowReportListFragment
             RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
             // ignore transfert if both is on selected account
             // create recurring transaction
-            double amount = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransaction();
             if (rx.getTransactionType() == TransactionTypes.Transfer ) {
                 if (selectedAccounts.contains(rx.getAccountId()) &&
@@ -169,6 +171,7 @@ public class CashFlowReportListFragment
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
             row.put(QueryBillDeposits.AMOUNT, amount);
+            row.put("transCurrency", cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)));
             row.put(BALANCE, 0);
             listRecurring.add(row);
 
@@ -186,6 +189,7 @@ public class CashFlowReportListFragment
                 row2.put(QueryBillDeposits.NOTES             , row.get(QueryBillDeposits.NOTES            ));
                 row2.put(QueryBillDeposits.STATUS            , row.get(QueryBillDeposits.STATUS           ));
                 row2.put(QueryBillDeposits.AMOUNT            , row.get(QueryBillDeposits.AMOUNT           ));
+                row2.put("transCurrency"                     , row.get("transCurrency"));
                 row2.put(BALANCE, 0);
                 listRecurring.add(row2);
             }
@@ -198,10 +202,18 @@ public class CashFlowReportListFragment
             }
         });
 
+        long baseCurrencyId = currencyService.getBaseCurrencyId();
         // copy to matrix cursor
         for (HashMap<String, Object> rowMap : listRecurring) {
-            if (!rowMap.get(QueryBillDeposits.STATUS).equals("V"))
-                totalAmount += (double) rowMap.get(QueryBillDeposits.AMOUNT);
+            Money amountTrans ;
+            Money amountBase;
+            long transCurrency = ( rowMap.get("transCurrency") == null ? baseCurrencyId : (long) rowMap.get("transCurrency") );
+            amountTrans = MoneyFactory.fromDouble((double) rowMap.get(QueryBillDeposits.AMOUNT));
+            amountBase = currencyService.doCurrencyExchange(baseCurrencyId, amountTrans, transCurrency);
+
+            if (!rowMap.get(QueryBillDeposits.STATUS).equals("V")) {
+                totalAmount += amountBase.toDouble();
+            }
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
                     .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
@@ -212,7 +224,8 @@ public class CashFlowReportListFragment
                     .add(QueryBillDeposits.TAGS, rowMap.get(QueryBillDeposits.TAGS))
                     .add(QueryBillDeposits.NOTES, rowMap.get(QueryBillDeposits.NOTES))
                     .add(QueryBillDeposits.STATUS, rowMap.get(QueryBillDeposits.STATUS))
-                    .add(QueryBillDeposits.AMOUNT, rowMap.get(QueryBillDeposits.AMOUNT))
+                    .add(QueryBillDeposits.AMOUNT,  amountTrans.toDouble())
+                    .add("transCurrency", transCurrency)
                     .add(BALANCE, totalAmount);
         }
     }
@@ -382,6 +395,13 @@ public class CashFlowReportListFragment
                         textView.setText(aCursor.getString(aColumnIndex));
                         break;
                     case R.id.textViewAmount:
+                        textView.setText(getAsAmountFromCurrency(aCursor, aColumnIndex));
+                        if (aCursor.getDouble(aColumnIndex) <= 0) {
+                            textView.setTextColor(getResources().getColor(R.color.material_red_700));
+                        } else {
+                            textView.setTextColor(getResources().getColor(R.color.material_green_700));
+                        }
+                        break;
                     case R.id.textViewBalance:
                         textView.setText(getAsAmount(aCursor, aColumnIndex));
                         if (aCursor.getDouble(aColumnIndex) <= 0) {
@@ -390,6 +410,8 @@ public class CashFlowReportListFragment
                             textView.setTextColor(getResources().getColor(R.color.material_green_700));
                         }
                         break;
+                    default:
+                        return false;
                 }
                 aView.setVisibility(View.VISIBLE);
                 return true;
@@ -416,6 +438,15 @@ public class CashFlowReportListFragment
 
     private String getAsString(Cursor aCursor, int aColumnIndex) {
         return aCursor.getString(aColumnIndex);
+    }
+
+    private String getAsAmountFromCurrency(Cursor aCursor, int aColumnIndex) {
+        Long currency = aCursor.getLong(aCursor.getColumnIndex("transCurrency"));
+        if (currency == null) currency = currencyService.getBaseCurrencyId();
+        return currencyService.getCurrencyFormatted(
+                currency, MoneyFactory.fromDouble(
+                aCursor.getDouble(aColumnIndex)
+        ));
     }
 
     private String getAsAmount(Cursor aCursor, int aColumnIndex) {
