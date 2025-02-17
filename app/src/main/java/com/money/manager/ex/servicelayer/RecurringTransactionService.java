@@ -473,7 +473,7 @@ public class RecurringTransactionService
         AccountTransaction accountTrx = AccountTransaction.create();
         accountTrx.setDate(scheduledTrx.getPaymentDate());
         accountTrx.setAccountId(scheduledTrx.getAccountId());
-        accountTrx.setAccountToId(scheduledTrx.getToAccountId());
+        accountTrx.setAccountToId(scheduledTrx.getAccountToId());
         accountTrx.setTransactionType(TransactionTypes.valueOf(scheduledTrx.getTransactionCode()));
         accountTrx.setStatus(scheduledTrx.getStatus());
         accountTrx.setAmount(scheduledTrx.getAmount());

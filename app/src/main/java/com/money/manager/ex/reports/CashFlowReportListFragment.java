@@ -127,15 +127,15 @@ public class CashFlowReportListFragment
 
         getTotalAmountAndAccounts();
 
-        RecurringTransactionService recurringTransactionService = new RecurringTransactionService(getContext());
 
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
+            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
             // ignore transfert if both is on selected account
             // create recurring transaction
-            double amount;
-            RecurringTransaction rx = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext()).getSimulatedTransaction();
+            double amount = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            RecurringTransaction rx = recurringTransactionService.getSimulatedTransaction();
             if (rx.getTransactionType() == TransactionTypes.Transfer ) {
                 if (selectedAccounts.contains(rx.getAccountId()) &&
                         selectedAccounts.contains(rx.getAccountToId())) {
@@ -149,13 +149,13 @@ public class CashFlowReportListFragment
                 }
                 if (selectedAccounts.contains(rx.getAccountId()) ) {
                     // source in
-                    amount = rx.getAmount().toDouble();
+                    amount = 0 - amount;
                 } else {
                     // dest in
-                    amount = rx.getAmountTo().toDouble();
+//                    amount = rx.getAmountTo().toDouble();
                 }
             } else {
-                amount = rx.getAmount().toDouble();
+//                amount = rx.getAmount().toDouble();
             }
 
             row = new HashMap<>();
@@ -382,8 +382,6 @@ public class CashFlowReportListFragment
                         textView.setText(aCursor.getString(aColumnIndex));
                         break;
                     case R.id.textViewAmount:
-                        textView.setText(getAsAmount(aCursor, aColumnIndex));
-                        break;
                     case R.id.textViewBalance:
                         textView.setText(getAsAmount(aCursor, aColumnIndex));
                         if (aCursor.getDouble(aColumnIndex) <= 0) {

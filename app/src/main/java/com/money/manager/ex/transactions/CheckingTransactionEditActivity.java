@@ -448,7 +448,7 @@ public class CheckingTransactionEditActivity
         // Copy properties from recurring transaction
         mCommon.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
-        mCommon.transactionEntity.setAccountToId(recurringTx.getToAccountId());
+        mCommon.transactionEntity.setAccountToId(recurringTx.getAccountToId());
         mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(recurringTx.getTransactionCode()));
         mCommon.transactionEntity.setStatus(recurringTx.getStatus());
         mCommon.transactionEntity.setAmount(recurringTx.getAmount());
