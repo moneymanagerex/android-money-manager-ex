@@ -371,7 +371,7 @@ public class CashFlowReportListFragment
                             aView.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.textViewTags:
-                        if (aCursor.getString(aColumnIndex).isEmpty())
+                        if (aCursor.getString(aColumnIndex) == null || aCursor.getString(aColumnIndex).isEmpty())
                             aView.setVisibility(View.GONE);
                         else
                             aView.setVisibility(View.VISIBLE);
