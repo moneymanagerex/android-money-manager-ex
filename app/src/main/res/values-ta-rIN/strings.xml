@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">பண மேலாளர் இஎக்ஸ்</string>
     <string name="application_definition">தனிப்பட்ட நிதிகள், வங்கிக் கணக்குகள், குடும்ப பட்ஜெட் மற்றும் பலவற்றை நிர்வகிக்க எளிய மற்றும் பயன்படுத்த எளிதான பயன்பாடு.</string>
+    <string name="application_credits">ஆண்ட்ராய்டு திட்டத்திற்கான Money Manager Ex, ActionBarSherlock நூலகத்தைப் பயன்படுத்துகிறது</string>
     <string name="application_license">திறந்த மூல உரிமங்கள்</string>
     <!-- database -->
     <string name="db_insert_failed">தரவைச் செருகுவது தோல்வியடைந்தது</string>
@@ -55,6 +56,7 @@
     <string name="if_not_selected_willShowAllAccounts">தேர்ந்தெடுக்கப்படவில்லை என்றால் அனைத்து கணக்குகளையும் காண்பிக்கும்</string>
     <string name="view_accounts_favorites">பிடித்த கணக்குகளைப் பார்க்க</string>
     <string name="version">பதிப்பு</string>
+    <string name="build">உருவாக்கம்</string>
     <string name="path">தரவுத்தள பாதை</string>
     <string name="remote_path">தொலை பாதை</string>
     <string name="database_version">தரவுத்தள பதிப்பு</string>
@@ -71,6 +73,7 @@
     <string name="title_sms_trans_status_notification">SMS பரிவர்த்தனை நிலை அறிவிப்பு</string>
     <string name="notification_click_to_edit_transaction">பரிவர்த்தனையைத் திருத்த, தொடவும்...</string>
     <string name="notification_process_sms_transaction_status">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
+    <string name="notification_process_sms_channel_description">AMMEX SMS அறிவிப்பு சேனல்</string>
     <!-- account -->
     <string name="account">கணக்கு</string>
     <string name="account_list">கணக்கு பட்டியல்</string>
@@ -182,6 +185,7 @@
     <!-- 20120906 -->
     <string name="close_application">பயன்பாட்டை மூடு</string>
     <string name="question_close_application">பயன்பாட்டை மூட வேண்டுமா?</string>
+    <string name="error_intent_pick_file">இன்டென்ட் பிக் கோப்பைக் கையாள எந்தச் செயல்பாடும் இல்லை</string>
     <string name="attention">கவனம்</string>
     <string name="payee_can_not_deleted">தேர்ந்தெடுக்கப்பட்ட பணம் பெறுபவரை நீக்க முடியாது, ஏனெனில் அது பயன்படுத்தப்படுகிறது</string>
     <string name="account_can_not_deleted">தேர்ந்தெடுக்கப்பட்ட கணக்கை நீக்க முடியாது, ஏனெனில் அது பயன்படுத்தப்படுகிறது</string>
@@ -306,6 +310,7 @@
     <string name="split_transaction">பிளவு பரிவர்த்தனை</string>
     <string name="split">பிளவு</string>
     <string name="error_split_transaction_empty">குறைந்தபட்சம் ஒன்று பிரிக்கப்பட்ட பரிவர்த்தனை தேவை</string>
+    <string name="swipe_to_dismiss">அகற்ற உருப்படிகளை ஸ்வைப் செய்யவும்.</string>
     <string name="export_data_in_progress">தரவு ஏற்றுமதி. தயவுசெய்து காத்திருங்கள்&#8230;</string>
     <string name="export_file_complete">தரவு வெற்றிகரமாக %1$s கோப்புக்கு ஏற்றுமதி செய்யப்பட்டது</string>
     <string name="export_file_failed">%1$s கோப்பை ஏற்றுமதி செய்ய முடியவில்லை</string>
@@ -334,7 +339,9 @@
     <string name="database">தகவல்தளம்</string>
     <string name="tips">குறிப்புகள்</string>
     <string name="title_application_font">பயன்பாட்டு எழுத்துரு</string>
+    <string name="summary_application_font">நீங்கள் விண்ணப்பத்தை கொடுக்க விரும்பும் எழுத்துருவைத் தேர்ந்தெடுக்கவும்</string>
     <string name="title_application_font_size">பயன்பாட்டு எழுத்துரு அளவு</string>
+    <string name="summary_application_font_size">நீங்கள் விண்ணப்பத்தை கொடுக்க விரும்பும் எழுத்துரு அளவைத் தேர்ந்தெடுக்கவும்</string>
     <string name="micro">மைக்ரோ</string>
     <string name="small">சிறிய</string>
     <string name="Default">இயல்புநிலை</string>
@@ -383,8 +390,14 @@
     <string name="time_frame">கால கட்டம்</string>
     <string name="show_chart">விளக்கப்படத்தைக் காட்டு</string>
     <string name="add_transaction">பரிவர்த்தனையைச் சேர்க்கவும்</string>
+    <string name="welcome_header">MoneyManagerEx க்கு வரவேற்கிறோம்!</string>
+    <string name="welcome_body">MoneyManagerEx இல் உள்ள அனைத்து பரிவர்த்தனைகளும் கணக்குகளுக்கு சொந்தமானது.\n\nஉங்களிடம் தற்போது காணக்கூடிய கணக்குகள் எதுவும் இல்லை. அமைப்புகளில் தெரியும் கணக்குகளுக்கான வடிப்பானைச் சரிசெய்யவும் அல்லது கீழே உள்ள விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="welcome_body_dropbox">நீங்கள் ஏற்கனவே Windows, Linux அல்லது Mac இல் MoneyManagerEx ஐப் பயன்படுத்தினால், உங்கள் தரவுத்தளத்தை ஒத்திசைக்க கிளவுட் ஸ்டோரேஜ் வழங்குனருடன் இணைக்கலாம்</string>
     <string name="configure_sync">ஒத்திசைவை உள்ளமைக்கவும்</string>
+    <string name="search_text_contain_title">உரை உள்ளடக்கங்களின் மூலம் தேடுவது, தொடங்கும் உரை மூலம் அல்ல</string>
+    <string name="search_text_contain_summary">பணம் பெறுபவர், வகைகள், நாணயங்கள் போன்றவற்றைத் தேடுங்கள்... எழுத்துக்களைத் தொடங்குவதன் மூலம் அல்ல</string>
     <string name="rate_application">மென்பொருளை மதிப்பிடவும்</string>
+    <string name="withdrawal_from">%1$s இலிருந்து திரும்பப் பெறுதல்</string>
     <string name="deposit_to">%1$s க்கு வைப்பு</string>
     <string name="mmex_website">MoneyManagerEx இணையதளம்</string>
     <string name="android_website">ஆண்ட்ராய்டு இணையதளத்திற்கான MMEx</string>
@@ -426,8 +439,13 @@
     <string name="due_today">இன்று நிலுவையில் உள்ளது</string>
     <string name="action_settings">அமைப்புகள்</string>
     <string name="close">மூடு</string>
+    <string name="tutorial_accounts_1">பல கணக்கு வகைகள்: சோதனை, சேமிப்பு, கடன், சொத்துக்கள் மற்றும் முதலீடுகள்.</string>
+    <string name="tutorial_accounts_2">தொடர இடதுபுறமாக ஸ்வைப் செய்யவும்&#8230;</string>
     <string name="financial_overview">நிதி கண்ணோட்டம்</string>
+    <string name="tutorial_overview_1">விரைவு மேலோட்டப் பார்வை டாஷ்போர்டு, பட்ஜெட்டுகள், தனிப்பயனாக்கங்களுடன் கூடிய அறிக்கைகள்.</string>
     <string name="global">எல்லா இடங்களிலும்</string>
+    <string name="tutorial_global_1">பல நாணயங்கள் மற்றும் மொழிகள். திறந்த மூல. எங்கள் மொழிபெயர்ப்பு குழுவில் சேரவும்.</string>
+    <string name="tutorial_sync_1">பல தளங்களுக்கான ஆதரவு, பல கிளவுட் சேவைகள் மூலம் ஒத்திசைவு. பிற பயன்பாடுகளுக்கு உங்கள் தரவை இறக்குமதி செய்து ஏற்றுமதி செய்யுங்கள்.</string>
     <string name="transactions">பரிவர்த்தனைகள்</string>
     <string name="tutorial_transactions_1">வைப்பு, திரும்பப் பெறுதல், இடமாற்றம். நினைவூட்டல்களுடன் திட்டமிடப்பட்ட பரிவர்த்தனைகள்.</string>
     <string name="sort_by_ascending">ஆண்டு மற்றும் மாதம் ஏறுவரிசைப்படி வரிசைப்படுத்தவும்</string>
@@ -450,6 +468,7 @@
     <string name="confirm_price_download">ஆன்லைனில் பாதுகாப்பு விலைகளைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
     <string name="starting_price_update">விலைகளைப் பதிவிறக்குகிறது, காத்திருக்கவும்&#8230;</string>
     <string name="database_migrate_14_to_20_success">தரவுத்தள இடம்பெயர்வு வெற்றியடைந்தது.</string>
+    <string name="clear_recent_files_list">சமீபத்திய கோப்புகளை அழிக்கவும்</string>
     <string name="purge_history_confirmation">அனைத்து கணக்குகளின் விலை வரலாற்றை முழுமையாக நீக்க விரும்புகிறீர்களா?</string>
     <string name="create_db">தரவுத்தளத்தை உருவாக்கவும்</string>
     <string name="create_db_summary">புதிய தரவுத்தள கோப்பை உருவாக்கவும்</string>
@@ -457,10 +476,22 @@
     <string name="create_db_dialog_content">தரவுத்தளம் இயல்புநிலை தரவுத்தள கோப்பகத்தில் உருவாக்கப்படும். நீங்கள் கோப்பு நீட்டிப்பை (.mmb) தவிர்க்கலாம்.</string>
     <string name="create_db_success">தரவுத்தளம் வெற்றிகரமாக உருவாக்கப்பட்டது</string>
     <string name="create_db_error">புதிய தரவுத்தள கோப்பை உருவாக்க முடியவில்லை</string>
+    <string name="create_db_exists">இந்தப் பெயருடன் தரவுத்தளம் ஏற்கனவே உள்ளது!</string>
     <string name="db_check_integrity">db ஒருமைப்பாட்டை சரிபார்க்கவும்</string>
+    <string name="db_check_integrity_summary">தரவுத்தள கோப்பு ஒருமைப்பாட்டை சரிபார்க்கிறது</string>
+    <string name="db_check_integrity_success">தரவுத்தளம் ஒருமைப்பாடு சரிபார்ப்பை வெற்றிகரமாக நிறைவேற்றியது.</string>
+    <string name="db_check_integrity_error">பிழை: தரவுத்தள கோப்பு சிதைந்துள்ளது!</string>
+    <string name="db_check_schema">டிபி ஸ்கீமாவைச் சரிபார்க்கவும்</string>
+    <string name="db_check_schema_summary">அனைத்து அட்டவணைகளும் தரவுத்தளத்தில் உள்ளதா என சரிபார்க்கவும்.</string>
+    <string name="db_check_schema_success">தேவையான அனைத்து அட்டவணைகளும் தரவுத்தளத்தில் உள்ளன.</string>
+    <string name="db_check_schema_error">பிழை: தரவுத்தளத்தில் அட்டவணைகள் இல்லை!</string>
+    <string name="db_fix_duplicates">நகல் பதிவுகளை சரிசெய்யவும்</string>
+    <string name="split_amount_negative">மொத்த தொகை எதிர்மறையாக இருக்க முடியாது.</string>
     <string name="select_all">அனைத்தையும் தேர்ந்தெடுக்கவும்</string>
     <string name="choose_type">வகையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="default_account">இயல்புநிலை கணக்கு</string>
+    <string name="default_account_summary">புதிய பரிவர்த்தனை செய்யும்போது பயன்படுத்த வேண்டிய கணக்கு.</string>
+    <string name="default_account_not_set">இயல்புநிலை கணக்கு அமைக்கப்படவில்லை.</string>
     <string name="balance_account">இருப்பு கணக்கு</string>
     <string name="balance_adjustment">இருப்பு சரிசெய்தல்</string>
     <string name="cash">பணம்</string>

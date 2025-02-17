@@ -278,6 +278,7 @@
         <item>@string/locale_ro</item>
         <item>@string/locale_ru</item>
         <item>@string/locale_sk</item>
+		<item>@string/locale_ta</item>
         <item>@string/locale_tr</item>
         <item>@string/locale_uk</item>
         <item>@string/locale_vi</item>
@@ -307,6 +308,7 @@
         <item>ro</item>
         <item>ru</item>
         <item>sk</item>
+		<item>ta</item>
         <item>tr</item>
         <item>uk</item>
         <item>vi</item>
