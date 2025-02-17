@@ -322,7 +322,6 @@
     <string name="menu_reports">Build-in Reports</string> -->
     <string name="menu_general_report_group">General Reports</string>
     <string name="title_activity_general_report">General Report</string>
-    <string name="no_report_group">No Group</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="total">Total</string>
@@ -506,6 +505,7 @@
     <string name="locale_ro" translatable="false">Română</string>
     <string name="locale_ru" translatable="false">Русский</string>
     <string name="locale_sk" translatable="false">slovenský</string>
+	<string name="locale_ta" translatable="false">தமிழ்</string>
     <string name="locale_tr" translatable="false">Türkçe</string>
     <string name="locale_uk" translatable="false">українська</string>
     <string name="locale_vi" translatable="false">Tiếng Việt</string>
