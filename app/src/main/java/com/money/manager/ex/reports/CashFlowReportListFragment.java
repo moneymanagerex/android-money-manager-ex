@@ -164,7 +164,11 @@ public class CashFlowReportListFragment
             row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
             row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
             row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
+            if (row.get(QueryBillDeposits.PAYEENAME) == null)
+                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
             row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
+            if (row.get(QueryBillDeposits.CATEGNAME) == null)
+                row.put(QueryBillDeposits.CATEGNAME, getString(R.string.transfer));
             row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)),-1L)); // handle null #2235
             row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)),0L)); // handle null #2235
             row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)),"")); // handle null #2235
