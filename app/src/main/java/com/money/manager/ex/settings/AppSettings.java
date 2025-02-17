@@ -108,6 +108,10 @@ public class AppSettings
     public int getCategorySort() { return get("pref_category_sort", 0); }
     public void setCategorySort(int value) { set("pref_category_sort", value); }
 
+    public int getCategoryNavMode() { return get("pref_category_nav_mode", -1); }
+    public void setCategoryNavMode(int value) { set("pref_category_nav_mode", value); }
+
+
     public int getTagSort() { return get("pref_tag_sort", 0); }
     public void setTagSort(int value) { set("pref_tag_sort", value); }
 
