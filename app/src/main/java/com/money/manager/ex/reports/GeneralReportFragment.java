@@ -10,18 +10,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
-import com.money.manager.ex.settings.AppSettings;
 
 import androidx.fragment.app.Fragment;
-
-import java.util.List;
 
 
 public class GeneralReportFragment extends Fragment {
@@ -54,56 +47,45 @@ public class GeneralReportFragment extends Fragment {
 
     private String getHtmlReport(String reportName){
 
-        //Db setup
-        MmxOpenHelper MmxHelper = new MmxOpenHelper(getActivity(), new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath());
-        //CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-
-        String sqlQuery = "";
-        String htmlTable = "<html><head><style>" +
-               "#GeneralReport { font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%;} " +
-               "#GeneralReport td, #GeneralReport th { border: 1px solid #ddd; padding: 8px;} " +
-               "#GeneralReport tr:nth-child(even){background-color: #f2f2f2;} " +
+        StringBuilder htmlTable = new StringBuilder("<html><head><style>" +
+                "#GeneralReport { font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; border-collapse: collapse; width: 100%;} " +
+                "#GeneralReport td, #GeneralReport th { border: 1px solid #ddd; padding: 8px;} " +
+                "#GeneralReport tr:nth-child(even){background-color: #f2f2f2;} " +
                 "#GeneralReport tr:hover {background-color: #ddd;} " +
-               "#GeneralReport th {padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #4CAF50; color: white;} " +
-                "</style></head><body>";
+                "#GeneralReport th {padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #4CAF50; color: white;} " +
+                "</style></head><body>");
 
         try
         {
             ReportRepository repo = new ReportRepository(getActivity());
             Report report = repo.loadByName(reportName.trim());
 
-            if (report != null) {
-                sqlQuery = report.getSqlContent();
-            }
-
             //fetch the data and generate the html table
-            Cursor sqlCursor = MmxHelper.getReadableDatabase().query(sqlQuery, null);
+            Cursor sqlCursor = repo.runReport(report);
 
-            htmlTable = htmlTable + "<table id='GeneralReport'><tr>";
+            htmlTable.append("<table id='GeneralReport'><tr>");
 
             //get the columns
             for (int i = 0; i < sqlCursor.getColumnCount(); i++) {
-                htmlTable = htmlTable + "<th>" + sqlCursor.getColumnName(i) + "</th>";
+                htmlTable.append("<th>").append(sqlCursor.getColumnName(i)).append("</th>");
             }
 
-            htmlTable = htmlTable + "</tr>";
+            htmlTable.append("</tr>");
 
             //get the data
             for (sqlCursor.moveToFirst(); !sqlCursor.isAfterLast(); sqlCursor.moveToNext())
             {
-                htmlTable = htmlTable + "<tr>";
+                htmlTable.append("<tr>");
 
                 for (int i = 0; i < sqlCursor.getColumnCount(); i++)
                 {
-                    htmlTable = htmlTable + "<td>" +
-                            sqlCursor.getString(sqlCursor.getColumnIndex(sqlCursor.getColumnName(i))) +
-                            "</td>";
+                    htmlTable.append("<td>").append(sqlCursor.getString(sqlCursor.getColumnIndex(sqlCursor.getColumnName(i)))).append("</td>");
                 }
 
-                htmlTable = htmlTable + "</tr>";
+                htmlTable.append("</tr>");
             }
 
-            htmlTable = htmlTable + "</table></body></html>";
+            htmlTable.append("</table></body></html>");
 
             sqlCursor.close();
         }
@@ -111,6 +93,6 @@ public class GeneralReportFragment extends Fragment {
             //System.err.println("EXCEPTION:"+e);
         }
 
-        return htmlTable;
+        return htmlTable.toString();
     }
 }

@@ -382,37 +382,33 @@ public class MmxContentProvider
 
         // check type of instance data set
         if (sourceObject instanceof Dataset) {
-            Dataset dataset = ((Dataset) sourceObject);
-            String query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
+            Dataset dataset = (Dataset) sourceObject;
+            String query;
+            String[] args;
 
             switch (dataset.getType()) {
                 case QUERY:
                 case TABLE:
                 case VIEW:
-                    if (selectionArgs == null) {
-                        cursor = database.query(query);
-                    } else {
-                        cursor = database.query(query, selectionArgs);
-                    }
+                    query = prepareQuery(dataset.getSource(), projection, selection, sortOrder);
+                    args = selectionArgs;
                     break;
                 case SQL:
-                    cursor = database.query(selection, selectionArgs);
+                    query = selection;
+                    args = selectionArgs;
                     break;
                 default:
                     throw new IllegalArgumentException("Type of dataset not defined");
             }
+
+            cursor = database.query(query, args);
+            // notify listeners waiting for the data is ready
+            cursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
+            Timber.v("Rows returned: %d", cursor.getCount());
+            return cursor;
         } else {
             throw new IllegalArgumentException("Object sourceObject of mapContent is not instance of dataset");
         }
-
-        // notify listeners waiting for the data is ready
-        cursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
-
-        if (!cursor.isClosed()) {
-            Timber.v("Rows returned: %d", cursor.getCount());
-        }
-
-        return cursor;
     }
 
     private void logQuery(Dataset dataset, String[] projection, String selection,
