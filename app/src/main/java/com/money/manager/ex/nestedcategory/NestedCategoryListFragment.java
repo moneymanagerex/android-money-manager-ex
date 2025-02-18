@@ -113,9 +113,9 @@ public class NestedCategoryListFragment
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.attention)
                     .setIcon(new UIHelper(getActivity()).getIcon(FontAwesome.Icon.faw_question))
-                    .setMessage("New navigation mode is available under menu")
-                    .setPositiveButton("Remember me Later", (dialog, which) -> {})
-                    .setNegativeButton("Dismiss", (dialog, which) -> {
+                    .setMessage(R.string.category_nav_mode)
+                    .setPositiveButton(R.string.remember_later, (dialog, which) -> {})
+                    .setNegativeButton(R.string.dismiss, (dialog, which) -> {
                         new AppSettings(getActivity()).setCategoryNavMode(levelMode);
                     })
                     .show();

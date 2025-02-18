@@ -147,12 +147,9 @@ public class SyncPreferenceFragment
             if (sync.canSync()) {
                 boolean isLocalModified = currentDb.isLocalFileChanged();
 
-                String message = String.format(
-                        "Local file changes indicator: %s.\n" +
-                                "Downloading will overwrite your local version.\nDo you want to continue?"
+                String message = String.format(getString(R.string.local_file_change) +"%s.\n" + getString(R.string.download_warning)
                         , isLocalModified);
-
-                showConfirmDialog("Download Warning", message, this::forceDownload);
+                showConfirmDialog(getString(R.string.download_warning), message, this::forceDownload);
             } else {
                 Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
             }
@@ -169,12 +166,11 @@ public class SyncPreferenceFragment
                 boolean isRemoteModified = currentDb.isRemoteFileChanged(getContext());
 
                 String message = String.format(
-                        "Remote file changes indicator: %s.\n" +
-                                "Uploading will overwrite your remote version.\nDo you want to continue?"
+                        getString(R.string.remote_file_change)+ "%s.\n" + getString(R.string.msg_uploading_overwrite)
                         , isRemoteModified);
-                showConfirmDialog("Upload Warning",message,this::forceUpload);
+                showConfirmDialog(getString(R.string.upload_warning),message,this::forceUpload);
             } else {
-                Toast.makeText(getContext(), "Remote file unavailable.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
             }
             return false;
         });
@@ -209,8 +205,8 @@ public class SyncPreferenceFragment
         new AlertDialog.Builder(getActivity())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Continue", (dialog, which) -> onConfirm.run())
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(R.string.btn_continue, (dialog, which) -> onConfirm.run())
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 }
