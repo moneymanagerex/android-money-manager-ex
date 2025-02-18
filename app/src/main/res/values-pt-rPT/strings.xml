@@ -684,4 +684,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="shares_accounts">Contas de Acções</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

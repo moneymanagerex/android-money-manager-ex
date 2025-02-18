@@ -701,4 +701,6 @@
     <string name="notification_channel_fileoperation_complete">Mmex upload voltooid</string>
     <string name="show">Weergeven</string>
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

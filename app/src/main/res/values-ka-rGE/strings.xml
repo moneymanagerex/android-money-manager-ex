@@ -351,4 +351,6 @@
     <string name="per_database_settings">ყოველ მონაცემთა ბაზაზე</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

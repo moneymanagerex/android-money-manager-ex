@@ -676,4 +676,6 @@
     <string name="shares_accounts">Μετοχικοί Λογαριασμοί</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

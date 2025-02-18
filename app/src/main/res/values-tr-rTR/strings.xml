@@ -673,4 +673,6 @@
     <string name="summary_budget_show_simple_view">Kontrol edilen bütçeler basitleştirilmiş görünümü kullanıyorsa</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

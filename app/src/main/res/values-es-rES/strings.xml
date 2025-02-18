@@ -746,4 +746,6 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Borrar todo</string>
     <string name="empty_color_message">elige un color</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

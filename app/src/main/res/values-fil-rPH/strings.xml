@@ -677,4 +677,6 @@
     <string name="shares_accounts">Mga Share Account</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

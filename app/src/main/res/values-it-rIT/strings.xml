@@ -775,4 +775,6 @@
     <string name="CLEAR_ALL">Cancella tutto</string>
     <string name="empty_color_message">Scegli un colore</string>
     <string name="menu_show_inactive">Mostra inattivo</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

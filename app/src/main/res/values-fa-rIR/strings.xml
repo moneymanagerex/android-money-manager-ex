@@ -217,4 +217,6 @@
     <string name="per_database_settings">هر پایگاه داده</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>
