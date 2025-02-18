@@ -153,7 +153,7 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
-        storage.pullDatabaseToTmpFile(currentDb); // TODO: Why do I need to download the remote file, otherwise the metadata is wrong
+        storage.pullDatabaseToTmpFile(currentDb); // TODO: Why do I need to download the remote file, otherwise the metadata is wrong (for Google Drive at least)
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
@@ -171,19 +171,25 @@ public class SyncService
         }
 
         if (isLocalModified && isRemoteModified) {
+            // TODO duplicate local database in case the user aborts merge and want to resume
             // start merge changes from remote to local
             DataMerger merger = new DataMerger();
-            merger.merge(currentDb, storage);
-            // if both changed, there is a conflict!
-            Timber.w(getString(R.string.both_files_modified));
-            sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
-
- //           sendStopEvent();
-            MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-                put("authority", uri.getAuthority());
-                put("result", "Conflict");
-            }});
-            showNotificationForConflict();
+            try {
+                merger.merge(currentDb, storage);
+                Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);
+                // upload file
+                storage.pushDatabase(currentDb);
+                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+            } catch (Exception e) {
+                Timber.e(e,"Could not complete sync");
+                sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
+                //           sendStopEvent();
+                MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
+                    put("authority", uri.getAuthority());
+                    put("result", "Conflict");
+                }});
+                showNotificationForConflict();
+            }
             return;
         }
         if (isRemoteModified) {
