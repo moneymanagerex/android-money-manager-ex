@@ -363,7 +363,40 @@ public class MmxDatabaseUtils {
         client.close();
     }
 
-    public List<Info> getLastSyncDate() {
-        return infoRepositorySqlLazy.get().loadAll(InfoKeys.LAST_SYNC_DATE);
+    /**
+     *
+     * @return the first entry with key {@link InfoKeys#LAST_SYNC_DATE} or {@code null}
+     */
+    public MmxDate getLastSyncDate() {
+        Info info = internalGetLastSyncInfoEntry();
+        if (info != null) {
+            return MmxDate.fromIso8601(info.getString(Info.INFOVALUE));
+        }
+        return null;
+    }
+
+    private Info internalGetLastSyncInfoEntry() {
+        List<Info> infoList = infoRepositorySqlLazy.get().loadAll(InfoKeys.LAST_SYNC_DATE);
+        if (infoList != null && ! infoList.isEmpty()) {
+            return infoList.get(0);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param newDate the new date to be stored before uploading the database
+     */
+    public void setLastSyncDate(MmxDate newDate) {
+        Info info = internalGetLastSyncInfoEntry();
+        if (info == null) {
+            // create new entry
+            info = Info.create(InfoKeys.LAST_SYNC_DATE, newDate.toIsoString());
+            infoRepositorySqlLazy.get().insert(info);
+        } else {
+            // update entry
+            info.setValue(newDate.toIsoString());
+            infoRepositorySqlLazy.get().update(info);
+        }
     }
 }

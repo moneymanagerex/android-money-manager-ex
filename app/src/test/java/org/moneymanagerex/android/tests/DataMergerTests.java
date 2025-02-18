@@ -25,6 +25,7 @@ import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.merge.DataMerger;
+import com.money.manager.ex.sync.merge.MergeConflictResolution;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.javamoney.moneta.Money;
@@ -64,7 +65,7 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_mergeAccountTransaction_takeoverFromRemote() {
+    public void testMergeAccountTransactionTakeoverFromRemote() {
         // prepare data
 
         // prepare mocks
@@ -82,7 +83,7 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_AccountTransaction_equals() {
+    public void testAccountTransactionEquals() {
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-20T18:42:18.000Z");
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -94,7 +95,7 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_AccountTransaction_equals_null1() {
+    public void testAccountTransactionEqualsNull1() {
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setNotes(null);
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -105,7 +106,7 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_AccountTransaction_equals_null2() {
+    public void testAccountTransactionEqualsNull2() {
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setNotes("x");
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -114,7 +115,7 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_AccountTransaction_equals_null3() {
+    public void testAccountTransactionEqualsNull3() {
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setAccountId(null);
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -123,9 +124,10 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_mergeAccountTransaction_remoteWasModifiedAfterSync() {
+    public void testMergeAccountTransactionRemoteWasModifiedAfterSync() {
         // prepare mocks
         DataMerger testee = spy(new DataMerger());
+        doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-20T18:42:18.000Z");
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -142,9 +144,10 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_mergeAccountTransaction_bothModified_remoteWasLaterModified() {
+    public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
         DataMerger testee = spy(new DataMerger());
+        doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -161,9 +164,10 @@ public class DataMergerTests {
     }
 
     @Test
-    public void test_mergeAccountTransaction_bothModified_localWasLaterModified() {
+    public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
         DataMerger testee = spy(new DataMerger());
+        doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
         AccountTransaction remoteEntity = new AccountTransaction();
@@ -174,7 +178,47 @@ public class DataMergerTests {
         // test
         testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
         // verify
-        verify(localAccTrans, never()).save(remoteEntity);
+        verify(localAccTrans).save(remoteEntity);
         verify(localAccTrans, never()).add(remoteEntity);
+    }
+
+    @Test
+    public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceOurs() {
+        // prepare mocks
+        DataMerger testee = spy(new DataMerger());
+        doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
+        AccountTransaction localEntity = new AccountTransaction();
+        localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
+        AccountTransaction remoteEntity = new AccountTransaction();
+        remoteEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
+        AccountTransactionRepository localAccTrans = mock(AccountTransactionRepository.class);
+        MmxDate lastLocalSyncDate = MmxDate.fromIso8601("2020-01-21T18:42:18.000Z");
+        StringBuilder log = new StringBuilder();
+        // test
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        // verify
+        verify(localAccTrans, never()).save(any());
+        verify(localAccTrans, never()).add(any());
+        assertEquals(0, log.length());
+    }
+
+    @Test
+    public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceOurs() {
+        // prepare mocks
+        DataMerger testee = spy(new DataMerger());
+        doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
+        AccountTransaction localEntity = new AccountTransaction();
+        localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
+        AccountTransaction remoteEntity = new AccountTransaction();
+        remoteEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
+        AccountTransactionRepository localAccTrans = mock(AccountTransactionRepository.class);
+        MmxDate lastLocalSyncDate = MmxDate.fromIso8601("2020-01-21T18:42:18.000Z");
+        StringBuilder log = new StringBuilder();
+        // test
+        testee.mergeEntity(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
+        // verify
+        verify(localAccTrans, never()).save(any());
+        verify(localAccTrans, never()).add(any());
+        assertEquals(0, log.length());
     }
 }

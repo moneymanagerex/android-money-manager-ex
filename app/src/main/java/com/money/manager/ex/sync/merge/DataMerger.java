@@ -2,18 +2,15 @@ package com.money.manager.ex.sync.merge;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.OperationCanceledException;
 
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.IModificationTraceable;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.RepositoryBase;
-import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.EntityBase;
-import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
@@ -33,7 +30,6 @@ public class DataMerger {
         MmxOpenHelper tmpDBHelper = new MmxOpenHelper(storage.getContext(), metadata.localTmpPath);
         SupportSQLiteDatabase tmpDBReadable = tmpDBHelper.getReadableDatabase();
         // prepare local db (writeable)
-        SupportSQLiteDatabase localDB = MmexApplication.getApp().openHelperAtomicReference.get().getWritableDatabase();
         MmxDate lastLocalSyncDate = getLastLocalSyncDate(storage.getContext());
         StringBuilder log = new StringBuilder();
         // merge payee
@@ -69,93 +65,56 @@ public class DataMerger {
             updateCount++;
         } else if (! localEntity.equals(remoteEntity)) {
             // not equal --> check what has changed
-            boolean modifiedLocallyAfterSync = false;
-            boolean modifiedRemoteAfterSync = false;
-            MmxDate localChangeDate = lastLocalSyncDate;
-            MmxDate remoteChangeDate = lastLocalSyncDate;
+            boolean modifiedLocallyAfterSync = true;
+            boolean modifiedRemoteAfterSync = true;
             if (localEntity instanceof IModificationTraceable) {
-                localChangeDate = new MmxDate(((IModificationTraceable)localEntity).getLastUpdatedTime(), Constants.IOS_8601_COMBINED);
+                // only for entities that implements IModificationTraceable we can determine if they are modified or not
+                MmxDate localChangeDate = MmxDate.fromIso8601(((IModificationTraceable)localEntity).getLastUpdatedTime());
                 modifiedLocallyAfterSync = localChangeDate.toDate().after(lastLocalSyncDate.toDate());
-                remoteChangeDate = new MmxDate(((IModificationTraceable)remoteEntity).getLastUpdatedTime(), Constants.IOS_8601_COMBINED);
+                MmxDate remoteChangeDate = MmxDate.fromIso8601(((IModificationTraceable)remoteEntity).getLastUpdatedTime());
                 modifiedRemoteAfterSync = remoteChangeDate.toDate().after(lastLocalSyncDate.toDate());
             }
-            // both modified
-            if (modifiedLocallyAfterSync && modifiedRemoteAfterSync) {
-                // for now we take remote if newer  --> TODO ask user: manual merge decision
-                if (localChangeDate.toDate().before(remoteChangeDate.toDate())) {
-                    localRepo.save(remoteEntity);
-                    updateCount++;
-                    log.append(OVERWRITE_LOCAL_CHANGES).append("transaction ").append(localEntity.getId()).append(" ").append(localEntity.toString()).append("\n");
-                }
-            } else if (! modifiedLocallyAfterSync) {
-                // import the remote data
-                // this is the default merge action for all entities that do no implement IModificationTraceable
-                // This also means that we import the
+
+            if (! modifiedLocallyAfterSync && modifiedRemoteAfterSync) {
+                // only remote modified
                 localRepo.save(remoteEntity);
                 updateCount++;
                 log.append(REMOTE_ONLY_WAS_MODIFIED).append("transaction ").append(remoteEntity.getId()).append("\n");
-            }
+            } else if (modifiedLocallyAfterSync && modifiedRemoteAfterSync) {
+                // both modified -> ask user
+                MergeConflictResolution resolution = conflictResolutionByUser(localEntity, remoteEntity);
+                switch (resolution) {
+                    case THEIRS:
+                        localRepo.save(remoteEntity);
+                        updateCount++;
+                        log.append(OVERWRITE_LOCAL_CHANGES).append("transaction ").append(localEntity.getId()).append(" ").append(localEntity).append("\n");
+                        break;
+                    case OURS:
+                       // do nothing, we use the local change
+                        break;
+                    case ABORT:
+                        // fall-through
+                    default:
+                        // default:. abort
+                        throw new OperationCanceledException("Merge databases canceled by user");
+                }
+            } // otherwise we don't have to do anything (local change only)
         }
         return updateCount;
     }
 
-
-    /*
-     * go through remote data and compare with local data
-     */
-   /* public void mergeAccountTransactions(SupportSQLiteDatabase tmpDBReadable, AccountTransactionRepository localAccTrans, MmxDate lastLocalSyncDate, StringBuilder log) {
-        int updateCount = 0;
-        // iterate through all entries from tmp file (remote copy)
-        try (Cursor remoteCursor = tmpDBReadable.query("SELECT * from "+AccountTransactionRepository.TABLE_NAME+" WHERE 1")) {
-            while (remoteCursor.moveToNext()) {
-                AccountTransaction remoteEntity = new AccountTransaction();
-                remoteEntity.loadFromCursor(remoteCursor);
-                // test if local data is equal
-                AccountTransaction localEntity = localAccTrans.load(remoteEntity.getId());
-                updateCount += mergeAccountTransaction(localAccTrans, localEntity, remoteEntity, lastLocalSyncDate, log);
-            }
-        } catch (Exception e) {
-            Timber.e(e);
-        }
-        log.append("Updated ").append(updateCount).append(" AccountTransaction");
-    }*/
-
-    /*public int mergeAccountTransaction(AccountTransactionRepository localAccTrans, AccountTransaction localEntity, AccountTransaction remoteEntity, MmxDate lastLocalSyncDate, StringBuilder log) {
-        int updateCount = 0;
-        if (localEntity == null) {
-            // new entry from remote
-            localAccTrans.insert(remoteEntity);
-            updateCount++;
-        } else if (! localEntity.equals(remoteEntity)) {
-            // not equal --> check what has changed
-            MmxDate localChangeDate = new MmxDate(localEntity.getLastUpdatedTime(), Constants.IOS_8601_COMBINED);
-            boolean modifiedLocallyAfterSync = localChangeDate.toDate().after(lastLocalSyncDate.toDate());
-            MmxDate remoteChangeDate = new MmxDate(remoteEntity.getLastUpdatedTime(), Constants.IOS_8601_COMBINED);
-            boolean modifiedRemoteAfterSync = remoteChangeDate.toDate().after(lastLocalSyncDate.toDate());
-            // both modified
-            if (modifiedLocallyAfterSync && modifiedRemoteAfterSync) {
-                // for now we take remote if newer  --> TODO ask user: manual merge decision
-                if (localChangeDate.toDate().before(remoteChangeDate.toDate())) {
-                    localAccTrans.update(remoteEntity);
-                    updateCount++;
-                    log.append(OVERWRITE_LOCAL_CHANGES).append("transaction ").append(localEntity.getId()).append(" ").append(localEntity.toString()).append("\n");
-                }
-            } else if (! modifiedLocallyAfterSync) {
-                // import the remote data
-                localAccTrans.update(remoteEntity);
-                updateCount++;
-                log.append(REMOTE_ONLY_WAS_MODIFIED).append("transaction ").append(remoteEntity.getId()).append("\n");
-            }
-        }
-        return updateCount;
-    }*/
+    public <T extends EntityBase> MergeConflictResolution conflictResolutionByUser(T localEntity, T remoteEntity) {
+        // FIXME create user dialog
+        return MergeConflictResolution.THEIRS;
+    }
 
     private MmxDate getLastLocalSyncDate(Context ctx) {
         MmxDatabaseUtils utils = new MmxDatabaseUtils(ctx);
-        List<Info> infoList = utils.getLastSyncDate();
-        if (infoList != null && ! infoList.isEmpty()) {
-            return new MmxDate(infoList.get(0).getString(Info.INFOVALUE));
+        MmxDate lastSyncDate = utils.getLastSyncDate();
+        if (lastSyncDate != null) {
+            return lastSyncDate;
         }
-        return new MmxDate("1900-01-01T00:00:00");
+        // as a default (when the database has not yet an entry)
+        return new MmxDate("1900-01-01T00:00:00.000+0200");
     }
 }
