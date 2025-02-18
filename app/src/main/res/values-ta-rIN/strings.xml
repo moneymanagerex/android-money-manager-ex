@@ -746,6 +746,16 @@
     <string name="CLEAR_ALL">அனைத்தையும் அழிக்கவும்</string>
     <string name="empty_color_message">ஒரு நிறத்தை தேர்வு செய்யவும்</string>
     <string name="menu_show_inactive">செயலற்றதைக் காட்டு</string>
+    <string name="btn_continue">தொடரவும்</string>
     <!--- New navigation mode -->
+    <string name="dismiss">நிராகரி</string>
+    <string name="category_nav_mode">மெனுவின் கீழ் புதிய வழிசெலுத்தல் பயன்முறை உள்ளது</string>
+    <string name="remember_later">பின்னர் என்னை நினைவில் கொள்க</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">பதிவேற்ற எச்சரிக்கை</string>
+    <string name="download_warning">பதிவிறக்க எச்சரிக்கை</string>
+    <string name="remote_file_change">தொலை கோப்பு மாற்றங்கள் காட்டி:</string>
+    <string name="local_file_change">உள்ளூர் கோப்பு மாற்றங்கள் காட்டி:</string>
+    <string name="msg_uploading_overwrite">பதிவேற்றினால் உங்கள் தொலைநிலைப் பதிப்பு மேலெழுதப்படும்.\nதொடர விரும்புகிறீர்களா?</string>
+    <string name="msg_downloading_overwrite">பதிவிறக்குவது உங்கள் உள்ளூர் பதிப்பை மேலெழுதும்.\nதொடர விரும்புகிறீர்களா?</string>
 </resources>
