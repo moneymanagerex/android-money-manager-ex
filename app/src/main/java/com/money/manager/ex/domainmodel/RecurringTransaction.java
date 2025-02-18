@@ -303,9 +303,10 @@ public class RecurringTransaction
         setString(ITransactionEntity.STATUS, value);
     }
 
-    public Long getToAccountId() {
-        return getLong(ITransactionEntity.TOACCOUNTID);
-    }
+    // duplicate of getAccountToId()
+//    public Long getToAccountId() {
+//        return getLong(ITransactionEntity.TOACCOUNTID);
+//    }
 
     public String getTransactionCode() {
         return getString(ITransactionEntity.TRANSCODE);

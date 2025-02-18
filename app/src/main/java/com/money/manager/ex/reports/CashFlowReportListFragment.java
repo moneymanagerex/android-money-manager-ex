@@ -33,17 +33,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.settings.AppSettings;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /* Master note
@@ -87,6 +89,7 @@ public class CashFlowReportListFragment
     MmxDateTimeUtils dateUtils;
     InfoService infoService;
     MoneySimpleCursorAdapter adapter;
+    ArrayList<Long> selectedAccounts = new ArrayList<>();
 
     @SuppressLint("Range")
     private void createCashFlowRecords() {
@@ -108,6 +111,7 @@ public class CashFlowReportListFragment
                 QueryBillDeposits.NOTES,
                 QueryBillDeposits.STATUS,
                 QueryBillDeposits.AMOUNT,
+                "transCurrency",
                 BALANCE
         };
         matrixCursor = new MatrixCursor(columnNames);
@@ -120,32 +124,61 @@ public class CashFlowReportListFragment
                 null,
                 QueryBillDeposits.NEXTOCCURRENCEDATE);
         if (cursor == null ||
-            cursor.getCount() == 0)
+                cursor.getCount() == 0)
             return;
 
-        getTotalAmount();
+        getTotalAmountAndAccounts();
 
-        RecurringTransactionService recurringTransactionService = new RecurringTransactionService(getContext());
 
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
+            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
+            // ignore transfert if both is on selected account
+            // create recurring transaction
+            double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            RecurringTransaction rx = recurringTransactionService.getSimulatedTransaction();
+            if (rx.getTransactionType() == TransactionTypes.Transfer ) {
+                if (selectedAccounts.contains(rx.getAccountId()) &&
+                        selectedAccounts.contains(rx.getAccountToId())) {
+                    // both in
+                    continue; // skip
+                }
+                if (!selectedAccounts.contains(rx.getAccountId()) &&
+                        !selectedAccounts.contains(rx.getAccountToId())) {
+                    // both out
+                    continue; // skip
+                }
+                if (selectedAccounts.contains(rx.getAccountId()) ) {
+                    // source in
+                    amount = 0 - amount;
+                } else {
+                    // dest in
+//                    amount = rx.getAmountTo().toDouble();
+                }
+            } else {
+//                amount = rx.getAmount().toDouble();
+            }
+
             row = new HashMap<>();
             row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
             row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
             row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
+            if (row.get(QueryBillDeposits.PAYEENAME) == null)
+                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
             row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
+            if (row.get(QueryBillDeposits.CATEGNAME) == null)
+                row.put(QueryBillDeposits.CATEGNAME, getString(R.string.transfer));
             row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)),-1L)); // handle null #2235
             row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)),0L)); // handle null #2235
             row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)),"")); // handle null #2235
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
-            row.put(QueryBillDeposits.AMOUNT, cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)));
+            row.put(QueryBillDeposits.AMOUNT, amount);
+            row.put("transCurrency", cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)));
             row.put(BALANCE, 0);
             listRecurring.add(row);
 
-            // create recurring transaction
-            recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
             int limit = monthInAdvance * 31;
             while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getDate().before(endDate.toDate())) {
                 limit -= 1;
@@ -160,6 +193,7 @@ public class CashFlowReportListFragment
                 row2.put(QueryBillDeposits.NOTES             , row.get(QueryBillDeposits.NOTES            ));
                 row2.put(QueryBillDeposits.STATUS            , row.get(QueryBillDeposits.STATUS           ));
                 row2.put(QueryBillDeposits.AMOUNT            , row.get(QueryBillDeposits.AMOUNT           ));
+                row2.put("transCurrency"                     , row.get("transCurrency"));
                 row2.put(BALANCE, 0);
                 listRecurring.add(row2);
             }
@@ -172,10 +206,18 @@ public class CashFlowReportListFragment
             }
         });
 
+        long baseCurrencyId = currencyService.getBaseCurrencyId();
         // copy to matrix cursor
         for (HashMap<String, Object> rowMap : listRecurring) {
-            if (!rowMap.get(QueryBillDeposits.STATUS).equals("V"))
-                totalAmount += (double) rowMap.get(QueryBillDeposits.AMOUNT);
+            Money amountTrans ;
+            Money amountBase;
+            long transCurrency = ( rowMap.get("transCurrency") == null ? baseCurrencyId : (long) rowMap.get("transCurrency") );
+            amountTrans = MoneyFactory.fromDouble((double) rowMap.get(QueryBillDeposits.AMOUNT));
+            amountBase = currencyService.doCurrencyExchange(baseCurrencyId, amountTrans, transCurrency);
+
+            if (!rowMap.get(QueryBillDeposits.STATUS).equals("V")) {
+                totalAmount += amountBase.toDouble();
+            }
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
                     .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
@@ -186,12 +228,13 @@ public class CashFlowReportListFragment
                     .add(QueryBillDeposits.TAGS, rowMap.get(QueryBillDeposits.TAGS))
                     .add(QueryBillDeposits.NOTES, rowMap.get(QueryBillDeposits.NOTES))
                     .add(QueryBillDeposits.STATUS, rowMap.get(QueryBillDeposits.STATUS))
-                    .add(QueryBillDeposits.AMOUNT, rowMap.get(QueryBillDeposits.AMOUNT))
+                    .add(QueryBillDeposits.AMOUNT,  amountTrans.toDouble())
+                    .add("transCurrency", transCurrency)
                     .add(BALANCE, totalAmount);
         }
     }
 
-    private void getTotalAmount() {
+    private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
         // compose whereClause
         String where = "";
@@ -209,6 +252,8 @@ public class CashFlowReportListFragment
                 .where(where)
                 .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
+        selectedAccounts = new ArrayList<>();
+
         Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
                 null,
                 where,
@@ -217,6 +262,7 @@ public class CashFlowReportListFragment
         if (c != null) {
             totalAmount = 0;
             while (c.moveToNext()) {
+                selectedAccounts.add(c.getLong(c.getColumnIndex(QueryAccountBills.ACCOUNTID)));
                 totalAmount += c.getDouble(c.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
             }
             c.close();
@@ -231,8 +277,8 @@ public class CashFlowReportListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-                // Update UI elements here
-                //createCashFlowRecords();
+        // Update UI elements here
+        //createCashFlowRecords();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -325,7 +371,7 @@ public class CashFlowReportListFragment
                             aView.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.textViewTags:
-                        if (aCursor.getString(aColumnIndex).isEmpty())
+                        if (aCursor.getString(aColumnIndex) == null || aCursor.getString(aColumnIndex).isEmpty())
                             aView.setVisibility(View.GONE);
                         else
                             aView.setVisibility(View.VISIBLE);
@@ -353,7 +399,12 @@ public class CashFlowReportListFragment
                         textView.setText(aCursor.getString(aColumnIndex));
                         break;
                     case R.id.textViewAmount:
-                        textView.setText(getAsAmount(aCursor, aColumnIndex));
+                        textView.setText(getAsAmountFromCurrency(aCursor, aColumnIndex));
+                        if (aCursor.getDouble(aColumnIndex) <= 0) {
+                            textView.setTextColor(getResources().getColor(R.color.material_red_700));
+                        } else {
+                            textView.setTextColor(getResources().getColor(R.color.material_green_700));
+                        }
                         break;
                     case R.id.textViewBalance:
                         textView.setText(getAsAmount(aCursor, aColumnIndex));
@@ -363,6 +414,8 @@ public class CashFlowReportListFragment
                             textView.setTextColor(getResources().getColor(R.color.material_green_700));
                         }
                         break;
+                    default:
+                        return false;
                 }
                 aView.setVisibility(View.VISIBLE);
                 return true;
@@ -389,6 +442,15 @@ public class CashFlowReportListFragment
 
     private String getAsString(Cursor aCursor, int aColumnIndex) {
         return aCursor.getString(aColumnIndex);
+    }
+
+    private String getAsAmountFromCurrency(Cursor aCursor, int aColumnIndex) {
+        Long currency = aCursor.getLong(aCursor.getColumnIndex("transCurrency"));
+        if (currency == null) currency = currencyService.getBaseCurrencyId();
+        return currencyService.getCurrencyFormatted(
+                currency, MoneyFactory.fromDouble(
+                aCursor.getDouble(aColumnIndex)
+        ));
     }
 
     private String getAsAmount(Cursor aCursor, int aColumnIndex) {
