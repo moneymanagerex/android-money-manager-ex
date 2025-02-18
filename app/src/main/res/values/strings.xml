@@ -854,7 +854,20 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Clear all</string>
     <string name="empty_color_message">choose a color</string>
-
     <string name="menu_show_inactive">Show inactive</string>
+    <string name="btn_continue">Continue</string>
+
+    <!--- New navigation mode -->
+    <string name="dismiss">Dismiss</string>
+    <string name="category_nav_mode">New navigation mode is available under menu</string>
+    <string name="remember_later">Remember me Later</string>
+
+    <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Upload Warning</string>
+    <string name="download_warning">Download Warning</string>
+    <string name="remote_file_change">Remote file changes indicator: </string>
+    <string name="local_file_change">Local file changes indicator: </string>
+    <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
+    <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
 
 </resources>

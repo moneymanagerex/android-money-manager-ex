@@ -112,13 +112,13 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.year))
                 .setView(numberPicker)
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int selectedYear = numberPicker.getValue();
                     mModel.setYear(selectedYear);
                     viewHolder.refreshYear();
                     viewHolder.refreshName();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 
@@ -133,13 +133,13 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.month))
                 .setView(numberPicker)
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int selectedMonth = numberPicker.getValue();
                     mModel.setMonth(selectedMonth);
                     viewHolder.refreshMonth();
                     viewHolder.refreshName();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 
