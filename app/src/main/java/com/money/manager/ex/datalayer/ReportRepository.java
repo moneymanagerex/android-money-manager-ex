@@ -18,8 +18,10 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.domainmodel.Report;
 
 import java.util.ArrayList;
@@ -75,5 +77,15 @@ public class ReportRepository extends RepositoryBase<Report> {
         }
 
         return reportMap;
+    }
+
+    public Cursor runReport(Report report) {
+        return getContext().getContentResolver().query(
+                new SQLDataSet().getUri(),
+                null, // ignore
+                report.getSqlContent(),
+                null, // ignore
+                null  // ignore
+        );
     }
 }
