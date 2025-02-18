@@ -746,4 +746,6 @@
     <string name="CLEAR_ALL">அனைத்தையும் அழிக்கவும்</string>
     <string name="empty_color_message">ஒரு நிறத்தை தேர்வு செய்யவும்</string>
     <string name="menu_show_inactive">செயலற்றதைக் காட்டு</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

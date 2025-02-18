@@ -677,4 +677,6 @@
     <string name="shares_accounts">証券口座</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

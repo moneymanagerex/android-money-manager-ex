@@ -703,4 +703,6 @@
     <string name="issue_open">"Ouvrir un ticket sur GitHub "</string>
     <!-- Builder button -->
     <string name="CLEAR_ALL">Effacer tout</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

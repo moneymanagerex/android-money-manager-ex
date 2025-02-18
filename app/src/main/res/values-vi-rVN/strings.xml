@@ -635,4 +635,6 @@
     <string name="shares_accounts">Tài khoản cổ phần</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

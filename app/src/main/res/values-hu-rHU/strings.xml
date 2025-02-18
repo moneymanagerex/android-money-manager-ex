@@ -777,4 +777,6 @@
     <string name="CLEAR_ALL">Összes törlése</string>
     <string name="empty_color_message">válasszon színt</string>
     <string name="menu_show_inactive">Inaktív megjelenítése</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

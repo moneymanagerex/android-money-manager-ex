@@ -608,4 +608,6 @@
     <string name="per_database_settings">Per-Baza de date</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

@@ -769,4 +769,6 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Alle schließen</string>
     <string name="empty_color_message">wähle eine Farbe</string>
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>
