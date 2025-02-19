@@ -114,4 +114,8 @@ public class AccountTransactionRepository
 
         return this.count(where.getWhere(), null) > 0;
     }
+
+    public boolean isPayeeUsed(long payeeId) {
+        return this.count(ITransactionEntity.PAYEEID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(payeeId)}) > 0;
+    }
 }
