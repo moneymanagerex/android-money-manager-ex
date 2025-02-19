@@ -1,6 +1,5 @@
 package com.money.manager.ex.reports;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,6 +14,8 @@ import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 
 import androidx.fragment.app.Fragment;
+
+import java.util.Map;
 
 
 public class GeneralReportFragment extends Fragment {
@@ -55,43 +56,38 @@ public class GeneralReportFragment extends Fragment {
                 "#GeneralReport th {padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #4CAF50; color: white;} " +
                 "</style></head><body>");
 
-        try
-        {
-            ReportRepository repo = new ReportRepository(getActivity());
-            Report report = repo.loadByName(reportName.trim());
+        // Create Repo instance and load the report
+        ReportRepository repo = new ReportRepository(getActivity());
+        Report report = repo.loadByName(reportName.trim());
 
-            //fetch the data and generate the html table
-            Cursor sqlCursor = repo.runReport(report);
+        // Execute query and get column names and results
+        ReportRepository.ReportResult result = repo.runReport(report);
 
-            htmlTable.append("<table id='GeneralReport'><tr>");
+        // If no data, return an empty table message
+        if (result.getColumnNames() == null || result.getQueryResult() == null) {
+            return "<p>No data available</p>";
+        }
 
-            //get the columns
-            for (int i = 0; i < sqlCursor.getColumnCount(); i++) {
-                htmlTable.append("<th>").append(sqlCursor.getColumnName(i)).append("</th>");
+        // Start building the HTML table
+        htmlTable.append("<table id='GeneralReport'><tr>");
+
+        // Add column names (table header)
+        for (String columnName : result.getColumnNames()) {
+            htmlTable.append("<th>").append(columnName).append("</th>");
+        }
+
+        htmlTable.append("</tr>");
+
+        // Add rows from query result
+        for (Map<String, String> row : result.getQueryResult()) {
+            htmlTable.append("<tr>");
+            for (String columnName : result.getColumnNames()) {
+                htmlTable.append("<td>").append(row.getOrDefault(columnName, "")).append("</td>");
             }
-
             htmlTable.append("</tr>");
-
-            //get the data
-            for (sqlCursor.moveToFirst(); !sqlCursor.isAfterLast(); sqlCursor.moveToNext())
-            {
-                htmlTable.append("<tr>");
-
-                for (int i = 0; i < sqlCursor.getColumnCount(); i++)
-                {
-                    htmlTable.append("<td>").append(sqlCursor.getString(sqlCursor.getColumnIndex(sqlCursor.getColumnName(i)))).append("</td>");
-                }
-
-                htmlTable.append("</tr>");
-            }
-
-            htmlTable.append("</table></body></html>");
-
-            sqlCursor.close();
         }
-        catch(Exception e) {
-            //System.err.println("EXCEPTION:"+e);
-        }
+
+        htmlTable.append("</table></body></html>");
 
         return htmlTable.toString();
     }

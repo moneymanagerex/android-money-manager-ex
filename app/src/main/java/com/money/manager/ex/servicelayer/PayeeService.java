@@ -21,7 +21,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Payee;
@@ -72,8 +71,7 @@ public class PayeeService
 
     public boolean isPayeeUsed(long payeeId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count(ITransactionEntity.PAYEEID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(payeeId)});
-        return links > 0;
+        return repo.isPayeeUsed(payeeId);
     }
 
     public long update(long id, String name) {

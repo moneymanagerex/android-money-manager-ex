@@ -91,22 +91,22 @@ public interface ITransactionEntity {
     String getTransactionNumber();
     void setTransactionNumber(String value);
 
-    public String getTransactionCode();
+    String getTransactionCode();
     TransactionTypes getTransactionType();
     void setTransactionType(TransactionTypes value);
 
-    public RefType getTransactionModel();
+    RefType getTransactionModel();
 
-    public void setAttachments(ArrayList<Attachment> attachments);
-    public ArrayList<Attachment> getAttachments();
+    void setAttachments(ArrayList<Attachment> attachments);
+    ArrayList<Attachment> getAttachments();
 
-    public void setTagLinks(ArrayList<TagLink> tagLinks) ;
-    public ArrayList<TagLink> getTagLinks() ;
+    void setTagLinks(ArrayList<TagLink> tagLinks) ;
+    ArrayList<TagLink> getTagLinks() ;
 
-    public void setColor(int value) ;
-    public int getColor() ;
+    void setColor(int value) ;
+    int getColor() ;
 
-    public void setSplit(ArrayList<ISplitTransaction> split);
-    public ArrayList<ISplitTransaction> getSplit();
+    void setSplit(ArrayList<ISplitTransaction> split);
+    ArrayList<ISplitTransaction> getSplit();
 
 }
