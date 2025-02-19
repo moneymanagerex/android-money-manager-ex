@@ -239,25 +239,14 @@ public class AccountService
      * @return a boolean indicating if there are any transactions using this account.
      */
     public boolean isAccountUsed(long accountId) {
+        AccountTransactionRepository repoAccount = new AccountTransactionRepository(getContext());
+
         WhereStatementGenerator where = new WhereStatementGenerator();
-        // transactional accounts
-        where.addStatement(
-            where.concatenateOr(
-                where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
-                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
-            )
-        );
-
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long txCount = repo.count(where.getWhere(), null);
-
-        // investment accounts
         StockRepository stockRepository = new StockRepository(getContext());
-        where.clear();
         where.addStatement(StockFields.HELDAT, "=", accountId);
         long investmentCount = stockRepository.count(where.getWhere(), null);
 
-        return (txCount + investmentCount) > 0;
+        return repoAccount.isAccountUsed(accountId) || (investmentCount > 0);
     }
 
     public void loadTransactionAccountsToSpinner(Spinner spinner) {

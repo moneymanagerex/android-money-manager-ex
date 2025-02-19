@@ -167,7 +167,7 @@ public class BudgetListFragment
 
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
-        menuHelper.addDeleteToContextMenu();
+        menuHelper.addDeleteToContextMenu(true);
         //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
     }
 

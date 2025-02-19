@@ -50,8 +50,8 @@ public class MenuHelper {
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getContext().getString(R.string.edit));
     }
 
-    public void addDeleteToContextMenu() {
-        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getContext().getString(R.string.delete));
+    public void addDeleteToContextMenu(boolean isEnabled) {
+        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getContext().getString(R.string.delete)).setEnabled(isEnabled);
     }
 
     public MenuItem addToContextMenu(ContextMenuIds itemId) {
