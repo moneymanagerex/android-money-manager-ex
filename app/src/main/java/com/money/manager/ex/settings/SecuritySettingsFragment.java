@@ -133,19 +133,28 @@ public class SecuritySettingsFragment
                     } else
                         Toast.makeText(getActivity(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
                 }
+
                 break;
 
             case REQUEST_DELETE_PASSCODE:
                 // check if reinsert
                 passcode = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                String passcodeDelete = pass.getPasscode();
-                if (passcodeDelete != null && passcode != null) {
-                    if (passcodeDelete.equals(passcode)) {
-                        if (!pass.clearPasscode()) {
-                            Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
-                        }
-                    } else
-                        Toast.makeText(getActivity(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                if (passcode.equals("FingerprintAuthenticationSuccess")) {
+                    if (!pass.clearPasscode()) {
+                        Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    String passcodeDelete = pass.getPasscode();
+                    if (passcodeDelete != null && passcode != null) {
+                        if (passcodeDelete.equals(passcode)) {
+                            if (!pass.clearPasscode()) {
+                                Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
+                            }
+                        } else
+                            Toast.makeText(getActivity(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                        // Delete hits here
+                    }
                 }
                 break;
         }
@@ -170,6 +179,7 @@ public class SecuritySettingsFragment
 
         intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
         intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, message);
+        intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(request));
 
         startActivityForResult(intent, request);
     }

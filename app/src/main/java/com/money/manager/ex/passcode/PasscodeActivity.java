@@ -47,6 +47,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.Objects;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
@@ -67,6 +69,7 @@ public class PasscodeActivity extends AppCompatActivity {
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
 	public static final String INTENT_RESULT_PASSCODE = "INTENT_RESULT_PASSCODE";
+	public static final String PASSCODE_REQUEST = "PASSCODE_REQUEST";
 
 	private static final String KEY_NAME = "yourKey";
 	private Cipher cipher;
@@ -86,8 +89,6 @@ public class PasscodeActivity extends AppCompatActivity {
 		setContentView(R.layout.passcode_activity);
 
 		findViewById(R.id.editTextPasscode1).requestFocus();
-
-		//
 		findViewById(R.id.buttonPasscodeKeyBack).setOnClickListener(v -> onBackspaceClick());
 
 		// arrays of button id
@@ -211,12 +212,20 @@ public class PasscodeActivity extends AppCompatActivity {
 		}
 	}
 
-	private void setupLegacyFingerprintAuth() {
+	private void setupLegacyFingerprintAuth() { 
 		// Your existing fingerprint authentication setup code
 		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-		if (fingerprintManager.isHardwareDetected()) {
+		//#1691 : Problem with biometric security / pin protection
+		// Show the fingerprint screen
+		Boolean showFingerprint = true;
+		if(Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "1")
+				|| Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "2")
+				|| Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "10"))
+			showFingerprint = false;
+
+		if (fingerprintManager.isHardwareDetected() && showFingerprint ) {
 			findViewById(R.id.fpImageView).setVisibility(View.VISIBLE);
 			findViewById(R.id.fingerprintInfo).setVisibility(View.VISIBLE);
 
