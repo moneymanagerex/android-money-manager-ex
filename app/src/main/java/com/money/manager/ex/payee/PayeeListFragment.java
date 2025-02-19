@@ -255,8 +255,10 @@ public class PayeeListFragment
         cursor.moveToPosition(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
 
+        PayeeService payeeService = new PayeeService(getActivity());
+
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
-        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete)).setEnabled(!payeeService.isPayeeUsed(info.id));
         menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
         menu.add(Menu.NONE, ContextMenuIds.SWITCH_ACTIVE.getId(), Menu.NONE, getString(R.string.switch_active));
     }
@@ -289,18 +291,7 @@ public class PayeeListFragment
                 break;
 
             case DELETE:
-                PayeeService service = new PayeeService(getActivity());
-                if (!service.isPayeeUsed(payee.getId())) {
-                    showDialogDeletePayee(payee.getId());
-                } else {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.attention)
-                            .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                            .setMessage(R.string.payee_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                            .create()
-                            .show();
-                }
+                showDialogDeletePayee(payee.getId());
                 break;
 
             case VIEW_TRANSACTIONS:
