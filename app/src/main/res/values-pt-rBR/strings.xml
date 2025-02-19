@@ -722,4 +722,6 @@
     <string name="notification_channel_recurring">Notificação de Transação Agendada</string>
     <string name="notification_channel_recurring__description">Notificação de Transação Agendada vencida</string>
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

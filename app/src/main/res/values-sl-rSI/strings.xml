@@ -573,4 +573,6 @@
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction"></string>
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

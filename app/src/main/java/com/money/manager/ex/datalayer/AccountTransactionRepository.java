@@ -101,4 +101,17 @@ public class AccountTransactionRepository
 
         return super.update(item, where.getWhere());
     }
+
+    public boolean isAccountUsed(long accountId) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        // transactional accounts
+        where.addStatement(
+                where.concatenateOr(
+                        where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
+                        where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
+                )
+        );
+
+        return this.count(where.getWhere(), null) > 0;
+    }
 }

@@ -679,4 +679,6 @@
     <string name="create_database">建立資料庫</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>

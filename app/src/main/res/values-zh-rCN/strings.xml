@@ -733,4 +733,6 @@
     <string name="attachment_folder_summary">选择保存附件的文件夹</string>
     <string name="pref_attachment_folder">附件文件夹</string>
     <!-- Builder button -->
+    <!--- New navigation mode -->
+    <!--Upload/Downlaod warnning -->
 </resources>
