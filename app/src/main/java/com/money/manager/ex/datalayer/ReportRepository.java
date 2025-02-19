@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * Report repository
  */
@@ -79,13 +81,69 @@ public class ReportRepository extends RepositoryBase<Report> {
         return reportMap;
     }
 
-    public Cursor runReport(Report report) {
-        return getContext().getContentResolver().query(
-                new SQLDataSet().getUri(),
-                null, // ignore
-                report.getSqlContent(),
-                null, // ignore
-                null  // ignore
-        );
+    public ReportResult runReport(Report report) {
+        Cursor cursor = null;
+        try {
+            // Execute the query on the content resolver
+            cursor = getContext().getContentResolver().query(
+                    new SQLDataSet().getUri(),
+                    null,  // null to get all columns
+                    report.getSqlContent(),  // The raw SQL query
+                    null,  // No selection arguments
+                    null   // No sort order
+            );
+
+            if (cursor == null) {
+                Timber.e("Cursor is null. Query failed.");
+                return new ReportResult(null, null);
+            }
+
+            // Get the column names
+            int columnCount = cursor.getColumnCount();
+            String[] columnNames = new String[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                columnNames[i] = cursor.getColumnName(i);
+            }
+
+            // Collect the rows from the cursor
+            ArrayList<Map<String, String>> queryResult = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                Map<String, String> row = new HashMap<>();
+                for (int i = 0; i < columnCount; i++) {
+                    String columnName = columnNames[i];
+                    String columnValue = cursor.getString(i);  // You can handle nulls as needed
+                    row.put(columnName, columnValue != null ? columnValue : "");
+                }
+                queryResult.add(row);
+            }
+
+            return new ReportResult(columnNames, queryResult);
+        } catch (Exception e) {
+            Timber.e(e, "Error executing query: %s", e.getMessage());
+            return new ReportResult(null, null);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    // ReportResult class to hold column names and query result
+    public static class ReportResult {
+        private final String[] columnNames;
+        private final ArrayList<Map<String, String>> queryResult;
+
+        public ReportResult(String[] columnNames, ArrayList<Map<String, String>> queryResult) {
+            this.columnNames = columnNames;
+            this.queryResult = queryResult;
+        }
+
+        public String[] getColumnNames() {
+            return columnNames;
+        }
+
+        public ArrayList<Map<String, String>> getQueryResult() {
+            return queryResult;
+        }
     }
 }
