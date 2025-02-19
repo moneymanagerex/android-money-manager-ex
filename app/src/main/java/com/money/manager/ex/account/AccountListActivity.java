@@ -26,6 +26,8 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 import androidx.fragment.app.FragmentManager;
 
+import java.util.Objects;
+
 /**
  * Account list activity.
  */
@@ -42,7 +44,7 @@ public class AccountListActivity
 
         setContentView(R.layout.base_toolbar_activity);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         AccountListFragment listFragment = new AccountListFragment();
         Intent intent = getIntent();

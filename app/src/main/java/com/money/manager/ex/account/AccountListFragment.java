@@ -66,7 +66,7 @@ public class AccountListFragment
         // set show search
         setSearchMenuVisible(true);
         // set default value
-        setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
+        setEmptyText(requireActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
         int layout = Intent.ACTION_PICK.equals(mAction)
@@ -105,9 +105,12 @@ public class AccountListFragment
         Cursor cursor = (Cursor) adapter.getItem(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
 
+        long accountId = info.id;
+        AccountService service = new AccountService(getActivity());
+
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
-        menuHelper.addDeleteToContextMenu();
+        menuHelper.addDeleteToContextMenu(!service.isAccountUsed(accountId));
     }
 
     @Override
@@ -128,18 +131,7 @@ public class AccountListFragment
                 break;
 
             case DELETE:
-                AccountService service = new AccountService(getActivity());
-                if (service.isAccountUsed(accountId)) {
-                    new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.attention)
-                            .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
-                            .setMessage(R.string.account_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                            .create()
-                            .show();
-                } else {
-                    showDeleteConfirmationDialog(accountId);
-                }
+                showDeleteConfirmationDialog(accountId);
                 break;
         }
         return false;
@@ -223,7 +215,7 @@ public class AccountListFragment
                     cursor.moveToPosition(i);
                     result = new Intent();
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID,
-                            cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
+                            cursor.getLong(cursor.getColumnIndex(Account.ACCOUNTID)));
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME,
                             cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
                     getActivity().setResult(Activity.RESULT_OK, result);
