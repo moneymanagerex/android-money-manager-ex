@@ -777,6 +777,16 @@
     <string name="CLEAR_ALL">Összes törlése</string>
     <string name="empty_color_message">válasszon színt</string>
     <string name="menu_show_inactive">Inaktív megjelenítése</string>
+    <string name="btn_continue">Folytatás</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Elutasítás</string>
+    <string name="category_nav_mode">Új navigációs mód érhető el a menüben</string>
+    <string name="remember_later">Emlékeztessen később</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Feltöltési figyelmeztetés</string>
+    <string name="download_warning">Letöltési figyelmeztetés</string>
+    <string name="remote_file_change">Távoli fájlmódosítások jelzője: </string>
+    <string name="local_file_change">Helyi fájlváltozások jelzője: </string>
+    <string name="msg_uploading_overwrite">A feltöltés felülírja a távoli verziót.\nFolytatja?</string>
+    <string name="msg_downloading_overwrite">A letöltés felülírja a helyi verziót.\nFolytatja?</string>
 </resources>
