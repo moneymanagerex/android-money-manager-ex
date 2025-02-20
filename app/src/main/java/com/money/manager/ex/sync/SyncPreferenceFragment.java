@@ -147,7 +147,7 @@ public class SyncPreferenceFragment
             if (sync.canSync()) {
                 boolean isLocalModified = currentDb.isLocalFileChanged();
 
-                String message = String.format(getString(R.string.local_file_change) +"%s.\n" + getString(R.string.download_warning)
+                String message = String.format(getString(R.string.local_file_change) +"%s.\n" + getString(R.string.msg_downloading_overwrite)
                         , isLocalModified);
                 showConfirmDialog(getString(R.string.download_warning), message, this::forceDownload);
             } else {
