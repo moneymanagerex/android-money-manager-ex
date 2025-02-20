@@ -213,7 +213,7 @@ public class PasscodeActivity extends AppCompatActivity {
 		}
 	}
 
-	private void setupLegacyFingerprintAuth() { 
+	private void setupLegacyFingerprintAuth() {
 		// Your existing fingerprint authentication setup code
 		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
