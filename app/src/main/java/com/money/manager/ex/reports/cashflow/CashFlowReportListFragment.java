@@ -575,6 +575,7 @@ public class CashFlowReportListFragment
         // disable dual axis (only use LEFT axis)
         chart = getActivity().findViewById(R.id.chartLine);
         chart.getAxisRight().setEnabled(false);
+        chart.setDescription("");
         chart.setData(data);
         chart.setTouchEnabled(false);
         chart.invalidate(); // refresh
