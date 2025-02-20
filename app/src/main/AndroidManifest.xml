@@ -305,7 +305,7 @@
             android:name=".reports.IncomeVsExpensesActivity"
             android:label="@string/menu_report_income_vs_expenses" />
         <activity
-            android:name=".reports.CashFlowReportActivity"
+            android:name=".reports.cashflow.CashFlowReportActivity"
             android:label="@string/menu_report_cashflow" />
         <activity
             android:name=".reports.PayeesReportActivity"

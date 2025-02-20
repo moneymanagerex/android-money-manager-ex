@@ -16,7 +16,7 @@
  *
  * developer wolfsolver
  */
-package com.money.manager.ex.reports;
+package com.money.manager.ex.reports.cashflow;
 
 import android.os.Bundle;
 
@@ -35,7 +35,8 @@ public class CashFlowReportActivity extends MmxBaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.report_chart_fragments_activity);
+//        setContentView(R.layout.report_chart_fragments_activity);
+        setContentView(R.layout.chart_line_fragment);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
