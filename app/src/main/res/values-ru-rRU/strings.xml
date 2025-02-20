@@ -50,10 +50,10 @@
     <string name="preferences_dispaly">Внешний вид</string>
     <string name="preferences_behaviour">Поведение</string>
     <string name="base_currency">Основная валюта</string>
-    <string name="base_currency_changed">Базовая валюта изменена</string>
-    <string name="base_currency_change_notification">Базовая валюта была изменена. Пожалуйста, обновите курсы обмена валюты, чтобы получить правильные суммы в новой базовой валюте.</string>
+    <string name="base_currency_changed">Основная валюта изменена</string>
+    <string name="base_currency_change_notification">Основная валюта была изменена. Пожалуйста, обновите курсы обмена, чтобы получить правильные суммы в новой основной валюте.</string>
     <string name="view_accounts_opened">Просмотр открытых счетов</string>
-    <string name="if_not_selected_willShowAllAccounts">Если не выбрана, будут отображаться все счета</string>
+    <string name="if_not_selected_willShowAllAccounts">Если не выбрано, будут отображаться все счета</string>
     <string name="view_accounts_favorites">Просмотр избранных счетов</string>
     <string name="version">Версия</string>
     <string name="build">сборка</string>
@@ -62,12 +62,12 @@
     <string name="database_version">Версия базы данных</string>
     <string name="title_show_tutorial">Показать руководство</string>
     <string name="summary_show_tutorial">Показать учебник при следующем запуске?</string>
-    <string name="preferences_behaviour_focus_filter_title">Фокус на поле фильтра</string>
-    <string name="preferences_behaviour_focus_filter_summary">Фокус на поле фильтра при выборе сущностей. Иначе просмотр.</string>
-    <string name="auto_sync_via_wifi">Авто-синхронизация только через WiFi</string>
-    <string name="auto_sync_via_wifi_summary">Авто-синхронизация только при соединении с WiFi.</string>
+    <string name="preferences_behaviour_focus_filter_title">Фильтрация при выборе</string>
+    <string name="preferences_behaviour_focus_filter_summary">Включение фильтра при выборе сущностей. Иначе просмотр.</string>
+    <string name="auto_sync_via_wifi">Автосинхронизация только через WiFi</string>
+    <string name="auto_sync_via_wifi_summary">Автосинхронизация только при соединении по WiFi.</string>
     <string name="sync_on_app_start">Синхронизация при запуске приложения.</string>
-    <string name="sync_on_start">Синхронизация на старте</string>
+    <string name="sync_on_start">Синхронизация при запуске</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Обрабатывать SMS о платежах</string>
     <string name="summary_sms_auto_trans">Читать SMS от банка и автоматически создавать проводку</string>
@@ -94,18 +94,18 @@
     <string name="favourite_account">Избранный счет</string>
     <string name="select_currency">Выберите валюту</string>
     <string name="checking">Чековый</string>
-    <string name="investment">Инвестиционный</string>
+    <string name="investment">Инвестиции</string>
     <string name="investment_accounts">Инвестиционные счета</string>
-    <string name="term">Вклад</string>
+    <string name="term">Срок</string>
     <string name="db_account_insert_failed">Ошибка добавления счета</string>
     <string name="db_account_update_failed">Ошибка обновления счета</string>
-    <string name="error_currency_not_selected">Требуется указать валюту</string>
+    <string name="error_currency_not_selected">Укажите валюту</string>
     <string name="error_saving_default_currency">Ошибка при сохранении валюты по умолчанию</string>
-    <string name="error_initialbal_empty">Требуется указать начальный баланс счета</string>
-    <string name="error_accountname_empty">Имя счёта не может быть пустым</string>
-    <string name="error_accounttype_empty">Требуется указать тип счета</string>
-    <string name="error_status_empty">Требуется указать статус счета</string>
-    <string name="error_amount_must_be_positive">Сумма должна быть положительной. Знак числа определяется Типом транзакции.</string>
+    <string name="error_initialbal_empty">Укажите начальный баланс счета</string>
+    <string name="error_accountname_empty">Укажите имя счёта</string>
+    <string name="error_accounttype_empty">Укажите тип счета</string>
+    <string name="error_status_empty">Укажите статус счета</string>
+    <string name="error_amount_must_be_positive">Сумма должна быть положительной. Знак числа определяется типом транзакции.</string>
     <!-- payee -->
     <string name="payee_name">Имя контрагента</string>
     <string name="edit_payeeName">Редактировать контрагента</string>
@@ -133,7 +133,7 @@
     <string name="cents_name">Наименование дробных</string>
     <string name="prefix_symbol">Символ префикса</string>
     <string name="suffix_symbol">Символ суффикса</string>
-    <string name="decimal_char">Разделитель целой и дробной части</string>
+    <string name="decimal_char">Десятичный разделитель</string>
     <string name="group_char">Разделитель групп</string>
     <string name="scale">Дробных</string>
     <string name="conversion_to_base_rate">Конвертация</string>
@@ -152,21 +152,22 @@
     <string name="status_none">Нет</string>
     <string name="transfer">Перевод</string>
     <string name="transfer_amount">Сумма перевода</string>
-    <string name="transaction_type">Тип транзакции</string>
+    <string name="transaction_type">Тип проводки</string>
     <string name="transaction_status">Статус</string>
     <string name="withdrawal">Снятие</string>
-    <string name="db_checking_insert_failed">Ошибка добавления транзакции</string>
-    <string name="db_checking_update_failed">Ошибка обновления транзакции</string>
-    <string name="delete_transaction">Удалить транзакцию</string>
+    <string name="db_checking_insert_failed">Ошибка добавления проводки</string>
+    <string name="db_checking_update_failed">Ошибка обновления проводки</string>
+    <string name="delete_transaction">Удалить проводку</string>
     <string name="new_transaction">Новая проводка</string>
     <string name="error_payee_not_selected">Требуется указать контрагента</string>
+    <string name="error_fromaccount_not_selected">Укажите исходный счет</string>
     <string name="error_toaccount_not_selected">Требуется указать счет получателя</string>
     <string name="error_category_not_selected">Требуется указать категорию</string>
     <string name="error_totamount_empty">Требуется указать полную сумму</string>
     <string name="error_transfer_to_same_account">Для перевода требуются два разных счёта</string>
     <string name="about">О программе</string>
     <string name="add">Добавить</string>
-    <string name="confirmDelete">Удалить эту запись?</string>
+    <string name="confirmDelete">Вы уверены, что хотите удалить запись?</string>
     <string name="date">Дата</string>
     <string name="delete">Удалить</string>
     <string name="download">Скачать</string>
@@ -198,7 +199,7 @@
     <!-- 20120906 -->
     <string name="close_application">Закрыть приложение</string>
     <string name="question_close_application">Вы хотите закрыть приложение?</string>
-    <string name="error_intent_pick_file">Не обнаружено никакой активности для обработки выбранного файла</string>
+    <string name="error_intent_pick_file">Не обнаружено компонента для выбора файлов</string>
     <string name="attention">Внимание</string>
     <string name="payee_can_not_deleted">Контрагент не может быть удален, т.к. на него есть ссылки из проводок</string>
     <string name="account_can_not_deleted">Счет не может быть удален, т.к. на него есть ссылки из проводок</string>
@@ -206,13 +207,13 @@
     <string name="category_can_not_deleted">Категория не может быть удалена, т.к. на нее есть ссылки из проводок</string>
     <!-- transaction list periods -->
     <string name="all_transaction">Все проводки</string>
-    <string name="today">За сегодня</string>
-    <string name="last7days">За последние 7 дней</string>
-    <string name="last15days">За последние 2 недели</string>
+    <string name="today">Cегодня</string>
+    <string name="last7days">Последние 7 дней</string>
+    <string name="last15days">Последние 2 недели</string>
     <string name="current_month">Текущий месяц</string>
     <string name="current_year">Текущий год</string>
     <string name="future_transactions">Будущие проводки</string>
-    <string name="show_transaction">Показать проводку</string>
+    <string name="show_transaction">Показать проводки за</string>
     <string name="changelog">История изменений</string>
     <string name="transaction_number">Номер проводки</string>
     <string name="widget_summary">Сводка</string>
@@ -300,11 +301,14 @@
     <string name="no_stock_data">Нет биржевых данных, доступных для этого счета.</string>
     <string name="month">Месяц</string>
     <string name="year">Год</string>
+    <string name="menu_reports">Встроенные отчеты</string>
+    <string name="menu_general_report_group">Общие отчеты</string>
+    <string name="title_activity_general_report">Общий отчет</string>
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
     <string name="menu_report_cashflow">Движение средств</string>
     <string name="total">Итого</string>
     <!--<string name="option">Option</string>-->
-    <string name="all_time">Все транзакции</string>
+    <string name="all_time">За все время</string>
     <string name="last_month">Предыдущий месяц</string>
     <string name="last30days">Последние 30 дней</string>
     <string name="last_year">Предыдущий год</string>
@@ -317,6 +321,7 @@
     <string name="date_format">Формат даты</string>
     <string name="financial_year_start_day">Финансовый год: День начала</string>
     <string name="financial_year_start_month">Финансовый год: Месяц начала</string>
+    <string name="financial_year_not_set">Укажите начало финансового года в настройках.</string>
     <string name="menu_move_database_to_external_storage">Экспорт базы данных</string>
     <string name="database_has_been_moved">База данных была перемещена: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Копирование базы данных на внешнее хранилище не удалось</string>
@@ -408,6 +413,7 @@
     <string name="result_search">Результат вашего поиска</string>
     <string name="new_repeating_transaction">Новая запланированная проводка</string>
     <string name="edit_repeating_transaction">Редактировать запланированную проводку</string>
+    <string name="no_recurring_transaction">Отчёт об операциях использует запланированную проводку, которая не найдена</string>
     <string name="path_database_not_exists">Путь к базе данных не существует</string>
     <string name="database_can_not_open_write">База данных не может быть открыта для записи</string>
     <string name="time_frame">Период времени</string>
@@ -442,9 +448,11 @@
     <string name="sort_by_name">Сортировать по имени</string>
     <string name="sort_by_usage">Сортировать по назначению</string>
     <string name="sort_by_recent">Сортировать по времени</string>
+    <string name="sort_date_desc">Упорядочить по дате (по убыванию)</string>
+    <string name="sort_date_asc">Упорядочить по дате (по возрастанию)</string>
     <string name="choose_sorting">Выберите способ сортировки</string>
     <string name="credit_card">Кредитная Карта</string>
-    <string name="cash_accounts">Наличные Счета</string>
+    <string name="cash_accounts">Счета наличных</string>
     <string name="bank_accounts">Банковские счета</string>
     <string name="term_accounts">Срочные депозиты</string>
     <string name="credit_card_accounts">Счета Кредитной Карты</string>
@@ -483,7 +491,7 @@
     <string name="pref_transaction_hide_reconciled_amounts_summary">Скрыть подтвержденные суммы со счетов на основной панели.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
     <string name="pref_transaction_sort_by_type_summary">Упорядочить ежедневные операции по типу проводки (доход, перевод, расход)</string>
-    <string name="pref_transaction_sort_by_type_title">Сортировать операции по типу</string>
+    <string name="pref_transaction_sort_by_type_title">Сортировать проводки по типу</string>
     <string name="warning">Предупреждение</string>
     <string name="no_transfer_splits">Вы переключились на перевод между счетами вместо текущей операции, но текущая проводка разделена. Вы хотите продолжить, удалив разделение?</string>
     <string name="qif_export">QIF экспорт</string>
@@ -520,7 +528,7 @@
     <string name="db_check_integrity_success">База данных успешно прошла проверку целостности.</string>
     <string name="db_check_integrity_error">Ошибка: файл базы данных поврежден!</string>
     <string name="db_check_schema">Проверка схемы БД</string>
-    <string name="db_check_schema_summary">Проверьте, есть ли все таблицы в базе данных.</string>
+    <string name="db_check_schema_summary">Проверьте, есть ли все необходимые таблицы в базе данных.</string>
     <string name="db_check_schema_success">Все необходимые таблицы есть в базе данных.</string>
     <string name="db_check_schema_error">Ошибка: таблицы отсутствуют в базе данных!</string>
     <string name="db_fix_duplicates">Исправить дублирующиеся записи</string>
@@ -654,7 +662,7 @@
     <string name="portfolio">Портфолио</string>
     <string name="change_provider">Сменить провайдера</string>
     <string name="quote_provider">Поставщик цен</string>
-    <string name="exchange_rate_provider">Провайдеры обменного курса</string>
+    <string name="exchange_rate_provider">Поставщик курса обмена</string>
     <!-- deprecated / Dropbox -->
     <string name="dropbox_database_can_be_updted">Есть обновление базы данных на Dropbox</string>
     <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
@@ -682,7 +690,7 @@
     <string name="reset_preferences">Сбросить настройки</string>
     <string name="preferences_reset">Настройки синхронизации были сброшены.</string>
     <string name="cloud_download">Скачать файл базы данных из облачного хранилища.</string>
-    <string name="cloud_upload">Выгрузить файл базы данных в облако.</string>
+    <string name="cloud_upload">Загрузить базу данных в облачное хранилище.</string>
     <string name="sync_notification_title">Money Manager Ex - Синхронизация</string>
     <string name="sync_downloading">Загрузка базы данных. Подождите&#8230;</string>
     <string name="sync_uploading">Выгрузка базы данных. Подождите&#8230;</string>
@@ -768,6 +776,17 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Очистить все</string>
     <string name="empty_color_message">Выберите цвет</string>
+    <string name="menu_show_inactive">Показать неактивные</string>
+    <string name="btn_continue">Продолжить</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Отменить</string>
+    <string name="category_nav_mode">Новый режим навигации доступен в меню</string>
+    <string name="remember_later">Уведомить позже</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Предупреждение о загрузке</string>
+    <string name="download_warning">Предупреждение о скачивании</string>
+    <string name="remote_file_change">Индикатор изменений удаленного файла: </string>
+    <string name="local_file_change">Индикатор изменений локального файла: </string>
+    <string name="msg_uploading_overwrite">Загруженная версия перезапишет существующую.\nПродолжить?</string>
+    <string name="msg_downloading_overwrite">Скачанная версия перезапишет существующую.\nПродолжить?</string>
 </resources>
