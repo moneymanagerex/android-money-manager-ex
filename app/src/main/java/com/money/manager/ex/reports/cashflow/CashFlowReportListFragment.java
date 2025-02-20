@@ -16,12 +16,13 @@
  *
  * developer wolfsolver
  */
-package com.money.manager.ex.reports;
+package com.money.manager.ex.reports.cashflow;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,8 +34,13 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.data.Entry;
+
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -63,6 +69,7 @@ import java.util.Objects;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /* Master note
    Use AllDataAdapter as master view
@@ -90,6 +97,7 @@ public class CashFlowReportListFragment
     InfoService infoService;
     MoneySimpleCursorAdapter adapter;
     ArrayList<Long> selectedAccounts = new ArrayList<>();
+    ArrayList<Double> graphValue;
 
     @SuppressLint("Range")
     private void createCashFlowRecords() {
@@ -138,7 +146,11 @@ public class CashFlowReportListFragment
             // create recurring transaction
             double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransaction();
-            if (rx.getTransactionType() == TransactionTypes.Transfer ) {
+            if (rx.getPaymentDate().after(endDate.toDate())) {
+                // first occurence of this transaction is over cashflow visibility
+                continue;
+            }
+            if (rx.getTransactionType() == TransactionTypes.Transfer) {
                 if (selectedAccounts.contains(rx.getAccountId()) &&
                         selectedAccounts.contains(rx.getAccountToId())) {
                     // both in
@@ -149,7 +161,7 @@ public class CashFlowReportListFragment
                     // both out
                     continue; // skip
                 }
-                if (selectedAccounts.contains(rx.getAccountId()) ) {
+                if (selectedAccounts.contains(rx.getAccountId())) {
                     // source in
                     amount = 0 - amount;
                 } else {
@@ -169,9 +181,9 @@ public class CashFlowReportListFragment
             row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
             if (row.get(QueryBillDeposits.CATEGNAME) == null)
                 row.put(QueryBillDeposits.CATEGNAME, getString(R.string.transfer));
-            row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)),-1L)); // handle null #2235
-            row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)),0L)); // handle null #2235
-            row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)),"")); // handle null #2235
+            row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)), -1L)); // handle null #2235
+            row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)), 0L)); // handle null #2235
+            row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)), "")); // handle null #2235
             row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
             row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
             row.put(QueryBillDeposits.AMOUNT, amount);
@@ -180,20 +192,23 @@ public class CashFlowReportListFragment
             listRecurring.add(row);
 
             int limit = monthInAdvance * 31;
-            while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getDate().before(endDate.toDate())) {
+            while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(endDate.toDate())) {
+                if (recurringTransactionService.getSimulatedTransaction().getPaymentDateString().compareTo("2026-02-20") > 0) {
+                    Timber.d("ops");
+                }
                 limit -= 1;
                 HashMap<String, Object> row2 = new HashMap<>();
                 row2.put(ID, row.get(ID));
                 row2.put(QueryBillDeposits.TRANSDATE, recurringTransactionService.getSimulatedTransaction().getPaymentDateString());
-                row2.put(QueryBillDeposits.PAYEENAME         , row.get(QueryBillDeposits.PAYEENAME        ));
-                row2.put(QueryBillDeposits.CATEGNAME         , row.get(QueryBillDeposits.CATEGNAME        ));
-                row2.put(QueryBillDeposits.COLOR             , row.get(QueryBillDeposits.COLOR            ));
-                row2.put(QueryBillDeposits.ATTACHMENTCOUNT   , row.get(QueryBillDeposits.ATTACHMENTCOUNT  ));
-                row2.put(QueryBillDeposits.TAGS              , row.get(QueryBillDeposits.TAGS             ));
-                row2.put(QueryBillDeposits.NOTES             , row.get(QueryBillDeposits.NOTES            ));
-                row2.put(QueryBillDeposits.STATUS            , row.get(QueryBillDeposits.STATUS           ));
-                row2.put(QueryBillDeposits.AMOUNT            , row.get(QueryBillDeposits.AMOUNT           ));
-                row2.put("transCurrency"                     , row.get("transCurrency"));
+                row2.put(QueryBillDeposits.PAYEENAME, row.get(QueryBillDeposits.PAYEENAME));
+                row2.put(QueryBillDeposits.CATEGNAME, row.get(QueryBillDeposits.CATEGNAME));
+                row2.put(QueryBillDeposits.COLOR, row.get(QueryBillDeposits.COLOR));
+                row2.put(QueryBillDeposits.ATTACHMENTCOUNT, row.get(QueryBillDeposits.ATTACHMENTCOUNT));
+                row2.put(QueryBillDeposits.TAGS, row.get(QueryBillDeposits.TAGS));
+                row2.put(QueryBillDeposits.NOTES, row.get(QueryBillDeposits.NOTES));
+                row2.put(QueryBillDeposits.STATUS, row.get(QueryBillDeposits.STATUS));
+                row2.put(QueryBillDeposits.AMOUNT, row.get(QueryBillDeposits.AMOUNT));
+                row2.put("transCurrency", row.get("transCurrency"));
                 row2.put(BALANCE, 0);
                 listRecurring.add(row2);
             }
@@ -207,16 +222,32 @@ public class CashFlowReportListFragment
         });
 
         long baseCurrencyId = currencyService.getBaseCurrencyId();
+        graphValue = new ArrayList<>();
+        for (int x = 0; x < 31 * monthInAdvance; x++) {
+            graphValue.add(null);
+        }
+
+        Date olderDate = MmxDate.newDate().toDate();
         // copy to matrix cursor
         for (HashMap<String, Object> rowMap : listRecurring) {
-            Money amountTrans ;
+            Money amountTrans;
             Money amountBase;
-            long transCurrency = ( rowMap.get("transCurrency") == null ? baseCurrencyId : (long) rowMap.get("transCurrency") );
+            long transCurrency = (rowMap.get("transCurrency") == null ? baseCurrencyId : (long) rowMap.get("transCurrency"));
             amountTrans = MoneyFactory.fromDouble((double) rowMap.get(QueryBillDeposits.AMOUNT));
             amountBase = currencyService.doCurrencyExchange(baseCurrencyId, amountTrans, transCurrency);
 
             if (!rowMap.get(QueryBillDeposits.STATUS).equals("V")) {
                 totalAmount += amountBase.toDouble();
+            }
+
+            Date newerDate = MmxDate.from(rowMap.get(QueryBillDeposits.TRANSDATE).toString(), "yyyy-MM-dd");
+            int diffInDays = (int) ((newerDate.getTime() - olderDate.getTime())
+                    / (1000 * 60 * 60 * 24));
+            if (diffInDays < 0) diffInDays = 0;
+            try {
+                graphValue.set(diffInDays, totalAmount);
+            } catch (Exception e) {
+                Timber.d(e);
             }
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
@@ -228,7 +259,7 @@ public class CashFlowReportListFragment
                     .add(QueryBillDeposits.TAGS, rowMap.get(QueryBillDeposits.TAGS))
                     .add(QueryBillDeposits.NOTES, rowMap.get(QueryBillDeposits.NOTES))
                     .add(QueryBillDeposits.STATUS, rowMap.get(QueryBillDeposits.STATUS))
-                    .add(QueryBillDeposits.AMOUNT,  amountTrans.toDouble())
+                    .add(QueryBillDeposits.AMOUNT, amountTrans.toDouble())
                     .add("transCurrency", transCurrency)
                     .add(BALANCE, totalAmount);
         }
@@ -296,6 +327,7 @@ public class CashFlowReportListFragment
                         } else {
                             adapter.swapCursor(matrixCursor);
                             adapter.notifyDataSetChanged();
+                            buildChartInfo();
                         }
                         setListShown(true);
                     }
@@ -449,8 +481,8 @@ public class CashFlowReportListFragment
         if (currency == null) currency = currencyService.getBaseCurrencyId();
         return currencyService.getCurrencyFormatted(
                 currency, MoneyFactory.fromDouble(
-                aCursor.getDouble(aColumnIndex)
-        ));
+                        aCursor.getDouble(aColumnIndex)
+                ));
     }
 
     private String getAsAmount(Cursor aCursor, int aColumnIndex) {
@@ -500,6 +532,54 @@ public class CashFlowReportListFragment
         return false;
     }
 
+    private LineChart chart;
+
+    private void buildChartInfo() {
+        List<String> xVal = new ArrayList<>();
+        ArrayList<Entry> values = new ArrayList<>();
+//        for (int i = 0; i < graphValue.size(); i++) {
+        float old = 0;
+        float maxV = 0;
+        float minV = 0;
+        MmxDate date = MmxDate.newDate();
+        for (int i = 0; i < 31 * monthInAdvance; i++) {
+            if ( date.getDayOfMonth() == 1) {
+                xVal.add(dateUtils.format(date.toDate(), "MMM"));
+            } else {
+                xVal.add("");
+            }
+            if (graphValue.get(i) != null) {
+                old = (Float) graphValue.get(i).floatValue();
+            }
+            if (i == 0) {
+                maxV = old;
+                minV = old;
+            } else {
+                maxV = (maxV < old ? old : maxV);
+                minV = (minV > old ? old : minV);
+            }
+            Entry entry = new Entry(old, i);
+            values.add(entry);
+            date.addDays(1);
+        }
+
+        LineDataSet set1 = new LineDataSet(values, "Balance");
+        set1.setColor(Color.GREEN);
+        set1.setCircleColor(Color.GREEN);
+//        set1.setLineWidth(1f);
+//        set1.setCircleRadius(3f);
+        set1.setDrawCircleHole(false);
+
+        LineData data = new LineData(xVal, set1);   //(dataSets);
+
+        // disable dual axis (only use LEFT axis)
+        chart = getActivity().findViewById(R.id.chartLine);
+        chart.getAxisRight().setEnabled(false);
+        chart.setData(data);
+        chart.setTouchEnabled(false);
+        chart.invalidate(); // refresh
+
+    }
 
 
 }
