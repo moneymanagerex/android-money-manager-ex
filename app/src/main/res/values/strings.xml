@@ -309,6 +309,10 @@
     <string name="enter_your_previous_passcode">Enter your previous passcode</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">passcode is not updated</string>
+    <string name="preferences_fingerprint_auth_key">Fingerprint Authentication Key</string>
+    <string name="preferences_fingerprint_summary">Enable to use the Fingerprint authentication for login and disable passcode screen. However, user cannot use Fingerprint for activating or editing the passcode</string>
+    <string name="preferences_fingerprint_title">Fingerprint Authentication</string>
+
     <!-- 20121217 -->
     <string name="lookups_wildcard">For lookups you can use the % wildcard character</string>
     <string name="income_vs_expenses_current_month">Income vs Expenses: Current Month</string>

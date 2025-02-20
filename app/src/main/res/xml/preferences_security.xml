@@ -29,4 +29,11 @@
         android:icon="@null"
         android:key="@string/pref_disable_passcode"
         android:title="@string/preferences_disable_passcode" />
+
+    <SwitchPreference
+        android:icon="@null"
+        android:defaultValue="false"
+        android:key="@string/preferences_fingerprint_auth_key"
+        android:summary="@string/preferences_fingerprint_summary"
+        android:title="@string/preferences_fingerprint_title" />
 </PreferenceScreen>

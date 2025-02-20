@@ -58,6 +58,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
+import com.money.manager.ex.settings.SecuritySettings;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -216,6 +217,7 @@ public class PasscodeActivity extends AppCompatActivity {
 		// Your existing fingerprint authentication setup code
 		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+		final SecuritySettings securitySettings = new SecuritySettings(this);
 
 		//#1691 : Problem with biometric security / pin protection
 		// Show the fingerprint screen
@@ -225,7 +227,8 @@ public class PasscodeActivity extends AppCompatActivity {
 				|| Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "10"))
 			showFingerprint = false;
 
-		if (fingerprintManager.isHardwareDetected() && showFingerprint ) {
+		if (fingerprintManager.isHardwareDetected() && showFingerprint && securitySettings.getFingerprintAuthentication()) {
+
 			findViewById(R.id.fpImageView).setVisibility(View.VISIBLE);
 			findViewById(R.id.fingerprintInfo).setVisibility(View.VISIBLE);
 
