@@ -118,4 +118,8 @@ public class AccountTransactionRepository
     public boolean isPayeeUsed(long payeeId) {
         return this.count(ITransactionEntity.PAYEEID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(payeeId)}) > 0;
     }
+
+    public boolean isCategoryUsed(long categoryId) {
+        return this.count(ITransactionEntity.CATEGID + "=? AND DELETEDTIME IS NULL", new String[]{Long.toString(categoryId)}) > 0;
+    }
 }

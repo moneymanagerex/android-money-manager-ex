@@ -66,9 +66,8 @@ public class CategoryService
 
         Uri result = getContext().getContentResolver()
                 .insert(repo.getUri(), values);
-        long id = ContentUris.parseId(result);
 
-        return id;
+        return ContentUris.parseId(result);
     }
 
     public String getCategorySubcategoryName(long categoryId) {
@@ -94,15 +93,6 @@ public class CategoryService
         return categoryName;
     }
 
-    /**
-     * Return a list of all categories. Ordered by name.
-     */
-    public List<Category> getList() {
-        Select query = new Select().where("PARENTID < 0").orderBy(Category.CATEGNAME);
-
-        return getRepository().query(query);
-    }
-
     public long update(long id, String name, long parentId) {
         return update(id, name, parentId, true);
     }
@@ -119,31 +109,21 @@ public class CategoryService
 
         CategoryRepository repo = new CategoryRepository(getContext());
 
-        long result = getContext().getContentResolver().update(repo.getUri(),
+        return getContext().getContentResolver().update(repo.getUri(),
                 values,
                 Category.CATEGID + "=?", new String[]{Long.toString(id)});
-
-        return result;
     }
-
 
     public long update(Category category) {
         return update(category.getId(), category.getBasename(), category.getParentId(),category.getActive());
     }
-
 
     /**
      * Checks account transactions to find any that use given category
      * @param categoryId Id of the category for which to check.
      * @return A boolean indicating if the category is in use.
      */
-    public boolean isCategoryUsed(long categoryId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count(Category.CATEGID + "=?", new String[]{Long.toString(categoryId)});
-        return links > 0;
-    }
-
-    public boolean isCategoryUsedWithChildren( long categoryId ) {
+    public boolean isCategoryUsedWithChildren(long categoryId) {
         // First if list has more than 1 record category is used
         QueryNestedCategory query = new QueryNestedCategory(getContext());
         List<NestedCategoryEntity> ids = query.getChildrenNestedCategoryEntities(categoryId);
@@ -151,9 +131,7 @@ public class CategoryService
         if (ids.size() > 1 ) {return true;}
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
-        long links = repo.count("( " + Category.CATEGID + "=? AND DELETEDTIME IS NULL )",
-                new String[]{Long.toString(categoryId)});
-        return links > 0;
+        return repo.isCategoryUsed(categoryId);
     }
 
     private CategoryRepository getRepository() {
