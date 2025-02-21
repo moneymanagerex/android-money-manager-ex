@@ -29,6 +29,9 @@ public class BudgetEntry
     public static final String BUDGETYEARID = "BUDGETYEARID";
     public static final String CATEGID = "CATEGID";
     public static final String PERIOD = "PERIOD";
+    public static final String AMOUNT = "AMOUNT";
+    public static final String NOTES = "NOTES";
+    public static final String ACTIVE = "ACTIVE";
 
     public Long getCategId() {
         return getLong(CATEGID);

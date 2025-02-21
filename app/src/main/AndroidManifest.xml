@@ -342,7 +342,7 @@
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".budget.BudgetsActivity"
+            android:name=".budget.BudgetListActivity"
             android:label="@string/budgets" />
         <activity android:name=".widget.SingleAccountWidgetConfigureActivity" android:exported="true">
             <intent-filter>

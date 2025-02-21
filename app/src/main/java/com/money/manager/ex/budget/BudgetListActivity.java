@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class BudgetsActivity
+public class BudgetListActivity
     extends MmxBaseFragmentActivity {
 
     private boolean mIsDualPanel = false;
@@ -174,5 +174,4 @@ public class BudgetsActivity
         // Commit the transaction
         transaction.commit();
     }
-
 }

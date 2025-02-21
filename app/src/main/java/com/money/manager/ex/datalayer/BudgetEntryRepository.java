@@ -50,7 +50,7 @@ public class BudgetEntryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { ID_COLUMN + " AS _id",
+        return new String[]{ID_COLUMN + " AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
@@ -59,6 +59,7 @@ public class BudgetEntryRepository
 
     /**
      * Returns a string value which is used as a key in the budget entry thread cache
+     *
      * @param categoryId
      * @return
      */
@@ -99,4 +100,10 @@ public class BudgetEntryRepository
         return budgetEntryHashMap;
     }
 
+    // custom func
+    public BudgetEntry loadByYearAndCateID(long yearId, long cateId) {
+        return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
+                , new String[]{Long.toString(yearId), Long.toString(cateId)}
+                , null);
+    }
 }
