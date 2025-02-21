@@ -167,7 +167,7 @@ public class BudgetEntryFragment
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
         Cursor cursor = (Cursor) adapter.getItem(info.position);
 
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(BudgetNestedQuery.CATEGNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME)));
 
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
