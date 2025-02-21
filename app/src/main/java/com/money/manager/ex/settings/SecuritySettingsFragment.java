@@ -37,10 +37,10 @@ import androidx.preference.PreferenceScreen;
 public class SecuritySettingsFragment
     extends PreferenceFragmentCompat {
 
-    private static final int REQUEST_INSERT_PASSCODE = 1;
-    private static final int REQUEST_EDIT_PASSCODE = 2;
-    private static final int REQUEST_DELETE_PASSCODE = 3;
-    private static final int REQUEST_REINSERT_PASSCODE = 10;
+    public static final int REQUEST_INSERT_PASSCODE = 1;
+    public static final int REQUEST_EDIT_PASSCODE = 2;
+    public static final int REQUEST_DELETE_PASSCODE = 3;
+    public static final int REQUEST_REINSERT_PASSCODE = 10;
 
     private String passcode = null;
 

@@ -59,6 +59,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.settings.SecuritySettings;
+import com.money.manager.ex.settings.SecuritySettingsFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -221,13 +222,11 @@ public class PasscodeActivity extends AppCompatActivity {
 
 		//#1691 : Problem with biometric security / pin protection
 		// Show the fingerprint screen
-		Boolean showFingerprint = true;
-		if(Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "1")
-				|| Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "2")
-				|| Objects.equals(getIntent().getStringExtra(PASSCODE_REQUEST), "10"))
-			showFingerprint = false;
+		boolean showFingerprint = Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra(PASSCODE_REQUEST))) != SecuritySettingsFragment.REQUEST_INSERT_PASSCODE
+                && Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra(PASSCODE_REQUEST))) != SecuritySettingsFragment.REQUEST_EDIT_PASSCODE
+                && Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra(PASSCODE_REQUEST))) != SecuritySettingsFragment.REQUEST_REINSERT_PASSCODE;
 
-		if (fingerprintManager.isHardwareDetected() && showFingerprint && securitySettings.getFingerprintAuthentication()) {
+        if (fingerprintManager.isHardwareDetected() && showFingerprint && securitySettings.getFingerprintAuthentication()) {
 
 			findViewById(R.id.fpImageView).setVisibility(View.VISIBLE);
 			findViewById(R.id.fingerprintInfo).setVisibility(View.VISIBLE);
