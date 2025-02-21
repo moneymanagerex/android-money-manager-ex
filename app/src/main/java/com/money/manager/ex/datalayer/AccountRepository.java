@@ -105,12 +105,10 @@ public class AccountRepository
             where.addStatement(Account.STATUS, "=", AccountStatuses.OPEN.toString());
         }
 
-        Cursor c = openCursor(this.getAllColumns(),
+        return openCursor(this.getAllColumns(),
             where.getWhere(),
             null,
             "lower (" + Account.ACCOUNTNAME + ")");
-
-        return c;
     }
 
     public boolean anyAccountsUsingCurrency(long currencyId) {
