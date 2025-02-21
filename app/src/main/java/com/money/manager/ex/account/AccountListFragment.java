@@ -28,12 +28,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
@@ -103,7 +103,7 @@ public class AccountListFragment
         // get selected item name
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
         Cursor cursor = (Cursor) adapter.getItem(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(Account.ACCOUNTNAME)));
 
         long accountId = info.id;
         AccountService service = new AccountService(getActivity());
@@ -139,6 +139,7 @@ public class AccountListFragment
 
     // Loader
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == LOADER_ACCOUNT) {
@@ -215,16 +216,16 @@ public class AccountListFragment
                     cursor.moveToPosition(i);
                     result = new Intent();
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID,
-                            cursor.getLong(cursor.getColumnIndex(Account.ACCOUNTID)));
+                            cursor.getLong(cursor.getColumnIndexOrThrow(Account.ACCOUNTID)));
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME,
-                            cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
-                    getActivity().setResult(Activity.RESULT_OK, result);
+                            cursor.getString(cursor.getColumnIndexOrThrow(Account.ACCOUNTNAME)));
+                    requireActivity().setResult(Activity.RESULT_OK, result);
                     return;
                 }
             }
         }
         // return cancel
-        getActivity().setResult(AccountListActivity.RESULT_CANCELED);
+        requireActivity().setResult(AccountListActivity.RESULT_CANCELED);
     }
 
     @Override
@@ -258,7 +259,7 @@ public class AccountListFragment
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
                     // restart loader
-                    getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
+                    LoaderManager.getInstance(this).restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
@@ -292,7 +293,7 @@ public class AccountListFragment
     }
 
     private void restartLoader() {
-        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
+        LoaderManager.getInstance(this).restartLoader(LOADER_ACCOUNT, null, this);
     }
 
     @Override
@@ -302,5 +303,4 @@ public class AccountListFragment
         // becouse normaly was call duble
         restartLoader();
     }
-
 }
