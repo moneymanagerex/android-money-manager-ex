@@ -22,7 +22,6 @@ import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
@@ -55,7 +54,11 @@ public class BudgetEntryRepository
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
-                BudgetEntry.PERIOD};
+                BudgetEntry.PERIOD,
+                BudgetEntry.AMOUNT,
+                BudgetEntry.NOTES,
+                BudgetEntry.ACTIVE
+        };
     }
 
     /**
@@ -90,7 +93,7 @@ public class BudgetEntryRepository
             BudgetEntry budgetEntry = new BudgetEntry();
             budgetEntry.loadFromCursor(cursor);
 
-            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
+            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategoryId());
             if (nestedCategory == null) {
                 continue;
             }
