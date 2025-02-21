@@ -12,12 +12,11 @@ This release primarily focuses on improving SMS transaction creation, enhancing 
 
 **Enhancements:**
 1. SMS Receiver: Improved notification for failures in automatic transaction creation from SMS.
-2. Reports: Fixed issues where reports had blank group names and added more detailed report results.
-3. ORM Refinements: Multiple updates to improve ORM operations like handling database entities (e.g., Account, Payee, Tag) and optimizing queries and deletions.
-4. Database Updates: Support for upgrading to DB version 20. The app now re-enables SUID for database synchronization and centralizes entity creation.
-5. Tag Management: Added filter options for inactive tags, categories, and payees.
-6. Transaction Handling: Enhanced transaction handling with more detailed error messages and fixes to prevent crashes.
-7. Attachment Management: Improved handling and normalization of attachments and TagLinks within transactions.
+2. ORM Refinements: Multiple updates to improve ORM operations like handling database entities (e.g., Account, Payee, Tag) and optimizing queries and deletions.
+3. Database Updates: Support for upgrading to DB version 20. The app now re-enables SUID for database synchronization and centralizes entity creation.
+4. Tag Management: Added filter options for inactive tags, categories, and payees.
+5. Transaction Handling: Enhanced transaction handling with more detailed error messages and fixes to prevent crashes.
+6. Attachment Management: Improved handling and normalization of attachments and TagLinks within transactions.
 
  **Bug Fixes:**
 1. Core Dump in CashFlow: Fixed a core dump issue in the CashFlow feature.
