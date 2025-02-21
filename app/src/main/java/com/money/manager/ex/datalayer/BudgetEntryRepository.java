@@ -22,6 +22,7 @@ import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
@@ -101,6 +102,11 @@ public class BudgetEntryRepository
     }
 
     // custom func
+    public boolean hasBudget(long yearId, long cateId) {
+        return this.count(BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
+                , new String[]{Long.toString(yearId), Long.toString(cateId)} ) > 0;
+    }
+
     public BudgetEntry loadByYearAndCateID(long yearId, long cateId) {
         return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
                 , new String[]{Long.toString(yearId), Long.toString(cateId)}

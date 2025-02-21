@@ -16,21 +16,29 @@
  */
 package com.money.manager.ex.budget;
 
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
 
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -39,7 +47,7 @@ import androidx.loader.content.Loader;
  * create an instance of this fragment.
  */
 public class BudgetEntryFragment
-    extends BaseListFragment {
+        extends BaseListFragment {
 
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
     private static final String ARG_BUDGET_NAME_ID = "budgetName";
@@ -78,7 +86,6 @@ public class BudgetEntryFragment
             mBudgetYearId = getArguments().getLong(ARG_BUDGET_YEAR_ID);
             mBudgetName = getArguments().getString(ARG_BUDGET_NAME_ID);
         }
-
     }
 
     @Override
@@ -119,6 +126,16 @@ public class BudgetEntryFragment
         displayBudget();
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setFloatingActionButtonVisible(true);
+        attachFloatingActionButtonToListView();
+
+        registerForContextMenu(getListView());
+    }
+
     // Private
 
     private void displayBudget() {
@@ -129,8 +146,7 @@ public class BudgetEntryFragment
     }
 
     private void setUpAdapter() {
-        BudgetAdapter adapter;
-        adapter = new BudgetAdapter(getActivity(),
+        BudgetAdapter adapter = new BudgetAdapter(getActivity(),
                 null,
                 new String[]{BudgetNestedQuery.CATEGNAME},
                 new int[]{R.id.categoryTextView},
@@ -139,7 +155,59 @@ public class BudgetEntryFragment
         adapter.setBudgetYearId(mBudgetYearId);
 
         setListAdapter(adapter);
+    }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // get selected item name
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(info.position);
+
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(BudgetNestedQuery.CATEGNAME)));
+
+        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        menuHelper.addEditToContextMenu();
+
+        BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
+        menuHelper.addDeleteToContextMenu(repo.hasBudget(mBudgetYearId, info.id));
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        long categoryId = info.id;
+        int id = item.getItemId();
+        ContextMenuIds menuId = ContextMenuIds.get(id);
+
+        switch (menuId) {
+            case EDIT:
+                // editBudgetEntry(categoryId);
+                break;
+            case DELETE:
+                confirmDelete(mBudgetYearId, categoryId);
+                break;
+            default:
+                return false;
+        }
+        return false;
+    }
+
+    private void confirmDelete(long yearId, long budgetEntryId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.delete)
+                .setMessage(R.string.confirmDelete)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
+                    BudgetEntry budgetEntry = repo.loadByYearAndCateID(yearId, budgetEntryId);
+                    if (budgetEntry != null)
+                        repo.delete(budgetEntry.getId());
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> setUpLoaderCallbacks() {
