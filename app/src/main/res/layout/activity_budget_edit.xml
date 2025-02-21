@@ -84,10 +84,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:animateLayoutChanges="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -112,7 +110,6 @@
                         app:iiv_size="@dimen/mmx_icon_size"
                         android:layout_width="@dimen/mmx_side_icon_size"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/mmx_side_icon_margin"
                         android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                         android:layout_gravity="center_vertical"/>
 
@@ -154,7 +151,6 @@
                         app:iiv_size="@dimen/mmx_icon_size"
                         android:layout_width="@dimen/mmx_side_icon_size"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/mmx_side_icon_margin"
                         android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                         android:layout_gravity="center_vertical"/>
 
@@ -193,7 +189,6 @@
                     app:iiv_size="@dimen/mmx_icon_size"
                     android:layout_width="@dimen/mmx_side_icon_size"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
                     android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                     android:layout_gravity="center_vertical"/>
 
