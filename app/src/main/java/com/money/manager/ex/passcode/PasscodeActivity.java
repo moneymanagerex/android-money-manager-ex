@@ -47,6 +47,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.Objects;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
@@ -56,6 +58,8 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
+import com.money.manager.ex.settings.SecuritySettings;
+import com.money.manager.ex.settings.SecuritySettingsFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,12 +71,13 @@ public class PasscodeActivity extends AppCompatActivity {
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
 	public static final String INTENT_RESULT_PASSCODE = "INTENT_RESULT_PASSCODE";
+	public static final String PASSCODE_REQUEST = "PASSCODE_REQUEST";
 
 	private static final String KEY_NAME = "yourKey";
 	private Cipher cipher;
 	private KeyStore keyStore;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// set theme
 		try {
@@ -86,8 +91,6 @@ public class PasscodeActivity extends AppCompatActivity {
 		setContentView(R.layout.passcode_activity);
 
 		findViewById(R.id.editTextPasscode1).requestFocus();
-
-		//
 		findViewById(R.id.buttonPasscodeKeyBack).setOnClickListener(v -> onBackspaceClick());
 
 		// arrays of button id
@@ -215,8 +218,15 @@ public class PasscodeActivity extends AppCompatActivity {
 		// Your existing fingerprint authentication setup code
 		KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 		FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+		final SecuritySettings securitySettings = new SecuritySettings(this);
 
-		if (fingerprintManager.isHardwareDetected()) {
+		//#1691 : Problem with biometric security / pin protection
+		boolean showFingerprint = Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra(PASSCODE_REQUEST))) == SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE
+				|| Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra(PASSCODE_REQUEST))) == SecuritySettingsFragment.REQUEST_DELETE_PASSCODE;
+
+		// Show the fingerprint screen
+        if (fingerprintManager.isHardwareDetected() && showFingerprint && securitySettings.getFingerprintAuthentication()) {
+
 			findViewById(R.id.fpImageView).setVisibility(View.VISIBLE);
 			findViewById(R.id.fingerprintInfo).setVisibility(View.VISIBLE);
 

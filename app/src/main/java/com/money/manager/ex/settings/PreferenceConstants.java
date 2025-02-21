@@ -40,6 +40,7 @@ public class PreferenceConstants {
     public static final Integer PREF_DISABLE_PASSCODE = R.string.pref_disable_passcode;
     public static final Integer PREF_ACTIVE_PASSCODE = R.string.pref_active_passcode;
     public static final Integer PREF_VERSION_NAME = R.string.pref_version_name;
+    public static final Integer PREF_FINGERPRINT = R.string.preferences_fingerprint_auth_key;
 
     public static final Integer PREF_SQLITE_VERSION = R.string.pref_sqlite_version;
     public static final Integer PREF_TRANSACTION_SHOWN_BALANCE = R.string.pref_transaction_shown_balance;
