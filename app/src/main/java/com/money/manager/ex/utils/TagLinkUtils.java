@@ -67,7 +67,7 @@ public class TagLinkUtils {
             mTagLinks = tagLink;
         }
 
-        // inizialize display
+        // initialize display
         displayTags(tagTextView);
 
         tagTextView.setOnClickListener(v -> {
