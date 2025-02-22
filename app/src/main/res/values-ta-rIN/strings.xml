@@ -291,9 +291,6 @@
     <string name="enter_your_previous_passcode">உங்கள் முந்தைய கடவுக்குறியீட்டை உள்ளிடவும்</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">கடவுக்குறியீடு புதுப்பிக்கப்படவில்லை</string>
-    <string name="preferences_fingerprint_auth_key">கைரேகை அங்கீகார விசை</string>
-    <string name="preferences_fingerprint_summary">உள்நுழைவுக்கான கைரேகை அங்கீகாரத்தைப் பயன்படுத்தவும் மற்றும் கடவுக்குறியீடு திரையை முடக்கவும். இருப்பினும், கடவுக்குறியீட்டை செயல்படுத்தவோ திருத்தவோ பயனர் கைரேகையைப் பயன்படுத்த முடியாது</string>
-    <string name="preferences_fingerprint_title">கைரேகை அங்கீகாரம்</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">தேடல்களுக்கு நீங்கள் % வைல்டு கார்டு எழுத்தைப் பயன்படுத்தலாம்</string>
     <string name="income_vs_expenses_current_month">வருமானம் மற்றும் செலவுகள்: தற்போதைய மாதம்</string>
