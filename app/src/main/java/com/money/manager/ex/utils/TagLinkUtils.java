@@ -64,7 +64,7 @@ public class TagLinkUtils {
         if( tagTextView == null ) return;
         mTagLinks = Objects.requireNonNullElseGet(tagLink, ArrayList::new);
 
-        // initialize display
+        // inizialize display
         displayTags(tagTextView);
 
         tagTextView.setOnClickListener(v -> {
