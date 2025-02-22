@@ -160,6 +160,7 @@
     <string name="delete_transaction">Transaktion löschen</string>
     <string name="new_transaction">Neue Transaktion</string>
     <string name="error_payee_not_selected">Zahlungsempfänger/Zahler ist erforderlich</string>
+    <string name="error_fromaccount_not_selected">Empfängerkonto ist erforderlich</string>
     <string name="error_toaccount_not_selected">Empfängerkonto ist erforderlich</string>
     <string name="error_category_not_selected">Kategorie ist erforderlich</string>
     <string name="error_totamount_empty">Gesamtbetrag ist erforderlich</string>
@@ -290,6 +291,9 @@
     <string name="enter_your_previous_passcode">Geben Sie Ihren vorherigen Zugangscode ein</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">Zugangscode wurde nicht aktualisiert</string>
+    <string name="preferences_fingerprint_auth_key">Fingerabdruck-Authentifizierungsschlüssel</string>
+    <string name="preferences_fingerprint_summary">Aktivieren, um die Fingerabdruck-Authentifizierung für die Anmeldung zu verwenden und den Passwort-Bildschirm zu deaktivieren. Der Benutzer kann jedoch keinen Fingerabdruck verwenden, um den Zugangscode zu aktivieren oder zu bearbeiten</string>
+    <string name="preferences_fingerprint_title">Authentifizierung per Fingerabdruck</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Für Suchvorgänge können Sie das Platzhalterzeichen % verwenden</string>
     <string name="income_vs_expenses_current_month">Einkommen vs Ausgaben: Aktueller Monat</string>
@@ -300,6 +304,9 @@
     <string name="no_stock_data">Keine Bestandsdaten für dieses Konto vorhanden.</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
+    <string name="menu_reports">Eingebaute Berichte</string>
+    <string name="menu_general_report_group">Allgemeine Berichte</string>
+    <string name="title_activity_general_report">Allgemeiner Bericht</string>
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
     <string name="menu_report_cashflow">Geldfluss</string>
     <string name="total">Gesamt</string>
@@ -317,6 +324,7 @@
     <string name="date_format">Datumsformat</string>
     <string name="financial_year_start_day">Geschäftsjahr: Starttag</string>
     <string name="financial_year_start_month">Geschäftsjahr: Startmonat</string>
+    <string name="financial_year_not_set">Legen Sie das Startdatum des Geschäftsjahres fest.</string>
     <string name="menu_move_database_to_external_storage">Datenbank exportieren</string>
     <string name="database_has_been_moved">Die Datenbank wurde verschoben: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Kopieren auf externen Datenträger fehlgeschlagen</string>
@@ -443,6 +451,8 @@
     <string name="sort_by_name">Sortieren nach Name</string>
     <string name="sort_by_usage">Sortierung nach Verwendung</string>
     <string name="sort_by_recent">Sortierung nach letzter Verwendung</string>
+    <string name="sort_date_desc">Absteigend nach Datum sortieren</string>
+    <string name="sort_date_asc">Aufsteigend nach Datum sortieren</string>
     <string name="choose_sorting">Wähle Sortierung</string>
     <string name="credit_card">Kreditkarte</string>
     <string name="cash_accounts">Geldkonten</string>
@@ -769,6 +779,17 @@
     <!-- Builder button -->
     <string name="CLEAR_ALL">Alle schließen</string>
     <string name="empty_color_message">wähle eine Farbe</string>
+    <string name="menu_show_inactive">Inaktive anzeigen</string>
+    <string name="btn_continue">Weiter</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Verwerfen</string>
+    <string name="category_nav_mode">Neuer Navigationsmodus ist im Menü verfügbar</string>
+    <string name="remember_later">Später erinnern</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Upload Warnung</string>
+    <string name="download_warning">Download Warnung</string>
+    <string name="remote_file_change">Anzeige für Remote-Datei-Änderungen: </string>
+    <string name="local_file_change">Anzeige für lokale Dateiänderungen: </string>
+    <string name="msg_uploading_overwrite">Hochladen wird Ihre Remote-Version überschreiben.\nMöchten Sie fortfahren?</string>
+    <string name="msg_downloading_overwrite">Das Herunterladen wird Ihre lokale Version überschreiben.\nMöchten Sie fortfahren?</string>
 </resources>
