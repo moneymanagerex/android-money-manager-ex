@@ -1,0 +1,30 @@
+## What's Changed
+This release primarily focuses on improving SMS transaction creation, enhancing reporting capabilities, refining ORM for better performance, and fixing bugs related to transaction handling and database operations.
+
+### highlight
+**New Features and Improvements:**
+1. Automatic Transaction from SMS: Support for creating transactions automatically from SMS for database v19.
+2. General Reports: Added support for General Reports in AMMEX.
+3. Language Support: Tamil language added to the app's language options.
+4. Nested Category Management: Introduced management for nested categories.
+5. New Cash Flow Report: A new cash flow report has been added to the app with graphics analysis
+6. New option under security to enable Fingerprint Authentication
+
+**Enhancements:**
+1. SMS Receiver: Improved notification for failures in automatic transaction creation from SMS.
+2. ORM Refinements: Multiple updates to improve ORM operations like handling database entities (e.g., Account, Payee, Tag) and optimizing queries and deletions.
+3. Database Updates: Support for upgrading to DB version 20. The app now re-enables SUID for database synchronization and centralizes entity creation.
+4. Tag Management: Added filter options for inactive tags, categories, and payees.
+5. Transaction Handling: Enhanced transaction handling with more detailed error messages and fixes to prevent crashes.
+6. Attachment Management: Improved handling and normalization of attachments and TagLinks within transactions.
+
+ **Bug Fixes:**
+1. Core Dump in CashFlow: Fixed a core dump issue in the CashFlow feature.
+2. ANR for Investment: Addressed an Application Not Responding (ANR) issue related to investment features.
+3. Stock Repo Fix: Fixed issues with null values in stock repository.
+4. Database Dump Fix: Resolved problems with database dumps, especially when entering transactions via the floating button.
+5. Fix dump when financial year is not set in transaction list
+6. Hidden Biometric UI when the user activates or edits the passcode. This will appear only during app startup and disabling the passcode screen
+
+**Translations:**
+* Multiple updates to Crowdin translations, adding and updating several languages, including new entries for Tamil.
