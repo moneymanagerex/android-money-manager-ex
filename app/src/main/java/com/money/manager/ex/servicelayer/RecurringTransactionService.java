@@ -558,14 +558,18 @@ public class RecurringTransactionService
                     return true;
                 } else {
                     decreasePaymentsLeft();
-                    if ( tx.getPaymentsLeft() == 0) {
-                        // no more payments
-                        return false;
-                    } else {
-                        // more payement
+                    if ( tx.getPaymentsLeft() == 1 ) {
+                        tx.setRecurrence(Recurrence.ONCE);
                         return true;
-                    }
-                }
+                    } else {
+                        if (tx.getPaymentsLeft() == 0) {
+                            // no more payments
+                            return false;
+                        } else {
+                            // more payement
+                            return true;
+                        }
+                    }                }
 //                break;
             // every n periods
             case EVERY_X_DAYS:
