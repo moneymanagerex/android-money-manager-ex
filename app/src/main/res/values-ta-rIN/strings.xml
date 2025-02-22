@@ -284,7 +284,7 @@
     <string name="preferences_security">பாதுகாப்பு</string>
     <string name="preferences_active_passcode">கடவுக்குறியீட்டை இயக்கவும்</string>
     <string name="enter_your_passcode">உங்கள் கடவுக்குறியீட்டை உள்ளிடவும்</string>
-    <string name="reinsert_your_passcode"></string>
+    <string name="reinsert_your_passcode">உங்கள் புதிய கடவுக்குறியீட்டை மீண்டும் உள்ளிடவும்</string>
     <string name="passocde_no_macth">கடவுக்குறியீடு பொருந்தவில்லை</string>
     <string name="preferences_edit_passcode">கடவுக்குறியீட்டைத் திருத்தவும்</string>
     <string name="preferences_disable_passcode">கடவுக்குறியீட்டை முடக்கு</string>

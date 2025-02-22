@@ -232,14 +232,8 @@ public class AllDataListFragment
 //                    whereParams = whereParamsList.toArray(whereParams);
 //                }
 
-            // set sort
-            String sort = "";
-            if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                sort = args.getString(KEY_ARGUMENTS_SORT);
-            }
-
-            // create loader
             Dataset allData;
+            // create loader
             if (args != null && args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
                 // coming from report, use mobile data
                 allData = new QueryMobileData(getActivity());
@@ -247,13 +241,19 @@ public class AllDataListFragment
                 allData = new QueryAllData(getActivity());
             }
 
-            if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
-                sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC";
-            }
-            if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
-                sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC";
-            }
+            // set sort
+            String sort = "";
+            if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
+                sort = args.getString(KEY_ARGUMENTS_SORT);
+            } else {
+                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
+                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC";
+                }
+                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
+                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC";
+                }
 
+            }
 
             Select query = new Select(allData.getAllColumns())
                     .where(selection)
