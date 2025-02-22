@@ -50,7 +50,7 @@ public class TaglinkRepository extends RepositoryBase <TagLink> {
     }
 
     public boolean saveAllFor(RefType refType, long refId, ArrayList<TagLink> tagLinks) {
-        if ( tagLinks == null || tagLinks.size() == 0 ) {
+        if ( tagLinks == null || tagLinks.isEmpty()) {
             deleteForType(refId, refType);
             return true;
         }
@@ -60,10 +60,11 @@ public class TaglinkRepository extends RepositoryBase <TagLink> {
                 delete(entity.getId());
         }
 
-        // be sure to set refid
+        // be sure to set refId
         for (int i = 0; i < tagLinks.size(); i++ ) {
             tagLinks.get(i).setRefId(refId);
             tagLinks.get(i).setRefType(refType);
+            tagLinks.get(i).setId(Constants.NOT_SET);
         }
         return save(tagLinks);
     }
