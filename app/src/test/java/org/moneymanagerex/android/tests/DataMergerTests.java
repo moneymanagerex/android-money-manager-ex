@@ -17,6 +17,9 @@
 package org.moneymanagerex.android.tests;
 
 import android.content.ContentProvider;
+import android.os.Handler;
+import android.os.Messenger;
+import android.os.RemoteException;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.TransactionTypes;
@@ -53,6 +56,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test Account model.
@@ -69,7 +73,8 @@ public class DataMergerTests {
         // prepare data
 
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = new Messenger(mock(Handler.class));
+        DataMerger testee = spy(new DataMerger(msger));
         AccountTransaction localEntity = null;
         AccountTransaction remoteEntity = new AccountTransaction();
         AccountTransactionRepository localAccTrans = mock(AccountTransactionRepository.class);
@@ -126,7 +131,8 @@ public class DataMergerTests {
     @Test
     public void testMergeAccountTransactionRemoteWasModifiedAfterSync() {
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = new Messenger(mock(Handler.class));
+        DataMerger testee = spy(new DataMerger(msger));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-20T18:42:18.000Z");
@@ -146,7 +152,8 @@ public class DataMergerTests {
     @Test
     public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = new Messenger(mock(Handler.class));
+        DataMerger testee = spy(new DataMerger(msger));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
@@ -166,7 +173,8 @@ public class DataMergerTests {
     @Test
     public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = new Messenger(mock(Handler.class));
+        DataMerger testee = spy(new DataMerger(msger));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
@@ -185,7 +193,8 @@ public class DataMergerTests {
     @Test
     public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceOurs() {
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = new Messenger(mock(Handler.class));
+        DataMerger testee = spy(new DataMerger(msger));
         doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
@@ -203,9 +212,10 @@ public class DataMergerTests {
     }
 
     @Test
-    public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceOurs() {
+    public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceOurs() throws RemoteException {
         // prepare mocks
-        DataMerger testee = spy(new DataMerger());
+        Messenger msger = mock(Messenger.class);
+        final DataMerger testee = spy(new DataMerger(msger));
         doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
