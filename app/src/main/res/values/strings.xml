@@ -900,6 +900,10 @@
     <string name="menu_cashflow_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Take ours</string>
+    <string name="merge_take_theirs">Take theirs</string>
+
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>

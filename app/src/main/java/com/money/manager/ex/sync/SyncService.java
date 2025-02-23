@@ -173,7 +173,7 @@ public class SyncService
         if (isLocalModified && isRemoteModified) {
             // TODO duplicate local database in case the user aborts merge and want to resume
             // start merge changes from remote to local
-            DataMerger merger = new DataMerger();
+            DataMerger merger = new DataMerger(outMessenger);
             try {
                 merger.merge(currentDb, storage);
                 Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);

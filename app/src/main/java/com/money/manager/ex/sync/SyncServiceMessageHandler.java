@@ -22,6 +22,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.MmexApplication;
@@ -29,6 +33,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
+import com.money.manager.ex.sync.merge.MergeConflictResolution;
 import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +51,8 @@ import timber.log.Timber;
 
 public class SyncServiceMessageHandler
     extends Handler {
+
+    public static final int SENDING_UID_RESPONSE = 1;
 
     public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
         super(Looper.getMainLooper()); // Explicitly use the main thread's Looper
@@ -115,6 +122,41 @@ public class SyncServiceMessageHandler
                 new UIHelper(getContext()).showToast(R.string.error, Toast.LENGTH_SHORT);
                 break;
 
+            case USER_DIALOG_CONFLICT:
+                String txtOurs = ((String[])msg.obj)[0];
+                String txtTheirs = ((String[])msg.obj)[1];
+                TextView textOurs = (TextView)progressDialog.findViewById(R.id.textMergeOurs);
+                textOurs.setText(txtOurs);
+                TextView textTheirs = (TextView)progressDialog.findViewById(R.id.textMergeTheirs);
+                textTheirs.setText(txtTheirs);
+
+                Button btOurs = (Button)progressDialog.findViewById(R.id.buttonMergeTakeOurs);
+                Button btTheirs = (Button)progressDialog.findViewById(R.id.buttonMergeTakeTheirs);
+
+                Message msgResponse = new Message();
+                msgResponse.sendingUid = SENDING_UID_RESPONSE;
+                btOurs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            msgResponse.what = MergeConflictResolution.OURS.ordinal();
+                            msg.replyTo.send(msgResponse);
+                        } catch (RemoteException e) {
+                            Timber.e(e);
+                        }
+                    }
+                });
+                btTheirs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            msgResponse.what = MergeConflictResolution.THEIRS.ordinal();
+                            msg.replyTo.send(msgResponse);
+                        } catch (RemoteException e) {
+                            Timber.e(e);
+                        }
+                    }
+                });
             default:
                 throw new RuntimeException("unknown message");
         }

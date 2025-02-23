@@ -36,4 +36,34 @@
         android:layout_marginTop="10dp"
         android:text="@string/syncProgress"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="18dp" />
+
+    <TextView
+        android:id="@+id/textMergeOurs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textMergeTheirs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/buttonMergeTakeOurs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/merge_take_ours"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/buttonMergeTakeTheirs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/merge_take_theirs"
+        android:visibility="invisible" />
 </LinearLayout>

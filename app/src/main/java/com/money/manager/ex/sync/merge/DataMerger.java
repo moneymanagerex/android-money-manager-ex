@@ -2,7 +2,12 @@ package com.money.manager.ex.sync.merge;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.OperationCanceledException;
+import android.os.RemoteException;
 
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
@@ -12,18 +17,29 @@ import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.sync.SyncServiceMessage;
+import com.money.manager.ex.sync.SyncServiceMessageHandler;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
+import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import timber.log.Timber;
 
-public class DataMerger {
+public class DataMerger extends Handler {
 
     public static final String REMOTE_ONLY_WAS_MODIFIED = "remote-only was modified:";
     public static final String OVERWRITE_LOCAL_CHANGES = "overwrite local changes:";
+
+    private final Messenger messenger;
+    private MergeConflictResolution lastUserResponse;
+
+    public DataMerger(@NotNull Messenger messenger) {
+        super(Looper.getMainLooper());
+        this.messenger = messenger;
+    }
 
     public void merge(DatabaseMetadata metadata, FileStorageHelper storage) {
         // prepare remote db (readable) -> already downloaded in SyncService
@@ -104,8 +120,33 @@ public class DataMerger {
     }
 
     public <T extends EntityBase> MergeConflictResolution conflictResolutionByUser(T localEntity, T remoteEntity) {
-        // FIXME create user dialog
-        return MergeConflictResolution.THEIRS;
+        // send the question to user dialog
+        Message msg = new Message();
+        msg.what = SyncServiceMessage.USER_DIALOG_CONFLICT.code;
+        msg.obj = new String[] {"Ours:", "Theirs"};
+        msg.setAsynchronous(false);
+        msg.replyTo = new Messenger(this);
+        try {
+            Timber.d("Asking user for conflict solution");
+            messenger.send(msg);
+        } catch (RemoteException e) {
+            Timber.e(e);
+            return MergeConflictResolution.ABORT;
+        }
+        // wait for response
+        try {
+            Timber.i("Waiting for user response");
+            this.wait();
+            // return the last response and continue
+            MergeConflictResolution resp = lastUserResponse;// received by {@link #handleMessage}
+            lastUserResponse = null; // reset
+            return resp;
+        } catch (InterruptedException e) {
+            Timber.e(e);
+            return MergeConflictResolution.ABORT;
+        } finally {
+            Timber.i("Continue processing");
+        }
     }
 
     private MmxDate getLastLocalSyncDate(Context ctx) {
@@ -117,4 +158,15 @@ public class DataMerger {
         // as a default (when the database has not yet an entry)
         return new MmxDate("1900-01-01T00:00:00.000+0200");
     }
+
+    @Override
+    public void handleMessage(@NonNull Message msg) {
+        if (msg.sendingUid == SyncServiceMessageHandler.SENDING_UID_RESPONSE) {
+            Timber.d("Response received");
+            lastUserResponse = MergeConflictResolution.values()[msg.what];
+            this.notify();
+        }
+    }
+
+
 }
