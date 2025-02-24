@@ -291,6 +291,9 @@
     <string name="enter_your_previous_passcode">Inserisci il tuo precedente passcode</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">codice di accesso non aggiornato</string>
+    <string name="preferences_fingerprint_auth_key">Chiave Di Autenticazione Impronta Digitale</string>
+    <string name="preferences_fingerprint_summary">Abilita l\'autenticazione con impronta digitale per l\'accesso e disabilita la schermata del codice di accesso. Tuttavia, l\'utente non può utilizzare l\'impronta digitale per attivare o modificare il codice di accesso.</string>
+    <string name="preferences_fingerprint_title">Autenticazione con impronta digitale</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Per le ricerche si può utilizzare il carattere jolly %</string>
     <string name="income_vs_expenses_current_month">Entrate / Uscite: Mese Corrente</string>
@@ -775,6 +778,10 @@
     <string name="CLEAR_ALL">Cancella tutto</string>
     <string name="empty_color_message">Scegli un colore</string>
     <string name="menu_show_inactive">Mostra inattivo</string>
+    <string name="btn_continue">Continua</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="remote_file_change">Indicatore di modifiche al file remoto:</string>
+    <string name="msg_uploading_overwrite">Il caricamento sovrascriverà la tua versione remota.\nVuoi continuare?</string>
+    <string name="msg_downloading_overwrite">Il download sovrascriverà la tua versione locale.\nVuoi continuare?</string>
 </resources>
