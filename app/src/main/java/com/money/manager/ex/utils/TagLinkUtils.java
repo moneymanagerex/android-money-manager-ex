@@ -15,6 +15,7 @@ import com.money.manager.ex.domainmodel.Tag;
 import com.money.manager.ex.domainmodel.TagLink;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TagLinkUtils {
     private Context mContext;
@@ -61,13 +62,9 @@ public class TagLinkUtils {
                                 RefType tagRefType,
                                 OnTagSelected onTagSelected ) {
         if( tagTextView == null ) return;
-        if (tagLink == null) {
-            mTagLinks = new ArrayList<TagLink>();
-        } else {
-            mTagLinks = tagLink;
-        }
+        mTagLinks = Objects.requireNonNullElseGet(tagLink, ArrayList::new);
 
-        // inizialize display
+        // initialize display
         displayTags(tagTextView);
 
         tagTextView.setOnClickListener(v -> {
@@ -77,7 +74,7 @@ public class TagLinkUtils {
             for (int i = 0; i < mTagsList.size(); i++) {
                 tagsListString[i] = mTagsList.get(i).getName();
                 // set default from mTagLink
-                long tagId = mTagsList.get(i).getId().intValue();
+                long tagId = mTagsList.get(i).getId();
                 if ( mTagLinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().isPresent() ) {
                     tagsFlag[i] = true;
                 };
@@ -100,7 +97,7 @@ public class TagLinkUtils {
                     // Initialize string builder
                     // Save also taglink, loop at mtaglink to check actual record
                     for (int j = 0; j < mTagsList.size(); j++) {
-                        long tagId = mTagsList.get(j).getId().longValue();
+                        long tagId = mTagsList.get(j).getId();
                         TagLink taglink ;
                         try {
                             taglink = mTagLinks.stream().filter(x -> x.getTagId() == tagId ).findFirst().get();

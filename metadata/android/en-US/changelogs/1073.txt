@@ -1,0 +1,11 @@
+## What's Changed
+Minor fix to 5.1 release
+
+* new translation improvement
+* Tag: fix tag save/re-creation bug by @guanlisheng in https://github.com/moneymanagerex/android-money-manager-ex/pull/2331 and https://github.com/moneymanagerex/android-money-manager-ex/pull/2334
+* Restore Order in transaction list for V5.1 by @wolfsolver in https://github.com/moneymanagerex/android-money-manager-ex/pull/2329
+* Moved OTP skipping logic to top of the section by @velmuruganc in https://github.com/moneymanagerex/android-money-manager-ex/pull/2335
+* Honor number of payement in CashFlow Report by @wolfsolver in https://github.com/moneymanagerex/android-money-manager-ex/pull/2342
+
+
+**Full Changelog**: https://github.com/moneymanagerex/android-money-manager-ex/compare/5.1...5.1.1

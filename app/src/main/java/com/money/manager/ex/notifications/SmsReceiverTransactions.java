@@ -133,7 +133,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     //Must be commented in released version
                     //msgSender = "AT-SIBSMS";
 
-                    if(isTransactionSms(msgSender)) {
+                    if(isTransactionSms(msgSender) && !msgBody.toLowerCase().contains("otp")) {
                         // Transaction Sms sender will have format like this AT-SIBSMS,
                         // Promotional sms will have sender like AT-012345
                         // Not sure how this format will be in out side of India. I may need to update if I get sample
@@ -194,8 +194,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         mCommon.transactionEntity.setStatus("");
                         mCommon.payeeName = "";
 
-                        // if not from blank, then nothing to do with sms
-                        if (!transType.isEmpty() && !msgBody.toLowerCase().contains("otp")) {
+                        // if it is blank, then nothing to do with sms
+                        if (!transType.isEmpty()) {
 
                             //Create the intent that’ll fire when the user taps the notification//
                             Intent t_intent = new Intent(mContext, CheckingTransactionEditActivity.class);
