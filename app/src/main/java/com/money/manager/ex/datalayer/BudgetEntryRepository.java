@@ -50,15 +50,20 @@ public class BudgetEntryRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { ID_COLUMN + " AS _id",
+        return new String[]{ID_COLUMN + " AS _id",
                 BudgetEntry.BUDGETENTRYID,
                 BudgetEntry.BUDGETYEARID,
                 BudgetEntry.CATEGID,
-                BudgetEntry.PERIOD};
+                BudgetEntry.PERIOD,
+                BudgetEntry.AMOUNT,
+                BudgetEntry.NOTES,
+                BudgetEntry.ACTIVE
+        };
     }
 
     /**
      * Returns a string value which is used as a key in the budget entry thread cache
+     *
      * @param categoryId
      * @return
      */
@@ -88,7 +93,7 @@ public class BudgetEntryRepository
             BudgetEntry budgetEntry = new BudgetEntry();
             budgetEntry.loadFromCursor(cursor);
 
-            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategId());
+            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategoryId());
             if (nestedCategory == null) {
                 continue;
             }
@@ -99,4 +104,15 @@ public class BudgetEntryRepository
         return budgetEntryHashMap;
     }
 
+    // custom func
+    public boolean hasBudget(long yearId, long cateId) {
+        return this.count(BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
+                , new String[]{Long.toString(yearId), Long.toString(cateId)} ) > 0;
+    }
+
+    public BudgetEntry loadByYearAndCateID(long yearId, long cateId) {
+        return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
+                , new String[]{Long.toString(yearId), Long.toString(cateId)}
+                , null);
+    }
 }

@@ -70,7 +70,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.budget.BudgetListActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -627,7 +627,7 @@ public class MainActivity
         } else if (itemId == R.id.menu_recurring_transaction) {
             showFragment(ScheduledTransactionListFragment.class);
         } else if (itemId == R.id.menu_budgets) {
-            Intent intent = new Intent(this, BudgetsActivity.class);
+            Intent intent = new Intent(this, BudgetListActivity.class);
             startActivity(intent);
         } else if (itemId == R.id.menu_search_transaction) {
             startActivity(new Intent(MainActivity.this, SearchActivity.class));

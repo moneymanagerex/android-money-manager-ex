@@ -120,8 +120,7 @@ public class BudgetAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         // Category
 
-        boolean hasSubcategory;
-        hasSubcategory = false;
+        boolean hasSubcategory = false;
 
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
@@ -129,8 +128,7 @@ public class BudgetAdapter
             categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
 
-        long categoryId;
-        categoryId = cursor.getInt(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
 
         // Frequency
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
@@ -280,7 +278,7 @@ public class BudgetAdapter
         double total = 0;
 
         // if month use month budget
-        // if year check if financianl or calendar
+        // if year check if financial or calendar
         long year = getYearFromBudgetName(mBudgetName);
         long month = getMonthFromBudgetName(mBudgetName);
         if (month != Constants.NOT_SET) {

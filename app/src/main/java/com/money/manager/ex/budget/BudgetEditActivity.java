@@ -45,17 +45,14 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
     private BudgetViewModel mModel;
     private BudgetEditViewHolder viewHolder;
 
-    private TextView budgetYearTextView;
-    private TextView budgetMonthTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_edit);
 
         // Initialize views using findViewById()
-        budgetYearTextView = findViewById(R.id.budgetYearTextView);
-        budgetMonthTextView = findViewById(R.id.budgetMonthTextView);
+        TextView budgetYearTextView = findViewById(R.id.budgetYearTextView);
+        TextView budgetMonthTextView = findViewById(R.id.budgetMonthTextView);
 
         initializeToolbar();
 
