@@ -223,7 +223,7 @@
   <string name="bi_weekly">2 gange om ugen</string>
   <string name="monthly">Månedlig</string>
   <string name="bi_monthly">To gange om måneden</string>
-  <string name="quaterly">Hvert kvartal</string>
+  <string name="quarterly">Hvert kvartal</string>
   <string name="half_year">Hvert halve år</string>
   <string name="yearly">Hvert år</string>
   <string name="four_months">Hver fjerde måned</string>

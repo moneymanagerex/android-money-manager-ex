@@ -17,18 +17,71 @@
 
 package com.money.manager.ex.budget;
 
+import android.content.Context;
+
+import com.money.manager.ex.R;
+
 /**
  * Budget period
  */
 
 public enum BudgetPeriodEnum {
-    NONE,
-    WEEKLY,
-    BI_WEEKLY,
-    MONTHLY,
-    BI_MONTHLY,
-    QUARTERLY,
-    HALF_YEARLY,
-    YEARLY,
-    DAILY
+    NONE("None", 0),
+    WEEKLY("Weekly", 7),
+    BI_WEEKLY("Bi-Weekly", 14),
+    MONTHLY("Monthly", 30),
+    BI_MONTHLY("Bi-Monthly", 60),
+    QUARTERLY("Quarterly", 90),
+    HALF_YEARLY("Half-Yearly", 180),
+    YEARLY("Yearly", 365),
+    DAILY("Daily", 1);
+
+    private final String displayName;
+    private final int daysInPeriod; // Approximate number of days for each period
+
+    BudgetPeriodEnum(String displayName, int daysInPeriod) {
+        this.displayName = displayName;
+        this.daysInPeriod = daysInPeriod;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public int getDaysInPeriod() {
+        return daysInPeriod;
+    }
+
+    public static BudgetPeriodEnum fromString(String periodString) {
+        for (BudgetPeriodEnum period : values()) {
+            if (period.displayName.equalsIgnoreCase(periodString)) {
+                return period;
+            }
+        }
+        return NONE; // Default to NONE if no match is found
+    }
+
+    public static String getTranslation(Context context, BudgetPeriodEnum periodEnum) {
+        switch (periodEnum) {
+            case WEEKLY:
+                return context.getString(R.string.weekly);
+            case BI_WEEKLY:
+                return context.getString(R.string.bi_weekly);
+            case MONTHLY:
+                return context.getString(R.string.monthly);
+            case BI_MONTHLY:
+                return context.getString(R.string.bi_monthly);
+            case QUARTERLY:
+                return context.getString(R.string.quarterly);
+            case HALF_YEARLY:
+                return context.getString(R.string.half_year);
+            case YEARLY:
+                return context.getString(R.string.yearly);
+            case DAILY:
+                return context.getString(R.string.daily);
+            case NONE:
+            default:
+                return context.getString(R.string.none);
+        }
+    }
 }

@@ -19,6 +19,8 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import com.money.manager.ex.budget.BudgetPeriodEnum;
+
 /**
  * A Budget Entry, part of the budget.
  */
@@ -36,6 +38,7 @@ public class BudgetEntry
     // Default constructor setting ACTIVE to 1L
     public BudgetEntry() {
         super();
+        setPeriod(BudgetPeriodEnum.NONE.getDisplayName());
         setLong(BudgetEntry.ACTIVE, 1L);  // ACTIVE is true by default (1L)
     }
 

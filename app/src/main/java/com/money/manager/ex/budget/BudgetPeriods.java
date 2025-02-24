@@ -19,17 +19,10 @@ package com.money.manager.ex.budget;
 
 import android.content.Context;
 
-import com.money.manager.ex.R;
-
-import java.util.HashMap;
-
 /**
  * Budget period helper
  */
 public class BudgetPeriods {
-
-    private static HashMap<String, BudgetPeriodEnum> periodEnumLookup = null;
-    private static HashMap<BudgetPeriodEnum, String> periodTranslationLookup = null;
 
     /**
      * Returns proper enum for period name in the database
@@ -37,24 +30,7 @@ public class BudgetPeriods {
      * @return
      */
     public static BudgetPeriodEnum getEnum(String periodString) {
-        if (periodEnumLookup == null) {
-            periodEnumLookup = new HashMap<>();
-        }
-
-        if (periodEnumLookup.isEmpty()) {
-            periodEnumLookup.put("None"       , BudgetPeriodEnum.NONE);
-            periodEnumLookup.put("Weekly"     , BudgetPeriodEnum.WEEKLY);
-            periodEnumLookup.put("Bi-Weekly"  , BudgetPeriodEnum.BI_WEEKLY);
-            periodEnumLookup.put("Monthly"    , BudgetPeriodEnum.MONTHLY);
-            periodEnumLookup.put("Bi-Monthly" , BudgetPeriodEnum.BI_MONTHLY);
-            periodEnumLookup.put("Every 2 Months" , BudgetPeriodEnum.BI_MONTHLY); // wolfsolver adapt periods
-            periodEnumLookup.put("Quarterly"  , BudgetPeriodEnum.QUARTERLY);
-            periodEnumLookup.put("Half-Yearly", BudgetPeriodEnum.HALF_YEARLY);
-            periodEnumLookup.put("Yearly"     , BudgetPeriodEnum.YEARLY);
-            periodEnumLookup.put("Daily"      , BudgetPeriodEnum.DAILY);
-        }
-
-        return periodEnumLookup.containsKey(periodString) ? periodEnumLookup.get(periodString) : BudgetPeriodEnum.NONE;
+        return BudgetPeriodEnum.fromString(periodString);
     }
 
     /**
@@ -70,89 +46,32 @@ public class BudgetPeriods {
     /**
      * Helper function to translate the string literals of period in the database.
      * @param context
-     * @param periodEnum string value from the database
+     * @param periodEnum
      * @return translated string
      */
     public static String getPeriodTranslationForEnum(Context context, BudgetPeriodEnum periodEnum) {
-        if (periodTranslationLookup == null) {
-            periodTranslationLookup = new HashMap<>();
-        }
-
-        if (periodTranslationLookup.isEmpty()) {
-            periodTranslationLookup.put(BudgetPeriodEnum.NONE, context.getString(R.string.none));
-            periodTranslationLookup.put(BudgetPeriodEnum.WEEKLY, context.getString(R.string.weekly));
-            periodTranslationLookup.put(BudgetPeriodEnum.BI_WEEKLY, context.getString(R.string.bi_weekly));
-            periodTranslationLookup.put(BudgetPeriodEnum.MONTHLY, context.getString(R.string.monthly));
-            periodTranslationLookup.put(BudgetPeriodEnum.BI_MONTHLY, context.getString(R.string.bi_monthly));
-            periodTranslationLookup.put(BudgetPeriodEnum.QUARTERLY, context.getString(R.string.quaterly));
-            periodTranslationLookup.put(BudgetPeriodEnum.HALF_YEARLY, context.getString(R.string.half_year));
-            periodTranslationLookup.put(BudgetPeriodEnum.YEARLY, context.getString(R.string.yearly));
-            periodTranslationLookup.put(BudgetPeriodEnum.DAILY, context.getString(R.string.daily));
-        }
-
-        return periodTranslationLookup.containsKey(periodEnum)
-                ? periodTranslationLookup.get(periodEnum)
-                : context.getString(R.string.none);
+        return BudgetPeriodEnum.getTranslation(context, periodEnum);
     }
 
+    /**
+     * Method to estimate monthly equivalent for a given period
+     * @param periodEnum
+     * @param amount
+     * @return
+     */
     public static double getMonthlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-        double estimated = 0;
-        int ndays = 365;
-        if (periodEnum == BudgetPeriodEnum.MONTHLY) {
-            estimated = amount;
-        }
-        else if (periodEnum == BudgetPeriodEnum.YEARLY) {
-            estimated = amount / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
-            estimated = ((amount / 7) * ndays) / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
-            estimated = ((amount / 14) * ndays) / 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
-            estimated = amount / 2;
-        }
-        else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
-            estimated = amount / 3;
-        }
-        else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
-            estimated = (amount / 6);
-        }
-        else if (periodEnum == BudgetPeriodEnum.DAILY) {
-            estimated = (amount * ndays) / 12;
-        }
-
-        return estimated;
+        double daysInPeriod = periodEnum.getDaysInPeriod();
+        return (amount / daysInPeriod) * 30; // Simplified calculation for monthly estimate
     }
 
+    /**
+     * Method to estimate yearly equivalent for a given period
+     * @param periodEnum
+     * @param amount
+     * @return
+     */
     public static double getYearlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-        double estimated = 0;
-        if (periodEnum == BudgetPeriodEnum.MONTHLY) {
-            estimated = amount * 12;
-        }
-        else if (periodEnum == BudgetPeriodEnum.YEARLY) {
-            estimated = amount;
-        }
-        else if (periodEnum == BudgetPeriodEnum.WEEKLY) {
-            estimated = amount * 52;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_WEEKLY) {
-            estimated = amount * 26;
-        }
-        else if (periodEnum == BudgetPeriodEnum.BI_MONTHLY) {
-            estimated = amount * 6;
-        }
-        else if (periodEnum == BudgetPeriodEnum.QUARTERLY) {
-            estimated = amount * 4;
-        }
-        else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
-            estimated = amount * 2;
-        }
-        else if (periodEnum == BudgetPeriodEnum.DAILY) {
-            estimated = amount * 365;
-        }
-
-        return estimated;
+        double daysInPeriod = periodEnum.getDaysInPeriod();
+        return (amount / daysInPeriod) * 365; // Simplified calculation for yearly estimate
     }
 }

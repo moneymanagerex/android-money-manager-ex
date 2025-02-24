@@ -17,14 +17,18 @@
 package com.money.manager.ex.budget;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -185,7 +189,7 @@ public class BudgetEntryFragment
 
         switch (menuId) {
             case EDIT:
-                // editBudgetEntry(categoryId);
+                editBudgetEntry(mBudgetYearId, categoryId);
                 break;
             case DELETE:
                 confirmDelete(mBudgetYearId, categoryId);
@@ -196,17 +200,66 @@ public class BudgetEntryFragment
         return false;
     }
 
-    private void confirmDelete(long yearId, long budgetEntryId) {
+    private void confirmDelete(long yearId, long categoryId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.delete)
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
-                    BudgetEntry budgetEntry = repo.loadByYearAndCateID(yearId, budgetEntryId);
+                    BudgetEntry budgetEntry = repo.loadByYearAndCateID(yearId, categoryId);
                     if (budgetEntry != null)
                         repo.delete(budgetEntry.getId());
                 })
                 .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    public void editBudgetEntry(long budgetYearId, long categoryId) {
+        // Create the EditText view for numeric input
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setHint("Enter new budget");
+
+        BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getActivity());
+
+        BudgetEntry budgetEntry = budgetEntryRepository.loadByYearAndCateID(budgetYearId, categoryId);
+        if (budgetEntry != null) {
+            // Set the current value as the initial value in the EditText
+            input.setText(String.valueOf(budgetEntry.getAmount()));
+        }
+
+        // Set up the dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Edit Budget Entry")
+                .setMessage("Enter the new budget value:")
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newValue = input.getText().toString().trim();
+                        if (newValue.isEmpty()) {
+                            Toast.makeText(getActivity(), "Value cannot be empty", Toast.LENGTH_SHORT).show();
+                        } else {
+                            try {
+                                // Parse the input as a double
+                                double newValueNumeric = Double.parseDouble(newValue);
+                                BudgetEntry budgetEntry = budgetEntryRepository.loadByYearAndCateID(mBudgetYearId, categoryId);
+                                if (budgetEntry == null) {
+                                    budgetEntry = new BudgetEntry();
+                                    budgetEntry.setBudgetYearId(mBudgetYearId);
+                                    budgetEntry.setCategoryId(categoryId);
+                                }
+
+                                budgetEntry.setAmount(newValueNumeric);
+                                budgetEntryRepository.save(budgetEntry);
+                                Toast.makeText(getActivity(), "Budget entry updated", Toast.LENGTH_SHORT).show();
+                            } catch (NumberFormatException e) {
+                                Toast.makeText(getActivity(), "Invalid number format", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
                 .show();
     }
 
