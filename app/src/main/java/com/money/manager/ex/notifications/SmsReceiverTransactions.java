@@ -134,7 +134,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     //msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender) && !msgBody.toLowerCase().contains("otp")) {
-                        // Transaction Sms sender will have format like this AT-SIBSMS,
+                        // Transaction Sms sender will have format like this AT-SIBSMS, South Indian Bank
                         // Promotional sms will have sender like AT-012345
                         // Not sure how this format will be in out side of India. I may need to update if I get sample
 
@@ -489,16 +489,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     private static boolean isTransactionSms(String smsSender)
     {
-        boolean reqMatch = false;
+        boolean reqMatch = true;
 
         try
         {
-            Pattern p = Pattern.compile("(-[a-zA-Z]+)");
+            Pattern p = Pattern.compile("(-?\\d+)");
             Matcher m = p.matcher(smsSender);
 
             if (m != null) {
                 while(m.find()) {
-                    reqMatch = true;
+                    reqMatch = false;
                     break;
                 }
             }
@@ -772,7 +772,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([\\*](.*?)(\\d+)?[\\.]\\s?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "([A-Za-z\\*]\\/+(\\d+)+\\/[A-Za-z\\*])",
-                "((?:UPI|IMPS)\\s?:\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
+                "((?:UPI|IMPS)\\s?(?::|/)\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
 
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
@@ -789,8 +789,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 if (m != null && reqMatch.isEmpty()) {
                     while(m.find()) {
-                        reqMatch = m.group(getGroup[i]).trim();
-                        break;
+                        try {
+                            Double.parseDouble(m.group(getGroup[i]).trim()); // Can be Integer.parseInt(str) if checking for integers
+                            reqMatch = m.group(getGroup[i]).trim();
+                            break;
+                        } catch (NumberFormatException e) {
+                            //
+                        }
+
                     }
                 }
             }
