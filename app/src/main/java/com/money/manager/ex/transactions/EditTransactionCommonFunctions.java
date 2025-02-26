@@ -751,7 +751,7 @@ public class EditTransactionCommonFunctions {
             cursor.close();
         });
 
-        if (!transactionEntity.hasId() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
+        if (!transactionEntity.hasId() && transactionEntity.getTransactionNumber().isEmpty() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {
             viewHolder.btnTransNumber.callOnClick();
         }
     }
