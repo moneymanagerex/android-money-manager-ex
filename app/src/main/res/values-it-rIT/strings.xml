@@ -237,6 +237,7 @@
     <string name="bi_weekly">Quindicinale</string>
     <string name="monthly">Mensile</string>
     <string name="bi_monthly">Bimestrale</string>
+    <string name="quarterly">Trimestrale</string>
     <string name="half_year">Semestrale</string>
     <string name="yearly">Annuale</string>
     <string name="four_months">Quattro Mesi</string>
@@ -779,8 +780,12 @@
     <string name="menu_show_inactive">Mostra inattivo</string>
     <string name="btn_continue">Continua</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Ignora</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Carica Avviso</string>
+    <string name="download_warning">Scarica Avviso</string>
     <string name="remote_file_change">Indicatore di modifiche al file remoto:</string>
+    <string name="local_file_change">Indicatore di modifiche file locali: </string>
     <string name="msg_uploading_overwrite">Il caricamento sovrascriverà la tua versione remota.\nVuoi continuare?</string>
     <string name="msg_downloading_overwrite">Il download sovrascriverà la tua versione locale.\nVuoi continuare?</string>
 </resources>
