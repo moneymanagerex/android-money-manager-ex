@@ -493,7 +493,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         try
         {
-            Pattern p = Pattern.compile("(-?[0-9])");
+            Pattern p = Pattern.compile("(-?\\d+)");
             Matcher m = p.matcher(smsSender);
 
             if (m != null) {
@@ -772,7 +772,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([\\*](.*?)(\\d+)?[\\.]\\s?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "([A-Za-z\\*]\\/+(\\d+)+\\/[A-Za-z\\*])",
-                "((?:UPI|IMPS)\\s?:\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
+                "((?:UPI|IMPS)\\s?(?::|/)\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
 
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
@@ -789,8 +789,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 if (m != null && reqMatch.isEmpty()) {
                     while(m.find()) {
-                        reqMatch = m.group(getGroup[i]).trim();
-                        break;
+                        try {
+                            Double.parseDouble(m.group(getGroup[i]).trim()); // Can be Integer.parseInt(str) if checking for integers
+                            reqMatch = m.group(getGroup[i]).trim();
+                            break;
+                        } catch (NumberFormatException e) {
+                            //
+                        }
+
                     }
                 }
             }
