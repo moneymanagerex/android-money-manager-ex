@@ -134,7 +134,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     //msgSender = "AT-SIBSMS";
 
                     if(isTransactionSms(msgSender) && !msgBody.toLowerCase().contains("otp")) {
-                        // Transaction Sms sender will have format like this AT-SIBSMS,
+                        // Transaction Sms sender will have format like this AT-SIBSMS, South Indian Bank
                         // Promotional sms will have sender like AT-012345
                         // Not sure how this format will be in out side of India. I may need to update if I get sample
 
@@ -489,16 +489,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     private static boolean isTransactionSms(String smsSender)
     {
-        boolean reqMatch = false;
+        boolean reqMatch = true;
 
         try
         {
-            Pattern p = Pattern.compile("(-[a-zA-Z]+)");
+            Pattern p = Pattern.compile("(-?[0-9])");
             Matcher m = p.matcher(smsSender);
 
             if (m != null) {
                 while(m.find()) {
-                    reqMatch = true;
+                    reqMatch = false;
                     break;
                 }
             }
