@@ -153,7 +153,8 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
-        storage.pullDatabaseToTmpFile(currentDb); // TODO: Why do I need to download the remote file, otherwise the metadata is wrong (for Google Drive at least)
+        // download remote file into tmp (this forces also a refresh of the meta data)
+        storage.pullDatabaseToTmpFile(currentDb);
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);

@@ -304,8 +304,8 @@ public class AccountTransaction
         setString(LASTUPDATEDTIME, value);
     }
 
-    public String getLastUpdatedTime() {
-        return getString(LASTUPDATEDTIME);
+    public MmxDate getLastUpdatedTime() {
+        return MmxDate.fromIso8601(getString(LASTUPDATEDTIME));
     }
 
 //    public void createSplitFromRecurring(ArrayList<SplitRecurringCategory> source) {
