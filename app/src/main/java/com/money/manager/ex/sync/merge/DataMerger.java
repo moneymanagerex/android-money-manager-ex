@@ -1,5 +1,6 @@
 package com.money.manager.ex.sync.merge;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
@@ -7,8 +8,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.OperationCanceledException;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -28,7 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import timber.log.Timber;
 
-public class DataMerger extends Handler {
+public class DataMerger {
 
     public static final String REMOTE_ONLY_WAS_MODIFIED = "remote-only was modified:";
     public static final String OVERWRITE_LOCAL_CHANGES = "overwrite local changes:";
@@ -36,8 +40,9 @@ public class DataMerger extends Handler {
     private final Messenger messenger;
     private MergeConflictResolution lastUserResponse;
 
+    private final Object lock = new Object();
+
     public DataMerger(@NotNull Messenger messenger) {
-        super(Looper.getMainLooper());
         this.messenger = messenger;
     }
 
@@ -85,9 +90,9 @@ public class DataMerger extends Handler {
             boolean modifiedRemoteAfterSync = true;
             if (localEntity instanceof IModificationTraceable) {
                 // only for entities that implements IModificationTraceable we can determine if they are modified or not
-                MmxDate localChangeDate = MmxDate.fromIso8601(((IModificationTraceable)localEntity).getLastUpdatedTime());
+                MmxDate localChangeDate = ((IModificationTraceable)localEntity).getLastUpdatedTime();
                 modifiedLocallyAfterSync = localChangeDate.toDate().after(lastLocalSyncDate.toDate());
-                MmxDate remoteChangeDate = MmxDate.fromIso8601(((IModificationTraceable)remoteEntity).getLastUpdatedTime());
+                MmxDate remoteChangeDate = ((IModificationTraceable)remoteEntity).getLastUpdatedTime();
                 modifiedRemoteAfterSync = remoteChangeDate.toDate().after(lastLocalSyncDate.toDate());
             }
 
@@ -125,7 +130,8 @@ public class DataMerger extends Handler {
         msg.what = SyncServiceMessage.USER_DIALOG_CONFLICT.code;
         msg.obj = new String[] {"Ours:", "Theirs"};
         msg.setAsynchronous(false);
-        msg.replyTo = new Messenger(this);
+        Handler handler = new ResponseHandler();
+        msg.replyTo = new Messenger(handler);
         try {
             Timber.d("Asking user for conflict solution");
             messenger.send(msg);
@@ -135,8 +141,10 @@ public class DataMerger extends Handler {
         }
         // wait for response
         try {
-            Timber.i("Waiting for user response");
-            this.wait();
+            Timber.d("Waiting for user response");
+            synchronized (lock) {
+                lock.wait();
+            }
             // return the last response and continue
             MergeConflictResolution resp = lastUserResponse;// received by {@link #handleMessage}
             lastUserResponse = null; // reset
@@ -145,7 +153,7 @@ public class DataMerger extends Handler {
             Timber.e(e);
             return MergeConflictResolution.ABORT;
         } finally {
-            Timber.i("Continue processing");
+            Timber.d("Continue processing");
         }
     }
 
@@ -159,14 +167,20 @@ public class DataMerger extends Handler {
         return new MmxDate("1900-01-01T00:00:00.000+0200");
     }
 
-    @Override
-    public void handleMessage(@NonNull Message msg) {
-        if (msg.sendingUid == SyncServiceMessageHandler.SENDING_UID_RESPONSE) {
+    @SuppressLint("HandlerLeak")
+    private class ResponseHandler extends Handler{
+        public ResponseHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
             Timber.d("Response received");
             lastUserResponse = MergeConflictResolution.values()[msg.what];
-            this.notify();
+            synchronized (lock) {
+                lock.notify();
+            }
         }
     }
-
 
 }

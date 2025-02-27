@@ -22,6 +22,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Messenger;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import com.money.manager.ex.sync.merge.MergeConflictResolution;
 import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -52,19 +54,31 @@ import timber.log.Timber;
 public class SyncServiceMessageHandler
     extends Handler {
 
-    public static final int SENDING_UID_RESPONSE = 1;
-
     public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
         super(Looper.getMainLooper()); // Explicitly use the main thread's Looper
         MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
         this.progressDialog = progressDialog;
+        this.textOurs = progressDialog.findViewById(R.id.textMergeOurs);
+        this.textTheirs = progressDialog.findViewById(R.id.textMergeTheirs);
+        this.btOurs = progressDialog.findViewById(R.id.buttonMergeTakeOurs);
+        this.btTheirs = progressDialog.findViewById(R.id.buttonMergeTakeTheirs);
+        this.btTheirsListener = new ConflictDialogOnClickListener(MergeConflictResolution.THEIRS);
+        this.btTheirs.setOnClickListener(btTheirsListener);
+        this.btOursListener = new ConflictDialogOnClickListener(MergeConflictResolution.OURS);
+        this.btOurs.setOnClickListener(btOursListener);
     }
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
     private final Context context;
     private final AlertDialog progressDialog;
+    private final TextView textOurs;
+    private final TextView textTheirs;
+    private final Button btOurs;
+    private final ConflictDialogOnClickListener btOursListener;
+    private final Button btTheirs;
+    private final ConflictDialogOnClickListener btTheirsListener;
 
     @Override
     public void handleMessage(Message msg) {
@@ -125,41 +139,34 @@ public class SyncServiceMessageHandler
             case USER_DIALOG_CONFLICT:
                 String txtOurs = ((String[])msg.obj)[0];
                 String txtTheirs = ((String[])msg.obj)[1];
-                TextView textOurs = (TextView)progressDialog.findViewById(R.id.textMergeOurs);
-                textOurs.setText(txtOurs);
-                TextView textTheirs = (TextView)progressDialog.findViewById(R.id.textMergeTheirs);
-                textTheirs.setText(txtTheirs);
-
-                Button btOurs = (Button)progressDialog.findViewById(R.id.buttonMergeTakeOurs);
-                Button btTheirs = (Button)progressDialog.findViewById(R.id.buttonMergeTakeTheirs);
-
-                Message msgResponse = new Message();
-                msgResponse.sendingUid = SENDING_UID_RESPONSE;
-                btOurs.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            msgResponse.what = MergeConflictResolution.OURS.ordinal();
-                            msg.replyTo.send(msgResponse);
-                        } catch (RemoteException e) {
-                            Timber.e(e);
-                        }
-                    }
-                });
-                btTheirs.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            msgResponse.what = MergeConflictResolution.THEIRS.ordinal();
-                            msg.replyTo.send(msgResponse);
-                        } catch (RemoteException e) {
-                            Timber.e(e);
-                        }
-                    }
-                });
+                final Messenger replyTo = msg.replyTo;
+                this.textOurs.setText(txtOurs);
+                this.textTheirs.setText(txtTheirs);
+                this.btOursListener.setReplyTo(replyTo);
+                this.btTheirsListener.setReplyTo(replyTo);
+                setVisibilityConflictDialogElements(true);
+                break;
             default:
                 throw new RuntimeException("unknown message");
         }
+    }
+
+    private void sendResponse(@NotNull Messenger replyTo, MergeConflictResolution resolution) {
+        Message msgResponse = new Message();
+        msgResponse.what = resolution.ordinal();
+        try {
+            replyTo.send(msgResponse);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void setVisibilityConflictDialogElements(boolean visibility) {
+        Timber.d("conflict dialog visibility: %s", visibility);
+        int vis = visibility ? View.VISIBLE : View.INVISIBLE;
+        textOurs.setVisibility(vis);
+        textTheirs.setVisibility(vis);
+        btOurs.setVisibility(vis);
+        btTheirs.setVisibility(vis);
     }
 
     public Context getContext() {
@@ -183,6 +190,31 @@ public class SyncServiceMessageHandler
             progressDialog.show();
         } catch (Exception e) {
             Timber.e(e, "showing progress dialog on sync.");
+        }
+    }
+
+    private class ConflictDialogOnClickListener implements View.OnClickListener {
+        private final MergeConflictResolution resolution;
+        private Messenger replyTo;
+
+        public ConflictDialogOnClickListener(MergeConflictResolution resolution) {
+            this.resolution = resolution;
+        }
+
+        @Override
+        public void onClick(View view) {
+            try {
+                Timber.d("sending response from user: %s", resolution);
+                sendResponse(replyTo, resolution);
+            } catch( Exception e) {
+                Timber.e(e);
+            } finally {
+                setVisibilityConflictDialogElements(false);
+            }
+        }
+
+        public void setReplyTo(Messenger replyTo) {
+            this.replyTo = replyTo;
         }
     }
 }
