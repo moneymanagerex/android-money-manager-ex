@@ -1,6 +1,8 @@
 package com.money.manager.ex.datalayer;
 
+import com.money.manager.ex.utils.MmxDate;
+
 public interface IModificationTraceable {
 
-    public String getLastUpdatedTime();
+    public MmxDate getLastUpdatedTime();
 }

@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Tests for conversion from JodaTime back to the standard Java date types.
  */
@@ -47,4 +49,33 @@ public class MmxDateTimeTests {
         String current = _util.getCalendar().toString();
         Log.d("test", current);
     }
+
+    @Test
+    public void testIsoCombinedFormat() {
+        MmxDate d = MmxDate.fromIso8601("2025-02-26T21:36:07.000+0100");
+        assertEquals(36, d.getMinute());
+    }
+
+    @Test
+    public void testInvalidPattern() {
+        MmxDate d = MmxDate.fromIso8601("2016-10-21T18:42:18.000Z");
+        assertEquals(42, d.getMinute());
+    }
+
+    @Test
+    public void testCombinedPattern() {
+        MmxDate d = MmxDate.fromIso8601("2025-07-25T21:08:51");
+        assertEquals(21, d.getHour());
+
+        d = MmxDate.fromIso8601("2025-01-25T21:08:51");
+        assertEquals(21, d.getHour());
+    }
+
+    @Test
+    public void testValidPattern() {
+        MmxDate d = MmxDate.fromIso8601("2016-10-22T02:36:46.000+0200");
+        assertEquals(36, d.getMinute());
+    }
+
+
 }

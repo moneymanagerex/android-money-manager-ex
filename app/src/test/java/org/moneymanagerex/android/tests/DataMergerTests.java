@@ -90,12 +90,12 @@ public class DataMergerTests {
     @Test
     public void testAccountTransactionEquals() {
         AccountTransaction localEntity = new AccountTransaction();
-        localEntity.setLastUpdatedTime("2020-01-20T18:42:18.000Z");
+        localEntity.setLastUpdatedTime(MmxDate.fromIso8601("2020-01-20T18:42:18.000Z").toIsoString());
         AccountTransaction remoteEntity = new AccountTransaction();
-        remoteEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
+        remoteEntity.setLastUpdatedTime(MmxDate.fromIso8601("2020-01-22T18:42:18.000Z").toIsoString());
         assertNotEquals(localEntity, remoteEntity);
 
-        remoteEntity.setLastUpdatedTime(localEntity.getLastUpdatedTime());
+        remoteEntity.setLastUpdatedTime(localEntity.getLastUpdatedTime().toIsoString());
         assertEquals(localEntity, remoteEntity);
     }
 
