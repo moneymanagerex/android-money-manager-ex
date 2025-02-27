@@ -45,8 +45,13 @@ public class ReportRepository extends RepositoryBase<Report> {
     }
 
     @Override
-    protected Report createEntity() {
+    public Report createEntity() {
         return new Report();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

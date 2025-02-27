@@ -888,4 +888,8 @@
     <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
     <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Take ours</string>
+    <string name="merge_take_theirs">Take theirs</string>
+
 </resources>
