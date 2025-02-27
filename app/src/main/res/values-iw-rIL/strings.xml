@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">אחת לחודש (ביום העסקים האחרון)</string>
     <!-- languages -->
     <string name="locale_application">שפת יישום</string>
-    <string name="locale_ar">ערבית</string>
     <string name="transaction_cancel_confirm">האם אתה בטוח כי ברצונך למחוק את השינויים?</string>
     <string name="keep_editing">המשך בעריכה</string>
     <string name="discard">בטל</string>

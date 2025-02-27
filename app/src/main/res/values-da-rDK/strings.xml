@@ -423,7 +423,6 @@
     <string name="montly_last_bussines_day">Månedligt (sidste hverdag)</string>
     <!-- languages -->
     <string name="locale_application">Programsprog</string>
-    <string name="locale_ar">Arabisk</string>
     <string name="transaction_cancel_confirm">Er du sikker på du vil fortryde ændringerne?</string>
     <string name="keep_editing">Fortsæt redigering</string>
     <string name="discard">Kassér</string>

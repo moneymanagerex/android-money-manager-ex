@@ -463,7 +463,6 @@
     <string name="montly_last_bussines_day">Ежемесячно (последний рабочий день)</string>
     <!-- languages -->
     <string name="locale_application">Язык приложения</string>
-    <string name="locale_ar">Арабский</string>
     <string name="transaction_cancel_confirm">Отменить изменения?</string>
     <string name="keep_editing">Продолжить редактирование</string>
     <string name="discard">Не сохранять</string>

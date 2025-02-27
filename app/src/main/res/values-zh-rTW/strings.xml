@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">每月 (最後一個工作日)</string>
     <!-- languages -->
     <string name="locale_application">應用程式語言</string>
-    <string name="locale_ar">阿拉伯文</string>
     <string name="transaction_cancel_confirm">您確定要放棄所有修改嗎？</string>
     <string name="keep_editing">繼續編輯</string>
     <string name="discard">放棄</string>

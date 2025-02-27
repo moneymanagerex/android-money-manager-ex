@@ -400,7 +400,6 @@
     <string name="montly_last_bussines_day">Mesačne (posledný pracovný deň)</string>
     <!-- languages -->
     <string name="locale_application">Jazyk aplikácie</string>
-    <string name="locale_ar">Arabský</string>
     <string name="transaction_cancel_confirm">Ste si istý, že chcete zrušiť zmeny?</string>
     <string name="keep_editing">Pokračovať v upravovaní</string>
     <string name="discard">Zrušiť</string>

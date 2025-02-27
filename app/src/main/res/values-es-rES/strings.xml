@@ -450,7 +450,6 @@
     <string name="montly_last_bussines_day">Mensual (último día hábil)</string>
     <!-- languages -->
     <string name="locale_application">Idioma de la aplicación</string>
-    <string name="locale_ar">Árabe</string>
     <string name="transaction_cancel_confirm">¿Realmente quiere descartar los cambios?</string>
     <string name="keep_editing">Seguir editando</string>
     <string name="discard">Descartar</string>

@@ -413,7 +413,6 @@
     <string name="montly_last_bussines_day">Mensuel (dernier jour ouvrable)</string>
     <!-- languages -->
     <string name="locale_application">Langue</string>
-    <string name="locale_ar">Arabe</string>
     <string name="transaction_cancel_confirm">Êtes-vous sûr de vouloir annuler vos modifications ?</string>
     <string name="keep_editing">Continuer</string>
     <string name="discard">Abandonner</string>

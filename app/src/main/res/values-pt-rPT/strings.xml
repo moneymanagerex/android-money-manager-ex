@@ -408,7 +408,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="montly_last_bussines_day">Mensalmente (último dia útil)</string>
     <!-- languages -->
     <string name="locale_application">Idioma da aplicação</string>
-    <string name="locale_ar">Árabe</string>
     <string name="transaction_cancel_confirm">Pretende descartar as alterações?</string>
     <string name="keep_editing">Manter em edição</string>
     <string name="discard">Descartar</string>

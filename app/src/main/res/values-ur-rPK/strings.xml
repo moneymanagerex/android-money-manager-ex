@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">ماہانہ (آخری کاروباری دن)</string>
     <!-- languages -->
     <string name="locale_application">ایپلی کیشن زبان</string>
-    <string name="locale_ar">عربی</string>
     <string name="transaction_cancel_confirm">کیا آپ پراعتماد ہے کہ آپ تبدیلیاں موخر کرنا چاہتے ہیں?</string>
     <string name="keep_editing">تدوین کاری رکھیں</string>
     <string name="discard">مسترد کریں</string>

@@ -412,7 +412,6 @@
     <string name="montly_last_bussines_day">Maandelijkse (laatste werkdag)</string>
     <!-- languages -->
     <string name="locale_application">Taal voor deze app</string>
-    <string name="locale_ar">Arabisch</string>
     <string name="transaction_cancel_confirm">Weet u zeker dat de wijzigen niet opgeslagen moeten worden?</string>
     <string name="keep_editing">Doorgaan</string>
     <string name="discard">Annuleer</string>

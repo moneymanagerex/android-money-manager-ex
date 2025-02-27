@@ -413,7 +413,6 @@
     <string name="montly_last_bussines_day">شهريا (آخر يوم عمل)</string>
     <!-- languages -->
     <string name="locale_application">لغة التطبيق</string>
-    <string name="locale_ar">العربية</string>
     <string name="transaction_cancel_confirm">هل أنت متأكد من أنك تريد تجاهل هذه التغييرات؟</string>
     <string name="keep_editing">متابعة التعديل</string>
     <string name="discard">تجاهل</string>

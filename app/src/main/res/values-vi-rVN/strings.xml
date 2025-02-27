@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Hàng tháng (ngày kinh doanh cuối cùng)</string>
     <!-- languages -->
     <string name="locale_application">Ngôn ngữ ứng dụng</string>
-    <string name="locale_ar">Ngôn ngữ Ả-Rập</string>
     <string name="transaction_cancel_confirm">Có chắc là bạn muốn huỷ tất cả thay đổi?</string>
     <string name="keep_editing">Tiếp tục chỉnh sửa</string>
     <string name="discard">Hủy bỏ</string>

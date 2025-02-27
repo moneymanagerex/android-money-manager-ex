@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Lunar (ultima zi lucrătoare)</string>
     <!-- languages -->
     <string name="locale_application">Limba Aplicației</string>
-    <string name="locale_ar">Arabic</string>
     <string name="transaction_cancel_confirm">Eşti sigur ca vrei să renunți la toate modificările?</string>
     <string name="keep_editing">Continuă să editezi</string>
     <string name="discard">Anulează</string>

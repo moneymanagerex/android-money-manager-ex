@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">毎月 (最終営業日)</string>
     <!-- languages -->
     <string name="locale_application">アプリケーションの言語</string>
-    <string name="locale_ar">アラビア語</string>
     <string name="transaction_cancel_confirm">変更を破棄してもよろしいですか?</string>
     <string name="keep_editing">編集を続ける</string>
     <string name="discard">破棄</string>

@@ -459,7 +459,6 @@
     <string name="montly_last_bussines_day">Monthly (last business day)</string>
     <!-- languages -->
     <string name="locale_application">Application Language</string>
-    <string name="locale_ar">Arabic</string>
     <string name="transaction_cancel_confirm">Are you sure you want to discard the changes?</string>
     <string name="keep_editing">Keep editing</string>
     <string name="discard">Discard</string>
