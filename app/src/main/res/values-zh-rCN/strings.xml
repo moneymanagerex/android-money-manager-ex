@@ -443,7 +443,6 @@
     <string name="montly_last_bussines_day">每月 (最后一个工作日)</string>
     <!-- languages -->
     <string name="locale_application">界面语言</string>
-    <string name="locale_ar">阿拉伯语</string>
     <string name="transaction_cancel_confirm">您确定要放弃未保存的改动吗？</string>
     <string name="keep_editing">继续编辑</string>
     <string name="discard">放弃编辑</string>

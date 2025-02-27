@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Buwan buwan (huling araw ng pagtatrabaho)</string>
     <!-- languages -->
     <string name="locale_application">Lingwahe ng Aplikasyon</string>
-    <string name="locale_ar">Arabiko</string>
     <string name="transaction_cancel_confirm">Sigurado ka bang gusto mong isawala ang mga binago?</string>
     <string name="keep_editing">Patuloy na mag-edit</string>
     <string name="discard">Itapon</string>

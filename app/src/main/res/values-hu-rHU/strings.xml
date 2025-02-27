@@ -459,7 +459,6 @@
     <string name="montly_last_bussines_day">Havi (utolsó munkanap)</string>
     <!-- languages -->
     <string name="locale_application">Alkalmazás nyelve</string>
-    <string name="locale_ar">Arab</string>
     <string name="transaction_cancel_confirm">Biztosan elveti szeretné a változtatásokat?</string>
     <string name="keep_editing">Szerkesztés folytatása</string>
     <string name="discard">Elvet</string>

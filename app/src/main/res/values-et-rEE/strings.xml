@@ -177,7 +177,6 @@
     <string name="cash_accounts">Rahakontod</string>
     <string name="bank_accounts">Pangakontod</string>
     <!-- languages -->
-    <string name="locale_ar">Araabia</string>
     <string name="keep_editing">Jätka redigeerimist</string>
     <string name="discard">Loobu</string>
     <string name="due_today">Tänaseks</string>

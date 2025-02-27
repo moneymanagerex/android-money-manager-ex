@@ -423,7 +423,6 @@
     <string name="montly_last_bussines_day">Щомісяця (останній робочий день)</string>
     <!-- languages -->
     <string name="locale_application">Мова програми</string>
-    <string name="locale_ar">Арабська</string>
     <string name="transaction_cancel_confirm">Ви дійсно бажаєте скасувати зміни?</string>
     <string name="keep_editing">Продовжити редагування</string>
     <string name="discard">Відмінити</string>

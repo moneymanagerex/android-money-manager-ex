@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Mjesečno (posljednji radni dan)</string>
     <!-- languages -->
     <string name="locale_application">Jezik aplikacije</string>
-    <string name="locale_ar">Arapski</string>
     <string name="transaction_cancel_confirm">Jeste li sigurni da želite odbaciti promjene?</string>
     <string name="keep_editing">Nastavi izmjene</string>
     <string name="discard">Odbaci</string>

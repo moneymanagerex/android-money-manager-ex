@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Μηνιαία (τελευταία εργάσιμη ημέρα)</string>
     <!-- languages -->
     <string name="locale_application">Γλώσσα Εφαρμογής</string>
-    <string name="locale_ar">Αραβικά</string>
     <string name="transaction_cancel_confirm">Θέλετε σίγουρα να απορρίψετε τις αλλαγές;</string>
     <string name="keep_editing">Διατήρηση επεξεργασίας</string>
     <string name="discard">Απόρριψη</string>

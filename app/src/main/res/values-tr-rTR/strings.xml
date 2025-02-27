@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Aylık (son iş günü)</string>
     <!-- languages -->
     <string name="locale_application">Uygulama Dili</string>
-    <string name="locale_ar">Arapça</string>
     <string name="transaction_cancel_confirm">Değişiklikleri iptal etmek istediğinizden emin misiniz?</string>
     <string name="keep_editing">Düzenleme devam et</string>
     <string name="discard">İptal et</string>

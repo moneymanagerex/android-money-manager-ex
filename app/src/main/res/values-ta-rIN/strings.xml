@@ -463,7 +463,6 @@
     <string name="montly_last_bussines_day">மாதாந்திர (கடைசி வணிக நாள்)</string>
     <!-- languages -->
     <string name="locale_application">மென்பொருள் மொழி</string>
-    <string name="locale_ar">அரபு</string>
     <string name="transaction_cancel_confirm">இந்தப் பதிவை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</string>
     <string name="keep_editing">திருத்துவதைத் தொடரவும்</string>
     <string name="discard">நிராகரி</string>

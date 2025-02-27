@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Bulanan (hari bisnis terakhir)</string>
     <!-- languages -->
     <string name="locale_application">Bahasa Aplikasi</string>
-    <string name="locale_ar">Bahasa Arab</string>
     <string name="transaction_cancel_confirm">Apakah anda yakin ingin membuang perubahan?</string>
     <string name="keep_editing">Tetap menyunting</string>
     <string name="discard">Buang</string>

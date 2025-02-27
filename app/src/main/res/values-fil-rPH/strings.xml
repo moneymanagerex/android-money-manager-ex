@@ -401,7 +401,6 @@
     <string name="montly_last_bussines_day">Buwanan (huling araw ng negosyo)</string>
     <!-- languages -->
     <string name="locale_application">Wika ng aplikasyon</string>
-    <string name="locale_ar">Arabic</string>
     <string name="transaction_cancel_confirm">Sigurado ka ba na ibaliwala ang mga pagbabago?</string>
     <string name="keep_editing">Ipagpatuloy ang pag-edit</string>
     <string name="discard">Ibaliwala</string>
