@@ -136,8 +136,10 @@
     <string name="decimal_char">小数点</string>
     <string name="group_char">千分符</string>
     <string name="scale">小数位数</string>
+    <string name="conversion_to_base_rate">转换</string>
     <string name="currency_name_empty">请输入货币名称</string>
     <string name="new_edit_currency">新建/编辑货币</string>
+    <string name="missing_default_currency">设置缺少默认货币</string>
     <!-- transaction -->
     <string name="amount">金额</string>
     <string name="total_amount">总金额</string>
@@ -217,6 +219,12 @@
     <string name="widget_all_accounts">所有账户</string>
     <string name="widget_add_transaction">添加交易</string>
     <!-- TAG -->
+    <string name="tag">标签</string>
+    <string name="tagsList_transactions">交易标签</string>
+    <string name="tag_name">标签名称</string>
+    <string name="edit_tagName">编辑标签</string>
+    <string name="delete_tag">删除标签</string>
+    <string name="select_tag">选择标签</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">无</string>
     <string name="once">仅一次</string>
@@ -257,6 +265,7 @@
     <string name="enter">回车</string>
     <string name="enter_amount">输入金额</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">自动交易</string>
     <string name="manual">手动输入</string>
     <string name="prompt">提示输入</string>
     <string name="auto">自动输入</string>
@@ -286,6 +295,7 @@
     <string name="month">月</string>
     <string name="year">年</string>
     <string name="menu_report_income_vs_expenses">损益表</string>
+    <string name="menu_report_cashflow">现金流</string>
     <string name="total">总计</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">全部时间</string>
