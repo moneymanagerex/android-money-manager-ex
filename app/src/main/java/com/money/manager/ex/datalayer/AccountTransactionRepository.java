@@ -103,7 +103,7 @@ public class AccountTransactionRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
 
-        item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
+        item.setLastUpdatedTime((new MmxDate()).toIsoString());
 
         return super.update(item, where.getWhere());
     }
