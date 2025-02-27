@@ -48,6 +48,7 @@ import com.money.manager.ex.settings.AppSettings;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -326,7 +327,13 @@ public class Core {
         Locale locale;
 
         if (!TextUtils.isEmpty(languageToLoad)) {
-            locale = new Locale(languageToLoad);
+            String[] languages = languageToLoad.split("_");
+            if (languages.length == 1) {
+                locale = new Locale(languages[0]);
+            } else {
+                locale = new Locale(languages[0], languages[1]);
+            }
+//            locale = new Locale(languageToLoad);
 //                locale = Locale.forLanguageTag(languageToLoad);
         } else {
             locale = Locale.getDefault();
