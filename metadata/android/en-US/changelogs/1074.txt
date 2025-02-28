@@ -1,5 +1,3 @@
 Fix Tag if null
 Fix Cashflow for transaction with number of occurences
 Fix LoaderManager for error while enter transaction
-Fix SMS Receiver processing if the SMS sender name doesn't have the hyphen
-Fix Don't Replace the Transaction Number once the SMS Receiver sets the correct transaction number from SMS
