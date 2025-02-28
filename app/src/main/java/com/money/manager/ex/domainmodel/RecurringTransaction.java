@@ -32,6 +32,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -313,7 +314,7 @@ public class RecurringTransaction
     }
 
     public String getTransactionNumber() {
-        return getString(ITransactionEntity.TRANSACTIONNUMBER);
+        return Objects.requireNonNullElse(getString(ITransactionEntity.TRANSACTIONNUMBER),"");
     }
 
     public void setTransactionNumber(String value) {
