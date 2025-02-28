@@ -35,6 +35,7 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
+import com.money.manager.ex.settings.SecuritySettingsFragment;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 
@@ -66,6 +67,7 @@ public class ScheduledTransactionListActivity
                 // set action and data
                 intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+                intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
                 // start activity
                 startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
             }
