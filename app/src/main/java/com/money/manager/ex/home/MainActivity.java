@@ -63,6 +63,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
+import com.money.manager.ex.settings.SecuritySettingsFragment;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -263,7 +264,7 @@ public class MainActivity
                 // set action and data
                 intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
-                intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, "0"); // passing zero as default value
+                intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
                 // start activity
                 startActivityForResult(intent, RequestCodes.PASSCODE);
                 // set in authentication

@@ -10,7 +10,7 @@ import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
 
-public class TagRepository extends RepositoryBase <Tag> {
+public class TagRepository extends RepositoryBase<Tag> {
 
     private static final String TABLE_NAME = "TAG_V1";
     private static final String ID_COLUMN = Tag.TAGID;
@@ -40,7 +40,7 @@ public class TagRepository extends RepositoryBase <Tag> {
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {ID_COLUMN +" AS _id",
+        return new String[]{ID_COLUMN + " AS _id",
                 Tag.TAGID,
                 Tag.TAGNAME,
                 Tag.ACTIVE
@@ -58,19 +58,20 @@ public class TagRepository extends RepositoryBase <Tag> {
                 getOrderByFromCode());
 
         ArrayList<Tag> listEntity = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            Tag entity = new Tag();
-            entity.loadFromCursor(cursor);
-            listEntity.add(entity);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Tag entity = new Tag();
+                entity.loadFromCursor(cursor);
+                listEntity.add(entity);
+            }
+            cursor.close();
         }
-        cursor.close();
 
         return listEntity;
     }
 
     public String getOrderByFromCode(int sort) {
-        switch(sort) {
+        switch (sort) {
             case SORT_BY_FREQUENCY:
                 return ORDER_BY_USAGE;
             case SORT_BY_RECENT:
