@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">Kişisel mali, banka hesapları, aile bütçesini vb. yönetmek için basit ve kullanımı kolay bir uygulama.</string>
+    <string name="application_credits">Money Manager Ex android projesi için ActionBarSherlock kütüphanesi kullanıyor</string>
     <string name="application_license">Açık Kaynak Lisansları</string>
     <!-- database -->
     <string name="db_insert_failed">Veri ekleme başarısız oldu</string>
@@ -50,13 +51,14 @@
     <string name="preferences_behaviour">Davranış</string>
     <string name="base_currency">Baz para birimi</string>
     <string name="base_currency_changed">Baz para birimi değiştirildi</string>
-    <string name="base_currency_change_notification">Temel para birimi değiştirildi. Lütfen yeni temel para biriminde doğru değerleri almak için para birimi döviz kurlarını güncelleştirin.</string>
+    <string name="base_currency_change_notification">Temel para birimi değiştirildi. Yeni temel para biriminde doğru tutarları elde etmek için lütfen döviz kurlarını güncelleyin.</string>
     <string name="view_accounts_opened">Açık hesapları görüntüle</string>
     <string name="if_not_selected_willShowAllAccounts">Seçili değilse tüm hesapları gösterir</string>
     <string name="view_accounts_favorites">Favori hesapları görüntüle</string>
     <string name="version">Sürüm</string>
     <string name="build">Yapı</string>
     <string name="path">Veritabanı yolu</string>
+    <string name="remote_path">Uzak yol</string>
     <string name="database_version">Veritabanı versiyonu</string>
     <string name="title_show_tutorial">Eğitimi göster</string>
     <string name="summary_show_tutorial">Bir sonraki açılışta program özellikleri gösterilsin mi?</string>
@@ -67,6 +69,9 @@
     <string name="sync_on_app_start">Uygulama açıldığında eşitle.</string>
     <string name="sync_on_start">Eşitleme başlıyor</string>
     <!-- Receive SMS strings -->
+    <string name="granted_receive_sms_access">RECEIVE_SMS için zaten izin verildi</string>
+    <string name="title_sms_trans_status_notification">SMS İşlem Durumu Bildirimi</string>
+    <string name="notification_click_to_edit_transaction">İşlemi düzenlemek için dokunun&#8230;</string>
     <!-- account -->
     <string name="account">Hesap</string>
     <string name="account_list">Hesap Listesi</string>
@@ -74,7 +79,7 @@
     <string name="account_balance">Hesap bakiyesi</string>
     <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
     <string name="delete_account">Hesabı Sil</string>
-    <string name="account_name">Hesap ismi</string>
+    <string name="account_name">Hesap adı</string>
     <string name="account_type">Hesap tipi</string>
     <string name="account_number">Hesap numarası</string>
     <string name="account_held_at">Finan kuruluşu</string>
@@ -90,7 +95,7 @@
     <string name="error_currency_not_selected">Para birimi gereklidir</string>
     <string name="error_saving_default_currency">Varsayılan para birimi kaydedilirken hata oluştu</string>
     <string name="error_initialbal_empty">İlk hesap bakiyesi gereklidir</string>
-    <string name="error_accountname_empty">Hesap ismi gereklidir</string>
+    <string name="error_accountname_empty">Hesap adı gereklidir</string>
     <string name="error_accounttype_empty">Hesap tipi gereklidir</string>
     <string name="error_status_empty">Hesap durumu gereklidir</string>
     <string name="error_amount_must_be_positive">Tutar pozitif olmalıdır. Negatif işareti işlem türüne göre belirlenir.</string>
@@ -112,6 +117,7 @@
     <string name="add_subcategory">Alt Kategori Seç</string>
     <string name="edit_categoryName">Kategori Düzenle</string>
     <string name="delete_category">Kategori Sil</string>
+    <string name="search_sub_category">Alt kategoriyi içer</string>
     <!-- currency -->
     <string name="currency_name">Para birimi adı</string>
     <string name="currency_symbol">Para birimi sembolü</string>
@@ -125,21 +131,22 @@
     <string name="scale">Aralık</string>
     <string name="currency_name_empty">Para birimi adı gereklidir</string>
     <string name="new_edit_currency">Para birimi ekle/düzenle</string>
+    <string name="missing_default_currency">Ayarlarda varsayılan para birimi bulunmuyor</string>
     <!-- transaction -->
     <string name="amount">Tutar</string>
     <string name="total_amount">Toplam tutar</string>
-    <string name="deposit">Mevduat</string>
+    <string name="deposit">Gelir</string>
     <string name="status">Durum</string>
     <string name="status_reconciled">Onaylanmış</string>
     <string name="status_void">Hükümsüz</string>
     <string name="status_follow_up">Takip et</string>
     <string name="status_duplicate">Tekrar</string>
     <string name="status_none">Hiçbiri</string>
-    <string name="transfer">Havale</string>
-    <string name="transfer_amount">Transfer miktarı</string>
+    <string name="transfer">Aktarma</string>
+    <string name="transfer_amount">Aktarma tutarı</string>
     <string name="transaction_type">İşlem Türü</string>
     <string name="transaction_status">Durum</string>
-    <string name="withdrawal">Çıkış</string>
+    <string name="withdrawal">Ödeme</string>
     <string name="db_checking_insert_failed">İşlem ekleme başarısız</string>
     <string name="db_checking_update_failed">İşlem güncelleme başarısız</string>
     <string name="delete_transaction">İşlemi Sil</string>
@@ -148,7 +155,7 @@
     <string name="error_toaccount_not_selected">Aktarılacak hesap gereklidir</string>
     <string name="error_category_not_selected">Kategori gereklidir</string>
     <string name="error_totamount_empty">Toplam tutar gereklidir</string>
-    <string name="error_transfer_to_same_account">Transfer için iki hesabın farklı olması gerekir</string>
+    <string name="error_transfer_to_same_account">Aktarma için iki farklı hesap gerekir</string>
     <string name="about">Hakkında</string>
     <string name="add">Ekle</string>
     <string name="confirmDelete">Bu kaydı silmek istediğinize emin misiniz?</string>
@@ -175,6 +182,7 @@
     <string name="access_info">Erişim bilgisi</string>
     <string name="initial_balance">Başlangıç bakiyesi</string>
     <string name="notes">Açıklama</string>
+    <string name="notes_hint">Bir not ekle</string>
     <string name="closed">Kapalı</string>
     <string name="theme_application">Tema</string>
     <string name="theme_holo">Koyu Tema</string>
@@ -203,6 +211,10 @@
     <string name="widget_all_accounts">Tüm Hesaplar</string>
     <string name="widget_add_transaction">İşlem Ekle</string>
     <!-- TAG -->
+    <string name="tag_name">Etiket adı</string>
+    <string name="edit_tagName">Etiketi düzenle</string>
+    <string name="delete_tag">Etiketi sil</string>
+    <string name="select_tag">Etiketi seç</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Hiçbiri</string>
     <string name="once">Bir defa</string>
@@ -210,6 +222,7 @@
     <string name="bi_weekly">İki haftalık</string>
     <string name="monthly">Aylık</string>
     <string name="bi_monthly">İki aylık</string>
+    <string name="quarterly">Üç aylık</string>
     <string name="half_year">Yarı Yıllık</string>
     <string name="yearly">Yıllık</string>
     <string name="four_months">Dört Ay</string>
@@ -219,8 +232,11 @@
     <string name="in_x_months">(x) Ayda bir</string>
     <string name="every_x_days">Her (x) Gün</string>
     <string name="every_x_months">Her (x) Ay</string>
+    <string name="repeating_empty_transaction">Planlanmış işlem bulunmuyor. Oluşturmak için yeşil artı düğmesine dokunun.</string>
     <string name="inactive">Etkin değil</string>
     <string name="activates">Etkinleştirir</string>
+    <string name="days_overdue">%d gün gecikmiş!</string>
+    <string name="days_remaining">%d gün kaldı</string>
     <string name="due_date">Bitiş Tarihi</string>
     <string name="next_occurrence">Sonraki Gerçekleşme</string>
     <string name="payment_date">Ödeme Tarihi</string>
@@ -253,6 +269,7 @@
     <string name="enter_your_previous_passcode">Mevcut parolanızı girin</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">parola güncellenemedi</string>
+    <string name="preferences_fingerprint_title">Parmak izi doğrulaması</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Aramalar için % joker karakteri kullanabilirisiniz</string>
     <string name="income_vs_expenses_current_month">Gelirler ve Giderler: Bu ay</string>
@@ -270,6 +287,8 @@
     <string name="last_month">Önceki Ay</string>
     <string name="last30days">Son 30 gün</string>
     <string name="last_year">Önceki Yıl</string>
+    <string name="current_fin_year">Mevcut mali yıl</string>
+    <string name="last_fin_year">Önceki mali yıl</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Bulunan işlem sayısı: %1$d</string>
@@ -277,6 +296,7 @@
     <string name="date_format">Tarih Biçimi</string>
     <string name="financial_year_start_day">Mali Yıl: Başlangıç günü</string>
     <string name="financial_year_start_month">Mali Yıl: Başlangıç Ayı</string>
+    <string name="financial_year_not_set">Ayarlarda mali yıl başlangıç ​​tarihini ayarlayın.</string>
     <string name="menu_move_database_to_external_storage">Veritabanını dışa aktar</string>
     <string name="database_has_been_moved">Veritabanı taşındı: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Veritabanını harici belleğe taşıma başarısız</string>
@@ -285,7 +305,7 @@
     <string name="split_transaction">İşlemi Böl</string>
     <string name="split">Böl</string>
     <string name="error_split_transaction_empty">Bölünen işlemin en az bir bölmesi gereklidir</string>
-    <string name="swipe_to_dismiss">Öğeleri kaldırmak için sürükle.</string>
+    <string name="swipe_to_dismiss">Ögeleri kaldırmak için sürükle.</string>
     <string name="export_data_to_csv">Veriyi CSV olarak kaydet</string>
     <string name="export_data_in_progress">Veri dışa aktarılıyor. Lütfen bekleyin&#8230;</string>
     <string name="export_file_complete">Veri %1$s dosyasına başarılı bir şekilde aktarıldı</string>
@@ -293,7 +313,7 @@
     <string name="donate_header">MoneyManagerEx Android ücretsiz olarak sunulmaktadır. Eğer bu uygulamayı beğendiyseniz geliştirme ekibini bağışlarınız ile destekleyin.</string>
     <string name="donate_in_app_title">Google Play Uygulama-içi Satın Alma</string>
     <string name="donate_in_app_description">Google Play Uygulama İçi Ödeme ile bağış yap.</string>
-    <string name="donate_in_app_spinner_text">Bağış miktarı seç</string>
+    <string name="donate_in_app_spinner_text">Bağış tutarı seçin</string>
     <string name="donate_in_app_button">Bağış yap</string>
     <string name="donate_thank_you">Bağış için teşekkür ederiz!</string>
     <string name="donate">Bağış yap</string>
@@ -313,6 +333,7 @@
     <string name="open_database">Veritabanı Aç</string>
     <string name="synchronization_interval">Eşitleme Aralığı</string>
     <string name="summary_synchronization_interval">Ne sıklıkla eşitlenmesini istersiniz?</string>
+    <string name="tips_new_version_dropbox">Sürüm 1.2.0 itibariyle, Android için Money Manager Ex, Dropbox eşleme motorunu değiştirdi. Dropbox eşlemesi kullanan kullanıcıların yapılandırmayı güncellemesi gerekir. \nKimlik doğrulama ve veri tabanının seçimi ayarlarda bulunur. \nSürüm 1.2.0 itibariyle, Android için Money Manager Ex veri tabanını otomatik olarak eşleyebilir.</string>
     <string name="title_transaction_shown_balance">Her işlemde bakiye görüntüle</string>
     <string name="summary_transaction_shown_balance">Her işlemde bakiyeyi gösterir. Her işlemde bakiye göstermek uygulamanın yavaş çalışmasına neden olur</string>
     <string name="menu_open_database">Veritabanı aç</string>
@@ -332,7 +353,7 @@
     <string name="title_check_repeating_transaction">Bildirim zamanı</string>
     <string name="credits">Ekip</string>
     <string name="libraries">Kitaplıklar</string>
-    <string name="top_withdrawals_last_30_days">En fazla para çekme: Son 30 gün</string>
+    <string name="top_withdrawals_last_30_days">En yüksek ödemeler: Son 30 gün</string>
     <string name="top_payees_last_30_days">En Çok Kullanılan Alacaklılar: Son 30 gün</string>
     <string name="upcoming_transactions">Yaklaşan İşlemler</string>
     <string name="quantity">Miktar</string>
@@ -342,6 +363,7 @@
     <string name="empty_category">Boş Kategori</string>
     <string name="empty_payee">Boş alacaklı</string>
     <string name="help">Yardım</string>
+    <string name="delete_repeating_transaction">Planlanmış işlemi sil</string>
     <string name="last">Son</string>
     <string name="accounts">Hesaplar</string>
     <string name="to_account">Şu hesaba</string>
@@ -353,15 +375,18 @@
     <string name="delete_others_selected_transaction">%d seçilen işlemleri silmek istediğinizden emin misiniz?</string>
     <string name="categories">Kategoriler</string>
     <string name="payees">Alacaklılar</string>
+    <string name="recurring_transactions">Planlanmış İşlemler</string>
     <string name="theme_holo_light">Holo Açık</string>
     <string name="new_account">Yeni Hesap</string>
     <string name="create_new_account">Yeni Hesap Oluştur</string>
-    <string name="amount_greater_or_equal">Miktar büyük veya eşit</string>
-    <string name="amount_from">Hesaptan alınan miktar</string>
-    <string name="amount_less_or_equal">Miktar daha az veya eşit</string>
-    <string name="amount_to">Hesaba giden miktar</string>
+    <string name="amount_greater_or_equal">Tutar büyük veya eşit</string>
+    <string name="amount_from">Hesaptan alınan tutar</string>
+    <string name="amount_less_or_equal">Tutar daha az veya eşit</string>
+    <string name="amount_to">Hesaba giden tutar</string>
     <string name="reset">Sıfırla</string>
     <string name="result_search">Aramanızın sonucu</string>
+    <string name="new_repeating_transaction">Yeni Planlanmış İşlem</string>
+    <string name="edit_repeating_transaction">Planlanmış işlemi düzenle</string>
     <string name="path_database_not_exists">Veritabanı yolu bulunamıyor</string>
     <string name="database_can_not_open_write">Veritabanı yazma için açılamıyor</string>
     <string name="time_frame">Zaman Periyodu</string>
@@ -374,13 +399,16 @@
     <string name="search_text_contain_title">Metnin başlangıcıyla değil de içeriğiyle arama yapmak</string>
     <string name="search_text_contain_summary">Alacaklı, kategori, para birimleri vb... başlangıç karakteri ile değil de içerikle aramak</string>
     <string name="rate_application">Uygulamayı Puanla</string>
-    <string name="withdrawal_from">Para çekilen hesap %1$s</string>
+    <string name="withdrawal_from">%1$s\'dan ödeme</string>
     <string name="deposit_to">Para yatırılan hesap %1$s</string>
     <string name="mmex_website">MoneyManagerEx Web sitesi</string>
     <string name="android_website">MMEx Android web sitesi</string>
     <string name="donate_in_app_already_donate">Android için MoneyManagerEx\'in geliştirilmesine zaten bağışlarınızla katkı sağladınız mı?\n\nGeliştirme ekibi adına size teşekkürler!</string>
     <string name="donate_in_app_retrieving_status">Google Play\'den bağışlarınızın durumu alınıyor. Lütfen bekleyin&#8230;</string>
     <string name="donate_in_app_error">Uygulama içi ödeme kullanılmıyor. Uygulamanın en son sürümünü kullandığınızdan emin olmak için Play Store\'u kontrol edin.</string>
+    <string name="title_repeating_transaction_process">Planlanmış işlemi işle</string>
+    <string name="title_use_nested_category">Yeni iç içe kategori kalıbını kullanın</string>
+    <string name="summary_use_nested_category">Kategori yerine yeni iç içe kategori kalıbını kullanın: alt kategori kalıbı</string>
     <string name="tools">Araçlar</string>
     <string name="entities">Varlıklar</string>
     <string name="loading">Yükleniyor&#8230;</string>
@@ -391,6 +419,9 @@
     <string name="sort_order">Sırala</string>
     <string name="sort_by_name">İsme göre sırala</string>
     <string name="sort_by_usage">Kullanıma göre sırala</string>
+    <string name="sort_by_recent">Yeniye göre sırala</string>
+    <string name="sort_date_desc">Azalan tarihe göre sırala</string>
+    <string name="sort_date_asc">Artan tarihe göre sırala</string>
     <string name="choose_sorting">Sıralama seç</string>
     <string name="credit_card">Kredi Kartı</string>
     <string name="cash_accounts">Banka Hesapları</string>
@@ -418,6 +449,7 @@
     <string name="tutorial_global_1">Çoklu para birimleri ve çoklu dil desteği. Açık kaynak kodu. Çeviri ekibimize katılın.</string>
     <string name="tutorial_sync_1">Çoklu platformlar için destek birden fazla bulut servisi ile eşitleme. Verileri diğer uygulamalara aktarma ve diğer uygulamalardan içeri aktarma.</string>
     <string name="transactions">İşlemler</string>
+    <string name="tutorial_transactions_1">Gelir, ödeme, aktarma. Planlanan işlem hatırlatıcıları.</string>
     <string name="split_category">-Kategori Böl-</string>
     <string name="title_activity_currency_chart">Para Birimi Dönüşüm Tablosu</string>
     <string name="sort_by_ascending">Ay ve yıla göre artan şekilde sırala</string>
@@ -428,11 +460,11 @@
     <string name="from_date">Tarihinden</string>
     <string name="custom_dates">Özel Tarihler</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Denetim masasında hesaplarda onaylanmış işlemleri gösterme.</string>
-    <string name="pref_transaction_hide_reconciled_amounts_title">Onaylanmış İşlemleri Gizle</string>
-    <string name="pref_transaction_sort_by_type_summary">İşlem türlerine göre günlük işlemleri düzenleyin (mevduat, transfer, para çekme)</string>
+    <string name="pref_transaction_hide_reconciled_amounts_title">Onaylanmış Tutarları Gizle</string>
+    <string name="pref_transaction_sort_by_type_summary">İşlem türlerine göre günlük işlemleri düzenleyin (gelir, aktarma, ödeme)</string>
     <string name="pref_transaction_sort_by_type_title">İşlemleri türüne göre sırala</string>
     <string name="warning">Dikkat</string>
-    <string name="no_transfer_splits">Hesaplar arası havale yapmayı seçtiniz ancak işlem bölünmüş kategoriye ait. Havale işlemini gerçekleştirmek ve bölünmüş kategoriyi kaldırmak istiyor musunuz?</string>
+    <string name="no_transfer_splits">Hesaplar arası aktarma yapmayı seçtiniz, ancak işlemde bölünmüş kategoriler var. Bölünmüş kategorilerle devam etmek ve kaldırmak istiyor musunuz?</string>
     <string name="qif_export">Qif Olarak Aktar</string>
     <string name="update_prices">Fiyatları güncelleştir</string>
     <string name="update_price">Fiyatı güncelleştir</string>
@@ -457,11 +489,11 @@
     <string name="purge_history_failed">Fiyat geçmiş temizlenemedi.</string>
     <string name="create_db">Veritabanı oluştur</string>
     <string name="create_db_summary">Yeni veritabanı dosyası oluştur</string>
-    <string name="create_db_hint">Lütfen bir dosya ismi verin</string>
+    <string name="create_db_hint">Lütfen bir dosya adı yazın</string>
     <string name="create_db_dialog_content">Veritabanı varsayılan klasör içerisinde oluşturulacak..mmb uzantılı dosyayı dilerseniz başka bir konuma taşıyabilirsiniz.</string>
     <string name="create_db_success">Veritabanı başarıyla oluşturuldu</string>
     <string name="create_db_error">Yeni veritabanı dosyası oluşturulamadı</string>
-    <string name="create_db_exists">Bu isimde başka bir veritabanı mevcut!</string>
+    <string name="create_db_exists">Aynı ada sahip başka bir veri tabanı mevcut!</string>
     <string name="db_check_integrity">Veritabanı hata denetimi</string>
     <string name="db_check_integrity_summary">Veritabanının tamamında hata denetimi gerçekleştirir</string>
     <string name="db_check_integrity_success">Veritabanı bütünlük denetimi başarılı.</string>
@@ -471,7 +503,7 @@
     <string name="db_check_schema_success">Veritabanında gerekli tabloların tamamı mevcut.</string>
     <string name="db_check_schema_error">Hata: veritabanında tablolar eksik!</string>
     <string name="db_fix_duplicates">Yinelenen kayıtları düzelt</string>
-    <string name="split_amount_negative">Toplam değer negatif olamaz.</string>
+    <string name="split_amount_negative">Toplam tutar eksi olamaz.</string>
     <string name="select_all">Tümünü seç</string>
     <string name="choose_type">Bir tür seç</string>
     <string name="default_account">Varsayılan hesap</string>
@@ -494,6 +526,7 @@
     <string name="update_available">Göncelleme mevcut</string>
     <string name="update_available_online">Online bir güncelleştirilmiş veritabanı dosyası mevcut. Veritabanınızı güncelleştirmek istiyor musunuz?</string>
     <string name="currency_not_found">Para birimi bulunamadı</string>
+    <string name="homepage">Ana sayfamız https://moneymanagerex.org/</string>
     <string name="current_database">Geçerli veritabanı</string>
     <string name="about_logcat_header">Uygulama günlüğüne aşağıdaki buyona tıklayarak bize gönderebilirsiniz.</string>
     <string name="transaction_type_filter">İşlem Türüne Göre Filtrele</string>
@@ -501,6 +534,11 @@
     <string name="filter_options_info">Filtre Seçenekleri ve Bilgi</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Veritabanı parolasını girin</string>
+    <string name="fingerprint_info">Kilidini açmak için parmak izinizi tarayın</string>
+    <string name="fingerprint_no_hardware">Aygıtınız parmak izi kimlik doğrulamasını desteklemiyor</string>
+    <string name="fingerprint_check_permission">Lütfen parmak izi iznini etkinleştirin</string>
+    <string name="fingerprint_has_enrolled">Yapılandırılmış parmak izi yok. Lütfen cihaz ayarlarınıza en az bir parmak izi kaydedin</string>
+    <string name="fingerprint_is_keyguard_secure">Lütfen aygıt ayarlarınızda kilit ekran güvenliğini etkinleştirin</string>
     <string name="income_expense_period">Gelir/gider dönemi</string>
     <string name="income_expense_period_summary">Gelir/gider dönemine genel bakış, başlangıç ekranının alt kısmında yer alır.</string>
     <string name="appwidget_text">ÖRNEK</string>
@@ -524,7 +562,7 @@
     <string name="error_no_price_found_for_symbol">Sembol için fiyat bulunmadı</string>
     <string name="other">Diğer</string>
     <string name="cleared">Temizlendi</string>
-    <string name="delete_success">Öğe silindi</string>
+    <string name="delete_success">Öge silindi</string>
     <!-- asset allocation -->
     <string name="asset_allocation">Varlık Tahsisi</string>
     <string name="asset_classes_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı butonuna dokunun.</string>
@@ -545,6 +583,8 @@
     <string name="all_accounts">Tüm Hesaplar</string>
     <string name="records">kayıtlar</string>
     <!-- db password entry -->
+    <string name="enter_password">Parola girin (isteğe bağlı)</string>
+    <string name="password_hint">Sadece .emb dosyası için</string>
     <string name="success">İşlem başarılı</string>
     <string name="overview">Genel Görünüm</string>
     <string name="title_activity_asset_allocation_overview">Varlık Tahsisi Genel Görünüm</string>
@@ -656,10 +696,12 @@
     <string name="remote_file_not_found">Uzak dosya bulunamadı</string>
     <string name="error_checking_remote">Uzaktan değişiklikler denetlenirken hata oluştu.</string>
     <string name="no_remote_change_date">Meta verilerde uzaktan değiştirme tarihi bulunamadı.</string>
+    <string name="remote_unavailable">Uzak dosya kullanılamıyor</string>
     <!-- Select database screen -->
     <string name="intro_text">Money Manager Ex kullanmaya başlamak için, verilerinizi depolamak üzere bir veritabanına ihtiyacınız var. Lütfen aşağıdaki uygun seçeneklerden birini seçin.</string>
     <string name="intro_create_db">Yeni bir dosya oluşturup ilk tercihlerinizi ayarlayabilirsiniz.</string>
     <string name="intro_open_db">Veya cihazınızdan var olan bir dosyayı seçebilirsiniz.</string>
+    <string name="intro_sync">Bulut hizmetlerini kullanmak için dosyayı tercih edilen bir belge sağlayıcısından açın.</string>
     <!-- Create Database screen -->
     <string name="select_language">Dil seç</string>
     <string name="run">Money Manager Ex\'i çalıştır</string>
@@ -669,8 +711,41 @@
     <string name="save">Kaydet</string>
     <string name="title_budget_show_simple_view">Basit bütçe görünümünü göster</string>
     <string name="summary_budget_show_simple_view">Kontrol edilen bütçeler basitleştirilmiş görünümü kullanıyorsa</string>
+    <string name="title_pref_budget_financial_year">Mali yılı bütçede kullanın</string>
+    <string name="summary_pref_budget_financial_year">Kontrol edilen bütçeler takvim yılı yerine mali yıl kullanın</string>
+    <string name="loan">Kredi</string>
+    <string name="loan_account">Kredi hesapları</string>
+    <string name="currency">Para birimi</string>
+    <string name="menu_create_database">Veri tabanı oluştur</string>
+    <string name="create_database">Veri tabanı oluştur</string>
+    <string name="summary_anonymous_usage">MMEX kullanımı hakkında anonim veri gönderimini etkinleştir</string>
+    <string name="title_anonymous_usage">Anonim kullanım verilerini gönderin</string>
+    <string name="title_auto_transaction_number">İşlem numarasını otomatik doldur</string>
     <!-- Notification Setting -->
+    <string name="title_notifications_repeating_transaction">Planlanmış işlem gecikme bildirimi</string>
+    <string name="summary_notifications_repeating_transaction">Gecikmiş planlanmış işlem için bildirim göster</string>
+    <string name="notification_channel_recurring">Planlanmış işlem bildirimi</string>
+    <string name="notification_channel_recurring__description">Gecikmiş planlanmış işlem bildirimi</string>
+    <string name="notification_channel_remotefile">Uzak dosya işlemi</string>
+    <string name="notification_channel_remotefile__description">Uzak dosya işlem bildirimi</string>
+    <string name="show">Göster</string>
+    <string name="attachment_folder">Ek klasörü</string>
+    <string name="attachment_folder_summary">Eklerin kaydedileceği klasörü seçin</string>
+    <string name="pref_attachment_folder">Ek klasörü</string>
+    <string name="version_copied_to_clipboard">Sürüm numarası panoya kopyalandı</string>
+    <string name="issue_open">"Github'da bir konu açın"</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Tümünü temizle</string>
+    <string name="empty_color_message">renk seçin</string>
+    <string name="btn_continue">Sürdür</string>
     <!--- New navigation mode -->
+    <string name="category_nav_mode">Yeni gezinme kipi menü altında mevcuttur</string>
+    <string name="remember_later">Beni hatırla</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Yükleme uyarısı</string>
+    <string name="download_warning">İndirme uyarısı</string>
+    <string name="remote_file_change">Uzak dosya değişiklikleri göstergesi:</string>
+    <string name="local_file_change">Yerel dosya değişiklikleri göstergesi:</string>
+    <string name="msg_uploading_overwrite">Yükleme, uzak sürümünüzün üzerine yazacaktır.\nDevam etmek ister misin?</string>
+    <string name="msg_downloading_overwrite">İndirilen dosya yerel sürümünüzün üzerine yazacak.\nDevam etmek ister misin?</string>
 </resources>
