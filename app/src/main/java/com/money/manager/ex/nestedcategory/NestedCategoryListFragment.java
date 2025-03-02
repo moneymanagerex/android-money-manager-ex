@@ -201,7 +201,7 @@ public class NestedCategoryListFragment
 
             boolean active = nestedCategory.getActiveAsBoolean();
             CharSequence text;
-            if (levelMode != NAVMODE_LIST) {
+            if (levelMode != NAVMODE_LIST && TextUtils.isEmpty(mCurFilter)) {
                 if (rootCategoryId != nestedCategory.getParentId() || rootCategoryId == -1) {
                     // this is actual root
                     text = nestedCategory.getCategoryName();
@@ -406,13 +406,27 @@ public class NestedCategoryListFragment
             String whereClause = "";
             String[] selectionArgs = new String[]{};
 
-            if (levelMode == NAVMODE_TREE && TextUtils.isEmpty(mCurFilter ) ) {
+            if (levelMode == NAVMODE_TREE ) {
                 if (!TextUtils.isEmpty(whereClause)) {
                     whereClause += " AND ";
                 }
-                whereClause += "(" + QueryNestedCategory.PARENTID + " = ?  OR " + QueryNestedCategory.CATEGID + " = ? )";
-                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
-                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                if ( TextUtils.isEmpty(mCurFilter ) ) {
+                    whereClause += "(" + QueryNestedCategory.PARENTID + " = ?  OR " + QueryNestedCategory.CATEGID + " = ? )";
+                    selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                    selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                } else {
+                    // search mode with level
+                    whereClause += "(" + QueryNestedCategory.FULLCATID + " LIKE ? )";
+                    if (rootCategoryId == -1) {
+                        selectionArgs = ArrayUtils.add(selectionArgs, ":%:");
+                    } else {
+                        StringBuilder builder = new StringBuilder();
+                        builder.append(":");
+                        builder.append(rootCategoryId);
+                        builder.append(":%");
+                        selectionArgs = ArrayUtils.add(selectionArgs,builder.toString());
+                    }
+                }
             }
 
             if (mAction == Intent.ACTION_PICK
