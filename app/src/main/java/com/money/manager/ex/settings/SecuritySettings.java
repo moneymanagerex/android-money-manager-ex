@@ -17,7 +17,7 @@ public class SecuritySettings extends SettingsBase {
     }
 
     public boolean getFingerprintAuthentication() {
-        return get(PreferenceConstants.PREF_FINGERPRINT, false);
+        return get(PreferenceConstants.PREF_FINGERPRINT, true);
     }
 
     public void setFingerprintAuthentication(boolean status) {

@@ -228,7 +228,8 @@ public class NestedCategoryListFragment
         attachFloatingActionButtonToListView();
 
         // start loader
-        LoaderManager.getInstance(getActivity()).initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+//        LoaderManager.getInstance(getActivity()).initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+        getLoaderManager().initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
 
         setFloatingActionButtonVisible(true);
         attachFloatingActionButtonToListView();
@@ -585,7 +586,8 @@ public class NestedCategoryListFragment
      * Restart loader to view data
      */
     private void restartLoader() {
-        LoaderManager.getInstance(getActivity()).restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+//        LoaderManager.getInstance(getActivity()).restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
+        getLoaderManager().restartLoader(ID_LOADER_NESTEDCATEGORY, null, this);
     }
 
     /**
@@ -753,6 +755,7 @@ public class NestedCategoryListFragment
         // force reset loader on start. try to fix 2217, not the best code
         // becouse normaly was call duble
         restartLoader();
+
     }
 
 
