@@ -21,6 +21,7 @@ package com.money.manager.ex.reports.cashflow;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -100,6 +102,8 @@ public class CashFlowReportListFragment
     MoneySimpleCursorAdapter adapter;
     ArrayList<Long> selectedAccounts = new ArrayList<>();
     ArrayList<Double> graphValue;
+    LimitLine cursorPosition;
+    ArrayList<Integer> dayPosition = new ArrayList<>();
 
     @SuppressLint("Range")
     private void createCashFlowRecords() {
@@ -251,6 +255,7 @@ public class CashFlowReportListFragment
             } catch (Exception e) {
                 Timber.d(e);
             }
+            dayPosition.add(diffInDays);
             matrixCursor.newRow()
                     .add(ID, rowMap.get(ID))
                     .add(QueryBillDeposits.TRANSDATE, rowMap.get(QueryBillDeposits.TRANSDATE))
@@ -329,6 +334,24 @@ public class CashFlowReportListFragment
                         } else {
                             adapter.swapCursor(matrixCursor);
                             adapter.notifyDataSetChanged();
+                            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                                }
+
+                                @Override
+                                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                                    if (cursorPosition != null ) {
+                                        Timber.d(String.format("Position: %d",firstVisibleItem));
+                                        chart.getXAxis().removeLimitLine(cursorPosition);
+                                        int pos = dayPosition.get(firstVisibleItem);
+                                        cursorPosition = new LimitLine(pos,"");
+                                        cursorPosition.setLineColor(Color.GREEN);
+                                        chart.getXAxis().addLimitLine(cursorPosition);
+                                        chart.invalidate();
+                                    }
+                                }
+                            });
                             buildChartInfo();
                         }
                         setListShown(true);
@@ -592,6 +615,11 @@ public class CashFlowReportListFragment
                 chart.getXAxis().addLimitLine(l);
             }
         }
+        cursorPosition = new LimitLine(0,"");
+        cursorPosition.setLineColor(Color.GREEN);
+        cursorPosition.setLineWidth(2);
+        chart.getXAxis().addLimitLine(cursorPosition);
+
         chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
 //        chart.getXAxis().setValueFormatter((original, index, viewPortHandler) -> {
