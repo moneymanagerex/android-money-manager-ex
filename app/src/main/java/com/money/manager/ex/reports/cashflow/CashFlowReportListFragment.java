@@ -34,6 +34,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -548,6 +550,7 @@ public class CashFlowReportListFragment
             } else {
                 xVal.add("");
             }
+//            xVal.add(dateUtils.format(date.toDate(), "dd-MMM"));
             if (graphValue.get(i) != null) {
                 old = (Float) graphValue.get(i).floatValue();
             }
@@ -566,18 +569,39 @@ public class CashFlowReportListFragment
         LineDataSet set1 = new LineDataSet(values, "Balance");
         set1.setColor(Color.GREEN);
         set1.setCircleColor(Color.GREEN);
-//        set1.setLineWidth(1f);
-//        set1.setCircleRadius(3f);
+        set1.setLineWidth(1f);
         set1.setDrawCircleHole(false);
+        set1.setDrawCircles(false);
 
+//        LineData data = new LineData(xVal, set1);   //(dataSets);
         LineData data = new LineData(xVal, set1);   //(dataSets);
+        data.setDrawValues(false);
+//        data.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> {
+//            return "";
+//        });
 
         // disable dual axis (only use LEFT axis)
         chart = getActivity().findViewById(R.id.chartLine);
         chart.getAxisRight().setEnabled(false);
+        chart.getXAxis().setDrawGridLines(false);
+        for( int i = 0; i < xVal.size(); i++ ) {
+            if (xVal.get(i) != "") {
+                LimitLine l = new LimitLine(i, xVal.get(i));
+                l.setTextSize(10);
+                l.setLineColor(Color.GRAY);
+                chart.getXAxis().addLimitLine(l);
+            }
+        }
+        chart.getXAxis().setDrawLabels(false);
+//        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+//        chart.getXAxis().setValueFormatter((original, index, viewPortHandler) -> {
+//            return "";
+//        });
+//        chart.getXAxis().setDrawLabels(true);
         chart.setDescription("");
         chart.setData(data);
         chart.setTouchEnabled(false);
+        chart.setNoDataText(getString(R.string.loading));
         chart.invalidate(); // refresh
 
     }
