@@ -608,7 +608,7 @@ public class CashFlowReportListFragment
         chart.getAxisRight().setEnabled(false);
         chart.getXAxis().setDrawGridLines(false);
         for( int i = 0; i < xVal.size(); i++ ) {
-            if (xVal.get(i) != "") {
+            if (!xVal.get(i).isEmpty()) {
                 LimitLine l = new LimitLine(i, xVal.get(i));
                 l.setTextSize(10);
                 l.setLineColor(Color.GRAY);
