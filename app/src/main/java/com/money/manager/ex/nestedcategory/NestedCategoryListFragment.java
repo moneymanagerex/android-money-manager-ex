@@ -97,9 +97,14 @@ public class NestedCategoryListFragment
             " WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID \n" +
             "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
+    private static int NAVMODE_UNKNOW = -1;
+    private static int NAVMODE_LIST = 0;
+    private static int NAVMODE_TREE = 1;
+
+
     //    private Context mContext;
     private String mCurFilter;
-    private int levelMode = -1;
+    private int levelMode = NAVMODE_UNKNOW;
     private long rootCategoryId = -1;
 
 
@@ -109,17 +114,18 @@ public class NestedCategoryListFragment
         setSearchMenuVisible(true);
 
         levelMode = (new AppSettings(getActivity()).getCategoryNavMode());
-        if (levelMode == -1) {
+        if (levelMode == NAVMODE_UNKNOW) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.attention)
                     .setIcon(new UIHelper(getActivity()).getIcon(FontAwesome.Icon.faw_question))
                     .setMessage(R.string.category_nav_mode)
-                    .setPositiveButton(R.string.remember_later, (dialog, which) -> {})
+                    .setPositiveButton(R.string.remember_later, (dialog, which) -> {
+                    })
                     .setNegativeButton(R.string.dismiss, (dialog, which) -> {
                         new AppSettings(getActivity()).setCategoryNavMode(levelMode);
                     })
                     .show();
-            levelMode = 0;
+            levelMode = NAVMODE_TREE;
         }
         rootCategoryId = -1; // reset filter
 
@@ -154,13 +160,13 @@ public class NestedCategoryListFragment
             TextView selector = aView.findViewById(R.id.selector);
 
             textView.setVisibility(View.VISIBLE);
-            if (levelMode == 0) {
+            if (levelMode == NAVMODE_LIST || !TextUtils.isEmpty(mCurFilter)) {
                 foldericon.setVisibility(View.GONE);
                 selector.setVisibility(View.GONE);
             } else {
                 foldericon.setVisibility(View.VISIBLE);
                 // set foldericon
-                if ( rootCategoryId == nestedCategory.getId()) {
+                if (rootCategoryId == nestedCategory.getId()) {
                     // this is actual root
                     foldericon.setText("x"); // <
                 } else if (nestedCategory.hasChildren()) {
@@ -170,7 +176,7 @@ public class NestedCategoryListFragment
                 }
 
                 selector.setVisibility(View.VISIBLE);
-                if ( mAction.equals(Intent.ACTION_PICK)) {
+                if (mAction.equals(Intent.ACTION_PICK)) {
                     // pick
                     selector.setText("o");
                 } else {
@@ -179,7 +185,7 @@ public class NestedCategoryListFragment
 
             }
 
-            if (mAction.equals(Intent.ACTION_PICK) ) {
+            if (mAction.equals(Intent.ACTION_PICK)) {
                 selector.setOnClickListener(v -> {
                     sendResultToActivity(nestedCategory.getId(), nestedCategory.getCategoryName());
                 });
@@ -189,14 +195,14 @@ public class NestedCategoryListFragment
                 });
 
             }
-            foldericon.setOnClickListener(v->{
+            foldericon.setOnClickListener(v -> {
                 onListItemClick(getListView(), v, getListView().getPositionForView(v), nestedCategory.getId());
             });
 
             boolean active = nestedCategory.getActiveAsBoolean();
             CharSequence text;
-            if ( levelMode != 0 ) {
-                if ( rootCategoryId != nestedCategory.getParentId() || rootCategoryId == -1 ) {
+            if (levelMode != NAVMODE_LIST && TextUtils.isEmpty(mCurFilter)) {
+                if (rootCategoryId != nestedCategory.getParentId() || rootCategoryId == -1) {
                     // this is actual root
                     text = nestedCategory.getCategoryName();
                 } else {
@@ -252,7 +258,7 @@ public class NestedCategoryListFragment
                 menu.findItem(R.id.menu_sort_name).setChecked(true);
                 break;
         }
-        if (mAction.equals(Intent.ACTION_PICK) ) {
+        if (mAction.equals(Intent.ACTION_PICK)) {
             menu.findItem(R.id.menu_show_inactive).setVisible(false);
         } else {
             menu.findItem(R.id.menu_show_inactive).setVisible(true);
@@ -262,11 +268,11 @@ public class NestedCategoryListFragment
         // add menu option for navigatio
         MenuItem menuNavigation = menu.findItem(R.id.menu_sort).getSubMenu().add("Navigation Mode");
         menuNavigation.setCheckable(true);
-        menuNavigation.setChecked(levelMode != 0);
+        menuNavigation.setChecked(levelMode != NAVMODE_LIST);
         menuNavigation.setOnMenuItemClickListener(item -> {
-            levelMode = 1 - levelMode;
+            levelMode = (levelMode == NAVMODE_LIST ? NAVMODE_TREE : NAVMODE_LIST);
             new AppSettings(getActivity()).setCategoryNavMode(levelMode);
-            item.setChecked(levelMode != 0);
+            item.setChecked(levelMode != NAVMODE_LIST);
             rootCategoryId = -1;
             restartLoader();
             return true;
@@ -393,17 +399,34 @@ public class NestedCategoryListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_NESTEDCATEGORY) {// update id selected
+            if ( !TextUtils.isEmpty(mCurFilter) && mCurFilter.equalsIgnoreCase("%") ) {
+                mCurFilter = "";
+            }
             // load data
             String whereClause = "";
             String[] selectionArgs = new String[]{};
 
-            if (levelMode != 0 ) {
+            if (levelMode == NAVMODE_TREE ) {
                 if (!TextUtils.isEmpty(whereClause)) {
                     whereClause += " AND ";
                 }
-                whereClause += "(" + QueryNestedCategory.PARENTID + " = ?  OR " + QueryNestedCategory.CATEGID + " = ? )" ;
-                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
-                selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                if ( TextUtils.isEmpty(mCurFilter ) ) {
+                    whereClause += "(" + QueryNestedCategory.PARENTID + " = ?  OR " + QueryNestedCategory.CATEGID + " = ? )";
+                    selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                    selectionArgs = ArrayUtils.add(selectionArgs, String.valueOf(rootCategoryId));
+                } else {
+                    // search mode with level
+                    whereClause += "(" + QueryNestedCategory.FULLCATID + " LIKE ? )";
+                    if (rootCategoryId == -1) {
+                        selectionArgs = ArrayUtils.add(selectionArgs, ":%:");
+                    } else {
+                        StringBuilder builder = new StringBuilder();
+                        builder.append(":");
+                        builder.append(rootCategoryId);
+                        builder.append(":%");
+                        selectionArgs = ArrayUtils.add(selectionArgs,builder.toString());
+                    }
+                }
             }
 
             if (mAction == Intent.ACTION_PICK
@@ -418,7 +441,7 @@ public class NestedCategoryListFragment
                     whereClause += " AND ";
                 }
                 whereClause += QueryNestedCategory.CATEGNAME + " LIKE ?";
-                selectionArgs = ArrayUtils.add( selectionArgs, mCurFilter + "%");
+                selectionArgs = ArrayUtils.add(selectionArgs, mCurFilter + "%");
             }
             QueryNestedCategory repo = new QueryNestedCategory(getActivity());
             String sort;
@@ -535,7 +558,7 @@ public class NestedCategoryListFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        if (levelMode == 0) {
+        if (levelMode == NAVMODE_LIST) {
             onListItemLongClick(l, v, position, id);
             return;
         }
@@ -750,13 +773,12 @@ public class NestedCategoryListFragment
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         // force reset loader on start. try to fix 2217, not the best code
         // becouse normaly was call duble
         restartLoader();
 
     }
-
 
 }
