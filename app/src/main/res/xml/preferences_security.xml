@@ -32,7 +32,7 @@
 
     <SwitchPreference
         android:icon="@null"
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="@string/preferences_fingerprint_auth_key"
         android:summary="@string/preferences_fingerprint_summary"
         android:title="@string/preferences_fingerprint_title" />
