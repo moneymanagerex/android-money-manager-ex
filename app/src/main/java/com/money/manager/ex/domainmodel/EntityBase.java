@@ -158,4 +158,37 @@ public abstract class EntityBase implements IEntity {
 
     // Abstract method to get primary key column (overridden by subclasses)
     public abstract String getPrimaryKeyColumn();
+
+    /**
+     * Creates a diff that a user can understand the content for sync/merge.
+     * @return textual representation of the content diff
+     */
+    public String getDiffString(EntityBase theirs) {
+        StringBuilder sb = new StringBuilder();
+        if (theirs == null) {
+            sb.append("theirs is empty"); // should not happen on merge
+        } else if (theirs.contentValues == null && this.contentValues == null) {
+            sb.append("both entities empty"); // should not happen on merge
+        } else if (this.contentValues == null || this.contentValues.isEmpty()) {
+            sb.append("ours is empty"); // should not happen on merge
+        } else if (theirs.contentValues == null || theirs.contentValues.isEmpty()) {
+            sb.append("theirs is empty");// should not happen on merge
+        } else {
+            for (Map.Entry<String, Object> kvOurs : this.contentValues.valueSet()) {
+                if (kvOurs != null && !"_id".equals(kvOurs.getKey())) { // do not show _id
+                    Object valTheirs = theirs.getContentValues().get(kvOurs.getKey());
+                    boolean equalValues = valTheirs == null && kvOurs.getValue() == null;
+                    if (valTheirs != null) {
+                        equalValues = valTheirs.equals(kvOurs.getValue());
+                    }
+                    if (! equalValues) {
+                        sb.append(kvOurs.getKey()).append(": ");
+                        sb.append(kvOurs.getValue()).append(" | ").append(valTheirs);
+                        sb.append("\n");
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
 }

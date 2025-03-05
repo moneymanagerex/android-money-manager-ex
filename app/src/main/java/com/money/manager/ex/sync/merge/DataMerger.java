@@ -128,7 +128,7 @@ public class DataMerger {
         // send the question to user dialog
         Message msg = new Message();
         msg.what = SyncServiceMessage.USER_DIALOG_CONFLICT.code;
-        msg.obj = new String[] {"Ours:", "Theirs"};
+        msg.obj = localEntity.getDiffString(remoteEntity);
         msg.setAsynchronous(false);
         Handler handler = new ResponseHandler();
         msg.replyTo = new Messenger(handler);

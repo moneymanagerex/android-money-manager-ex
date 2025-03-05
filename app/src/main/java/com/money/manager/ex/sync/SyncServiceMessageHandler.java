@@ -60,8 +60,7 @@ public class SyncServiceMessageHandler
 
         this.context = context;
         this.progressDialog = progressDialog;
-        this.textOurs = progressDialog.findViewById(R.id.textMergeOurs);
-        this.textTheirs = progressDialog.findViewById(R.id.textMergeTheirs);
+        this.textDiff = progressDialog.findViewById(R.id.textDiff);
         this.btOurs = progressDialog.findViewById(R.id.buttonMergeTakeOurs);
         this.btTheirs = progressDialog.findViewById(R.id.buttonMergeTakeTheirs);
         this.btTheirsListener = new ConflictDialogOnClickListener(MergeConflictResolution.THEIRS);
@@ -73,8 +72,7 @@ public class SyncServiceMessageHandler
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
     private final Context context;
     private final AlertDialog progressDialog;
-    private final TextView textOurs;
-    private final TextView textTheirs;
+    private final TextView textDiff;
     private final Button btOurs;
     private final ConflictDialogOnClickListener btOursListener;
     private final Button btTheirs;
@@ -137,11 +135,8 @@ public class SyncServiceMessageHandler
                 break;
 
             case USER_DIALOG_CONFLICT:
-                String txtOurs = ((String[])msg.obj)[0];
-                String txtTheirs = ((String[])msg.obj)[1];
                 final Messenger replyTo = msg.replyTo;
-                this.textOurs.setText(txtOurs);
-                this.textTheirs.setText(txtTheirs);
+                this.textDiff.setText((String)msg.obj);
                 this.btOursListener.setReplyTo(replyTo);
                 this.btTheirsListener.setReplyTo(replyTo);
                 setVisibilityConflictDialogElements(true);
@@ -163,8 +158,7 @@ public class SyncServiceMessageHandler
     private void setVisibilityConflictDialogElements(boolean visibility) {
         Timber.d("conflict dialog visibility: %s", visibility);
         int vis = visibility ? View.VISIBLE : View.INVISIBLE;
-        textOurs.setVisibility(vis);
-        textTheirs.setVisibility(vis);
+        textDiff.setVisibility(vis);
         btOurs.setVisibility(vis);
         btTheirs.setVisibility(vis);
     }
