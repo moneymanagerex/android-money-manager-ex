@@ -28,7 +28,9 @@ import com.money.manager.ex.utils.MmxDate;
 import org.parceler.Parcel;
 
 import java.util.Date;
+import java.util.Map;
 
+import androidx.annotation.Nullable;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -41,6 +43,32 @@ public abstract class EntityBase implements IEntity {
 
     public EntityBase() {
         contentValues = new ContentValues();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        // for sync we need a content equals
+        if (obj == null) return false;
+        if (obj instanceof EntityBase) {
+            EntityBase o2 = (EntityBase) obj;
+            if (o2.contentValues != null && this.contentValues != null) {
+                if (o2.contentValues.size() != this.contentValues.size()) return false;
+                for (Map.Entry<String, Object> kvThis : this.contentValues.valueSet()) {
+                    if (kvThis != null) {
+                        if (! o2.getContentValues().containsKey(kvThis.getKey())) return false;
+                        Object ov2 = o2.getContentValues().get(kvThis.getKey());
+                        Object ovThis = this.contentValues.get(kvThis.getKey());
+                        if (ov2 == null) {
+                            if (ovThis != null) return false;
+                        } else {
+                            if (! ov2.equals(ovThis)) return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return super.equals(obj);
     }
 
     public EntityBase(ContentValues contentValues) {
@@ -130,4 +158,37 @@ public abstract class EntityBase implements IEntity {
 
     // Abstract method to get primary key column (overridden by subclasses)
     public abstract String getPrimaryKeyColumn();
+
+    /**
+     * Creates a diff that a user can understand the content for sync/merge.
+     * @return textual representation of the content diff
+     */
+    public String getDiffString(EntityBase theirs) {
+        StringBuilder sb = new StringBuilder();
+        if (theirs == null) {
+            sb.append("theirs is empty"); // should not happen on merge
+        } else if (theirs.contentValues == null && this.contentValues == null) {
+            sb.append("both entities empty"); // should not happen on merge
+        } else if (this.contentValues == null || this.contentValues.isEmpty()) {
+            sb.append("ours is empty"); // should not happen on merge
+        } else if (theirs.contentValues == null || theirs.contentValues.isEmpty()) {
+            sb.append("theirs is empty");// should not happen on merge
+        } else {
+            for (Map.Entry<String, Object> kvOurs : this.contentValues.valueSet()) {
+                if (kvOurs != null && !"_id".equals(kvOurs.getKey())) { // do not show _id
+                    Object valTheirs = theirs.getContentValues().get(kvOurs.getKey());
+                    boolean equalValues = valTheirs == null && kvOurs.getValue() == null;
+                    if (valTheirs != null) {
+                        equalValues = valTheirs.equals(kvOurs.getValue());
+                    }
+                    if (! equalValues) {
+                        sb.append(kvOurs.getKey()).append(": ");
+                        sb.append(kvOurs.getValue()).append(" | ").append(valTheirs);
+                        sb.append("\n");
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
 }
