@@ -21,7 +21,6 @@ package com.money.manager.ex.reports.cashflow;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -37,7 +36,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -63,8 +61,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -88,11 +84,12 @@ import timber.log.Timber;
 public class CashFlowReportListFragment
         extends BaseListFragment {
 
-    private static final int ID_LOADER_REPORT = 1;
+//    private static final int ID_LOADER_REPORT = 1;
     private double totalAmount = 0;
     private static final String ID = "_id";
     private static final String BALANCE = "BALANCE";
-    private int monthInAdvance = 12;
+    private static final int monthInAdvance = 12;
+
 
     private MatrixCursor matrixCursor;
     String[] columnNames;
@@ -132,17 +129,21 @@ public class CashFlowReportListFragment
 
         QueryBillDeposits billDeposits = new QueryBillDeposits(getContext());
 
-        Cursor cursor = getContext().getContentResolver().query(billDeposits.getUri(),
-                billDeposits.getAllColumns(),
-                null,
-                null,
-                QueryBillDeposits.NEXTOCCURRENCEDATE);
+        Cursor cursor = null;
+        try {
+            cursor = getContext().getContentResolver().query(billDeposits.getUri(),
+                    billDeposits.getAllColumns(),
+                    null,
+                    null,
+                    QueryBillDeposits.NEXTOCCURRENCEDATE);
+        } catch ( Exception e) {
+            Timber.d(e);
+        }
         if (cursor == null ||
                 cursor.getCount() == 0)
             return;
 
         getTotalAmountAndAccounts();
-
 
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
@@ -170,12 +171,11 @@ public class CashFlowReportListFragment
                 if (selectedAccounts.contains(rx.getAccountId())) {
                     // source in
                     amount = 0 - amount;
-                } else {
-                    // dest in
-//                    amount = rx.getAmountTo().toDouble();
                 }
             } else {
-//                amount = rx.getAmount().toDouble();
+                if (!selectedAccounts.contains(rx.getAccountId())) {
+                    continue;
+                }
             }
 
             row = new HashMap<>();
@@ -221,11 +221,7 @@ public class CashFlowReportListFragment
         }
         cursor.close();
 
-        Collections.sort(listRecurring, new Comparator<HashMap<String, Object>>() {
-            public int compare(HashMap<String, Object> uno, HashMap<String, Object> due) {
-                return uno.get(QueryBillDeposits.TRANSDATE).toString().compareTo(due.get(QueryBillDeposits.TRANSDATE).toString());
-            }
-        });
+        listRecurring.sort((HashMap<String, Object> uno, HashMap<String, Object> due) -> uno.get(QueryBillDeposits.TRANSDATE).toString().compareTo(due.get(QueryBillDeposits.TRANSDATE).toString()));
 
         long baseCurrencyId = currencyService.getBaseCurrencyId();
         graphValue = new ArrayList<>();
@@ -274,29 +270,36 @@ public class CashFlowReportListFragment
 
     private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        String accountCustomFilters = "";
+        if ( accountFilter == R.id.menu_cashflow_custom ) {
+            accountCustomFilters = settings.get("AccountFilterCustom", "");
+//            accountCustomFilters = "5,6" ; // Tor Test
+        }
         // compose whereClause
         String where = "";
-        // check if show only open accounts
-        if (settings.getViewOpenAccounts()) {
-            where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
-        }
-        // check if show fav accounts
-        if (settings.getViewFavouriteAccounts()) {
-            where = "LOWER(" + QueryAccountBills.FAVORITEACCT + ")='true'";
+        switch (accountFilter) {
+            case R.id.menu_cashflow_open:
+                where += "LOWER(" + QueryAccountBills.STATUS + ") = 'open'";
+                break;
+            case R.id.menu_cashflow_favorite:
+                where += "LOWER(" + QueryAccountBills.FAVORITEACCT + ") = 'true'";
+                break;
+            case R.id.menu_cashflow_custom:
+                where += QueryAccountBills.ACCOUNTID + " IN ( "+accountCustomFilters + " )";
+                break;
+            default:
+                break;
         }
 
         QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
-        Select query = new Select(queryAccountBills.getAllColumns())
-                .where(where)
-                .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
-
         selectedAccounts = new ArrayList<>();
 
         Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
                 null,
                 where,
                 null,
-                null);
+                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
         if (c != null) {
             totalAmount = 0;
             while (c.moveToNext()) {
@@ -317,47 +320,42 @@ public class CashFlowReportListFragment
 
         // Update UI elements here
         //createCashFlowRecords();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                createCashFlowRecords();
+        new Thread(() -> {
+            createCashFlowRecords();
 
-                // here you perform background operation
-                //Update the value background thread to UI thread
-                Handler mHandler = new Handler(Looper.getMainLooper());
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // here you can update ui
-                        if (matrixCursor.getCount() == 0) {
-                            setEmptyText(getActivity().getResources().getString(R.string.no_recurring_transaction));
-                        } else {
-                            adapter.swapCursor(matrixCursor);
-                            adapter.notifyDataSetChanged();
-                            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-                                @Override
-                                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                                }
-
-                                @Override
-                                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                    if (cursorPosition != null ) {
-                                        Timber.d(String.format("Position: %d",firstVisibleItem));
-                                        chart.getXAxis().removeLimitLine(cursorPosition);
-                                        int pos = dayPosition.get(firstVisibleItem);
-                                        cursorPosition = new LimitLine(pos,"");
-                                        cursorPosition.setLineColor(Color.GREEN);
-                                        chart.getXAxis().addLimitLine(cursorPosition);
-                                        chart.invalidate();
-                                    }
-                                }
-                            });
-                            buildChartInfo();
+            // here you perform background operation
+            //Update the value background thread to UI thread
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(() -> {
+                // here you can update ui
+                if (matrixCursor.getCount() == 0) {
+                    setEmptyText(getActivity().getResources().getString(R.string.no_recurring_transaction));
+                } else {
+                    adapter.swapCursor(matrixCursor);
+                    adapter.notifyDataSetChanged();
+                    getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
                         }
-                        setListShown(true);
-                    }
-                });
-            }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                            if (cursorPosition != null ) {
+//                                Timber.d("Position: %d",firstVisibleItem);
+                                chart.getXAxis().removeLimitLine(cursorPosition);
+                                int pos = dayPosition.get(firstVisibleItem);
+                                cursorPosition = new LimitLine(pos,"");
+                                cursorPosition.setLineColor(Color.GREEN);
+                                cursorPosition.setLineWidth(2f);
+                                chart.getXAxis().addLimitLine(cursorPosition);
+                                chart.invalidate();
+                            }
+                        }
+                    });
+                    buildChartInfo();
+                }
+                setListShown(true);
+            });
         }).start();
 
         // create a object query
@@ -408,75 +406,73 @@ public class CashFlowReportListFragment
                 },
                 0);
 
-        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                // set non text field
-                switch (aView.getId()) {
-                    case R.id.viewColor:
-                        int color = aCursor.getInt(aColumnIndex);
-                        if (color > 0) {
-                            aView.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
-                            aView.setVisibility(View.VISIBLE);
-                        } else {
-                            aView.setVisibility(View.GONE);
-                        }
-                        return true;
-                    case R.id.textViewAttachment:
-                        if (aCursor.getLong(aColumnIndex) <= 0)
-                            aView.setVisibility(View.GONE);
-                        else
-                            aView.setVisibility(View.VISIBLE);
-                        return true;
-                    case R.id.textViewTags:
-                        if (aCursor.getString(aColumnIndex) == null || aCursor.getString(aColumnIndex).isEmpty())
-                            aView.setVisibility(View.GONE);
-                        else
-                            aView.setVisibility(View.VISIBLE);
-                        return true;
-                    case R.id.textTransactionId:
-                        aView.setTag(aCursor.getLong(aColumnIndex));
+        adapter.setViewBinder((aView, aCursor, aColumnIndex) -> {
+            // set non text field
+            switch (aView.getId()) {
+                case R.id.viewColor:
+                    int color = aCursor.getInt(aColumnIndex);
+                    if (color > 0) {
+                        aView.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
+                        aView.setVisibility(View.VISIBLE);
+                    } else {
                         aView.setVisibility(View.GONE);
-                        return true;
-                }
-                TextView textView = (TextView) aView;
-                switch (textView.getId()) {
-                    case R.id.textViewMonth:
-                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "MMM"));
-                        break;
-                    case R.id.textViewDay:
-                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "dd"));
-                        break;
-                    case R.id.textViewYear:
-                        textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "yyyy"));
-                        break;
-                    case R.id.textViewCategorySub:
-                    case R.id.textViewPayee:
-                    case R.id.textViewNotes:
-                    case R.id.textViewStatus:
-                        textView.setText(aCursor.getString(aColumnIndex));
-                        break;
-                    case R.id.textViewAmount:
-                        textView.setText(getAsAmountFromCurrency(aCursor, aColumnIndex));
-                        if (aCursor.getDouble(aColumnIndex) <= 0) {
-                            textView.setTextColor(getResources().getColor(R.color.material_red_700));
-                        } else {
-                            textView.setTextColor(getResources().getColor(R.color.material_green_700));
-                        }
-                        break;
-                    case R.id.textViewBalance:
-                        textView.setText(getAsAmount(aCursor, aColumnIndex));
-                        if (aCursor.getDouble(aColumnIndex) <= 0) {
-                            textView.setTextColor(getResources().getColor(R.color.material_red_700));
-                        } else {
-                            textView.setTextColor(getResources().getColor(R.color.material_green_700));
-                        }
-                        break;
-                    default:
-                        return false;
-                }
-                aView.setVisibility(View.VISIBLE);
-                return true;
+                    }
+                    return true;
+                case R.id.textViewAttachment:
+                    if (aCursor.getLong(aColumnIndex) <= 0)
+                        aView.setVisibility(View.GONE);
+                    else
+                        aView.setVisibility(View.VISIBLE);
+                    return true;
+                case R.id.textViewTags:
+                    if (aCursor.getString(aColumnIndex) == null || aCursor.getString(aColumnIndex).isEmpty())
+                        aView.setVisibility(View.GONE);
+                    else
+                        aView.setVisibility(View.VISIBLE);
+                    return true;
+                case R.id.textTransactionId:
+                    aView.setTag(aCursor.getLong(aColumnIndex));
+                    aView.setVisibility(View.GONE);
+                    return true;
             }
+            TextView textView = (TextView) aView;
+            switch (textView.getId()) {
+                case R.id.textViewMonth:
+                    textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "MMM"));
+                    break;
+                case R.id.textViewDay:
+                    textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "dd"));
+                    break;
+                case R.id.textViewYear:
+                    textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "yyyy"));
+                    break;
+                case R.id.textViewCategorySub:
+                case R.id.textViewPayee:
+                case R.id.textViewNotes:
+                case R.id.textViewStatus:
+                    textView.setText(aCursor.getString(aColumnIndex));
+                    break;
+                case R.id.textViewAmount:
+                    textView.setText(getAsAmountFromCurrency(aCursor, aColumnIndex));
+                    if (aCursor.getDouble(aColumnIndex) <= 0) {
+                        textView.setTextColor(getResources().getColor(R.color.material_red_700));
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color.material_green_700));
+                    }
+                    break;
+                case R.id.textViewBalance:
+                    textView.setText(getAsAmount(aCursor, aColumnIndex));
+                    if (aCursor.getDouble(aColumnIndex) <= 0) {
+                        textView.setTextColor(getResources().getColor(R.color.material_red_700));
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color.material_green_700));
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            aView.setVisibility(View.VISIBLE);
+            return true;
         });
 
         setListAdapter(adapter);
@@ -528,13 +524,45 @@ public class CashFlowReportListFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        // set calendar
+        // set accounts Filter
+        inflater.inflate(R.menu.menu_cashflow, menu);
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        menu.findItem(accountFilter).setChecked(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle calendar
-        return super.onOptionsItemSelected(item);
+        // handle accounts filter
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+//        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        switch (item.getItemId()) {
+            case R.id.menu_cashflow_all:
+            case R.id.menu_cashflow_open:
+            case R.id.menu_cashflow_favorite:
+            case R.id.menu_cashflow_custom:
+                item.setChecked(true);
+                settings.set(R.menu.menu_cashflow, item.getItemId());
+                if ( item.getItemId() == R.id.menu_cashflow_custom ){
+                    // call popup
+                    selectedAccounts = new ArrayList<>();
+                    QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
+                    Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
+                            null,
+                            null,
+                            null,
+                            QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")" );
+                    while (c.moveToNext()) {
+
+                    }
+                    c.close();
+                    settings.get("AccountFilterCustom", "");
+                }
+                getActivity().recreate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -552,7 +580,7 @@ public class CashFlowReportListFragment
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item) {
         // context menu
         return false;
     }
@@ -592,7 +620,7 @@ public class CashFlowReportListFragment
         LineDataSet set1 = new LineDataSet(values, "Balance");
         set1.setColor(Color.GREEN);
         set1.setCircleColor(Color.GREEN);
-        set1.setLineWidth(1f);
+        set1.setLineWidth(2f);
         set1.setDrawCircleHole(false);
         set1.setDrawCircles(false);
 
