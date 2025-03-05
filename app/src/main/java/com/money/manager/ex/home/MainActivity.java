@@ -260,14 +260,27 @@ public class MainActivity
         if (!isAuthenticated) {
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode() && !isInAuthentication) {
-                Intent intent = new Intent(this, PasscodeActivity.class);
-                // set action and data
-                intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
-                intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
-                intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
-                // start activity
-                startActivityForResult(intent, RequestCodes.PASSCODE);
-                // set in authentication
+
+                //#2381 : Passcode issue after Android update
+                // remove the passcode which was set as "FingerprintAuthenticationSuccess"
+                if (passcode.getPasscode().equals("FingerprintAuthenticationSuccess")) {
+                    if (passcode.clearPasscode()) {
+                        new Core(this).alert(R.string.fingerprint_passcode_deactivated);
+                    }
+                    else {
+                        new Core(this).alert(R.string.passcode_not_update);
+                    }
+                } else {
+                    Intent intent = new Intent(this, PasscodeActivity.class);
+                    // set action and data
+                    intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
+                    intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
+                    intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
+                    // start activity
+                    startActivityForResult(intent, RequestCodes.PASSCODE);
+                    // set in authentication
+                }
+
                 isInAuthentication = true;
             }
         }
