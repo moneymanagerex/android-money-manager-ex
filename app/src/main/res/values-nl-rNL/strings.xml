@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">Een eenvoudig en makkelijk te gebruiken toepassing voor het beheer van persoonlijke financiën, rekeningen, gezinsbudget, enzovoort.</string>
+    <string name="application_credits">Money Manager Ex voor Android Project maakt gebruik van de ActionBarSherlock-bibliotheek</string>
     <string name="application_license">Open source-licenties</string>
     <!-- database -->
     <string name="db_insert_failed">Invoeren van gegevens is mislukt</string>
@@ -68,7 +69,16 @@
     <string name="sync_on_app_start">Synchroniseer bij opstarten app.</string>
     <string name="sync_on_start">Synchroniseer bij starten</string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">Verwerk banktransactie SMS</string>
+    <string name="summary_sms_auto_trans">Lees de banktransactie SMS en maak de transactie automatisch aan</string>
+    <string name="deny_receive_sms_error">Je hebt de toestemming om sms te ontvangen geweigerd, zodat je banktransactie-SMS niet wordt verwerkt</string>
+    <string name="granted_receive_sms_access">Toestemming al verleend voor RECEIVE_SMS</string>
+    <string name="revoke_receive_sms_access">Ga naar Instellingen &gt;&gt; Apps &gt;&gt; Money Manager Ex &gt;&gt; Toestemmingen en weiger toegang tot SMS</string>
+    <string name="title_sms_trans_status_notification">SMS Transactie Status Melding</string>
+    <string name="summary_sms_trans_status_notification">Inschakelen om de status van banktransactie sms proces te tonen in het meldingenoverzicht in plaats van ze te tonen als Toast msg of Nieuw Transactie scherm</string>
     <string name="notification_click_to_edit_transaction">Raak aan om de transactie te bewerken&#8230;</string>
+    <string name="notification_process_sms_transaction_status">Verwerk Bank Transactie SMS Status</string>
+    <string name="notification_process_sms_channel_description">AMMEX SMS Notificatie Kanaal</string>
     <!-- account -->
     <string name="account">Rekening</string>
     <string name="account_list">Rekeninglijst</string>
@@ -114,6 +124,7 @@
     <string name="add_subcategory">Voeg subcategorie toe</string>
     <string name="edit_categoryName">Bewerk categorie</string>
     <string name="delete_category">Verwijder categorie</string>
+    <string name="search_sub_category">Inclusief subcategorie</string>
     <!-- currency -->
     <string name="currency_name">Valutanaam</string>
     <string name="currency_symbol">Valutasymbool</string>
@@ -125,8 +136,10 @@
     <string name="decimal_char">Decimaal teken</string>
     <string name="group_char">Groepeer teken</string>
     <string name="scale">Schaal</string>
+    <string name="conversion_to_base_rate">Conversie</string>
     <string name="currency_name_empty">Valutanaam is vereist</string>
     <string name="new_edit_currency">Nieuw/Bewerk valuta</string>
+    <string name="missing_default_currency">Standaard valuta ontbreekt in de instelling</string>
     <!-- transaction -->
     <string name="amount">Bedrag</string>
     <string name="total_amount">Totaalbedrag</string>
@@ -147,6 +160,7 @@
     <string name="delete_transaction">Verwijder transactie</string>
     <string name="new_transaction">Nieuwe transactie</string>
     <string name="error_payee_not_selected">Ontvanger/betaler is vereist</string>
+    <string name="error_fromaccount_not_selected">Van Rekening is vereist</string>
     <string name="error_toaccount_not_selected">\"Naar Rekening\" is vereist</string>
     <string name="error_category_not_selected">Categorie is vereist</string>
     <string name="error_totamount_empty">Totaalbedrag is vereist</string>
@@ -206,6 +220,16 @@
     <string name="widget_all_accounts">Alle rekeningen</string>
     <string name="widget_add_transaction">Voeg transactie toe</string>
     <!-- TAG -->
+    <string name="tag">Tag/Label</string>
+    <string name="tagsList_transactions">Labels voor transactie</string>
+    <string name="tag_name">Labelnaam</string>
+    <string name="edit_tagName">Bewerk Label</string>
+    <string name="delete_tag">Verwijder Label</string>
+    <string name="select_tag">Selecteer Label</string>
+    <string name="tag_empty_list">Geen Label gevonden. Tik op de groene + knop om er een aan te maken.</string>
+    <string name="tag_can_not_deleted">Het geselecteerde label kan niet worden verwijderd omdat ernaar wordt verwezen</string>
+    <string name="db_tag_update_failed">Label bijwerken mislukt</string>
+    <string name="space_replaced_with__">Space, &amp; en | is vervangen door \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Geen</string>
     <string name="once">Eenmalig</string>
@@ -213,6 +237,7 @@
     <string name="bi_weekly">Tweewekelijks</string>
     <string name="monthly">Maandelijks</string>
     <string name="bi_monthly">Tweemaandelijks</string>
+    <string name="quarterly">Driemaandelijks</string>
     <string name="half_year">Halfjaarlijks</string>
     <string name="yearly">Jaarlijks</string>
     <string name="four_months">Viermaandelijks</string>
@@ -225,6 +250,9 @@
     <string name="repeating_empty_transaction">Er zijn geen geplande transacties gevonden. Tik op de groene + knop om er een aan te maken.</string>
     <string name="inactive">Inactief</string>
     <string name="activates">Activeringen</string>
+    <string name="days_overdue">%d dagen te laat!</string>
+    <string name="days_remaining">%d dagen resterend</string>
+    <string name="new_edit_repeating_transaction">Nieuw/Bewerk Geplande Transactie</string>
     <string name="due_date">Verloopdatum</string>
     <string name="next_occurrence">Volgende verwerking</string>
     <string name="payment_date">Betalingsdatum</string>
@@ -237,11 +265,14 @@
     <string name="enter_next_occurrence">Voer volgende verwerking in</string>
     <string name="skip_next_occurrence">Sla volgende verwerking over</string>
     <string name="skip_next_occurrence_confirmation">Wilt u de volgende verwerking overslaan?</string>
+    <string name="notification_repeating_transaction_expired">Er zijn verlopen geplande transacties</string>
     <string name="notification_click_to_check_repeating_transaction">Raak aan om de verlopen transacties te controleren</string>
+    <string name="num_repeating_transaction_expired">%1$d geplande transactie te laat</string>
     <string name="skip">Overslaan</string>
     <string name="enter">Voer in</string>
     <string name="enter_amount">Vul bedrag in</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Automatische transactie</string>
     <string name="manual">Handmatige invoer</string>
     <string name="prompt">Vragen om invoer</string>
     <string name="auto">Automatische invoer</string>
@@ -260,6 +291,9 @@
     <string name="enter_your_previous_passcode">Voer uw vorige wachtwoord in</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">wachtwoord werd niet bijgewerkt</string>
+    <string name="preferences_fingerprint_auth_key">Vingerafdruk authenticatie sleutel</string>
+    <string name="preferences_fingerprint_summary">Inschakelen om de vingerafdruk authenticatie te gebruiken voor login en het wachtwoord uit te schakelen. Een gebruiker kan echter geen vingerafdruk gebruiken om de toegangscode te activeren of te bewerken</string>
+    <string name="preferences_fingerprint_title">Vingerafdruk authenticatie</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Voor zoekopdrachten kunt u het %-teken gebruiken</string>
     <string name="income_vs_expenses_current_month">Inkomsten vs Uitgaven: huidige maand</string>
@@ -270,6 +304,9 @@
     <string name="no_stock_data">Geen effectengegevens beschikbaar voor deze rekening.</string>
     <string name="month">Maand</string>
     <string name="year">Jaar</string>
+    <string name="menu_reports">Ingebouwde Rapporten</string>
+    <string name="menu_general_report_group">Algemene Rapporten</string>
+    <string name="title_activity_general_report">Algemeen Rapport</string>
     <string name="menu_report_income_vs_expenses">Inkomsten vs Uitgaven</string>
     <string name="total">Totaal</string>
     <!--<string name="option">Option</string>-->
