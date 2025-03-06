@@ -188,8 +188,12 @@ public class ScheduledTransactionListFragment
             handler.showMessage("no context menu info");
             return false;
         }
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
+        AdapterView.AdapterContextMenuInfo info;
+        try {
+            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        } catch ( Exception e ) {
+            return  false;
+        }
         int menuItemId = item.getItemId();
         long scheduledTransactionId = info.id;
 
