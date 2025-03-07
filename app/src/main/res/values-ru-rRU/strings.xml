@@ -791,4 +791,5 @@
     <string name="local_file_change">Индикатор изменений локального файла: </string>
     <string name="msg_uploading_overwrite">Загруженная версия перезапишет существующую.\nПродолжить?</string>
     <string name="msg_downloading_overwrite">Скачанная версия перезапишет существующую.\nПродолжить?</string>
+    <string name="menu_cashflow_all">Все счета</string>
 </resources>

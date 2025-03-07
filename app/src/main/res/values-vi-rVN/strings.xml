@@ -635,4 +635,5 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="menu_cashflow_all">Tất cả tài khoản</string>
 </resources>
