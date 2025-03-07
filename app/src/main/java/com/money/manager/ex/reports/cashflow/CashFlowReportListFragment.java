@@ -578,7 +578,7 @@ public class CashFlowReportListFragment
                             (dialog, which, isChecked) -> {
                                 matrixCursor.moveToPosition(which);
                                 long id = matrixCursor.getInt(matrixCursor.getColumnIndex("_id"));
-                                if ( isChecked == false ) {
+                                if ( !isChecked ) {
 //                                    if ( selectedAccounts.contains(id) ) {
                                         selectedAccounts.remove(id);
 //                                    }
