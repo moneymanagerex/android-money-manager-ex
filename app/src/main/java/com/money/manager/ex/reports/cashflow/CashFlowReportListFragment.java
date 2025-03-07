@@ -38,7 +38,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.appcompat.app.AlertDialog;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
@@ -51,7 +51,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -518,7 +517,7 @@ public class CashFlowReportListFragment
         super.onCreate(savedInstanceState);
 //        MmexApplication.getApp().iocComponent.inject(this);
         setHasOptionsMenu(false);
-        Intent i = getActivity().getParentActivityIntent();
+//        Intent i = getActivity().getParentActivityIntent();
     }
 
     @Override
@@ -546,17 +545,53 @@ public class CashFlowReportListFragment
                 if ( item.getItemId() == R.id.menu_cashflow_custom ){
                     // call popup
                     selectedAccounts = new ArrayList<>();
+                    String[] accountList = settings.get("AccountFilterCustom", "").split(",");
+                    for (String x : accountList) {
+                        if (! x.isEmpty() )
+                            try {
+                                selectedAccounts.add(Long.valueOf(x));
+                            } catch ( Exception e ) {}
+                    }
                     QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
                     Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
                             null,
                             null,
                             null,
                             QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")" );
+                    if ( c == null ) return false;
+                    MatrixCursor matrixCursor = new MatrixCursor( new String[]{"_id", QueryAccountBills.ACCOUNTNAME, "CHECKED"} );
                     while (c.moveToNext()) {
-
+                        long id = c.getLong(c.getColumnIndex(QueryAccountBills.ACCOUNTID));
+                        matrixCursor.newRow()
+                                .add("_id", id)
+                                .add(QueryAccountBills.ACCOUNTNAME, c.getString(c.getColumnIndex(QueryAccountBills.ACCOUNTNAME)))
+                                .add("CHECKED", ( selectedAccounts.contains(id) ? 1 : 0 ) );
                     }
                     c.close();
-                    settings.get("AccountFilterCustom", "");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Select Accounts");
+                    builder.setCancelable(false);
+                    builder.setMultiChoiceItems(matrixCursor,"CHECKED", QueryAccountBills.ACCOUNTNAME,
+                            (dialog, which, isChecked) -> {
+                                matrixCursor.moveToPosition(which);
+                                long id = matrixCursor.getInt(matrixCursor.getColumnIndex("_id"));
+                                if ( isChecked == false ) {
+//                                    if ( selectedAccounts.contains(id) ) {
+                                        selectedAccounts.remove(id);
+//                                    }
+                                } else {
+                                    if ( ! selectedAccounts.contains( id )) {
+                                        selectedAccounts.add( id );
+                                    }
+                                }
+                            } );
+                    builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        settings.set("AccountFilterCustom", selectedAccounts.toString().replace("[","").replace("]","").replace(" ",""));
+                        getActivity().recreate();
+                    });
+                    builder.show();
+                    settings.set("AccountFilterCustom", "");
+                    return true;
                 }
                 getActivity().recreate();
                 return true;
