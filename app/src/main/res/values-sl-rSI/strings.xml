@@ -573,4 +573,5 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="menu_cashflow_all">Vsi računi</string>
 </resources>

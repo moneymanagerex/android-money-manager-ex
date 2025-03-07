@@ -703,4 +703,5 @@
     <string name="CLEAR_ALL">Effacer tout</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="menu_cashflow_all">Tous les comptes</string>
 </resources>
