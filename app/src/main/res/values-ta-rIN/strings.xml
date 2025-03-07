@@ -291,6 +291,7 @@
     <string name="enter_your_previous_passcode">உங்கள் முந்தைய கடவுக்குறியீட்டை உள்ளிடவும்</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">கடவுக்குறியீடு புதுப்பிக்கப்படவில்லை</string>
+    <string name="fingerprint_passcode_deactivated">பாதுகாப்பு கடவுக்குறியீடு கைரேகை அங்கீகாரத்தைப் பயன்படுத்தி செயல்படுத்தப்பட்டது, எனவே கடவுக்குறியீடு தானாகவே செயலிழக்கப்பட்டது, தயவுசெய்து எண் மதிப்புடன் கடவுக்குறியீட்டை மீண்டும் செயல்படுத்தவும்.</string>
     <string name="preferences_fingerprint_auth_key">கைரேகை அங்கீகார விசை</string>
     <string name="preferences_fingerprint_summary">உள்நுழைவுக்கான கைரேகை அங்கீகாரத்தைப் பயன்படுத்தவும் மற்றும் கடவுக்குறியீடு திரையை முடக்கவும். இருப்பினும், கடவுக்குறியீட்டை செயல்படுத்தவோ திருத்தவோ பயனர் கைரேகையைப் பயன்படுத்த முடியாது</string>
     <string name="preferences_fingerprint_title">கைரேகை அங்கீகாரம்</string>
@@ -790,4 +791,7 @@
     <string name="msg_uploading_overwrite">பதிவேற்றினால் உங்கள் தொலைநிலைப் பதிப்பு மேலெழுதப்படும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="msg_downloading_overwrite">பதிவிறக்குவது உங்கள் உள்ளூர் பதிப்பை மேலெழுதும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="menu_cashflow_all">அனைத்து கணக்குகளும்</string>
+    <string name="menu_cashflow_open">திறந்த கணக்குகள்</string>
+    <string name="menu_cashflow_favorite">பிடித்த கணக்குகள்</string>
+    <string name="menu_cashflow_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
 </resources>
