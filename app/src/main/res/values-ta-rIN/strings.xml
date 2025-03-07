@@ -789,4 +789,5 @@
     <string name="local_file_change">உள்ளூர் கோப்பு மாற்றங்கள் காட்டி:</string>
     <string name="msg_uploading_overwrite">பதிவேற்றினால் உங்கள் தொலைநிலைப் பதிப்பு மேலெழுதப்படும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="msg_downloading_overwrite">பதிவிறக்குவது உங்கள் உள்ளூர் பதிப்பை மேலெழுதும்.\nதொடர விரும்புகிறீர்களா?</string>
+    <string name="menu_cashflow_all">அனைத்து கணக்குகளும்</string>
 </resources>

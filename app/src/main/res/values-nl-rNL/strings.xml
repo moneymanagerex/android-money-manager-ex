@@ -791,4 +791,5 @@
     <string name="local_file_change">Indicator voor lokale bestandswijzigingen: </string>
     <string name="msg_uploading_overwrite">Uploaden overschrijft uw externe versie.\nWilt u doorgaan?</string>
     <string name="msg_downloading_overwrite">Downloaden overschrijft uw lokale versie.\nWilt u doorgaan?</string>
+    <string name="menu_cashflow_all">Alle rekeningen</string>
 </resources>

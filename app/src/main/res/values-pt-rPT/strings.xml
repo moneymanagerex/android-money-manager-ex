@@ -684,4 +684,5 @@ Toque para marcar a transação como atrasada</string>
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="menu_cashflow_all">Todas as Contas</string>
 </resources>
