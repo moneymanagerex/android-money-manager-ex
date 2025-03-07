@@ -30,6 +30,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -43,6 +44,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -692,6 +695,22 @@ public class CashFlowReportListFragment
         chart.setDescription("");
         chart.setData(data);
         chart.setTouchEnabled(false);
+/*      // try to move... dont work
+        chart.setTouchEnabled(true);
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+                matrixCursor.moveToPosition(dayPosition.get(e.getXIndex()));
+                adapter.swapCursor(adapter.getCursor());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+ */
         chart.setNoDataText(getString(R.string.loading));
         chart.invalidate(); // refresh
 
