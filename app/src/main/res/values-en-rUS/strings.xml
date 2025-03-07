@@ -155,7 +155,7 @@
     <string name="transaction_type">Transaction Type</string>
     <string name="transaction_status">Status</string>
     <string name="withdrawal">Withdrawal</string>
-    <string name="db_checking_insert_failed">Inserting transaction failed</string>
+    <string name="db_checking_insert_failed">Failed to insert transaction</string>
     <string name="db_checking_update_failed">Updating transaction failed</string>
     <string name="delete_transaction">Delete Transaction</string>
     <string name="new_transaction">New transaction</string>

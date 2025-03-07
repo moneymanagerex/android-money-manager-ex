@@ -75,7 +75,7 @@
     <string name="granted_receive_sms_access">Autorizzazione già concessa per RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Vai in Impostazioni &gt;&gt; Applicazioni &gt;&gt; Money Manager Ex &gt;&gt; Autorizzazioni e nega l\'accesso per SMS</string>
     <string name="title_sms_trans_status_notification">Notifica lo stato delle transazioni via SMS</string>
-    <string name="summary_sms_trans_status_notification">Consente di mostrare lo stato del processo degli SMS di transazione bancaria nell\'area di notifica invece di mostrarli come messaggio Toast o nella schermata Nuova transazione.</string>
+    <string name="summary_sms_trans_status_notification">Abilita la visualizzazione dello stato dell\'elaborazione degli SMS delle transazioni bancarie nell\'area di notifica, invece di mostrarli come messaggio Toast o nella schermata Nuova Transazione.</string>
     <string name="notification_click_to_edit_transaction">Tocca per modificare la transazione&#8230;</string>
     <string name="notification_process_sms_transaction_status">Processa Stato Transazione Bancaria via SMS</string>
     <string name="notification_process_sms_channel_description">Canale di notifica SMS AMMEX</string>
@@ -145,7 +145,7 @@
     <string name="total_amount">Importo totale</string>
     <string name="deposit">Deposito</string>
     <string name="status">Stato</string>
-    <string name="status_reconciled">Contabilizzata</string>
+    <string name="status_reconciled">Riconciliata</string>
     <string name="status_void">Nulla</string>
     <string name="status_follow_up">Da Monitorare</string>
     <string name="status_duplicate">Duplicata</string>
@@ -266,7 +266,7 @@
     <string name="skip_next_occurrence">Salta prossima scadenza</string>
     <string name="skip_next_occurrence_confirmation">Si desidera saltare la prossima scadenza?</string>
     <string name="notification_repeating_transaction_expired">Ci sono transazioni pianificate scadute</string>
-    <string name="notification_click_to_check_repeating_transaction">Toccare per controllare le operazioni scadute</string>
+    <string name="notification_click_to_check_repeating_transaction">Toccare per controllare la transazione scadute</string>
     <string name="num_repeating_transaction_expired">%1$d Transazioni Pianificate scadute</string>
     <string name="skip">Salta</string>
     <string name="enter">Inserisci</string>
@@ -332,7 +332,7 @@
     <!-- Split Categories -->
     <string name="split_transaction">Transazione Suddivisa</string>
     <string name="split">Suddividi</string>
-    <string name="error_split_transaction_empty">E\' richiesta almeno una operazione suddivisa</string>
+    <string name="error_split_transaction_empty">È richiesta almeno una transazione suddivisa.</string>
     <string name="swipe_to_dismiss">Scorri orizzontalmente gli elementi per rimuoverli.</string>
     <string name="export_data_to_csv">Esporta dati in un file CSV</string>
     <string name="export_data_in_progress">Esportazione dei dati. Attendere prego&#8230;</string>
@@ -362,8 +362,8 @@
     <string name="synchronization_interval">Intervallo di sincronizzazione</string>
     <string name="summary_synchronization_interval">Con quale frequenza vuoi sincronizzare?</string>
     <string name="tips_new_version_dropbox">A partire dalla versione 1.2.0, Money Manager Ex per Android ha cambiato il motore di sincronizzazione di Dropbox. Gli utenti che già utilizzano la sincronizzazione con Dropbox devono aggiornare la configurazione.\nL\'autenticazione e la selezione del database si trovano nelle Impostazioni.\nA partire dalla versione 1.2.0, Money Manager Ex per Android può sincronizzare automaticamente il database.</string>
-    <string name="title_transaction_shown_balance">Mostra il saldo per ogni operazione</string>
-    <string name="summary_transaction_shown_balance">Visualizza il saldo per ogni operazione. La visualizzazione del saldo per ogni transazione potrebbe rallentare l\'applicazione</string>
+    <string name="title_transaction_shown_balance">Mostra il saldo per ogni transazione</string>
+    <string name="summary_transaction_shown_balance">Mostra il saldo per ogni transazione. La visualizzazione del saldo potrebbe rendere l\'applicazione più lenta</string>
     <string name="menu_open_database">Apri Database</string>
     <string name="database">Database</string>
     <string name="tips">Suggerimenti</string>
@@ -384,7 +384,7 @@
     <string name="libraries">Librerie</string>
     <string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>
     <string name="top_payees_last_30_days">Top Beneficiari: Ultimi 30 giorni</string>
-    <string name="upcoming_transactions">Operazioni Imminenti</string>
+    <string name="upcoming_transactions">Transazioni Imminenti</string>
     <string name="quantity">Quantità</string>
     <string name="dashboard">Cruscotto</string>
     <string name="last3months">Ultimi 3 mesi</string>
@@ -400,8 +400,8 @@
     <string name="default_status">Stato predefinito</string>
     <string name="default_payee">Beneficiario predefinito</string>
     <string name="edit_transaction">Modifica Transazione</string>
-    <string name="delete_one_selected_transaction">Sei sicuro di voler eliminare l\'operazione selezionata?</string>
-    <string name="delete_others_selected_transaction">Sei sicuro di che volere cancellare le %d operazioni selezionate?</string>
+    <string name="delete_one_selected_transaction">Sei sicuro di voler eliminare la transazione selezionata?</string>
+    <string name="delete_others_selected_transaction">Sei sicuro di voler eliminare le %d transazioni selezionate?</string>
     <string name="categories">Categorie</string>
     <string name="payees">Beneficiari</string>
     <string name="recurring_transactions">Transazioni Pianificate</string>
@@ -423,7 +423,7 @@
     <string name="show_chart">Visualizza Grafico</string>
     <string name="add_transaction">Aggiungi Transazione</string>
     <string name="welcome_header">Benevenuti in MoneyManagerEx!</string>
-    <string name="welcome_body">Tutte le operazioni in MoneyManagerEx sono assegnate ad un conto.\n\nAttualmente non hai nessun conto visibile. Modificare le impostazioni dei filtri per i conti da visualizzare, oppure\n\nselezionare una delle seguenti opzioni.</string>
+    <string name="welcome_body">Tutte le transazioni in MoneyManagerEx appartengono a conti.\n\nAttualmente non hai conti visibili. Puoi modificare il filtro per i conti visibili nelle Impostazioni oppure selezionare una delle opzioni seguenti.</string>
     <string name="welcome_body_dropbox">Se utilizzi già MoneyManagerEx su Windows, Linux o Mac puoi collegare questa applicazione ad un provider di archiviazione su cloud per sincronizzare il database</string>
     <string name="configure_sync">Configura sincronizzazione</string>
     <string name="search_text_contain_title">Ricerca testo per contenuto e non per l\'inizio del testo</string>
@@ -445,7 +445,7 @@
     <string name="loading">Caricamento in corso&#8230;</string>
     <string name="grand_total">Totale complessivo</string>
     <string name="change_status">Modifica lo stato</string>
-    <string name="duplicate_selected_transactions">Duplica le operazioni selezionate</string>
+    <string name="duplicate_selected_transactions">Duplica le transazioni selezionate</string>
     <string name="sort">Ordinamento</string>
     <string name="sort_order">Ordina per</string>
     <string name="sort_by_name">Ordina per nome</string>
@@ -464,7 +464,7 @@
     <!-- languages -->
     <string name="locale_application">Lingua dell\'applicazione</string>
     <string name="transaction_cancel_confirm">Sicuro di voler annullare le modifiche?</string>
-    <string name="keep_editing">Mantenere la modifica</string>
+    <string name="keep_editing">Mantieni la modifica</string>
     <string name="discard">Abbandona</string>
     <string name="invalid_expression">Espressione non valida</string>
     <string name="send_me_logcat">Logcat</string>
@@ -492,8 +492,8 @@
     <string name="custom_dates">Date personalizzate</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Nascondi gli importi riconciliati dai conti nel cruscotto.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Nascondi importi riconciliati</string>
-    <string name="pref_transaction_sort_by_type_summary">Organizza le operazioni giornaliere per tipo (deposito, trasferimento, prelievo)</string>
-    <string name="pref_transaction_sort_by_type_title">Ordina operazioni per Tipo</string>
+    <string name="pref_transaction_sort_by_type_summary">Ordina le transazioni giornaliere per tipo di transazione (deposito, trasferimento, prelievo).</string>
+    <string name="pref_transaction_sort_by_type_title">Ordina Transazioni per Tipo</string>
     <string name="warning">Avvertenza</string>
     <string name="no_transfer_splits">Si è scelto di passare al trasferimento, ma ci sono categorie suddivise nell\'operazione. Vuoi procedere e rimuovere le categorie suddivise?</string>
     <string name="qif_export">Export QIF</string>
@@ -544,7 +544,7 @@
     <string name="balance_adjustment">Correzione del saldo</string>
     <string name="cash">Contante</string>
     <string name="select_account">Seleziona conto</string>
-    <string name="invalid_transaction_number">Numero di operazione non valido</string>
+    <string name="invalid_transaction_number">Numero di transazione non valido</string>
     <string name="budgets">Budgets</string>
     <string name="budget">Budget</string>
     <string name="budget_list">Lista Budget</string>
@@ -780,6 +780,7 @@
     <string name="btn_continue">Continua</string>
     <!--- New navigation mode -->
     <string name="dismiss">Ignora</string>
+    <string name="category_nav_mode">È disponibile un nuovo metodo di navigazione nel menu.</string>
     <!--Upload/Downlaod warnning -->
     <string name="upload_warning">Carica Avviso</string>
     <string name="download_warning">Scarica Avviso</string>

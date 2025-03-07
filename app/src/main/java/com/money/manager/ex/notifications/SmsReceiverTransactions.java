@@ -140,6 +140,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                         // MMEX Helper
                         openHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
+                        boolean smsTxnStatusNotificationSetting = behav_settings.getSmsTransStatusNotification();
 
                         ITransactionEntity model = AccountTransaction.create();
                         mCommon = new EditTransactionCommonFunctions(null, model, database);
@@ -393,7 +394,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                             autoTransactionStatus = true;
 
-                                            if (behav_settings.getSmsTransStatusNotification()) {
+                                            if (smsTxnStatusNotificationSetting) {
                                                 t_intent.setAction(Intent.ACTION_EDIT);
                                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
 
@@ -404,7 +405,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             }
                                         }
                                         else {
-                                            if (behav_settings.getSmsTransStatusNotification()) {
+                                            if (smsTxnStatusNotificationSetting) {
                                                 showNotification(t_intent, msgBody, msgSender, "Save Failed", " - " + saveStatus);
                                             }
                                             else {
@@ -417,7 +418,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     //if transaction is not created automatically, then invoke notification or activity screen
                                     if (!autoTransactionStatus) {
 
-                                        if (behav_settings.getSmsTransStatusNotification()) {
+                                        if (smsTxnStatusNotificationSetting) {
                                             showNotification(t_intent, msgBody, msgSender, "Auto Failed", " - " + validationStatus);
                                         }
                                         else {
@@ -427,7 +428,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     }
                                 }
                                 else {
-                                    if (behav_settings.getSmsTransStatusNotification()) {
+                                    if (smsTxnStatusNotificationSetting) {
                                         showNotification(t_intent, "MMEX: Skiping Bank Transaction updates SMS, because transaction exists with ref. no. " + transRefNo, msgSender, "Already Exists", "");
                                     }
                                     else {
