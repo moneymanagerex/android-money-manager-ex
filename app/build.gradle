@@ -70,12 +70,12 @@ android {
 //            applicationIdSuffix ".beta"
 //            versionNameSuffix "-beta"
 //        }
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        release {
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            versionNameSuffix "-release"
-        }
+//        }
     }
 
     dataBinding {
