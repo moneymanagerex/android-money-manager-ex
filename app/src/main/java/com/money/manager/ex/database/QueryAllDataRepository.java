@@ -40,8 +40,13 @@ public class QueryAllDataRepository
     }
 
     @Override
-    protected AccountTransactionDisplay createEntity() {
+    public AccountTransactionDisplay createEntity() {
         return new AccountTransactionDisplay();
+    }
+
+    @Override
+    public String getTableName() {
+        return ""; // FIXME
     }
 
     @Override

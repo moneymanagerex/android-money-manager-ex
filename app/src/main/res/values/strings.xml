@@ -893,4 +893,8 @@
     <string name="menu_cashflow_favorite">Favorite Accounts</string>
     <string name="menu_cashflow_custom">Select Accounts…</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Take ours</string>
+    <string name="merge_take_theirs">Take theirs</string>
+
 </resources>

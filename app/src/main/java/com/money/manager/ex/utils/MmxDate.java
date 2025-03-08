@@ -44,6 +44,11 @@ public class MmxDate {
      */
     public static MmxDate fromIso8601(String dateString) {
         if (dateString.length() < 28) {
+            // 2025-02-25T21:08:51 //  Combined
+            if (dateString.length() == 19 && dateString.charAt(10) == 'T') {
+                return new MmxDate(dateString, Constants.IOS_8601_COMBINED);
+            }
+
             // manually handle short time-zone offset, i.e. 2016-10-22T02:36:46.000+02
             if (dateString.charAt(23) == '+' || dateString.charAt(23) == '-') {
                 // append two zeroes
