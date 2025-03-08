@@ -59,6 +59,7 @@ import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import info.javaperformance.money.MoneyFactory;
@@ -272,9 +273,13 @@ public class IncomeVsExpensesListFragment
             years.add(String.valueOf(mYearsSelected.keyAt(i)));
 
             if (mYearsSelected.valueAt(i)) {
-                selected.add(i);
+                // SparseBooleanArray will be always in ASC order, so reversing the selection index
+                selected.add(mYearsSelected.size()-(i+1));
             }
         }
+
+        // SparseBooleanArray will be always in ASC order, so using sort option
+        Collections.sort(years, Collections.reverseOrder());
 
         // Convert years to CharSequence array
         final CharSequence[] items = years.toArray(new CharSequence[years.size()]);
@@ -300,7 +305,7 @@ public class IncomeVsExpensesListFragment
                         }
                         // Set selected years
                         for (int i = 0; i < checkedItems.length; i++) {
-                            mYearsSelected.put(mYearsSelected.keyAt(i), checkedItems[i]);
+                            mYearsSelected.put(mYearsSelected.keyAt(checkedItems.length-(i+1)), checkedItems[i]);
                         }
                         startLoader();
                     }
