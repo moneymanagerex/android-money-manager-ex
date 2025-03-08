@@ -189,10 +189,10 @@ public class MainActivity
         super.onCreate(savedInstanceState);
 
         // test
-        int test = 0;
+/*        int test = 0;
         if (test == 1) throw new IllegalStateException("This state is not allowed.");
         if ( test == 2) {test = 0; test = 1 / test;};
-
+*/
         MmexApplication.getApp().iocComponent.inject(this);
 
         if (showPrerequisite()) {
