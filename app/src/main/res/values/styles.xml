@@ -146,4 +146,13 @@
         <item name="background">@android:drawable/dialog_holo_light_frame</item>
         <item name="android:padding">0dp</item>
     </style>
+
+
+    <!-- for Error Handling -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
