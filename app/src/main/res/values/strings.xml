@@ -896,4 +896,7 @@
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
+    <!-- Error Handling -->
+    <string name="title_activity_auth">Opps! Something went wrong.</string>
+    <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
 </resources>
