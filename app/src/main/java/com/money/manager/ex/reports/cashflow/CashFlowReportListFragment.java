@@ -529,7 +529,9 @@ public class CashFlowReportListFragment
         inflater.inflate(R.menu.menu_cashflow, menu);
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
         int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
-        menu.findItem(accountFilter).setChecked(true);
+        if ( menu.findItem(accountFilter) != null ) {
+            menu.findItem(accountFilter).setChecked(true);
+        }
     }
 
     @Override
