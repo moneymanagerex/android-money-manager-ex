@@ -276,7 +276,6 @@ public class CashFlowReportListFragment
         String accountCustomFilters = "";
         if ( accountFilter == R.id.menu_cashflow_custom ) {
             accountCustomFilters = settings.get("AccountFilterCustom", "");
-//            accountCustomFilters = "5,6" ; // Tor Test
         }
         // compose whereClause
         String where = "";
@@ -547,6 +546,10 @@ public class CashFlowReportListFragment
                 settings.set(R.menu.menu_cashflow, item.getItemId());
                 if ( item.getItemId() == R.id.menu_cashflow_custom ){
                     // call popup
+                                        String where = "";
+                    if ( settings.getViewOpenAccounts() ) {
+                        where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
+                    }
                     selectedAccounts = new ArrayList<>();
                     String[] accountList = settings.get("AccountFilterCustom", "").split(",");
                     for (String x : accountList) {
@@ -558,7 +561,7 @@ public class CashFlowReportListFragment
                     QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
                     Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
                             null,
-                            null,
+                            where,
                             null,
                             QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")" );
                     if ( c == null ) return false;
@@ -694,15 +697,15 @@ public class CashFlowReportListFragment
 //        chart.getXAxis().setDrawLabels(true);
         chart.setDescription("");
         chart.setData(data);
-        chart.setTouchEnabled(false);
-/*      // try to move... dont work
+//        chart.setTouchEnabled(false);
         chart.setTouchEnabled(true);
+        chart.setPinchZoom(false);
         chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-                matrixCursor.moveToPosition(dayPosition.get(e.getXIndex()));
-                adapter.swapCursor(adapter.getCursor());
-                adapter.notifyDataSetChanged();
+                int newPos = dayPosition.indexOf(e.getXIndex());
+                //                getListView().smoothScrollToPosition(newPos);
+                getListView().setSelection(newPos);
             }
 
             @Override
@@ -710,7 +713,7 @@ public class CashFlowReportListFragment
 
             }
         });
- */
+
         chart.setNoDataText(getString(R.string.loading));
         chart.invalidate(); // refresh
 
