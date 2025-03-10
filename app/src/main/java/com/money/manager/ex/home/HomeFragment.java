@@ -437,6 +437,7 @@ public class HomeFragment
         // Investment menu items.
         if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
             menu.add(Menu.NONE, ContextMenuIds.Portfolio.getId(), 0, getString(R.string.portfolio));
+            menu.add(Menu.NONE, ContextMenuIds.CASH_LEDGER.getId(), 0, getString(R.string.cash_ledger));
         }
     }
 
@@ -461,11 +462,14 @@ public class HomeFragment
 
             result = true;
         }
-        if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
+        else if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
             startBalanceAccount(account);
         }
-        if (menuItemTitle.equalsIgnoreCase(getString(R.string.portfolio))) {
+        else if (menuItemTitle.equalsIgnoreCase(getString(R.string.portfolio))) {
             EventBus.getDefault().post(new RequestPortfolioFragmentEvent(accountId));
+        }
+        else if (menuItemTitle.equalsIgnoreCase(getString(R.string.cash_ledger))) {
+            EventBus.getDefault().post(new RequestAccountFragmentEvent(accountId));
         }
 
         return result;
@@ -744,7 +748,7 @@ public class HomeFragment
         for (int i = 0; i < mAccountTypes.size(); i++) {
             // Check saved visibility preferences. Some groups might be collapsed.
             String key = getSettingsKeyFromGroupPosition(i);
-            Boolean expanded = settings.get(key, true);
+            boolean expanded = settings.get(key, true);
 
             if(expanded) {
                 mExpandableListView.expandGroup(i);
