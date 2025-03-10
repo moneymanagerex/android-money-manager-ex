@@ -291,6 +291,7 @@
     <string name="enter_your_previous_passcode">Введите ваш старый пароль</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">Пароль не обновлен</string>
+    <string name="fingerprint_passcode_deactivated">Была включена аутентификация по отпечатку пальца, поэтому пароль был автоматически деактивирован; пожалуйста, включите числовой пароль повторно</string>
     <string name="preferences_fingerprint_auth_key">Код входа по отпечатку пальца</string>
     <string name="preferences_fingerprint_summary">Разрешить использование отпечатка пальца для входа в программу и отключения экрана пароля. При этом пользователь не сможет использовать отпечаток пальца для активации или редактирования пароля</string>
     <string name="preferences_fingerprint_title">Вход по отпечатку пальца</string>
@@ -792,4 +793,7 @@
     <string name="msg_uploading_overwrite">Загруженная версия перезапишет существующую.\nПродолжить?</string>
     <string name="msg_downloading_overwrite">Скачанная версия перезапишет существующую.\nПродолжить?</string>
     <string name="menu_cashflow_all">Все счета</string>
+    <string name="menu_cashflow_open">Открытые счета</string>
+    <string name="menu_cashflow_favorite">Избранные счета</string>
+    <string name="menu_cashflow_custom">Выберите счета&#8230;</string>
 </resources>
