@@ -46,8 +46,13 @@ public class CurrencyRepository
     }
 
     @Override
-    protected Currency createEntity() {
+    public Currency createEntity() {
         return new Currency();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

@@ -41,8 +41,13 @@ public class ScheduledTransactionRepository
     }
 
     @Override
-    protected RecurringTransaction createEntity() {
+    public RecurringTransaction createEntity() {
         return new RecurringTransaction();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
