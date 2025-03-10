@@ -37,6 +37,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 
 import androidx.appcompat.app.AlertDialog;
@@ -101,7 +103,7 @@ public class CashFlowReportListFragment
     MoneySimpleCursorAdapter adapter;
     ArrayList<Long> selectedAccounts = new ArrayList<>();
     ArrayList<Double> graphValue;
-    LimitLine cursorPosition;
+//    LimitLine cursorPosition;
     ArrayList<Integer> dayPosition = new ArrayList<>();
 
     @SuppressLint("Range")
@@ -341,14 +343,16 @@ public class CashFlowReportListFragment
 
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                            if (cursorPosition != null ) {
+//                            if (cursorPosition != null ) {
+                              if ( chart != null ) {
 //                                Timber.d("Position: %d",firstVisibleItem);
-                                chart.getXAxis().removeLimitLine(cursorPosition);
+//                                chart.getXAxis().removeLimitLine(cursorPosition);
                                 int pos = dayPosition.get(firstVisibleItem);
-                                cursorPosition = new LimitLine(pos,"");
-                                cursorPosition.setLineColor(Color.GREEN);
-                                cursorPosition.setLineWidth(2f);
-                                chart.getXAxis().addLimitLine(cursorPosition);
+//                                cursorPosition = new LimitLine(pos,"");
+//                                cursorPosition.setLineColor(Color.GREEN);
+//                                cursorPosition.setLineWidth(2f);
+//                                chart.getXAxis().addLimitLine(cursorPosition);
+                                chart.highlightValue(pos, 0, false);
                                 chart.invalidate();
                             }
                         }
@@ -666,6 +670,9 @@ public class CashFlowReportListFragment
         set1.setLineWidth(2f);
         set1.setDrawCircleHole(false);
         set1.setDrawCircles(false);
+        set1.setHighLightColor(Color.BLUE);
+        set1.setDrawHighlightIndicators(true);
+        set1.setHighlightLineWidth(1F);
 
 //        LineData data = new LineData(xVal, set1);   //(dataSets);
         LineData data = new LineData(xVal, set1);   //(dataSets);
@@ -682,21 +689,18 @@ public class CashFlowReportListFragment
             if (!xVal.get(i).isEmpty()) {
                 LimitLine l = new LimitLine(i, xVal.get(i));
                 l.setTextSize(10);
-                l.setLineColor(Color.GRAY);
+                l.setLineColor(Color.DKGRAY);
                 chart.getXAxis().addLimitLine(l);
             }
         }
-        cursorPosition = new LimitLine(0,"");
-        cursorPosition.setLineColor(Color.GREEN);
-        cursorPosition.setLineWidth(2);
-        chart.getXAxis().addLimitLine(cursorPosition);
+//        cursorPosition = new LimitLine(0,"");
+//        cursorPosition.setLineColor(Color.GREEN);
+//        cursorPosition.setLineWidth(2);
+//        chart.getXAxis().addLimitLine(cursorPosition);
+//        chart.setHighlightPerTapEnabled(true);
 
         chart.getXAxis().setDrawLabels(false);
-//        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
-//        chart.getXAxis().setValueFormatter((original, index, viewPortHandler) -> {
-//            return "";
-//        });
-//        chart.getXAxis().setDrawLabels(true);
+//        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP);
         chart.setDescription("");
         chart.setData(data);
 //        chart.setTouchEnabled(false);
@@ -715,11 +719,15 @@ public class CashFlowReportListFragment
 
             }
         });
-
+        chart.getLegend().setEnabled(false);
         chart.setNoDataText(getString(R.string.loading));
+        Timber.d("Max: %f", chart.getAxisLeft().getAxisMaximum());
+        Timber.d("Min: %f", chart.getAxisLeft().getAxisMinimum());
+        chart.getAxisLeft().setAxisMaxValue( ( (chart.getAxisLeft().getAxisMaximum()  - chart.getAxisLeft().getAxisMinimum() ) / ( chart.getHeight() - 15 ) ) * chart.getHeight() + chart.getAxisLeft().getAxisMinimum() );
+        Timber.d("New Max: %f", chart.getAxisLeft().getAxisMaximum());
+//        chart.setDrawMarkerViews(true);
         chart.invalidate(); // refresh
 
     }
-
 
 }
