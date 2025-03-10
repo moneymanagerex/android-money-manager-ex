@@ -457,6 +457,15 @@
             android:resource="@dimen/app_minimumsize_h" />
 
         <activity android:name=".investment.PriceEditActivity" />
+
+        <!-- Error Handling -->
+        <activity
+            android:process=":crashreport"
+            android:name=".crashreport.CrashReportActivity"
+            android:label="@string/title_activity_auth"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
