@@ -220,7 +220,7 @@ public class AccountService
         list.add(AccountTypes.TERM);
         list.add(AccountTypes.CREDIT_CARD);
         list.add(AccountTypes.LOAN);
-        list.add(AccountTypes.SHARES);
+        list.add(AccountTypes.INVESTMENT);
 
         return list;
     }
@@ -228,9 +228,7 @@ public class AccountService
     public List<Account> getTransactionAccounts(boolean openOnly, boolean favoriteOnly) {
         List<String> accountTypeNames = getTransactionAccountTypeNames();
 
-        List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
-
-        return result;
+        return loadAccounts(openOnly, favoriteOnly, accountTypeNames);
     }
 
     /**
@@ -361,17 +359,16 @@ public class AccountService
 
         String where = getWhereFilterFor(openOnly, favoriteOnly);
 
-        if (accountTypes != null && accountTypes.size() > 0) {
+        if (accountTypes != null && !accountTypes.isEmpty()) {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
+        return getContext().getContentResolver().query(repo.getUri(),
                 repo.getAllColumns(),
                 where,
                 null,
                 "lower (" + Account.ACCOUNTNAME + ")"
         );
-        return cursor;
     }
 
     private String getWhereFilterFor(boolean openOnly, boolean favoriteOnly) {
