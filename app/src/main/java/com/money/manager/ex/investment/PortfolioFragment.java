@@ -43,7 +43,7 @@ import androidx.loader.content.Loader;
 public class PortfolioFragment
     extends BaseListFragment {
 
-    private static final String ARG_ACCOUNT_ID = "accountId";
+    private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
     public static final int ID_LOADER = 1;
 
     /**
@@ -163,7 +163,7 @@ public class PortfolioFragment
 
                 StockRepository repo = new StockRepository(getActivity());
                 Select query = new Select(repo.getAllColumns())
-                    .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID))
+                    .where(StockFields.HELDAT + " = " + args.getLong(ARG_ACCOUNT_ID))
                     .orderBy(StockFields.SYMBOL);
                 //.orderBy(sort);
 

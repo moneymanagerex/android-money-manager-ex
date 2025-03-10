@@ -213,10 +213,10 @@ public class QueryAccountBills
             return;
         }
 
-        this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
+        this.setAccountId(c.getLong(c.getColumnIndex(ACCOUNTID)));
         this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
         this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));
-        this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
+        this.setCurrencyId(c.getLong(c.getColumnIndex(CURRENCYID)));
         this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
         this.setReconciled(c.getDouble(c.getColumnIndex(RECONCILED)));
         this.setReconciledBaseConvRate(c.getDouble(c.getColumnIndex(RECONCILEDBASECONVRATE)));
