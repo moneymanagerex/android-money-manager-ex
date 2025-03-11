@@ -27,20 +27,17 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <!-- 列表容器 -->
     <FrameLayout
         android:id="@+id/listContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- RecyclerView 作为列表 -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
-        <!-- 空数据视图 -->
         <ScrollView
             android:id="@+id/emptyViewScroll"
             android:layout_width="match_parent"
@@ -57,7 +54,6 @@
         </ScrollView>
     </FrameLayout>
 
-    <!-- 悬浮按钮 -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

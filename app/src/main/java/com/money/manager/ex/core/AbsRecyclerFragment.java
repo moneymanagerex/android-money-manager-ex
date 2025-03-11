@@ -71,7 +71,6 @@ public abstract class AbsRecyclerFragment extends Fragment {
         mRecyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
     }
 
-    // 类似AbsListFragment的加载状态控制
     protected void setListShown(boolean shown) {
         if (mListShown == shown) return;
         mListShown = shown;

@@ -37,7 +37,6 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
-    // 复用BaseListFragment中的FAB、搜索菜单等逻辑
     private FloatingActionButton mFloatingActionButton;
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 
@@ -78,7 +77,6 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         return (RecyclerView) getView().findViewById(R.id.recyclerView);
     }
 
-    // 其他复用BaseListFragment的代码（搜索菜单等）
     @Override
     public void onStart() {
         super.onStart();
