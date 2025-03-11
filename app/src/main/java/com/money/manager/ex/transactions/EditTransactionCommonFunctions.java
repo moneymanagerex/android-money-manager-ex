@@ -1343,8 +1343,11 @@ public class EditTransactionCommonFunctions {
         loadCategoryName();
 //        displayCategoryName();
 
-        // issue #1961
-        transactionEntity.setNotes(splitTransaction.getNotes());
+        // issue #2380
+        if ( ! splitTransaction.getNotes().isEmpty() ) {
+            // issue #1961
+            transactionEntity.setNotes(splitTransaction.getNotes());
+        }
         displayNotes();
 
         // reset split indicator & display category
