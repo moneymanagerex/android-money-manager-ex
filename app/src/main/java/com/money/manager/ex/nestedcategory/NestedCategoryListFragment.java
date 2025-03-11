@@ -162,7 +162,7 @@ public class NestedCategoryListFragment
             textView.setVisibility(View.VISIBLE);
             if (levelMode == NAVMODE_LIST || !TextUtils.isEmpty(mCurFilter)) {
                 foldericon.setVisibility(View.GONE);
-                selector.setVisibility(View.GONE);
+//                selector.setVisibility(View.GONE);
             } else {
                 foldericon.setVisibility(View.VISIBLE);
                 // set foldericon
@@ -175,14 +175,14 @@ public class NestedCategoryListFragment
                     foldericon.setText(" ");
                 }
 
-                selector.setVisibility(View.VISIBLE);
-                if (mAction.equals(Intent.ACTION_PICK)) {
-                    // pick
-                    selector.setText("o");
-                } else {
-                    selector.setText("j");
-                }
+            }
 
+            selector.setVisibility(View.VISIBLE);
+            if (mAction.equals(Intent.ACTION_PICK)) {
+                // pick
+                selector.setText("o");
+            } else {
+                selector.setText("j");
             }
 
             if (mAction.equals(Intent.ACTION_PICK)) {
@@ -553,8 +553,15 @@ public class NestedCategoryListFragment
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        if ( (mAction.equals(Intent.ACTION_PICK)) &&
+                !TextUtils.isEmpty(mCurFilter) && !mCurFilter.equalsIgnoreCase("%") ) {
+            // we hare in pick mode and search for text
+            // select item means return item to edit
+            setResult();
+        }
         super.onListItemClick(l, v, position, id);
-        if (levelMode == NAVMODE_LIST) {
+        if (levelMode == NAVMODE_LIST ||
+                !TextUtils.isEmpty(mCurFilter) && !mCurFilter.equalsIgnoreCase("%") ) {
             onListItemLongClick(l, v, position, id);
             return;
         }
