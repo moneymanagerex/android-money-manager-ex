@@ -18,9 +18,12 @@
 package com.money.manager.ex.core;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,12 +40,26 @@ public abstract class AbsRecyclerFragment extends Fragment {
     private View mProgressContainer;
     private View mListContainer;
     private boolean mListShown = true;
+    private RecyclerView.Adapter<?> mAdapter;
 
+    // Handler to manage UI updates like focusing on the RecyclerView
+    private final Handler mHandler = new Handler();
+
+    // Check if RecyclerView is empty
+    private final Runnable mRequestFocus = new Runnable() {
+        @Override
+        public void run() {
+            mRecyclerView.requestFocus();
+        }
+    };
+
+    // Create view for the fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.abs_recycler_fragment, container, false);
     }
 
+    // Initialize views and RecyclerView settings
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -52,9 +69,12 @@ public abstract class AbsRecyclerFragment extends Fragment {
         mListContainer = view.findViewById(R.id.listContainer);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
+    // Update RecyclerView adapter
     public void setAdapter(RecyclerView.Adapter<?> adapter) {
+        this.mAdapter = adapter;
         mRecyclerView.setAdapter(adapter);
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -65,16 +85,113 @@ public abstract class AbsRecyclerFragment extends Fragment {
         checkEmpty();
     }
 
+    // Check if RecyclerView is empty and adjust visibility accordingly
     private void checkEmpty() {
-        boolean empty = Objects.requireNonNull(mRecyclerView.getAdapter()).getItemCount() == 0;
+        boolean empty = mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0;
         mEmptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
         mRecyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
     }
 
+    // Set visibility of the list view (RecyclerView)
     protected void setListShown(boolean shown) {
-        if (mListShown == shown) return;
+        setListShown(shown, true);
+    }
+
+    // Control visibility with or without animation
+    protected void setListShownNoAnimation(boolean shown) {
+        setListShown(shown, false);
+    }
+
+    // Control visibility of list view, with an option for animation
+    private void setListShown(boolean shown, boolean animate) {
+        if (mProgressContainer == null) {
+            throw new IllegalStateException("Can't be used with a custom content view");
+        }
+
+        if (mListShown == shown) {
+            return;
+        }
         mListShown = shown;
-        mProgressContainer.setVisibility(shown ? View.GONE : View.VISIBLE);
-        mListContainer.setVisibility(shown ? View.VISIBLE : View.GONE);
+
+        if (shown) {
+            if (animate) {
+                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out));
+                mListContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+            } else {
+                mProgressContainer.clearAnimation();
+                mListContainer.clearAnimation();
+            }
+
+            mProgressContainer.setVisibility(View.GONE);
+            mListContainer.setVisibility(View.VISIBLE);
+        } else {
+            if (animate) {
+                mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+                mListContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out));
+            } else {
+                mProgressContainer.clearAnimation();
+                mListContainer.clearAnimation();
+            }
+
+            mProgressContainer.setVisibility(View.VISIBLE);
+            mListContainer.setVisibility(View.GONE);
+        }
+    }
+
+    // Set the empty view text
+    public void setEmptyText(CharSequence text) {
+        if (mEmptyView instanceof TextView) {
+            ((TextView) mEmptyView).setText(text);
+        } else {
+            throw new IllegalStateException("Empty view must be a TextView");
+        }
+    }
+
+    // Handle item clicks (can be overridden by subclasses)
+    public void onItemClick(View view, int position) {
+        // Implement in subclass if needed
+    }
+
+    // Handle item long clicks (can be overridden by subclasses)
+    public void onItemLongClick(View view, int position) {
+        // Implement in subclass if needed
+    }
+
+    // Set the selection position of the RecyclerView
+    public void setSelection(int position) {
+        if (mRecyclerView != null) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            if (layoutManager != null) {
+                layoutManager.scrollToPosition(position);
+            }
+        }
+    }
+
+    // Get the position of the selected item
+    public int getSelectedItemPosition() {
+        // Custom logic can be implemented to track selection
+        return -1;
+    }
+
+    // Get the selected item ID (can be implemented based on your data model)
+    public long getSelectedItemId() {
+        // Custom logic can be implemented to track selection ID
+        return -1;
+    }
+
+    // Get the RecyclerView itself
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    // Handle fragment destruction and clean up
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacks(mRequestFocus);
+        mRecyclerView = null;
+        mEmptyView = null;
+        mProgressContainer = null;
+        mListContainer = null;
     }
 }
