@@ -117,8 +117,7 @@ public class PortfolioFragment
 //            actionBar.setDisplayShowTitleEnabled(false);
 //        }
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
+        setFabVisible(true);
     }
 
     @Override
@@ -179,7 +178,7 @@ public class PortfolioFragment
                     setListShown(true);
 
                     if (getFloatingActionButton() != null) {
-                        getFloatingActionButton().show(true);
+                        setFabVisible(true);
                     }
                 } else {
                     setListShownNoAnimation(true);

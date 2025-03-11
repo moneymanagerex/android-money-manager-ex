@@ -93,24 +93,10 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--<com.melnykov.fab.ObservableScrollView-->
-        <!--android:id="@+id/scrollView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <!--</com.melnykov.fab.ObservableScrollView>-->
-
-    <!--<com.melnykov.fab.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--style="@style/MoneyFloatingActionButton"-->
-        <!--android:layout_marginBottom="@dimen/fab_margin_bottom_higher"-->
-        <!--app:fab_colorNormal="@color/md_primary"-->
-        <!--app:fab_colorPressed="@color/md_primary_dark" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

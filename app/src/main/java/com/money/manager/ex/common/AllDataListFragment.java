@@ -190,8 +190,7 @@ public class AllDataListFragment
         boolean showAddButton = getArguments().getBoolean(ARG_SHOW_FLOATING_BUTTON);
         if (showAddButton) {
             // Show floating action button.
-            setFloatingActionButtonVisible(true);
-            attachFloatingActionButtonToListView();
+            setFabVisible(true);
         }
 
         // start loader if asked to do so by the caller.
@@ -285,7 +284,7 @@ public class AllDataListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
             } else {
                 setListShownNoAnimation(true);
             }

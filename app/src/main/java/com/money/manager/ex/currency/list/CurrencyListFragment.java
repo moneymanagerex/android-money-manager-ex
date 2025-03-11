@@ -145,8 +145,7 @@ public class CurrencyListFragment
 
         // for some reason, the onViewCreated does not fire when expected.
         setupFloatingActionButton(requireView());
-        attachFloatingActionButtonToListView();
-        setFloatingActionButtonVisible(true);
+        setFabVisible(true);
     }
 
     @Override
@@ -469,7 +468,7 @@ public class CurrencyListFragment
                     if (isResumed()) {
                         setListShown(true);
                         if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)
-                            getFloatingActionButton().show(true);
+                            setFabVisible(true);
                     } else {
                         setListShownNoAnimation(true);
                     }

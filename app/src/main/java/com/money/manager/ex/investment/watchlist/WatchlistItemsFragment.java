@@ -167,8 +167,7 @@ public class WatchlistItemsFragment
             reloadData();
         }
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
+        setFabVisible(true);
     }
 
     @Override
@@ -328,7 +327,7 @@ public class WatchlistItemsFragment
                 setListShown(true);
 
                 if (getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 setListShownNoAnimation(true);

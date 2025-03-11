@@ -24,8 +24,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
 import com.money.manager.ex.core.SearchViewFormatter;
@@ -61,9 +62,27 @@ public abstract class BaseListFragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         setupFloatingActionButton(view);
 
-        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+            private boolean isFabVisible = true;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem > 0 && isFabVisible) {
+                    isFabVisible = false;
+                } else if (firstVisibleItem == 0 && !isFabVisible) {
+                    isFabVisible = true;
+                }
+                setFabVisible(isFabVisible);
+            }
+        });
     }
 
     @Override
@@ -199,15 +218,9 @@ public abstract class BaseListFragment
         return mFloatingActionButton;
     }
 
-    public void setFloatingActionButtonVisible(boolean visible) {
+    public void setFabVisible(boolean isVisible) {
         if (mFloatingActionButton != null) {
-            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    public void attachFloatingActionButtonToListView() {
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.attachToListView(getListView());
+            mFloatingActionButton.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
     }
 

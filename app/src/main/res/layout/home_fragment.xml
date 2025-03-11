@@ -150,7 +150,7 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <com.melnykov.fab.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -158,24 +158,12 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
+            android:contentDescription="TODO"
             android:src="@drawable/ic_action_add_dark"
-            app:fab_colorNormal="@color/md_accent"
-            app:fab_colorPressed="@color/md_primary_dark"
+            app:backgroundTint="@color/md_accent"
+            app:rippleColor="@color/md_primary_dark" />
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp" />
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/fab"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|end"-->
-            <!--android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"-->
-            <!--android:layout_marginLeft="12dp"-->
-            <!--android:layout_marginRight="12dp"-->
-            <!--android:src="@drawable/ic_action_add_dark"-->
-            <!--app:elevation="4dp"-->
-            <!--app:borderWidth="0dp"-->
-            <!--/>-->
     </FrameLayout>
 
     <include

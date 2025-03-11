@@ -231,15 +231,11 @@ public class NestedCategoryListFragment
 
         setListShown(false);
 
-        attachFloatingActionButtonToListView();
-
         // start loader
 //        LoaderManager.getInstance(getActivity()).initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
         getLoaderManager().initLoader(ID_LOADER_NESTEDCATEGORY, null, this);
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
     }
 
     @Override
@@ -486,7 +482,7 @@ public class NestedCategoryListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data.getCount() <= 0 && getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 try {

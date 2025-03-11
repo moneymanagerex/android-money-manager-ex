@@ -90,8 +90,7 @@ public class AccountListFragment
 
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
+        setFabVisible(true);
     }
 
     @Override
@@ -181,7 +180,7 @@ public class AccountListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 setListShownNoAnimation(true);
