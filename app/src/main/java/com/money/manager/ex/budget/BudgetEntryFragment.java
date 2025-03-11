@@ -127,6 +127,7 @@ public class BudgetEntryFragment
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         displayBudget();
     }
 
@@ -134,9 +135,7 @@ public class BudgetEntryFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
         registerForContextMenu(getListView());
     }
 

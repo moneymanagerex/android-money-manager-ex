@@ -155,9 +155,7 @@ public class PayeeListFragment
         getLoaderManager().initLoader(ID_LOADER_PAYEE, null, this);
 
         // set floating button visible
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
     }
 
     @Override
@@ -376,7 +374,7 @@ public class PayeeListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data.getCount() <= 0 && getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 setListShownNoAnimation(true);

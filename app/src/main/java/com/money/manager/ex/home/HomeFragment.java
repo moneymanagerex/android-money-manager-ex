@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -44,7 +45,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -197,7 +198,24 @@ public class HomeFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mFloatingActionButton.attachToListView(mExpandableListView);
+        mExpandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private boolean isFabVisible = true;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem > 0 && isFabVisible) {
+                    hideFab();
+                    isFabVisible = false;
+                } else if (firstVisibleItem == 0 && !isFabVisible) {
+                    showFab();
+                    isFabVisible = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -882,6 +900,24 @@ public class HomeFragment
 
         if (txtFooterSummaryReconciled != null) {
             txtFooterSummaryReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void hideFab() {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.animate()
+                    .translationY(mFloatingActionButton.getHeight() + 100) // 移出屏幕底部
+                    .setDuration(300)
+                    .start();
+        }
+    }
+
+    private void showFab() {
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.animate()
+                    .translationY(0)
+                    .setDuration(300)
+                    .start();
         }
     }
 }

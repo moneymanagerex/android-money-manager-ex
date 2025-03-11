@@ -109,9 +109,7 @@ public class ScheduledTransactionListFragment
         getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
 
         // show floating button.
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
     }
 
     @Override
@@ -260,7 +258,7 @@ public class ScheduledTransactionListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data.getCount() <= 0 && getFloatingActionButton() != null)
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
             } else {
                 setListShownNoAnimation(true);
             }

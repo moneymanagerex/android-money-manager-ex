@@ -39,9 +39,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.domainmodel.Tag;
-import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.search.SearchParameters;
-import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -108,8 +106,7 @@ public class TagListFragment     extends BaseListFragment
         getLoaderManager().initLoader(ID_LOADER_TAG, null, this);
 
         // set floating button visible
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
+        setFabVisible(true);
     }
 
     // Menu
@@ -314,7 +311,7 @@ public class TagListFragment     extends BaseListFragment
             if (isResumed()) {
                 setListShown(true);
                 if (data.getCount() <= 0 && getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 setListShownNoAnimation(true);

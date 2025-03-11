@@ -84,9 +84,7 @@ public class BudgetListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
         registerForContextMenu(getListView());
     }
 
