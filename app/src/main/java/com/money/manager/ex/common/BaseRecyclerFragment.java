@@ -28,7 +28,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsRecyclerFragment;
 import com.money.manager.ex.core.SearchViewFormatter;
@@ -40,24 +40,19 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     private FloatingActionButton mFloatingActionButton;
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 
-    // menu items
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
-    // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
-    // hint search view
     private String mSearchHint = "";
 
     public static String mAction = null;
 
-    // abstract method
     public abstract String getSubTitle();
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupFloatingActionButton(view);
-        attachFloatingActionButtonToRecyclerView();
     }
 
     private void setupFloatingActionButton(View view) {
@@ -67,40 +62,29 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         }
     }
 
-    private void attachFloatingActionButtonToRecyclerView() {
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.attachToRecyclerView(getRecyclerView());
-        }
-    }
-
     public RecyclerView getRecyclerView() {
-        return (RecyclerView) getView().findViewById(R.id.recyclerView);
+        return getView().findViewById(R.id.recyclerView);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // show tooltip wildcard
-        // check search type
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isSearchMenuVisible() && !searchType && !isShowTipsWildcard) {
-            // show tooltip for wildcard
             TipsDialogFragment tipsSync = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
             if (tipsSync != null) {
                 tipsSync.setTips(getString(R.string.lookups_wildcard));
-                // tipsSync.setCheckDontShowAgain(true);
                 tipsSync.show(getActivity().getSupportFragmentManager(), "lookupswildcard");
-                isShowTipsWildcard = true; // set shown
+                isShowTipsWildcard = true;
             }
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            // Place an action bar item for searching.
+        if (isSearchMenuVisible() && getActivity() instanceof AppCompatActivity) {
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
@@ -116,7 +100,6 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
                     return BaseRecyclerFragment.this.onPreQueryTextChange(s);
                 }
             });
-//            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
             itemSearch.setActionView(searchView);
 
@@ -124,26 +107,18 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
             formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
             formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-            //formatter.setSearchHintColorResource(R.color.mmx_hint_foreground_material_dark);
-
             formatter.setSearchHintText(getSearchHint());
-
             formatter.format(searchView);
-
-//            if (getSearchCollapsed()) {
-//                itemSearch.collapseActionView();
-//            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (getActivity() != null && getActivity() instanceof MainActivity)
+            if (getActivity() instanceof MainActivity)
                 return super.onOptionsItemSelected(item);
-            // set result and exit
             this.setResultAndFinish();
-            return true; // consumed here
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -158,8 +133,8 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         return mShowMenuItemSearch;
     }
 
-    public void setSearchMenuVisible(boolean mShowMenuItemSearch) {
-        this.mShowMenuItemSearch = mShowMenuItemSearch;
+    public void setSearchMenuVisible(boolean show) {
+        this.mShowMenuItemSearch = show;
     }
 
     public void setResultAndFinish() {
@@ -171,21 +146,19 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         return mMenuItemSearchIconified;
     }
 
-    public void setMenuItemSearchIconified(boolean mMenuItemSearchIconified) {
-        this.mMenuItemSearchIconified = mMenuItemSearchIconified;
+    public void setMenuItemSearchIconified(boolean iconified) {
+        this.mMenuItemSearchIconified = iconified;
     }
 
     public String getSearchHint() {
         return mSearchHint;
     }
 
-    public void setSearchHint(@NonNull String mSearchHint) {
-        this.mSearchHint = mSearchHint;
+    public void setSearchHint(@NonNull String hint) {
+        this.mSearchHint = hint;
     }
 
-    // Floating button methods
-
-    public com.melnykov.fab.FloatingActionButton getFloatingActionButton() {
+    public FloatingActionButton getFloatingActionButton() {
         return mFloatingActionButton;
     }
 
@@ -198,13 +171,11 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     public void onFloatingActionButtonClicked() {
     }
 
-    // End floating button methods.
-
     protected boolean onPreQueryTextChange(String newText) {
         if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE)) {
             newText = "%" + newText;
-
+        }
         return onQueryTextChange(newText);
     }
 
@@ -212,9 +183,6 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         return true;
     }
 
-    /**
-     * metodo per l'implementazione del ritorno dei dati
-     */
-    protected void setResult() { }
-
+    protected void setResult() {
+    }
 }
