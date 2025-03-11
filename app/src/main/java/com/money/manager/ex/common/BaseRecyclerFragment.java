@@ -38,7 +38,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 
 public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     private FloatingActionButton mFloatingActionButton;
-    private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
+    private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseRecyclerFragment:isShowTipsWildcard";
 
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
@@ -47,12 +47,26 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
 
     public static String mAction = null;
 
+    // Abstract method to get subtitle for the action bar
     public abstract String getSubTitle();
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupFloatingActionButton(view);
+        getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private boolean isFabVisible = true;
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && isFabVisible) {
+                    isFabVisible = false;
+                } else if (dy < 0 && !isFabVisible) {
+                    isFabVisible = true;
+                }
+                setFabVisible(isFabVisible);
+            }
+        });
     }
 
     private void setupFloatingActionButton(View view) {
@@ -69,6 +83,7 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     @Override
     public void onStart() {
         super.onStart();
+        // Show wildcard tip if necessary
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
@@ -129,6 +144,7 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         super.onSaveInstanceState(outState);
     }
 
+    // Search-related methods
     public boolean isSearchMenuVisible() {
         return mShowMenuItemSearch;
     }
@@ -158,17 +174,19 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         this.mSearchHint = hint;
     }
 
+    // Floating action button methods
     public FloatingActionButton getFloatingActionButton() {
         return mFloatingActionButton;
     }
 
-    public void setFloatingActionButtonVisible(boolean visible) {
+    public void setFabVisible(boolean isVisible) {
         if (mFloatingActionButton != null) {
-            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+            mFloatingActionButton.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
     }
 
     public void onFloatingActionButtonClicked() {
+        // Override this method to handle FAB click
     }
 
     protected boolean onPreQueryTextChange(String newText) {
@@ -180,9 +198,11 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     }
 
     protected boolean onQueryTextChange(String newText) {
+        // Implement query handling logic
         return true;
     }
 
     protected void setResult() {
+        // Implement result handling logic
     }
 }
