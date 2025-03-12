@@ -22,6 +22,7 @@ import android.database.Cursor;
 
 import com.google.common.collect.ObjectArrays;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
@@ -91,15 +92,7 @@ public class StockRepository
             idParams[i] = Integer.toString(ids[i]);
         }
 
-        Cursor c = openCursor(null,
-            StockFields.STOCKID + " IN (" + placeHolders + ")",
-            idParams,
-            null);
-        if (c == null) return null;
-
-        List<Stock> result = getEntities(c);
-
-        return result;
+        return query(new Select(getAllColumns()).where(StockFields.STOCKID + " IN (" + placeHolders + ")", idParams));
     }
 
     public List<Stock> loadForSymbols(String[] symbols) {
@@ -108,38 +101,22 @@ public class StockRepository
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
-        Cursor c = openCursor(null,
-            StockFields.SYMBOL + " IN (" + placeHolders + ")",
-            symbols,
-            null);
-        if (c == null) return null;
-
-        List<Stock> result = getEntities(c);
-
-        return result;
+        return query(new Select(getAllColumns()).where(StockFields.SYMBOL + " IN (" + placeHolders + ")", symbols));
     }
 
     /**
      * Retrieves all record ids which refer the given symbol.
      * @return array of ids of records which contain the symbol.
      */
-    public int[] findIdsBySymbol(String symbol) {
-        int[] result;
+    private long[] findIdsBySymbol(String symbol) {
 
-        Cursor cursor = getContext().getContentResolver().query(this.getUri(),
-                new String[]{ StockFields.STOCKID },
-                StockFields.SYMBOL + "=?", new String[]{symbol},
-                null);
-        if (cursor == null) return null;
+        List<Stock> stocks = query(new Select(getAllColumns()).where(StockFields.SYMBOL + "=?", new String[]{symbol}));
 
-        int records = cursor.getCount();
-        result = new int[records];
-
-        for (int i = 0; i < records; i++) {
-            cursor.moveToNext();
-            result[i] = cursor.getInt(cursor.getColumnIndex(StockFields.STOCKID));
+        long[] result = new long[stocks.size()];
+        int i = 0;
+        for (Stock stock:stocks) {
+            result[i] = stock.getId();
         }
-        cursor.close();
 
         return result;
     }
@@ -150,7 +127,7 @@ public class StockRepository
      * @param price Stock price
      */
     public void updateCurrentPrice(String symbol, Money price) {
-        int[] ids = findIdsBySymbol(symbol);
+        long[] ids = findIdsBySymbol(symbol);
 
         // recalculate value
 
@@ -165,13 +142,8 @@ public class StockRepository
         }
     }
 
-    private List<Stock> getEntities(Cursor c) {
-        List<Stock> result = new ArrayList<>();
-        while (c.moveToNext()) {
-            result.add(Stock.from(c));
-        }
-        c.close();
-
-        return result;
+    // custom func
+    public List<Stock> loadByAccount(long accountId) {
+        return query(new Select(getAllColumns()).where(StockFields.HELDAT + " = ?", accountId));
     }
 }
