@@ -345,9 +345,9 @@ public class EditTransactionCommonFunctions {
                     if (isTransfer) {
                         // calculate the exchange amount if it is 0.
                         if (transactionEntity.getToAmount().isZero()) {
-                            Money convertedAmount = calculateAmountTo();
+                            Money convertedAmount = calculateToAmount();
                             transactionEntity.setToAmount(convertedAmount);
-                            displayAmountTo();
+                            displayToAmount();
                         }
                         // Recalculate the original amount when the currency changes.
                         if (originalCurrencyId != getSourceCurrencyId()) {
@@ -372,12 +372,12 @@ public class EditTransactionCommonFunctions {
                         }
                         // Recalculate the original amount when the currency changes.
                         if (originalCurrencyId != getDestinationCurrencyId()) {
-                            Money exchangeAmount = calculateAmountTo();
+                            Money exchangeAmount = calculateToAmount();
                             transactionEntity.setToAmount(exchangeAmount);
-                            displayAmountTo();
+                            displayToAmount();
                         }
                     } else {
-                        displayAmountTo();
+                        displayToAmount();
                     }
                 }
 
@@ -478,7 +478,7 @@ public class EditTransactionCommonFunctions {
         });
 
         // amount to
-        displayAmountTo();
+        displayToAmount();
         viewHolder.txtAmountTo.setOnClickListener(view -> {
             long currencyId = getDestinationCurrencyId();
             Money amount = transactionEntity.getToAmount();
@@ -997,7 +997,7 @@ public class EditTransactionCommonFunctions {
             displayAmountFrom();
         } else {
             this.transactionEntity.setToAmount(amount);
-            displayAmountTo();
+            displayToAmount();
         }
 
         // Handle currency exchange on Transfers.
@@ -1010,7 +1010,7 @@ public class EditTransactionCommonFunctions {
                 this.transactionEntity.setToAmount(amount);
 
                 displayAmountFrom();
-                displayAmountTo();
+                displayToAmount();
                 // Exit here.
                 return;
             }
@@ -1023,9 +1023,9 @@ public class EditTransactionCommonFunctions {
                 // Convert the value and write the amount into the other input box.
                 Money convertedAmount;
                 if (isAmountFrom) {
-                    convertedAmount = calculateAmountTo();
+                    convertedAmount = calculateToAmount();
                     transactionEntity.setToAmount(convertedAmount);
-                    displayAmountTo();
+                    displayToAmount();
                 } else {
                     convertedAmount = calculateAmountFrom();
                     transactionEntity.setAmount(convertedAmount);
@@ -1404,7 +1404,7 @@ public class EditTransactionCommonFunctions {
                 getDestinationCurrencyId());
     }
 
-    private Money calculateAmountTo() {
+    private Money calculateToAmount() {
         CurrencyService currencyService = new CurrencyService(getContext());
 
         return currencyService.doCurrencyExchange(getDestinationCurrencyId(), transactionEntity.getAmount(),
@@ -1446,13 +1446,13 @@ public class EditTransactionCommonFunctions {
         displayAmountFormatted(viewHolder.txtAmount, amount, getSourceCurrencyId());
     }
 
-    private void displayAmountTo() {
+    private void displayToAmount() {
         // if the currencies are the same, show only one Amount field.
         int amountToVisibility = areCurrenciesSame() ? View.GONE : View.VISIBLE;
         viewHolder.tableRowAmountTo.setVisibility(amountToVisibility);
 
         Money amount = transactionEntity.getToAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getToAmount();
-        //displayAmountTo(amount);
+        //displayToAmount(amount);
 
         displayAmountFormatted(viewHolder.txtAmountTo, amount, getDestinationCurrencyId());
     }
@@ -1574,10 +1574,10 @@ public class EditTransactionCommonFunctions {
 
         // calculate AmountTo only if not set previously.
         if (transactionEntity.getToAmount().isZero()) {
-            Money amountTo = calculateAmountTo();
+            Money amountTo = calculateToAmount();
             transactionEntity.setToAmount(amountTo);
         }
-        displayAmountTo();
+        displayToAmount();
     }
 
     private void resetCategory() {
