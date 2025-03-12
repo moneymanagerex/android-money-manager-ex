@@ -17,6 +17,7 @@
 package com.money.manager.ex.common;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +36,8 @@ import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
+
+import java.util.Objects;
 
 public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     private FloatingActionButton mFloatingActionButton;
@@ -67,6 +70,15 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
                 setFabVisible(isFabVisible);
             }
         });
+
+        // set subtitle in actionbar
+        String subTitle = getSubTitle();
+        if (!(TextUtils.isEmpty(subTitle)) && getActivity() instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            if (activity != null) {
+                Objects.requireNonNull(activity.getSupportActionBar()).setSubtitle(subTitle);
+            }
+        }
     }
 
     private void setupFloatingActionButton(View view) {

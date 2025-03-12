@@ -24,7 +24,9 @@ import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.viewmodels.StockViewModel;
 import com.money.manager.ex.viewmodels.ViewModelFactory;
 
@@ -58,6 +60,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     }
 
     private Long mAccountId;
+    private Account mAccount;
 
     @Override
     public String getSubTitle() {
@@ -68,11 +71,19 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
-            mAccountId = savedInstanceState.getLong(ARG_ACCOUNT_ID);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
+                mAccountId = savedInstanceState.getLong(ARG_ACCOUNT_ID);
+            }
         } else {
-            mAccountId = getArguments().getLong(ARG_ACCOUNT_ID);
+            Bundle args = getArguments();
+            if (args != null) {
+                mAccountId = args.getLong(ARG_ACCOUNT_ID);
+            }
         }
+
+        if (mAccountId > 0)
+            mAccount = (new AccountRepository(requireContext())).load(mAccountId);
 
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
@@ -95,7 +106,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setRecyclerViewShown(false);
 
         // Initialize RecyclerView
-        adapter = new PortfolioRecyclerAdapter(getActivity());
+        adapter = new PortfolioRecyclerAdapter(getActivity(), this.mAccount);
         adapter.setOnItemClickListener(this::openEditInvestmentActivity);
         initializeRecyclerView();
 
