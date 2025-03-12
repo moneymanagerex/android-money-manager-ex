@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2025-2025 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,120 +16,103 @@
  */
 package com.money.manager.ex.common;
 
-import android.animation.LayoutTransition;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.AbsListFragment;
+import com.money.manager.ex.core.AbsRecyclerFragment;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+import java.util.Objects;
 
-/**
- *
- */
-public abstract class BaseListFragment
-    extends AbsListFragment {
+public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
+    private FloatingActionButton mFloatingActionButton;
+    private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseRecyclerFragment:isShowTipsWildcard";
 
-    private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
-
-    FloatingActionButton mFloatingActionButton;
-    // menu items
     private boolean mShowMenuItemSearch = false;
     private boolean mMenuItemSearchIconified = true;
-    // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
-    // hint search view
     private String mSearchHint = "";
 
     public static String mAction = null;
 
-    // abstract method
+    // Abstract method to get subtitle for the action bar
     public abstract String getSubTitle();
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupFloatingActionButton(view);
-
-        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+        getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
             private boolean isFabVisible = true;
 
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem > 0 && isFabVisible) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && isFabVisible) {
                     isFabVisible = false;
-                } else if (firstVisibleItem == 0 && !isFabVisible) {
+                } else if (dy < 0 && !isFabVisible) {
                     isFabVisible = true;
                 }
                 setFabVisible(isFabVisible);
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // set animation
-        getListView().setLayoutTransition(new LayoutTransition());
-        // saved instance
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
-            isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
-        }
 
         // set subtitle in actionbar
         String subTitle = getSubTitle();
         if (!(TextUtils.isEmpty(subTitle)) && getActivity() instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             if (activity != null) {
-                activity.getSupportActionBar().setSubtitle(subTitle);
+                Objects.requireNonNull(activity.getSupportActionBar()).setSubtitle(subTitle);
             }
         }
+    }
+
+    private void setupFloatingActionButton(View view) {
+        mFloatingActionButton = view.findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(v -> onFloatingActionButtonClicked());
+        }
+        setFabVisible(true);
+    }
+
+    public RecyclerView getRecyclerView() {
+        return getView().findViewById(R.id.recyclerView);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // show tooltip wildcard
-        // check search type
+        // Show wildcard tip if necessary
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
         if (isSearchMenuVisible() && !searchType && !isShowTipsWildcard) {
-            // show tooltip for wildcard
             TipsDialogFragment tipsSync = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
             if (tipsSync != null) {
                 tipsSync.setTips(getString(R.string.lookups_wildcard));
-                // tipsSync.setCheckDontShowAgain(true);
                 tipsSync.show(getActivity().getSupportFragmentManager(), "lookupswildcard");
-                isShowTipsWildcard = true; // set shown
+                isShowTipsWildcard = true;
             }
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            // Place an action bar item for searching.
+        if (isSearchMenuVisible() && getActivity() instanceof AppCompatActivity) {
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
@@ -142,10 +125,9 @@ public abstract class BaseListFragment
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    return BaseListFragment.this.onPreQueryTextChange(s);
+                    return BaseRecyclerFragment.this.onPreQueryTextChange(s);
                 }
             });
-//            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
             searchView.setIconified(isMenuItemSearchIconified());
             itemSearch.setActionView(searchView);
 
@@ -153,26 +135,18 @@ public abstract class BaseListFragment
             formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
             formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
             formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-            //formatter.setSearchHintColorResource(R.color.mmx_hint_foreground_material_dark);
-
             formatter.setSearchHintText(getSearchHint());
-
             formatter.format(searchView);
-
-//            if (getSearchCollapsed()) {
-//                itemSearch.collapseActionView();
-//            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (getActivity() != null && getActivity() instanceof MainActivity)
+            if (getActivity() instanceof MainActivity)
                 return super.onOptionsItemSelected(item);
-            // set result and exit
             this.setResultAndFinish();
-            return true; // consumed here
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -183,12 +157,13 @@ public abstract class BaseListFragment
         super.onSaveInstanceState(outState);
     }
 
+    // Search-related methods
     public boolean isSearchMenuVisible() {
         return mShowMenuItemSearch;
     }
 
-    public void setSearchMenuVisible(boolean mShowMenuItemSearch) {
-        this.mShowMenuItemSearch = mShowMenuItemSearch;
+    public void setSearchMenuVisible(boolean show) {
+        this.mShowMenuItemSearch = show;
     }
 
     public void setResultAndFinish() {
@@ -200,20 +175,19 @@ public abstract class BaseListFragment
         return mMenuItemSearchIconified;
     }
 
-    public void setMenuItemSearchIconified(boolean mMenuItemSearchIconified) {
-        this.mMenuItemSearchIconified = mMenuItemSearchIconified;
+    public void setMenuItemSearchIconified(boolean iconified) {
+        this.mMenuItemSearchIconified = iconified;
     }
 
     public String getSearchHint() {
         return mSearchHint;
     }
 
-    public void setSearchHint(@NonNull String mSearchHint) {
-        this.mSearchHint = mSearchHint;
+    public void setSearchHint(@NonNull String hint) {
+        this.mSearchHint = hint;
     }
 
-    // Floating button methods
-
+    // Floating action button methods
     public FloatingActionButton getFloatingActionButton() {
         return mFloatingActionButton;
     }
@@ -225,36 +199,23 @@ public abstract class BaseListFragment
     }
 
     public void onFloatingActionButtonClicked() {
+        // Override this method to handle FAB click
     }
-
-    // End floating button methods.
 
     protected boolean onPreQueryTextChange(String newText) {
         if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE)) {
             newText = "%" + newText;
-
+        }
         return onQueryTextChange(newText);
     }
 
     protected boolean onQueryTextChange(String newText) {
+        // Implement query handling logic
         return true;
     }
 
-    /**
-     * metodo per l'implementazione del ritorno dei dati
-     */
-    protected void setResult() { }
-
-    public void setupFloatingActionButton(View view) {
-        mFloatingActionButton = view.findViewById(R.id.fab);
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFloatingActionButtonClicked();
-                }
-            });
-        }
+    protected void setResult() {
+        // Implement result handling logic
     }
 }

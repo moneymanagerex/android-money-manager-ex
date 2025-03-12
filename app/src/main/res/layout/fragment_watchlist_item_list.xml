@@ -56,7 +56,6 @@
 
         <ScrollView
             android:id="@+id/emptyViewScroll"
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:fillViewport="true">
@@ -71,7 +70,7 @@
         </ScrollView>
     </FrameLayout>
 
-    <com.melnykov.fab.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +78,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_action_add_dark"
         android:visibility="gone"
-        fab:fab_colorNormal="@color/md_accent"
-        fab:fab_colorPressed="@color/md_primary_dark" />
+        fab:backgroundTint="@color/md_accent"
+        fab:rippleColor="@color/md_primary_dark" />
 
 </FrameLayout>

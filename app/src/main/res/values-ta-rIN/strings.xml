@@ -794,4 +794,5 @@
     <string name="menu_cashflow_open">திறந்த கணக்குகள்</string>
     <string name="menu_cashflow_favorite">பிடித்த கணக்குகள்</string>
     <string name="menu_cashflow_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
+    <string name="cash_ledger">பண பேரேடு</string>
 </resources>

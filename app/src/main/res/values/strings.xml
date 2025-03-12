@@ -892,6 +892,7 @@
     <string name="menu_cashflow_open">Open Accounts</string>
     <string name="menu_cashflow_favorite">Favorite Accounts</string>
     <string name="menu_cashflow_custom">Select Accounts…</string>
+    <string name="cash_ledger">Cash Ledger</string>
 
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>

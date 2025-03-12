@@ -23,6 +23,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,6 +44,7 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -112,6 +116,8 @@ public class BudgetEntryFragment
 
         setUpAdapter();
 
+        setHasOptionsMenu(true);
+
         return view;
     }
 
@@ -127,6 +133,7 @@ public class BudgetEntryFragment
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         displayBudget();
     }
 
@@ -134,9 +141,7 @@ public class BudgetEntryFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
-
+        setFabVisible(true);
         registerForContextMenu(getListView());
     }
 
@@ -159,6 +164,29 @@ public class BudgetEntryFragment
         adapter.setBudgetYearId(mBudgetYearId);
 
         setListAdapter(adapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // set accounts Filter
+        inflater.inflate(R.menu.menu_budget, menu);
+
+        boolean useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
+        if ( menu.findItem(R.id.menu_budget_financial_year) != null ) {
+            menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_budget_financial_year) {
+            item.setChecked(!item.isChecked());
+            (new AppSettings(getContext())).getBudgetSettings().setBudgetFinancialYear(item.isChecked());
+            getActivity().recreate(); // todo restart loader
+            return true;
+        }
+        return false;
     }
 
     @Override

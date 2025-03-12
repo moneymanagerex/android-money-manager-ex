@@ -70,12 +70,12 @@ android {
 //            applicationIdSuffix ".beta"
 //            versionNameSuffix "-beta"
 //        }
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        release {
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            versionNameSuffix "-release"
-        }
+//        }
     }
 
     dataBinding {
@@ -150,7 +150,6 @@ dependencies {
             , 'com.opencsv:opencsv:4.6'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
-            , 'com.melnykov:floatingactionbutton:1.3.0'
             , 'com.github.pedrovgs:lynx:1.6'
             , 'de.hdodenhof:circleimageview:2.2.0'
             , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268

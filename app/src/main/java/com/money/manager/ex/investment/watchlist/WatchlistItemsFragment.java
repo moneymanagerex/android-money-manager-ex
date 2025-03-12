@@ -86,8 +86,7 @@ public class WatchlistItemsFragment
      * @return new instance AllDataListFragment
      */
     public static WatchlistItemsFragment newInstance() {
-        WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        return fragment;
+        return new WatchlistItemsFragment();
     }
 
     // non-static
@@ -117,9 +116,8 @@ public class WatchlistItemsFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
 
-        return layout;
+        return inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
     }
 
     @Override
@@ -169,8 +167,7 @@ public class WatchlistItemsFragment
             reloadData();
         }
 
-        setFloatingActionButtonVisible(true);
-        attachFloatingActionButtonToListView();
+        setFabVisible(true);
     }
 
     @Override
@@ -330,7 +327,7 @@ public class WatchlistItemsFragment
                 setListShown(true);
 
                 if (getFloatingActionButton() != null) {
-                    getFloatingActionButton().show(true);
+                    setFabVisible(true);
                 }
             } else {
                 setListShownNoAnimation(true);

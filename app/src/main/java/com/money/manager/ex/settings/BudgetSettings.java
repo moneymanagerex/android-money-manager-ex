@@ -50,4 +50,7 @@ public class BudgetSettings
         return get(R.string.pref_budget_financial_year, false);
     }
 
+    public void setBudgetFinancialYear( Boolean value ) {
+        set(R.string.pref_budget_financial_year, value);
+    }
 }

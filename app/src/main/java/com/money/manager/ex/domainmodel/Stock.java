@@ -26,6 +26,7 @@ import com.money.manager.ex.utils.MmxDate;
 import org.parceler.Parcel;
 
 import java.util.Date;
+import java.util.Objects;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -177,5 +178,21 @@ public class Stock
         setMoney(StockFields.VALUE, value);
 
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        return Objects.equals(getId(), stock.getId()) &&
+                Objects.equals(getSymbol(), stock.getSymbol()) &&
+                Objects.equals(getNumberOfShares(), stock.getNumberOfShares()) &&
+                Objects.equals(getCurrentPrice(), stock.getCurrentPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getSymbol(), getNumberOfShares(), getCurrentPrice());
     }
 }
