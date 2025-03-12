@@ -894,4 +894,8 @@
     <string name="menu_cashflow_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Take ours</string>
+    <string name="merge_take_theirs">Take theirs</string>
+
 </resources>
