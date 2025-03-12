@@ -86,6 +86,7 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         if (mFloatingActionButton != null) {
             mFloatingActionButton.setOnClickListener(v -> onFloatingActionButtonClicked());
         }
+        setFabVisible(true);
     }
 
     public RecyclerView getRecyclerView() {

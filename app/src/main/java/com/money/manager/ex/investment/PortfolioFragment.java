@@ -17,6 +17,7 @@
 package com.money.manager.ex.investment;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,13 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.viewmodels.StockViewModel;
 import com.money.manager.ex.viewmodels.ViewModelFactory;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import java.util.Objects;
 
 /**
  * Use the {@link PortfolioFragment#newInstance} factory method to
@@ -42,8 +48,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
 
     private StockViewModel viewModel;
-    private PortfolioRecyclerAdapter adapter;
-
+    private PortfolioListAdapter adapter;
+    private Long mAccountId;
+    private Account mAccount;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -58,9 +65,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private Long mAccountId;
-    private Account mAccount;
 
     @Override
     public String getSubTitle() {
@@ -106,7 +110,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setRecyclerViewShown(false);
 
         // Initialize RecyclerView
-        adapter = new PortfolioRecyclerAdapter(getActivity(), this.mAccount);
+        adapter = new PortfolioListAdapter(getActivity(), this.mAccount);
         adapter.setOnItemClickListener(this::openEditInvestmentActivity);
         initializeRecyclerView();
 
@@ -153,6 +157,13 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         adapter.setOnItemClickListener(this::openEditInvestmentActivity);
 
         getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext()));
+        getRecyclerView().addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        getRecyclerView().addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 1;
+            }
+        });
         getRecyclerView().setAdapter(adapter);
 
         getRecyclerView().setNestedScrollingEnabled(false);

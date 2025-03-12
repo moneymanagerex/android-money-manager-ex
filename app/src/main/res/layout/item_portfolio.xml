@@ -15,47 +15,44 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mmx_list_item_height_dense"
-    android:paddingLeft="@dimen/mmx_list_item_padding_side"
-    android:paddingRight="@dimen/mmx_list_item_padding_side"
-    android:layout_margin="@dimen/mmx_margin"
     android:orientation="horizontal"
     android:baselineAligned="false"
     android:gravity="center_vertical"
-    android:paddingEnd="@dimen/mmx_list_item_padding_side"
-    android:paddingStart="@dimen/mmx_list_item_padding_side">
+    android:padding="@dimen/mmx_margin">
 
-        <!-- symbol -->
+        <!-- Symbol (40% width) -->
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/symbolTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:ellipsize="end"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textAlignment="textStart"/>
 
-        <!-- number of shares -->
+        <!-- Shares (30% width) -->
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/numSharesView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/mmx_margin"
-            android:layout_marginRight="@dimen/mmx_margin"
+            android:layout_weight="1.5"
             android:gravity="end"
             android:ellipsize="end"
             android:singleLine="true"
-            android:layout_marginEnd="@dimen/mmx_margin"
-            android:layout_marginStart="@dimen/mmx_margin" />
+            android:textAlignment="viewEnd"/>
 
-        <!-- price -->
+        <!-- Price (30% width) -->
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/priceTextView"
-            android:layout_width="wrap_content"
-            android:minWidth="40sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1.5"
             android:gravity="end"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textAlignment="viewEnd"/>
 
 </LinearLayout>

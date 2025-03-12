@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +36,7 @@ import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.Objects;
 
-public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecyclerAdapter.ViewHolder> {
+public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private OnItemClickListener listener;
     private final Account mAccount;
@@ -57,7 +58,7 @@ public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecycl
         }
     };
 
-    public PortfolioRecyclerAdapter(Context context, Account account) {
+    public PortfolioListAdapter(Context context, Account account) {
         super(DIFF_CALLBACK);
         this.inflater = LayoutInflater.from(context);
         this.mAccount = account;
@@ -81,6 +82,13 @@ public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecycl
         holder.symbolTextView.setText(stock.getSymbol());
         holder.numSharesView.setText(String.valueOf(stock.getNumberOfShares()));
         holder.priceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getCurrentPrice()));
+
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.white));
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
