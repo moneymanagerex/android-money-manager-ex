@@ -48,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@android:id/list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/mmx_list_padding_top"
@@ -60,10 +60,13 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:visibility="gone"
+            android:focusable="false"
+            android:clickable="false"
             android:fillViewport="true">
 
             <TextView
-                android:id="@android:id/empty"
+                android:id="@+id/emptyView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

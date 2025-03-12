@@ -17,34 +17,30 @@
 package com.money.manager.ex.investment;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.StockFields;
+import com.money.manager.ex.common.BaseRecyclerFragment;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.viewmodels.StockViewModel;
+import com.money.manager.ex.viewmodels.ViewModelFactory;
 
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
  * Use the {@link PortfolioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PortfolioFragment
-    extends BaseListFragment {
+public class PortfolioFragment extends BaseRecyclerFragment {
 
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
-    public static final int ID_LOADER = 1;
+
+    private StockViewModel viewModel;
+    private PortfolioRecyclerAdapter adapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -61,10 +57,6 @@ public class PortfolioFragment
         return fragment;
     }
 
-    public PortfolioFragment() {
-        // Required empty public constructor
-    }
-
     private Long mAccountId;
 
     @Override
@@ -77,21 +69,22 @@ public class PortfolioFragment
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
-            // get data from saved instance state
             mAccountId = savedInstanceState.getLong(ARG_ACCOUNT_ID);
         } else {
-            //if (getArguments() != null) {
             mAccountId = getArguments().getLong(ARG_ACCOUNT_ID);
         }
+
+        StockRepository repository = new StockRepository(requireContext());
+        ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
+        viewModel = new ViewModelProvider(this, factory).get(StockViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
 
-        View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
-
-        return view;
+        // Inflate the layout for the fragment
+        return inflater.inflate(R.layout.fragment_portfolio, container, false);
     }
 
     @Override
@@ -99,25 +92,30 @@ public class PortfolioFragment
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getString(R.string.no_stock_data));
-        setListShown(false);
+        setRecyclerViewShown(false);
 
-        // create adapter
-        PortfolioCursorAdapter adapter = new PortfolioCursorAdapter(getActivity(), null);
+        // Initialize RecyclerView
+        adapter = new PortfolioRecyclerAdapter(getActivity());
+        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
+        initializeRecyclerView();
 
-        initializeList();
+        // Observe ViewModel
+        viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
+            adapter.submitList(stocks);
+            if (stocks == null || stocks.isEmpty()) {
+                setEmptyText(getString(R.string.no_stock_data));
+            }
+            setRecyclerViewShown(true);
+        });
 
-        setListAdapter(adapter);
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading != null && isLoading) {
+                setRecyclerViewShown(false);
+            }
+        });
 
-        initializeLoader();
-
-        // hide the title
-        // todo: uncomment this after setting the correct fragment type.
-//        ActionBar actionBar = getActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayShowTitleEnabled(false);
-//        }
-
-        setFabVisible(true);
+        // Load initial data
+        viewModel.loadStocks(mAccountId);
     }
 
     @Override
@@ -132,66 +130,25 @@ public class PortfolioFragment
         saveInstanceState.putLong(ARG_ACCOUNT_ID, mAccountId);
     }
 
-    // Private
-
-    private void initializeList() {
-        // e list item click.
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Ignore the header row.
-                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
-
-                if (getListAdapter() != null && getListAdapter() instanceof PortfolioCursorAdapter) {
-                    Cursor cursor = (Cursor) getListAdapter().getItem(position);
-                    Stock stock = Stock.from(cursor);
-                    openEditInvestmentActivity(stock.getId());
-                }
-            }
-        });
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.loadStocks(mAccountId);
     }
 
-    private void initializeLoader() {
-        // initialize loader
-        getLoaderManager().initLoader(ID_LOADER, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                //animation
-                setListShown(false);
+    // Initialize RecyclerView
+    private void initializeRecyclerView() {
 
-                StockRepository repo = new StockRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
-                    .where(StockFields.HELDAT + " = " + args.getLong(ARG_ACCOUNT_ID))
-                    .orderBy(StockFields.SYMBOL);
-                //.orderBy(sort);
+        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
 
-                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
-            }
+        getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext()));
+        getRecyclerView().setAdapter(adapter);
 
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                CursorAdapter adapter = (CursorAdapter) getListAdapter();
-                adapter.changeCursor(data);
+        getRecyclerView().setNestedScrollingEnabled(false);
+        getRecyclerView().setClickable(true);
+        getRecyclerView().setFocusable(true);
 
-                if (isResumed()) {
-                    setListShown(true);
-
-                    if (getFloatingActionButton() != null) {
-                        setFabVisible(true);
-                    }
-                } else {
-                    setListShownNoAnimation(true);
-                }
-                // update the header
-//   todo     displayHeaderData();
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                ((CursorAdapter) getListAdapter()).changeCursor(null);
-            }
-        });
+        getRecyclerView().getParent().requestDisallowInterceptTouchEvent(true);
     }
 
     private void openEditInvestmentActivity(Long stockId) {
@@ -201,5 +158,4 @@ public class PortfolioFragment
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }
-
 }

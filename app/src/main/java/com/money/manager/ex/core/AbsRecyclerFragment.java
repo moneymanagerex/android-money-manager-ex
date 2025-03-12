@@ -32,8 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.money.manager.ex.R;
 
-import java.util.Objects;
-
 public abstract class AbsRecyclerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private View mEmptyView;
@@ -93,17 +91,17 @@ public abstract class AbsRecyclerFragment extends Fragment {
     }
 
     // Set visibility of the list view (RecyclerView)
-    protected void setListShown(boolean shown) {
-        setListShown(shown, true);
+    protected void setRecyclerViewShown(boolean shown) {
+        setRecyclerViewShown(shown, true);
     }
 
     // Control visibility with or without animation
-    protected void setListShownNoAnimation(boolean shown) {
-        setListShown(shown, false);
+    protected void setRecyclerViewShownNoAnimation(boolean shown) {
+        setRecyclerViewShown(shown, false);
     }
 
     // Control visibility of list view, with an option for animation
-    private void setListShown(boolean shown, boolean animate) {
+    private void setRecyclerViewShown(boolean shown, boolean animate) {
         if (mProgressContainer == null) {
             throw new IllegalStateException("Can't be used with a custom content view");
         }
