@@ -18,9 +18,12 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import org.parceler.Parcel;
+
 /**
  * Attachment model.
  */
+@Parcel
 public class Attachment
     extends EntityBase {
 
