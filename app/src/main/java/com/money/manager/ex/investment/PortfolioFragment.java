@@ -17,25 +17,19 @@
 package com.money.manager.ex.investment;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
-import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.viewmodels.StockViewModel;
+import com.money.manager.ex.viewmodels.ViewModelFactory;
 
-import androidx.annotation.NonNull;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Use the {@link PortfolioFragment#newInstance} factory method to
@@ -45,6 +39,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
     public static final int ID_LOADER = 1;
+
+    private StockViewModel viewModel;
+    private PortfolioRecyclerAdapter adapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -78,6 +75,10 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         } else {
             mAccountId = getArguments().getLong(ARG_ACCOUNT_ID);
         }
+
+        StockRepository repository = new StockRepository(requireContext());
+        ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
+        viewModel = new ViewModelProvider(this, factory).get(StockViewModel.class);
     }
 
     @Override
@@ -95,15 +96,28 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setEmptyText(getString(R.string.no_stock_data));
         setRecyclerViewShown(false);
 
-        // Create adapter and set to RecyclerView
-        mAdapter = new PortfolioRecyclerAdapter(getActivity(), null);
+        // Initialize RecyclerView
+        adapter = new PortfolioRecyclerAdapter(getActivity());
+        adapter.setOnItemClickListener(stockId -> openEditInvestmentActivity(stockId));
         initializeRecyclerView();
 
-        setAdapter(mAdapter);
+        // Observe ViewModel
+        viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
+            adapter.submitList(stocks);
+            if (stocks == null || stocks.isEmpty()) {
+                setEmptyText(getString(R.string.no_stock_data));
+            }
+            setRecyclerViewShown(true);
+        });
 
-        initializeLoader();
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading != null && isLoading) {
+                setRecyclerViewShown(false);
+            }
+        });
 
-        setFabVisible(true);
+        // Load initial data
+        viewModel.loadStocks(mAccountId);
     }
 
     @Override
@@ -121,72 +135,22 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        initializeLoader();
+        viewModel.loadStocks(mAccountId);
     }
 
     // Initialize RecyclerView
     private void initializeRecyclerView() {
+
+        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
+
         getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext()));
+        getRecyclerView().setAdapter(adapter);
+
         getRecyclerView().setNestedScrollingEnabled(false);
         getRecyclerView().setClickable(true);
         getRecyclerView().setFocusable(true);
 
-        // 确保父布局不拦截事件
         getRecyclerView().getParent().requestDisallowInterceptTouchEvent(true);
-
-        getRecyclerView().addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                View child = rv.findChildViewUnder(e.getX(), e.getY());
-                if (child != null && e.getAction() == MotionEvent.ACTION_DOWN) {
-                    int position = rv.getChildAdapterPosition(child);
-                    if (position != RecyclerView.NO_POSITION) {
-                        PortfolioRecyclerAdapter.StockItem stockItem = mAdapter.getItem(position);
-                        if (stockItem != null) {
-                            openEditInvestmentActivity(stockItem.stockId);
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
-    private void initializeLoader() {
-        // Initialize loader
-        LoaderManager.getInstance(this).initLoader(ID_LOADER, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
-            @NonNull
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                // Show loading animation
-                setRecyclerViewShown(false);
-
-                StockRepository repo = new StockRepository(getActivity());
-                Select query = new Select(repo.getAllColumns())
-                        .where(StockFields.HELDAT + " = " + args.getLong(ARG_ACCOUNT_ID))
-                        .orderBy(StockFields.SYMBOL);
-
-                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                mAdapter.swapCursor(data);
-
-                if (isResumed()) {
-                    setRecyclerViewShown(true);
-                    setFabVisible(true);
-                } else {
-                    setRecyclerViewShownNoAnimation(true);
-                }
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                mAdapter.swapCursor(null);
-            }
-        });
     }
 
     private void openEditInvestmentActivity(Long stockId) {

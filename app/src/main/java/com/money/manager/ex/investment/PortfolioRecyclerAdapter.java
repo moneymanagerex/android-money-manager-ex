@@ -18,53 +18,46 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.datalayer.StockFields;
+import com.money.manager.ex.domainmodel.Stock;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PortfolioRecyclerAdapter extends RecyclerView.Adapter<PortfolioRecyclerAdapter.ViewHolder> {
-
-    private List<StockItem> stockItems = new ArrayList<>();
+public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecyclerAdapter.ViewHolder> {
     private final LayoutInflater inflater;
+    private OnItemClickListener listener;
 
-    public PortfolioRecyclerAdapter(Context context, Cursor cursor) {
+    public interface OnItemClickListener {
+        void onItemClick(long stockId);
+    }
+
+    private static final DiffUtil.ItemCallback<Stock> DIFF_CALLBACK = new DiffUtil.ItemCallback<Stock>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Stock oldItem, @NonNull Stock newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Stock oldItem, @NonNull Stock newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    public PortfolioRecyclerAdapter(Context context) {
+        super(DIFF_CALLBACK);
         this.inflater = LayoutInflater.from(context);
-        if (cursor != null) {
-            convertCursorToList(cursor);
-        }
     }
 
-    // Converts cursor data to stockItems list
-    private void convertCursorToList(Cursor cursor) {
-        if (cursor != null) {
-            stockItems.clear();
-            while (cursor.moveToNext()) {
-                StockItem item = new StockItem(
-                        cursor.getLong(cursor.getColumnIndex(StockFields.STOCKID)),
-                        cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL)),
-                        cursor.getString(cursor.getColumnIndex(StockFields.NUMSHARES)),
-                        cursor.getString(cursor.getColumnIndex(StockFields.CURRENTPRICE))
-                );
-                stockItems.add(item);
-            }
-        }
-    }
-
-    // Swap cursor and update the list
-    public void swapCursor(Cursor cursor) {
-        convertCursorToList(cursor);
-        notifyDataSetChanged();
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -74,27 +67,15 @@ public class PortfolioRecyclerAdapter extends RecyclerView.Adapter<PortfolioRecy
         return new ViewHolder(view);
     }
 
-    public StockItem getItem(int position) {
-        if (position >= 0 && position < stockItems.size()) {
-            return stockItems.get(position);
-        }
-        return null;
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StockItem item = stockItems.get(position);
-        holder.symbolTextView.setText(item.symbol);
-        holder.numSharesView.setText(item.numShares);
-        holder.priceTextView.setText(item.price);
+        Stock stock = getItem(position);
+        holder.symbolTextView.setText(stock.getSymbol());
+        holder.numSharesView.setText(String.valueOf(stock.getNumberOfShares()));
+        holder.priceTextView.setText(stock.getCurrentPrice().toString());
     }
 
-    @Override
-    public int getItemCount() {
-        return stockItems.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView symbolTextView, numSharesView, priceTextView;
 
         public ViewHolder(View itemView) {
@@ -102,20 +83,13 @@ public class PortfolioRecyclerAdapter extends RecyclerView.Adapter<PortfolioRecy
             symbolTextView = itemView.findViewById(R.id.symbolTextView);
             numSharesView = itemView.findViewById(R.id.numSharesView);
             priceTextView = itemView.findViewById(R.id.priceTextView);
-        }
-    }
 
-    public static class StockItem {
-        long stockId;
-        String symbol;
-        String numShares;
-        String price;
-
-        public StockItem(long stockId, String symbol, String numShares, String price) {
-            this.stockId = stockId;
-            this.symbol = symbol;
-            this.numShares = numShares;
-            this.price = price;
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(getItem(position).getId());
+                }
+            });
         }
     }
 }
