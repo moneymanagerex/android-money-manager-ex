@@ -65,7 +65,7 @@ public class RecurringTransaction
         RecurringTransaction tx = new RecurringTransaction();
 
         tx.setAmount(MoneyFactory.fromDouble(0));
-        tx.setAmountTo(MoneyFactory.fromDouble(0));
+        tx.setToAmount(MoneyFactory.fromDouble(0));
 
         return tx;
     }
@@ -106,17 +106,17 @@ public class RecurringTransaction
     }
 
     @Override
-    public Long getAccountToId() {
+    public Long getToAccountId() {
         return getLong(ITransactionEntity.TOACCOUNTID);
     }
 
     @Override
-    public void setAccountToId(Long value) {
+    public void setToAccountId(Long value) {
         setLong(ITransactionEntity.TOACCOUNTID, value);
     }
 
-    public boolean hasAccountTo() {
-        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
+    public boolean hasToAccount() {
+        return getToAccountId() != null && getToAccountId() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -132,7 +132,7 @@ public class RecurringTransaction
         setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
-    public Money getAmountTo() {
+    public Money getToAmount() {
         Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
         if (amount == null) {
             amount = 0D;
@@ -141,7 +141,7 @@ public class RecurringTransaction
         return result;
     }
 
-    public void setAmountTo(Money value) {
+    public void setToAmount(Money value) {
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
@@ -304,7 +304,7 @@ public class RecurringTransaction
         setString(ITransactionEntity.STATUS, value);
     }
 
-    // duplicate of getAccountToId()
+    // duplicate of getToAccountId()
 //    public Long getToAccountId() {
 //        return getLong(ITransactionEntity.TOACCOUNTID);
 //    }

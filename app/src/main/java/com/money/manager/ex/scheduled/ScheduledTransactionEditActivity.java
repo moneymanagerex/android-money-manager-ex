@@ -491,7 +491,7 @@ public class ScheduledTransactionEditActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getToAccountId());
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
         mCommon.loadCategoryName();

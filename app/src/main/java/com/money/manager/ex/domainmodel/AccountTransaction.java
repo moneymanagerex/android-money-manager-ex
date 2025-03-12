@@ -69,7 +69,7 @@ public class AccountTransaction
         tx.setCategoryId(categoryId);
         tx.setAmount(amount);
 
-        tx.setAmountTo(MoneyFactory.fromDouble(0));
+        tx.setToAmount(MoneyFactory.fromDouble(0));
 
         return tx;
     }
@@ -77,7 +77,7 @@ public class AccountTransaction
     public AccountTransaction() {
         super();
 
-        setAccountToId(Constants.NOT_SET);
+        setToAccountId(Constants.NOT_SET);
         setCategoryId(Constants.NOT_SET);
         setFollowUpId(Constants.NOT_SET);
     }
@@ -113,17 +113,17 @@ public class AccountTransaction
     }
 
     @Override
-    public Long getAccountToId() {
+    public Long getToAccountId() {
         return getLong(ITransactionEntity.TOACCOUNTID);
     }
 
     @Override
-    public void setAccountToId(Long value) {
+    public void setToAccountId(Long value) {
         setLong(ITransactionEntity.TOACCOUNTID, value);
     }
 
-    public boolean hasAccountTo() {
-        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
+    public boolean hasToAccount() {
+        return getToAccountId() != null && getToAccountId() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -139,7 +139,7 @@ public class AccountTransaction
         setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
-    public Money getAmountTo() {
+    public Money getToAmount() {
         Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
         if (amount == null) {
             amount = 0D;
@@ -148,7 +148,7 @@ public class AccountTransaction
         return result;
     }
 
-    public void setAmountTo(Money value) {
+    public void setToAmount(Money value) {
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 

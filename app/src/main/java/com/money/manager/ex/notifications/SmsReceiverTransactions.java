@@ -268,11 +268,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             toCurrencyID = parseInt(toAccountDetails[2]);
                                             toAccCurrencySymbl = toAccountDetails[3];
 
-                                            mCommon.transactionEntity.setAccountToId(toAccountID);
+                                            mCommon.transactionEntity.setToAccountId(toAccountID);
 
                                             //convert the to amount from the both currency details
                                             CurrencyService currencyService = new CurrencyService(mContext);
-                                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
+                                            mCommon.transactionEntity.setToAmount(currencyService.doCurrencyExchange(fromCurrencyID,
                                                     mCommon.transactionEntity.getAmount(),
                                                     toCurrencyID));
 
@@ -293,8 +293,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         transType = "Withdrawal";
 
                                         mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
-                                        mCommon.transactionEntity.setAccountToId(Constants.NOT_SET);
-                                        mCommon.transactionEntity.setAmountTo(MoneyFactory.fromString(transAmount));
+                                        mCommon.transactionEntity.setToAccountId(Constants.NOT_SET);
+                                        mCommon.transactionEntity.setToAmount(MoneyFactory.fromString(transAmount));
 
                                         mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
@@ -326,11 +326,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                             mCommon.transactionEntity = txn;
                                             // check if this can be removed mCommon.transactionEntity.setTransactionType(TransactionTypes.Transfer);
                                             mCommon.transactionEntity.setAccountId(fromAccountID);
-                                            // check if this can be removed mCommon.transactionEntity.setAccountToId(toAccountID);
+                                            // check if this can be removed mCommon.transactionEntity.setToAccountId(toAccountID);
 
                                             //convert the to amount from the both currency details
                                             CurrencyService currencyService = new CurrencyService(mContext);
-                                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(fromCurrencyID,
+                                            mCommon.transactionEntity.setToAmount(currencyService.doCurrencyExchange(fromCurrencyID,
                                                     mCommon.transactionEntity.getAmount(),
                                                     toCurrencyID));
 
@@ -371,7 +371,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "SmsReceiverTransactions.java");
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, mCommon.transactionEntity.getId());
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountId()));
-                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getAccountToId()));
+                                t_intent.putExtra(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, String.valueOf(mCommon.transactionEntity.getToAccountId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommon.getTransactionType());
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_ID, String.valueOf(mCommon.transactionEntity.getPayeeId()));
                                 t_intent.putExtra(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommon.payeeName);
@@ -980,16 +980,16 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         if (mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
 
-            if (mCommon.transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
+            if (mCommon.transactionEntity.getToAccountId().equals(Constants.NOT_SET)) {
                 return mContext.getString(R.string.error_toaccount_not_selected);
             }
 
-            if (mCommon.transactionEntity.getAccountToId().equals(mCommon.transactionEntity.getAccountId())) {
+            if (mCommon.transactionEntity.getToAccountId().equals(mCommon.transactionEntity.getAccountId())) {
                 return mContext.getString(R.string.error_transfer_to_same_account);
             }
 
             // Amount To is required and has to be positive.
-            if (mCommon.transactionEntity.getAmountTo().toDouble() <= 0 ) {
+            if (mCommon.transactionEntity.getToAmount().toDouble() <= 0 ) {
                 return mContext.getString(R.string.error_amount_must_be_positive);
             }
         } else { // payee required for automatic transactions.
