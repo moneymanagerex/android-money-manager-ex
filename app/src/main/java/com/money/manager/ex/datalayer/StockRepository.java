@@ -18,16 +18,13 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
-import android.database.Cursor;
 
 import com.google.common.collect.ObjectArrays;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
