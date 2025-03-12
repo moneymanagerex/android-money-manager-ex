@@ -54,9 +54,9 @@ public interface ITransactionEntity {
     Long getAccountId();
     void setAccountId(Long value);
 
-    Long getAccountToId();
-    void setAccountToId(Long value);
-    boolean hasAccountTo();
+    Long getToAccountId();
+    void setToAccountId(Long value);
+    boolean hasToAccount();
 
     Long getCategoryId();
     void setCategoryId(Long value);
@@ -71,8 +71,8 @@ public interface ITransactionEntity {
      */
     void setAmount(Money value);
 
-    Money getAmountTo();
-    void setAmountTo(Money value);
+    Money getToAmount();
+    void setToAmount(Money value);
 
     Date getDate();
     String getDateString();

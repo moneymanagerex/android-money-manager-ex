@@ -159,12 +159,12 @@ public class CashFlowReportListFragment
             }
             if (rx.getTransactionType() == TransactionTypes.Transfer) {
                 if (selectedAccounts.contains(rx.getAccountId()) &&
-                        selectedAccounts.contains(rx.getAccountToId())) {
+                        selectedAccounts.contains(rx.getToAccountId())) {
                     // both in
                     continue; // skip
                 }
                 if (!selectedAccounts.contains(rx.getAccountId()) &&
-                        !selectedAccounts.contains(rx.getAccountToId())) {
+                        !selectedAccounts.contains(rx.getToAccountId())) {
                     // both out
                     continue; // skip
                 }

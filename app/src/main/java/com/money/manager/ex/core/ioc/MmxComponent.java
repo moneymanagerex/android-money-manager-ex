@@ -27,8 +27,6 @@ import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListFragment;
-import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
-import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;
@@ -37,7 +35,6 @@ import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.PriceEditModel;
-import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.scheduled.ScheduledTransactionEditActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
@@ -96,7 +93,6 @@ public interface MmxComponent {
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
-    void inject(MorningstarPriceUpdater updater);
     void inject(AppSettings settings);
     void inject(Core core);
     void inject(MmxContentProvider provider);
@@ -117,11 +113,6 @@ public interface MmxComponent {
     // Intent Services
     void inject(SyncService service);
 
-    // Repositories
-    void inject(StockRepositorySql repository);
-    void inject(StockHistoryRepositorySql repository);
-
     // Adapters
     void inject(BudgetAdapter adapter);
-
 }

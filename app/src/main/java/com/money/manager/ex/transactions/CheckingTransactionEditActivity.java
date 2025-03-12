@@ -297,7 +297,7 @@ public class CheckingTransactionEditActivity
             this.mCommon.transactionEntity.setAccountId(parameters.accountId);
         }
         if (parameters.accountToId > 0) {
-            this.mCommon.transactionEntity.setAccountToId(parameters.accountToId);
+            this.mCommon.transactionEntity.setToAccountId(parameters.accountToId);
         }
 
         mCommon.transactionEntity.setAmount(parameters.amount);
@@ -305,14 +305,14 @@ public class CheckingTransactionEditActivity
         // transfer amount
         if (parameters.transactionType == TransactionTypes.Transfer){
             if (parameters.amountTo != null){
-                mCommon.transactionEntity.setAmountTo(parameters.amountTo);
+                mCommon.transactionEntity.setToAmount(parameters.amountTo);
             } else {
                 //convert the to amount from the both currency details
                 CurrencyService currencyService = new CurrencyService(this);
                 AccountRepository accountRepository = new AccountRepository(this);
-                mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                mCommon.transactionEntity.setToAmount(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
                         mCommon.transactionEntity.getAmount(),
-                        accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+                        accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getToAccountId())));
             }
         }
 
@@ -418,7 +418,7 @@ public class CheckingTransactionEditActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getToAccountId());
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
         mCommon.loadCategoryName();
@@ -448,11 +448,11 @@ public class CheckingTransactionEditActivity
         // Copy properties from recurring transaction
         mCommon.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommon.transactionEntity.setAccountId(recurringTx.getAccountId());
-        mCommon.transactionEntity.setAccountToId(recurringTx.getAccountToId());
+        mCommon.transactionEntity.setToAccountId(recurringTx.getToAccountId());
         mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(recurringTx.getTransactionCode()));
         mCommon.transactionEntity.setStatus(recurringTx.getStatus());
         mCommon.transactionEntity.setAmount(recurringTx.getAmount());
-        mCommon.transactionEntity.setAmountTo(recurringTx.getAmountTo());
+        mCommon.transactionEntity.setToAmount(recurringTx.getToAmount());
         mCommon.transactionEntity.setPayeeId(recurringTx.getPayeeId());
         mCommon.transactionEntity.setCategoryId(recurringTx.getCategoryId());
         mCommon.transactionEntity.setTransactionNumber(recurringTx.getTransactionNumber());
@@ -460,7 +460,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setColor(recurringTx.getColor());
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getToAccountId());
 
         mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
         mCommon.loadCategoryName();
@@ -576,13 +576,13 @@ public class CheckingTransactionEditActivity
                         if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
                         {
                             mCommon.transactionEntity.setAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
-                            mCommon.transactionEntity.setAccountToId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                            mCommon.transactionEntity.setToAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
                             //convert the to amount from the both currency details
                             CurrencyService currencyService = new CurrencyService(this);
-                            mCommon.transactionEntity.setAmountTo(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                            mCommon.transactionEntity.setToAmount(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
                                     mCommon.transactionEntity.getAmount(),
-                                    accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountToId())));
+                                    accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getToAccountId())));
 
                         }
 
@@ -625,7 +625,7 @@ public class CheckingTransactionEditActivity
                             mCommon.loadCategoryName();
                         }
 
-                        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
+                        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getToAccountId());
                         extras = null;
                     }
                 }

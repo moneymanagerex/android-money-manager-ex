@@ -19,7 +19,6 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 
-import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
 import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
@@ -38,9 +37,6 @@ public class SecurityPriceUpdaterFactory {
         QuoteProviders provider = settings.getQuoteProvider();
 
         switch (provider) {
-            case Morningstar:
-                updater = new MorningstarPriceUpdater(context);
-                break;
             case YahooYql:
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
                 break;
