@@ -55,7 +55,6 @@ import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
 
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import info.javaperformance.money.Money;
