@@ -38,7 +38,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 public class PortfolioFragment extends BaseRecyclerFragment {
 
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
-    public static final int ID_LOADER = 1;
 
     private StockViewModel viewModel;
     private PortfolioRecyclerAdapter adapter;
@@ -59,7 +58,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     }
 
     private Long mAccountId;
-    private PortfolioRecyclerAdapter mAdapter;
 
     @Override
     public String getSubTitle() {
@@ -98,7 +96,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
         // Initialize RecyclerView
         adapter = new PortfolioRecyclerAdapter(getActivity());
-        adapter.setOnItemClickListener(stockId -> openEditInvestmentActivity(stockId));
+        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
         initializeRecyclerView();
 
         // Observe ViewModel

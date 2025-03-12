@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.Stock;
 
+import java.util.Objects;
+
 public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecyclerAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private OnItemClickListener listener;
@@ -39,10 +41,10 @@ public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecycl
         void onItemClick(long stockId);
     }
 
-    private static final DiffUtil.ItemCallback<Stock> DIFF_CALLBACK = new DiffUtil.ItemCallback<Stock>() {
+    private static final DiffUtil.ItemCallback<Stock> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(@NonNull Stock oldItem, @NonNull Stock newItem) {
-            return oldItem.getId() == newItem.getId();
+            return Objects.equals(oldItem.getId(), newItem.getId());
         }
 
         @Override
@@ -76,7 +78,9 @@ public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView symbolTextView, numSharesView, priceTextView;
+        TextView symbolTextView;
+        TextView numSharesView;
+        TextView priceTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -85,7 +89,7 @@ public class PortfolioRecyclerAdapter extends ListAdapter<Stock, PortfolioRecycl
             priceTextView = itemView.findViewById(R.id.priceTextView);
 
             itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onItemClick(getItem(position).getId());
                 }
