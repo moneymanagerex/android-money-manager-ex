@@ -40,9 +40,6 @@ public class ExchangeRateUpdaterFactory {
         InvestmentSettings settings = new InvestmentSettings(context);
         ExchangeRateProviders provider = settings.getExchangeRateProvider();
 
-        //            case Morningstar:
-        //                updater = new MorningstarPriceUpdater(context);
-        //                break;
         if (Objects.requireNonNull(provider) == ExchangeRateProviders.Fixer) {
             updater = new FreeCurrencyExchangeRateAPIService(context);
             //            case YahooYql:

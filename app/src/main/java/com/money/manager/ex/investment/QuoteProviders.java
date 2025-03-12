@@ -24,8 +24,7 @@ import com.money.manager.ex.Constants;
  */
 public enum QuoteProviders {
     YahooYql,
-    YahooCsv,
-    Morningstar;
+    YahooCsv;
 
     public static String[] names() {
         QuoteProviders[] providers = QuoteProviders.values();
