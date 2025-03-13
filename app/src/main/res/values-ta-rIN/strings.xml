@@ -69,16 +69,16 @@
     <string name="sync_on_app_start">பயன்பாட்டின் தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
     <string name="sync_on_start">தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
     <!-- Receive SMS strings -->
-    <string name="title_sms_auto_trans">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
-    <string name="summary_sms_auto_trans">வங்கி பரிவர்த்தனை புதுப்பிப்பு SMS ஐப் படித்து, தானாகவே பரிவர்த்தனையை உருவாக்கவும்</string>
-    <string name="deny_receive_sms_error">SMS பெறுவதற்கான அனுமதியை நீங்கள் மறுத்துவிட்டீர்கள், எனவே உங்கள் வங்கிப் பரிவர்த்தனை SMS செயலாக்கப்படாது</string>
-    <string name="granted_receive_sms_access">RECEIVE_SMS க்கு ஏற்கனவே அனுமதி வழங்கப்பட்டுள்ளது</string>
+    <string name="title_sms_auto_trans">செயல்முறை வங்கி பரிவர்த்தனை குறுஞ்செய்தி நிலை</string>
+    <string name="summary_sms_auto_trans">வங்கி பரிவர்த்தனை புதுப்பிப்பு குருஞ்செய்தியை படித்து, தானாகவே பரிவர்த்தனையை உருவாக்கவும்</string>
+    <string name="deny_receive_sms_error">குருஞ்செய்தி பெறுவதற்கான அனுமதியை நீங்கள் மறுத்துவிட்டீர்கள், எனவே உங்கள் வங்கிப் பரிவர்த்தனை SMS செயலாக்கப்படாது</string>
+    <string name="granted_receive_sms_access">குருஞ்செய்தி பெறுவதற்கான அனுமதி ஏற்கனவே வழங்கப்பட்டுள்ளது</string>
     <string name="revoke_receive_sms_access">அமைப்புகளுக்குச் செல்லவும் &gt;&gt; பயன்பாடுகள் &gt;&gt; பண மேலாளர் முன்னாள் &gt;&gt; அனுமதிகள் மற்றும் SMSக்கான அணுகலை மறுக்கவும்</string>
-    <string name="title_sms_trans_status_notification">SMS பரிவர்த்தனை நிலை அறிவிப்பு</string>
+    <string name="title_sms_trans_status_notification">குறுஞ்செய்தி பரிவர்த்தனை நிலை அறிவிப்பு</string>
     <string name="summary_sms_trans_status_notification">டோஸ்ட் மெசேஜ் அல்லது புதிய பரிவர்த்தனை திரையாகக் காண்பிக்கும் இடத்தில் வங்கிப் பரிவர்த்தனை எஸ்எம்எஸ் செயல்முறையின் நிலையை அறிவிப்புப் பகுதியில் காட்ட இயக்கவும்</string>
     <string name="notification_click_to_edit_transaction">பரிவர்த்தனையைத் திருத்த, தொடவும்...</string>
-    <string name="notification_process_sms_transaction_status">செயல்முறை வங்கி பரிவர்த்தனை SMS நிலை</string>
-    <string name="notification_process_sms_channel_description">AMMEX SMS அறிவிப்பு சேனல்</string>
+    <string name="notification_process_sms_transaction_status">செயல்முறை வங்கி பரிவர்த்தனை குறுஞ்செய்தி நிலை</string>
+    <string name="notification_process_sms_channel_description">AMMEX குறுஞ்செய்தி அறிவிப்பு சேனல்</string>
     <!-- account -->
     <string name="account">கணக்கு</string>
     <string name="account_list">கணக்கு பட்டியல்</string>
