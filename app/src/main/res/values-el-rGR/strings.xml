@@ -677,4 +677,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Όλοι οι λογαριασμοί</string>
+    <!-- Error Handling -->
 </resources>

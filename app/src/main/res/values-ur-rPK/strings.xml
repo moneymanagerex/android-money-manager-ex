@@ -678,4 +678,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">تمام اکاؤنٹ</string>
+    <!-- Error Handling -->
 </resources>

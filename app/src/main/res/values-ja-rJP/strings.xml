@@ -678,4 +678,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">すべての口座</string>
+    <!-- Error Handling -->
 </resources>

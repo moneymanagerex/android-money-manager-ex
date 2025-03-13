@@ -796,4 +796,5 @@
     <string name="menu_cashflow_open">Открытые счета</string>
     <string name="menu_cashflow_favorite">Избранные счета</string>
     <string name="menu_cashflow_custom">Выберите счета&#8230;</string>
+    <!-- Error Handling -->
 </resources>
