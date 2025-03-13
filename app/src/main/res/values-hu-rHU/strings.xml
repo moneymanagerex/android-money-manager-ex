@@ -237,6 +237,7 @@
     <string name="bi_weekly">Kéthetente</string>
     <string name="monthly">Havonta</string>
     <string name="bi_monthly">Kéthavonta</string>
+    <string name="quarterly">Negyedévente</string>
     <string name="half_year">Félévente</string>
     <string name="yearly">Évente</string>
     <string name="four_months">Négy havonta</string>
@@ -290,6 +291,10 @@
     <string name="enter_your_previous_passcode">Előző jelszó megadása</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">Jelszó nem frissült</string>
+    <string name="fingerprint_passcode_deactivated">A biztonsági kód bekapcsolva az ujjlenyomat-hitelesítés használatával, így a jelszó automatikusan lekapcsolva lett. Kérjük, kapcsolja újra a jelszót számértékkel.</string>
+    <string name="preferences_fingerprint_auth_key">Ujjlenyomat-hitelesítési kulcs</string>
+    <string name="preferences_fingerprint_summary">Engedélyezze az ujjlenyomat-hitelesítés használatát a bejelentkezéshez és a jelszó letiltása képernyőt. A felhasználó azonban nem használhatja az ujjlenyomatot bekapcsolására vagy a jelszó szerkesztésére.</string>
+    <string name="preferences_fingerprint_title">Ujjlenyomat-hitelesítés</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Kereséskor használhatja a % helyettesítő karaktert</string>
     <string name="income_vs_expenses_current_month">Bevételek-Kiadások: Aktuális hónap</string>
@@ -788,4 +793,8 @@
     <string name="msg_uploading_overwrite">A feltöltés felülírja a távoli verziót.\nFolytatja?</string>
     <string name="msg_downloading_overwrite">A letöltés felülírja a helyi verziót.\nFolytatja?</string>
     <string name="menu_cashflow_all">Minden számla</string>
+    <string name="menu_cashflow_open">Nyitott számlák</string>
+    <string name="menu_cashflow_favorite">Kedvenc számlák</string>
+    <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
+    <string name="cash_ledger">Készpénzes főkönyv</string>
 </resources>
