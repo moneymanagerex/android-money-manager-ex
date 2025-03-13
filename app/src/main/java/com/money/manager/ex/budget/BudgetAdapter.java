@@ -177,7 +177,12 @@ public class BudgetAdapter
         TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
             double amountAvailable = -(estimated - actual);
-            String amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
+            String amountAvailableString;
+            if ( Double.isNaN(amountAvailable) || Double.isInfinite( amountAvailable ) ) {
+                amountAvailableString = "NaN";
+            } else {
+                amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
+            }
             amountAvailableTextView.setText(amountAvailableString);
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places

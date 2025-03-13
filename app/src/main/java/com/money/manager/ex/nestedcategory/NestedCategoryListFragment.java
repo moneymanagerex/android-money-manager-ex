@@ -115,6 +115,7 @@ public class NestedCategoryListFragment
 
         levelMode = (new AppSettings(getActivity()).getCategoryNavMode());
         if (levelMode == NAVMODE_UNKNOW) {
+/*
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.attention)
                     .setIcon(new UIHelper(getActivity()).getIcon(FontAwesome.Icon.faw_question))
@@ -125,7 +126,9 @@ public class NestedCategoryListFragment
                         new AppSettings(getActivity()).setCategoryNavMode(levelMode);
                     })
                     .show();
+ */
             levelMode = NAVMODE_TREE;
+            new AppSettings(getActivity()).setCategoryNavMode(levelMode);
         }
         rootCategoryId = -1; // reset filter
 
