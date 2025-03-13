@@ -203,6 +203,7 @@ dependencies {
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.13'
     implementation fileTree(dir: 'sqlite3mc', include: ['*.aar', '*.jar'], exclude: [])
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     annotationProcessor 'org.parceler:parceler:1.1.13'
     // Dagger 2
     implementation 'com.google.dagger:dagger:2.55'

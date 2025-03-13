@@ -36,6 +36,7 @@ import android.view.View.OnClickListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.crashreport.CrashReporter;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -60,6 +61,8 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new CrashReporter(this);
+
         setTheme();
 
         AppSettings settings = new AppSettings(this);
@@ -76,6 +79,7 @@ public abstract class MmxBaseFragmentActivity
         this.compositeSubscription = new CompositeSubscription();
 
         super.onCreate(savedInstanceState);
+
         // Initialize the ActivityResultLauncher
         openDocumentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
