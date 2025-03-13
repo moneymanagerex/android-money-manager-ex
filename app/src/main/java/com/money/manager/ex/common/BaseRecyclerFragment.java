@@ -26,29 +26,32 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsRecyclerFragment;
-import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.util.Objects;
 
 public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
-    private FloatingActionButton mFloatingActionButton;
+    private FloatingActionButton mFab;
+    private MenuProvider menuProvider;
+    private SearchView mSearchView;
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseRecyclerFragment:isShowTipsWildcard";
 
     private boolean mShowMenuItemSearch = false;
-    private boolean mMenuItemSearchIconified = true;
     private boolean isShowTipsWildcard = false;
     private String mSearchHint = "";
 
     public static String mAction = null;
+
+    private boolean mEnableFab = true;
+    private boolean mEnableSearch = false;
 
     // Abstract method to get subtitle for the action bar
     public abstract String getSubTitle();
@@ -56,7 +59,10 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupFloatingActionButton(view);
+
+        initFab(view);
+        initSearch();
+
         getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
             private boolean isFabVisible = true;
 
@@ -81,12 +87,12 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         }
     }
 
-    private void setupFloatingActionButton(View view) {
-        mFloatingActionButton = view.findViewById(R.id.fab);
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setOnClickListener(v -> onFloatingActionButtonClicked());
+    private void initFab(View view) {
+        mFab = view.findViewById(R.id.fab);
+        if (mFab != null && mEnableFab) {
+            mFab.setVisibility(View.VISIBLE);
+            mFab.setOnClickListener(v -> onFabClicked());
         }
-        setFabVisible(true);
     }
 
     public RecyclerView getRecyclerView() {
@@ -111,47 +117,6 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isSearchMenuVisible() && getActivity() instanceof AppCompatActivity) {
-            final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
-            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-            SearchView searchView = new SearchView(getActivity());
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return BaseRecyclerFragment.this.onPreQueryTextChange(s);
-                }
-            });
-            searchView.setIconified(isMenuItemSearchIconified());
-            itemSearch.setActionView(searchView);
-
-            SearchViewFormatter formatter = new SearchViewFormatter();
-            formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
-            formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
-            formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-            formatter.setSearchHintText(getSearchHint());
-            formatter.format(searchView);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (getActivity() instanceof MainActivity)
-                return super.onOptionsItemSelected(item);
-            this.setResultAndFinish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
         super.onSaveInstanceState(outState);
@@ -162,60 +127,69 @@ public abstract class BaseRecyclerFragment extends AbsRecyclerFragment {
         return mShowMenuItemSearch;
     }
 
-    public void setSearchMenuVisible(boolean show) {
-        this.mShowMenuItemSearch = show;
-    }
-
-    public void setResultAndFinish() {
-        this.setResult();
-        getActivity().finish();
-    }
-
-    public boolean isMenuItemSearchIconified() {
-        return mMenuItemSearchIconified;
-    }
-
-    public void setMenuItemSearchIconified(boolean iconified) {
-        this.mMenuItemSearchIconified = iconified;
-    }
-
     public String getSearchHint() {
         return mSearchHint;
     }
 
-    public void setSearchHint(@NonNull String hint) {
-        this.mSearchHint = hint;
-    }
-
-    // Floating action button methods
-    public FloatingActionButton getFloatingActionButton() {
-        return mFloatingActionButton;
-    }
-
     public void setFabVisible(boolean isVisible) {
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        if (mFab != null) {
+            mFab.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         }
     }
 
-    public void onFloatingActionButtonClicked() {
+    public void onFabClicked() {
         // Override this method to handle FAB click
     }
 
-    protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE)) {
-            newText = "%" + newText;
-        }
-        return onQueryTextChange(newText);
+    private void initSearch() {
+        if (!mEnableSearch) return;
+
+        if (menuProvider != null) return;
+        menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+                inflater.inflate(R.menu.base_search_menu, menu);
+                MenuItem searchItem = menu.findItem(R.id.action_search);
+                mSearchView = (SearchView) searchItem.getActionView();
+                setupSearchView();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        };
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner());
     }
 
-    protected boolean onQueryTextChange(String newText) {
-        // Implement query handling logic
-        return true;
+    private void setupSearchView() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                handleSearchQuery(newText);
+                return true;
+            }
+        });
     }
 
     protected void setResult() {
         // Implement result handling logic
+    }
+
+    protected void enableFab(boolean enable) {
+        mEnableFab = enable;
+    }
+
+    protected void handleSearchQuery(String query) {
+        // Default empty implementation
+    }
+
+    protected void enableSearch(boolean enable) {
+        mEnableSearch = enable;
     }
 }

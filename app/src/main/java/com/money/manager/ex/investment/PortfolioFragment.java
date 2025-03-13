@@ -17,11 +17,8 @@
 package com.money.manager.ex.investment;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
@@ -34,10 +31,6 @@ import com.money.manager.ex.viewmodels.ViewModelFactory;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import java.util.Objects;
 
 /**
  * Use the {@link PortfolioFragment#newInstance} factory method to
@@ -48,7 +41,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
 
     private StockViewModel viewModel;
-    private PortfolioListAdapter adapter;
+    private PortfolioListAdapter mAdapter;
     private Long mAccountId;
     private Account mAccount;
     /**
@@ -88,53 +81,42 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
         if (mAccountId > 0)
             mAccount = (new AccountRepository(requireContext())).load(mAccountId);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupViewModel();
+        enableFab(true);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_portfolio;
+    }
+
+    @Override
+    protected RecyclerView.Adapter<?> createAdapter() {
+        mAdapter = new PortfolioListAdapter(getActivity(), this.mAccount);
+        mAdapter.setOnItemClickListener(this::openEditInvestmentActivity);
+        return mAdapter;
+    }
+
+    private void setupViewModel() {
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
         viewModel = new ViewModelProvider(this, factory).get(StockViewModel.class);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (container == null) return null;
-
-        // Inflate the layout for the fragment
-        return inflater.inflate(R.layout.fragment_portfolio, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setEmptyText(getString(R.string.no_stock_data));
-        setRecyclerViewShown(false);
-
-        // Initialize RecyclerView
-        adapter = new PortfolioListAdapter(getActivity(), this.mAccount);
-        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
-        initializeRecyclerView();
-
-        // Observe ViewModel
         viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
-            adapter.submitList(stocks);
-            if (stocks == null || stocks.isEmpty()) {
-                setEmptyText(getString(R.string.no_stock_data));
-            }
-            setRecyclerViewShown(true);
+            ((PortfolioListAdapter)getAdapter()).submitList(stocks);
+            checkEmpty();
         });
 
-        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            if (isLoading != null && isLoading) {
-                setRecyclerViewShown(false);
-            }
-        });
-
-        // Load initial data
         viewModel.loadStocks(mAccountId);
     }
 
     @Override
-    public void onFloatingActionButtonClicked() {
+    public void onFabClicked() {
         openEditInvestmentActivity(null);
     }
 
@@ -149,28 +131,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     public void onResume() {
         super.onResume();
         viewModel.loadStocks(mAccountId);
-    }
-
-    // Initialize RecyclerView
-    private void initializeRecyclerView() {
-
-        adapter.setOnItemClickListener(this::openEditInvestmentActivity);
-
-        getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext()));
-        getRecyclerView().addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
-        getRecyclerView().addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.bottom = 1;
-            }
-        });
-        getRecyclerView().setAdapter(adapter);
-
-        getRecyclerView().setNestedScrollingEnabled(false);
-        getRecyclerView().setClickable(true);
-        getRecyclerView().setFocusable(true);
-
-        getRecyclerView().getParent().requestDisallowInterceptTouchEvent(true);
     }
 
     private void openEditInvestmentActivity(Long stockId) {
