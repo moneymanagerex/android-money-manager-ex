@@ -51,23 +51,68 @@ public abstract class AbsRecyclerFragment extends Fragment {
         }
     };
 
+    protected int getLayoutId() { return R.layout.abs_recycler_fragment; };
+    protected int getRecyclerViewId() { return R.id.recyclerView; };
+    protected int getEmptyViewId() { return R.id.emptyView; };
+    protected int getProgressContainerId() { return R.id.progressContainer; };
+    protected int getListContainerId() { return R.id.listContainer; };
+
     // Create view for the fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.abs_recycler_fragment, container, false);
+        return inflater.inflate(getLayoutId(), container, false);
     }
 
     // Initialize views and RecyclerView settings
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = view.findViewById(R.id.recyclerView);
-        mEmptyView = view.findViewById(R.id.emptyView);
-        mProgressContainer = view.findViewById(R.id.progressContainer);
-        mListContainer = view.findViewById(R.id.listContainer);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView = view.findViewById(getRecyclerViewId());
+        mEmptyView = view.findViewById(getEmptyViewId());
+        mProgressContainer = view.findViewById(getProgressContainerId());
+        mListContainer = view.findViewById(getListContainerId());
+
+        initRecyclerView();
+    }
+
+    protected void initRecyclerView() {
+        mRecyclerView.setLayoutManager(createLayoutManager());
+        mAdapter = createAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        setupAdapterObserver();
+    }
+
+    private void setupAdapterObserver() {
+        if (mAdapter != null) {
+            mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    checkEmpty();
+                }
+
+                @Override
+                public void onItemRangeInserted(int positionStart, int itemCount) {
+                    checkEmpty();
+                }
+
+                @Override
+                public void onItemRangeRemoved(int positionStart, int itemCount) {
+                    checkEmpty();
+                }
+            });
+        }
+    }
+
+    //
+    protected RecyclerView.LayoutManager createLayoutManager() {
+        return new LinearLayoutManager(getContext());
+    }
+
+    protected abstract RecyclerView.Adapter<?> createAdapter();
+
+    protected RecyclerView.Adapter<?> getAdapter() {
+        return mAdapter;
     }
 
     // Update RecyclerView adapter
@@ -84,10 +129,10 @@ public abstract class AbsRecyclerFragment extends Fragment {
     }
 
     // Check if RecyclerView is empty and adjust visibility accordingly
-    private void checkEmpty() {
-        boolean empty = mRecyclerView.getAdapter() == null || mRecyclerView.getAdapter().getItemCount() == 0;
-        mEmptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
-        mRecyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
+    protected void checkEmpty() {
+        boolean isEmpty = mAdapter == null || mAdapter.getItemCount() == 0;
+        mEmptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        mRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 
     // Set visibility of the list view (RecyclerView)
