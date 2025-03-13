@@ -108,4 +108,3 @@ FROM CHECKINGACCOUNT_V1 TX
 		)
 	) as balance on balance.Transid = TX.TransID and balance.accountid = tx.accountid
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
-and tx.accountid = 2

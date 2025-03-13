@@ -409,6 +409,7 @@ public class AllDataAdapter
                 // TODO Money
                 CurrencyService currencyService = new CurrencyService(mContext);
                 holder.txtBalance.setText(currencyService.getCurrencyFormatted(getCurrencyId(), MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryAllData.BALANCE)))));
+                holder.txtBalance.setVisibility(View.VISIBLE);
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }

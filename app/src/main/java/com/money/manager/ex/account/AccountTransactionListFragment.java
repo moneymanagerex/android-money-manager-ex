@@ -360,6 +360,8 @@ public class AccountTransactionListFragment
                     mAccountBalance = MoneyFactory.fromString("0");
                     mAccountReconciled = MoneyFactory.fromString("0");
                 }
+                // show balance values
+                setTextViewBalance();
                 break;
 
             case AllDataListFragment.ID_LOADER_ALL_DATA_DETAIL:
