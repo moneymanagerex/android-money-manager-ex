@@ -38,7 +38,7 @@ SELECT
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
 	  ( TX.TRANSAMOUNT ) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate,
-	null as BALANCE
+	balance.BALANCE as BALANCE
 FROM CHECKINGACCOUNT_V1 TX
     LEFT JOIN categories CAT ON CAT.CATEGID = TX.CATEGID
     LEFT JOIN PAYEE_V1 PAYEE ON PAYEE.PAYEEID = TX.PAYEEID
@@ -67,4 +67,45 @@ FROM CHECKINGACCOUNT_V1 TX
 	   from splittransactions_v1
 	   group by TransId
 	) as splitCounter on splitCounter.Transid = TX.TransID
+	LEFT JOIN (
+		select ACCOUNTID, TRANSDATE, TRANSID, type, Amount, SUM( AMOUNT ) OVER ( PARTITION BY ACCOUNTID ORDER BY TRANSDATE, TRANSID ) as Balance
+		from (
+			select * from (
+				SELECT ACCOUNTID,
+					   0 as TRANSID,
+					   INITIALDATE as TRANSDATE,
+					   'INITIAL' as type,
+					   INITIALBAL  as Amount
+				FROM ACCOUNTLIST_V1
+				UNION
+				SELECT ACCOUNTID,
+					   TRANSID,
+					   TRANSDATE,
+					   'Transfer FROM' as type,
+					   ( CASE STATUS WHEN 'V' THEN 0 ELSE ( TransAmount * -1 ) END ) as Amount
+				FROM CHECKINGACCOUNT_V1
+				WHERE (DELETEDTIME IS NULL OR DELETEDTIME = '')
+				AND   TRANSCODE = 'Transfer'
+				UNION
+				SELECT TOACCOUNTID,
+					   TRANSID,
+					   TRANSDATE,
+					   'Transfer TO' as type,
+					   ( CASE STATUS WHEN 'V' THEN 0 ELSE ( TransAmount ) END ) as Amount
+				FROM CHECKINGACCOUNT_V1
+				WHERE (DELETEDTIME IS NULL OR DELETEDTIME = '')
+				AND   TRANSCODE = 'Transfer'
+				UNION
+				SELECT ACCOUNTID,
+					   TRANSID,
+					   TRANSDATE,
+					   TRANSCODE as type,
+					   ( CASE STATUS WHEN 'V' THEN 0 ELSE ( CASE TRANSCODE WHEN 'Deposit' THEN TRANSAMOUNT ELSE TRANSAMOUNT * -1 END ) END ) as Amount
+				FROM CHECKINGACCOUNT_V1
+				WHERE (DELETEDTIME IS NULL OR DELETEDTIME = '')
+				AND   TRANSCODE <> 'Transfer'
+			) order by ACCOUNTID, TRANSDATE, TRANSID
+		)
+	) as balance on balance.Transid = TX.TransID and balance.accountid = tx.accountid
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
+and tx.accountid = 2

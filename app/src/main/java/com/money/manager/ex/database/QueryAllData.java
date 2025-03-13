@@ -18,7 +18,11 @@ package com.money.manager.ex.database;
 
 import android.content.Context;
 
+import androidx.preference.PreferenceManager;
+
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
@@ -55,10 +59,17 @@ public class QueryAllData
     public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
     public static final String TAGS = "TAGS";
     public static final String COLOR = "COLOR";
+    public static final String BALANCE = "BALANCE";
 
     public QueryAllData(Context context) {
-        super(MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
+        super(null, DatasetType.QUERY, "queryalldata");
         this.mContext = context.getApplicationContext();
+        if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean("transactionshownbalance", false) ) {
+            this.setSource(MmxFileUtils.getRawAsString(context, R.raw.query_alldata_budget));
+        } else {
+            this.setSource(MmxFileUtils.getRawAsString(context, R.raw.query_alldata));
+        }
     }
 
     private final Context mContext;
@@ -69,6 +80,6 @@ public class QueryAllData
                 Category, AMOUNT, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 SPLITTED, CATEGID, PAYEENAME, PAYEEID, TransactionNumber, STATUS, Notes,
                 ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
-                currency, TAGS, COLOR};
+                currency, TAGS, COLOR, BALANCE};
     }
 }

@@ -490,14 +490,6 @@ public class AllDataListFragment
         }
     }
 
-    // Methods
-
-    public void displayRunningBalances(HashMap<Long, Money> balances) {
-        AllDataAdapter adapter = getAllDataAdapter();
-        if (adapter == null) return;
-
-        adapter.setBalances(balances);
-    }
 
     /**
      * Export data to CSV file
@@ -564,7 +556,6 @@ public class AllDataListFragment
         AllDataAdapter adapter = getAllDataAdapter();
         if (adapter != null) {
             adapter.setAccountId(this.accountId);
-            adapter.setBalances(null);
         }
 
         // set the current arguments / account id

@@ -69,7 +69,7 @@ public class AllDataAdapter
         mTypeCursor = typeCursor;
         mContext = context;
 
-        this.requestingBalanceUpdate = new ArrayList<>();
+//        this.requestingBalanceUpdate = new ArrayList<>();
 
         setFieldFromTypeCursor();
     }
@@ -88,7 +88,8 @@ public class AllDataAdapter
         ATTACHMENTCOUNT,
         CURRENCYID, PAYEE, ACCOUNTNAME, CATEGORY, NOTES,
         TOCURRENCYID, TOACCOUNTID, TOAMOUNT, TOACCOUNTNAME, TAGS, COLOR,
-        SPLITTED, CATEGID;
+        SPLITTED, CATEGID,
+        BALANCE;
 
     private final LayoutInflater mInflater;
     // hash map for group
@@ -101,8 +102,8 @@ public class AllDataAdapter
     private boolean mShowAccountName = false;
     private boolean mShowBalanceAmount = false;
     private final Context mContext;
-    private HashMap<Long, Money> balances;
-    private final ArrayList<TextView> requestingBalanceUpdate;
+//    private HashMap<Long, Money> balances;
+//    private final ArrayList<TextView> requestingBalanceUpdate;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -394,17 +395,7 @@ public class AllDataAdapter
         COLOR = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.COLOR : QueryBillDeposits.COLOR;
         SPLITTED = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.SPLITTED : QueryBillDeposits.SPLITTED;
         CATEGID = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.CATEGID : QueryBillDeposits.CATEGID;
-    }
-
-    public void setBalances(HashMap<Long, Money> balances) {
-        this.balances = balances;
-
-        // update the balances on visible elements.
-        for (TextView textView : this.requestingBalanceUpdate) {
-            showBalanceAmount(textView);
-        }
-
-        this.requestingBalanceUpdate.clear();
+        BALANCE = mTypeCursor == TypeCursor.ALLDATA ? QueryAllData.BALANCE : null;
     }
 
     /**
@@ -414,16 +405,10 @@ public class AllDataAdapter
     private void displayBalanceAmountOrDaysLeft(AllDataViewHolder holder, Cursor cursor,
                                                 Context context) {
         if (mTypeCursor == TypeCursor.ALLDATA) {
-            if (isShowBalanceAmount()) {
-                // create thread for calculate balance amount
-//                calculateBalanceAmount(cursor, holder);
-
-                // Save transaction Id.
-                long txId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ID));
-                holder.txtBalance.setTag(txId);
-
-                requestBalanceDisplay(holder.txtBalance);
-
+            if (BALANCE != null && isShowBalanceAmount()) {
+                // TODO Money
+                CurrencyService currencyService = new CurrencyService(mContext);
+                holder.txtBalance.setText(currencyService.getCurrencyFormatted(getCurrencyId(), MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryAllData.BALANCE)))));
             } else {
                 holder.txtBalance.setVisibility(View.GONE);
             }
@@ -513,37 +498,5 @@ public class AllDataAdapter
         }
 
         return result;
-    }
-
-    private void showBalanceAmount(TextView textView) {
-        if (this.balances == null) {
-            return;
-        }
-
-        // get id
-        Object tag = textView.getTag();
-        if (tag == null) return;
-
-        long txId = (long)tag;
-        if (!this.balances.containsKey(txId)) return;
-
-        CurrencyService currencyService = new CurrencyService(mContext);
-        Money currentBalance = this.balances.get(txId);
-        String balanceFormatted = currencyService.getCurrencyFormatted(getCurrencyId(), currentBalance);
-        textView.setText(balanceFormatted);
-        textView.setVisibility(View.VISIBLE);
-    }
-
-    private void requestBalanceDisplay(TextView textView) {
-        // if we have balances, display it immediately.
-        if (this.balances != null) {
-            showBalanceAmount(textView);
-        } else {
-            // hide balance amount.
-            textView.setVisibility(View.GONE);
-
-            // store for later.
-            this.requestingBalanceUpdate.add(textView);
-        }
     }
 }

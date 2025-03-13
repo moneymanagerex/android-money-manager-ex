@@ -198,8 +198,6 @@ public class AccountTransactionListFragment
     @Override
     public void onStart() {
         super.onStart();
-
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -218,8 +216,6 @@ public class AccountTransactionListFragment
     @Override
     public void onStop() {
         super.onStop();
-
-        EventBus.getDefault().unregister(this);
     }
 
     // Menu
@@ -364,16 +360,12 @@ public class AccountTransactionListFragment
                     mAccountBalance = MoneyFactory.fromString("0");
                     mAccountReconciled = MoneyFactory.fromString("0");
                 }
-                // show balance values
-                setTextViewBalance();
                 break;
 
             case AllDataListFragment.ID_LOADER_ALL_DATA_DETAIL:
                 // Notification received from AllDataListFragment.
                 // Once the transactions are loaded, load the summary data.
                 LoaderManager.getInstance(this).restartLoader(ID_LOADER_SUMMARY, null, this);
-                // load/reset running balance
-                populateRunningBalance();
 
                 break;
         }
@@ -403,14 +395,6 @@ public class AccountTransactionListFragment
 
     public void setFragmentName(String mFragmentName) {
         this.mFragmentName = mFragmentName;
-    }
-
-    // Events
-
-    @Subscribe
-    public void onEvent(RunningBalanceCalculatedEvent event) {
-        // Update the UI controls
-        mAllDataListFragment.displayRunningBalances(event.balances);
     }
 
     // Private
@@ -628,28 +612,6 @@ public class AccountTransactionListFragment
         });
     }
 
-    /**
-     * Refreshes the running balance.
-     */
-    private void populateRunningBalance() {
-        Bundle arguments = prepareQuery();
-
-        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-            getContext(), this.mAccountId, mFilter.dateRange.dateFrom, arguments);
-        // events now handled in onEvent, using an event bus.
-        task.execute();
-
-        // the result is received in #onTaskComplete.
-    }
-
-    /**
-     * Implementation using Rx instead of AsyncTask.
-     */
-    private void populateRunningBalanceRx() {
-        Bundle arguments = prepareQuery();
-
-
-    }
 
     /**
      * Prepare SQL query for record selection.
