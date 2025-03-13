@@ -34,7 +34,7 @@ public class CrashReportActivity extends AppCompatActivity {
         intent = getIntent();
         if (intent == null) return;
 
-        String source = intent.getStringExtra("ERROR");
+        //String source = intent.getStringExtra("ERROR");
         String report = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         TextView reportUI = findViewById(R.id.editTextReport);
