@@ -267,4 +267,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Kõik kontod</string>
+    <!-- Error Handling -->
 </resources>

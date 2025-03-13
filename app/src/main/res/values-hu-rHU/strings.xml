@@ -797,4 +797,5 @@
     <string name="menu_cashflow_favorite">Kedvenc számlák</string>
     <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
     <string name="cash_ledger">Készpénzes főkönyv</string>
+    <!-- Error Handling -->
 </resources>

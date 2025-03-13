@@ -710,4 +710,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Svi računi</string>
+    <!-- Error Handling -->
 </resources>

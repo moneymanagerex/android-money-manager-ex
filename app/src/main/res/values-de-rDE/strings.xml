@@ -792,4 +792,5 @@
     <string name="msg_uploading_overwrite">Hochladen wird Ihre Remote-Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="msg_downloading_overwrite">Das Herunterladen wird Ihre lokale Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="menu_cashflow_all">Alle Konten</string>
+    <!-- Error Handling -->
 </resources>

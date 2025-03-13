@@ -680,4 +680,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">所有帳戶</string>
+    <!-- Error Handling -->
 </resources>

@@ -704,4 +704,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Tous les comptes</string>
+    <!-- Error Handling -->
 </resources>

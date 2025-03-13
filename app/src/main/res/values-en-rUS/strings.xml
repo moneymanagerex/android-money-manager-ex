@@ -792,4 +792,5 @@
     <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
     <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
     <string name="menu_cashflow_all">All Accounts</string>
+    <!-- Error Handling -->
 </resources>

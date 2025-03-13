@@ -564,4 +564,5 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">كافة الحسابات</string>
+    <!-- Error Handling -->
 </resources>
