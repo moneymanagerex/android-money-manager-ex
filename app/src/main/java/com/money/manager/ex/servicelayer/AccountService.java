@@ -119,7 +119,8 @@ public class AccountService
             )
         );
 
-        where.addStatement(ITransactionEntity.TRANSDATE, "<=", isoDate);
+//        where.addStatement(ITransactionEntity.TRANSDATE, "<=", isoDate);
+        where.addStatement(ITransactionEntity.TRANSDATE, "<", isoDate);
         where.addStatement(ITransactionEntity.STATUS, "<>", TransactionStatuses.VOID.getCode());
 
         String selection = where.getWhere();
