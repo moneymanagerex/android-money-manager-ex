@@ -39,11 +39,15 @@ import java.util.Objects;
 public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private OnItemClickListener listener;
+    private OnItemLongClickListener longClickListener;
     private final Account mAccount;
     private final CurrencyService mCurrencyService;
 
     public interface OnItemClickListener {
         void onItemClick(long stockId);
+    }
+    public interface OnItemLongClickListener {
+        void onItemLongClick(Stock stock, View view);
     }
 
     private static final DiffUtil.ItemCallback<Stock> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
@@ -67,6 +71,10 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     @NonNull
@@ -107,6 +115,16 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onItemClick(getItem(position).getId());
                 }
+            });
+
+            itemView.setOnLongClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && longClickListener != null) {
+                    Stock stock = getItem(position);
+                    longClickListener.onItemLongClick(stock, v);
+                    return true;
+                }
+                return false;
             });
         }
     }
