@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2025 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,9 +57,8 @@ public class StockRepository
                 ID_COLUMN + " AS _id"
         };
 
-        String[] result = ObjectArrays.concat(idColumn, tableColumns(), String.class);
         //String[] result = ArrayUtils.addAll(idColumn, tableColumns());
-        return result;
+        return ObjectArrays.concat(idColumn, tableColumns(), String.class);
     }
 
     private String[] tableColumns() {
@@ -102,38 +101,18 @@ public class StockRepository
     }
 
     /**
-     * Retrieves all record ids which refer the given symbol.
-     * @return array of ids of records which contain the symbol.
-     */
-    private long[] findIdsBySymbol(String symbol) {
-
-        List<Stock> stocks = query(new Select(getAllColumns()).where(StockFields.SYMBOL + "=?", new String[]{symbol}));
-
-        long[] result = new long[stocks.size()];
-        int i = 0;
-        for (Stock stock:stocks) {
-            result[i] = stock.getId();
-        }
-
-        return result;
-    }
-
-    /**
      * Update price for all the records with this symbol.
      * @param symbol Stock symbol
      * @param price Stock price
      */
     public void updateCurrentPrice(String symbol, Money price) {
-        long[] ids = findIdsBySymbol(symbol);
 
         // recalculate value
-
-        for (long id : ids) {
-            Stock stock = load(id);
+        for (Stock stock : loadBySymbol(symbol)) {
             if (stock == null) continue; // this should not happen, but see #2295 -anr-1071-stockrepository
             stock.setCurrentPrice(price);
             // recalculate & assign the value
-            Money value = stock.getValue();
+            stock.getValue();
 
             save(stock);
         }
@@ -142,5 +121,9 @@ public class StockRepository
     // custom func
     public List<Stock> loadByAccount(long accountId) {
         return query(new Select(getAllColumns()).where(StockFields.HELDAT + " = ?", accountId));
+    }
+
+    public List<Stock> loadBySymbol(String symbol) {
+        return query(new Select(getAllColumns()).where(StockFields.SYMBOL + " = ?", symbol));
     }
 }
