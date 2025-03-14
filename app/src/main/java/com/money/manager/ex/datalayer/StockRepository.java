@@ -22,7 +22,6 @@ import android.content.Context;
 import com.google.common.collect.ObjectArrays;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -70,34 +69,6 @@ public class StockRepository
         }
 
         return names;
-    }
-
-    /**
-     * Load multiple items by id.
-     * @param ids Array of ids to load.
-     * @return List of stocks.
-     */
-    public List<Stock> load(Integer[] ids) {
-        if (ids.length == 0) return null;
-
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String placeHolders = dbUtils.makePlaceholders(ids.length);
-        String[] idParams = new String[ids.length];
-
-        for (int i = 0; i < ids.length; i++) {
-            idParams[i] = Integer.toString(ids[i]);
-        }
-
-        return query(new Select(getAllColumns()).where(StockFields.STOCKID + " IN (" + placeHolders + ")", idParams));
-    }
-
-    public List<Stock> loadForSymbols(String[] symbols) {
-        if (symbols.length == 0) return null;
-
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String placeHolders = dbUtils.makePlaceholders(symbols.length);
-
-        return query(new Select(getAllColumns()).where(StockFields.SYMBOL + " IN (" + placeHolders + ")", symbols));
     }
 
     /**
