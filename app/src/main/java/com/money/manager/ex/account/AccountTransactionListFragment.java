@@ -669,7 +669,7 @@ public class AccountTransactionListFragment
         where.addStatement(QueryAllData.Date, ">=", new MmxDate(mFilter.dateRange.dateFrom)
                 .toIsoDateString());
         where.addStatement(QueryAllData.Date, "<=", new MmxDate(mFilter.dateRange.dateTo)
-                .toIsoDateString());
+                .toIsoDateString()+"T23:59:59");
 
         // Status
         where.addStatement(QueryAllData.STATUS, "IN", mFilter.transactionStatus.getSqlParameters());
