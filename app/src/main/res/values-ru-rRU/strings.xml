@@ -796,5 +796,8 @@
     <string name="menu_cashflow_open">Открытые счета</string>
     <string name="menu_cashflow_favorite">Избранные счета</string>
     <string name="menu_cashflow_custom">Выберите счета&#8230;</string>
+    <string name="cash_ledger">Кассовая книга</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Ой! Что-то пошло не так.</string>
+    <string name="bad_error_occurs">Нам очень грустно из-за этой непредвиденной ошибки. Пожалуйста, сообщите разработчику</string>
 </resources>
