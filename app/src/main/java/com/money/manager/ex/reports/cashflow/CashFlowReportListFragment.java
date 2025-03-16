@@ -49,6 +49,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -90,7 +91,7 @@ public class CashFlowReportListFragment
     private static final String BALANCE = "BALANCE";
     private static final int monthInAdvance = 12;
 
-
+    private UIHelper ui;
     private MatrixCursor matrixCursor;
     String[] columnNames;
     CurrencyService currencyService;
@@ -316,6 +317,8 @@ public class CashFlowReportListFragment
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ui = new UIHelper(getActivity());
 
         // Update UI elements here
         //createCashFlowRecords();
@@ -686,6 +689,7 @@ public class CashFlowReportListFragment
                 LimitLine l = new LimitLine(i, xVal.get(i));
                 l.setTextSize(10);
                 l.setLineColor(Color.DKGRAY);
+                l.setTextColor(ui.getPrimaryTextColor());
                 chart.getXAxis().addLimitLine(l);
             }
         }
@@ -697,6 +701,7 @@ public class CashFlowReportListFragment
 
         chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP);
+        chart.getAxisLeft().setTextColor(ui.getPrimaryTextColor());
         chart.setDescription("");
         chart.setData(data);
 //        chart.setTouchEnabled(false);
