@@ -46,6 +46,8 @@ public class BehaviourSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivity().setTitle(R.string.preferences_behaviour);
+
 //        PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 

@@ -47,7 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Generales</string>
     <string name="preferences_perdatabase">Por base de datos</string>
-    <string name="preferences_dispaly">Apariencia</string>
+    <string name="preferences_display">Apariencia</string>
     <string name="preferences_behaviour">Comportamiento</string>
     <string name="base_currency">Moneda base</string>
     <string name="base_currency_changed">Moneda base cambiada</string>

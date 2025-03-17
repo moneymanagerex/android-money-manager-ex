@@ -46,7 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">جنرل</string>
     <string name="preferences_perdatabase">پری-ڈاٹا بیس</string>
-    <string name="preferences_dispaly">دیکھیں اور محسوس کریں</string>
+    <string name="preferences_display">دیکھیں اور محسوس کریں</string>
     <string name="preferences_behaviour">برتاو</string>
     <string name="base_currency">بنیادی کرنسی</string>
     <string name="base_currency_changed">بنیادی کرنسی تبدیل ہونا</string>

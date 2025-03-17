@@ -27,7 +27,7 @@
     <Preference
         android:icon="@null"
         android:key="@string/pref_look_feel"
-        android:title="@string/preferences_dispaly" />
+        android:title="@string/preferences_display" />
     <Preference
         android:icon="@null"
         android:key="@string/pref_behaviour"

@@ -31,6 +31,7 @@ public class BudgetSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.budget);
 
 //        PreferenceManager.getDefaultSharedPreferences(getActivity());
     }

@@ -46,7 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Obecné</string>
     <string name="preferences_perdatabase">Nastavení databáze</string>
-    <string name="preferences_dispaly">Vzhled a chování</string>
+    <string name="preferences_display">Vzhled a chování</string>
     <string name="preferences_behaviour">Chování</string>
     <string name="base_currency">Základní měna</string>
     <string name="base_currency_changed">Základní měna změněna</string>

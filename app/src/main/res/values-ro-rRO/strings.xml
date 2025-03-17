@@ -46,7 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Setări Generale</string>
     <string name="preferences_perdatabase">Per-Baza de date</string>
-    <string name="preferences_dispaly">Privește &amp; Simte</string>
+    <string name="preferences_display">Privește &amp; Simte</string>
     <string name="preferences_behaviour">Comportament</string>
     <string name="base_currency">Moneda de bază</string>
     <string name="base_currency_changed">Moneda de bază a fost modificată</string>

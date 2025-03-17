@@ -46,7 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">Γενικά</string>
     <string name="preferences_perdatabase">Ανά Βάση Δεδομένων</string>
-    <string name="preferences_dispaly">Εμφάνιση</string>
+    <string name="preferences_display">Εμφάνιση</string>
     <string name="preferences_behaviour">Συμπεριφορά</string>
     <string name="base_currency">Βασική νομισματική μονάδα</string>
     <string name="base_currency_changed">Βασικό νόμισμα άλλαξε</string>

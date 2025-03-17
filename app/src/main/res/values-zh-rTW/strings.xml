@@ -46,7 +46,7 @@
     <!-- preferences -->
     <string name="preferences_general">一般</string>
     <string name="preferences_perdatabase">目前資料庫</string>
-    <string name="preferences_dispaly">外觀和感覺</string>
+    <string name="preferences_display">外觀和感覺</string>
     <string name="preferences_behaviour">動作</string>
     <string name="base_currency">基本貨幣</string>
     <string name="base_currency_changed">基礎貨幣已更改</string>

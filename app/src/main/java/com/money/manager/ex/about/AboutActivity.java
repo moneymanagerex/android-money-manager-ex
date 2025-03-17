@@ -44,6 +44,8 @@ public class AboutActivity
         setContentView(R.layout.about_activity);
         setDisplayHomeAsUpEnabled(true);
 
+        setTitle(R.string.about);
+
         mViewPager = findViewById(R.id.viewpager);
         AboutTabAdapter adapter = new AboutTabAdapter(this,
                 new String[]{

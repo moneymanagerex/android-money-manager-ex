@@ -44,6 +44,7 @@ public class InvestmentSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.investment);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 

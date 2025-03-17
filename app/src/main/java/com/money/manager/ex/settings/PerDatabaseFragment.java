@@ -67,6 +67,13 @@ public class PerDatabaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivity().setTitle(R.string.preferences_perdatabase);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.preferences_perdatabase);
     }
 
     @Override
