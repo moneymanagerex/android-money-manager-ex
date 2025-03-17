@@ -10,12 +10,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 
 import androidx.fragment.app.Fragment;
 
 import java.util.Map;
+
+import info.javaperformance.money.MoneyFactory;
 
 
 public class GeneralReportFragment extends Fragment {
@@ -60,6 +63,8 @@ public class GeneralReportFragment extends Fragment {
         ReportRepository repo = new ReportRepository(getActivity());
         Report report = repo.loadByName(reportName.trim());
 
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+
         // Execute query and get column names and results
         ReportRepository.ReportResult result = repo.runReport(report);
 
@@ -81,8 +86,26 @@ public class GeneralReportFragment extends Fragment {
         // Add rows from query result
         for (Map<String, String> row : result.getQueryResult()) {
             htmlTable.append("<tr>");
+
             for (String columnName : result.getColumnNames()) {
-                htmlTable.append("<td>").append(row.getOrDefault(columnName, "")).append("</td>");
+                if(columnName.toLowerCase().contains("amount")
+                        || columnName.toLowerCase().contains("deposit")
+                        || columnName.toLowerCase().contains("withdrawal")
+                        || columnName.toLowerCase().contains("total")
+                        || columnName.toLowerCase().contains("initialbal")) {
+
+                    double amount = Double.valueOf(row.getOrDefault(columnName, ""));
+                    if (amount < 0) {
+                        htmlTable.append("<td style='color:red'>").append(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                                MoneyFactory.fromDouble(amount))).append("</td>");
+                    } else {
+                        htmlTable.append("<td>").append(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
+                                MoneyFactory.fromDouble(amount))).append("</td>");
+                    }
+
+                } else {
+                    htmlTable.append("<td>").append(row.getOrDefault(columnName, "")).append("</td>");
+                }
             }
             htmlTable.append("</tr>");
         }
