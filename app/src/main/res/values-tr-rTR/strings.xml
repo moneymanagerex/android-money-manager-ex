@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">Genel</string>
     <string name="preferences_perdatabase">Veritabanı Genel</string>
-    <string name="preferences_display">Görünüm</string>
     <string name="preferences_behaviour">Davranış</string>
     <string name="base_currency">Baz para birimi</string>
     <string name="base_currency_changed">Baz para birimi değiştirildi</string>

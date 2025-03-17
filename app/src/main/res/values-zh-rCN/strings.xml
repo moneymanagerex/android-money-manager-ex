@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">通用设置</string>
     <string name="preferences_perdatabase">此数据库</string>
-    <string name="preferences_display">外观 &amp; 显示</string>
     <string name="preferences_behaviour">表示方式</string>
     <string name="base_currency">基础货币</string>
     <string name="base_currency_changed">本位币已经变更</string>

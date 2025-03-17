@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">כללי</string>
     <string name="preferences_perdatabase">למסד נתונים</string>
-    <string name="preferences_display">נראה ומרגיש</string>
     <string name="preferences_behaviour">התנהגות</string>
     <string name="base_currency">מטבע בסיס</string>
     <string name="base_currency_changed">מטבע בסיסי השתנה</string>

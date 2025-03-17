@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">பொது</string>
     <string name="preferences_perdatabase">ஒவ்வொரு தரவுத்தளமும்</string>
-    <string name="preferences_display">பார்க்கவும் &amp; உணரவும்</string>
     <string name="preferences_behaviour">நடத்தை</string>
     <string name="base_currency">அடிப்படை செலாவணி</string>
     <string name="base_currency_changed">அடிப்படை செலாவணி மாற்றப்பட்டது</string>
@@ -796,4 +795,6 @@
     <string name="menu_cashflow_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
     <string name="cash_ledger">பண பேரேடு</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">அச்சச்சோ! ஏதோ தவறு நடந்துவிட்டது.</string>
+    <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
 </resources>

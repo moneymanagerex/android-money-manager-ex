@@ -44,7 +44,6 @@
     <!-- preferences -->
     <string name="preferences_general">عمومی</string>
     <string name="preferences_perdatabase">هر پایگاه داده</string>
-    <string name="preferences_display">شکل&amp; شمایل</string>
     <string name="preferences_behaviour">عملکرد</string>
     <string name="base_currency">ارز پایه</string>
     <string name="base_currency_changed">ارز پایه تغییر کرد</string>

@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">Algemeen</string>
     <string name="preferences_perdatabase">Per-Database</string>
-    <string name="preferences_display">Weergave</string>
     <string name="preferences_behaviour">Gedrag</string>
     <string name="base_currency">Standaardvaluta</string>
     <string name="base_currency_changed">Standaardvaluta gewijzigd</string>

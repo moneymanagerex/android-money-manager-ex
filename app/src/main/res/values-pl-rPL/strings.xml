@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">Ogólne</string>
     <string name="preferences_perdatabase">Na bazę danych</string>
-    <string name="preferences_display">Wygląd</string>
     <string name="preferences_behaviour">Zachowanie</string>
     <string name="base_currency">Podstawowa waluta</string>
     <string name="base_currency_changed">Zmieniono podstawową walutę</string>

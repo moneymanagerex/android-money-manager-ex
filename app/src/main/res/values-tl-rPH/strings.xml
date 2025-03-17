@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">Pangkalahatan</string>
     <string name="preferences_perdatabase">Kada-Database</string>
-    <string name="preferences_display">Itsura &amp; Pakiramdam</string>
     <string name="preferences_behaviour">Katangian</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Ngbago ang base currency</string>

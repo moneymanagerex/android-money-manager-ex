@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_perdatabase">Kada-Datos</string>
-    <string name="preferences_display">Hitsura &amp; Pakiramdam</string>
     <string name="preferences_behaviour">Pag-uugali</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Base currency ay nagbago</string>
