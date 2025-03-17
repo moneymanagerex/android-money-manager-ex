@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">عام</string>
     <string name="preferences_perdatabase">في قاعدة البيانات</string>
-    <string name="preferences_display">المظهر &amp; الشكل</string>
     <string name="preferences_behaviour">السلوك</string>
     <string name="base_currency">العملة الأساسية</string>
     <string name="base_currency_changed">تم تغيير العملة الأساسية</string>

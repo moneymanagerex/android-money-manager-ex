@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">Općenito</string>
     <string name="preferences_perdatabase">Po bazi podataka</string>
-    <string name="preferences_display">Izgled i osjećaj</string>
     <string name="preferences_behaviour">Ponašanje</string>
     <string name="base_currency">Osnovna valuta</string>
     <string name="base_currency_changed">Osnovna valuta promijenjena</string>

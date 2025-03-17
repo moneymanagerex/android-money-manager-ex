@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">Umum</string>
     <string name="preferences_perdatabase">Per Basis Data</string>
-    <string name="preferences_display">Tampilan &amp; Nuansa</string>
     <string name="preferences_behaviour">Perilaku</string>
     <string name="base_currency">Mata uang dasar</string>
     <string name="base_currency_changed">Mata uang dasar diubah</string>

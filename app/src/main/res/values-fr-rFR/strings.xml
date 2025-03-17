@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">Général</string>
     <string name="preferences_perdatabase">Par-Base de données</string>
-    <string name="preferences_display">Affichage</string>
     <string name="preferences_behaviour">Comportement</string>
     <string name="base_currency">Devise de référence</string>
     <string name="base_currency_changed">Devise de référence modifiée</string>

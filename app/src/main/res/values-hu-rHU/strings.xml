@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">Általános</string>
     <string name="preferences_perdatabase">Adatbázis beállításai</string>
-    <string name="preferences_display">Megjelenés</string>
     <string name="preferences_behaviour">Működés</string>
     <string name="base_currency">Alapértelmezett pénznem</string>
     <string name="base_currency_changed">Az alap pénznem megváltozott</string>

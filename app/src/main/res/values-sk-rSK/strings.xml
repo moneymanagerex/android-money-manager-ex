@@ -45,7 +45,6 @@
     <!--<string name="import_export_failed">Import / Export failed</string>-->
     <!-- preferences -->
     <string name="preferences_general">Všeobecné</string>
-    <string name="preferences_display">Vzhľad</string>
     <string name="preferences_behaviour">Chovanie</string>
     <string name="base_currency">Základná mena</string>
     <string name="base_currency_changed">Základná mena zmenená</string>

@@ -47,7 +47,6 @@
     <!-- preferences -->
     <string name="preferences_general">Основные</string>
     <string name="preferences_perdatabase">Настройки текущей БД</string>
-    <string name="preferences_display">Внешний вид</string>
     <string name="preferences_behaviour">Поведение</string>
     <string name="base_currency">Основная валюта</string>
     <string name="base_currency_changed">Основная валюта изменена</string>

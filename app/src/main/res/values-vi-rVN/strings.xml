@@ -46,7 +46,6 @@
     <!-- preferences -->
     <string name="preferences_general">Chung</string>
     <string name="preferences_perdatabase">Cơ sở dữ liệu cá nhân</string>
-    <string name="preferences_display">Nhìn &amp; Cảm nhận</string>
     <string name="preferences_behaviour">Hành vi</string>
     <string name="base_currency">Tiền tệ cơ sở</string>
     <string name="base_currency_changed">Tiền tệ cơ sở đã thay đổi</string>
