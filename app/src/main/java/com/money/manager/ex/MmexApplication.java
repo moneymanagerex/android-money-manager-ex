@@ -21,6 +21,7 @@ import static timber.log.Timber.plant;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.LocaleList;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -221,7 +222,14 @@ public class MmexApplication
 
         if(!TextUtils.isEmpty(language)) {
             try {
-                locale = new Locale(language);
+//                locale = new Locale(language);
+                String[] langpart = language.split("_");
+                if (langpart.length == 3)
+                    locale = new Locale(langpart[0], langpart[1], langpart[2]);
+                else if (langpart.length == 2)
+                    locale = new Locale(langpart[0], langpart[1]);
+                else
+                    locale = new Locale(langpart[0]);
             } catch (Exception e) {
                 Timber.e(e, "parsing locale: %s", language);
             }
