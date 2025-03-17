@@ -27,14 +27,14 @@ import com.money.manager.ex.R;
 
 public enum BudgetPeriodEnum {
     NONE("None", 0),
-    WEEKLY("Weekly", 7),
-    BI_WEEKLY("Bi-Weekly", 14),
-    MONTHLY("Monthly", 30),
-    BI_MONTHLY("Bi-Monthly", 60),
-    QUARTERLY("Quarterly", 90),
-    HALF_YEARLY("Half-Yearly", 180),
-    YEARLY("Yearly", 365),
-    DAILY("Daily", 1);
+    WEEKLY("Weekly", 7), // ok
+    BI_WEEKLY("Fortnightly", 14), // mod
+    MONTHLY("Monthly", 30), // ok
+    BI_MONTHLY("Every 2 Months", 60), // mod
+    QUARTERLY("Quarterly", 90), //ok
+    HALF_YEARLY("Half-Yearly", 180), //ok
+    YEARLY("Yearly", 365), // ok
+    DAILY("Daily", 1); // ok
 
     private final String displayName;
     private final int daysInPeriod; // Approximate number of days for each period

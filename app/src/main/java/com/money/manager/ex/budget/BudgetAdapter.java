@@ -152,6 +152,11 @@ public class BudgetAdapter
         double estimated = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
+        if ( Double.isNaN(estimated) ) {
+            // this means that we don't have estimate for this category
+            // so estimate is 0
+            estimated = 0;
+        }
 
         // Actual
         TextView actualTextView = view.findViewById(R.id.actualTextView);
@@ -178,8 +183,8 @@ public class BudgetAdapter
         if (amountAvailableTextView != null) {
             double amountAvailable = -(estimated - actual);
             String amountAvailableString;
-            if ( Double.isNaN(amountAvailable) || Double.isInfinite( amountAvailable ) ) {
-                amountAvailableString = "NaN";
+            if ( Double.isInfinite( amountAvailable ) ) {
+                amountAvailableString = "<setup a period>";
             } else {
                 amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
             }

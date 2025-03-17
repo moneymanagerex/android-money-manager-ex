@@ -258,6 +258,7 @@ public class BudgetEntryFragment
 
         // Set up the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        // TODO: set custom xml layout to manage both period and amount
         builder.setTitle("Edit Budget Entry")
                 .setMessage("Enter the new budget value:")
                 .setView(input)
@@ -276,6 +277,12 @@ public class BudgetEntryFragment
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);
                                     budgetEntry.setCategoryId(categoryId);
+                                    budgetEntry.setPeriod(BudgetPeriodEnum.YEARLY.getDisplayName());
+                                } else {
+                                    // to fix wrong budget entry
+                                    if (budgetEntry.getPeriod().equals(BudgetPeriodEnum.NONE.getDisplayName())) {
+                                        budgetEntry.setPeriod(BudgetPeriodEnum.YEARLY.getDisplayName());
+                                    }
                                 }
 
                                 budgetEntry.setAmount(newValueNumeric);
