@@ -132,7 +132,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         displayBudget();
     }
@@ -172,10 +172,16 @@ public class BudgetEntryFragment
         // set accounts Filter
         inflater.inflate(R.menu.menu_budget, menu);
 
-        boolean useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
-        if ( menu.findItem(R.id.menu_budget_financial_year) != null ) {
+        boolean useBudgetFinancialYear = (new AppSettings(getContext())).getBudgetSettings().getBudgetFinancialYear();
+        if (menu.findItem(R.id.menu_budget_financial_year) != null) {
             menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
         }
+
+        boolean useBudgetSimplifyView = (new AppSettings(getContext())).getBudgetSettings().getShowSimpleView();
+        if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
+            menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
+        }
+
     }
 
     @Override
@@ -183,7 +189,13 @@ public class BudgetEntryFragment
         if (item.getItemId() == R.id.menu_budget_financial_year) {
             item.setChecked(!item.isChecked());
             (new AppSettings(getContext())).getBudgetSettings().setBudgetFinancialYear(item.isChecked());
-            getActivity().recreate(); // todo restart loader
+            restartLoader();
+            return true;
+        }
+        if (item.getItemId() == R.id.menu_budget_use_simple_view) {
+            item.setChecked(!item.isChecked());
+            (new AppSettings(getContext())).getBudgetSettings().setShowSimpleView(item.isChecked());
+            restartLoader();
             return true;
         }
         return false;
@@ -235,8 +247,10 @@ public class BudgetEntryFragment
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
                     BudgetEntry budgetEntry = repo.loadByYearAndCateID(yearId, categoryId);
-                    if (budgetEntry != null)
+                    if (budgetEntry != null) {
                         repo.delete(budgetEntry.getId());
+                        restartLoader();
+                    }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
@@ -288,6 +302,7 @@ public class BudgetEntryFragment
                                 budgetEntry.setAmount(newValueNumeric);
                                 budgetEntryRepository.save(budgetEntry);
                                 Toast.makeText(getActivity(), "Budget entry updated", Toast.LENGTH_SHORT).show();
+                                restartLoader();
                             } catch (NumberFormatException e) {
                                 Toast.makeText(getActivity(), "Invalid number format", Toast.LENGTH_SHORT).show();
                             }
@@ -339,4 +354,11 @@ public class BudgetEntryFragment
             }
         };
     }
+
+    private void restartLoader() {
+//  getloader does not restart loader????
+//        getLoaderManager().restartLoader(LOADER_BUDGET, null, setUpLoaderCallbacks());
+        getActivity().recreate();
+    }
+
 }

@@ -25,10 +25,14 @@
         android:title="@string/settings"
         app:showAsAction="always">
         <menu>
-                <item
-                    android:id="@+id/menu_budget_financial_year"
-                    android:checkable="true"
-                    android:title="@string/title_pref_budget_financial_year" />
+            <item
+                android:id="@+id/menu_budget_use_simple_view"
+                android:checkable="true"
+                android:title="@string/title_budget_show_simple_view" />
+            <item
+                android:id="@+id/menu_budget_financial_year"
+                android:checkable="true"
+                android:title="@string/title_pref_budget_financial_year" />
         </menu>
     </item>
 </menu>
