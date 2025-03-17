@@ -21,7 +21,6 @@ import static timber.log.Timber.plant;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.LocaleList;
 import android.text.TextUtils;
 import android.widget.TextView;
 
