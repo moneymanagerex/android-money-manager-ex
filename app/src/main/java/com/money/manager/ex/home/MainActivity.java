@@ -619,6 +619,8 @@ public class MainActivity
 
         if (itemId == R.id.menu_home) {
             showFragment(HomeFragment.class);
+        } else if (itemId == R.id.menu_home2) {
+            showFragment(HomeFragment2.class);
         } else if (itemId == R.id.menu_sync) {
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
@@ -829,12 +831,15 @@ public class MainActivity
         UIHelper uiHelper = new UIHelper(this);
         int iconColor = uiHelper.getSecondaryTextColor();
 
-        // Menu.
+        // Menu
 
         final ArrayList<DrawerMenuItem> groupItems = getDrawerMenuItems();
         final ArrayList<Object> childItems = new ArrayList<>();
 
         // Home
+        childItems.add(null);
+
+        // Home2
         childItems.add(null);
 
         // Open Database. Display the recent db list.
@@ -1039,6 +1044,12 @@ public class MainActivity
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
                 .withText(getString(R.string.home))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_home)
+                        .color(iconColor)));
+
+        // Home
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_home2)
+                .withText(getString(R.string.home2))
                 .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_home)
                         .color(iconColor)));
 

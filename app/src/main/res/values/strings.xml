@@ -185,6 +185,7 @@
     <string name="download">Download</string>
     <string name="edit">Edit</string>
     <string name="home">Home</string>
+    <string name="home2">New Home</string>
     <string name="logo">Logo</string>
     <string name="new_edit_transaction">New/Edit Transaction</string>
     <string name="refresh">Refresh</string>

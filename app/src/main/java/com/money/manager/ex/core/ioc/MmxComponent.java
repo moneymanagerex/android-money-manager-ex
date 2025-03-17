@@ -28,6 +28,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.home.HomeFragment;
+import com.money.manager.ex.home.HomeFragment2;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.EditPriceDialog;
@@ -115,4 +116,6 @@ public interface MmxComponent {
 
     // Adapters
     void inject(BudgetAdapter adapter);
+
+    void inject(HomeFragment2 homeFragment2);
 }

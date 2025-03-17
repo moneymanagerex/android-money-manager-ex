@@ -21,6 +21,7 @@
     <item name="menu_cancel" type="id"/>
     <item name="menu_debug_rotate" type="id"/>
     <item name="menu_home" type="id"/>
+    <item name="menu_home2" type="id"/>
     <item name="menu_query_mode" type="id"/>
     <item name="menu_none" type="id"/>
     <item name="menu_reconciled" type="id"/>
