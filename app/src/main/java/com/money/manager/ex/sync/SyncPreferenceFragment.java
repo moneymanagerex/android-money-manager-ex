@@ -62,6 +62,7 @@ public class SyncPreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.synchronization);
 
         MmexApplication.getApp().iocComponent.inject(this);
     }

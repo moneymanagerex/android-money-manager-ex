@@ -44,6 +44,8 @@ public class LookFeelPreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivity().setTitle(R.string.preferences_display);
+
         addPreferencesFromResource(R.xml.preferences_look_and_feel);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());

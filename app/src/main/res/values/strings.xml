@@ -51,7 +51,7 @@
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_perdatabase">Per-Database</string>
-    <string name="preferences_dispaly">Look &#38; Feel</string>
+    <string name="preferences_display">Look &#38; Feel</string>
     <string name="preferences_behaviour">Behaviour</string>
     <string name="base_currency">Base currency</string>
     <string name="base_currency_changed">Base currency changed</string>

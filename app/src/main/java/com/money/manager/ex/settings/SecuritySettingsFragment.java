@@ -49,6 +49,8 @@ public class SecuritySettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_security);
+        getActivity().setTitle(R.string.preferences_security);
+
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // active passcode

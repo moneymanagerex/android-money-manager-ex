@@ -47,7 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Splošno</string>
     <string name="preferences_perdatabase">Zbirke podatkovnih baz</string>
-    <string name="preferences_dispaly">Poglej &amp; Čuti</string>
+    <string name="preferences_display">Poglej &amp; Čuti</string>
     <string name="preferences_behaviour">Obnašanje</string>
     <string name="base_currency">Osnovna valuta</string>
     <string name="base_currency_changed">Sprememba osnovne valute</string>

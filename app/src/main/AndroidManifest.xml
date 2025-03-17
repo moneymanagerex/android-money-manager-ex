@@ -267,7 +267,7 @@
             android:label="@string/preferences_general" />
         <activity
             android:name=".settings.LookFeelSettingsActivity"
-            android:label="@string/preferences_dispaly" />
+            android:label="@string/preferences_display" />
         <activity
             android:name=".settings.BehaviourSettingsActivity"
             android:label="@string/preferences_behaviour" />
