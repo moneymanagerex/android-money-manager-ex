@@ -61,6 +61,8 @@ public class DatabaseSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivity().setTitle(R.string.database);
+
         MmexApplication.getApp().iocComponent.inject(this);
 
         addPreferencesFromResource(R.xml.preferences_database);
@@ -90,6 +92,12 @@ public class DatabaseSettingsFragment
 
         // Fix duplicates
         initFixDuplicates();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.database);
     }
 
     @Override
