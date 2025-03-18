@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Allgemein</string>
     <string name="preferences_perdatabase">Per-Datenbank</string>
+    <string name="preferences_display">Design</string>
     <string name="preferences_behaviour">Verhalten</string>
     <string name="base_currency">Basiswährung</string>
     <string name="base_currency_changed">Standard-Währung geändert</string>
@@ -290,6 +291,7 @@
     <string name="enter_your_previous_passcode">Geben Sie Ihren vorherigen Zugangscode ein</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">Zugangscode wurde nicht aktualisiert</string>
+    <string name="fingerprint_passcode_deactivated">Sicherheitscode wurde mit Fingerabdruck-Authentifizierung aktiviert, daher wurde der Zugangscode automatisch deaktiviert, bitte reaktivieren Sie den Zugangscode mit numerischem Wert</string>
     <string name="preferences_fingerprint_auth_key">Fingerabdruck-Authentifizierungsschlüssel</string>
     <string name="preferences_fingerprint_summary">Aktivieren, um die Fingerabdruck-Authentifizierung für die Anmeldung zu verwenden und den Passwort-Bildschirm zu deaktivieren. Der Benutzer kann jedoch keinen Fingerabdruck verwenden, um den Zugangscode zu aktivieren oder zu bearbeiten</string>
     <string name="preferences_fingerprint_title">Authentifizierung per Fingerabdruck</string>
@@ -791,5 +793,11 @@
     <string name="msg_uploading_overwrite">Hochladen wird Ihre Remote-Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="msg_downloading_overwrite">Das Herunterladen wird Ihre lokale Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="menu_cashflow_all">Alle Konten</string>
+    <string name="menu_cashflow_open">Offene Konten</string>
+    <string name="menu_cashflow_favorite">Favorisierte Konten</string>
+    <string name="menu_cashflow_custom">Konten wählen&#8230;</string>
+    <string name="cash_ledger">Kassenbuch</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
+    <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
 </resources>
