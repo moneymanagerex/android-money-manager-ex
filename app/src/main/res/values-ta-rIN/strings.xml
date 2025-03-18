@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">பொது</string>
     <string name="preferences_perdatabase">ஒவ்வொரு தரவுத்தளமும்</string>
+    <string name="preferences_display">பார்க்க மற்றும் உணர</string>
     <string name="preferences_behaviour">நடத்தை</string>
     <string name="base_currency">அடிப்படை செலாவணி</string>
     <string name="base_currency_changed">அடிப்படை செலாவணி மாற்றப்பட்டது</string>
@@ -549,6 +550,7 @@
     <string name="budget">பட்ஜெட்</string>
     <string name="budget_list">பட்ஜெட் பட்டியல்</string>
     <string name="actual">உண்மையான</string>
+    <string name="amount_available">கிடைக்கக்கூடிய</string>
     <string name="base_currency_not_set">அடிப்படை நாணயம் அமைக்கப்படவில்லை</string>
     <string name="error">பிழை</string>
     <string name="unhandled_crash">எதிர்பாராத பிழை. பதிவை எங்களுக்கு அனுப்பவும்.</string>
