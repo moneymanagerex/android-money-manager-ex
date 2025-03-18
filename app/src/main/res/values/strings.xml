@@ -617,6 +617,7 @@
     <string name="budget">Budget</string>
     <string name="budget_list">Budget list</string>
     <string name="actual">Actual</string>
+    <string name="amount_available">Available</string>
     <string name="base_currency_not_set">Base currency has not been set</string>
     <string name="error">Error</string>
     <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
