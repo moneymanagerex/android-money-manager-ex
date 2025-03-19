@@ -15,44 +15,124 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout
+<HorizontalScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/mmx_list_item_height_dense"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
-    android:gravity="center_vertical"
-    android:padding="@dimen/mmx_margin">
+    android:layout_height="@dimen/mmx_list_item_height"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
-        <!-- Symbol (40% width) -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/symbolTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAlignment="textStart"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/mmx_margin_bottom_top">
 
-        <!-- Shares (30% width) -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/numSharesView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="end"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAlignment="viewEnd"/>
+                <!-- Column 1: Name | Symbol -->
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/mmx_margin"
+                    android:paddingEnd="8dp">
 
-        <!-- Price (30% width) -->
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/priceTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="end"
-            android:textStyle="bold"
-            android:textAlignment="viewEnd"/>
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/nameTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textSize="14sp"
+                            android:paddingVertical="2dp"/>
 
-</LinearLayout>
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/symbolTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textSize="12sp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:paddingVertical="2dp"/>
+                </LinearLayout>
+
+                <!-- Column 2: Market Value | Shares -->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:paddingHorizontal="8dp">
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/marketValueTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:paddingVertical="2dp"/>
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/sharesTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:paddingVertical="2dp"/>
+                </LinearLayout>
+
+                <!-- Column 3: Current Price | Purchase Price -->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:paddingHorizontal="8dp">
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/currentPriceTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:paddingVertical="2dp"/>
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/purchasePriceTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:paddingVertical="2dp"/>
+                </LinearLayout>
+
+                <!-- Column 4: Unrealized G/L | % -->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:paddingHorizontal="8dp">
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/unrealizedGLAmountTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:paddingVertical="2dp"/>
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/unrealizedGLPercentTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:paddingVertical="2dp"/>
+                </LinearLayout>
+        </LinearLayout>
+</HorizontalScrollView>
