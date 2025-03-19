@@ -1,0 +1,27 @@
+# What's Changed
+
+## Feature
+* Add new Error handle in case of crash for fast open iossue
+* Basic budget editing support
+* New Model for translation
+* Improve Search in subcategory. Now will return all subcategory that match search string
+* Improve CashFlow report and Graph
+* Stock: new V2 model
+* Initial supporto for General Report now available on Mobile (but still need to edit from PC version). No LUA support for now.
+* Stock: support Edit Price to long click
+
+## Bugfix
+* Varius FIX for SMS
+* Minor fix
+* Change Sort in Year Selection in report (from most recent)
+* Preserve master note if split has empty note
+* Switch back to FloatAddButton to material design
+* Switch back to ListView to RecyclerView
+* Balance fix in transaction list flag "Show balance on every transation" is on
+
+
+## Translation
+* New Language
+* Translations improvement
+
+
