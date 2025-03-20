@@ -21,6 +21,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,8 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.Objects;
+
+import info.javaperformance.money.Money;
 
 public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapter.ViewHolder> {
     private final LayoutInflater inflater;
@@ -87,37 +91,85 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Stock stock = getItem(position);
+
+        // Column 1: Name and Symbol
+        holder.nameTextView.setText(stock.getName());
         holder.symbolTextView.setText(stock.getSymbol());
-        holder.numSharesView.setText(String.valueOf(stock.getNumberOfShares()));
-        holder.priceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getCurrentPrice()));
+
+        // Column 2: Market Value and Shares
+        Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
+        holder.marketValueTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), marketValue));
+        holder.sharesTextView.setText(String.format("%.2f", stock.getNumberOfShares()));
+
+        // Column 3: Current Price and Purchase Price
+        holder.currentPriceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getCurrentPrice()));
+        holder.purchasePriceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getPurchasePrice()));
+
+        // Column 4: Unrealized G/L
+        Money unrealizedAmount = calculateUnrealizedGainLoss(stock);
+        double unrealizedPercent = calculateUnrealizedPercentage(stock);
+
+        holder.unrealizedGLAmountTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), unrealizedAmount));
+        holder.unrealizedGLPercentTextView.setText(String.format("%.2f%%", unrealizedPercent));
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
-        } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.white));
-        }
+        int bgColor = (position % 2 == 0) ? android.R.color.darker_gray : android.R.color.white;
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), bgColor));
+    }
+
+    // Helper methods for calculations
+    private Money calculateUnrealizedGainLoss(Stock stock) {
+        Money current = stock.getCurrentPrice();
+        Money purchase = stock.getPurchasePrice();
+        return current.subtract(purchase).multiply(stock.getNumberOfShares());
+    }
+
+    private double calculateUnrealizedPercentage(Stock stock) {
+        Money purchase = stock.getPurchasePrice();
+        if (purchase.isZero()) return 0.0;
+        Money diff = stock.getCurrentPrice().subtract(purchase);
+        return (diff.toDouble() / purchase.toDouble()) * 100.0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        // Column 1
+        TextView nameTextView;
         TextView symbolTextView;
-        TextView numSharesView;
-        TextView priceTextView;
+        // Column 2
+        TextView marketValueTextView;
+        TextView sharesTextView;
+        // Column 3
+        TextView currentPriceTextView;
+        TextView purchasePriceTextView;
+        // Column 4
+        TextView unrealizedGLAmountTextView;
+        TextView unrealizedGLPercentTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            // Column 1
+            nameTextView = itemView.findViewById(R.id.nameTextView);
             symbolTextView = itemView.findViewById(R.id.symbolTextView);
-            numSharesView = itemView.findViewById(R.id.numSharesView);
-            priceTextView = itemView.findViewById(R.id.priceTextView);
+            // Column 2
+            marketValueTextView = itemView.findViewById(R.id.marketValueTextView);
+            sharesTextView = itemView.findViewById(R.id.sharesTextView);
+            // Column 3
+            currentPriceTextView = itemView.findViewById(R.id.currentPriceTextView);
+            purchasePriceTextView = itemView.findViewById(R.id.purchasePriceTextView);
+            // Column 4
+            unrealizedGLAmountTextView = itemView.findViewById(R.id.unrealizedGLAmountTextView);
+            unrealizedGLPercentTextView = itemView.findViewById(R.id.unrealizedGLPercentTextView);
 
-            itemView.setOnClickListener(v -> {
+            LinearLayout mainLayout = (LinearLayout) ((HorizontalScrollView) itemView).getChildAt(0);
+
+            mainLayout.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onItemClick(getItem(position).getId());
                 }
             });
 
-            itemView.setOnLongClickListener(v -> {
+            mainLayout.setOnLongClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && longClickListener != null) {
                     Stock stock = getItem(position);
