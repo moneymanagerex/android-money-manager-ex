@@ -550,6 +550,7 @@
     <string name="budget">Бюджет</string>
     <string name="budget_list">Список бюджетов</string>
     <string name="actual">Факт</string>
+    <string name="amount_available">Доступно</string>
     <string name="base_currency_not_set">Базовая валюта не была установлена</string>
     <string name="error">Ошибка</string>
     <string name="unhandled_crash">Непредвиденная ошибка. Пришлите нам лог.</string>
