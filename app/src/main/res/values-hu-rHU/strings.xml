@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Általános</string>
     <string name="preferences_perdatabase">Adatbázis beállításai</string>
+    <string name="preferences_display">Nézd és érezd</string>
     <string name="preferences_behaviour">Működés</string>
     <string name="base_currency">Alapértelmezett pénznem</string>
     <string name="base_currency_changed">Az alap pénznem megváltozott</string>
@@ -549,6 +550,7 @@
     <string name="budget">Költségvetés</string>
     <string name="budget_list">Költségvetés lista</string>
     <string name="actual">Tényleges</string>
+    <string name="amount_available">Elérhető</string>
     <string name="base_currency_not_set">Alapértelmezett pénznem nincs beállítva</string>
     <string name="error">Hiba</string>
     <string name="unhandled_crash">Váratlan hiba. Kérjük, küldje el a hibanaplót.</string>
@@ -797,4 +799,6 @@
     <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
     <string name="cash_ledger">Készpénzes főkönyv</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Hoppá! Hiba történt.</string>
+    <string name="bad_error_occurs">Váratlan hiba történt. Kérlek jelezd a fejlesztőknek.</string>
 </resources>
