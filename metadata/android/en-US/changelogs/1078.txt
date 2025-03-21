@@ -1,0 +1,6 @@
+## What's Changed
+* fix dump in provider setting
+* Fix dump in category search
+* Add app version in crash
+* Excluded Deleted Transaction from balance
+* Correct language translation for report
