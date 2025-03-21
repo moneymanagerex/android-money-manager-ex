@@ -36,6 +36,7 @@ public class CashFlowReportActivity extends MmxBaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.report_chart_fragments_activity);
+        setTitle(R.string.menu_report_cashflow);
         setContentView(R.layout.chart_line_fragment);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -54,6 +54,8 @@ public class SearchActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.search);
+
         setContentView(R.layout.search_activity);
 
         SearchParametersFragment searchParametersFragment = getSearchFragment();
