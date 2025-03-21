@@ -31,8 +31,16 @@ public class IncomeVsExpensesActivity extends MmxBaseFragmentActivity {
     private final IncomeVsExpensesListFragment listFragment = new IncomeVsExpensesListFragment();
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setTitle(R.string.menu_report_income_vs_expenses);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.menu_report_income_vs_expenses); // need to be befor set content for correct language determination
+
         setContentView(R.layout.report_chart_fragments_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

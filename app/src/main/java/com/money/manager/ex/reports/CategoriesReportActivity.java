@@ -37,6 +37,8 @@ public class CategoriesReportActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTitle(R.string.category); // set default title
+
         if (getIntent() != null) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra(REPORT_FILTERS))) {
                 mFilter = getIntent().getStringExtra(REPORT_FILTERS);
