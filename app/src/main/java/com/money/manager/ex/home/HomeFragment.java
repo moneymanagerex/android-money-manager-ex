@@ -838,9 +838,11 @@ public class HomeFragment
             accountTransaction.setValueFromCursor(cursor);
 
             double total = accountTransaction.getTotalBaseConvRate();
-            mGrandTotal = mGrandTotal.add(MoneyFactory.fromDouble(total));
             double totalReconciled = accountTransaction.getReconciledBaseConvRate();
-            mGrandReconciled = mGrandReconciled.add(MoneyFactory.fromDouble(totalReconciled));
+            if (!accountTransaction.getAccountType().equalsIgnoreCase(AccountTypes.SHARES.toString())) {
+                mGrandTotal = mGrandTotal.add(MoneyFactory.fromDouble(total));
+                mGrandReconciled = mGrandReconciled.add(MoneyFactory.fromDouble(totalReconciled));
+            }
 
             String accountType = accountTransaction.getAccountType().toLowerCase();
             QueryAccountBills totalForType;
