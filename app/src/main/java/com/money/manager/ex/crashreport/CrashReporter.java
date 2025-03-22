@@ -1,9 +1,13 @@
 package com.money.manager.ex.crashreport;
 
 
+import static android.provider.Settings.System.getString;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
+import com.money.manager.ex.core.Core;
 
 /**
  * Activity based Exception handler ...
@@ -30,7 +34,7 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
         Intent registerActivity = new Intent(mContext, CrashReportActivity.class);
         registerActivity.setAction("HANDLE_ERROR");
         registerActivity.putExtra("ERROR", CrashReporter.class.getName());
-        registerActivity.putExtra(Intent.EXTRA_TEXT, generateReport(thread,ex));
+        registerActivity.putExtra(Intent.EXTRA_TEXT, generateReport(mContext, thread,ex));
         registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         mContext.startActivity(registerActivity);
@@ -43,7 +47,7 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
 
     }
 
-    public static String generateReport(final Thread t, final Throwable e) {
+    public static String generateReport(final Context mContext, final Thread t, final Throwable e) {
         StackTraceElement[] arr = e.getStackTrace();
         final StringBuffer report = new StringBuffer(e.toString());
         final String lineSeperator = "-------------------------------\n\n";
@@ -69,6 +73,24 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
                 report.append("\n");
             }
         }
+        // Getting the App version
+        report.append(lineSeperator);
+        report.append("--------- APP VERSION ---------\n\n");
+        try {
+            Core core = new Core(mContext);
+            String version = core.getAppVersionName();
+            report.append("App version: ");
+            report.append(version);
+            report.append("\n");
+            int build = core.getAppVersionCode();
+            report.append("Build: ");
+            report.append(build);
+            report.append("\n");
+        } catch ( Exception ex) {
+            report.append("error while get App Version");
+            report.append("\n");
+        }
+
         // Getting the Device brand,model and sdk verion details.
         report.append(lineSeperator);
         report.append("--------- Device ---------\n\n");

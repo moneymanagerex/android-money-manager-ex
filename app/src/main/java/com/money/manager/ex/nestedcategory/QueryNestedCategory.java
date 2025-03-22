@@ -85,7 +85,7 @@ public class QueryNestedCategory
     public List<NestedCategoryEntity> getNestedCategoryEntities(String filter, String sort) {
         List<NestedCategoryEntity> categories = new ArrayList<>();
         Cursor cursor = getCursor(null, filter, null, sort);
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) { //
             do {
                 NestedCategoryEntity entity = new NestedCategoryEntity();
                 entity.loadFromCursor(cursor);
