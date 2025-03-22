@@ -44,4 +44,12 @@ public class Budget
     public void setName(String value) {
         setString(BUDGETYEARNAME, value);
     }
+
+    public boolean isMontlyBudget() {
+        return getName().contains("-");
+    }
+
+    public static boolean isMontlyBudget(String budgetName) {
+        return budgetName.contains("-");
+    }
 }
