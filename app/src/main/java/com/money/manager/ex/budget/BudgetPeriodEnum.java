@@ -26,31 +26,35 @@ import com.money.manager.ex.R;
  */
 
 public enum BudgetPeriodEnum {
-    NONE("None", 0),
-    WEEKLY("Weekly", 7), // ok
-    BI_WEEKLY("Fortnightly", 14), // mod
-    MONTHLY("Monthly", 30), // ok
-    BI_MONTHLY("Every 2 Months", 60), // mod
-    QUARTERLY("Quarterly", 90), //ok
-    HALF_YEARLY("Half-Yearly", 180), //ok
-    YEARLY("Yearly", 365), // ok
-    DAILY("Daily", 1); // ok
+    NONE("None",  0),
+    WEEKLY("Weekly",  52), // ok
+    BI_WEEKLY("Fortnightly",  26), // mod
+    MONTHLY("Monthly",  12), // ok
+    BI_MONTHLY("Every 2 Months",  6), // mod
+    QUARTERLY("Quarterly",  4), //ok
+    HALF_YEARLY("Half-Yearly",  2), //ok
+    YEARLY("Yearly",  1), // ok
+    DAILY("Daily", 365); // ok
 
     private final String displayName;
-    private final int daysInPeriod; // Approximate number of days for each period
+    private final int occursTimes; // How many times event occurs in a year
 
-    BudgetPeriodEnum(String displayName, int daysInPeriod) {
+    BudgetPeriodEnum(String displayName,  int occursTimes) {
         this.displayName = displayName;
-        this.daysInPeriod = daysInPeriod;
+        this.occursTimes = occursTimes;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
+    // please use new getOccursTime that has better compute
+    @Deprecated
     public int getDaysInPeriod() {
-        return daysInPeriod;
+        return ( occursTimes == 0 ? 99999 : occursTimes ); // simulate infinity
     }
+
+    public int getOccursTimes() { return occursTimes; }
 
     public static BudgetPeriodEnum fromString(String periodString) {
         for (BudgetPeriodEnum period : values()) {

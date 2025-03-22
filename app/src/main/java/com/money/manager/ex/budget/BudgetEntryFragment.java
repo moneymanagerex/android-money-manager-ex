@@ -41,6 +41,7 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
@@ -174,7 +175,13 @@ public class BudgetEntryFragment
 
         boolean useBudgetFinancialYear = (new AppSettings(getContext())).getBudgetSettings().getBudgetFinancialYear();
         if (menu.findItem(R.id.menu_budget_financial_year) != null) {
-            menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
+            if ( Budget.isMontlyBudget(mBudgetName) ) {
+                // does not sense to have financial year for monthly budget
+                menu.findItem(R.id.menu_budget_financial_year).setVisible(false);
+            } else {
+                menu.findItem(R.id.menu_budget_financial_year).setVisible(true);
+                menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
+            }
         }
 
         boolean useBudgetSimplifyView = (new AppSettings(getContext())).getBudgetSettings().getShowSimpleView();
@@ -291,7 +298,7 @@ public class BudgetEntryFragment
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);
                                     budgetEntry.setCategoryId(categoryId);
-                                    budgetEntry.setPeriod(BudgetPeriodEnum.YEARLY.getDisplayName());
+                                    budgetEntry.setPeriod(( Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName()));
                                 } else {
                                     // to fix wrong budget entry
                                     if (budgetEntry.getPeriod().equals(BudgetPeriodEnum.NONE.getDisplayName())) {
