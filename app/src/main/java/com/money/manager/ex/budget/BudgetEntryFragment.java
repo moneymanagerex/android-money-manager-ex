@@ -164,7 +164,20 @@ public class BudgetEntryFragment
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
+        setVisibleColumn(R.id.frequencyTextView, adapter);
+        setVisibleColumn(R.id.amountTextView, adapter);
+        setVisibleColumn(R.id.actualTextView, adapter);
+        setVisibleColumn(R.id.amountAvailableTextView, adapter);
+        setVisibleColumn(R.id.forecastRemainTextView, adapter);
         setListAdapter(adapter);
+    }
+
+    private void setVisibleColumn(int column, BudgetAdapter adapter) {
+        try {
+            mHeader.findViewById(column).setVisibility(adapter.getVisibleColumn().contains(column) ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            // null
+        }
     }
 
     @Override

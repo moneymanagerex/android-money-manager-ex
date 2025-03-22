@@ -46,7 +46,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -74,6 +74,8 @@ public class BudgetAdapter
     private boolean useBudgetFinancialYear = false;
     private MmxDate dateFrom;
     private MmxDate dateTo;
+
+    private ArrayList<Integer> mVisibleColumn;
 
     /**
      * Standard constructor.
@@ -108,6 +110,24 @@ public class BudgetAdapter
         } catch (Exception e) {
         }
 
+        mVisibleColumn = new ArrayList<>();
+        mVisibleColumn.add(R.id.frequencyTextView);
+        mVisibleColumn.add(R.id.amountTextView);
+        mVisibleColumn.add(R.id.actualTextView);
+        mVisibleColumn.add(R.id.amountAvailableTextView);
+        mVisibleColumn.add(R.id.forecastRemainTextView);
+    }
+
+    public void addVisibleColumn(int column){
+        mVisibleColumn.add(column);
+    }
+
+    public void addVisibleColumns(ArrayList<Integer> columns){
+        mVisibleColumn.addAll(columns);
+    }
+
+    ArrayList<Integer> getVisibleColumn() {
+        return mVisibleColumn;
     }
 
     @Override
@@ -119,10 +139,8 @@ public class BudgetAdapter
     @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // Category
-
+        // Category categoryTextView
         boolean hasSubcategory = false;
-
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
             int categoryColumnIndex = cursor.getColumnIndex(QueryNestedCategory.CATEGNAME);
@@ -131,44 +149,52 @@ public class BudgetAdapter
 
         long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
 
-        // Frequency
+        // Frequency frequencyTextView
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
-
         TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
+            frequencyTextView.setVisibility(mVisibleColumn.contains(R.id.frequencyTextView) ? View.VISIBLE : View.GONE);
             frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
-        // Amount
+        // amountTextView
         TextView amountTextView = view.findViewById(R.id.amountTextView);
         double amount = getBudgetAmountFor(categoryId);
         if (amountTextView != null) {
+            amountTextView.setVisibility(mVisibleColumn.contains(R.id.amountTextView) ? View.VISIBLE : View.GONE);
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
-        // Estimated
-        double estimated = isMonthlyBudget(mBudgetName)
+        // Estimated estimatedAnnualTextView
+        double estimatedAnnual = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if ( Double.isNaN(estimated) ) {
+        if ( Double.isNaN(estimatedAnnual) ) {
             // this means that we don't have estimate for this category
             // so estimate is 0
-            estimated = 0;
+            estimatedAnnual = 0;
+        }
+        TextView estimatedAnnualTextView = view.findViewById(R.id.estimatedAnnualTextView);
+        if ( estimatedAnnualTextView != null ) {
+            estimatedAnnualTextView.setVisibility(mVisibleColumn.contains(R.id.estimatedAnnualTextView) ? View.VISIBLE : View.GONE);
+            String estimatedAnnualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(estimatedAnnual));
+            estimatedAnnualTextView.setText(estimatedAnnualString);
         }
 
-        // Actual
+        // Actual actualTextView
         TextView actualTextView = view.findViewById(R.id.actualTextView);
         double actual = getActualAmount(hasSubcategory, cursor);
         if (actualTextView != null) {
+            actualTextView.setVisibility(mVisibleColumn.contains(R.id.actualTextView) ? View.VISIBLE : View.GONE);
             String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
             actualTextView.setText(actualString);
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            if ((int) (actual * 100) < (int) (estimated * 100)) {
+            if ((int) (actual * 100) < (int) (estimatedAnnual * 100)) {
                 actualTextView.setTextColor(
                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
@@ -179,10 +205,12 @@ public class BudgetAdapter
             }
         }
 
-        // Amount Available
+        // Amount Available amountAvailableTextView
         TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
-            double amountAvailable = -(estimated - actual);
+            amountAvailableTextView.setVisibility(mVisibleColumn.contains(R.id.amountAvailableTextView) ? View.VISIBLE : View.GONE);
+            // TODO Check sign for income
+            double amountAvailable = -(estimatedAnnual - actual);
             String amountAvailableString;
             if ( Double.isInfinite( amountAvailable ) ) {
                 amountAvailableString = "<setup a period>";
@@ -204,6 +232,34 @@ public class BudgetAdapter
                 );
             }
         }
+
+        // forecastRemainTextView
+        TextView forecastRemainTextView = view.findViewById(R.id.forecastRemainTextView);
+        if (forecastRemainTextView != null) {
+            forecastRemainTextView.setVisibility(mVisibleColumn.contains(R.id.forecastRemainTextView) ? View.VISIBLE : View.GONE);
+            double forecastRemain = getEstimateFromRecurringTransaction( cursor );
+            String forecastRemainString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(forecastRemain));
+            actualTextView.setText(forecastRemainString);
+
+            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+            UIHelper uiHelper = new UIHelper(context);
+            if (forecastRemain < 0 ) {
+                actualTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                );
+            } else {
+                actualTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                );
+            }
+
+        }
+
+    }
+
+    private double getEstimateFromRecurringTransaction(Cursor cursor) {
+        // TODO Get Value for this category from recurring transaction
+        return 0;
     }
 
     public Context getContext() {
