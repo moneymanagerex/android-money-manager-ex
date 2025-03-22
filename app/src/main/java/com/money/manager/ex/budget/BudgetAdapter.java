@@ -38,6 +38,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -211,7 +212,7 @@ public class BudgetAdapter
 
     public void setBudgetName(String budgetName) {
         mBudgetName = budgetName;
-        if (useBudgetFinancialYear) {
+        if (!Budget.isMontlyBudget(mBudgetName) && useBudgetFinancialYear) {
             dateFrom = getStartDateForFinancialYear(mBudgetName);
             dateTo = new MmxDate(dateFrom.toDate());
             dateTo.addYear(1).minusDays(1);
@@ -294,6 +295,7 @@ public class BudgetAdapter
         if (month != Constants.NOT_SET) {
             // month
             where += " AND " + QueryMobileData.Month + "=" + month;
+            where += " AND " + QueryMobileData.Year + "=" + year;
         } else
         if (!useBudgetFinancialYear || dateFrom == null || dateTo == null ) {
             // annual
