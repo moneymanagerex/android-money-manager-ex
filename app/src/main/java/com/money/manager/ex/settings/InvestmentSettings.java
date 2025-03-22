@@ -80,7 +80,12 @@ public class InvestmentSettings
             return defaultValue;
         }
 
-        QuoteProviders provider = QuoteProviders.valueOf(value);
+        QuoteProviders provider = null;
+        try {
+            provider = QuoteProviders.valueOf(value);
+        } catch (Exception e) {
+            Timber.e("Unable to use quote provider: %s",value);
+        }
         // default value returned if none set.
         return provider != null ? provider : defaultValue;
     }

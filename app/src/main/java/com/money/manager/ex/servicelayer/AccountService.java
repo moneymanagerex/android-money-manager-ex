@@ -123,6 +123,9 @@ public class AccountService
         where.addStatement(ITransactionEntity.TRANSDATE, "<", isoDate);
         where.addStatement(ITransactionEntity.STATUS, "<>", TransactionStatuses.VOID.getCode());
 
+//      Ignore Deleted Record!!!!! #2348
+        where.addStatement("(DELETEDTIME IS NULL OR DELETEDTIME = '')");
+
         String selection = where.getWhere();
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
