@@ -55,6 +55,17 @@
         android:paddingStart="1dp" />
 
     <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/estimatedAnnualTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/estimatedAnnual"
+        android:paddingStart="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/actualTextView"
         android:layout_width="wrap_content"
         android:minWidth="60dp"
@@ -63,6 +74,28 @@
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
         android:text="@string/actual"
+        android:paddingStart="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/amountAvailableTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/amount_available"
+        android:paddingStart="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/forecastRemainTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/forecast_remain"
         android:paddingStart="1dp" />
 
 </LinearLayout>

@@ -51,6 +51,8 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import timber.log.Timber;
+
 /**
  * Use the {@link BudgetEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -164,6 +166,7 @@ public class BudgetEntryFragment
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
+        adapter.setVisibleTextFieldsForView(mHeader);
         setListAdapter(adapter);
     }
 
@@ -188,6 +191,9 @@ public class BudgetEntryFragment
         if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
             menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
         }
+
+        // Todo Add selectable columns name
+
 
     }
 

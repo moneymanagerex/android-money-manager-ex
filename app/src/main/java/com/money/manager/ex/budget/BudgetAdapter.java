@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +47,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -61,7 +62,7 @@ import timber.log.Timber;
  * Adapter for budgets.
  */
 public class BudgetAdapter
-    extends SimpleCursorAdapter {
+        extends SimpleCursorAdapter {
 
     @Inject
     Lazy<BriteDatabase> databaseLazy;
@@ -74,6 +75,8 @@ public class BudgetAdapter
     private boolean useBudgetFinancialYear = false;
     private MmxDate dateFrom;
     private MmxDate dateTo;
+
+    private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
     /**
      * Standard constructor.
@@ -108,6 +111,31 @@ public class BudgetAdapter
         } catch (Exception e) {
         }
 
+        if (mLayout == R.layout.item_budget_simple) {
+            addVisibleColumn(R.id.amountAvailableTextView);
+        } else {
+            // todo read from settings
+            addVisibleColumn(R.id.frequencyTextView);
+            addVisibleColumn(R.id.amountTextView);
+//        addVisibleColumn(R.id.estimatedAnnualTextView);
+            addVisibleColumn(R.id.actualTextView);
+//        addVisibleColumn(R.id.amountAvailableTextView);
+//        addVisibleColumn(R.id.forecastRemainTextView);
+        }
+    }
+
+    public void addVisibleColumn(int column) {
+        if (!mVisibleColumn.contains(column))
+            mVisibleColumn.add(column);
+    }
+
+    public void removeVisibleColumn(int column) {
+        if (mVisibleColumn.contains(column))
+            mVisibleColumn.remove(column);
+    }
+
+    ArrayList<Integer> getVisibleColumn() {
+        return mVisibleColumn;
     }
 
     @Override
@@ -116,94 +144,192 @@ public class BudgetAdapter
         return inflater.inflate(mLayout, parent, false);
     }
 
+    public void setVisibleTextFieldsForView(View view) {
+        // todo read from settings
+        setVisibleTextFieldForView(view, R.id.frequencyTextView);
+        setVisibleTextFieldForView(view, R.id.amountTextView);
+        setVisibleTextFieldForView(view, R.id.estimatedAnnualTextView);
+        setVisibleTextFieldForView(view, R.id.actualTextView);
+        setVisibleTextFieldForView(view, R.id.amountAvailableTextView);
+        setVisibleTextFieldForView(view, R.id.forecastRemainTextView);
+    }
+
+    private void setVisibleTextFieldForView(View view, int resid) {
+        try {
+            view.findViewById(resid).setVisibility(getVisibleColumn().contains(resid) ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            // colummn not visible
+        }
+
+    }
+
+    private void setViewElement(View view, int resId, String text) {
+        setViewElement(view, resId, text, false, false);
+    }
+
+    private void setViewElement(View view, int resId, String text, Boolean withColor, boolean witchColor) {
+        TextView textView = view.findViewById(resId);
+        if (textView != null) {
+            textView.setText(text);
+            if (withColor) {
+                // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+                UIHelper uiHelper = new UIHelper(mContext);
+                if (witchColor) {
+                    textView.setTextColor(
+                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    );
+                } else {
+                    textView.setTextColor(
+                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    );
+                }
+            }
+        }
+    }
+
+    private void setViewElement(View view, int resId, double amount, CurrencyService currencyService, Boolean withColor) {
+        setViewElement(view, resId, currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount)), true, withColor);
+    }
+
+    private void setViewElement(View view, int resId, double amount, CurrencyService currencyService) {
+        setViewElement(view, resId, currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount)), false, false);
+    }
+
+
     @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // Category
+        // Category categoryTextView
+
+        setVisibleTextFieldsForView(view);
 
         boolean hasSubcategory = false;
-
-        TextView categoryTextView = view.findViewById(R.id.categoryTextView);
-        if (categoryTextView != null) {
-            int categoryColumnIndex = cursor.getColumnIndex(QueryNestedCategory.CATEGNAME);
-            categoryTextView.setText(cursor.getString(categoryColumnIndex));
-        }
+        setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME)));
+//        TextView categoryTextView = view.findViewById(R.id.categoryTextView);
+//        if (categoryTextView != null) {
+//            int categoryColumnIndex = cursor.getColumnIndex(QueryNestedCategory.CATEGNAME);
+//            categoryTextView.setText(cursor.getString(categoryColumnIndex));
+//        }
 
         long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
 
-        // Frequency
+        // Frequency frequencyTextView
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
-
-        TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
-        if (frequencyTextView != null) {
-            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
-        }
+        setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
+//        TextView frequencyTextView = view.findViewById(R.id.frequencyTextView);
+//        if (frequencyTextView != null) {
+//            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
+//        }
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
-        // Amount
-        TextView amountTextView = view.findViewById(R.id.amountTextView);
+        // amountTextView
         double amount = getBudgetAmountFor(categoryId);
-        if (amountTextView != null) {
-            String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
-            amountTextView.setText(text);
-        }
+        setViewElement(view, R.id.amountTextView, amount, currencyService);
+//        TextView amountTextView = view.findViewById(R.id.amountTextView);
+//        if (amountTextView != null) {
+//            String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
+//            amountTextView.setText(text);
+//        }
 
-        // Estimated
-        double estimated = isMonthlyBudget(mBudgetName)
+        // Estimated estimatedAnnualTextView
+        double estimatedAnnual = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if ( Double.isNaN(estimated) ) {
+        if (Double.isNaN(estimatedAnnual)) {
             // this means that we don't have estimate for this category
             // so estimate is 0
-            estimated = 0;
+            estimatedAnnual = 0;
         }
 
-        // Actual
-        TextView actualTextView = view.findViewById(R.id.actualTextView);
+        setViewElement(view, R.id.estimatedAnnualTextView, estimatedAnnual, currencyService);
+//        TextView estimatedAnnualTextView = view.findViewById(R.id.estimatedAnnualTextView);
+//        if (estimatedAnnualTextView != null) {
+//            String estimatedAnnualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(estimatedAnnual));
+//            estimatedAnnualTextView.setText(estimatedAnnualString);
+//        }
+
+        // Actual actualTextView
         double actual = getActualAmount(hasSubcategory, cursor);
-        if (actualTextView != null) {
-            String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
-            actualTextView.setText(actualString);
+        setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedAnnual * 100));
+//        TextView actualTextView = view.findViewById(R.id.actualTextView);
+//        if (actualTextView != null) {
+//            String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
+//            actualTextView.setText(actualString);
 
-            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
-            UIHelper uiHelper = new UIHelper(context);
-            if ((int) (actual * 100) < (int) (estimated * 100)) {
-                actualTextView.setTextColor(
-                   ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
-                );
-            } else {
-                actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
-                );
-            }
+//            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+//            UIHelper uiHelper = new UIHelper(context);
+//            if ((int) (actual * 100) < (int) (estimatedAnnual * 100)) {
+//                actualTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+//                );
+//            } else {
+//                actualTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+//                );
+//            }
+//        }
+
+        // Amount Available amountAvailableTextView
+        double amountAvailable = -(estimatedAnnual - actual);
+        if (Double.isInfinite(amountAvailable)) {
+            setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
+        } else {
+            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
         }
+//        TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
+//        if (amountAvailableTextView != null) {
+//            // TODO Check sign for income
+//            double amountAvailable = -(estimatedAnnual - actual);
+//            String amountAvailableString;
+//            if (Double.isInfinite(amountAvailable)) {
+//                amountAvailableString = "<setup a period>";
+//            } else {
+//                amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
+//            }
+//            amountAvailableTextView.setText(amountAvailableString);
 
-        // Amount Available
-        TextView amountAvailableTextView = view.findViewById(R.id.amountAvailableTextView);
-        if (amountAvailableTextView != null) {
-            double amountAvailable = -(estimated - actual);
-            String amountAvailableString;
-            if ( Double.isInfinite( amountAvailable ) ) {
-                amountAvailableString = "<setup a period>";
-            } else {
-                amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
-            }
-            amountAvailableTextView.setText(amountAvailableString);
+        // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+//            UIHelper uiHelper = new UIHelper(context);
+//            long amountAvailablelong = (long) amountAvailable * 100;
+//            if (amountAvailablelong < 0) {
+//                amountAvailableTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+//                );
+//            } else if (amountAvailablelong > 0) {
+//                amountAvailableTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+//                );
+//            }
+//        }
 
-            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
-            UIHelper uiHelper = new UIHelper(context);
-            long amountAvailablelong = (long) amountAvailable * 100;
-            if (amountAvailablelong < 0) {
-                amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
-                );
-            } else if (amountAvailablelong > 0) {
-                amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
-                );
-            }
-        }
+        // forecastRemainTextView
+        double forecastRemain = getEstimateFromRecurringTransaction(cursor);
+        setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+//        TextView forecastRemainTextView = view.findViewById(R.id.forecastRemainTextView);
+//        if (forecastRemainTextView != null) {
+//            String forecastRemainString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(forecastRemain));
+//            forecastRemainTextView.setText(forecastRemainString);
+
+//            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+//            UIHelper uiHelper = new UIHelper(context);
+//            if (forecastRemain < 0) {
+//                forecastRemainTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+//                );
+//            } else {
+//                forecastRemainTextView.setTextColor(
+//                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+//                );
+//            }
+//
+//        }
+
+    }
+
+    private double getEstimateFromRecurringTransaction(Cursor cursor) {
+        // TODO Get Value for this category from recurring transaction
+        return 0;
     }
 
     public Context getContext() {
@@ -296,8 +422,7 @@ public class BudgetAdapter
             // month
             where += " AND " + QueryMobileData.Month + "=" + month;
             where += " AND " + QueryMobileData.Year + "=" + year;
-        } else
-        if (!useBudgetFinancialYear || dateFrom == null || dateTo == null ) {
+        } else if (!useBudgetFinancialYear || dateFrom == null || dateTo == null) {
             // annual
             where += " AND " + QueryMobileData.Year + "=" + year;
         } else {
