@@ -166,22 +166,8 @@ public class BudgetEntryFragment
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
-        setVisibleColumn(R.id.frequencyTextView, adapter);
-        setVisibleColumn(R.id.amountTextView, adapter);
-        setVisibleColumn(R.id.actualTextView, adapter);
-        setVisibleColumn(R.id.estimatedAnnualTextView, adapter);
-        setVisibleColumn(R.id.amountAvailableTextView, adapter);
-        setVisibleColumn(R.id.forecastRemainTextView, adapter);
+        adapter.setVisibleTextFieldsForView(mHeader);
         setListAdapter(adapter);
-    }
-
-    private void setVisibleColumn(int column, BudgetAdapter adapter) {
-        try {
-            mHeader.findViewById(column).setVisibility(adapter.getVisibleColumn().contains(column) ? View.VISIBLE : View.GONE);
-        } catch (Exception e) {
-            // null
-            Timber.d("column not found: %s", e);
-        }
     }
 
     @Override
