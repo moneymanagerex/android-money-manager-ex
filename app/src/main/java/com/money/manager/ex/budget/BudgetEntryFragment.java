@@ -51,6 +51,8 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import timber.log.Timber;
+
 /**
  * Use the {@link BudgetEntryFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -167,6 +169,7 @@ public class BudgetEntryFragment
         setVisibleColumn(R.id.frequencyTextView, adapter);
         setVisibleColumn(R.id.amountTextView, adapter);
         setVisibleColumn(R.id.actualTextView, adapter);
+        setVisibleColumn(R.id.estimatedAnnualTextView, adapter);
         setVisibleColumn(R.id.amountAvailableTextView, adapter);
         setVisibleColumn(R.id.forecastRemainTextView, adapter);
         setListAdapter(adapter);
@@ -177,6 +180,7 @@ public class BudgetEntryFragment
             mHeader.findViewById(column).setVisibility(adapter.getVisibleColumn().contains(column) ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             // null
+            Timber.d("column not found: %s", e);
         }
     }
 
@@ -201,6 +205,9 @@ public class BudgetEntryFragment
         if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
             menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
         }
+
+        // Todo Add selectable columns name
+
 
     }
 

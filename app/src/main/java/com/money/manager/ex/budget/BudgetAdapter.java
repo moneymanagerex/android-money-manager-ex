@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,7 @@ import timber.log.Timber;
  * Adapter for budgets.
  */
 public class BudgetAdapter
-    extends SimpleCursorAdapter {
+        extends SimpleCursorAdapter {
 
     @Inject
     Lazy<BriteDatabase> databaseLazy;
@@ -75,7 +76,7 @@ public class BudgetAdapter
     private MmxDate dateFrom;
     private MmxDate dateTo;
 
-    private ArrayList<Integer> mVisibleColumn;
+    private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
     /**
      * Standard constructor.
@@ -110,20 +111,27 @@ public class BudgetAdapter
         } catch (Exception e) {
         }
 
-        mVisibleColumn = new ArrayList<>();
-        mVisibleColumn.add(R.id.frequencyTextView);
-        mVisibleColumn.add(R.id.amountTextView);
-        mVisibleColumn.add(R.id.actualTextView);
-        mVisibleColumn.add(R.id.amountAvailableTextView);
-        mVisibleColumn.add(R.id.forecastRemainTextView);
+        if (mLayout == R.layout.item_budget_simple ) {
+            addVisibleColumn(R.id.amountAvailableTextView);
+        } else {
+            // todo read from settings
+            addVisibleColumn(R.id.frequencyTextView);
+            addVisibleColumn(R.id.amountTextView);
+//        addVisibleColumn(R.id.estimatedAnnualTextView);
+            addVisibleColumn(R.id.actualTextView);
+//        addVisibleColumn(R.id.amountAvailableTextView);
+//        addVisibleColumn(R.id.forecastRemainTextView);
+        }
     }
 
-    public void addVisibleColumn(int column){
-        mVisibleColumn.add(column);
+    public void addVisibleColumn(int column) {
+        if (!mVisibleColumn.contains(column))
+            mVisibleColumn.add(column);
     }
 
-    public void addVisibleColumns(ArrayList<Integer> columns){
-        mVisibleColumn.addAll(columns);
+    public void removeVisibleColumn(int column) {
+        if (mVisibleColumn.contains(column))
+            mVisibleColumn.remove(column);
     }
 
     ArrayList<Integer> getVisibleColumn() {
@@ -172,13 +180,14 @@ public class BudgetAdapter
         double estimatedAnnual = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if ( Double.isNaN(estimatedAnnual) ) {
+        if (Double.isNaN(estimatedAnnual)) {
             // this means that we don't have estimate for this category
             // so estimate is 0
             estimatedAnnual = 0;
         }
+
         TextView estimatedAnnualTextView = view.findViewById(R.id.estimatedAnnualTextView);
-        if ( estimatedAnnualTextView != null ) {
+        if (estimatedAnnualTextView != null) {
             estimatedAnnualTextView.setVisibility(mVisibleColumn.contains(R.id.estimatedAnnualTextView) ? View.VISIBLE : View.GONE);
             String estimatedAnnualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(estimatedAnnual));
             estimatedAnnualTextView.setText(estimatedAnnualString);
@@ -196,11 +205,11 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (estimatedAnnual * 100)) {
                 actualTextView.setTextColor(
-                   ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -212,7 +221,7 @@ public class BudgetAdapter
             // TODO Check sign for income
             double amountAvailable = -(estimatedAnnual - actual);
             String amountAvailableString;
-            if ( Double.isInfinite( amountAvailable ) ) {
+            if (Double.isInfinite(amountAvailable)) {
                 amountAvailableString = "<setup a period>";
             } else {
                 amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
@@ -224,11 +233,11 @@ public class BudgetAdapter
             long amountAvailablelong = (long) amountAvailable * 100;
             if (amountAvailablelong < 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailablelong > 0) {
                 amountAvailableTextView.setTextColor(
-                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -237,18 +246,18 @@ public class BudgetAdapter
         TextView forecastRemainTextView = view.findViewById(R.id.forecastRemainTextView);
         if (forecastRemainTextView != null) {
             forecastRemainTextView.setVisibility(mVisibleColumn.contains(R.id.forecastRemainTextView) ? View.VISIBLE : View.GONE);
-            double forecastRemain = getEstimateFromRecurringTransaction( cursor );
+            double forecastRemain = getEstimateFromRecurringTransaction(cursor);
             String forecastRemainString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(forecastRemain));
-            actualTextView.setText(forecastRemainString);
+            forecastRemainTextView.setText(forecastRemainString);
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            if (forecastRemain < 0 ) {
-                actualTextView.setTextColor(
+            if (forecastRemain < 0) {
+                forecastRemainTextView.setTextColor(
                         ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
-                actualTextView.setTextColor(
+                forecastRemainTextView.setTextColor(
                         ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
@@ -352,8 +361,7 @@ public class BudgetAdapter
             // month
             where += " AND " + QueryMobileData.Month + "=" + month;
             where += " AND " + QueryMobileData.Year + "=" + year;
-        } else
-        if (!useBudgetFinancialYear || dateFrom == null || dateTo == null ) {
+        } else if (!useBudgetFinancialYear || dateFrom == null || dateTo == null) {
             // annual
             where += " AND " + QueryMobileData.Year + "=" + year;
         } else {
