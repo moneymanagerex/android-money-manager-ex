@@ -550,6 +550,7 @@
     <string name="budget">Budget</string>
     <string name="budget_list">Budget-Liste</string>
     <string name="actual">Tatsächlich</string>
+    <string name="amount_available">Verfügbar</string>
     <string name="base_currency_not_set">Basiswährung wurde nicht festgelegt</string>
     <string name="error">Fehler</string>
     <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
