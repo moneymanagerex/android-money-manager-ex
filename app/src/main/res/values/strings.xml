@@ -623,6 +623,7 @@
     <string name="unhandled_crash">Unexpected error. Please send us the log.</string>
     <string name="title_activity_currency_rates_report">Currency Rates</string>
     <string name="frequency">Frequency</string>
+    <string name="select_columns">Select Visibile Columns</string>
     <string name="update_available">Update available</string>
     <string name="update_available_online">There is an updated database file available online. Would you like to update?</string>
     <string name="currency_not_found">Currency not found</string>
