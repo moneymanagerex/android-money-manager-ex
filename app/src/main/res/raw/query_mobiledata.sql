@@ -23,7 +23,7 @@ SELECT
     FROMACC.CurrencyID AS CurrencyID,
     FROMACC.AccountID AS AccountID,
     FROMACC.AccountName AS AccountName,
-	FROMACC.ACCOUNTTYPE as ACCOUNTTYPE,
+    FROMACC.ACCOUNTTYPE AS ACCOUNTTYPE,
     ifnull( TX.TOACCOUNTID, -1 ) AS ToAccountID,
     ifnull( TOACC.AccountName, '' ) AS ToAccountName,
 	ifnull( TOACC.ACCOUNTTYPE, '' ) AS TOACCOUNTTYPE,
@@ -37,7 +37,7 @@ SELECT
     round( strftime( '%m', TX.transdate ) ) AS month,
     round( strftime( '%Y', TX.transdate ) ) AS year,
     ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
-	Tags.Tags as TAGS,
+	Tags.Tags AS TAGS,
 	TX.Color AS COLOR,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
 	  ( CASE ifnull( st.CATEGID, -1) WHEN -1 THEN TX.TRANSAMOUNT ELSE st.splittransamount END) , 2 )
