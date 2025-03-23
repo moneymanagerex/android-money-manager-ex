@@ -21,237 +21,344 @@
 
     <!-- Define currency value -->
     <string-array name="currencies_code">
-        <item>ALL</item>
+        <item>AED</item>
         <item>AFN</item>
+        <item>ALL</item>
+        <item>AMD</item>
         <item>ANG</item>
+        <item>AOA</item>
         <item>ARS</item>
         <item>AUD</item>
         <item>AWG</item>
         <item>AZN</item>
         <item>BAM</item>
         <item>BBD</item>
+        <item>BDT</item>
         <item>BGN</item>
+        <item>BHD</item>
+        <item>BIF</item>
         <item>BMD</item>
         <item>BND</item>
         <item>BOB</item>
         <item>BRL</item>
         <item>BSD</item>
+        <item>BTC</item>
+        <item>BTN</item>
         <item>BWP</item>
         <item>BYN</item>
         <item>BYR</item>
         <item>BZD</item>
-        <item>KHR</item>
         <item>CAD</item>
+        <item>CDF</item>
         <item>CHF</item>
         <item>CLP</item>
         <item>CNY</item>
         <item>COP</item>
         <item>CRC</item>
+        <item>CUC</item>
         <item>CUP</item>
+        <item>CVE</item>
         <item>CZK</item>
+        <item>DJF</item>
         <item>DKK</item>
         <item>DOP</item>
-        <item>EEK</item>
+        <item>DZD</item>
         <item>EGP</item>
+        <item>ERN</item>
+        <item>ETB</item>
         <item>EUR</item>
         <item>FJD</item>
         <item>FKP</item>
         <item>GBP</item>
-        <item>GGP</item>
-        <item>GHC</item>
+        <item>GEL</item>
+        <item>GHS</item>
         <item>GIP</item>
+        <item>GMD</item>
+        <item>GNF</item>
         <item>GTQ</item>
         <item>GYD</item>
         <item>HKD</item>
         <item>HNL</item>
         <item>HRK</item>
+        <item>HTG</item>
         <item>HUF</item>
         <item>IDR</item>
         <item>ILS</item>
-        <item>IMP</item>
         <item>INR</item>
+        <item>IQD</item>
         <item>IRR</item>
         <item>ISK</item>
-        <item>JEP</item>
         <item>JMD</item>
+        <item>JOD</item>
         <item>JPY</item>
+        <item>KES</item>
         <item>KGS</item>
+        <item>KHR</item>
+        <item>KMF</item>
         <item>KPW</item>
         <item>KRW</item>
+        <item>KWD</item>
         <item>KYD</item>
         <item>KZT</item>
         <item>LAK</item>
         <item>LBP</item>
         <item>LKR</item>
         <item>LRD</item>
+        <item>LSL</item>
         <item>LTL</item>
         <item>LVL</item>
+        <item>LYD</item>
+        <item>MAD</item>
+        <item>MDL</item>
+        <item>MGA</item>
         <item>MKD</item>
+        <item>MMK</item>
         <item>MNT</item>
+        <item>MOP</item>
+        <item>MRO</item>
+        <item>MRU</item>
         <item>MUR</item>
+        <item>MVR</item>
+        <item>MWK</item>
         <item>MXN</item>
         <item>MYR</item>
         <item>MZN</item>
         <item>NAD</item>
-        <item>NIO</item>
         <item>NGN</item>
+        <item>NIO</item>
+        <item>NOK</item>
         <item>NPR</item>
         <item>NZD</item>
-        <item>NOK</item>
         <item>OMR</item>
         <item>PAB</item>
         <item>PEN</item>
+        <item>PGK</item>
         <item>PHP</item>
         <item>PKR</item>
         <item>PLN</item>
         <item>PYG</item>
         <item>QAR</item>
         <item>RON</item>
-        <item>RUB</item>
-        <item>SAR</item>
-        <item>SHP</item>
         <item>RSD</item>
+        <item>RUB</item>
+        <item>RWF</item>
+        <item>SAR</item>
         <item>SBD</item>
         <item>SCR</item>
+        <item>SDG</item>
         <item>SEK</item>
         <item>SGD</item>
+        <item>SHP</item>
+        <item>SLE</item>
+        <item>SLL</item>
         <item>SOS</item>
         <item>SRD</item>
+        <item>SSP</item>
+        <item>STD</item>
+        <item>STN</item>
         <item>SVC</item>
         <item>SYP</item>
+        <item>SZL</item>
         <item>THB</item>
-        <item>TRL</item>
+        <item>TJS</item>
+        <item>TMT</item>
+        <item>TND</item>
+        <item>TOP</item>
         <item>TRY</item>
         <item>TTD</item>
-        <item>TVD</item>
         <item>TWD</item>
+        <item>TZS</item>
         <item>UAH</item>
+        <item>UGX</item>
         <item>USD</item>
         <item>UYU</item>
+        <item>UYW</item>
         <item>UZS</item>
+        <item>VED</item>
         <item>VEF</item>
+        <item>VES</item>
         <item>VND</item>
+        <item>VUV</item>
+        <item>WST</item>
+        <item>XAF</item>
         <item>XCD</item>
+        <item>XDR</item>
+        <item>XOF</item>
+        <item>XPF</item>
         <item>YER</item>
         <item>ZAR</item>
-        <item>ZWD</item>
+        <item>ZMW</item>
+        <item>ZWL</item>
     </string-array>
     <string-array name="currencies_symbol">
-        <item>\u004c\u0065\u006b</item>
-        <item>\u060b</item>
+        <item>\u0044\u0068\u0073</item>
+        <item>\u060B</item>
+        <item>\u004C</item>
+        <item>\u058F</item>
+        <item>\u004E\u0041\u0192</item>
+        <item>\u004B\u007A</item>
+        <item>\u0041\u0052\u0024</item>
         <item>\u0024</item>
         <item>\u0192</item>
-        <item>\u0024</item>
-        <item>\u043c\u0430\u043d</item>
-        <item>\u0024</item>
-        <item>\u0024</item>
-        <item>\u0070\u002e</item>
-        <item>\u0042\u005a\u0024</item>
-        <item>\u0024</item>
-        <item>\u0024\u0062</item>
-        <item>\u004b\u004d</item>
-        <item>\u0050</item>
-        <item>\u043b\u0432</item>
+        <item>\u20BC</item>
+        <item>\u004B\u004D</item>
+        <item>\u058F</item>
+        <item>\u09F3</item>
+        <item>\u043B\u0432</item>
+        <item>\u002E\u062F\u002E\u0628</item>
+        <item>\u0046\u0042\u0075</item>
+        <item>\u0042\u0044\u0024</item>
+        <item>\u0042\u0024</item>
+        <item>\u0042\u0073\u002E</item>
         <item>\u0052\u0024</item>
+        <item>\u0042\u0024</item>
+        <item>\u0243</item>
+        <item>\u004E\u0075\u002E</item>
+        <item>\u0050</item>
+        <item>\u0042\u0059\u004E</item>
+        <item>\u0042\u0072</item>
+        <item>\u0042\u005A\u0024</item>
         <item>\u0024</item>
-        <item>\u17db</item>
+        <item>\u0046</item>
+        <item>\u0046\u0072\u002E</item>
+        <item>\u0024</item>
+        <item>\u00A5</item>
+        <item>\u0043\u006F\u006C\u0024</item>
+        <item>\u20A1</item>
         <item>\u0024</item>
         <item>\u0024</item>
-        <item>\u0024</item>
-        <item>\u00a5</item>
-        <item>\u0024</item>
-        <item>\u20a1</item>
-        <item>\u006b\u006e</item>
-        <item>\u20b1</item>
-        <item>\u004b\u010d</item>
-        <item>\u006b\u0072</item>
+        <item>\u0045\u0073\u0063</item>
+        <item>\u004B\u010D</item>
+        <item>\u0046\u0064\u006A</item>
+        <item>\u004B\u0072</item>
         <item>\u0052\u0044\u0024</item>
-        <item>\u0024</item>
-        <item>\u00a3</item>
-        <item>\u0024</item>
-        <item>\u006b\u0072</item>
-        <item>\u20ac</item>
-        <item>\u00a3</item>
-        <item>\u0024</item>
-        <item>\u00a2</item>
-        <item>\u00a3</item>
+        <item>\u062F\u062C</item>
+        <item>\u00A3</item>
+        <item>\u004E\u0066\u0061</item>
+        <item>\u0042\u0072</item>
+        <item>\u20AC</item>
+        <item>\u0046\u004A\u0024</item>
+        <item>\u00A3</item>
+        <item>\u00A3</item>
+        <item>\u20BE</item>
+        <item>\u20B5</item>
+        <item>\u00A3</item>
+        <item>\u0044</item>
+        <item>\u0046\u0047</item>
         <item>\u0051</item>
-        <item>\u00a3</item>
-        <item>\u0024</item>
-        <item>\u004c</item>
-        <item>\u0024</item>
+        <item>\u0047\u0059\u0024</item>
+        <item>\u0048\u004B\u0024</item>
+        <item>\u004C</item>
+        <item>\u006B\u006E</item>
+        <item>\u0047</item>
         <item>\u0046\u0074</item>
-        <item>\u006b\u0072</item>
-        <item>\u0000</item>
         <item>\u0052\u0070</item>
-        <item>\ufdfc</item>
-        <item>\u00a3</item>
-        <item>\u20aa</item>
-        <item>\u004a\u0024</item>
-        <item>\u00a5</item>
-        <item>\u00a3</item>
-        <item>\u043b\u0432</item>
-        <item>\u20a9</item>
-        <item>\u20a9</item>
-        <item>\u043b\u0432</item>
-        <item>\u20ad</item>
-        <item>\u004c\u0073</item>
-        <item>\u00a3</item>
+        <item>\u20AA</item>
+        <item>\u20B9</item>
+        <item>\u0639\u002E\u062F</item>
+        <item>\uFDFC</item>
+        <item>\u006B\u0072</item>
+        <item>\u004A\u0024</item>
+        <item>\u00A5</item>
+        <item>\u004B\u0053\u0068</item>
+        <item>\u0057</item>
+        <item>\u0057</item>
+        <item>\u004B\u0059\u0024</item>
+        <item>\u0054</item>
+        <item>\u004B\u004E</item>
+        <item>\u0052\u0073</item>
+        <item>\u004C\u0024</item>
+        <item>\u004D</item>
+        <item>\u004C\u0074</item>
+        <item>\u004C\u0073</item>
+        <item>\u004C\u0044</item>
+        <item>\u0046\u004D\u0047</item>
+        <item>\u004B</item>
+        <item>\u20AE</item>
+        <item>\u0050</item>
+        <item>\u0055\u004D</item>
+        <item>\u004D\u0052\u0055</item>
+        <item>\u0052\u0073</item>
+        <item>\u0052\u0066</item>
+        <item>\u004D\u004B</item>
         <item>\u0024</item>
-        <item>\u004c\u0074</item>
-        <item>\u0434\u0435\u043d</item>
-        <item>\u0052\u004d</item>
-        <item>\u20a8</item>
-        <item>\u0024</item>
-        <item>\u20ae</item>
-        <item>\u004d\u0054</item>
-        <item>\u0024</item>
-        <item>\u20a8</item>
-        <item>\u0192</item>
-        <item>\u0024</item>
+        <item>\u0052\u004D</item>
+        <item>\u004D\u005A\u004E</item>
+        <item>\u004E\u0024</item>
+        <item>\u20A6</item>
         <item>\u0043\u0024</item>
-        <item>\u20a6</item>
-        <item>\u20a9</item>
-        <item>\u006b\u0072</item>
-        <item>\ufdfc</item>
-        <item>\u20a8</item>
-        <item>\u0042\u002f\u002e</item>
-        <item>\u0047\u0073</item>
-        <item>\u0053\u002f\u002e</item>
-        <item>\u20b1</item>
-        <item>\u007a\u0142</item>
-        <item>\ufdfc</item>
-        <item>\u006c\u0065\u0069</item>
-        <item>\u0440\u0443\u0431</item>
-        <item>\u00a3</item>
-        <item>\ufdfc</item>
-        <item>\u0414\u0438\u043d\u002e</item>
-        <item>\u20a8</item>
+        <item>\u006B\u0072</item>
+        <item>\u004E\u0052\u0073</item>
+        <item>\u004E\u005A\u0024</item>
+        <item>\u0042\u002E\u002F</item>
+        <item>\u0053\u002F\u002E</item>
+        <item>\u004B</item>
+        <item>\u20B1</item>
+        <item>\u0052\u0073\u002E</item>
+        <item>\u007A\u0142</item>
+        <item>\u0051\u0052</item>
+        <item>\u004C</item>
+        <item>\u0064\u0069\u006E\u002E</item>
+        <item>\u0440</item>
+        <item>\u0052\u0046</item>
+        <item>\u0053\u0052</item>
+        <item>\u0053\u0049\u0024</item>
+        <item>\u0053\u0052</item>
+        <item>\u006B\u0072</item>
+        <item>\u0053\u0024</item>
+        <item>\u00A3</item>
+        <item>\u0053\u004C\u0045</item>
+        <item>\u004C\u0065</item>
+        <item>\u0053\u0068\u002E</item>
         <item>\u0024</item>
-        <item>\u0024</item>
-        <item>\u0053</item>
-        <item>\u0052</item>
-        <item>\u20a9</item>
-        <item>\u20a8</item>
-        <item>\u006b\u0072</item>
-        <item>\u0043\u0048\u0046</item>
-        <item>\u0024</item>
-        <item>\u00a3</item>
-        <item>\u004e\u0054\u0024</item>
-        <item>\u0e3f</item>
+        <item>\u00A3</item>
+        <item>\u0044\u0062</item>
+        <item>\u0044\u0062</item>
+        <item>\u0053\u0056\u0043</item>
+        <item>\u0045</item>
+        <item>\u0E3F</item>
+        <item>\u006D</item>
+        <item>\u0044\u0054</item>
+        <item>\u0054\u0024</item>
+        <item>\u20BA</item>
         <item>\u0054\u0054\u0024</item>
-        <item>\u0000</item>
-        <item>\u20a4</item>
-        <item>\u0024</item>
-        <item>\u20b4</item>
-        <item>\u00a3</item>
+        <item>\u004E\u0054\u0024</item>
+        <item>\u20B4</item>
+        <item>\u0055\u0053\u0068</item>
         <item>\u0024</item>
         <item>\u0024\u0055</item>
-        <item>\u043b\u0432</item>
-        <item>\u0042\u0073</item>
-        <item>\u20ab</item>
-        <item>\ufdfc</item>
-        <item>\u005a\u0024</item>
+        <item>\u0055\u0059\u0057</item>
+        <item>\u0056\u0045\u0044</item>
+        <item>\u0042\u0073\u002E</item>
+        <item>\u0056\u0045\u0053</item>
+        <item>\u20AB</item>
+        <item>\u0056\u0054</item>
+        <item>\u0057\u0053\u0024</item>
+        <item>\u0043\u0046\u0041</item>
+        <item>\u0045\u0043\u0024</item>
+        <item>\u0053\u0044\u0052</item>
+        <item>\u0043\u0046\u0041</item>
+        <item>\u0046</item>
+        <item>\u0059\u0052\u006C</item>
+        <item>\u0052</item>
+        <item>\u005A\u004B</item>
+        <item>\u005A\u0057\u004C</item>
+        <item>\u043B\u0432</item>
+        <item>\u0042\u0073\u002E\u0044</item>
+        <item>\u0042\u0073\u002E</item>
+        <item>\u0042\u0073\u002E\u0053</item>
+        <item>\u20AB</item>
+        <item>\u0056\u0054</item>
+        <item>\u0057\u0053\u0024</item>
+        <item>\u0043\u0046\u0041</item>
+        <item>\u0045\u0043\u0024</item>
+        <item>\u0053\u0044\u0052</item>
+        <item>\u0043\u0046\u0041</item>
+        <item>\u0046</item>
+        <item>\u0059\u0052\u006C</item>
+        <item>\u0052</item>
+        <item>\u005A\u004B</item>
+        <item>\u005A\u0057\u004C</item>
     </string-array>
 
 </resources>
