@@ -33,6 +33,36 @@
                 android:id="@+id/menu_budget_financial_year"
                 android:checkable="true"
                 android:title="@string/title_pref_budget_financial_year" />
+            <item
+                android:id="@+id/menu_budget_columns"
+                android:title="@string/select_columns" >
+                <menu>
+                    <item
+                        android:id="@id/frequencyTextView"
+                        android:checkable="true"
+                        android:title="@string/frequency" />
+                    <item
+                        android:id="@id/amountTextView"
+                        android:checkable="true"
+                        android:title="@string/amount" />
+                    <item
+                        android:id="@id/estimatedAnnualTextView"
+                        android:checkable="true"
+                        android:title="@string/estimatedAnnual" />
+                    <item
+                        android:id="@id/actualTextView"
+                        android:checkable="true"
+                        android:title="@string/actual" />
+                    <item
+                        android:id="@id/amountAvailableTextView"
+                        android:checkable="true"
+                        android:title="@string/amount_available" />
+                    <item
+                        android:id="@id/forecastRemainTextView"
+                        android:checkable="true"
+                        android:title="@string/forecast_remain" />
+                </menu>
+            </item>
         </menu>
     </item>
 </menu>

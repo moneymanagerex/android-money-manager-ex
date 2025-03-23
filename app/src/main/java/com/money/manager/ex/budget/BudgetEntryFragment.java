@@ -51,6 +51,8 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import java.util.ArrayList;
+
 import timber.log.Timber;
 
 /**
@@ -178,7 +180,7 @@ public class BudgetEntryFragment
 
         boolean useBudgetFinancialYear = (new AppSettings(getContext())).getBudgetSettings().getBudgetFinancialYear();
         if (menu.findItem(R.id.menu_budget_financial_year) != null) {
-            if ( Budget.isMontlyBudget(mBudgetName) ) {
+            if (Budget.isMontlyBudget(mBudgetName)) {
                 // does not sense to have financial year for monthly budget
                 menu.findItem(R.id.menu_budget_financial_year).setVisible(false);
             } else {
@@ -191,8 +193,19 @@ public class BudgetEntryFragment
         if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
             menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
         }
+        if (useBudgetSimplifyView)
+            menu.findItem(R.id.menu_budget_columns).setVisible(false);
+        else
+            menu.findItem(R.id.menu_budget_columns).setVisible(true);
 
-        // Todo Add selectable columns name
+        // Add selectable columns name
+        ArrayList<Integer> visibleColumn = ((BudgetAdapter) getListAdapter()).getVisibleColumn();
+        if (menu.findItem(R.id.menu_budget_columns) != null && menu.findItem(R.id.menu_budget_columns).isVisible()) {
+            Menu menuColumns = menu.findItem(R.id.menu_budget_columns).getSubMenu();
+            for(int i = 0; i < menuColumns.size(); i++) {
+                menuColumns.getItem(i).setChecked(visibleColumn.contains(menuColumns.getItem(i).getItemId()));
+            }
+        }
 
 
     }
@@ -211,6 +224,25 @@ public class BudgetEntryFragment
             restartLoader();
             return true;
         }
+
+        if (    item.getItemId() == R.id.frequencyTextView ||
+                item.getItemId() == R.id.amountTextView ||
+                item.getItemId() == R.id.estimatedAnnualTextView ||
+                item.getItemId() == R.id.actualTextView ||
+                item.getItemId() == R.id.amountAvailableTextView ||
+                item.getItemId() == R.id.forecastRemainTextView) {
+            item.setChecked(!item.isChecked());
+/*            if ( item.isChecked() ) {
+                ((BudgetAdapter) getListAdapter()).addVisibleColumn(item.getItemId());
+            } else {
+                ((BudgetAdapter) getListAdapter()).removeVisibleColumn(item.getItemId());
+            }
+ */
+            (new AppSettings(getContext())).getBudgetSettings().setColumnVisible(item.getItemId(), item.isChecked());
+            restartLoader();
+            return true;
+        }
+
         return false;
     }
 
@@ -304,7 +336,7 @@ public class BudgetEntryFragment
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);
                                     budgetEntry.setCategoryId(categoryId);
-                                    budgetEntry.setPeriod(( Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName()));
+                                    budgetEntry.setPeriod((Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName()));
                                 } else {
                                     // to fix wrong budget entry
                                     if (budgetEntry.getPeriod().equals(BudgetPeriodEnum.NONE.getDisplayName())) {

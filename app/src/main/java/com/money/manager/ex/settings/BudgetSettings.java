@@ -53,4 +53,14 @@ public class BudgetSettings
     public void setBudgetFinancialYear( Boolean value ) {
         set(R.string.pref_budget_financial_year, value);
     }
+
+    public boolean getColumnVisible(int id, boolean defaultValue) {
+        String key = "budgetColumn_" + id;
+        return get(key, defaultValue);
+    }
+    public void setColumnVisible(int id, boolean value) {
+        String key = "budgetColumn_" + id;
+        set(key, value);
+    }
+
 }
