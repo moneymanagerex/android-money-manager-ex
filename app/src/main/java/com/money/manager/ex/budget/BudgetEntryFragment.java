@@ -326,7 +326,7 @@ public class BudgetEntryFragment
         builder.setTitle(R.string.enter_budget)
                 .setMessage(getString(R.string.enter_budget_value,category,budgetEntry.getPeriod()))
                 .setView(input)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String newValue = input.getText().toString().trim();
@@ -359,7 +359,7 @@ public class BudgetEntryFragment
                         }
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 
