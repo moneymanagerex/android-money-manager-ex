@@ -41,6 +41,7 @@ import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
@@ -49,7 +50,9 @@ import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -206,7 +209,8 @@ public class BudgetAdapter
 
         setVisibleTextFieldsForView(view);
 
-        boolean hasSubcategory = false;
+        boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub, false);
+
         setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME)));
         long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
 
@@ -217,7 +221,8 @@ public class BudgetAdapter
         CurrencyService currencyService = new CurrencyService(mContext);
 
         // amountTextView
-        double amount = getBudgetAmountFor(categoryId);
+        double amount = 0;
+        amount = getBudgetAmountFor(categoryId);
         setViewElement(view, R.id.amountTextView, amount, currencyService);
 
         // Estimated estimatedAnnualTextView
@@ -229,11 +234,28 @@ public class BudgetAdapter
             // so estimate is 0
             estimatedAnnual = 0;
         }
-
+        if ( useSubCategory) {
+            List<NestedCategoryEntity> children = (new QueryNestedCategory(context)).getChildrenNestedCategoryEntities(categoryId);
+            for (NestedCategoryEntity child : children) {
+                if ( child.getId() != categoryId ) { // already computed
+                    BudgetPeriodEnum childPeriodEnum = getBudgetPeriodFor(child.getCategoryId());
+                    double childAmount = getBudgetAmountFor(child.getCategoryId());
+                    double childEstimatedAnnual = isMonthlyBudget(mBudgetName)
+                            ? BudgetPeriods.getMonthlyEstimate(childPeriodEnum, childAmount)
+                            : BudgetPeriods.getYearlyEstimate(childPeriodEnum, childAmount);
+                    if (Double.isNaN(childEstimatedAnnual)) {
+                        // this means that we don't have estimate for this category
+                        // so estimate is 0
+                        childEstimatedAnnual = 0;
+                    }
+                    estimatedAnnual += childEstimatedAnnual;
+                }
+            }
+        }
         setViewElement(view, R.id.estimatedAnnualTextView, estimatedAnnual, currencyService);
 
         // Actual actualTextView
-        double actual = getActualAmount(hasSubcategory, cursor);
+        double actual = getActualAmount(useSubCategory, cursor);
         setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedAnnual * 100));
 
         // Amount Available amountAvailableTextView
@@ -296,11 +318,12 @@ public class BudgetAdapter
         mBudgetEntries = populateThreadCache();
     }
 
-    private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
+    private double getActualAmount(Boolean useSubCategory, Cursor cursor) {
         double actual;
         // wolfsolver since category can be neested we need to consider always category as master
         long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
-        actual = getAmountForCategory(categoryId);
+        String categoryName = cursor.getString(cursor.getColumnIndex(BudgetNestedQuery.CATEGNAME));
+        actual = getAmountForCategory(useSubCategory, categoryId, categoryName);
 
         return actual;
     }
@@ -342,8 +365,13 @@ public class BudgetAdapter
         return repo.loadForYear(mBudgetYearId);
     }
 
-    private double getAmountForCategory(long categoryId) {
-        double total = loadTotalFor(QueryMobileData.CATEGID + "=" + categoryId);
+    private double getAmountForCategory(Boolean useSubCategory, long categoryId, String categoryName) {
+        String where;
+        where = QueryNestedCategory.CATEGID + "=" + categoryId;
+        if (useSubCategory) {
+            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE '" + categoryName +":%' )";
+        }
+        double total = loadTotalFor(where);
         return total;
     }
 
