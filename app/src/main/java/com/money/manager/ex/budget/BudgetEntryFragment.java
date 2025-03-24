@@ -206,6 +206,8 @@ public class BudgetEntryFragment
             for(int i = 0; i < menuColumns.size(); i++) {
                 menuColumns.getItem(i).setChecked(visibleColumn.contains(menuColumns.getItem(i).getItemId()));
             }
+            // todo add forecast sill to be implemented
+            menu.findItem(R.id.forecastRemainTextView).setVisible(false);
         }
 
 
