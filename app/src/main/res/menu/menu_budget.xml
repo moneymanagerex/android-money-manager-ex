@@ -34,6 +34,10 @@
                 android:checkable="true"
                 android:title="@string/title_pref_budget_financial_year" />
             <item
+                android:id="@+id/menu_budget_category_with_sub"
+                android:checkable="true"
+                android:title="@string/search_sub_category" />
+            <item
                 android:id="@+id/menu_budget_columns"
                 android:title="@string/select_columns" >
                 <menu>

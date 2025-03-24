@@ -205,6 +205,12 @@ public class BudgetEntryFragment
         else
             menu.findItem(R.id.menu_budget_columns).setVisible(true);
 
+        // set menu_budget_category_with_sub
+        boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub,false);
+        if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
+            menu.findItem(R.id.menu_budget_category_with_sub).setChecked(useSubCategory);
+        }
+
         // Add selectable columns name
         ArrayList<Integer> visibleColumn = ((BudgetAdapter) getListAdapter()).getVisibleColumn();
         if (menu.findItem(R.id.menu_budget_columns) != null && menu.findItem(R.id.menu_budget_columns).isVisible()) {
@@ -230,6 +236,12 @@ public class BudgetEntryFragment
         if (item.getItemId() == R.id.menu_budget_use_simple_view) {
             item.setChecked(!item.isChecked());
             (new AppSettings(getContext())).getBudgetSettings().setShowSimpleView(item.isChecked());
+            restartLoader();
+            return true;
+        }
+        if (item.getItemId() == R.id.menu_budget_category_with_sub ) {
+            item.setChecked(!item.isChecked());
+            (new AppSettings(getContext())).getBudgetSettings().set(R.id.menu_budget_category_with_sub,item.isChecked());
             restartLoader();
             return true;
         }
