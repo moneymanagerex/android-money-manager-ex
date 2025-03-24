@@ -556,6 +556,7 @@
     <string name="unhandled_crash">எதிர்பாராத பிழை. பதிவை எங்களுக்கு அனுப்பவும்.</string>
     <string name="title_activity_currency_rates_report">நாணய விகிதங்கள்</string>
     <string name="frequency">அடுக்கு நகழ்வு</string>
+    <string name="select_columns">காணக்கூடிய நெடுவரிசைகளைத் தேர்ந்தெடுக்கவும்</string>
     <string name="update_available">புதுப்பிப்பு கிடைக்கிறது</string>
     <string name="update_available_online">புதுப்பிக்கப்பட்ட தரவுத்தள கோப்பு ஆன்லைனில் கிடைக்கிறது. நீங்கள் புதுப்பிக்க விரும்புகிறீர்களா?</string>
     <string name="currency_not_found">நாணயம் கிடைக்கவில்லை</string>
@@ -801,4 +802,6 @@
     <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
     <string name="estimatedAnnual">வருடாந்திர மதிப்பீடு</string>
     <string name="forecast_remain">முன் கணிப்பு மீதமுள்ளது</string>
+    <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
+    <string name="enter_budget_value">%1$s வகைக்கு, %2$s காலத்திற்கு பட்ஜெட்டை அமைக்கவும்:</string>
 </resources>
