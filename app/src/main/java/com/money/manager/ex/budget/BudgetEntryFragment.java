@@ -234,13 +234,8 @@ public class BudgetEntryFragment
                 item.getItemId() == R.id.actualTextView ||
                 item.getItemId() == R.id.amountAvailableTextView ||
                 item.getItemId() == R.id.forecastRemainTextView) {
+
             item.setChecked(!item.isChecked());
-/*            if ( item.isChecked() ) {
-                ((BudgetAdapter) getListAdapter()).addVisibleColumn(item.getItemId());
-            } else {
-                ((BudgetAdapter) getListAdapter()).removeVisibleColumn(item.getItemId());
-            }
- */
             (new AppSettings(getContext())).getBudgetSettings().setColumnVisible(item.getItemId(), item.isChecked());
             restartLoader();
             return true;
