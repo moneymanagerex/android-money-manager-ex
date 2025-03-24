@@ -901,4 +901,6 @@
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
     <string name="estimatedAnnual">Annual Estimate</string>
     <string name="forecast_remain">Forecast Remain</string>
+    <string name="enter_budget">Enter Budget</string>
+    <string name="enter_budget_value">For Category %1$s, set buget for period %2$s:</string>
 </resources>
