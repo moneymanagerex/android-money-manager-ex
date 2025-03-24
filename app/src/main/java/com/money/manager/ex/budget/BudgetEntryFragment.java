@@ -43,6 +43,7 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
@@ -272,9 +273,13 @@ public class BudgetEntryFragment
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
 
+        // get selected item name
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(info.position);
+
         switch (menuId) {
             case EDIT:
-                editBudgetEntry(mBudgetYearId, categoryId);
+                editBudgetEntry(mBudgetYearId, categoryId, cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME)));
                 break;
             case DELETE:
                 confirmDelete(mBudgetYearId, categoryId);
@@ -301,7 +306,7 @@ public class BudgetEntryFragment
                 .show();
     }
 
-    public void editBudgetEntry(long budgetYearId, long categoryId) {
+    public void editBudgetEntry(long budgetYearId, long categoryId, String category) {
         // Create the EditText view for numeric input
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -318,8 +323,8 @@ public class BudgetEntryFragment
         // Set up the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         // TODO: set custom xml layout to manage both period and amount
-        builder.setTitle("Edit Budget Entry")
-                .setMessage("Enter the new budget value:")
+        builder.setTitle(R.string.enter_budget)
+                .setMessage(getString(R.string.enter_budget_value,category,budgetEntry.getPeriod()))
                 .setView(input)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
