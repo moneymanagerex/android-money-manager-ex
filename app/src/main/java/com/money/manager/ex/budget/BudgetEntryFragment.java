@@ -18,6 +18,7 @@ package com.money.manager.ex.budget;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
@@ -45,12 +46,17 @@ import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -261,6 +267,9 @@ public class BudgetEntryFragment
 
         BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
         menuHelper.addDeleteToContextMenu(repo.hasBudget(mBudgetYearId, info.id));
+
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+
     }
 
     @Override
@@ -271,7 +280,7 @@ public class BudgetEntryFragment
         ContextMenuIds menuId = ContextMenuIds.get(id);
 
         // get selected item name
-        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
         Cursor cursor = (Cursor) adapter.getItem(info.position);
 
         switch (menuId) {
@@ -280,6 +289,16 @@ public class BudgetEntryFragment
                 break;
             case DELETE:
                 confirmDelete(mBudgetYearId, categoryId);
+                break;
+            case VIEW_TRANSACTIONS:
+                SearchParameters parameters = new SearchParameters();
+                CategorySub catSub = new CategorySub();
+                catSub.categId = categoryId;
+                catSub.categName = cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME));
+                parameters.category = catSub;
+                parameters.dateFrom = adapter.getDateFrom().toDate();
+                parameters.dateTo = adapter.getDateTo().toDate();
+                showSearchActivityFor(parameters);
                 break;
             default:
                 return false;
@@ -406,6 +425,13 @@ public class BudgetEntryFragment
 //  getloader does not restart loader????
 //        getLoaderManager().restartLoader(LOADER_BUDGET, null, setUpLoaderCallbacks());
         getActivity().recreate();
+    }
+
+    private void showSearchActivityFor(SearchParameters parameters) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
     }
 
 }

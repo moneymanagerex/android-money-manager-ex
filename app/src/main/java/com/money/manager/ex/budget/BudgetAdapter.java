@@ -136,6 +136,9 @@ public class BudgetAdapter
             mVisibleColumn.remove(column);
     }
 
+    public MmxDate getDateFrom() { return dateFrom ;}
+    public MmxDate getDateTo() { return dateTo ;}
+
     ArrayList<Integer> getVisibleColumn() {
         return mVisibleColumn;
     }
@@ -259,10 +262,22 @@ public class BudgetAdapter
 
     public void setBudgetName(String budgetName) {
         mBudgetName = budgetName;
-        if (!Budget.isMontlyBudget(mBudgetName) && useBudgetFinancialYear) {
+        long year = getYearFromBudgetName(mBudgetName);
+        long month = getMonthFromBudgetName(mBudgetName);
+        if ( month != Constants.NOT_SET ) {
+            month--;
+            // monthly budget
+            dateFrom = new MmxDate((int) year, (int) month, 1);
+            dateTo = new MmxDate((int) year, (int) month + 1, 1).minusDays(1);
+        } else if ( useBudgetFinancialYear ){
+            // year financial budget
             dateFrom = getStartDateForFinancialYear(mBudgetName);
             dateTo = new MmxDate(dateFrom.toDate());
             dateTo.addYear(1).minusDays(1);
+        } else {
+            // year budget
+            dateFrom = new MmxDate((int) year, 0, 1);
+            dateTo = new MmxDate((int) year, 11, 31);
         }
     }
 
