@@ -34,6 +34,8 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
+        // version code is already update. remove this comment before release final release
+        // keep 1079.txt up to date with latest commit
         versionCode 1079
         //versionName getVersionAsDate() + "." + versionCode
         versionName "5.2.2"
