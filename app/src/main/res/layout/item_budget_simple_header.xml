@@ -32,7 +32,7 @@
         android:text="@string/category" />
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/amountTextView"
+        android:id="@+id/amountAvailableTextView"
         android:layout_width="wrap_content"
         android:minWidth="60dp"
         android:padding="4dp"

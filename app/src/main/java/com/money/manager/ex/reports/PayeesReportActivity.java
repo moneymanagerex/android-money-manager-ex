@@ -31,6 +31,8 @@ public class PayeesReportActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.payee);
+
         setContentView(R.layout.report_chart_fragments_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

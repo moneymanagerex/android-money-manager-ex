@@ -18,6 +18,7 @@ package com.money.manager.ex.budget;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
@@ -41,14 +42,25 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.search.CategorySub;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
+
+import timber.log.Timber;
 
 /**
  * Use the {@link BudgetEntryFragment#newInstance} factory method to
@@ -163,6 +175,7 @@ public class BudgetEntryFragment
         adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
+        adapter.setVisibleTextFieldsForView(mHeader);
         setListAdapter(adapter);
     }
 
@@ -174,13 +187,41 @@ public class BudgetEntryFragment
 
         boolean useBudgetFinancialYear = (new AppSettings(getContext())).getBudgetSettings().getBudgetFinancialYear();
         if (menu.findItem(R.id.menu_budget_financial_year) != null) {
-            menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
+            if (Budget.isMontlyBudget(mBudgetName)) {
+                // does not sense to have financial year for monthly budget
+                menu.findItem(R.id.menu_budget_financial_year).setVisible(false);
+            } else {
+                menu.findItem(R.id.menu_budget_financial_year).setVisible(true);
+                menu.findItem(R.id.menu_budget_financial_year).setChecked(useBudgetFinancialYear);
+            }
         }
 
         boolean useBudgetSimplifyView = (new AppSettings(getContext())).getBudgetSettings().getShowSimpleView();
         if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
             menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
         }
+        if (useBudgetSimplifyView)
+            menu.findItem(R.id.menu_budget_columns).setVisible(false);
+        else
+            menu.findItem(R.id.menu_budget_columns).setVisible(true);
+
+        // set menu_budget_category_with_sub
+        boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub,false);
+        if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
+            menu.findItem(R.id.menu_budget_category_with_sub).setChecked(useSubCategory);
+        }
+
+        // Add selectable columns name
+        ArrayList<Integer> visibleColumn = ((BudgetAdapter) getListAdapter()).getVisibleColumn();
+        if (menu.findItem(R.id.menu_budget_columns) != null && menu.findItem(R.id.menu_budget_columns).isVisible()) {
+            Menu menuColumns = menu.findItem(R.id.menu_budget_columns).getSubMenu();
+            for(int i = 0; i < menuColumns.size(); i++) {
+                menuColumns.getItem(i).setChecked(visibleColumn.contains(menuColumns.getItem(i).getItemId()));
+            }
+            // todo add forecast sill to be implemented
+            menu.findItem(R.id.forecastRemainTextView).setVisible(false);
+        }
+
 
     }
 
@@ -198,6 +239,26 @@ public class BudgetEntryFragment
             restartLoader();
             return true;
         }
+        if (item.getItemId() == R.id.menu_budget_category_with_sub ) {
+            item.setChecked(!item.isChecked());
+            (new AppSettings(getContext())).getBudgetSettings().set(R.id.menu_budget_category_with_sub,item.isChecked());
+            restartLoader();
+            return true;
+        }
+
+        if (    item.getItemId() == R.id.frequencyTextView ||
+                item.getItemId() == R.id.amountTextView ||
+                item.getItemId() == R.id.estimatedAnnualTextView ||
+                item.getItemId() == R.id.actualTextView ||
+                item.getItemId() == R.id.amountAvailableTextView ||
+                item.getItemId() == R.id.forecastRemainTextView) {
+
+            item.setChecked(!item.isChecked());
+            (new AppSettings(getContext())).getBudgetSettings().setColumnVisible(item.getItemId(), item.isChecked());
+            restartLoader();
+            return true;
+        }
+
         return false;
     }
 
@@ -218,6 +279,9 @@ public class BudgetEntryFragment
 
         BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
         menuHelper.addDeleteToContextMenu(repo.hasBudget(mBudgetYearId, info.id));
+
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
+
     }
 
     @Override
@@ -227,12 +291,26 @@ public class BudgetEntryFragment
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
 
+        // get selected item name
+        BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(info.position);
+
         switch (menuId) {
             case EDIT:
-                editBudgetEntry(mBudgetYearId, categoryId);
+                editBudgetEntry(mBudgetYearId, categoryId, cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME)));
                 break;
             case DELETE:
                 confirmDelete(mBudgetYearId, categoryId);
+                break;
+            case VIEW_TRANSACTIONS:
+                SearchParameters parameters = new SearchParameters();
+                CategorySub catSub = new CategorySub();
+                catSub.categId = categoryId;
+                catSub.categName = cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME));
+                parameters.category = catSub;
+                parameters.dateFrom = adapter.getDateFrom().toDate();
+                parameters.dateTo = adapter.getDateTo().toDate();
+                showSearchActivityFor(parameters);
                 break;
             default:
                 return false;
@@ -256,7 +334,7 @@ public class BudgetEntryFragment
                 .show();
     }
 
-    public void editBudgetEntry(long budgetYearId, long categoryId) {
+    public void editBudgetEntry(long budgetYearId, long categoryId, String category) {
         // Create the EditText view for numeric input
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -273,10 +351,10 @@ public class BudgetEntryFragment
         // Set up the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         // TODO: set custom xml layout to manage both period and amount
-        builder.setTitle("Edit Budget Entry")
-                .setMessage("Enter the new budget value:")
+        builder.setTitle(R.string.enter_budget)
+                .setMessage(getString(R.string.enter_budget_value,category,budgetEntry.getPeriod()))
                 .setView(input)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String newValue = input.getText().toString().trim();
@@ -291,7 +369,7 @@ public class BudgetEntryFragment
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);
                                     budgetEntry.setCategoryId(categoryId);
-                                    budgetEntry.setPeriod(BudgetPeriodEnum.YEARLY.getDisplayName());
+                                    budgetEntry.setPeriod((Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName()));
                                 } else {
                                     // to fix wrong budget entry
                                     if (budgetEntry.getPeriod().equals(BudgetPeriodEnum.NONE.getDisplayName())) {
@@ -309,7 +387,7 @@ public class BudgetEntryFragment
                         }
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 
@@ -359,6 +437,13 @@ public class BudgetEntryFragment
 //  getloader does not restart loader????
 //        getLoaderManager().restartLoader(LOADER_BUDGET, null, setUpLoaderCallbacks());
         getActivity().recreate();
+    }
+
+    private void showSearchActivityFor(SearchParameters parameters) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
     }
 
 }
