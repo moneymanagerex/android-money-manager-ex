@@ -44,6 +44,7 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
@@ -286,7 +287,7 @@ public class BudgetEntryFragment
 
         // get selected item name
         BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
-        Cursor cursor = (Cursor) adapter.getItem(info.position);
+        Cursor cursor = (Cursor) adapter.getItem(info.position - 1); // -1 because of header
 
         switch (menuId) {
             case EDIT:
@@ -332,7 +333,7 @@ public class BudgetEntryFragment
         // Create the EditText view for numeric input
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setHint("Enter new budget");
+        input.setHint(R.string.enter_budget_value_plus_minus);
 
         BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getActivity());
 
@@ -398,7 +399,8 @@ public class BudgetEntryFragment
                     // useNestedCategory
                     QueryNestedCategory categories = new QueryNestedCategory(getActivity());
                     Select query = new Select(categories.getAllColumns())
-                            .orderBy(QueryNestedCategory.CATEGNAME);
+                            .orderBy(QueryNestedCategory.CATEGNAME)
+                            .where(QueryNestedCategory.ACTIVE + " = 1");
                     result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
                 }
                 return result;
