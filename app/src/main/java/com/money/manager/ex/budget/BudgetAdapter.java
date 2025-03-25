@@ -369,7 +369,10 @@ public class BudgetAdapter
         String where;
         where = QueryNestedCategory.CATEGID + "=" + categoryId;
         if (useSubCategory) {
-            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE '" + categoryName +":%' )";
+            if ( categoryName.contains("'")) {
+                categoryName = categoryName.replace("\"", "\"\"");
+            }
+            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
         }
         double total = loadTotalFor(where);
         return total;
