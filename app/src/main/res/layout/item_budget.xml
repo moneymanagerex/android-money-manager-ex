@@ -23,20 +23,21 @@
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/categoryTextView"
+        android:layout_weight="2"
         android:layout_width="0dp"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:layout_weight="1"
         android:text="@string/category"
-        android:paddingStart="1dp"
-        android:paddingEnd="1dp" />
+        android:paddingEnd="1dp"
+        android:paddingStart="1dp" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/frequencyTextView"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:minWidth="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
@@ -45,24 +46,62 @@
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/amountTextView"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:minWidth="60dp"
-        android:paddingLeft="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
         android:text="@string/amount"
-        android:paddingStart="1dp" />
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/estimatedAnnualTextView"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:minWidth="60dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/estimatedAnnual"
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp" />
 
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/actualTextView"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:minWidth="60dp"
-        android:paddingLeft="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
         android:text="@string/actual"
-        android:paddingStart="1dp" />
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/amountAvailableTextView"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:minWidth="60dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/amount_available"
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp" />
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/forecastRemainTextView"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:minWidth="60dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/forecast_remain"
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp" />
 
 </LinearLayout>

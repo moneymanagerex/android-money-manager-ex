@@ -60,8 +60,9 @@ public class BudgetPeriods {
      * @return
      */
     public static double getMonthlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-        double daysInPeriod = periodEnum.getDaysInPeriod();
-        return (amount / daysInPeriod) * 30; // Simplified calculation for monthly estimate
+//        double daysInPeriod = periodEnum.getDaysInPeriod();
+//        return (amount / daysInPeriod) * 30; // Simplified calculation for monthly estimate
+        return ( getYearlyEstimate(periodEnum, amount) / 12) ; // compute 1/12 of annual value
     }
 
     /**
@@ -71,7 +72,8 @@ public class BudgetPeriods {
      * @return
      */
     public static double getYearlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-        double daysInPeriod = periodEnum.getDaysInPeriod();
-        return (amount / daysInPeriod) * 365; // Simplified calculation for yearly estimate
+//        double daysInPeriod = periodEnum.getDaysInPeriod();
+//        return (amount / daysInPeriod) * 365; // Simplified calculation for yearly estimate
+        return ( amount * periodEnum.getOccursTimes() );
     }
 }
