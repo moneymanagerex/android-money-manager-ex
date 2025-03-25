@@ -44,7 +44,6 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
-import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
@@ -242,7 +241,7 @@ public class BudgetEntryFragment
 
         if (    item.getItemId() == R.id.frequencyTextView ||
                 item.getItemId() == R.id.amountTextView ||
-                item.getItemId() == R.id.estimatedAnnualTextView ||
+                item.getItemId() == R.id.estimatedForPeriodTextView ||
                 item.getItemId() == R.id.actualTextView ||
                 item.getItemId() == R.id.amountAvailableTextView ||
                 item.getItemId() == R.id.forecastRemainTextView) {
