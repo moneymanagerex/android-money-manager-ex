@@ -259,12 +259,13 @@ public class BudgetEntryFragment
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        if (info.id == -1) return;
 
         // get selected item name
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-        Cursor cursor = (Cursor) adapter.getItem(info.position);
+        Cursor cursor = (Cursor) adapter.getItem(info.position - 1);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME)));
 
