@@ -44,13 +44,11 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
-import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.LookAndFeelSettings;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -59,8 +57,6 @@ import androidx.loader.content.Loader;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-
-import timber.log.Timber;
 
 /**
  * Use the {@link BudgetEntryFragment#newInstance} factory method to
@@ -200,10 +196,7 @@ public class BudgetEntryFragment
         if (menu.findItem(R.id.menu_budget_use_simple_view) != null) {
             menu.findItem(R.id.menu_budget_use_simple_view).setChecked(useBudgetSimplifyView);
         }
-        if (useBudgetSimplifyView)
-            menu.findItem(R.id.menu_budget_columns).setVisible(false);
-        else
-            menu.findItem(R.id.menu_budget_columns).setVisible(true);
+        menu.findItem(R.id.menu_budget_columns).setVisible(!useBudgetSimplifyView);
 
         // set menu_budget_category_with_sub
         boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub,false);
@@ -335,6 +328,7 @@ public class BudgetEntryFragment
     }
 
     public void editBudgetEntry(long budgetYearId, long categoryId, String category) {
+        String budgetPeriodString;
         // Create the EditText view for numeric input
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -346,13 +340,16 @@ public class BudgetEntryFragment
         if (budgetEntry != null) {
             // Set the current value as the initial value in the EditText
             input.setText(String.valueOf(budgetEntry.getAmount()));
+            budgetPeriodString = budgetEntry.getPeriod();
+        } else {
+            budgetPeriodString = (Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName());
         }
 
         // Set up the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         // TODO: set custom xml layout to manage both period and amount
         builder.setTitle(R.string.enter_budget)
-                .setMessage(getString(R.string.enter_budget_value,category,budgetEntry.getPeriod()))
+                .setMessage(getString(R.string.enter_budget_value,category,budgetPeriodString))
                 .setView(input)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
