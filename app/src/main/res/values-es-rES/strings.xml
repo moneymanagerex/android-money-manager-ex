@@ -542,6 +542,7 @@
     <string name="update_available">Actualización disponible</string>
     <string name="update_available_online">Hay un archivo actualizado de la base de datos online. ¿Quiere actualizar?</string>
     <string name="currency_not_found">Moneda no encontrada</string>
+    <string name="homepage"></string>
     <string name="current_database">Base de datos actual</string>
     <string name="about_logcat_header">Puede enviarnos el registro de la aplicación haciendo click en el botón de abajo.</string>
     <string name="transaction_type_filter">Filtrar por Tipo de Transacción</string>
@@ -549,6 +550,8 @@
     <string name="filter_options_info">Opciones de filtrado e información</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Ingrese la contraseña de la base de datos</string>
+    <string name="fingerprint_info">Escanea tu huella dactilar para desbloquear</string>
+    <string name="fingerprint_no_hardware">Tu dispositivo no soporta la autenticación con huella dactilar</string>
     <string name="income_expense_period">Periódo de Ingresos/Gastos</string>
     <string name="income_expense_period_summary">El período para el resumen de ingresos/gastos al pie de la pantalla de inicio.</string>
     <string name="appwidget_text">EJEMPLO</string>
@@ -744,6 +747,7 @@
     <string name="CLEAR_ALL">Borrar todo</string>
     <string name="empty_color_message">elige un color</string>
     <!--- New navigation mode -->
+    <string name="remember_later">Recordarme más tarde</string>
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Todas las cuentas</string>
     <!-- Error Handling -->
