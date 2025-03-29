@@ -58,14 +58,44 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="12.000,00 €"
+                        android:textColor="@color/white"
                         android:paddingVertical="5dp"
                         android:textSize="34sp" />
 
                     <TextView
+                        android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="+1.350,00€ (+12%) last month" />
+                        android:paddingVertical="2dp"
+                        android:text="12.000,00 €"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="+1.350,00€"
+                            android:textColor="@color/green"
+                             />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="-1.350,00€"
+                            android:textColor="@color/red"
+                            />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -86,6 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        style="?attr/headerTextViewStyle"
                         android:text="Incoming Transactions"/>
 
                     <HorizontalScrollView
