@@ -1,0 +1,13 @@
+## Feature
+* Add new Error handle in case of crash for fast open issue
+* Basic budget editing support
+* New Model for translation
+* Improve Search in subcategory. Now will return all subcategories that match the search string
+* Improve CashFlow report and Graph
+* Stock: new V2 model
+* Initial support for the General Report is now available on Mobile (but still need to edit from PC version). No LUA support for now.
+* Stock: support Edit Price to long click
+
+## What's new
+* minor fix to budget management
+* minor fix to 5.2

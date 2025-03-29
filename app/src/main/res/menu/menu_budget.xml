@@ -50,9 +50,9 @@
                         android:checkable="true"
                         android:title="@string/amount" />
                     <item
-                        android:id="@id/estimatedAnnualTextView"
+                        android:id="@id/estimatedForPeriodTextView"
                         android:checkable="true"
-                        android:title="@string/estimatedAnnual" />
+                        android:title="@string/estimatedForPeriod" />
                     <item
                         android:id="@id/actualTextView"
                         android:checkable="true"
