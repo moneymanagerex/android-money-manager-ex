@@ -34,6 +34,7 @@ public enum ContextMenuIds {
     ADD_SUB(10),
     VIEW_TRANSACTIONS_SUB(11),
     CASH_LEDGER(13),
+    WATCHLIST(14),
     SWITCH_ACTIVE(12);
 
     public static ContextMenuIds get(int id) {
