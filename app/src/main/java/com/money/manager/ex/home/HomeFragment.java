@@ -454,6 +454,7 @@ public class HomeFragment
 
         // Investment menu items.
         if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
+            menu.add(Menu.NONE, ContextMenuIds.WATCHLIST.getId(), 0, getString(R.string.watchlist));
             menu.add(Menu.NONE, ContextMenuIds.Portfolio.getId(), 0, getString(R.string.portfolio));
             menu.add(Menu.NONE, ContextMenuIds.CASH_LEDGER.getId(), 0, getString(R.string.cash_ledger));
         }
@@ -482,6 +483,9 @@ public class HomeFragment
         }
         else if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
             startBalanceAccount(account);
+        }
+        else if (menuItemTitle.equalsIgnoreCase(getString(R.string.watchlist))) {
+            EventBus.getDefault().post(new RequestWatchlistFragmentEvent(accountId));
         }
         else if (menuItemTitle.equalsIgnoreCase(getString(R.string.portfolio))) {
             EventBus.getDefault().post(new RequestPortfolioFragmentEvent(accountId));
@@ -712,7 +716,7 @@ public class HomeFragment
                 Object event;
 
                 if (accountType.equalsIgnoreCase(AccountTypes.INVESTMENT.toString())) {
-                    event = new RequestWatchlistFragmentEvent(accountId);
+                    event = new RequestPortfolioFragmentEvent(accountId);
                 } else {
                     event = new RequestAccountFragmentEvent(accountId);
                 }
