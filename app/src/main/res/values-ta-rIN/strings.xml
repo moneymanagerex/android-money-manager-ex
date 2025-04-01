@@ -639,6 +639,7 @@
     <string name="budget_name">பட்ஜெட் பெயர்</string>
     <string name="budget_year">பட்ஜெட் ஆண்டு</string>
     <string name="budget_month">பட்ஜெட் மாதம்</string>
+    <string name="budget_month_optional">பட்ஜெட் மாதம் (கட்டாயமற்ற)</string>
     <string name="copy">நகலெடுக்கவும்</string>
     <string name="app_restart">மாற்றங்களைப் பயன்படுத்த, பயன்பாடு இப்போது மூடப்படும். தயவுசெய்து மீண்டும் தொடங்கவும்.</string>
     <string name="print">அச்சிடுக</string>
@@ -800,6 +801,9 @@
     <!-- Error Handling -->
     <string name="title_activity_auth">அச்சச்சோ! ஏதோ தவறு நடந்துவிட்டது.</string>
     <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
+    <string name="estimatedForPeriod">காலத்திற்கான மதிப்பீடு</string>
     <string name="forecast_remain">முன் கணிப்பு மீதமுள்ளது</string>
     <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
+    <string name="enter_budget_value">வகை %1$s க்கு, %2$s காலத்திற்கு பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
+    <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
 </resources>
