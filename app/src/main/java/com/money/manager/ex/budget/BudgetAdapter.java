@@ -23,7 +23,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
-import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
@@ -50,7 +48,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -122,7 +119,7 @@ public class BudgetAdapter
             BudgetSettings setting = (new AppSettings(getContext())).getBudgetSettings();
             if (setting.getColumnVisible(R.id.frequencyTextView, true)) addVisibleColumn(R.id.frequencyTextView);
             if (setting.getColumnVisible(R.id.amountTextView, true)) addVisibleColumn(R.id.amountTextView);
-            if (setting.getColumnVisible(R.id.estimatedAnnualTextView, false)) addVisibleColumn(R.id.estimatedAnnualTextView);
+            if (setting.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
             if (setting.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
             if (setting.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
             if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
@@ -155,7 +152,7 @@ public class BudgetAdapter
     public void setVisibleTextFieldsForView(View view) {
         setVisibleTextFieldForView(view, R.id.frequencyTextView);
         setVisibleTextFieldForView(view, R.id.amountTextView);
-        setVisibleTextFieldForView(view, R.id.estimatedAnnualTextView);
+        setVisibleTextFieldForView(view, R.id.estimatedForPeriodTextView);
         setVisibleTextFieldForView(view, R.id.actualTextView);
         setVisibleTextFieldForView(view, R.id.amountAvailableTextView);
         setVisibleTextFieldForView(view, R.id.forecastRemainTextView);
@@ -225,14 +222,14 @@ public class BudgetAdapter
         amount = getBudgetAmountFor(categoryId);
         setViewElement(view, R.id.amountTextView, amount, currencyService);
 
-        // Estimated estimatedAnnualTextView
-        double estimatedAnnual = isMonthlyBudget(mBudgetName)
+        // Estimated estimatedForPeriodTextView
+        double estimatedForPeriod = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if (Double.isNaN(estimatedAnnual)) {
+        if (Double.isNaN(estimatedForPeriod)) {
             // this means that we don't have estimate for this category
             // so estimate is 0
-            estimatedAnnual = 0;
+            estimatedForPeriod = 0;
         }
         if ( useSubCategory) {
             List<NestedCategoryEntity> children = (new QueryNestedCategory(context)).getChildrenNestedCategoryEntities(categoryId);
@@ -240,26 +237,26 @@ public class BudgetAdapter
                 if ( child.getId() != categoryId ) { // already computed
                     BudgetPeriodEnum childPeriodEnum = getBudgetPeriodFor(child.getCategoryId());
                     double childAmount = getBudgetAmountFor(child.getCategoryId());
-                    double childEstimatedAnnual = isMonthlyBudget(mBudgetName)
+                    double childEstimatedForPeriod = isMonthlyBudget(mBudgetName)
                             ? BudgetPeriods.getMonthlyEstimate(childPeriodEnum, childAmount)
                             : BudgetPeriods.getYearlyEstimate(childPeriodEnum, childAmount);
-                    if (Double.isNaN(childEstimatedAnnual)) {
+                    if (Double.isNaN(childEstimatedForPeriod)) {
                         // this means that we don't have estimate for this category
                         // so estimate is 0
-                        childEstimatedAnnual = 0;
+                        childEstimatedForPeriod = 0;
                     }
-                    estimatedAnnual += childEstimatedAnnual;
+                    estimatedForPeriod += childEstimatedForPeriod;
                 }
             }
         }
-        setViewElement(view, R.id.estimatedAnnualTextView, estimatedAnnual, currencyService);
+        setViewElement(view, R.id.estimatedForPeriodTextView, estimatedForPeriod, currencyService);
 
         // Actual actualTextView
         double actual = getActualAmount(useSubCategory, cursor);
-        setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedAnnual * 100));
+        setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedForPeriod * 100));
 
         // Amount Available amountAvailableTextView
-        double amountAvailable = -(estimatedAnnual - actual);
+        double amountAvailable = -(estimatedForPeriod - actual);
         if (Double.isInfinite(amountAvailable)) {
             setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
         } else {
@@ -369,7 +366,10 @@ public class BudgetAdapter
         String where;
         where = QueryNestedCategory.CATEGID + "=" + categoryId;
         if (useSubCategory) {
-            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE '" + categoryName +":%' )";
+            if ( categoryName.contains("'")) {
+                categoryName = categoryName.replace("\"", "\"\"");
+            }
+            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
         }
         double total = loadTotalFor(where);
         return total;

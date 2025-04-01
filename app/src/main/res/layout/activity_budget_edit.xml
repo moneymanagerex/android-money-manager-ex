@@ -211,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:gravity="end"
-                        android:hint="@string/budget_month" />
+                        android:hint="@string/budget_month_optional" />
                 </LinearLayout>
             </LinearLayout>
 
