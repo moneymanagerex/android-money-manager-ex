@@ -802,8 +802,6 @@
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
-    <string name="estimatedAnnual">Jahresprognose</string>
     <string name="forecast_remain">Prognostiziere verbleibende</string>
     <string name="enter_budget">Budget eingeben</string>
-    <string name="enter_budget_value">Für Kategorie %1$s, setzen Sie Budget für Zeitraum %2$s:</string>
 </resources>
