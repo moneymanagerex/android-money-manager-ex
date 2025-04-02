@@ -56,7 +56,9 @@ public class YahooChartDownloaderRetrofit
 
                 @Override
                 public void onFailure(@NonNull Call<YahooChartResponse> call, @NonNull Throwable t) {
-                    closeProgressDialog();
+                    mCounter++;
+                    setProgress(mCounter);
+                    finishIfAllDone();
                     Timber.e(t, "Error fetching stock prices");
                 }
             });
