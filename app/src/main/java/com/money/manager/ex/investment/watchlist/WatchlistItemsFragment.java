@@ -18,7 +18,6 @@ package com.money.manager.ex.investment.watchlist;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -135,15 +133,12 @@ public class WatchlistItemsFragment
         StocksCursorAdapter adapter = new StocksCursorAdapter(context, null);
 
         // e list item click.
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Ignore the header row.
-                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
+        getListView().setOnItemClickListener((parent, view, position, id) -> {
+            // Ignore the header row.
+            if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
 
-                if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
-                    getActivity().openContextMenu(view);
-                }
+            if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                getActivity().openContextMenu(view);
             }
         });
 
@@ -473,24 +468,18 @@ public class WatchlistItemsFragment
         builder.setTitle(R.string.delete_transaction)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirmDelete)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StockRepository repo = new StockRepository(getActivity());
-                        if (!repo.delete(id)) {
-                            new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
-                        }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    StockRepository repo = new StockRepository(getActivity());
+                    if (!repo.delete(id)) {
+                        new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
+                    }
 
-                        // Restart loader
-                        reloadData();
-                    }
+                    // Restart loader
+                    reloadData();
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Close dialog
-                        dialog.cancel();
-                    }
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                    // Close dialog
+                    dialog.cancel();
                 })
                 .show();
     }

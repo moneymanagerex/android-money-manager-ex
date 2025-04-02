@@ -27,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
@@ -67,7 +66,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -354,12 +352,8 @@ public class WatchlistFragment
         mToUpdateTotal = 1;
         mUpdateCounter = 0;
 
-        // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
-        List<String> symbols = new ArrayList<>();
-        symbols.add(symbol);
-
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity());
-        updater.downloadPrices(symbols);
+        updater.downloadPrices(List.of(symbol));
         // result received via onEvent.
     }
 
@@ -382,17 +376,14 @@ public class WatchlistFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.quote_provider)
-                .setSingleChoiceItems(QuoteProviders.names(), currentIndex, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Change provider
-                        QuoteProviders newProvider = QuoteProviders.valueOf(QuoteProviders.names()[which].toString());
+                .setSingleChoiceItems(QuoteProviders.names(), currentIndex, (dialog, which) -> {
+                    // Change provider
+                    QuoteProviders newProvider = QuoteProviders.valueOf(QuoteProviders.names()[which]);
 
-                        InvestmentSettings settings = new InvestmentSettings(getActivity());
-                        settings.setQuoteProvider(newProvider);
+                    InvestmentSettings settings1 = new InvestmentSettings(getActivity());
+                    settings1.setQuoteProvider(newProvider);
 
-                        dialog.dismiss();
-                    }
+                    dialog.dismiss();
                 })
                 .show();
 
@@ -400,12 +391,9 @@ public class WatchlistFragment
 
     private void completePriceUpdate() {
         // this call is made from async task so have to get back to the main thread.
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // refresh the data.
-                mDataFragment.reloadData();
-            }
+        requireActivity().runOnUiThread(() -> {
+            // refresh the data.
+            mDataFragment.reloadData();
         });
     }
 
@@ -456,20 +444,17 @@ public class WatchlistFragment
         builder.setTitle(R.string.download)
                 .setIcon(ui.getIcon(FontAwesome.Icon.faw_question_circle))
                 .setMessage(R.string.confirm_price_download)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-                        mUpdateCounter = 0;
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Get the list of symbols
+                    String[] symbols = getAllShownSymbols();
+                    mToUpdateTotal = symbols.length;
+                    mUpdateCounter = 0;
 
-                        // Update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(getContext());
-                        updater.downloadPrices(Arrays.asList(symbols));
-                        // Results received via event
-                    }
+                    // Update security prices
+                    ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                            .getUpdaterInstance(getContext());
+                    updater.downloadPrices(Arrays.asList(symbols));
+                    // Results received via event
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -492,8 +477,7 @@ public class WatchlistFragment
         if (!(getActivity() instanceof AppCompatActivity)) return null;
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
-        return actionBar;
+        return activity.getSupportActionBar();
     }
 
     private Spinner getAccountsSpinner() {
@@ -502,8 +486,7 @@ public class WatchlistFragment
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return null;
 
-        Spinner spinner = actionBar.getCustomView().findViewById(R.id.spinner);
-        return spinner;
+        return actionBar.getCustomView().findViewById(R.id.spinner);
     }
 
     private void initializeAccountsSelector() {
@@ -547,33 +530,28 @@ public class WatchlistFragment
         // favorite icon
         this.viewHolder.imgAccountFav = this.viewHolder.mListHeader.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
-        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                mAccount.setFavorite(!mAccount.getFavorite());
+        this.viewHolder.imgAccountFav.setOnClickListener(v -> {
+            mAccount.setFavorite(!mAccount.getFavorite());
 
-                AccountRepository repo = new AccountRepository(getActivity());
-                boolean saved = repo.save(mAccount);
+            AccountRepository repo = new AccountRepository(getActivity());
+            boolean saved = repo.save(mAccount);
 
-                if (!saved) {
-                    Toast.makeText(getActivity(),
-                        getActivity().getResources().getString(R.string.db_update_failed),
-                        Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
+            if (!saved) {
+                Toast.makeText(getActivity(),
+                    getActivity().getResources().getString(R.string.db_update_failed),
+                    Toast.LENGTH_LONG).show();
+            } else {
+                setImageViewFavorite();
             }
         });
 
         // Edit account
         this.viewHolder.imgGotoAccount = this.viewHolder.mListHeader.findViewById(R.id.imageViewGotoAccount);
-        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, getAccountId());
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-            }
+        this.viewHolder.imgGotoAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, getAccountId());
+            intent.setAction(Intent.ACTION_EDIT);
+            startActivity(intent);
         });
     }
 
@@ -630,12 +608,7 @@ public class WatchlistFragment
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
