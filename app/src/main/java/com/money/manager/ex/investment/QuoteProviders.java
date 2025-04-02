@@ -23,8 +23,7 @@ import com.money.manager.ex.Constants;
  * List of quote providers for stock prices and currency rates.
  */
 public enum QuoteProviders {
-    YahooYql,
-    YahooCsv;
+    YahooChart;
 
     public static String[] names() {
         QuoteProviders[] providers = QuoteProviders.values();
