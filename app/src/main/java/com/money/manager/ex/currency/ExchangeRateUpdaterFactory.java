@@ -42,12 +42,6 @@ public class ExchangeRateUpdaterFactory {
 
         if (Objects.requireNonNull(provider) == ExchangeRateProviders.Fixer) {
             updater = new FreeCurrencyExchangeRateAPIService(context);
-            //            case YahooYql:
-//                updater = new YqlSecurityPriceUpdaterRetrofit(context);
-//                break;
-//            case YahooCsv:
-//                updater = new YahooCsvQuoteDownloaderRetrofit(context);
-//                break;
         } else {
             updater = new FreeCurrencyExchangeRateAPIService(context);
         }

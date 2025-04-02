@@ -20,8 +20,7 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 
 import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
-import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
+import com.money.manager.ex.investment.yahoofinance.YahooChartDownloaderRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
 
 /**
@@ -37,15 +36,12 @@ public class SecurityPriceUpdaterFactory {
         QuoteProviders provider = settings.getQuoteProvider();
 
         switch (provider) {
-            case YahooYql:
-                updater = new YqlSecurityPriceUpdaterRetrofit(context);
-                break;
-            case YahooCsv:
-                updater = new YahooCsvQuoteDownloaderRetrofit(context);
+            case YahooChart:
+                updater = new YahooChartDownloaderRetrofit(context);
                 break;
             default:
-                // yql
-                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+                // YahooChart
+                updater = new YahooChartDownloaderRetrofit(context);
                 break;
         }
 
