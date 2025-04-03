@@ -44,16 +44,9 @@ public class StockViewModel extends AndroidViewModel {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Stock> result = stockRepository.loadByAccount(accountId);
             stocks.postValue(result);
+            account.postValue(accountRepository.load(accountId));
             isLoading.postValue(false);
         });
-    }
-
-    public void loadAccount(Long accountId) {
-        if (accountId > 0) {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                account.postValue(accountRepository.load(accountId));
-            });
-        }
     }
 
     public void downloadStockPrice(String symbol) {

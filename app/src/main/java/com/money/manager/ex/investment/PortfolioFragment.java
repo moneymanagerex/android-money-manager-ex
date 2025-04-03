@@ -170,7 +170,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
             mAdapter.setAccount(account);
         });
 
-        viewModel.loadAccount(mAccountId);
         viewModel.loadStocks(mAccountId);
     }
 
