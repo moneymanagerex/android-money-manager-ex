@@ -15,6 +15,7 @@ import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.yahoofinance.StockPriceRepository;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 // StockViewModel.java
@@ -41,12 +42,21 @@ public class StockViewModel extends AndroidViewModel {
 
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
-        Executors.newSingleThreadExecutor().execute(() -> {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        executor.execute(() -> {
             List<Stock> result = stockRepository.loadByAccount(accountId);
             stocks.postValue(result);
-            account.postValue(accountRepository.load(accountId));
-            isLoading.postValue(false);
         });
+
+        executor.execute(() -> {
+            Account acc = accountRepository.load(accountId);
+            account.postValue(acc);
+        });
+
+        executor.execute(() -> isLoading.postValue(false));
+
+        executor.shutdown();
     }
 
     public void downloadStockPrice(String symbol) {
