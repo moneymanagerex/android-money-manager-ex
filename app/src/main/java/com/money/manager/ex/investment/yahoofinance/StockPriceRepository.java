@@ -44,8 +44,15 @@ public class StockPriceRepository {
         yahooService.getChartData(symbol, "1mo", "1d").enqueue(new Callback<YahooChartResponse>() {
             @Override
             public void onResponse(@NonNull Call<YahooChartResponse> call, @NonNull Response<YahooChartResponse> response) {
-                if (response.body() != null && response.body().chart.result != null) {
+                if (response.body() != null && response.body().chart != null && response.body().chart.result != null) {
                     YahooChartResponse.Result result = response.body().chart.result.get(0);
+
+                    if (result.timestamps == null || result.indicators == null ||
+                            result.indicators.quote == null || result.indicators.quote.isEmpty() ||
+                            result.indicators.quote.get(0).closePrices == null) {
+                        Timber.e("Invalid stock price data for symbol: %s", symbol);
+                        return;
+                    }
 
                     List<Long> timestamps = result.timestamps;
                     List<Double> prices = result.indicators.quote.get(0).closePrices;
@@ -56,7 +63,6 @@ public class StockPriceRepository {
                         Date date = new MmxDate(latestTimestamp).toDate();
                         Money moneyPrice = MoneyFactory.fromDouble(latestPrice);
 
-                        // 更新数据库
                         stockRepository.updateCurrentPrice(symbol, moneyPrice);
                         stockHistoryRepository.addStockHistoryRecord(symbol, moneyPrice, date);
 
