@@ -44,7 +44,7 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
     private final LayoutInflater inflater;
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
-    private final Account mAccount;
+    private Account mAccount;
     private final CurrencyService mCurrencyService;
 
     public interface OnItemClickListener {
@@ -66,11 +66,14 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
         }
     };
 
-    public PortfolioListAdapter(Context context, Account account) {
+    public PortfolioListAdapter(Context context) {
         super(DIFF_CALLBACK);
         this.inflater = LayoutInflater.from(context);
-        this.mAccount = account;
         this.mCurrencyService = new CurrencyService(context);
+    }
+
+    public void setAccount(Account account) {
+        this.mAccount = account;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
