@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.view.ContextMenu;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
@@ -102,6 +103,15 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setupViewModel();
         enableFab(true);
         registerForContextMenu(getRecyclerView());
+
+        viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
+            if (priceModel != null) {
+                Toast.makeText(getContext(),
+                        "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
+                        Toast.LENGTH_SHORT).show();
+                viewModel.loadStocks(mAccountId);
+            }
+        });
     }
 
     @Override
@@ -111,6 +121,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         menu.setHeaderTitle(selectedStock.getSymbol());
 
         MenuHelper menuHelper = new MenuHelper(requireActivity(), menu);
+        menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice);
         menuHelper.addToContextMenu(ContextMenuIds.EditPrice);
     }
 
@@ -122,6 +133,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
         if (Objects.requireNonNull(menuId) == ContextMenuIds.EditPrice) {
             openEditPriceActivity(selectedStock);
+            return true;
+        } else if (Objects.requireNonNull(menuId) == ContextMenuIds.DownloadPrice) {
+            viewModel.downloadStockPrice(selectedStock.getSymbol());
             return true;
         }
 
@@ -148,10 +162,10 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private void setupViewModel() {
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
-        viewModel = new ViewModelProvider(this, factory).get(StockViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(StockViewModel.class);
 
         viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
-            ((PortfolioListAdapter)getAdapter()).submitList(stocks);
+            mAdapter.submitList(stocks);
             checkEmpty();
         });
 
