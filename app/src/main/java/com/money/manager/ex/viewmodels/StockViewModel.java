@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.yahoofinance.StockPriceRepository;
@@ -19,19 +21,23 @@ import java.util.concurrent.Executors;
 public class StockViewModel extends AndroidViewModel {
     private final StockRepository stockRepository;
     private final StockPriceRepository stockPriceRepository;
+    private final AccountRepository accountRepository;
     private final MutableLiveData<List<Stock>> stocks = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Account> account = new MutableLiveData<>();
     private final MutableLiveData<SecurityPriceModel> latestDownloadedPrice = new MutableLiveData<>();
 
     public StockViewModel(@NonNull Application application, StockRepository repository) {
         super(application);
         this.stockRepository = repository;
         this.stockPriceRepository = new StockPriceRepository(application);
+        this.accountRepository = new AccountRepository(application);
     }
 
     public LiveData<List<Stock>> getStocks() { return stocks; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<SecurityPriceModel> getLatestDownloadedPrice() { return latestDownloadedPrice; }
+    public LiveData<Account> getAccount() {return account; }
 
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
@@ -40,6 +46,14 @@ public class StockViewModel extends AndroidViewModel {
             stocks.postValue(result);
             isLoading.postValue(false);
         });
+    }
+
+    public void loadAccount(Long accountId) {
+        if (accountId > 0) {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                account.postValue(accountRepository.load(accountId));
+            });
+        }
     }
 
     public void downloadStockPrice(String symbol) {

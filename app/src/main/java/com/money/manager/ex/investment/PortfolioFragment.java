@@ -30,7 +30,6 @@ import com.money.manager.ex.common.BaseRecyclerFragment;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -92,9 +91,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
                 mAccountId = args.getLong(ARG_ACCOUNT_ID);
             }
         }
-
-        if (mAccountId > 0)
-            mAccount = (new AccountRepository(requireContext())).load(mAccountId);
     }
 
     @Override
@@ -103,15 +99,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setupViewModel();
         enableFab(true);
         registerForContextMenu(getRecyclerView());
-
-        viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
-            if (priceModel != null) {
-                Toast.makeText(getContext(),
-                        "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
-                        Toast.LENGTH_SHORT).show();
-                viewModel.loadStocks(mAccountId);
-            }
-        });
     }
 
     @Override
@@ -149,7 +136,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
     @Override
     protected RecyclerView.Adapter<?> createAdapter() {
-        mAdapter = new PortfolioListAdapter(getActivity(), this.mAccount);
+        mAdapter = new PortfolioListAdapter(getActivity());
         mAdapter.setOnItemClickListener(this::openEditInvestmentActivity);
         mAdapter.setOnItemLongClickListener((stock, view) -> {
             selectedStock = stock;
@@ -169,6 +156,21 @@ public class PortfolioFragment extends BaseRecyclerFragment {
             checkEmpty();
         });
 
+        viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
+            if (priceModel != null) {
+                Toast.makeText(getContext(),
+                        "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
+                        Toast.LENGTH_SHORT).show();
+                viewModel.loadStocks(mAccountId);
+            }
+        });
+
+        viewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
+            mAccount = account;
+            mAdapter.setAccount(account);
+        });
+
+        viewModel.loadAccount(mAccountId);
         viewModel.loadStocks(mAccountId);
     }
 
