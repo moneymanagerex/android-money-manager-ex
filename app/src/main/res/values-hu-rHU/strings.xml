@@ -556,6 +556,7 @@
     <string name="unhandled_crash">Váratlan hiba. Kérjük, küldje el a hibanaplót.</string>
     <string name="title_activity_currency_rates_report">Árfolyamok</string>
     <string name="frequency">Gyakoriság</string>
+    <string name="select_columns">Látható oszlopok kijelölése</string>
     <string name="update_available">Frissítés elérhető</string>
     <string name="update_available_online">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
     <string name="currency_not_found">Nem található pénznem</string>
@@ -573,7 +574,7 @@
     <string name="fingerprint_has_enrolled">Nincs beállítva ujjlenyomat. Kérjük, regisztráljon legalább egy ujjlenyomatot az eszköz beállításaiban.</string>
     <string name="fingerprint_is_keyguard_secure">Kérjük, engedélyezze a lezárási képernyő biztonságát az eszköz beállításaiban</string>
     <string name="income_expense_period">Bevétel/kiadás-időtartam</string>
-    <string name="income_expense_period_summary">A bevétel/kiadás időszaka a főképernyő alján.</string>
+    <string name="income_expense_period_summary">A bevétel/kiadás időtartamra a főképernyő alján.</string>
     <string name="appwidget_text">PÉLDA</string>
     <string name="configure">Beállít</string>
     <string name="add_widget">Widget hozzáadása</string>
@@ -638,6 +639,7 @@
     <string name="budget_name">Költségvetés neve</string>
     <string name="budget_year">Költségvetés év</string>
     <string name="budget_month">Költségvetés hónap</string>
+    <string name="budget_month_optional">Költségvetési hónap (nem kötelező)</string>
     <string name="copy">Másolás</string>
     <string name="app_restart">Az alkalmazás most bezárul a módosítások alkalmazásához. Kérjük, indítsa újra.</string>
     <string name="print">Nyomtatás</string>
@@ -801,4 +803,9 @@
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppá! Hiba történt.</string>
     <string name="bad_error_occurs">Váratlan hiba történt. Kérlek jelezd a fejlesztőknek.</string>
+    <string name="estimatedForPeriod">Becslés az időtartamhoz</string>
+    <string name="forecast_remain">Előrejelzés megmaradása</string>
+    <string name="enter_budget">Költségvetés megadása</string>
+    <string name="enter_budget_value">A(z) %1$s kategória esetében állítsa be a költségkeretet a(z) %2$s időtartamra. Használja a negatívot a kiadásokhoz, a pozitív a bevételekhez:</string>
+    <string name="enter_budget_value_plus_minus">Új érték megadása</string>
 </resources>
