@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.investment.SecurityPriceModel;
+import com.money.manager.ex.investment.yahoofinance.StockPriceRepository;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -16,22 +18,36 @@ import java.util.concurrent.Executors;
 // StockViewModel.java
 public class StockViewModel extends AndroidViewModel {
     private final StockRepository stockRepository;
+    private final StockPriceRepository stockPriceRepository;
     private final MutableLiveData<List<Stock>> stocks = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<SecurityPriceModel> latestDownloadedPrice = new MutableLiveData<>();
 
     public StockViewModel(@NonNull Application application, StockRepository repository) {
         super(application);
         this.stockRepository = repository;
+        this.stockPriceRepository = new StockPriceRepository(application);
     }
 
     public LiveData<List<Stock>> getStocks() { return stocks; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
+    public LiveData<SecurityPriceModel> getLatestDownloadedPrice() { return latestDownloadedPrice; }
 
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Stock> result = stockRepository.loadByAccount(accountId);
             stocks.postValue(result);
+            isLoading.postValue(false);
+        });
+    }
+
+    public void downloadStockPrice(String symbol) {
+        isLoading.postValue(true);
+        stockPriceRepository.downloadPrice(symbol).observeForever(priceModel -> {
+            if (priceModel != null) {
+                latestDownloadedPrice.postValue(priceModel);
+            }
             isLoading.postValue(false);
         });
     }
