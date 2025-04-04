@@ -188,11 +188,12 @@ public class Stock
         return Objects.equals(getId(), stock.getId()) &&
                 Objects.equals(getSymbol(), stock.getSymbol()) &&
                 Objects.equals(getNumberOfShares(), stock.getNumberOfShares()) &&
+                Objects.equals(getPurchasePrice(), stock.getPurchasePrice()) &&
                 Objects.equals(getCurrentPrice(), stock.getCurrentPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSymbol(), getNumberOfShares(), getCurrentPrice());
+        return Objects.hash(getId(), getSymbol(), getNumberOfShares(), getPurchasePrice(), getCurrentPrice());
     }
 }
