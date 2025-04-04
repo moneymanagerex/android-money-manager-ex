@@ -201,7 +201,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
         intent.setAction(Intent.ACTION_INSERT);
-        editPriceLauncher.launch(intent);
+        editInvestmentLauncher.launch(intent);
     }
 
     private void openEditPriceActivity(Stock stock) {
