@@ -68,6 +68,9 @@ public class CategoriesReportFragment
         setListAdapter(null);
         setSearchMenuVisible(true);
 
+        // disable fab issue #2504
+        setFabVisible(false);
+
         //create header view
         LinearLayout mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = mListViewHeader.findViewById(R.id.textViewColumn1);
