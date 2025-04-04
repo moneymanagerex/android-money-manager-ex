@@ -29,7 +29,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
-import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -37,7 +36,9 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.StockViewModel;
 import com.money.manager.ex.viewmodels.ViewModelFactory;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private Long mAccountId;
     private Account mAccount;
     private Stock selectedStock;
+
+    private ActivityResultLauncher<Intent> editPriceLauncher;
+    private ActivityResultLauncher<Intent> editInvestmentLauncher;
 
     /**
      * Use this factory method to create a new instance of
@@ -99,6 +103,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setupViewModel();
         enableFab(true);
         registerForContextMenu(getRecyclerView());
+        setupActivityResultLaunchers();
     }
 
     @Override
@@ -196,7 +201,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
         intent.setAction(Intent.ACTION_INSERT);
-        startActivity(intent);
+        editInvestmentLauncher.launch(intent);
     }
 
     private void openEditPriceActivity(Stock stock) {
@@ -207,14 +212,26 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
         String dateString = new MmxDate().toIsoDateString();
         intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-        startActivityForResult(intent, RequestCodes.PRICE);
+        editPriceLauncher.launch(intent);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestCodes.PRICE && resultCode == Activity.RESULT_OK) {
-            viewModel.loadStocks(mAccountId);
-        }
+    private void setupActivityResultLaunchers() {
+        editPriceLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        viewModel.loadStocks(mAccountId);
+                    }
+                }
+        );
+
+        editInvestmentLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        viewModel.loadStocks(mAccountId);
+                    }
+                }
+        );
     }
 }
