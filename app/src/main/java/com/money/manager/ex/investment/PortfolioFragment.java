@@ -212,7 +212,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
         String dateString = new MmxDate().toIsoDateString();
         intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-        editInvestmentLauncher.launch(intent);
+        editPriceLauncher.launch(intent);
     }
 
     private void setupActivityResultLaunchers() {
