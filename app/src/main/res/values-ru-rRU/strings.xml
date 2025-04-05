@@ -23,7 +23,7 @@
     <string name="application_credits">В проекте MoneyManagerEx для Android используется библиотека ActionBarSherlock</string>
     <string name="application_license">Лицензии открытого ПО</string>
     <!-- database -->
-    <string name="db_insert_failed">Вставка данных не удалась</string>
+    <string name="db_insert_failed">Ошибка при вставке данных</string>
     <string name="db_delete_failed">Ошибка удаления данных</string>
     <string name="db_update_failed">Ошибка обновления данных</string>
     <!-- menu -->
