@@ -68,7 +68,6 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
-import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -454,7 +453,6 @@ public class HomeFragment
 
         // Investment menu items.
         if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
-            menu.add(Menu.NONE, ContextMenuIds.WATCHLIST.getId(), 0, getString(R.string.watchlist));
             menu.add(Menu.NONE, ContextMenuIds.Portfolio.getId(), 0, getString(R.string.portfolio));
             menu.add(Menu.NONE, ContextMenuIds.CASH_LEDGER.getId(), 0, getString(R.string.cash_ledger));
         }
@@ -483,9 +481,6 @@ public class HomeFragment
         }
         else if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
             startBalanceAccount(account);
-        }
-        else if (menuItemTitle.equalsIgnoreCase(getString(R.string.watchlist))) {
-            EventBus.getDefault().post(new RequestWatchlistFragmentEvent(accountId));
         }
         else if (menuItemTitle.equalsIgnoreCase(getString(R.string.portfolio))) {
             EventBus.getDefault().post(new RequestPortfolioFragmentEvent(accountId));
