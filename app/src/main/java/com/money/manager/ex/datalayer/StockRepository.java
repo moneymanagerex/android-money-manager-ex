@@ -19,11 +19,9 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
-import com.google.common.collect.ObjectArrays;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Stock;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,8 +35,8 @@ public class StockRepository
     extends RepositoryBase<Stock> {
 
     private static final String TABLE_NAME = "stock_v1";
-    private static final String ID_COLUMN = StockFields.STOCKID;
-    private static final String NAME_COLUMN = StockFields.SYMBOL;
+    private static final String ID_COLUMN = Stock.STOCKID;
+    private static final String NAME_COLUMN = Stock.SYMBOL;
 
     @Inject
     public StockRepository(Context context) {
@@ -52,23 +50,12 @@ public class StockRepository
 
     @Override
     public String[] getAllColumns() {
-        String [] idColumn = new String[] {
-                ID_COLUMN + " AS _id"
+        return new String[] {
+                ID_COLUMN + " AS _id", Stock.STOCKID, Stock.STOCKNAME
+                , Stock.HELDAT, Stock.SYMBOL, Stock.PURCHASEDATE, Stock.PURCHASEPRICE
+                , Stock.NUMSHARES, Stock.NOTES, Stock.CURRENTPRICE
+                , Stock.VALUE, Stock.COMMISSION
         };
-
-        //String[] result = ArrayUtils.addAll(idColumn, tableColumns());
-        return ObjectArrays.concat(idColumn, tableColumns(), String.class);
-    }
-
-    private String[] tableColumns() {
-        Field[] fields = StockFields.class.getFields();
-        String[] names = new String[fields.length];
-
-        for(int i = 0; i < fields.length; i++) {
-            names[i] = fields[i].getName();
-        }
-
-        return names;
     }
 
     /**
@@ -91,10 +78,10 @@ public class StockRepository
 
     // custom func
     public List<Stock> loadByAccount(long accountId) {
-        return query(new Select(getAllColumns()).where(StockFields.HELDAT + " = ?", accountId));
+        return query(new Select(getAllColumns()).where(Stock.HELDAT + " = ?", accountId));
     }
 
     public List<Stock> loadBySymbol(String symbol) {
-        return query(new Select(getAllColumns()).where(StockFields.SYMBOL + " = ?", symbol));
+        return query(new Select(getAllColumns()).where(Stock.SYMBOL + " = ?", symbol));
     }
 }
