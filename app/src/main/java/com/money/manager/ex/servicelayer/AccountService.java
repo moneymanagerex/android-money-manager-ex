@@ -39,9 +39,9 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
@@ -245,7 +245,7 @@ public class AccountService
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         StockRepository stockRepository = new StockRepository(getContext());
-        where.addStatement(StockFields.HELDAT, "=", accountId);
+        where.addStatement(Stock.HELDAT, "=", accountId);
         long investmentCount = stockRepository.count(where.getWhere(), null);
 
         return repoAccount.isAccountUsed(accountId) || (investmentCount > 0);
