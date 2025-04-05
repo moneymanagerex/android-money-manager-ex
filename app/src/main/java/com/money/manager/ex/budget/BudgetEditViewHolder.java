@@ -28,9 +28,9 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 
 public class BudgetEditViewHolder {
-    private TextView budgetNameTextView;
-    private TextView budgetYearTextView;
-    private TextView budgetMonthTextView;
+    private final TextView budgetNameTextView;
+    private final TextView budgetYearTextView;
+    private final TextView budgetMonthTextView;
 
     private BudgetViewModel model;
 
@@ -50,14 +50,17 @@ public class BudgetEditViewHolder {
     }
 
     public void refreshName() {
+        if (budgetNameTextView == null) return;
         budgetNameTextView.setText(model.getName());
     }
 
     public void refreshYear() {
+        if (budgetYearTextView == null) return;
         budgetYearTextView.setText(model.getYear());
     }
 
     public void refreshMonth() {
+        if (budgetMonthTextView == null) return;
         budgetMonthTextView.setText(model.getMonth());
     }
 }
