@@ -52,6 +52,7 @@ public class ScheduleTransactionForecastList
     public Double getTotalAmount() {
         if (this.size() == 0) return 0.0;
 
+        // todo handle currency
         Double total = 0.0;
         for (RecurringTransaction recurringTransaction : this) {
             total += recurringTransaction.getAmount().toDouble();
