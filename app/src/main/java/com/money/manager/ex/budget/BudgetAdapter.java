@@ -43,6 +43,8 @@ import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.scheduled.ScheduleTransactionForecastList;
+import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BudgetSettings;
@@ -79,6 +81,8 @@ public class BudgetAdapter
     private boolean useBudgetFinancialYear = false;
     private MmxDate dateFrom;
     private MmxDate dateTo;
+
+    private ScheduleTransactionForecastList mScheduleTransactionForecastList;
 
     private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
@@ -125,7 +129,12 @@ public class BudgetAdapter
             if (setting.getColumnVisible(R.id.estimatedAnnualTextView, false)) addVisibleColumn(R.id.estimatedAnnualTextView);
             if (setting.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
             if (setting.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
-            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
+            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) {
+
+                addVisibleColumn(R.id.forecastRemainTextView);
+                // TODO use async method
+                mScheduleTransactionForecastList = new ScheduledTransactionForecastListServices(getContext()).createScheduledTransactionForecast();
+            }
         }
     }
 
@@ -268,14 +277,19 @@ public class BudgetAdapter
 
 
         // forecastRemainTextView
-        double forecastRemain = getEstimateFromRecurringTransaction(cursor);
+        double totalFromSchedule = getEstimateFromRecurringTransaction(cursor);
+        double forecastRemain = estimatedAnnual - actual - totalFromSchedule;
         setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
 
     }
 
     private double getEstimateFromRecurringTransaction(Cursor cursor) {
-        // TODO Get Value for this category from recurring transaction
-        return 0;
+        // Get Value for this category from recurring transaction
+        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+        if ( mScheduleTransactionForecastList == null ) return 0;
+
+        return mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount();
+
     }
 
     public Context getContext() {

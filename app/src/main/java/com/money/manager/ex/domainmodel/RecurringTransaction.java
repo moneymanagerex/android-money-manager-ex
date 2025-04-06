@@ -392,4 +392,16 @@ public class RecurringTransaction
         return splitTransactions;
     }
 
+    @Override
+    public String toString() {
+        return "RecurringTransaction{" +
+                "id=" + getId() +
+                ", payementDate=" + getPaymentDateString() +
+                ", categoryId=" + getCategoryId() +
+                ", payeeId=" + getPayeeId() +
+                ", amount=" + getAmount() +
+                ", note="+getNotes()+
+                "}";
+    }
+
 }
