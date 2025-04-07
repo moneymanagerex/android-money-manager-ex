@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -41,6 +42,8 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.scheduled.ScheduleTransactionForecastList;
+import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BudgetSettings;
@@ -77,6 +80,12 @@ public class BudgetAdapter
     private MmxDate dateFrom;
     private MmxDate dateTo;
 
+    private ScheduleTransactionForecastList mScheduleTransactionForecastList;
+    //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
+    private List<View> fieldRequestUpdate = new ArrayList<>();
+    private List<Double> categoryActualAmount = new ArrayList<>();
+    private CurrencyService currencyService;
+
     private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
     /**
@@ -103,6 +112,7 @@ public class BudgetAdapter
                 : R.layout.item_budget;
 
         mContext = context;
+        currencyService = new CurrencyService(mContext);
 
         MmexApplication.getApp().iocComponent.inject(this);
 
@@ -122,8 +132,31 @@ public class BudgetAdapter
             if (setting.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
             if (setting.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
             if (setting.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
-            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
+            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) {
+
+                addVisibleColumn(R.id.forecastRemainTextView);
+                Toast.makeText(context, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
+                new ScheduledTransactionForecastListServices(getContext()).
+                        createScheduledTransactionForecastAsync(result -> {
+                            processForecast((ScheduleTransactionForecastList) result);
+                            return result;
+                        });
+            }
         }
+    }
+
+    public void processForecast(ScheduleTransactionForecastList result){
+        mScheduleTransactionForecastList = result;
+        for (int i = 0; i < fieldRequestUpdate.size(); i++) {
+            View view = fieldRequestUpdate.get(i);
+            double amountAvailable = categoryActualAmount.get(i);
+            double totalFromSchedule = mScheduleTransactionForecastList.getRecurringTransactions((long) view.getTag(), dateFrom, dateTo).getTotalAmount();
+            double forecastRemain = amountAvailable + totalFromSchedule;
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+            view.postInvalidate();
+        }
+        fieldRequestUpdate.clear();
+        categoryActualAmount.clear();
     }
 
     public void addVisibleColumn(int column) {
@@ -215,8 +248,6 @@ public class BudgetAdapter
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
         setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
 
-        CurrencyService currencyService = new CurrencyService(mContext);
-
         // amountTextView
         double amount = 0;
         amount = getBudgetAmountFor(categoryId);
@@ -259,20 +290,32 @@ public class BudgetAdapter
         double amountAvailable = -(estimatedForPeriod - actual);
         if (Double.isInfinite(amountAvailable)) {
             setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
+            amountAvailable = 0.0;
         } else {
             setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
         }
 
 
         // forecastRemainTextView
-        double forecastRemain = getEstimateFromRecurringTransaction(cursor);
-        setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
-
+        if (mScheduleTransactionForecastList == null){
+            setViewElement(view, R.id.forecastRemainTextView, "<...>");
+            view.setTag(categoryId);
+            fieldRequestUpdate.add(view);
+            categoryActualAmount.add(amountAvailable);
+        } else {
+            double totalFromSchedule = getEstimateFromRecurringTransaction(cursor);
+            double forecastRemain = amountAvailable + totalFromSchedule;
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+        }
     }
 
     private double getEstimateFromRecurringTransaction(Cursor cursor) {
-        // TODO Get Value for this category from recurring transaction
-        return 0;
+        // Get Value for this category from recurring transaction
+        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+        if ( mScheduleTransactionForecastList == null ) return 0;
+
+        return mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount();
+
     }
 
     public Context getContext() {

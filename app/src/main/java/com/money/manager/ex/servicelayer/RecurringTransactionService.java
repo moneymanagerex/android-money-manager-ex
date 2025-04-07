@@ -512,6 +512,12 @@ public class RecurringTransactionService
         }
         return getRecurringTransaction();
     }
+
+    public RecurringTransaction getSimulatedTransactionAsClone() {
+        RecurringTransaction tx = getRepository().load(recurringTransactionId);
+        tx.setPaymentDate(getSimulatedTransaction().getPaymentDate());
+        return tx;
+    }
     /**
      * @return true transaction is moved next, false transaction was ended
      */
