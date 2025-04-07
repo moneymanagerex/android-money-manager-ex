@@ -53,7 +53,6 @@ import com.squareup.sqlbrite3.BriteDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -136,7 +135,7 @@ public class BudgetAdapter
             if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) {
 
                 addVisibleColumn(R.id.forecastRemainTextView);
-                Toast.makeText(context, "Calcolating Forecast. Please wait...", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
                 new ScheduledTransactionForecastListServices(getContext()).
                         createScheduledTransactionForecastAsync(result -> {
                             processForecast((ScheduleTransactionForecastList) result);
