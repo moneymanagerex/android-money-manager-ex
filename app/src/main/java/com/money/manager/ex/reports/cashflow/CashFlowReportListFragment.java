@@ -200,9 +200,6 @@ public class CashFlowReportListFragment
 
             int limit = monthInAdvance * 31;
             while (limit > 0 && recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(endDate.toDate())) {
-                if (recurringTransactionService.getSimulatedTransaction().getPaymentDateString().compareTo("2026-02-20") > 0) {
-                    Timber.d("ops");
-                }
                 limit -= 1;
                 HashMap<String, Object> row2 = new HashMap<>();
                 row2.put(ID, row.get(ID));

@@ -20,7 +20,6 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
@@ -37,6 +36,18 @@ import info.javaperformance.money.MoneyFactory;
 @Parcel
 public class Stock
     extends EntityBase {
+
+    public static final String STOCKID = "STOCKID";
+    public static final String HELDAT = "HELDAT";
+    public static final String PURCHASEDATE = "PURCHASEDATE";
+    public static final String STOCKNAME = "STOCKNAME";
+    public static final String SYMBOL = "SYMBOL";
+    public static final String NUMSHARES = "NUMSHARES";
+    public static final String PURCHASEPRICE = "PURCHASEPRICE";
+    public static final String NOTES = "NOTES";
+    public static final String CURRENTPRICE = "CURRENTPRICE";
+    public static final String VALUE = "VALUE";
+    public static final String COMMISSION = "COMMISSION";
 
     public static Stock from(Cursor c) {
         Stock stock = new Stock();
@@ -80,102 +91,102 @@ public class Stock
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.COMMISSION, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.CURRENTPRICE, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.NUMSHARES, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, StockFields.PURCHASEPRICE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, COMMISSION, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, CURRENTPRICE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, NUMSHARES, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, PURCHASEPRICE, this.contentValues);
     }
 
     // properties
     @Override
     public String getPrimaryKeyColumn() {
-        return StockFields.STOCKID;  // This returns the column name specific to Report
+        return STOCKID;  // This returns the column name specific to Report
     }
 
     public Money getCommission() {
-        return getMoney(StockFields.COMMISSION);
+        return getMoney(COMMISSION);
     }
 
     public void setCommission(Money value) {
-        setMoney(StockFields.COMMISSION, value);
+        setMoney(COMMISSION, value);
     }
 
     public Money getCurrentPrice() {
-        String currentPrice = contentValues.getAsString(StockFields.CURRENTPRICE);
+        String currentPrice = contentValues.getAsString(CURRENTPRICE);
         return MoneyFactory.fromString(currentPrice);
     }
 
     public void setCurrentPrice(Money currentPrice) {
-        contentValues.put(StockFields.CURRENTPRICE, currentPrice.toString());
+        contentValues.put(CURRENTPRICE, currentPrice.toString());
     }
 
     public long getHeldAt() {
-        return getLong(StockFields.HELDAT);
+        return getLong(HELDAT);
     }
 
     public void setHeldAt(long value) {
-        setLong(StockFields.HELDAT, value);
+        setLong(HELDAT, value);
     }
 
     public String getNotes() {
-        return getString(StockFields.NOTES);
+        return getString(NOTES);
     }
 
     public void setNotes(String value) {
-        setString(StockFields.NOTES, value);
+        setString(NOTES, value);
     }
 
     public Double getNumberOfShares() {
-        return getDouble(StockFields.NUMSHARES);
+        return getDouble(NUMSHARES);
     }
 
     public void setNumberOfShares(Double value) {
-        setDouble(StockFields.NUMSHARES, value);
+        setDouble(NUMSHARES, value);
     }
 
     public Date getPurchaseDate() {
-        String dateString = getString(StockFields.PURCHASEDATE);
+        String dateString = getString(PURCHASEDATE);
         return new MmxDate(dateString).toDate();
     }
 
     public void setPurchaseDate(Date value) {
-        setDate(StockFields.PURCHASEDATE, value);
+        setDate(PURCHASEDATE, value);
     }
 
     public Money getPurchasePrice() {
-        String purchasePrice = contentValues.getAsString(StockFields.PURCHASEPRICE);
+        String purchasePrice = contentValues.getAsString(PURCHASEPRICE);
         return MoneyFactory.fromString(purchasePrice);
     }
 
     public void setPurchaseDate(String value) {
-        setString(StockFields.PURCHASEDATE, value);
+        setString(PURCHASEDATE, value);
     }
 
     public void setPurchasePrice(Money value) {
-        setMoney(StockFields.PURCHASEPRICE, value);
+        setMoney(PURCHASEPRICE, value);
     }
 
     public String getName() {
-        return getString(StockFields.STOCKNAME);
+        return getString(STOCKNAME);
     }
 
     public void setName(String value) {
-        setString(StockFields.STOCKNAME, value);
+        setString(STOCKNAME, value);
     }
 
     public String getSymbol() {
-        return getString(StockFields.SYMBOL);
+        return getString(SYMBOL);
     }
 
     public void setSymbol(String value) {
-        setString(StockFields.SYMBOL, value);
+        setString(SYMBOL, value);
     }
 
     public Money getValue() {
         // value = current price * num shares
         Money value = this.getCurrentPrice().multiply(this.getNumberOfShares());
 
-        setMoney(StockFields.VALUE, value);
+        setMoney(VALUE, value);
 
         return value;
     }
@@ -188,11 +199,12 @@ public class Stock
         return Objects.equals(getId(), stock.getId()) &&
                 Objects.equals(getSymbol(), stock.getSymbol()) &&
                 Objects.equals(getNumberOfShares(), stock.getNumberOfShares()) &&
+                Objects.equals(getPurchasePrice(), stock.getPurchasePrice()) &&
                 Objects.equals(getCurrentPrice(), stock.getCurrentPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSymbol(), getNumberOfShares(), getCurrentPrice());
+        return Objects.hash(getId(), getSymbol(), getNumberOfShares(), getPurchasePrice(), getCurrentPrice());
     }
 }

@@ -129,7 +129,7 @@ public class InvestmentSettingsFragment
         // initialize
         preference.setEntries(QuoteProviders.names());
         preference.setEntryValues(QuoteProviders.names());
-        preference.setDefaultValue(QuoteProviders.YahooYql.name());
+        preference.setDefaultValue(QuoteProviders.YahooChart.name());
 
         final InvestmentSettings settings = new InvestmentSettings(getContext());
         QuoteProviders currentProvider = settings.getQuoteProvider();

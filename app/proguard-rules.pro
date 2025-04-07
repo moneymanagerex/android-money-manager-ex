@@ -68,7 +68,6 @@
 #-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
 #-keep class com.money.manager.ex.home.**
 -keepclassmembers class com.money.manager.ex.home.DatabaseMetadata { <fields>; }
--keepclassmembers class com.money.manager.ex.datalayer.StockFields { public *; }
 
 #Icon font
 -keep class .R

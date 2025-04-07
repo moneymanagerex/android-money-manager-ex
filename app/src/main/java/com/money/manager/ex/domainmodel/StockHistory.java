@@ -21,8 +21,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
 
-import com.money.manager.ex.datalayer.StockFields;
-
 import java.util.Date;
 
 /**

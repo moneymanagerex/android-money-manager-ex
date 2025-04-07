@@ -72,7 +72,7 @@ public class InvestmentSettings
     }
 
     public QuoteProviders getQuoteProvider() {
-        QuoteProviders defaultValue = QuoteProviders.YahooYql;
+        QuoteProviders defaultValue = QuoteProviders.YahooChart;
 
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.QUOTE_PROVIDER);

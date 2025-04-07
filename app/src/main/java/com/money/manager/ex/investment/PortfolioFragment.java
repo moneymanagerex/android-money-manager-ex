@@ -23,13 +23,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.view.ContextMenu;
+import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseRecyclerFragment;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
-import com.money.manager.ex.core.RequestCodes;
-import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -37,7 +36,9 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.StockViewModel;
 import com.money.manager.ex.viewmodels.ViewModelFactory;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private Long mAccountId;
     private Account mAccount;
     private Stock selectedStock;
+
+    private ActivityResultLauncher<Intent> editPriceLauncher;
+    private ActivityResultLauncher<Intent> editInvestmentLauncher;
 
     /**
      * Use this factory method to create a new instance of
@@ -91,9 +95,6 @@ public class PortfolioFragment extends BaseRecyclerFragment {
                 mAccountId = args.getLong(ARG_ACCOUNT_ID);
             }
         }
-
-        if (mAccountId > 0)
-            mAccount = (new AccountRepository(requireContext())).load(mAccountId);
     }
 
     @Override
@@ -102,6 +103,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         setupViewModel();
         enableFab(true);
         registerForContextMenu(getRecyclerView());
+        setupActivityResultLaunchers();
     }
 
     @Override
@@ -111,6 +113,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         menu.setHeaderTitle(selectedStock.getSymbol());
 
         MenuHelper menuHelper = new MenuHelper(requireActivity(), menu);
+        menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice);
         menuHelper.addToContextMenu(ContextMenuIds.EditPrice);
     }
 
@@ -122,6 +125,9 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
         if (Objects.requireNonNull(menuId) == ContextMenuIds.EditPrice) {
             openEditPriceActivity(selectedStock);
+            return true;
+        } else if (Objects.requireNonNull(menuId) == ContextMenuIds.DownloadPrice) {
+            viewModel.downloadStockPrice(selectedStock.getSymbol());
             return true;
         }
 
@@ -135,7 +141,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
 
     @Override
     protected RecyclerView.Adapter<?> createAdapter() {
-        mAdapter = new PortfolioListAdapter(getActivity(), this.mAccount);
+        mAdapter = new PortfolioListAdapter(getActivity());
         mAdapter.setOnItemClickListener(this::openEditInvestmentActivity);
         mAdapter.setOnItemLongClickListener((stock, view) -> {
             selectedStock = stock;
@@ -148,11 +154,25 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     private void setupViewModel() {
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
-        viewModel = new ViewModelProvider(this, factory).get(StockViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(StockViewModel.class);
 
         viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
-            ((PortfolioListAdapter)getAdapter()).submitList(stocks);
+            mAdapter.submitList(stocks);
             checkEmpty();
+        });
+
+        viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
+            if (priceModel != null) {
+                Toast.makeText(getContext(),
+                        "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
+                        Toast.LENGTH_SHORT).show();
+                viewModel.loadStocks(mAccountId);
+            }
+        });
+
+        viewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
+            mAccount = account;
+            mAdapter.setAccount(account);
         });
 
         viewModel.loadStocks(mAccountId);
@@ -181,7 +201,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
         intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
         intent.setAction(Intent.ACTION_INSERT);
-        startActivity(intent);
+        editInvestmentLauncher.launch(intent);
     }
 
     private void openEditPriceActivity(Stock stock) {
@@ -192,14 +212,26 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
         String dateString = new MmxDate().toIsoDateString();
         intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-        startActivityForResult(intent, RequestCodes.PRICE);
+        editPriceLauncher.launch(intent);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestCodes.PRICE && resultCode == Activity.RESULT_OK) {
-            viewModel.loadStocks(mAccountId);
-        }
+    private void setupActivityResultLaunchers() {
+        editPriceLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        viewModel.loadStocks(mAccountId);
+                    }
+                }
+        );
+
+        editInvestmentLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        viewModel.loadStocks(mAccountId);
+                    }
+                }
+        );
     }
 }

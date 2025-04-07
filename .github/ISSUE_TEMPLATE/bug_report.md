@@ -24,14 +24,14 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Device Information:**
- - Device: [e.g. LG G7 ThinQ]
- - OS: [e.g. Android 8.1]
- - Storage: [e.g. Phone storage + Syncthing]
- - Synchronization: [e.g. 5min interval and Sync on Start]
- - Encrypted: [e.g. Yes with password]
- - Security: [e.g. Actived with passcode or fingerprint]
+ - Device: [e.g., LG G7 ThinQ]
+ - OS: [e.g,. Android 13]
+ - Storage: [e.g,. Phone storage + Syncthing]
+ - Synchronization: [e.g. 5min interval]
+ - Encrypted: [e.g., Yes with password]
+ - Security: [e.g., Actived with passcode or fingerprint]
  - App Version: [e.g. 2025.01.14]
 
 **Additional context**
-Add any other context about the problem here.
-Great if you can try [the latest beta version](https://play.google.com/apps/testing/com.money.manager.ex.android)
+Please feel free to add any other context about the problem here.
+It would be great if you could try [the latest beta version](https://play.google.com/apps/testing/com.money.manager.ex.android)

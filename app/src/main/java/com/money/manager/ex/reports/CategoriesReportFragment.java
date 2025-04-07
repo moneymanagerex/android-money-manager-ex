@@ -34,9 +34,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
@@ -65,6 +67,9 @@ public class CategoriesReportFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setSearchMenuVisible(true);
+
+        // disable fab issue #2504
+        setFabVisible(false);
 
         //create header view
         LinearLayout mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
@@ -216,10 +221,15 @@ public class CategoriesReportFragment
         };
 
         String selection = QueryMobileData.Status + "<>'V' AND " +
-            QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+            QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')" +
+// ignore Stock Movement
+                " AND " +
+                QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
+                QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
+
 
         String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category;
 

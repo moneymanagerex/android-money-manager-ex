@@ -68,7 +68,6 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
-import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -712,7 +711,7 @@ public class HomeFragment
                 Object event;
 
                 if (accountType.equalsIgnoreCase(AccountTypes.INVESTMENT.toString())) {
-                    event = new RequestWatchlistFragmentEvent(accountId);
+                    event = new RequestPortfolioFragmentEvent(accountId);
                 } else {
                     event = new RequestAccountFragmentEvent(accountId);
                 }
@@ -837,10 +836,15 @@ public class HomeFragment
             QueryAccountBills accountTransaction = new QueryAccountBills(getActivity());
             accountTransaction.setValueFromCursor(cursor);
 
+            if (accountTransaction.getAccountType().equalsIgnoreCase(AccountTypes.SHARES.toString())) {
+                continue; // ignore stock account
+            }
+
             double total = accountTransaction.getTotalBaseConvRate();
-            mGrandTotal = mGrandTotal.add(MoneyFactory.fromDouble(total));
             double totalReconciled = accountTransaction.getReconciledBaseConvRate();
-            mGrandReconciled = mGrandReconciled.add(MoneyFactory.fromDouble(totalReconciled));
+
+                mGrandTotal = mGrandTotal.add(MoneyFactory.fromDouble(total));
+                mGrandReconciled = mGrandReconciled.add(MoneyFactory.fromDouble(totalReconciled));
 
             String accountType = accountTransaction.getAccountType().toLowerCase();
             QueryAccountBills totalForType;

@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryMobileData;
@@ -63,6 +64,8 @@ public class PayeeReportFragment
         setListAdapter(null);
         setSearchMenuVisible(true);
 
+        // disable fab issue #2504
+        setFabVisible(false);
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -166,7 +169,12 @@ public class PayeeReportFragment
                 QueryMobileData.PAYEEID, QueryMobileData.PAYEENAME,
                 "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"};
         String selection = QueryMobileData.Status + "<>'V' AND " +
-                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')"
+// ignore Stock Movement
+                + " AND " +
+                QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
+                QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
+
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }

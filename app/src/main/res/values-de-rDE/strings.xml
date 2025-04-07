@@ -556,6 +556,7 @@
     <string name="unhandled_crash">Unerwarteter Fehler. Bitte senden Sie uns das Protokoll (log file).</string>
     <string name="title_activity_currency_rates_report">Währungskurse</string>
     <string name="frequency">Häufigkeit</string>
+    <string name="select_columns">Sichtbare Spalten auswählen</string>
     <string name="update_available">Update verfügbar</string>
     <string name="update_available_online">Es ist eine aktualisierte Datenbankdatei online vorhanden. Möchten Sie aktualisieren?</string>
     <string name="currency_not_found">Währung nicht gefunden</string>
@@ -801,4 +802,6 @@
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
+    <string name="forecast_remain">Prognostiziere verbleibende</string>
+    <string name="enter_budget">Budget eingeben</string>
 </resources>

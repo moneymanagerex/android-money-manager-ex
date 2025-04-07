@@ -1,0 +1,5 @@
+* New Budget Functionality
+* Fix error while manually update currency exchange rate
+* Translation improvement
+* Stock: refine portfolio
+* Remove Shared Account from main screen

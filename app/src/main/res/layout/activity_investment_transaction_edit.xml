@@ -96,7 +96,7 @@
                         android:text="@string/ic_chevron_right"
                         android:textSize="@dimen/fonticon_drawer"
                         android:background="?attr/selectableItemBackground" />
-~                </LinearLayout>
+                </LinearLayout>
 
                 <!-- Account -->
                 <LinearLayout

@@ -90,10 +90,8 @@ import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
-import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.investment.PortfolioFragment;
-import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionProcess;
 import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
@@ -471,11 +469,6 @@ public class MainActivity
     }
 
     @Subscribe
-    public void onEvent(RequestWatchlistFragmentEvent event) {
-        showWatchlistFragment(event.accountId);
-    }
-
-    @Subscribe
     public void onEvent(RequestPortfolioFragmentEvent event) {
         showPortfolioFragment(event.accountId);
     }
@@ -781,15 +774,6 @@ public class MainActivity
         PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
             fragment = PortfolioFragment.newInstance(accountId);
-        }
-        showFragment(fragment, tag);
-    }
-
-    public void showWatchlistFragment(long accountId) {
-        String tag = WatchlistFragment.class.getSimpleName() + "_" + accountId;
-        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment == null || fragment.getId() != getContentId()) {
-            fragment = WatchlistFragment.newInstance(accountId);
         }
         showFragment(fragment, tag);
     }
