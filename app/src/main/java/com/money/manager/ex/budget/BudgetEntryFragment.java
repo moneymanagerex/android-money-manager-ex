@@ -333,7 +333,7 @@ public class BudgetEntryFragment
         String budgetPeriodString;
         // Create the EditText view for numeric input
         final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         input.setHint(R.string.enter_budget_value_plus_minus);
 
         BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getActivity());
