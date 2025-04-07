@@ -137,8 +137,7 @@ public class BudgetAdapter
 
                 addVisibleColumn(R.id.forecastRemainTextView);
                 Toast.makeText(context, "Calcolating Forecast. Please wait...", Toast.LENGTH_LONG).show();
-//                mScheduleTransactionForecastList = new ScheduledTransactionForecastListServices(getContext()).createScheduledTransactionForecast();
-                mScheduleTransactionForecastListFuture = new ScheduledTransactionForecastListServices(getContext()).
+                new ScheduledTransactionForecastListServices(getContext()).
                         createScheduledTransactionForecastAsync(result -> {
                             processForecast((ScheduleTransactionForecastList) result);
                             return result;
