@@ -1,5 +1,6 @@
 package com.money.manager.ex.scheduled;
 
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -55,7 +56,19 @@ public class ScheduleTransactionForecastList
         // todo handle currency
         Double total = 0.0;
         for (RecurringTransaction recurringTransaction : this) {
-            total += recurringTransaction.getAmount().toDouble();
+            // ignore transfert
+            if (recurringTransaction.getTransactionType().equals(TransactionTypes.Transfer)) continue;
+
+            // todo check split
+
+            // if deposit add to total
+            if (recurringTransaction.getTransactionType().equals(TransactionTypes.Deposit)) {
+                total += recurringTransaction.getAmount().toDouble();
+            }
+            // if withdrawal subtract from total
+            if (recurringTransaction.getTransactionType().equals(TransactionTypes.Withdrawal)) {
+                total -= recurringTransaction.getAmount().toDouble();
+            }
         }
         return total;
     }

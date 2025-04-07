@@ -27,6 +27,7 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import timber.log.Timber;
 
@@ -49,10 +50,10 @@ public class ScheduledTransactionForecastListServices {
         monthInAdvance = months;
     }
 
-    public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync() {
+    public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync(Function f) {
         return CompletableFuture.supplyAsync(() -> {
             return createScheduledTransactionForecast();
-        });
+        }).thenApply(f);
     }
 
     public ScheduleTransactionForecastList createScheduledTransactionForecast () {

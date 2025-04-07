@@ -278,7 +278,7 @@ public class BudgetAdapter
 
         // forecastRemainTextView
         double totalFromSchedule = getEstimateFromRecurringTransaction(cursor);
-        double forecastRemain = estimatedAnnual - actual - totalFromSchedule;
+        double forecastRemain = amountAvailable + totalFromSchedule;
         setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
 
     }
