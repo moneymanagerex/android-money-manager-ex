@@ -83,7 +83,8 @@ public class BudgetAdapter
     private ScheduleTransactionForecastList mScheduleTransactionForecastList;
     //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
     private List<View> fieldRequestUpdate = new ArrayList<>();
-    private List<Double> categoryActualAmount = new ArrayList<>();
+    private HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<Long, Double>();
+    private HashMap<Long, Double> categoryIdForecastAmount = new HashMap<Long, Double>();
     private CurrencyService currencyService;
 
     private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
@@ -132,31 +133,45 @@ public class BudgetAdapter
             if (setting.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
             if (setting.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
             if (setting.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
-            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) {
-
-                addVisibleColumn(R.id.forecastRemainTextView);
-                Toast.makeText(context, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
-                new ScheduledTransactionForecastListServices(getContext()).
-                        createScheduledTransactionForecastAsync(result -> {
-                            processForecast((ScheduleTransactionForecastList) result);
-                            return result;
-                        });
-            }
+            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
         }
+    }
+
+    private void createForecastEntry(){
+        if (!mVisibleColumn.contains(R.id.forecastRemainTextView))
+            return;
+        ScheduledTransactionForecastListServices forecastListServices = ScheduledTransactionForecastListServices.getInstance();
+        if (!forecastListServices.isReady()) {
+            Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
+            forecastListServices
+                    .setContext(mContext)
+                    .setDateTo(dateTo)
+                    .createScheduledTransactionForecastAsync(result -> {
+                        processForecast((ScheduleTransactionForecastList) result);
+                        return result;
+                    });
+        }
+
     }
 
     public void processForecast(ScheduleTransactionForecastList result){
         mScheduleTransactionForecastList = result;
         for (int i = 0; i < fieldRequestUpdate.size(); i++) {
             View view = fieldRequestUpdate.get(i);
-            double amountAvailable = categoryActualAmount.get(i);
-            double totalFromSchedule = mScheduleTransactionForecastList.getRecurringTransactions((long) view.getTag(), dateFrom, dateTo).getTotalAmount();
-            double forecastRemain = amountAvailable + totalFromSchedule;
+            long categoryId = (long) view.getTag();
+            double forecastRemain;
+            if (categoryIdForecastAmount.containsKey( categoryId ) ) {
+                // reuse from cache
+                forecastRemain = categoryIdAmountAvailable.get(categoryId) + categoryIdForecastAmount.get(categoryId);
+            } else {
+                double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
+                double amountAvailable = categoryIdAmountAvailable.get(categoryId);
+                forecastRemain = amountAvailable + totalFromSchedule;
+            }
             setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
             view.postInvalidate();
         }
         fieldRequestUpdate.clear();
-        categoryActualAmount.clear();
     }
 
     public void addVisibleColumn(int column) {
@@ -294,28 +309,29 @@ public class BudgetAdapter
         } else {
             setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
         }
-
+        categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
         // forecastRemainTextView
-        if (mScheduleTransactionForecastList == null){
+        if (!ScheduledTransactionForecastListServices.getInstance().isReady()){
             setViewElement(view, R.id.forecastRemainTextView, "<...>");
             view.setTag(categoryId);
             fieldRequestUpdate.add(view);
-            categoryActualAmount.add(amountAvailable);
         } else {
-            double totalFromSchedule = getEstimateFromRecurringTransaction(cursor);
+            double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
             double forecastRemain = amountAvailable + totalFromSchedule;
             setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
         }
     }
 
-    private double getEstimateFromRecurringTransaction(Cursor cursor) {
+    private double getEstimateFromRecurringTransaction(long categoryId) {
         // Get Value for this category from recurring transaction
-        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+        if ( categoryIdForecastAmount.containsKey(categoryId) ) {
+            return categoryIdForecastAmount.get(categoryId);
+        }
+
         if ( mScheduleTransactionForecastList == null ) return 0;
-
-        return mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount();
-
+        categoryIdForecastAmount.put(categoryId, mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount());
+        return categoryIdForecastAmount.get(categoryId);
     }
 
     public Context getContext() {
@@ -356,6 +372,8 @@ public class BudgetAdapter
         }
         // populate thread cache HashMap
         mBudgetEntries = populateThreadCache();
+        // populate forecast entry
+        createForecastEntry();
     }
 
     private double getActualAmount(Boolean useSubCategory, Cursor cursor) {
