@@ -82,7 +82,7 @@ public class BudgetAdapter
     private MmxDate dateTo;
 
     private ScheduleTransactionForecastList mScheduleTransactionForecastList;
-    private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
+    //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
     private List<View> fieldRequestUpdate = new ArrayList<>();
     private List<Double> categoryActualAmount = new ArrayList<>();
     private CurrencyService currencyService;
