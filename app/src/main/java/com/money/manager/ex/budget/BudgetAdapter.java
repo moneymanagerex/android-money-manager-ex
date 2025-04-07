@@ -300,6 +300,7 @@ public class BudgetAdapter
             setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
         }
 
+
         // forecastRemainTextView
         if (mScheduleTransactionForecastList == null){
             setViewElement(view, R.id.forecastRemainTextView, "<...>");
