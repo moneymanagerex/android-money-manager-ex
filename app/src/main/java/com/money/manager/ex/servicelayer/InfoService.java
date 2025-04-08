@@ -176,7 +176,7 @@ public class InfoService
     }
 
     public String[] getColorArrayFromInfoKey(int n) {
-        if ( n <= 0 ) {
+        if ( n <= 0 || n > defaultColor.length ) { // fix issue #2528
             return null;
         }
         String colorList = getInfoValue(String.format("USER_COLOR%d",n),"");
