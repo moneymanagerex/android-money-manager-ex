@@ -1,0 +1,1 @@
+* fix random dump when color is > 7
