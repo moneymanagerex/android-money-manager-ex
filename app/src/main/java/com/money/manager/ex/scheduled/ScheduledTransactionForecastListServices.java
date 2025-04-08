@@ -37,18 +37,51 @@ import timber.log.Timber;
  */
 public class ScheduledTransactionForecastListServices {
 
-    private final Context mContext;
-    private int monthInAdvance = 12;
-    private ScheduleTransactionForecastList scheduleTransactionForecastList;
+    private Context mContext;
+//    private int monthInAdvance = 12;
+    private MmxDate mDateTo;
+    private ScheduleTransactionForecastList scheduleTransactionForecastList = null;
+    private Boolean isReady = false;
+
+    private static ScheduledTransactionForecastListServices mInstance = new ScheduledTransactionForecastListServices();
+
+    public static ScheduledTransactionForecastListServices getInstance() {
+        return mInstance;
+    }
+
+    public ScheduledTransactionForecastListServices setContext(Context context) {
+        mContext = context;
+        return this;
+    }
+
+    public static void destroyInstance() {
+        mInstance = null;
+    }
+
+    public Boolean isReady() {
+        return isReady && (scheduleTransactionForecastList != null);
+    }
+
+    public ScheduledTransactionForecastListServices() {
+    }
 
     public ScheduledTransactionForecastListServices(Context context) {
         mContext = context;
-        scheduleTransactionForecastList = new ScheduleTransactionForecastList();
+        setMonthInAdvance(12); // default 12 months
     }
 
-    public void setMonthInAdvance(int months) {
-        monthInAdvance = months;
+    public ScheduledTransactionForecastListServices setMonthInAdvance(int months) {
+        return setDateTo(new MmxDate().addMonth(months));
     }
+
+    public ScheduledTransactionForecastListServices setDateTo(MmxDate dateTo) {
+        if ( mDateTo != null && mDateTo.toDate().equals(dateTo.toDate())) return this; // no change
+        mDateTo = dateTo;
+        // invalidate scheduleTransactionForecastList
+        scheduleTransactionForecastList = null;
+        return this;
+    }
+
 
     public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync(Function f) {
         return CompletableFuture.supplyAsync(() -> {
@@ -58,9 +91,8 @@ public class ScheduledTransactionForecastListServices {
 
     public ScheduleTransactionForecastList createScheduledTransactionForecast () {
         scheduleTransactionForecastList = new ScheduleTransactionForecastList();
+        if (mDateTo == null) return scheduleTransactionForecastList;
 
-        MmxDate endDate = new MmxDate();
-        endDate.addMonth(monthInAdvance);
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
 
         Cursor cursor = null;
@@ -81,12 +113,12 @@ public class ScheduledTransactionForecastListServices {
             @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), mContext);
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransactionAsClone();
             Timber.d("Recurring Transaction: " + rx.toString());
-            if (rx.getPaymentDate().after(endDate.toDate())) {
+            if (rx.getPaymentDate().after(mDateTo.toDate())) {
                 // first occurence of this transaction is over cashflow visibility
                 continue;
             }
             scheduleTransactionForecastList.add(rx); // add first entry of series
-            while (recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(endDate.toDate())) {
+            while (recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(mDateTo.toDate())) {
                 RecurringTransaction rx2 = recurringTransactionService.getSimulatedTransactionAsClone();
                 // Timber.d("Recurring Transaction Occurrence: " + rx2.toString());
                 scheduleTransactionForecastList.add(rx2);
@@ -95,11 +127,11 @@ public class ScheduledTransactionForecastListServices {
         }
         cursor.close();
         scheduleTransactionForecastList.orderByDateAscending();
+        isReady = true;
         return scheduleTransactionForecastList;
     }
 
     public ScheduleTransactionForecastList getRecurringTransactions() {
-        if (scheduleTransactionForecastList == null) createScheduledTransactionForecast();
         return scheduleTransactionForecastList;
     }
 

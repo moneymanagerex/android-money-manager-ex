@@ -11,14 +11,11 @@ import java.util.stream.Collectors;
 
 public class ScheduleTransactionForecastList
     extends ArrayList<RecurringTransaction> {
-//    private ArrayList<RecurringTransaction> mRecurringTransactions;
 
     ScheduleTransactionForecastList() {
-//        mRecurringTransactions = new ArrayList<>();
     }
 
     ScheduleTransactionForecastList(ArrayList<RecurringTransaction> recurringTransactionsList) {
-//        mRecurringTransactions = recurringTransactionsList;
         this.addAll(recurringTransactionsList);
     }
 
