@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Geral</string>
     <string name="preferences_perdatabase">Por banco de dados</string>
+    <string name="preferences_display">Aparência</string>
     <string name="preferences_behaviour">Comportamento</string>
     <string name="base_currency">Moeda base</string>
     <string name="base_currency_changed">Moeda base alterada</string>
@@ -123,6 +124,7 @@
     <string name="add_subcategory">Adicionar subcategoria</string>
     <string name="edit_categoryName">Editar Categoria</string>
     <string name="delete_category">Apagar Categoria</string>
+    <string name="search_sub_category">Incluir subcategoria</string>
     <!-- currency -->
     <string name="currency_name">Nome da moeda</string>
     <string name="currency_symbol">Símbolo de moeda</string>
@@ -134,8 +136,10 @@
     <string name="decimal_char">Separador decimal</string>
     <string name="group_char">Símbolo do grupo</string>
     <string name="scale">Escala</string>
+    <string name="conversion_to_base_rate">Conversão</string>
     <string name="currency_name_empty">Nome da moeda é necessário</string>
     <string name="new_edit_currency">Nova/Editar Moeda</string>
+    <string name="missing_default_currency">Falta Moeda Padrão na configuração</string>
     <!-- transaction -->
     <string name="amount">Valor</string>
     <string name="total_amount">Valor total</string>
@@ -156,6 +160,7 @@
     <string name="delete_transaction">Apagar transação</string>
     <string name="new_transaction">Nova transação</string>
     <string name="error_payee_not_selected">Favorecido é necessário</string>
+    <string name="error_fromaccount_not_selected">Conta de Origem é necessária</string>
     <string name="error_toaccount_not_selected">A conta é necessária</string>
     <string name="error_category_not_selected">A categoria é necessária</string>
     <string name="error_totamount_empty">O valor total é necessário</string>
@@ -215,6 +220,16 @@
     <string name="widget_all_accounts">Todas as contas</string>
     <string name="widget_add_transaction">Adicionar Transação</string>
     <!-- TAG -->
+    <string name="tag">Etiqueta/Rótulo</string>
+    <string name="tagsList_transactions">Etiqueta para transação</string>
+    <string name="tag_name">Nome da Etiqueta</string>
+    <string name="edit_tagName">Editar Etiqueta</string>
+    <string name="delete_tag">Excluir Etiqueta</string>
+    <string name="select_tag">Selecionar Etiqueta</string>
+    <string name="tag_empty_list">Nenhuma Etiqueta foi encontrada. Para criar uma, toque no botão verde +.</string>
+    <string name="tag_can_not_deleted">A Etiqueta selecionada não pode ser excluída porque está referenciada</string>
+    <string name="db_tag_update_failed">Atualização da Etiqueta falhou</string>
+    <string name="space_replaced_with__">Espaço, &amp; e | foi substituído por \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nenhum</string>
     <string name="once">Uma vez</string>
@@ -222,6 +237,7 @@
     <string name="bi_weekly">Quinzenal</string>
     <string name="monthly">Mensal</string>
     <string name="bi_monthly">Bimestral</string>
+    <string name="quarterly">Trimestral</string>
     <string name="half_year">Semestral</string>
     <string name="yearly">Anual</string>
     <string name="four_months">Quatro meses</string>
@@ -234,6 +250,8 @@
     <string name="repeating_empty_transaction">Nenhuma transação agendada foi encontrada. Para criar um, toque no botão verde de adição.</string>
     <string name="inactive">Inativo</string>
     <string name="activates">Ativa</string>
+    <string name="days_overdue">%d dias vencidos!</string>
+    <string name="days_remaining">%d dias restantes</string>
     <string name="new_edit_repeating_transaction">Nova/Editar Transação Agendada</string>
     <string name="due_date">Data de vencimento</string>
     <string name="next_occurrence">Próxima ocorrência</string>
@@ -254,6 +272,7 @@
     <string name="enter">Entrar</string>
     <string name="enter_amount">Digite a quantidade</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Transação Automática</string>
     <string name="manual">Entrada manual</string>
     <string name="prompt">Solicitar entrada</string>
     <string name="auto">Entrada automática</string>
@@ -272,6 +291,10 @@
     <string name="enter_your_previous_passcode">Digite sua senha anterior</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">a senha não foi atualizada</string>
+    <string name="fingerprint_passcode_deactivated">A senha de segurança foi ativada usando Autenticação de Impressão Digital, então a senha foi desativada automaticamente, por favor reative a senha com um valor numérico</string>
+    <string name="preferences_fingerprint_auth_key">Chave de Autenticação Biométrica</string>
+    <string name="preferences_fingerprint_summary">Ative para usar a Autenticação de Impressão Digital para login e desativar a tela de senha. No entanto, o usuário não pode usar Impressão Digital para ativar ou editar a senha</string>
+    <string name="preferences_fingerprint_title">Autenticação por Impressão Digital</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Quando pesquisar, você pode utilizar o caractere genérico \"%\"</string>
     <string name="income_vs_expenses_current_month">Receitas x Despesas: Mês atual</string>
@@ -282,13 +305,19 @@
     <string name="no_stock_data">Não há dados de ações disponíveis para esta conta.</string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
+    <string name="menu_reports">Relatórios de Construção</string>
+    <string name="menu_general_report_group">Relatórios Gerais</string>
+    <string name="title_activity_general_report">Relatório Geral</string>
     <string name="menu_report_income_vs_expenses">Receitas x Despesas</string>
+    <string name="menu_report_cashflow">Fluxo de Caixa</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sempre</string>
     <string name="last_month">Mês anterior</string>
     <string name="last30days">Últimos 30 dias</string>
     <string name="last_year">Ano anterior</string>
+    <string name="current_fin_year">Exercício Financeiro Atual</string>
+    <string name="last_fin_year">Último Exercício Financeiro</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Número de transações econtradas: %1$d</string>
@@ -296,6 +325,7 @@
     <string name="date_format">Formato da data</string>
     <string name="financial_year_start_day">Exercício: Dia de início</string>
     <string name="financial_year_start_month">Exercício: Mês de inicio</string>
+    <string name="financial_year_not_set">Definir data de início do Exercício Financeiro na configuração.</string>
     <string name="menu_move_database_to_external_storage">Exportar banco de dados</string>
     <string name="database_has_been_moved">O banco de dados foi movido: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Falha ao copiar banco de dados no armazenamento externo</string>
@@ -332,6 +362,7 @@
     <string name="open_database">Abrir banco de dados</string>
     <string name="synchronization_interval">Intervalo de sincronização</string>
     <string name="summary_synchronization_interval">Quantas vezes devo sincronizar?</string>
+    <string name="tips_new_version_dropbox">A partir da versão 1.2.0, o Money Manager EX para Android mudou o mecanismo de sincronização do Dropbox. Os usuários que já estão usando o Dropbox Sync precisam atualizar a configuração.\nA autenticação e a seleção do banco de dados estão localizadas nas configurações.\nA partir da versão 1.2.0 do Money Manager Ex para Android  pode sincronizar automaticamente o banco de dados</string>
     <string name="title_transaction_shown_balance">Mostra o saldo para cada transação</string>
     <string name="summary_transaction_shown_balance">Mostra o saldo para cada transação. A exibição de equilíbrio poderia tornar o aplicativo mais lento</string>
     <string name="menu_open_database">Abrir banco de dados</string>
@@ -386,6 +417,7 @@
     <string name="result_search">Resultado da pesquisa</string>
     <string name="new_repeating_transaction">Nova Transação Agendada</string>
     <string name="edit_repeating_transaction">Editar Transação Agendada</string>
+    <string name="no_recurring_transaction">Relatório de Fluxo de Caixa usa a Transação Agendada, mas nenhuma transação agendada encontradas</string>
     <string name="path_database_not_exists">Caminho do banco de dados não existe</string>
     <string name="database_can_not_open_write">O banco de dados não pode ser aberto para gravação</string>
     <string name="time_frame">Período de tempo</string>
@@ -405,6 +437,8 @@
     <string name="donate_in_app_already_donate">Você já apoiou o desenvolvimento do MoneyManagerEx para o Android com a sua doação! \n\nMuito obrigado da equipe de desenvolvimento!</string>
     <string name="donate_in_app_retrieving_status">Recuperando o status de suas doações do Google Play. Aguarde&#8230;</string>
     <string name="donate_in_app_error">Não é possível usar o faturamento no aplicativo. Verifique se a versão mais recente do aplicativo Play Store está instalada.</string>
+    <string name="title_repeating_transaction_process">Nova Transação Agendada</string>
+    <string name="summary_repeating_transaction_process">Processo de transação agendada vencida (Post, Prompt, Manual)</string>
     <string name="title_use_nested_category">(BETA) Use novo modelo de categoria aninhada</string>
     <string name="summary_use_nested_category">Use o novo modelo de categoria aninhada em vez do modelo categoria:subcategoria (Beta, use por sua própria conta e risco)</string>
     <string name="tools">Ferramentas</string>
@@ -417,6 +451,9 @@
     <string name="sort_order">Ordem de Classificação</string>
     <string name="sort_by_name">Ordenar por nome</string>
     <string name="sort_by_usage">Ordenar por uso</string>
+    <string name="sort_by_recent">Ordenar por recentes</string>
+    <string name="sort_date_desc">Ordenar por data decrescente</string>
+    <string name="sort_date_asc">Ordenar por data crescente</string>
     <string name="choose_sorting">Escolha a classificação</string>
     <string name="credit_card">Cartão de Crédito</string>
     <string name="cash_accounts">Contas de dinheiro</string>
@@ -513,11 +550,13 @@
     <string name="budget">Orçamento</string>
     <string name="budget_list">Lista de orçamento</string>
     <string name="actual">Atual</string>
+    <string name="amount_available">Disponível</string>
     <string name="base_currency_not_set">A moeda base não foi definida</string>
     <string name="error">Erro</string>
     <string name="unhandled_crash">Erro inesperado. Por favor, envie-nos o registo do erro.</string>
     <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
     <string name="frequency">Frequência</string>
+    <string name="select_columns">Selecionar Colunas Visíveis</string>
     <string name="update_available">Atualização disponível</string>
     <string name="update_available_online">Tem um banco de dados atualizado online. Você deseja atualizar?</string>
     <string name="currency_not_found">A moeda não foi encontrada</string>
@@ -552,6 +591,8 @@
     <string name="commission">Comissão</string>
     <string name="value">Valor</string>
     <string name="view_transactions">Ver transações</string>
+    <string name="view_transactions_sub">Ver transações com subcategorias</string>
+    <string name="switch_active">Alternar Ativo/Inativo</string>
     <string name="error_downloading_symbol">Erro ao baixar o preço para o símbolo</string>
     <string name="error_updating_rates">Erro ao atualizar as taxas</string>
     <string name="error_no_price_found_for_symbol">Nenhum preço foi encontrado para o símbolo</string>
@@ -578,6 +619,8 @@
     <string name="all_accounts">Todas as contas</string>
     <string name="records">registros</string>
     <!-- db password entry -->
+    <string name="enter_password">Insira a senha (opcional)</string>
+    <string name="password_hint">Apenas para o arquivo .emb</string>
     <string name="success">Operação bem sucedida</string>
     <string name="overview">Visão geral</string>
     <string name="title_activity_asset_allocation_overview">Visão geral de alocação de ativos</string>
@@ -596,6 +639,7 @@
     <string name="budget_name">Nome do orçamento</string>
     <string name="budget_year">Orçamento Anual</string>
     <string name="budget_month">Orçamento mensal</string>
+    <string name="budget_month_optional">Orçamento do Mês (opcional)</string>
     <string name="copy">Copiar</string>
     <string name="app_restart">O aplicativo será fechado para aplicar todas as alterações. Por favor reinicie.</string>
     <string name="print">Imprimir</string>
@@ -689,6 +733,7 @@
     <string name="remote_file_not_found">Arquivo remoto não encontrado</string>
     <string name="error_checking_remote">Erro ao verificar por alterações remotas.</string>
     <string name="no_remote_change_date">O controle remoto alterar Dados não encontrada no arquivo.</string>
+    <string name="remote_unavailable">Arquivo remoto não disponível</string>
     <!-- Select database screen -->
     <string name="intro_text">Para começar a utilizar o Money Manager Ex, você precisa ter um arquivo de banco de dados para armazenar seus dados. Por favor, selecione uma das opções disponíveis abaixo.</string>
     <string name="intro_create_db">Você pode criar um novo arquivo e configurar as preferências iniciais.</string>
@@ -703,6 +748,8 @@
     <string name="save">Salvar</string>
     <string name="title_budget_show_simple_view">Mostrar orçamento simples vista</string>
     <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
+    <string name="title_pref_budget_financial_year">Usar exercício financeiro no orçamento</string>
+    <string name="summary_pref_budget_financial_year">Se verificado o orçamento usa o exercício financeiro em vez do ano</string>
     <string name="shares">Compartilhar</string>
     <string name="loan">Empréstimo</string>
     <string name="loan_account">Contas de empréstimo</string>
@@ -710,17 +757,56 @@
     <string name="currency">Moeda</string>
     <string name="menu_create_database">Criar Banco de Dados</string>
     <string name="create_database">Criar Banco de Dados</string>
+    <string name="pref_anonymous_usage">Uso anônimo</string>
     <string name="summary_anonymous_usage">Habilite para nos ajudar a enviar dados anônimos sobre o uso do MMEX</string>
     <string name="title_anonymous_usage">Envia dados de uso anônimos</string>
+    <string name="pref_auto_transaction_number">Número de transação automático</string>
     <string name="title_auto_transaction_number">Preencher automaticamente o número da transação</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Notificação de Transação Agendada vencida</string>
     <string name="summary_notifications_repeating_transaction">Mostrar notificação de transação agendada vencida</string>
     <string name="notification_channel_recurring">Notificação de Transação Agendada</string>
     <string name="notification_channel_recurring__description">Notificação de Transação Agendada vencida</string>
+    <string name="notification_channel_remotefile">Operação de Arquivo Remoto</string>
+    <string name="notification_channel_remotefile__description">Notificação de Operação de Arquivo Remoto</string>
+    <string name="notification_channel_fileoperation_downloadin">Baixando Mmex</string>
+    <string name="notification_channel_fileoperation_uploadin">Enviando Mmex</string>
+    <string name="notification_channel_fileoperation_complete">Envio Mmex Concluído</string>
+    <string name="notification_channel_fileoperation_conflict">Conflito de Sincronização Mmex</string>
+    <string name="show">Exibir</string>
+    <string name="attachment_folder">Pasta de Anexo</string>
+    <string name="attachment_folder_summary">Selecione a pasta onde os anexos serão salvos</string>
+    <string name="pref_attachment_folder">Pasta de Anexo</string>
+    <string name="version_copied_to_clipboard">Número da versão copiado para a área de transferência</string>
+    <string name="issue_open">"Abrir questões no GitHub"</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Limpar tudo</string>
+    <string name="empty_color_message">Escolha uma cor</string>
+    <string name="menu_show_inactive">Exibir inativo</string>
+    <string name="btn_continue">Avançar</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Dispensar</string>
+    <string name="category_nav_mode">Novo modo de navegação está disponível no menu</string>
+    <string name="remember_later">Lembrar-me Mais Tarde</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Aviso de envio</string>
+    <string name="download_warning">Aviso de Download</string>
+    <string name="remote_file_change">Indicador de alterações de arquivo remoto: </string>
+    <string name="local_file_change">Indicador de alterações no arquivo local: </string>
+    <string name="msg_uploading_overwrite">Fazer uploading irá substituir a sua versão remota.\nVocê quer continuar?</string>
+    <string name="msg_downloading_overwrite">Baixando irá substituir a sua versão local.\nDeseja continuar?</string>
     <string name="menu_cashflow_all">Todas as contas</string>
+    <string name="menu_cashflow_open">Contas Abertas</string>
+    <string name="menu_cashflow_favorite">Contas Favoritas</string>
+    <string name="menu_cashflow_custom">Selecionar Contas&#8230;</string>
+    <string name="cash_ledger">Contabilidade de Caixa</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Oops! Algo deu errado.</string>
+    <string name="bad_error_occurs">Nós estamos muito tristes por notar um erro inesperado. Por favor, reporte ao desenvolvedor</string>
+    <string name="estimatedForPeriod">Estimativa Para o Período</string>
+    <string name="forecast_remain">Previsão Restante</string>
+    <string name="forecast_calculate">Previsão de Calculação. Por favor, espere...</string>
+    <string name="enter_budget">Digite o Orçamento</string>
+    <string name="enter_budget_value">Para Categoria %1$s, defina o ganho para o período %2$s. Use negativo para despesas, positivo para renda:</string>
+    <string name="enter_budget_value_plus_minus">Digite o novo valor</string>
 </resources>
