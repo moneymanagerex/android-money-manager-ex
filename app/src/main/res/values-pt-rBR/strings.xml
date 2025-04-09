@@ -805,8 +805,6 @@
     <string name="bad_error_occurs">Nós estamos muito tristes por notar um erro inesperado. Por favor, reporte ao desenvolvedor</string>
     <string name="estimatedForPeriod">Estimativa Para o Período</string>
     <string name="forecast_remain">Previsão Restante</string>
-    <string name="forecast_calculate">Previsão de Calculação. Por favor, espere...</string>
     <string name="enter_budget">Digite o Orçamento</string>
-    <string name="enter_budget_value">Para Categoria %1$s, defina o ganho para o período %2$s. Use negativo para despesas, positivo para renda:</string>
     <string name="enter_budget_value_plus_minus">Digite o novo valor</string>
 </resources>
