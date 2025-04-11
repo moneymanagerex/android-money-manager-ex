@@ -105,6 +105,8 @@ public class AccountRepository
     }
 
     public List<Account> loadByType(AccountTypes type) {
-        return query(new Select(getAllColumns()).where(Account.ACCOUNTTYPE + " = ?", type.toString()));
+        return query(new Select(getAllColumns())
+            .where(Account.ACCOUNTTYPE + " = ?", type.toString())
+            .orderBy("lower(" + Account.ACCOUNTNAME + ")"));
     }
 }
