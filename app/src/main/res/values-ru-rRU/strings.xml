@@ -96,7 +96,7 @@
     <string name="checking">Чековый</string>
     <string name="investment">Инвестиции</string>
     <string name="investment_accounts">Инвестиционные счета</string>
-    <string name="term">Срок</string>
+    <string name="term">Срочный</string>
     <string name="db_account_insert_failed">Ошибка добавления счета</string>
     <string name="db_account_update_failed">Ошибка обновления счета</string>
     <string name="error_currency_not_selected">Укажите валюту</string>
@@ -805,7 +805,8 @@
     <string name="bad_error_occurs">Нам очень грустно из-за этой непредвиденной ошибки. Пожалуйста, сообщите разработчику</string>
     <string name="estimatedForPeriod">Оценка за период</string>
     <string name="forecast_remain">Прогноз остатка</string>
+    <string name="forecast_calculate">Расчет прогноза. Подождите...</string>
     <string name="enter_budget">Введите бюджет</string>
-    <string name="enter_budget_value">Для категории %1$s, определите бюджет за период %2$s. Используйте отрицательные значения для расходов, положительные для доходов:</string>
+    <string name="enter_budget_value">Для категории %1$s, определите лимит на период %2$s. Используйте отрицательные значения для расходов, положительные для доходов:</string>
     <string name="enter_budget_value_plus_minus">Введите новое значение</string>
 </resources>

@@ -30,7 +30,7 @@
     <string name="category_11">Diversos</string>
     <string name="category_12">Presentes</string>
     <string name="category_13">Receitas</string>
-    <string name="category_14">Outros rendimentos</string>
+    <string name="category_14">Outros Rendimentos</string>
     <string name="category_15">Outras Despesas</string>
     <string name="category_16">Transferência</string>
     <!-- default subcategory -->
@@ -58,18 +58,18 @@
     <string name="subcategory_22">Outros</string>
     <string name="subcategory_23">Saúde</string>
     <string name="subcategory_24">Dentista</string>
-    <string name="subcategory_25">Óculos/lentes</string>
+    <string name="subcategory_25">Visão</string>
     <string name="subcategory_26">Médico</string>
     <string name="subcategory_27">Receitas médicas</string>
     <string name="subcategory_28">Transporte</string>
     <string name="subcategory_29">Vida</string>
-    <string name="subcategory_30">Residência</string>
+    <string name="subcategory_30">Casa</string>
     <string name="subcategory_31">Saúde</string>
-    <string name="subcategory_32">Viagens</string>
+    <string name="subcategory_32">Viagem</string>
     <string name="subcategory_33">Hotel</string>
     <string name="subcategory_34">Passeios turísticos</string>
     <string name="subcategory_35">Imposto de renda</string>
-    <string name="subcategory_36">IPTU</string>
+    <string name="subcategory_36">Imposto Imobiliário</string>
     <string name="subcategory_37">Água</string>
     <string name="subcategory_38">Outros</string>
     <string name="subcategory_39">Salário</string>

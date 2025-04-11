@@ -803,7 +803,8 @@
     <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
     <string name="estimatedForPeriod">காலத்திற்கான மதிப்பீடு</string>
     <string name="forecast_remain">முன் கணிப்பு மீதமுள்ளது</string>
+    <string name="forecast_calculate">முன்னறிவிப்பைக் கணக்கிடுகிறது. தயவுசெய்து காத்திருங்கள்...</string>
     <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
-    <string name="enter_budget_value">வகை %1$s க்கு, %2$s காலத்திற்கு பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
+    <string name="enter_budget_value">வகை %1$s க்கு, %2$s காலத்திற்கு ஒரு பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
     <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
 </resources>

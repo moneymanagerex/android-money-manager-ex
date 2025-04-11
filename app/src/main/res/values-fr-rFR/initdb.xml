@@ -27,7 +27,7 @@
     <string name="category_8">Assurance </string>
     <string name="category_9">Vacances</string>
     <string name="category_10">Taxes</string>
-    <string name="category_11">Divers</string>
+    <string name="category_11">Équipements Divers</string>
     <string name="category_12">Cadeaux</string>
     <string name="category_13">Revenu</string>
     <string name="category_14">Autres revenus</string>
@@ -57,7 +57,7 @@
     <string name="subcategory_21">Ameublement</string>
     <string name="subcategory_22">Autres</string>
     <string name="subcategory_23">Santé</string>
-    <string name="subcategory_24">Soins dentaires</string>
+    <string name="subcategory_24">Dentaire</string>
     <string name="subcategory_25">Opticien</string>
     <string name="subcategory_26">Médecin</string>
     <string name="subcategory_27">Ordonnances</string>

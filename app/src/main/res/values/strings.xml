@@ -902,8 +902,8 @@
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
     <string name="estimatedForPeriod">Estimate For Period</string>
     <string name="forecast_remain">Forecast Remain</string>
-    <string name="forecast_calculate">Calcolating Forecast. Please wait...</string>
+    <string name="forecast_calculate">Calculating Forecast. Please wait...</string>
     <string name="enter_budget">Enter Budget</string>
-    <string name="enter_budget_value">For Category %1$s, set buget for period %2$s. Use negative for expenses, positive for incomes:</string>
+    <string name="enter_budget_value">For Category %1$s, set budget for period %2$s. Use negative for expenses, positive for incomes:</string>
     <string name="enter_budget_value_plus_minus">Enter new value</string>
 </resources>
