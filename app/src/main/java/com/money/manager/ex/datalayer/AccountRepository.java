@@ -19,13 +19,13 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import java.util.List;
 
 /**
  * Repository for Accounts
@@ -98,22 +98,13 @@ public class AccountRepository
         return account.getName();
     }
 
-    public Cursor getInvestmentAccountsCursor(boolean openOnly) {
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Account.ACCOUNTTYPE, "=", AccountTypes.INVESTMENT.toString());
-        if (openOnly) {
-            where.addStatement(Account.STATUS, "=", AccountStatuses.OPEN.toString());
-        }
-
-        return openCursor(this.getAllColumns(),
-            where.getWhere(),
-            null,
-            "lower (" + Account.ACCOUNTNAME + ")");
-    }
-
     public boolean anyAccountsUsingCurrency(long currencyId) {
         long links = count(Account.CURRENCYID + "=?",
                 MmxDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
+    }
+
+    public List<Account> loadByType(AccountTypes type) {
+        return query(new Select(getAllColumns()).where(Account.ACCOUNTTYPE + " = ?", type.toString()));
     }
 }

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -35,6 +36,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
@@ -51,6 +53,7 @@ import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -263,10 +266,16 @@ public class InvestmentTransactionEditActivity
         viewHolder.dateView.setText(dateDisplay);
 
         // Account.
-        Cursor cursor = ((CursorAdapter) viewHolder.accountSpinner.getAdapter()).getCursor();
-        int accountIndex = SpinnerHelper.getPosition(mAccount.getName(), Account.ACCOUNTNAME, cursor);
-        if (accountIndex >= 0) {
-            viewHolder.accountSpinner.setSelection(accountIndex, true);
+        SpinnerAdapter adapter = viewHolder.accountSpinner.getAdapter();
+        if (adapter != null) {
+            ArrayAdapter<Account> accountAdapter = (ArrayAdapter<Account>) adapter;
+            for (int i = 0; i < accountAdapter.getCount(); i++) {
+                Account acc = accountAdapter.getItem(i);
+                if (acc != null && acc.getId().equals(mAccount.getId())) {
+                    viewHolder.accountSpinner.setSelection(i, true);
+                    break;
+                }
+            }
         }
 
         viewHolder.stockNameEdit.setText(stock.getName());
@@ -317,36 +326,28 @@ public class InvestmentTransactionEditActivity
      */
     private void initAccountSelectors(final InvestmentTransactionViewHolder viewHolder) {
         Context context = this;
-
         // Account list as the data source to populate the drop-downs.
 
         AccountService accountService = new AccountService(context);
         accountService.loadInvestmentAccountsToSpinner(viewHolder.accountSpinner, false);
 
-//        AccountRepository accountRepository = new AccountRepository(context);
         final Long accountId = mStock.getHeldAt();
-//        if (accountId != null) {
-//            addMissingAccountToSelectors(accountRepository, accountId);
-//        }
 
-        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+        viewHolder.accountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SpinnerAdapter adapter = viewHolder.accountSpinner.getAdapter();
-                Cursor cursor = (Cursor) adapter.getItem(position);
-                Account account = Account.from(cursor);
+                Account selected = (Account) parent.getItemAtPosition(position);
 
-                if (!account.getId().equals(accountId)) {
+                if (!selected.getId().equals(accountId)) {
                     setDirty(true);
-                    mStock.setHeldAt(account.getId());
+                    mStock.setHeldAt(selected.getId());
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        };
-        viewHolder.accountSpinner.setOnItemSelectedListener(listener);
+        });
     }
 
     private void initDateControl(final InvestmentTransactionViewHolder viewHolder) {

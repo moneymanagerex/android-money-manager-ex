@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.widget.ArrayAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
@@ -277,31 +278,19 @@ public class AccountService
         if (spinner == null) return;
 
         AccountRepository repo = new AccountRepository(getContext());
-        Cursor cursor = repo.getInvestmentAccountsCursor(true);
-        Cursor finalCursor = cursor;
+        List<Account> accounts = repo.loadByType(AccountTypes.INVESTMENT);
 
         if (showAllAccountsItem) {
-            // append All Accounts item
-            MatrixCursor extras = new MatrixCursor(new String[]{"_id", Account.ACCOUNTID,
-                    Account.ACCOUNTNAME, Account.INITIALBAL});
-            String title = getContext().getString(R.string.all_accounts);
-            extras.addRow(new String[]{Long.toString(Constants.NOT_SET),
-                    Long.toString(Constants.NOT_SET), title, "0.0"});
-            Cursor[] cursors = {extras, cursor};
-            finalCursor = new MergeCursor(cursors);
+            Account all = new Account();
+            all.setId(Constants.NOT_SET);
+            all.setName(getContext().getString(R.string.all_accounts));
+            accounts.add(0, all);
         }
 
-        int[] adapterRowViews = new int[] { android.R.id.text1 };
-
-        ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
-            android.R.layout.simple_spinner_item,
-                finalCursor,
-            new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
-            adapterRowViews,
-            SimpleCursorAdapter.NO_SELECTION);
-        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(cursorAdapter);
+        ArrayAdapter<Account> adapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, accounts);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     public List<Account> loadAccounts(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
