@@ -19,6 +19,8 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
@@ -208,5 +210,12 @@ public class Account
     public void setInitialDate(Date date) {
         String dateString = new MmxDate(date).toIsoDateString();
         setString(Account.INITIALDATE, dateString);
+    }
+
+    // for ArrayAdapter
+    @NonNull
+    @Override
+    public String toString() {
+        return getName();
     }
 }
