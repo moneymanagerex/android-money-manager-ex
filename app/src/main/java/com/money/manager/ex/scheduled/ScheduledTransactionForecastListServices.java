@@ -43,9 +43,12 @@ public class ScheduledTransactionForecastListServices {
     private ScheduleTransactionForecastList scheduleTransactionForecastList = null;
     private Boolean isReady = false;
 
-    private static ScheduledTransactionForecastListServices mInstance = new ScheduledTransactionForecastListServices();
+    private static ScheduledTransactionForecastListServices mInstance = null;
 
-    public static ScheduledTransactionForecastListServices getInstance() {
+    public static ScheduledTransactionForecastListServices getInstance(Context context) {
+        if ( mInstance == null ) {
+            mInstance = new ScheduledTransactionForecastListServices(context);
+        }
         return mInstance;
     }
 
@@ -67,6 +70,7 @@ public class ScheduledTransactionForecastListServices {
 
     public ScheduledTransactionForecastListServices(Context context) {
         mContext = context;
+        isReady = false;
         setMonthInAdvance(12); // default 12 months
     }
 
@@ -75,8 +79,9 @@ public class ScheduledTransactionForecastListServices {
     }
 
     public ScheduledTransactionForecastListServices setDateTo(MmxDate dateTo) {
-        if ( mDateTo != null && mDateTo.toDate().equals(dateTo.toDate())) return this; // no change
+        if ( mDateTo != null && mDateTo.toDate().before(dateTo.toDate())) return this; // no change
         mDateTo = dateTo;
+        isReady = false;
         // invalidate scheduleTransactionForecastList
         scheduleTransactionForecastList = null;
         return this;
@@ -85,7 +90,11 @@ public class ScheduledTransactionForecastListServices {
 
     public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync(Function f) {
         return CompletableFuture.supplyAsync(() -> {
-            return createScheduledTransactionForecast();
+            isReady = false;
+            createScheduledTransactionForecast();
+            scheduleTransactionForecastList.populateCacheForCategory();
+            isReady = true;
+            return scheduleTransactionForecastList;
         }).thenApply(f);
     }
 
@@ -127,7 +136,6 @@ public class ScheduledTransactionForecastListServices {
         }
         cursor.close();
         scheduleTransactionForecastList.orderByDateAscending();
-        isReady = true;
         return scheduleTransactionForecastList;
     }
 

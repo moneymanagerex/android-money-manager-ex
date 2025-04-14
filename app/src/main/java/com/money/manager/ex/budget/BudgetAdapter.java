@@ -80,7 +80,8 @@ public class BudgetAdapter
     private MmxDate dateFrom;
     private MmxDate dateTo;
 
-    private ScheduleTransactionForecastList mScheduleTransactionForecastList;
+    //private ScheduleTransactionForecastList mScheduleTransactionForecastList;
+    private ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
     //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
     private List<View> fieldRequestUpdate = new ArrayList<>();
     private HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<Long, Double>();
@@ -115,6 +116,8 @@ public class BudgetAdapter
         mContext = context;
         currencyService = new CurrencyService(mContext);
 
+        scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance(mContext);
+
         MmexApplication.getApp().iocComponent.inject(this);
 
         // get Budget financial
@@ -140,10 +143,9 @@ public class BudgetAdapter
     private void createForecastEntry(){
         if (!mVisibleColumn.contains(R.id.forecastRemainTextView))
             return;
-        ScheduledTransactionForecastListServices forecastListServices = ScheduledTransactionForecastListServices.getInstance();
-        if (!forecastListServices.isReady()) {
+        if (!scheduledTransactionForecastListServices.isReady()) {
             Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
-            forecastListServices
+            scheduledTransactionForecastListServices
                     .setContext(mContext)
                     .setDateTo(dateTo)
                     .createScheduledTransactionForecastAsync(result -> {
@@ -155,18 +157,17 @@ public class BudgetAdapter
     }
 
     public void processForecast(ScheduleTransactionForecastList result){
-        mScheduleTransactionForecastList = result;
         for (int i = 0; i < fieldRequestUpdate.size(); i++) {
             View view = fieldRequestUpdate.get(i);
             long categoryId = (long) view.getTag();
             double forecastRemain;
             if (categoryIdForecastAmount.containsKey( categoryId ) ) {
                 // reuse from cache
-                forecastRemain = categoryIdAmountAvailable.get(categoryId) + categoryIdForecastAmount.get(categoryId);
+                forecastRemain = categoryIdAmountAvailable.get(categoryId) - categoryIdForecastAmount.get(categoryId);
             } else {
                 double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
                 double amountAvailable = categoryIdAmountAvailable.get(categoryId);
-                forecastRemain = amountAvailable + totalFromSchedule;
+                forecastRemain = amountAvailable - totalFromSchedule;
             }
             setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
             view.postInvalidate();
@@ -302,35 +303,47 @@ public class BudgetAdapter
         setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedForPeriod * 100));
 
         // Amount Available amountAvailableTextView
-        double amountAvailable = -(estimatedForPeriod - actual);
+        double amountAvailable = (estimatedForPeriod - actual);
         if (Double.isInfinite(amountAvailable)) {
             setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
             amountAvailable = 0.0;
         } else {
-            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
+            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable * estimatedForPeriod < 0 );
         }
         categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
         // forecastRemainTextView
-        if (!ScheduledTransactionForecastListServices.getInstance().isReady()){
+        if (!ScheduledTransactionForecastListServices.getInstance(mContext).isReady()){
             setViewElement(view, R.id.forecastRemainTextView, "<...>");
             view.setTag(categoryId);
             fieldRequestUpdate.add(view);
         } else {
             double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
-            double forecastRemain = amountAvailable + totalFromSchedule;
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+            double forecastRemain = amountAvailable - totalFromSchedule;
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > estimatedForPeriod);
         }
     }
 
     private double getEstimateFromRecurringTransaction(long categoryId) {
+        if (categoryIdForecastAmount.isEmpty()) {
+            Timber.i("Calculate local cache");
+        }
         // Get Value for this category from recurring transaction
         if ( categoryIdForecastAmount.containsKey(categoryId) ) {
             return categoryIdForecastAmount.get(categoryId);
         }
 
-        if ( mScheduleTransactionForecastList == null ) return 0;
-        categoryIdForecastAmount.put(categoryId, mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount());
+        if ( ! scheduledTransactionForecastListServices.isReady() ) return 0;
+
+        // budget is based on year, Year financial, or monthly
+        MmxDate date = new MmxDate(dateFrom.toDate());
+        Double total = 0.0;
+        ScheduleTransactionForecastList list = scheduledTransactionForecastListServices.getRecurringTransactions();
+        while (date.toDate().compareTo(dateTo.toDate()) < 0) {
+            total += list.getForecastAmountFromCache(categoryId, date.getYear(), date.getMonth());
+            date.addMonth(1);
+        }
+        categoryIdForecastAmount.put(categoryId, total);
         return categoryIdForecastAmount.get(categoryId);
     }
 
