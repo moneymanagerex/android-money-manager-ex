@@ -169,7 +169,7 @@ public class BudgetAdapter
                 double amountAvailable = categoryIdAmountAvailable.get(categoryId);
                 forecastRemain = amountAvailable - totalFromSchedule;
             }
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
             view.postInvalidate();
         }
         fieldRequestUpdate.clear();
@@ -308,7 +308,7 @@ public class BudgetAdapter
             setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
             amountAvailable = 0.0;
         } else {
-            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable * estimatedForPeriod < 0 );
+            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService);
         }
         categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
@@ -320,7 +320,7 @@ public class BudgetAdapter
         } else {
             double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
             double forecastRemain = amountAvailable - totalFromSchedule;
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > estimatedForPeriod);
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
         }
     }
 
