@@ -316,6 +316,7 @@
     <string name="add_budget">ბიუჯეტის დამატება</string>
     <string name="budget_name">ბიუჯეტის სახელი</string>
     <string name="budget_year">ბიუჯეტის წელი</string>
+    <!-- string name="copy">Copy</string -->
     <!-- Currencies -->
     <!-- Investment -->
     <!-- deprecated / Dropbox -->

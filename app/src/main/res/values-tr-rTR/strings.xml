@@ -602,7 +602,7 @@
     <string name="budget_name">Bütçe Adı</string>
     <string name="budget_year">Bütçe Yılı</string>
     <string name="budget_month">Bütçe Ay</string>
-    <string name="copy">Kopyala</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Değişiklikleri uygulamak için uygulama kapanacak. Lütfen yeniden başlatın.</string>
     <string name="print">Yazdır</string>
     <string name="min_19">Belgeyi yazdırmak için en az Android 4.4 sürümüne ihtiyacınız var.</string>
@@ -695,7 +695,6 @@
     <string name="remote_file_not_found">Uzak dosya bulunamadı</string>
     <string name="error_checking_remote">Uzaktan değişiklikler denetlenirken hata oluştu.</string>
     <string name="no_remote_change_date">Meta verilerde uzaktan değiştirme tarihi bulunamadı.</string>
-    <string name="remote_unavailable">Uzak dosya kullanılamıyor</string>
     <!-- Select database screen -->
     <string name="intro_text">Money Manager Ex kullanmaya başlamak için, verilerinizi depolamak üzere bir veritabanına ihtiyacınız var. Lütfen aşağıdaki uygun seçeneklerden birini seçin.</string>
     <string name="intro_create_db">Yeni bir dosya oluşturup ilk tercihlerinizi ayarlayabilirsiniz.</string>

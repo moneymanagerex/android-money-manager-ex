@@ -562,7 +562,7 @@
     <string name="budget_name">Όνομα προϋπολογισμού</string>
     <string name="budget_year">Προϋπολογισμός έτους</string>
     <string name="budget_month">Προϋπολογισμός Μήνα</string>
-    <string name="copy">Αντίγραφο</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Η εφαρμογή τώρα θα κλείσει για να εφαρμοστούν οι αλλαγές. Παρακαλώ κάντε επανεκκίνηση.</string>
     <string name="print">Εκτύπωση</string>
     <string name="min_19">Χρειάζεται τουλάχιστον Android 4.4, ώστε να είναι σε θέση να εκτυπώσετε το έγγραφο.</string>

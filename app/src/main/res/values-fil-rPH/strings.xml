@@ -562,7 +562,7 @@
     <string name="budget_name">Pangalan ng Badyet</string>
     <string name="budget_year">Taon ng Badyet</string>
     <string name="budget_month">Buwanang Badyet</string>
-    <string name="copy">Kopyahin</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Malapit na ngayon ang app upang ilapat ang mga pagbabago.</string>
     <string name="print">I-print</string>
     <string name="min_19">Kailangan mo ng hindi bababa sa Android 4.4 upang ma-print ang dokumento.</string>

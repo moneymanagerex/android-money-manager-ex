@@ -562,7 +562,7 @@
     <string name="budget_name">預算名稱</string>
     <string name="budget_year">預算年度</string>
     <string name="budget_month">預算月份</string>
-    <string name="copy">複製</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">應用程式將關閉以套用變更。請重新啟動。</string>
     <string name="print">列印</string>
     <string name="min_19">您需要 Android 4.4 或以上才能列印文件。</string>

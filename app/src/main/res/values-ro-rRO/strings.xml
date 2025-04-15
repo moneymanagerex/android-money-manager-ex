@@ -562,7 +562,7 @@
     <string name="budget_name">Nume buget</string>
     <string name="budget_year">Anul bugetar</string>
     <string name="budget_month">Lună buget</string>
-    <string name="copy">Copie</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplicația se va închide pentru aplicarea schimbărilor. Vă rugăm să o reporniți.</string>
     <string name="print">Imprimă</string>
     <string name="min_19">Aveți nevoie de cel puțin Android 4.4 pentru a putea imprima documentul.</string>

@@ -555,7 +555,7 @@
     <string name="budget_name">Tên Ngân sách</string>
     <string name="budget_year">Ngân sách theo năm</string>
     <string name="budget_month">Ngân sách theo tháng</string>
-    <string name="copy">Sao chép</string>
+    <!-- string name="copy">Copy</string -->
     <string name="print">In</string>
     <string name="min_19">Bạn cần tối thiểu thiết bị chạy Android 4.4 để có thể in ấn văn bản</string>
     <string name="save_as_html">Lưu dưới định dạng HTML</string>

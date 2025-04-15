@@ -521,7 +521,7 @@
     <string name="add_budget">Dodaj proračun</string>
     <string name="budget_name">Ime proračuna </string>
     <string name="budget_month">Mesec proračuna </string>
-    <string name="copy">Kopiraj</string>
+    <!-- string name="copy">Copy</string -->
     <string name="print">Natisni</string>
     <string name="save_as_html">Shrani kot HTML</string>
     <!-- Currencies -->

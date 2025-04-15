@@ -640,7 +640,7 @@
     <string name="budget_year">Költségvetés év</string>
     <string name="budget_month">Költségvetés hónap</string>
     <string name="budget_month_optional">Költségvetési hónap (nem kötelező)</string>
-    <string name="copy">Másolás</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Az alkalmazás most bezárul a módosítások alkalmazásához. Kérjük, indítsa újra.</string>
     <string name="print">Nyomtatás</string>
     <string name="min_19">A dokumentum kinyomtatásához legalább Android 4.4-es verzióra van szüksége.</string>
@@ -733,7 +733,6 @@
     <string name="remote_file_not_found">Távoli fájl nem található</string>
     <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
     <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
-    <string name="remote_unavailable">A távoli fájl nem érhető el</string>
     <!-- Select database screen -->
     <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
     <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>

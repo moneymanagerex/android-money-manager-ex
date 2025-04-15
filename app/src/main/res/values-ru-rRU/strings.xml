@@ -640,7 +640,7 @@
     <string name="budget_year">Год бюджета</string>
     <string name="budget_month">Месяц бюджета</string>
     <string name="budget_month_optional">Месяц бюджета (необязательно)</string>
-    <string name="copy">Копировать</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
     <string name="print">Печать</string>
     <string name="min_19">Вам нужно по крайней мере Android 4.4, чтобы иметь возможность распечатать документ.</string>
@@ -733,7 +733,6 @@
     <string name="remote_file_not_found">Удаленный файл не найден</string>
     <string name="error_checking_remote">Проверка на ошибки удаленных изменений.</string>
     <string name="no_remote_change_date">Дата удаленного изменения не найдена в метаданных.</string>
-    <string name="remote_unavailable">Удаленный файл недоступен</string>
     <!-- Select database screen -->
     <string name="intro_text">Чтобы начать использовать деньги Менеджер Ex, нужно иметь файл базы данных для хранения данных. Выберите один из вариантов ниже.</string>
     <string name="intro_create_db">Можно создать новый файл и начальные настройки.</string>
@@ -805,7 +804,6 @@
     <string name="bad_error_occurs">Нам очень грустно из-за этой непредвиденной ошибки. Пожалуйста, сообщите разработчику</string>
     <string name="estimatedForPeriod">Оценка за период</string>
     <string name="forecast_remain">Прогноз остатка</string>
-    <string name="forecast_calculate">Расчет прогноза. Подождите...</string>
     <string name="enter_budget">Введите бюджет</string>
     <string name="enter_budget_value">Для категории %1$s, определите лимит на период %2$s. Используйте отрицательные значения для расходов, положительные для доходов:</string>
     <string name="enter_budget_value_plus_minus">Введите новое значение</string>

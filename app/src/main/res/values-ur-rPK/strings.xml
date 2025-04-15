@@ -562,7 +562,7 @@
     <string name="budget_name">بجٹ کا نام</string>
     <string name="budget_year">بجٹ سال</string>
     <string name="budget_month">بجٹ ماہ</string>
-    <string name="copy">نقل</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">اپلیکیشن تبدیلیاں لگانے کے لئے اب بند ہوجائے گی ۔ پھر شروع کریں ۔.</string>
     <string name="print">پرنٹ کریں</string>
     <string name="min_19">آپکو دستاویزات پرنٹ کرنے کے لیے کم از کم انڈرایڈ 4.4 کی ضرورت ہے.</string>

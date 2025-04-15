@@ -610,7 +610,7 @@
     <string name="budget_name">预算名称</string>
     <string name="budget_year">预算年度</string>
     <string name="budget_month">预算月</string>
-    <string name="copy">复制</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">此应用将关闭以应用您所做的更改。请稍后重新启动。</string>
     <string name="print">打印</string>
     <string name="min_19">打印功能需要 Android 4.4 以上版本的支持</string>

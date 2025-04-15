@@ -576,7 +576,7 @@
     <string name="budget_name">Nom du budget</string>
     <string name="budget_year">Année du budget</string>
     <string name="budget_month">Mois du budget</string>
-    <string name="copy">Copier</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">L\'application va maintenant s’arrêter pour appliquer les modifications. Veuillez la redémarrer.</string>
     <string name="print">Imprimer</string>
     <string name="min_19">Android 4.4 est la version minimale requise pour imprimer le document.</string>

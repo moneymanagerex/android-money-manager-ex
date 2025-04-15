@@ -640,7 +640,7 @@
     <string name="budget_year">Orçamento Anual</string>
     <string name="budget_month">Orçamento mensal</string>
     <string name="budget_month_optional">Orçamento do Mês (opcional)</string>
-    <string name="copy">Copiar</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">O aplicativo será fechado para aplicar todas as alterações. Por favor reinicie.</string>
     <string name="print">Imprimir</string>
     <string name="min_19">Você precisa ter pelo menos a versão 4.4 do Android para imprimir o documento.</string>
@@ -733,7 +733,6 @@
     <string name="remote_file_not_found">Arquivo remoto não encontrado</string>
     <string name="error_checking_remote">Erro ao verificar por alterações remotas.</string>
     <string name="no_remote_change_date">O controle remoto alterar Dados não encontrada no arquivo.</string>
-    <string name="remote_unavailable">Arquivo remoto não disponível</string>
     <!-- Select database screen -->
     <string name="intro_text">Para começar a utilizar o Money Manager Ex, você precisa ter um arquivo de banco de dados para armazenar seus dados. Por favor, selecione uma das opções disponíveis abaixo.</string>
     <string name="intro_create_db">Você pode criar um novo arquivo e configurar as preferências iniciais.</string>
