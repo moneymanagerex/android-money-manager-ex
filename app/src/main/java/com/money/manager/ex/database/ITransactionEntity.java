@@ -74,6 +74,8 @@ public interface ITransactionEntity {
     Money getToAmount();
     void setToAmount(Money value);
 
+    Money getRealSignedAmount();
+
     Date getDate();
     String getDateString();
     void setDate(Date value);

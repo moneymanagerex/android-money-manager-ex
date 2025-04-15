@@ -45,6 +45,7 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -198,11 +199,16 @@ public class BudgetEntryFragment
         }
         menu.findItem(R.id.menu_budget_columns).setVisible(!useBudgetSimplifyView);
 
-        // set menu_budget_category_with_sub
+        // remove for now. TODO apply needted budget
+        if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
+            menu.findItem(R.id.menu_budget_category_with_sub).setVisible(false);
+        }
+/*        // set menu_budget_category_with_sub
         boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub,false);
         if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
             menu.findItem(R.id.menu_budget_category_with_sub).setChecked(useSubCategory);
         }
+*/
 
         // Add selectable columns name
         ArrayList<Integer> visibleColumn = ((BudgetAdapter) getListAdapter()).getVisibleColumn();
@@ -221,6 +227,10 @@ public class BudgetEntryFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_budget_reload_forecast ) {
+            ScheduledTransactionForecastListServices.destroyInstance();
+            restartLoader();
+        }
         if (item.getItemId() == R.id.menu_budget_financial_year) {
             item.setChecked(!item.isChecked());
             (new AppSettings(getContext())).getBudgetSettings().setBudgetFinancialYear(item.isChecked());

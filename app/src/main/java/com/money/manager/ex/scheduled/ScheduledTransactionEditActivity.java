@@ -567,6 +567,9 @@ public class ScheduledTransactionEditActivity
 
         if (!validateData()) return false;
 
+        // invalidate Cache for ScheduledTransactionForecastListServices
+        ScheduledTransactionForecastListServices.destroyInstance();
+
         boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         if (!isTransfer) {
             mCommon.resetTransfer();

@@ -68,6 +68,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
+import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.SecuritySettingsFragment;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
@@ -540,6 +541,9 @@ public class MainActivity
      */
 
     public void changeDatabase(@NonNull DatabaseMetadata database) {
+        // invalidate Cache for ScheduledTransactionForecastListServices
+        ScheduledTransactionForecastListServices.destroyInstance();
+
         // Reuse existing metadata, if found.
         DatabaseMetadata existing = mDatabases.get().get(database.localPath);
         if (existing != null) {
