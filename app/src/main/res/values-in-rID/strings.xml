@@ -562,7 +562,7 @@
     <string name="budget_name">Nama anggaran</string>
     <string name="budget_year">Tahun Anggaran</string>
     <string name="budget_month">Bulan Anggaran</string>
-    <string name="copy">Salinan</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikasi sekarang akan mendekati untuk menerapkan perubahan. Silakan restart.</string>
     <string name="print">Mencetak</string>
     <string name="min_19">Anda memerlukan setidaknya Android 4.4 untuk bisa mencetak dokumen.</string>

@@ -573,7 +573,7 @@
     <string name="budget_name">Nazwa budżetu</string>
     <string name="budget_year">Rok budżetu</string>
     <string name="budget_month">Miesiąc budżetu</string>
-    <string name="copy">Kopiuj</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikacja zostanie zamknięta w celu zastosowania zmian. Proszę uruchomić ją ponownie.</string>
     <string name="print">Drukuj</string>
     <string name="min_19">Potrzebujesz systemu Android w wersji co najmniej 4.4, aby móc wydrukować ten dokument.</string>

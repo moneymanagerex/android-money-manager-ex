@@ -640,7 +640,7 @@
     <string name="budget_year">Jahres Budget</string>
     <string name="budget_month">Monatsbudget</string>
     <string name="budget_month_optional">Budget Monat (optional)</string>
-    <string name="copy">Kopie</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Die App wird sich nun schließen, um die Änderungen wirksam zu machen. Bitte starten Sie neu.</string>
     <string name="print">Drucken</string>
     <string name="min_19">Sie benötigen mindestens Android 4.4 um das Dokument zu drucken.</string>
@@ -733,7 +733,6 @@
     <string name="remote_file_not_found">Datei im Onlinespeicher nicht gefunden</string>
     <string name="error_checking_remote">Fehler beim Überprüfen der Datenbank im Onlinespeicher auf Änderungen.</string>
     <string name="no_remote_change_date">Das Datum der externen Änderung wurde in den Metadaten nicht gefunden.</string>
-    <string name="remote_unavailable">Remote-Datei ist nicht verfügbar</string>
     <!-- Select database screen -->
     <string name="intro_text">Um MoneyManager Ex verwenden zu können, müssen Sie eine Datenbank haben, um Ihre Daten zu speichern. Bitte wählen Sie eine der verfügbaren Optionen.</string>
     <string name="intro_create_db">Sie können eine neue Datei erstellen und die ersten Einstellungen vornehmen.</string>
@@ -805,7 +804,6 @@
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
     <string name="estimatedForPeriod">Schätzung für Periode</string>
     <string name="forecast_remain">Prognostiziere verbleibende</string>
-    <string name="forecast_calculate">Berechne Prognose. Bitte warten...</string>
     <string name="enter_budget">Budget eingeben</string>
     <string name="enter_budget_value">Für Kategorie %1$s setzen Sie Budget für Zeitraum %2$s. Verwenden Sie negativ für Ausgaben, positiv für Einnahmen:</string>
     <string name="enter_budget_value_plus_minus">Neuen Wert eingeben</string>

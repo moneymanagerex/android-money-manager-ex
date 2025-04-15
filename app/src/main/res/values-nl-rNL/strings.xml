@@ -635,7 +635,7 @@
     <string name="budget_name">Budgetnaam</string>
     <string name="budget_year">Budgetjaar</string>
     <string name="budget_month">Budgetmaand</string>
-    <string name="copy">Kopie</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Het programma zal nu afsluiten om de wijzigingen door te voeren. Start programma opnieuw.</string>
     <string name="print">Afdrukken</string>
     <string name="min_19">U heeft minstens Android 4.4 nodig om dit document te kunnen printen.</string>
@@ -728,7 +728,6 @@
     <string name="remote_file_not_found">Extern bestand niet gevonden</string>
     <string name="error_checking_remote">Fout bij het controleren op externe wijzigingen.</string>
     <string name="no_remote_change_date">Wijzigingsdatum niet gevonden in metadata.</string>
-    <string name="remote_unavailable">Extern bestand is niet beschikbaar</string>
     <!-- Select database screen -->
     <string name="intro_text">Om te starten met Money Manager ex heeft u een database bestand nodig om uw data in te stockeren. Selecteer een van de onderstaande beschikbare opties.</string>
     <string name="intro_create_db">U kunt een nieuw bestand maken en de eerste voorkeuren instellen.</string>

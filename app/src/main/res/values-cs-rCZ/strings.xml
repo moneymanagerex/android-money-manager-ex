@@ -556,7 +556,7 @@
     <string name="budget_name">Název rozpočtu</string>
     <string name="budget_year">Rok rozpočtu</string>
     <string name="budget_month">Měsíc rozpočtu</string>
-    <string name="copy">Kopírovat</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikace se nyní za účelem provedení změn ukončí. Prosím restartujte.</string>
     <string name="print">Tisk</string>
     <string name="min_19">Pro tisk potřebujete alespoň Android 4.4.</string>
