@@ -17,7 +17,10 @@
 
 package com.money.manager.ex.tutorial;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +32,8 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -62,6 +67,8 @@ public class TutorialActivity extends FragmentActivity {
 
         skipTextView = findViewById(R.id.skipTextView);
         skipTextView.setOnClickListener(view -> onCloseClicked());
+
+        checkNotificationChannel();
     }
 
     @Override
@@ -116,4 +123,29 @@ public class TutorialActivity extends FragmentActivity {
         // close
         finish();
     }
+
+
+    private void checkNotificationChannel() {
+        if (NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled()) {
+            return;
+        }
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            if (!(checkPermissionGranted(Manifest.permission.POST_NOTIFICATIONS) ) ) {
+                requestPostNotificationsPermission();
+            }
+        }
+    }
+
+    private boolean checkPermissionGranted(String permissions)
+    {
+        // Check if the permission is already available.
+        return (ActivityCompat.checkSelfPermission(this, permissions) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPostNotificationsPermission() {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+    }
+
 }
