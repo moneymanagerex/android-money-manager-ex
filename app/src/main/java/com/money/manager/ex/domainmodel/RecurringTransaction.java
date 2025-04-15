@@ -141,6 +141,16 @@ public class RecurringTransaction
         return result;
     }
 
+    public Money getRealSignedAmount() {
+        if ( this.getStatus().equals("V") || this.getTransactionType().equals(TransactionTypes.Transfer) ) {
+            return MoneyFactory.fromDouble(0);
+        } else if (getTransactionType().equals(TransactionTypes.Deposit)) {
+            return getAmount();
+        } else {
+            return getAmount().multiply(-1);
+        }
+    }
+
     public void setToAmount(Money value) {
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
@@ -205,13 +215,16 @@ public class RecurringTransaction
 //        return MmxJodaDateTimeUtils.from(dateString);
 //    }
 
-    public Date getPaymentDate() {
+    public MmxDate getPaymentDateAsMmxDate() {
         String dateString = getString(NEXTOCCURRENCEDATE);
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
+        return new MmxDate(dateString);
+    }
 
-        return new MmxDate(dateString).toDate();
+    public Date getPaymentDate() {
+        return getPaymentDateAsMmxDate().toDate();
     }
 
     public String getPaymentDateString() {

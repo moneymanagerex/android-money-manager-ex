@@ -23,6 +23,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,7 @@ public class BudgetAdapter
 
     @Inject
     Lazy<BriteDatabase> databaseLazy;
+    private final Context mContext;
     private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
@@ -80,14 +83,15 @@ public class BudgetAdapter
     private MmxDate dateFrom;
     private MmxDate dateTo;
 
-    private ScheduleTransactionForecastList mScheduleTransactionForecastList;
+    //private ScheduleTransactionForecastList mScheduleTransactionForecastList;
+    private final ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
     //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
-    private List<View> fieldRequestUpdate = new ArrayList<>();
-    private HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<Long, Double>();
-    private HashMap<Long, Double> categoryIdForecastAmount = new HashMap<Long, Double>();
-    private CurrencyService currencyService;
+    private final List<View> fieldRequestUpdate = new ArrayList<>();
+    private final HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<>();
+    private final HashMap<Long, Double> categoryIdForecastAmount = new HashMap<>();
+    private final CurrencyService currencyService;
 
-    private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
+    private final ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
     /**
      * Standard constructor.
@@ -115,12 +119,15 @@ public class BudgetAdapter
         mContext = context;
         currencyService = new CurrencyService(mContext);
 
+        scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
+
         MmexApplication.getApp().iocComponent.inject(this);
 
         // get Budget financial
         try {
             useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
         } catch (Exception e) {
+            useBudgetFinancialYear = false;
         }
 
         if (mLayout == R.layout.item_budget_simple) {
@@ -140,14 +147,13 @@ public class BudgetAdapter
     private void createForecastEntry(){
         if (!mVisibleColumn.contains(R.id.forecastRemainTextView))
             return;
-        ScheduledTransactionForecastListServices forecastListServices = ScheduledTransactionForecastListServices.getInstance();
-        if (!forecastListServices.isReady()) {
+        if (!scheduledTransactionForecastListServices.isReady()) {
             Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
-            forecastListServices
-                    .setContext(mContext)
+            scheduledTransactionForecastListServices
                     .setDateTo(dateTo)
-                    .createScheduledTransactionForecastAsync(result -> {
-                        processForecast((ScheduleTransactionForecastList) result);
+                    .createScheduledTransactionForecastAsync(mContext, result -> {
+                        Handler mHandler = new Handler(Looper.getMainLooper());
+                        mHandler.post(() -> processForecast((ScheduleTransactionForecastList) result));
                         return result;
                     });
         }
@@ -155,20 +161,19 @@ public class BudgetAdapter
     }
 
     public void processForecast(ScheduleTransactionForecastList result){
-        mScheduleTransactionForecastList = result;
         for (int i = 0; i < fieldRequestUpdate.size(); i++) {
             View view = fieldRequestUpdate.get(i);
             long categoryId = (long) view.getTag();
             double forecastRemain;
             if (categoryIdForecastAmount.containsKey( categoryId ) ) {
                 // reuse from cache
-                forecastRemain = categoryIdAmountAvailable.get(categoryId) + categoryIdForecastAmount.get(categoryId);
+                forecastRemain = categoryIdAmountAvailable.get(categoryId) - categoryIdForecastAmount.get(categoryId);
             } else {
                 double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
                 double amountAvailable = categoryIdAmountAvailable.get(categoryId);
-                forecastRemain = amountAvailable + totalFromSchedule;
+                forecastRemain = amountAvailable - totalFromSchedule;
             }
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
             view.postInvalidate();
         }
         fieldRequestUpdate.clear();
@@ -206,11 +211,11 @@ public class BudgetAdapter
         setVisibleTextFieldForView(view, R.id.forecastRemainTextView);
     }
 
-    private void setVisibleTextFieldForView(View view, int resid) {
+    private void setVisibleTextFieldForView(View view, int resId) {
         try {
-            view.findViewById(resid).setVisibility(getVisibleColumn().contains(resid) ? View.VISIBLE : View.GONE);
+            view.findViewById(resId).setVisibility(getVisibleColumn().contains(resId) ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
-            // colummn not visible
+            // column not visible
         }
 
     }
@@ -222,18 +227,22 @@ public class BudgetAdapter
     private void setViewElement(View view, int resId, String text, Boolean withColor, boolean witchColor) {
         TextView textView = view.findViewById(resId);
         if (textView != null) {
-            textView.setText(text);
-            if (withColor) {
-                UIHelper uiHelper = new UIHelper(mContext);
-                if (witchColor) {
-                    textView.setTextColor(
-                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
-                    );
-                } else {
-                    textView.setTextColor(
-                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
-                    );
+            try {
+                textView.setText(text);
+                if (withColor) {
+                    UIHelper uiHelper = new UIHelper(mContext);
+                    if (witchColor) {
+                        textView.setTextColor(
+                                ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        );
+                    } else {
+                        textView.setTextColor(
+                                ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        );
+                    }
                 }
+            } catch ( Exception e ) {
+                Timber.e(e, "setViewElement");
             }
         }
     }
@@ -302,12 +311,12 @@ public class BudgetAdapter
         setViewElement(view, R.id.actualTextView, actual, currencyService, (int) (actual * 100) < (int) (estimatedForPeriod * 100));
 
         // Amount Available amountAvailableTextView
-        double amountAvailable = -(estimatedForPeriod - actual);
+        double amountAvailable = (estimatedForPeriod - actual);
         if (Double.isInfinite(amountAvailable)) {
             setViewElement(view, R.id.amountAvailableTextView, "<setup a period>");
             amountAvailable = 0.0;
         } else {
-            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService, amountAvailable < 0);
+            setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService);
         }
         categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
@@ -318,19 +327,31 @@ public class BudgetAdapter
             fieldRequestUpdate.add(view);
         } else {
             double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
-            double forecastRemain = amountAvailable + totalFromSchedule;
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain < 0);
+            double forecastRemain = amountAvailable - totalFromSchedule;
+            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
         }
     }
 
     private double getEstimateFromRecurringTransaction(long categoryId) {
+        if (categoryIdForecastAmount.isEmpty()) {
+            Timber.i("Calculate local cache");
+        }
         // Get Value for this category from recurring transaction
         if ( categoryIdForecastAmount.containsKey(categoryId) ) {
             return categoryIdForecastAmount.get(categoryId);
         }
 
-        if ( mScheduleTransactionForecastList == null ) return 0;
-        categoryIdForecastAmount.put(categoryId, mScheduleTransactionForecastList.getRecurringTransactions(categoryId, dateFrom, dateTo).getTotalAmount());
+        if ( ! scheduledTransactionForecastListServices.isReady() ) return 0;
+
+        // budget is based on year, Year financial, or monthly
+        MmxDate date = new MmxDate(dateFrom.toDate());
+        Double total = 0.0;
+        ScheduleTransactionForecastList list = scheduledTransactionForecastListServices.getRecurringTransactions();
+        while (date.toDate().compareTo(dateTo.toDate()) < 0) {
+            total += list.getForecastAmountFromCache(categoryId, date.getYear(), date.getMonth());
+            date.addMonth(1);
+        }
+        categoryIdForecastAmount.put(categoryId, total);
         return categoryIdForecastAmount.get(categoryId);
     }
 
@@ -378,9 +399,9 @@ public class BudgetAdapter
 
     private double getActualAmount(Boolean useSubCategory, Cursor cursor) {
         double actual;
-        // wolfsolver since category can be neested we need to consider always category as master
-        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
-        String categoryName = cursor.getString(cursor.getColumnIndex(BudgetNestedQuery.CATEGNAME));
+        // WolfSolver since category can be nested we need to consider always category as master
+        long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
+        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME));
         actual = getAmountForCategory(useSubCategory, categoryId, categoryName);
 
         return actual;
@@ -456,13 +477,13 @@ public class BudgetAdapter
         }
 
         try {
-            // wolfsolver adapt query for nested category
+            // WolfSolver adapt query for nested category
             String query = prepareQuery(where);
             Cursor cursor = databaseLazy.get().query(query);
             if (cursor == null) return 0;
             // add all the categories and subcategories together.
             while (cursor.moveToNext()) {
-                total += cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+                total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
             }
             cursor.close();
         } catch (IllegalStateException ise) {

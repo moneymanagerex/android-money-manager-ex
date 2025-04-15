@@ -152,6 +152,16 @@ public class AccountTransaction
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
+    public Money getRealSignedAmount() {
+        if ( this.getStatus().equals("V") || this.getTransactionType().equals(TransactionTypes.Transfer) ) {
+            return MoneyFactory.fromDouble(0);
+        } else if (getTransactionType().equals(TransactionTypes.Deposit)) {
+            return getAmount();
+        } else {
+            return getAmount().multiply(-1);
+        }
+    }
+
     public Long getCategoryId() {
         return getLong(ITransactionEntity.CATEGID);
     }
