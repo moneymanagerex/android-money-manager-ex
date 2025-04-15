@@ -58,6 +58,7 @@ public class ScheduledTransactionForecastListServices {
     }
 
     public static void destroyInstance() {
+        Timber.d("ScheduledTransactionForecastListServices: destroy instance");
         mInstance = null;
     }
 
@@ -79,7 +80,11 @@ public class ScheduledTransactionForecastListServices {
     }
 
     public ScheduledTransactionForecastListServices setDateTo(MmxDate dateTo) {
-        if ( mDateTo != null && mDateTo.toDate().before(dateTo.toDate())) return this; // no change
+        if ( mDateTo != null && mDateTo.toDate().before(dateTo.toDate())) {
+            Timber.d("ScheduledTransactionForecastListServices: Request new DateTo [%s] befor actual cached value [%s]", dateTo.toIsoDateString(), mDateTo.toIsoDateString());
+            return this; // no change
+        }
+        Timber.d("ScheduledTransactionForecastListServices: start new DateTo [%s] invalidating cache.", dateTo.toIsoDateString());
         mDateTo = dateTo;
         isReady = false;
         // invalidate scheduleTransactionForecastList
@@ -90,12 +95,15 @@ public class ScheduledTransactionForecastListServices {
 
     public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync(Function f) {
         return CompletableFuture.supplyAsync(() -> {
+            Timber.d("ScheduledTransactionForecastListServices: Start compute forecast.");
             isReady = false;
             createScheduledTransactionForecast();
             scheduleTransactionForecastList.populateCacheForCategory();
             isReady = true;
+            Timber.d("ScheduledTransactionForecastListServices: End compute forecast.");
             return scheduleTransactionForecastList;
         }).thenApply(f);
+
     }
 
     public ScheduleTransactionForecastList createScheduledTransactionForecast () {

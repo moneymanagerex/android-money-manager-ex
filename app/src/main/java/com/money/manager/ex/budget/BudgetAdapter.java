@@ -23,6 +23,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,7 +151,10 @@ public class BudgetAdapter
                     .setContext(mContext)
                     .setDateTo(dateTo)
                     .createScheduledTransactionForecastAsync(result -> {
-                        processForecast((ScheduleTransactionForecastList) result);
+                        Handler mHandler = new Handler(Looper.getMainLooper());
+                        mHandler.post(() -> {
+                            processForecast((ScheduleTransactionForecastList) result);
+                        });
                         return result;
                     });
         }
@@ -223,18 +228,22 @@ public class BudgetAdapter
     private void setViewElement(View view, int resId, String text, Boolean withColor, boolean witchColor) {
         TextView textView = view.findViewById(resId);
         if (textView != null) {
-            textView.setText(text);
-            if (withColor) {
-                UIHelper uiHelper = new UIHelper(mContext);
-                if (witchColor) {
-                    textView.setTextColor(
-                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
-                    );
-                } else {
-                    textView.setTextColor(
-                            ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
-                    );
+            try {
+                textView.setText(text);
+                if (withColor) {
+                    UIHelper uiHelper = new UIHelper(mContext);
+                    if (witchColor) {
+                        textView.setTextColor(
+                                ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                        );
+                    } else {
+                        textView.setTextColor(
+                                ContextCompat.getColor(mContext, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                        );
+                    }
                 }
+            } catch ( Exception e ) {
+                Timber.e(e, "setViewElement");
             }
         }
     }
