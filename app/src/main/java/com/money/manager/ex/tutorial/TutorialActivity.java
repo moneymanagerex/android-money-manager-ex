@@ -62,6 +62,7 @@ public class TutorialActivity extends FragmentActivity {
 
         skipTextView = findViewById(R.id.skipTextView);
         skipTextView.setOnClickListener(view -> onCloseClicked());
+
     }
 
     @Override
@@ -116,4 +117,5 @@ public class TutorialActivity extends FragmentActivity {
         // close
         finish();
     }
+
 }

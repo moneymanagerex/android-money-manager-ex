@@ -16,16 +16,19 @@
  */
 package com.money.manager.ex.home;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -48,6 +51,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -186,11 +191,9 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // test
-/*        int test = 0;
-        if (test == 1) throw new IllegalStateException("This state is not allowed.");
-        if ( test == 2) {test = 0; test = 1 / test;};
-*/
+        // ask for notification
+        checkNotificationChannel();
+
         MmexApplication.getApp().iocComponent.inject(this);
 
         if (showPrerequisite()) {
@@ -1543,4 +1546,31 @@ public class MainActivity
             dialog.show();
         }
     }
+
+
+    private void checkNotificationChannel() {
+        if (NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled()) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            if (!(checkPermissionGranted(Manifest.permission.POST_NOTIFICATIONS) ) ) {
+                requestPostNotificationsPermission();
+            }
+        }
+    }
+
+    private boolean checkPermissionGranted(String permissions)
+    {
+        // Check if the permission is already available.
+        return (ActivityCompat.checkSelfPermission(this, permissions) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPostNotificationsPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+    }
+
+
+
 }
