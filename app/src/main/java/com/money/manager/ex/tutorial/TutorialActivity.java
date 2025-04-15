@@ -17,10 +17,7 @@
 
 package com.money.manager.ex.tutorial;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,8 +29,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
