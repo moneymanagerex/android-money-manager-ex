@@ -63,6 +63,11 @@ public class SettingsActivity
             fragment = new PerDatabaseFragment();
         }
 
+        // directly point to db setting
+        if (fragmentName != null && fragmentName.equals(DatabaseSettingsFragment.class.getSimpleName())) {
+            fragment = new DatabaseSettingsFragment();
+        }
+
         // default
         if (fragment == null) {
             fragment = new SettingsFragment();

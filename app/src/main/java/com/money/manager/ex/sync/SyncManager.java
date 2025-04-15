@@ -25,6 +25,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -40,11 +42,15 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.core.docstorage.FileStorageHelper;
+import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
@@ -121,6 +127,29 @@ public class SyncManager {
                 return false;
             }
         }
+
+        // Try to catch error if Remote provider does not support read.
+        if (!isRemoteFileAccessible(false)){
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(() -> {
+                // open setting for export
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.remote_unavailable);
+                builder.setMessage(R.string.request_reopen);
+                builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
+                    Intent intent = new Intent(getContext(), SettingsActivity.class);
+                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+                    getContext().startActivity(intent);
+                });
+                builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
+                    getContext().startActivity(new Intent(getContext(), PasswordActivity.class));
+                    FileStorageHelper helper = new FileStorageHelper(getContext());
+                    helper.showStorageFilePicker();
+                });
+                builder.show();
+            }  );
+            return false;
+        }
         return true;
     }
 
@@ -135,7 +164,7 @@ public class SyncManager {
                 inputStream.close();
                 isRemoteFileAccessibleExist = true;
             } catch (Exception e) {
-                Timber.e(e);
+                Timber.v(e);
             }
         });
         thread.start();
@@ -159,7 +188,7 @@ public class SyncManager {
                         .setSmallIcon(R.drawable.ic_stat_notification)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentTitle(getContext().getString(R.string.remote_unavailable))
-                        .setContentText(remotePath);
+                        .setContentText(getContext().getString(R.string.request_reopen) + remotePath);
 
                 Notification notification = builder.build();
                 notificationManager.notify(1, notification);
