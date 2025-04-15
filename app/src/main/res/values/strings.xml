@@ -717,7 +717,7 @@
     <string name="budget_month">Budget Month</string>
     <string name="budget_month_optional">Budget Month (optional)</string>
 
-    <string name="copy">Copy</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">The app will now close to apply the changes. Please restart.</string>
     <string name="print">Print</string>
     <string name="min_19">You need at least Android 4.4 to be able to print the document.</string>
@@ -816,7 +816,8 @@
     <string name="remote_file_not_found">Remote file not found</string>
     <string name="error_checking_remote">Error checking for remote changes.</string>
     <string name="no_remote_change_date">The remote change date not found in the metadata.</string>
-    <string name="remote_unavailable">Remote file is unavailable</string>
+    <string name="remote_unavailable">Remote file is unavailable.</string>
+    <string name="request_reopen">Remote file is not accessible. This cause your local copy cannot be synced with remote one. Please go Setting to export DB if you want to save your local copy, or Reopen from remote if you want to load data from remote file.</string>
 
     <!-- Select database screen -->
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
@@ -902,7 +903,7 @@
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
     <string name="estimatedForPeriod">Estimate For Period</string>
     <string name="forecast_remain">Forecast Remain</string>
-    <string name="forecast_calculate">Calculating Forecast. Please wait...</string>
+    <string name="forecast_calculate">Calculating Forecast. Please wait…</string>
     <string name="enter_budget">Enter Budget</string>
     <string name="enter_budget_value">For Category %1$s, set budget for period %2$s. Use negative for expenses, positive for incomes:</string>
     <string name="enter_budget_value_plus_minus">Enter new value</string>
