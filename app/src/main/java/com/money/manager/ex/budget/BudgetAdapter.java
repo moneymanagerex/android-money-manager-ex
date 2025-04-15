@@ -72,6 +72,7 @@ public class BudgetAdapter
 
     @Inject
     Lazy<BriteDatabase> databaseLazy;
+    private final Context mContext;
     private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
@@ -83,14 +84,14 @@ public class BudgetAdapter
     private MmxDate dateTo;
 
     //private ScheduleTransactionForecastList mScheduleTransactionForecastList;
-    private ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
+    private final ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
     //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
-    private List<View> fieldRequestUpdate = new ArrayList<>();
-    private HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<Long, Double>();
-    private HashMap<Long, Double> categoryIdForecastAmount = new HashMap<Long, Double>();
-    private CurrencyService currencyService;
+    private final List<View> fieldRequestUpdate = new ArrayList<>();
+    private final HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<>();
+    private final HashMap<Long, Double> categoryIdForecastAmount = new HashMap<>();
+    private final CurrencyService currencyService;
 
-    private ArrayList<Integer> mVisibleColumn = new ArrayList<>();
+    private final ArrayList<Integer> mVisibleColumn = new ArrayList<>();
 
     /**
      * Standard constructor.
@@ -118,7 +119,7 @@ public class BudgetAdapter
         mContext = context;
         currencyService = new CurrencyService(mContext);
 
-        scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance(mContext);
+        scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
 
         MmexApplication.getApp().iocComponent.inject(this);
 
@@ -126,6 +127,7 @@ public class BudgetAdapter
         try {
             useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
         } catch (Exception e) {
+            useBudgetFinancialYear = false;
         }
 
         if (mLayout == R.layout.item_budget_simple) {
@@ -148,13 +150,10 @@ public class BudgetAdapter
         if (!scheduledTransactionForecastListServices.isReady()) {
             Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
             scheduledTransactionForecastListServices
-                    .setContext(mContext)
                     .setDateTo(dateTo)
-                    .createScheduledTransactionForecastAsync(result -> {
+                    .createScheduledTransactionForecastAsync(mContext, result -> {
                         Handler mHandler = new Handler(Looper.getMainLooper());
-                        mHandler.post(() -> {
-                            processForecast((ScheduleTransactionForecastList) result);
-                        });
+                        mHandler.post(() -> processForecast((ScheduleTransactionForecastList) result));
                         return result;
                     });
         }
@@ -212,11 +211,11 @@ public class BudgetAdapter
         setVisibleTextFieldForView(view, R.id.forecastRemainTextView);
     }
 
-    private void setVisibleTextFieldForView(View view, int resid) {
+    private void setVisibleTextFieldForView(View view, int resId) {
         try {
-            view.findViewById(resid).setVisibility(getVisibleColumn().contains(resid) ? View.VISIBLE : View.GONE);
+            view.findViewById(resId).setVisibility(getVisibleColumn().contains(resId) ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
-            // colummn not visible
+            // column not visible
         }
 
     }
@@ -322,7 +321,7 @@ public class BudgetAdapter
         categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
         // forecastRemainTextView
-        if (!ScheduledTransactionForecastListServices.getInstance(mContext).isReady()){
+        if (!ScheduledTransactionForecastListServices.getInstance().isReady()){
             setViewElement(view, R.id.forecastRemainTextView, "<...>");
             view.setTag(categoryId);
             fieldRequestUpdate.add(view);
@@ -400,9 +399,9 @@ public class BudgetAdapter
 
     private double getActualAmount(Boolean useSubCategory, Cursor cursor) {
         double actual;
-        // wolfsolver since category can be neested we need to consider always category as master
-        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
-        String categoryName = cursor.getString(cursor.getColumnIndex(BudgetNestedQuery.CATEGNAME));
+        // WolfSolver since category can be nested we need to consider always category as master
+        long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
+        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGNAME));
         actual = getAmountForCategory(useSubCategory, categoryId, categoryName);
 
         return actual;
@@ -478,13 +477,13 @@ public class BudgetAdapter
         }
 
         try {
-            // wolfsolver adapt query for nested category
+            // WolfSolver adapt query for nested category
             String query = prepareQuery(where);
             Cursor cursor = databaseLazy.get().query(query);
             if (cursor == null) return 0;
             // add all the categories and subcategories together.
             while (cursor.moveToNext()) {
-                total += cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+                total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
             }
             cursor.close();
         } catch (IllegalStateException ise) {

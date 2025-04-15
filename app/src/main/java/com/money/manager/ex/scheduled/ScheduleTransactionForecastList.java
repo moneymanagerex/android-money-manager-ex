@@ -1,9 +1,12 @@
 package com.money.manager.ex.scheduled;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +45,7 @@ public class ScheduleTransactionForecastList
             return Objects.hash(categoryId, year, month);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "{ category:" + categoryId + ", year:" + year + ", month:" + month + "}";
@@ -49,7 +53,7 @@ public class ScheduleTransactionForecastList
 
     }
 
-    private HashMap<ScheduleTransactionCacheKey, Double> cacheForecastAmount = new HashMap<ScheduleTransactionCacheKey, Double>();
+    private final HashMap<ScheduleTransactionCacheKey, Double> cacheForecastAmount = new HashMap<>();
 
     ScheduleTransactionForecastList() {
     }
@@ -79,13 +83,12 @@ public class ScheduleTransactionForecastList
 
     public ScheduleTransactionForecastList getRecurringTransactions(Predicate<RecurringTransaction> predicate) {
 //        List list = this.stream().filter(predicate).collect(Collectors.toList());
-        List list = this.parallelStream().filter(predicate).collect(Collectors.toList());
-        ScheduleTransactionForecastList result = new ScheduleTransactionForecastList((ArrayList<RecurringTransaction>) list);
-        return result;
+        List<RecurringTransaction> list = this.parallelStream().filter(predicate).collect(Collectors.toList());
+        return new ScheduleTransactionForecastList((ArrayList<RecurringTransaction>) list);
     }
 
     public void orderByDateAscending() {
-        this.sort((RecurringTransaction uno, RecurringTransaction due) -> uno.getPaymentDate().compareTo(due.getPaymentDate()));
+        this.sort(Comparator.comparing(RecurringTransaction::getPaymentDate));
     }
 
     public ScheduleTransactionForecastList populateCacheForCategory() {
@@ -104,18 +107,14 @@ public class ScheduleTransactionForecastList
     }
 
     public Double getForecastAmountFromCache(long categoryId, int year, int month) {
-        if (cacheForecastAmount.containsKey(new ScheduleTransactionCacheKey(categoryId, year, month))) {
-            return cacheForecastAmount.get(new ScheduleTransactionCacheKey(categoryId, year, month));
-        } else {
-            return 0.0;
-        }
+        return cacheForecastAmount.getOrDefault(new ScheduleTransactionCacheKey(categoryId, year, month), 0.0);
     }
 
     public Double getTotalAmount() {
         if (this.size() == 0) return 0.0;
 
         // todo handle currency
-        Double total = 0.0;
+        double total = 0.0;
         for ( RecurringTransaction recurringTransaction : this ) {
             total += recurringTransaction.getRealSignedAmount().toDouble();
         }

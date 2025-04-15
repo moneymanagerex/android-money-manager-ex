@@ -37,24 +37,18 @@ import timber.log.Timber;
  */
 public class ScheduledTransactionForecastListServices {
 
-    private Context mContext;
 //    private int monthInAdvance = 12;
     private MmxDate mDateTo;
     private ScheduleTransactionForecastList scheduleTransactionForecastList = null;
-    private Boolean isReady = false;
+    private Boolean isReady;
 
     private static ScheduledTransactionForecastListServices mInstance = null;
 
-    public static ScheduledTransactionForecastListServices getInstance(Context context) {
+    public static ScheduledTransactionForecastListServices getInstance() {
         if ( mInstance == null ) {
-            mInstance = new ScheduledTransactionForecastListServices(context);
+            mInstance = new ScheduledTransactionForecastListServices();
         }
         return mInstance;
-    }
-
-    public ScheduledTransactionForecastListServices setContext(Context context) {
-        mContext = context;
-        return this;
     }
 
     public static void destroyInstance() {
@@ -67,10 +61,6 @@ public class ScheduledTransactionForecastListServices {
     }
 
     public ScheduledTransactionForecastListServices() {
-    }
-
-    public ScheduledTransactionForecastListServices(Context context) {
-        mContext = context;
         isReady = false;
         setMonthInAdvance(12); // default 12 months
     }
@@ -81,7 +71,7 @@ public class ScheduledTransactionForecastListServices {
 
     public ScheduledTransactionForecastListServices setDateTo(MmxDate dateTo) {
         if ( mDateTo != null && mDateTo.toDate().before(dateTo.toDate())) {
-            Timber.d("ScheduledTransactionForecastListServices: Request new DateTo [%s] befor actual cached value [%s]", dateTo.toIsoDateString(), mDateTo.toIsoDateString());
+            Timber.d("ScheduledTransactionForecastListServices: Request new DateTo [%s] before actual cached value [%s]", dateTo.toIsoDateString(), mDateTo.toIsoDateString());
             return this; // no change
         }
         Timber.d("ScheduledTransactionForecastListServices: start new DateTo [%s] invalidating cache.", dateTo.toIsoDateString());
@@ -93,11 +83,11 @@ public class ScheduledTransactionForecastListServices {
     }
 
 
-    public CompletableFuture<ScheduleTransactionForecastList> createScheduledTransactionForecastAsync(Function f) {
+    public CompletableFuture createScheduledTransactionForecastAsync(Context context, Function f) {
         return CompletableFuture.supplyAsync(() -> {
             Timber.d("ScheduledTransactionForecastListServices: Start compute forecast.");
             isReady = false;
-            createScheduledTransactionForecast();
+            createScheduledTransactionForecast(context);
             scheduleTransactionForecastList.populateCacheForCategory();
             isReady = true;
             Timber.d("ScheduledTransactionForecastListServices: End compute forecast.");
@@ -106,15 +96,15 @@ public class ScheduledTransactionForecastListServices {
 
     }
 
-    public ScheduleTransactionForecastList createScheduledTransactionForecast () {
+    public ScheduleTransactionForecastList createScheduledTransactionForecast (Context context) {
         scheduleTransactionForecastList = new ScheduleTransactionForecastList();
         if (mDateTo == null) return scheduleTransactionForecastList;
 
-        QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
+        QueryBillDeposits billDeposits = new QueryBillDeposits(context);
 
         Cursor cursor = null;
         try {
-            cursor = mContext.getContentResolver().query(billDeposits.getUri(),
+            cursor = context.getContentResolver().query(billDeposits.getUri(),
                     billDeposits.getAllColumns(),
                     null,
                     null,
@@ -127,11 +117,11 @@ public class ScheduledTransactionForecastListServices {
             return scheduleTransactionForecastList; // is empty
 
         while (cursor.moveToNext()) {
-            @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), mContext);
+            @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), context);
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransactionAsClone();
-            Timber.d("Recurring Transaction: " + rx.toString());
+            Timber.d("Recurring Transaction: %s", rx.toString());
             if (rx.getPaymentDate().after(mDateTo.toDate())) {
-                // first occurence of this transaction is over cashflow visibility
+                // first occurrence of this transaction is over cash flow visibility
                 continue;
             }
             scheduleTransactionForecastList.add(rx); // add first entry of series
