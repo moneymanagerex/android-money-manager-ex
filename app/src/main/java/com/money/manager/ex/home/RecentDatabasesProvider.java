@@ -92,7 +92,8 @@ public class RecentDatabasesProvider {
         this.map.clear();
 
         // add back the current db
-        add(current);
+        if (current != null)  // if user clear without selecting a database, current will be null.
+            add(current);
 //        this.save();
 
         MainActivity.setRestartActivity(true);
