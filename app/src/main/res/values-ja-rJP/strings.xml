@@ -562,7 +562,7 @@
     <string name="budget_name">予算名</string>
     <string name="budget_year">予算年度</string>
     <string name="budget_month">予算月</string>
-    <string name="copy">コピー</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">変更を適用するためアプリを閉じます。再起動してください。</string>
     <string name="print">印刷</string>
     <string name="min_19">文書を印刷するには、少なくとも Android 4.4 が必要です。</string>

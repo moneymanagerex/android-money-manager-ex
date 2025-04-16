@@ -591,7 +591,7 @@
     <string name="budget_name">Назва бюджету</string>
     <string name="budget_year">Рік бюджету</string>
     <string name="budget_month">Місяць бюджету</string>
-    <string name="copy">Копіювати</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Додаток буде закритий, щоб задіяти зміни. Будь ласка перезавантажте.</string>
     <string name="print">Друкувати</string>
     <string name="min_19">Необхідний принаймні Android 4.4, щоб надрукувати документ.</string>

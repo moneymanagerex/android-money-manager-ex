@@ -580,7 +580,7 @@
     <string name="budget_name">Naziv budžeta</string>
     <string name="budget_year">Godina budžeta</string>
     <string name="budget_month">Mjesec budžeta</string>
-    <string name="copy">Kopiraj</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikacija će se sada zatvoriti, kako bi se primijenile promjene. Pokreni aplikaciju ponovo.</string>
     <string name="print">Ispiši</string>
     <string name="min_19">Za mogućnost ispisivanja dokumenta, moraš imati barem Android 4.4.</string>

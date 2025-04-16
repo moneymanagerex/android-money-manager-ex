@@ -562,7 +562,7 @@
     <string name="budget_name">שם תקציב</string>
     <string name="budget_year">שנת תקציב</string>
     <string name="budget_month">חודש תקציב</string>
-    <string name="copy">העתק</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">היישום ייסגר כעת כדי להחיל את השינויים. בבקשה תפעיל אותו מחדש.</string>
     <string name="print">הדפס</string>
     <string name="min_19">אתה צריך לפחות אנדרואיד 4.4 כדי להיות מסוגל להדפיס את המסמך.</string>

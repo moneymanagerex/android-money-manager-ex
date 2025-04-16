@@ -503,7 +503,7 @@
     <string name="budget_name">اسم الميزانية</string>
     <string name="budget_year">سنة الميزانية</string>
     <string name="budget_month">شهر الميزانية</string>
-    <string name="copy">نسخ</string>
+    <!-- string name="copy">Copy</string -->
     <string name="print">طباعة</string>
     <string name="save_as_html">حفظ كملف HTML</string>
     <string name="no_network">لا يتوفر اتصال بالإنترنت.</string>

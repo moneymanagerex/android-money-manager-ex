@@ -336,7 +336,7 @@
     <string name="error_split_transaction_empty">Legalább egy megosztott ügylet megadása kötelező</string>
     <string name="swipe_to_dismiss">Törlés elhúzással.</string>
     <string name="export_data_to_csv">Adatok exportálása CSV állományba</string>
-    <string name="export_data_in_progress">Adatok exportálása. Kérem várjon&#8230;</string>
+    <string name="export_data_in_progress">Adatok exportálása. Kérjük, várjon&#8230;</string>
     <string name="export_file_complete">Az adatok exportálása sikeresen megtörtént a %1$s állományba</string>
     <string name="export_file_failed">Hiba történt a(z) %1$s fájl exportálásakor.</string>
     <string name="donate_header">A Money Manager Ex for Android használata ingyenes. Ha tetszik az alkalmazás, adománnyal támogathatja a fejlesztő csapatot.</string>
@@ -435,7 +435,7 @@
     <string name="mmex_website">MMEX honlap</string>
     <string name="android_website">MMEX Androidra honlap</string>
     <string name="donate_in_app_already_donate">Ön már támogatta adományával az MMEX Androidra fejlesztését!\n\nKöszönjük a fejlesztő csapattól!</string>
-    <string name="donate_in_app_retrieving_status">Támogatási állapotának lekérése a Google Play szerveréről. Kérem, várjon&#8230;</string>
+    <string name="donate_in_app_retrieving_status">Támogatási állapotának lekérése a Google Play szerveréről. Kérjük, várjon&#8230;</string>
     <string name="donate_in_app_error">Nem tudjuk használni az alkalmazáson belüli számlázást. Ellenőrizze, hogy a Play Áruház legfrissebb verziója van-e telepítve az eszközére.</string>
     <string name="title_repeating_transaction_process">Ütemezett ügyletének feldolgozása</string>
     <string name="summary_repeating_transaction_process">Ütemezett ügylet lejárt feldolgozása (bevitel, felszólítás, kézi)</string>
@@ -506,7 +506,7 @@
     <string name="all_prices_updated">Minden ár frissítve.</string>
     <string name="download_complete">Letöltés befejeződött.</string>
     <string name="confirm_price_download">Szeretné frissíteni a biztonsági árakat online?</string>
-    <string name="starting_price_update">Árak letöltése, kérem várjon&#8230;</string>
+    <string name="starting_price_update">Árak letöltése. Kérjük, várjon&#8230;</string>
     <string name="database_migrate_14_to_20">1.4 verziós adatbázis migrálása</string>
     <string name="database_migrate_14_to_20_explanation">Régi adat található. Koppintson ide a korábbi adatbázis használatához.</string>
     <string name="database_migrate_14_to_20_failure">Hiba történt az adatbázis áttelepítésekor. Kérjük, forduljon az ügyfélszolgálathoz.</string>
@@ -640,7 +640,7 @@
     <string name="budget_year">Költségvetés év</string>
     <string name="budget_month">Költségvetés hónap</string>
     <string name="budget_month_optional">Költségvetési hónap (nem kötelező)</string>
-    <string name="copy">Másolás</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Az alkalmazás most bezárul a módosítások alkalmazásához. Kérjük, indítsa újra.</string>
     <string name="print">Nyomtatás</string>
     <string name="min_19">A dokumentum kinyomtatásához legalább Android 4.4-es verzióra van szüksége.</string>
@@ -651,9 +651,9 @@
     <string name="currencies_used">Pénznemek, használt</string>
     <string name="open_currencies">Pénznemek megnyitása</string>
     <string name="import_all_currencies">Pénznemek importálása</string>
-    <string name="import_currencies_in_progress">Pénznemek importálása. Kérem várjon&#8230;</string>
+    <string name="import_currencies_in_progress">Pénznemek importálása. Kérjük, várjon&#8230;</string>
     <string name="question_import_currencies">Szeretné importálni a pénznemeket?</string>
-    <string name="start_currency_exchange_rates">Pénznemek árfolyamának frissítése. Kérem várjon&#8230;</string>
+    <string name="start_currency_exchange_rates">Pénznemek árfolyamának frissítése. Kérjük, várjon&#8230;</string>
     <string name="update_currency_exchange_rates">Árfolyam frissítés:\n%1$s</string>
     <string name="success_currency_exchange_rates">Minden pénznem árfolyamának frissítése sikeresen megtörtént</string>
     <string name="update_menu_currency_exchange_rates">Árfolyam frissítés</string>
@@ -681,8 +681,8 @@
     <string name="dropbox_how_it_works">Hogyan működik a Dropbox a MMEX esetében\?</string>
     <string name="dropbox_link">Összekapcsolás Dropbox-al</string>
     <string name="dropbox_unlink">Leválasztás a Dropbox-ról</string>
-    <string name="dropbox_downloadProgress">Fájl letöltése a Dropbox-ról. Kérem várjon&#8230;</string>
-    <string name="dropbox_uploadProgress">Fájl feltöltése a Dropbox-ba. Kérem várjon&#8230;</string>
+    <string name="dropbox_downloadProgress">Fájl letöltése a Dropbox-ról. Kérjük, várjon&#8230;</string>
+    <string name="dropbox_uploadProgress">Fájl feltöltése a Dropbox-ba. Kérjük, várjon&#8230;</string>
     <string name="dropbox_linkedFile">Dropbox fájl</string>
     <string name="dropbox_file_summary_all">Adatok elérhetők bárhol a Dropbox-ban</string>
     <string name="db_not_dropbox">A jelenlegi adatbázis nincs összehangolva. Kérem, állítsa be a Dropbox összehangolást.</string>
@@ -691,16 +691,16 @@
     <string name="sync_enabled">Összehangolás engedélyezve</string>
     <string name="sync_provider">Szolgáltató</string>
     <string name="remote_file">Távoli fájl</string>
-    <string name="please_wait">Kérem várjon</string>
+    <string name="please_wait">Kérjük, várjon…</string>
     <string name="invalid_database">A kiterjesztés nem ismerhető fel érvényes adatbázisként.</string>
     <string name="reset_preferences">Beállítások visszaállítása</string>
     <string name="preferences_reset">Az összehangolási beállítások visszaállításra kerültek.</string>
     <string name="cloud_download">Adatbázisfájl letöltése a felhőtárhelyről.</string>
     <string name="cloud_upload">Adatbázisfájl feltöltése a felhőtárhelyre.</string>
     <string name="sync_notification_title">MMEX – Összehangolás</string>
-    <string name="sync_downloading">Adatbázis letöltés alatt. Kérem várjon&#8230;</string>
-    <string name="sync_uploading">Adatbázis feltöltése. Kérem várjon&#8230;</string>
-    <string name="syncProgress">Fájl összehangolása. Kérem várjon&#8230;</string>
+    <string name="sync_downloading">Adatbázis letöltés alatt. Kérjük, várjon&#8230;</string>
+    <string name="sync_uploading">Adatbázis feltöltése. Kérjük, várjon&#8230;</string>
+    <string name="syncProgress">Fájl összehangolása. Kérjük, várjon&#8230;</string>
     <string name="database_is_synchronized">Az adatbázis naprakész</string>
     <string name="upload_file_complete">Az adatbázis feltöltése sikeres</string>
     <string name="every_5_minutes">5 percenként</string>
@@ -733,7 +733,8 @@
     <string name="remote_file_not_found">Távoli fájl nem található</string>
     <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
     <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
-    <string name="remote_unavailable">A távoli fájl nem érhető el</string>
+    <string name="remote_unavailable">A távoli fájl nem érhető el.</string>
+    <string name="request_reopen">A távoli fájl nem érhető el. A helyi és távoli adatbázisok nem összehangolhatók. Adatbázis exportálás egy helyi másolat mentéséhez, vagy távoli fájl újranyitása adatok betöltéséhez a távoli fájlból.</string>
     <!-- Select database screen -->
     <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
     <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>
@@ -748,6 +749,7 @@
     <string name="save">Mentés</string>
     <string name="title_budget_show_simple_view">Egyszerű költségvetési nézet megjelenítése</string>
     <string name="summary_budget_show_simple_view">Ha be van jelölve a költségvetés, használja az egyszerűsített nézetet</string>
+    <string name="title_budget_reload_forecast">Ütemezett ügylet újratöltése</string>
     <string name="title_pref_budget_financial_year">Pénzügyi év felhasználása a költségvetésben</string>
     <string name="summary_pref_budget_financial_year">Ha be van jelölve, a költségvetés a pénzügyi évet használja a naptári év helyett</string>
     <string name="shares">Megosztások</string>
@@ -805,6 +807,8 @@
     <string name="bad_error_occurs">Váratlan hiba történt. Kérlek jelezd a fejlesztőknek.</string>
     <string name="estimatedForPeriod">Becslés az időtartamhoz</string>
     <string name="forecast_remain">Előrejelzés megmaradása</string>
+    <string name="forecast_calculate">Előrejelzés kiszámítása. Kérjük, várjon&#8230;</string>
     <string name="enter_budget">Költségvetés megadása</string>
+    <string name="enter_budget_value">A(z) %1$s kategória esetében állítsa be a költségkeretet a(z) %2$s időtartamra. Használja a negatívot a kiadásokhoz, a pozitív a bevételekhez:</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
 </resources>

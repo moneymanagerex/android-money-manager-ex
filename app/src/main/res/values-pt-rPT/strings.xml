@@ -569,7 +569,7 @@ Toque para marcar a transação como atrasada</string>
     <string name="budget_name">Nome do orçamento</string>
     <string name="budget_year">Orçamento anual</string>
     <string name="budget_month">Orçamento mensal</string>
-    <string name="copy">Cópia</string>
+    <!-- string name="copy">Copy</string -->
     <string name="app_restart">O app vai fechar para aplicar as alterações. Por favor reinicie.</string>
     <string name="print">Imprimir</string>
     <string name="min_19">Precisa de ter pelo menos o Android 4.4 para poder imprimir o documento.</string>
