@@ -72,7 +72,7 @@ public class BudgetAdapter
 
     @Inject
     Lazy<BriteDatabase> databaseLazy;
-    private final Context mContext;
+
     private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
