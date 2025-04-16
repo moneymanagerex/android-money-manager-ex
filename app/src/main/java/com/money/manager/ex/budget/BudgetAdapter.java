@@ -73,6 +73,8 @@ public class BudgetAdapter
     @Inject
     Lazy<BriteDatabase> databaseLazy;
 
+    private Context mContext;
+
     private final int mLayout;
     private String mBudgetName;
     private long mBudgetYearId;
@@ -109,6 +111,7 @@ public class BudgetAdapter
      */
     public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
         super(context, R.layout.item_budget, cursor, from, to, flags);
+        mContext = context;
 
         // switch to simple layout if the showSimpleView is set
         AppSettings settings = new AppSettings(getContext());
@@ -116,7 +119,6 @@ public class BudgetAdapter
                 ? R.layout.item_budget_simple
                 : R.layout.item_budget;
 
-        mContext = context;
         currencyService = new CurrencyService(mContext);
 
         scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
