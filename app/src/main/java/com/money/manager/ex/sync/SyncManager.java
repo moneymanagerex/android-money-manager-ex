@@ -130,24 +130,28 @@ public class SyncManager {
 
         // Try to catch error if Remote provider does not support read.
         if (!isRemoteFileAccessible(false)){
-            Handler mHandler = new Handler(Looper.getMainLooper());
-            mHandler.post(() -> {
-                // open setting for export
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle(R.string.remote_unavailable);
-                builder.setMessage(R.string.request_reopen);
-                builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
-                    Intent intent = new Intent(getContext(), SettingsActivity.class);
-                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
-                    getContext().startActivity(intent);
+            try {
+                Handler mHandler = new Handler(Looper.getMainLooper());
+                mHandler.post(() -> {
+                    // open setting for export
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(R.string.remote_unavailable);
+                    builder.setMessage(R.string.request_reopen);
+                    builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
+                        Intent intent = new Intent(getContext(), SettingsActivity.class);
+                        intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+                        getContext().startActivity(intent);
+                    });
+                    builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
+                        getContext().startActivity(new Intent(getContext(), PasswordActivity.class));
+                        FileStorageHelper helper = new FileStorageHelper(getContext());
+                        helper.showStorageFilePicker();
+                    });
+                    builder.show();
                 });
-                builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
-                    getContext().startActivity(new Intent(getContext(), PasswordActivity.class));
-                    FileStorageHelper helper = new FileStorageHelper(getContext());
-                    helper.showStorageFilePicker();
-                });
-                builder.show();
-            }  );
+            } catch ( Exception e ) {
+                Timber.e("Sync is unavailable");
+            }
             return false;
         }
         return true;
