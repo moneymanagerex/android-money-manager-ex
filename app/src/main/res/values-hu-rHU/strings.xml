@@ -733,6 +733,7 @@
     <string name="remote_file_not_found">Távoli fájl nem található</string>
     <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
     <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
+    <string name="remote_unavailable">A távoli fájl nem érhető el.</string>
     <!-- Select database screen -->
     <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
     <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>
@@ -805,5 +806,6 @@
     <string name="estimatedForPeriod">Becslés az időtartamhoz</string>
     <string name="forecast_remain">Előrejelzés megmaradása</string>
     <string name="enter_budget">Költségvetés megadása</string>
+    <string name="enter_budget_value">A(z) %1$s kategória esetében állítsa be a költségkeretet a(z) %2$s időtartamra. Használja a negatívot a kiadásokhoz, a pozitív a bevételekhez:</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
 </resources>
