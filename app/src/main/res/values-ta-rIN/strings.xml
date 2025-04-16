@@ -733,6 +733,8 @@
     <string name="remote_file_not_found">தொலை கோப்பு கிடைக்கவில்லை</string>
     <string name="error_checking_remote">தொலைநிலை மாற்றங்களைச் சரிபார்ப்பதில் பிழை.</string>
     <string name="no_remote_change_date">தொலைநிலை மாற்ற தேதி மெட்டாடேட்டாவில் இல்லை.</string>
+    <string name="remote_unavailable">தொலை கோப்பு கிடைக்கவில்லை.</string>
+    <string name="request_reopen">தொலை கோப்பு அணுக முடியாதது. இதனால் உங்கள் உள்ளூர் நகலை தொலை நகலுடன் ஒத்திசைக்க முடியாது. உங்கள் உள்ளூர் நகலை சேமிக்க விரும்பினால் DB ஐ ஏற்றுமதி செய்ய அமைப்பிற்குச் செல்லவும், அல்லது தொலை கோப்பிலிருந்து தரவை ஏற்ற விரும்பினால் தொலைதூரத்திலிருந்து மீண்டும் திறக்கவும்.</string>
     <!-- Select database screen -->
     <string name="intro_text">Money Manager Ex ஐப் பயன்படுத்தத் தொடங்க, உங்கள் தரவைச் சேமிக்க ஒரு தரவுத்தளக் கோப்பை வைத்திருக்க வேண்டும். கீழே உள்ள விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும்.</string>
     <string name="intro_create_db">நீங்கள் ஒரு புதிய கோப்பை உருவாக்கலாம் மற்றும் ஆரம்ப விருப்பங்களை அமைக்கலாம்.</string>
@@ -747,6 +749,7 @@
     <string name="save">சேமிக்கவும்</string>
     <string name="title_budget_show_simple_view">எளிய பட்ஜெட் காட்சியைக் காட்டு</string>
     <string name="summary_budget_show_simple_view">பட்ஜெட்டுகள் சரிபார்க்கப்பட்டால், எளிமையான பார்வையைப் பயன்படுத்தவும்</string>
+    <string name="title_budget_reload_forecast">அட்டவணை பரிவர்த்தனையை மீண்டும் ஏற்றவும்</string>
     <string name="title_pref_budget_financial_year">பட்ஜெட்டில் நிதியாண்டைப் பயன்படுத்துங்கள்</string>
     <string name="summary_pref_budget_financial_year">சரிபார்க்கப்பட்ட பட்ஜெட்கள் காலண்டர் ஆண்டிற்குப் பதிலாக நிதியாண்டைப் பயன்படுத்துகின்றன</string>
     <string name="shares">பங்குகள்</string>
@@ -802,6 +805,7 @@
     <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
     <string name="estimatedForPeriod">காலத்திற்கான மதிப்பீடு</string>
     <string name="forecast_remain">முன் கணிப்பு மீதமுள்ளது</string>
+    <string name="forecast_calculate">முன்னறிவிப்பைக் கணக்கிடுகிறது. தயவுசெய்து காத்திருங்கள்&#8230;</string>
     <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
     <string name="enter_budget_value">வகை %1$s க்கு, %2$s காலத்திற்கு ஒரு பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
     <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
