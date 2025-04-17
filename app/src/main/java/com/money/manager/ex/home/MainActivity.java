@@ -1166,6 +1166,13 @@ public class MainActivity
         Intent intent = getIntent();
         if (intent == null) return;
 
+        if (intent.getAction() != null && intent.getAction().equals("CALL_OPEN_DB")) {
+            startActivity(new Intent(this, PasswordActivity.class));
+            FileStorageHelper helper = new FileStorageHelper(this);
+            helper.showStorageFilePicker();
+            return;
+        }
+
         // Open a db file
         if (intent.getData() != null) {
             String pathFile = getIntent().getData().getEncodedPath();

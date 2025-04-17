@@ -20,11 +20,15 @@ package com.money.manager.ex.sync;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
 /**
@@ -167,6 +171,17 @@ public class SyncNotificationFactory {
 //                .setLargeIcon(icon.toBitmap())
             .setSmallIcon(R.drawable.ic_stat_notification)
             .setColor(uiHelper.getToolbarItemColor());
+        notification.setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Intent exportIntent = new Intent(context, SettingsActivity.class);
+        exportIntent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+        PendingIntent exportPending = PendingIntent.getActivity(getContext(), 0, exportIntent, PendingIntent.FLAG_IMMUTABLE);
+        notification.addAction(0, getContext().getString(R.string.menu_move_database_to_external_storage), exportPending);
+
+        Intent openIntent = new Intent(context, MainActivity.class);
+        openIntent.setAction("CALL_OPEN_DB");
+        PendingIntent openPending = PendingIntent.getActivity(getContext(), 0, openIntent, PendingIntent.FLAG_IMMUTABLE);
+        notification.addAction(0, getContext().getString(R.string.open_database), openPending);
 
         return notification.build();
     }

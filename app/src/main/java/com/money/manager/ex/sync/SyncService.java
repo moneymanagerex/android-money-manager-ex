@@ -239,11 +239,5 @@ public class SyncService
         Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationForConflict();
         mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_ERROR, notification);
-
-        Intent intent=new Intent(this,SyncDialogMessage.class);
-        intent.putExtra("TITLE", R.string.both_files_modified);
-        intent.putExtra("BODY", R.string.request_conlict_reopen);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }
