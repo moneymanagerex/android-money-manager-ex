@@ -1186,7 +1186,7 @@ public class MainActivity
                 startActivity(localIntent);
             });
             builder.show();
-            intent.setAction("DUMMY");
+            this.dbUpdateCheckDone = true;
             return;
         }
 
@@ -1195,7 +1195,7 @@ public class MainActivity
             startActivity(new Intent(this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
-            intent.setAction("DUMMY");
+            this.dbUpdateCheckDone = true;
             return;
         }
 
@@ -1204,7 +1204,7 @@ public class MainActivity
             Intent intentEsportDB = new Intent(this, SettingsActivity.class);
             intentEsportDB.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
             startActivity(intentEsportDB);
-            intent.setAction("DUMMY");
+            this.dbUpdateCheckDone = true;
             return;
         }
 

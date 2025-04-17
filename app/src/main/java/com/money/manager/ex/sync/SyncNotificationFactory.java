@@ -27,8 +27,6 @@ import androidx.core.app.NotificationCompat;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.settings.DatabaseSettingsFragment;
-import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
 /**

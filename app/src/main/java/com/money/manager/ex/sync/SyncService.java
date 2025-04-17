@@ -238,6 +238,7 @@ public class SyncService
     private void showNotificationForConflict() {
         Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationForConflict();
+
         mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_ERROR, notification);
     }
 }
