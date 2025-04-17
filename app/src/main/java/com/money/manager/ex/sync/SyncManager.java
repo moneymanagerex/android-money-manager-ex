@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.sync;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -130,7 +132,7 @@ public class SyncManager {
 
         // Try to catch error if Remote provider does not support read.
         if (!isRemoteFileAccessible(false)){
-            SyncManager.notifyUserSyncFailed(getContext(), R.string.remote_unavailable,R.string.request_reopen);
+            notifyUserSyncFailed(getContext(), R.string.remote_unavailable,R.string.request_reopen);
             return false;
         }
         return true;
@@ -414,29 +416,9 @@ public class SyncManager {
         return (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
     }
 
-    public static void notifyUserSyncFailed(Context context, int resTitle, int resBody){
-        try {
-            Handler mHandler = new Handler(Looper.getMainLooper());
-            mHandler.post(() -> {
-                // open setting for export
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(resTitle);
-                builder.setMessage(resBody);
-                builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
-                    Intent intent = new Intent(context, SettingsActivity.class);
-                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
-                    context.startActivity(intent);
-                });
-                builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
-                    context.startActivity(new Intent(context, PasswordActivity.class));
-                    FileStorageHelper helper = new FileStorageHelper(context);
-                    helper.showStorageFilePicker();
-                });
-                builder.show();
-            });
-        } catch ( Exception e ) {
-            Timber.e("Sync is unavailable");
-        }
+    public void notifyUserSyncFailed(Context context, int resTitle, int resBody){
+        SyncDialogMessage dialogMessage = new SyncDialogMessage();
+        dialogMessage.notifyUserSyncFailed(context, resTitle, resBody);
     }
 
 }

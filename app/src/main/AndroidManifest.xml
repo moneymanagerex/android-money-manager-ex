@@ -371,6 +371,9 @@
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name=".sync.SyncDialogMessage"
+            android:label="@string/app_name" />
 
         <!-- providers -->
 
