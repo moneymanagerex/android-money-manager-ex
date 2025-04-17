@@ -69,6 +69,7 @@ import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
+import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SecuritySettingsFragment;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
@@ -1166,12 +1167,44 @@ public class MainActivity
         Intent intent = getIntent();
         if (intent == null) return;
 
-        if (intent.getAction() != null && intent.getAction().equals("CALL_OPEN_DB")) {
+        // Handle Sync Conflict Prompt
+        if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_PROMPT)) {
+            int resTitle = intent.getIntExtra("TITLE", R.string.remote_unavailable);
+            int resBody = intent.getIntExtra("BODY", R.string.request_reopen);
+            // show prompt
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(resTitle);
+            builder.setMessage(resBody);
+            builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
+                Intent localIntent = new Intent(this, MainActivity.class);
+                localIntent.setAction(SyncConstants.REQUEST_CONFLICT_EXPORT);
+                startActivity(localIntent);
+            });
+            builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
+                Intent localIntent = new Intent(this, MainActivity.class);
+                localIntent.setAction(SyncConstants.REQUEST_CONFLICT_OPEN);
+                startActivity(localIntent);
+            });
+            builder.show();
+            return;
+        }
+
+        // Handle Sync Conflict Open
+        if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_OPEN)) {
             startActivity(new Intent(this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
             helper.showStorageFilePicker();
             return;
         }
+
+        // Handle Sync Conflict Export
+        if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_EXPORT)) {
+            Intent intentEsportDB = new Intent(this, SettingsActivity.class);
+            intentEsportDB.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+            startActivity(intentEsportDB);
+            return;
+        }
+
 
         // Open a db file
         if (intent.getData() != null) {

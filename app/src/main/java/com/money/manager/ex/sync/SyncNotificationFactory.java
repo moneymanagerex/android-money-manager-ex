@@ -173,16 +173,12 @@ public class SyncNotificationFactory {
             .setColor(uiHelper.getToolbarItemColor());
         notification.setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        Intent exportIntent = new Intent(context, SettingsActivity.class);
-        exportIntent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
-        PendingIntent exportPending = PendingIntent.getActivity(getContext(), 0, exportIntent, PendingIntent.FLAG_IMMUTABLE);
-        notification.addAction(0, getContext().getString(R.string.menu_move_database_to_external_storage), exportPending);
-
-        Intent openIntent = new Intent(context, MainActivity.class);
-        openIntent.setAction("CALL_OPEN_DB");
-        PendingIntent openPending = PendingIntent.getActivity(getContext(), 0, openIntent, PendingIntent.FLAG_IMMUTABLE);
-        notification.addAction(0, getContext().getString(R.string.open_database), openPending);
-
+        Intent resolveConflictIntent = new Intent(context, MainActivity.class);
+        resolveConflictIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
+        resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, R.string.sync_conflict);
+        resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, R.string.both_files_modified);
+        PendingIntent resolveConflictPending = PendingIntent.getActivity(getContext(), 0, resolveConflictIntent, PendingIntent.FLAG_IMMUTABLE);
+        notification.addAction(0, getContext().getString(R.string.request_conflict_resolve), resolveConflictPending);
         return notification.build();
     }
 

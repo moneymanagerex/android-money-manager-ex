@@ -417,8 +417,9 @@ public class SyncManager {
     }
 
     public void notifyUserSyncFailed(Context context, int resTitle, int resBody){
-        SyncDialogMessage dialogMessage = new SyncDialogMessage();
-        dialogMessage.notifyUserSyncFailed(context, resTitle, resBody);
+        Intent localIntent = new Intent(context, MainActivity.class);
+        localIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
+        context.startActivity(localIntent);
     }
 
 }
