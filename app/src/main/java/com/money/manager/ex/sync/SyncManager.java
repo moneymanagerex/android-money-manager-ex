@@ -130,28 +130,7 @@ public class SyncManager {
 
         // Try to catch error if Remote provider does not support read.
         if (!isRemoteFileAccessible(false)){
-            try {
-                Handler mHandler = new Handler(Looper.getMainLooper());
-                mHandler.post(() -> {
-                    // open setting for export
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle(R.string.remote_unavailable);
-                    builder.setMessage(R.string.request_reopen);
-                    builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
-                        Intent intent = new Intent(getContext(), SettingsActivity.class);
-                        intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
-                        getContext().startActivity(intent);
-                    });
-                    builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
-                        getContext().startActivity(new Intent(getContext(), PasswordActivity.class));
-                        FileStorageHelper helper = new FileStorageHelper(getContext());
-                        helper.showStorageFilePicker();
-                    });
-                    builder.show();
-                });
-            } catch ( Exception e ) {
-                Timber.e("Sync is unavailable");
-            }
+            SyncManager.notifyUserSyncFailed(getContext(), R.string.remote_unavailable,R.string.request_reopen);
             return false;
         }
         return true;
@@ -434,4 +413,30 @@ public class SyncManager {
     private AlarmManager getAlarmManager() {
         return (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
     }
+
+    public static void notifyUserSyncFailed(Context context, int resTitle, int resBody){
+        try {
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(() -> {
+                // open setting for export
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(resTitle);
+                builder.setMessage(resBody);
+                builder.setPositiveButton(R.string.menu_move_database_to_external_storage, (dialog, which) -> {
+                    Intent intent = new Intent(context, SettingsActivity.class);
+                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+                    context.startActivity(intent);
+                });
+                builder.setNegativeButton(R.string.open_database, (dialog, which) -> {
+                    context.startActivity(new Intent(context, PasswordActivity.class));
+                    FileStorageHelper helper = new FileStorageHelper(context);
+                    helper.showStorageFilePicker();
+                });
+                builder.show();
+            });
+        } catch ( Exception e ) {
+            Timber.e("Sync is unavailable");
+        }
+    }
+
 }

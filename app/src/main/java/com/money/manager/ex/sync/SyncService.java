@@ -238,7 +238,7 @@ public class SyncService
     private void showNotificationForConflict() {
         Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationForConflict();
-
         mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_ERROR, notification);
+        SyncManager.notifyUserSyncFailed(getApplicationContext(), R.string.both_files_modified ,R.string.request_conlict_reopen);
     }
 }

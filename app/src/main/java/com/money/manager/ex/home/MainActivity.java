@@ -1203,6 +1203,7 @@ public class MainActivity
             // This is to avoid checking for online updates on every device rotation.
             dbUpdateCheckDone = true;
         }
+
     }
 
     private void populateScheduledTransactions() {
