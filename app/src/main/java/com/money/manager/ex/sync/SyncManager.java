@@ -413,7 +413,8 @@ public class SyncManager {
     public void notifyUserSyncFailed(Context context, int resTitle, int resBody){
         Intent localIntent = new Intent(context, MainActivity.class);
         localIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
-        context.startActivity(localIntent);
+        localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, resTitle);
+        localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, resBody);
     }
 
 }
