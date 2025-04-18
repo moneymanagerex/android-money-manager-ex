@@ -176,8 +176,7 @@ public class SyncNotificationFactory {
         resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, R.string.sync_conflict);
         resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, R.string.both_files_modified);
         PendingIntent resolveConflictPending = PendingIntent.getActivity(getContext(), 0, resolveConflictIntent, PendingIntent.FLAG_IMMUTABLE);
-        notification.addAction(0, getContext().getString(R.string.request_conflict_resolve), resolveConflictPending);
-        return notification.build();
+        notification.addAction(R.drawable.ic_action_resolve_conflict, getContext().getString(R.string.request_conflict_resolve), resolveConflictPending);
     }
 
 }
