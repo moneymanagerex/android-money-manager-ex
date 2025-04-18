@@ -415,6 +415,7 @@ public class SyncManager {
         localIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
         localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, resTitle);
         localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, resBody);
+        context.startActivity(localIntent);
     }
 
 }
