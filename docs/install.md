@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This file is not used anymore
+
 # Install instruction
 
 ## Manual instruction
