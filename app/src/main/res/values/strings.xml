@@ -806,7 +806,9 @@
     <string name="filenames_differ">The remote and local filenames differ. Aborting synchronization.</string>
     <string name="both_files_modified">Both the local and the remote database files have been modified!</string>
     <string name="sync_conflict">Sync conflict</string>
+    <string name="request_conflict_resolve">Resolve Conflict</string>
     <string name="no_remote_file">Please select the remote file to use for synchronization.</string>
+    <string name="request_conlict_reopen">Conflict between local and remote file. This cause your local copy cannot be synced with remote one. Please export DB if you want to save your local copy, or Reopen from remote if you want to load data from remote file.</string>
 
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>
@@ -817,7 +819,7 @@
     <string name="error_checking_remote">Error checking for remote changes.</string>
     <string name="no_remote_change_date">The remote change date not found in the metadata.</string>
     <string name="remote_unavailable">Remote file is unavailable.</string>
-    <string name="request_reopen">Remote file is not accessible. This cause your local copy cannot be synced with remote one. Please go Setting to export DB if you want to save your local copy, or Reopen from remote if you want to load data from remote file.</string>
+    <string name="request_reopen">Remote file is not accessible. This cause your local copy cannot be synced with remote one. Please export DB if you want to save your local copy, or Reopen from remote if you want to load data from remote file.</string>
 
     <!-- Select database screen -->
     <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>

@@ -35,4 +35,10 @@ public class SyncConstants {
 
     public static final int REQUEST_PERIODIC_SYNC = 0;
     public static final int REQUEST_DELAYED_SYNC = 1;
+
+    public static final String REQUEST_CONFLICT_PROMPT = "REQUEST_CONFLICT_PROMPT";
+    public static final String REQUEST_CONFLICT_OPEN = "REQUEST_CONFLICT_OPEN";
+    public static final String REQUEST_CONFLICT_EXPORT = "REQUEST_CONFLICT_EXPORT";
+    public static final String REQUEST_CONFLICT_PROMPT_TITLE = "TITLE";
+    public static final String REQUEST_CONFLICT_PROMPT_BODY = "BODY";
 }

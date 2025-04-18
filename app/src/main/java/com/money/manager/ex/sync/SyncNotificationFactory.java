@@ -20,11 +20,13 @@ package com.money.manager.ex.sync;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NotificationUtils;
 
 /**
@@ -167,7 +169,14 @@ public class SyncNotificationFactory {
 //                .setLargeIcon(icon.toBitmap())
             .setSmallIcon(R.drawable.ic_stat_notification)
             .setColor(uiHelper.getToolbarItemColor());
+        notification.setPriority(NotificationCompat.PRIORITY_HIGH);
 
+        Intent resolveConflictIntent = new Intent(context, MainActivity.class);
+        resolveConflictIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
+        resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, R.string.sync_conflict);
+        resolveConflictIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, R.string.both_files_modified);
+        PendingIntent resolveConflictPending = PendingIntent.getActivity(getContext(), 0, resolveConflictIntent, PendingIntent.FLAG_IMMUTABLE);
+        notification.addAction(R.drawable.arrows_reload_icon, getContext().getString(R.string.request_conflict_resolve), resolveConflictPending);
         return notification.build();
     }
 
