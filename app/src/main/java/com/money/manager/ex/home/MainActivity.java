@@ -1201,9 +1201,9 @@ public class MainActivity
 
         // Handle Sync Conflict Export
         if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_EXPORT)) {
-            Intent intentEsportDB = new Intent(this, SettingsActivity.class);
-            intentEsportDB.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
-            startActivity(intentEsportDB);
+            Intent intentExportDB = new Intent(this, SettingsActivity.class);
+            intentExportDB.putExtra(SettingsActivity.EXTRA_FRAGMENT, DatabaseSettingsFragment.class.getSimpleName());
+            startActivity(intentExportDB);
             this.dbUpdateCheckDone = true;
             return;
         }
