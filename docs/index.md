@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This index file is not used anymore
+
 # Money Manager Ex for Android
 
 Welcome to Money Manager Ex for Android documentation.
