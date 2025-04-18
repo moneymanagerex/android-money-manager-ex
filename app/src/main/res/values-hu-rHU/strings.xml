@@ -734,7 +734,6 @@
     <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
     <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
     <string name="remote_unavailable">A távoli fájl nem érhető el.</string>
-    <string name="request_reopen">A távoli fájl nem érhető el. A helyi és távoli adatbázisok nem összehangolhatók. Adatbázis exportálás egy helyi másolat mentéséhez, vagy távoli fájl újranyitása adatok betöltéséhez a távoli fájlból.</string>
     <!-- Select database screen -->
     <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
     <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>
