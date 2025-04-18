@@ -132,7 +132,7 @@ public class CategoriesReportFragment
 
             Money totalAmount = MoneyFactory.fromString("0");
             while (data.moveToNext()) {
-                String totalRow = data.getString(data.getColumnIndex("TOTAL"));
+                String totalRow = data.getString(data.getColumnIndexOrThrow("TOTAL"));
                 if (!TextUtils.isEmpty(totalRow)) {
                     totalAmount = totalAmount.add(MoneyFactory.fromString(totalRow));
                 } else {
@@ -304,9 +304,9 @@ public class CategoriesReportFragment
         // process cursor
         while (cursor.moveToNext()) {
             ValuePieEntry item = new ValuePieEntry();
-            String category = cursor.getString(cursor.getColumnIndex(QueryMobileData.Category));
+            String category = cursor.getString(cursor.getColumnIndexOrThrow(QueryMobileData.Category));
             // total
-            double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
+            double total = Math.abs(cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL")));
             // check if category is empty
             if (TextUtils.isEmpty(category)) {
                 category = getString(R.string.empty_category);

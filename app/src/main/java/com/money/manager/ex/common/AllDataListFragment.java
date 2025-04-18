@@ -162,7 +162,7 @@ public class AllDataListFragment
             if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                 Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                 if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                    startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
+                    startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ID)));
                 }
             }
         });
@@ -874,7 +874,7 @@ public class AllDataListFragment
             for (int i = 0; i < checkedItemsCount; i++) {
                 int position = positionChecked.keyAt(i);
                 if (cursor.moveToPosition(position)) {
-                    transIds.add(cursor.getLong(cursor.getColumnIndex(QueryAllData.ID)));
+                    transIds.add(cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ID)));
                 }
             }
         }

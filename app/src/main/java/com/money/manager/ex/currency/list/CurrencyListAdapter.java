@@ -59,11 +59,11 @@ public class CurrencyListAdapter
         CurrencyListItemViewHolder holder = (CurrencyListItemViewHolder) view.getTag();
 
         // name
-        String name = cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME));
         holder.name.setText(name);
 
         // exchange rate
-        String rate = cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE));
+        String rate = cursor.getString(cursor.getColumnIndexOrThrow(Currency.BASECONVRATE));
         holder.rate.setText(rate);
     }
 }

@@ -356,9 +356,9 @@ public class AccountTransactionListFragment
         switch (loader.getId()) {
             case ID_LOADER_SUMMARY:
                 if (data != null && data.moveToFirst()) {
-                    String balance = Double.toString(data.getDouble(data.getColumnIndex(QueryAccountBills.TOTAL)));
+                    String balance = Double.toString(data.getDouble(data.getColumnIndexOrThrow(QueryAccountBills.TOTAL)));
                     mAccountBalance = MoneyFactory.fromString(balance);
-                    String reconciled = Double.toString(data.getDouble(data.getColumnIndex(QueryAccountBills.RECONCILED)));
+                    String reconciled = Double.toString(data.getDouble(data.getColumnIndexOrThrow(QueryAccountBills.RECONCILED)));
                     mAccountReconciled = MoneyFactory.fromString(reconciled);
                 } else {
                     mAccountBalance = MoneyFactory.fromString("0");
@@ -749,7 +749,7 @@ public class AccountTransactionListFragment
 
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
-            String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
+            String accountIdString = cursor.getString(cursor.getColumnIndexOrThrow(Account.ACCOUNTID));
             long accountId = Long.parseLong(accountIdString);
             if (accountId == mAccountId) {
                 position = i;

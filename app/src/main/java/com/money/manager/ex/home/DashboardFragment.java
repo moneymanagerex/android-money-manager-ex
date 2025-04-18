@@ -272,11 +272,11 @@ public class DashboardFragment
         String[] titles = new String[3];
 
         // incomes and expenses
-        incomes[1] = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
-        expenses[1] = Math.abs(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses)));
+        incomes[1] = cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income));
+        expenses[1] = Math.abs(cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses)));
         // titles
-        int year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
-        int month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
+        int year = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.YEAR));
+        int month = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Month));
 
         // format month
 //        Calendar calendar = Calendar.getInstance();
@@ -329,9 +329,9 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String category = "<b>" + cursor.getString(cursor.getColumnIndex(QueryMobileData.Category)) + "</b>";
-            double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
+            String category = "<b>" + cursor.getString(cursor.getColumnIndexOrThrow(QueryMobileData.Category)) + "</b>";
+            double total = cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+            long num = cursor.getLong(cursor.getColumnIndexOrThrow("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + category + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -361,9 +361,9 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME));
-            double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-            long num = cursor.getLong(cursor.getColumnIndex("NUM"));
+            String payee = cursor.getString(cursor.getColumnIndexOrThrow(QueryMobileData.PAYEENAME));
+            double total = cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+            long num = cursor.getLong(cursor.getColumnIndexOrThrow("NUM"));
             // Add Row
             tableLayout.addView(createTableRow(new String[]{"<small>" + payee + "</small>",
                             "<small><i>" + num + "</i></small>",
@@ -392,10 +392,10 @@ public class DashboardFragment
         // add rows
         while (cursor.moveToNext()) {
             // load values
-            String payee = "<i>" + cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)) + "</i>";
-            double total = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
-            int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
-            long currencyId = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID));
+            String payee = "<i>" + cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.PAYEENAME)) + "</i>";
+            double total = cursor.getDouble(cursor.getColumnIndexOrThrow(QueryBillDeposits.AMOUNT));
+            int daysLeft = cursor.getInt(cursor.getColumnIndexOrThrow(QueryBillDeposits.DAYSLEFT));
+            long currencyId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.CURRENCYID));
             String daysLeftText = "";
             boolean hasNumber = getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue).indexOf("%d") >= 0;
             daysLeftText = String.format( (hasNumber ? getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) : "%d " + getString(daysLeft > 0 ? R.string.days_remaining : R.string.days_overdue) ),

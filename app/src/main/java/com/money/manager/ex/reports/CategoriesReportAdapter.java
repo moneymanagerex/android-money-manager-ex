@@ -63,7 +63,7 @@ public class CategoriesReportAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        long categoryId = cursor.getLong(cursor.getColumnIndex(QueryMobileData.CATEGID));
+        long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryMobileData.CATEGID));
         boolean isActive = true;
         if (categoryId != Constants.NOT_SET) {
             CategoryRepository categoryRepository = new CategoryRepository(context);
@@ -77,9 +77,9 @@ public class CategoriesReportAdapter
         TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
 
-        double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
+        double total = cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
         String column1;
-        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
+        String category = cursor.getString(cursor.getColumnIndexOrThrow(QueryAllData.Category));
         if (!TextUtils.isEmpty(category)) {
             if ( !isActive ) {
                 column1 = "<i>" + category + " " + context.getString(R.string.inactive) + "</i>";

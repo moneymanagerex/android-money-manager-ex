@@ -316,8 +316,8 @@ public class HomeFragment
                 double income = 0, expenses = 0;
                 if (data != null) {
                     while (data.moveToNext()) {
-                        expenses = data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
-                        income = data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
+                        expenses = data.getDouble(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses));
+                        income = data.getDouble(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income));
                     }
                 }
                 TextView txtIncome = getActivity().findViewById(R.id.textViewIncome);

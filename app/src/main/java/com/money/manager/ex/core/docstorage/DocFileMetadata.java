@@ -63,9 +63,9 @@ public class DocFileMetadata {
             }
 
             // Extract metadata
-            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            int lastModifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
+            int displayNameIndex = cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = cursor.getColumnIndexOrThrow(OpenableColumns.SIZE);
+            int lastModifiedIndex = cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
 
             result.Name = displayNameIndex != -1 ? cursor.getString(displayNameIndex) : "Unknown";
             result.Size = (sizeIndex != -1 && !cursor.isNull(sizeIndex)) ? cursor.getLong(sizeIndex) : -1;

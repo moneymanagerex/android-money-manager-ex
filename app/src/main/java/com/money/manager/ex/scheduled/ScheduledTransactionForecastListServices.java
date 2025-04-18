@@ -117,7 +117,7 @@ public class ScheduledTransactionForecastListServices {
             return scheduleTransactionForecastList; // is empty
 
         while (cursor.moveToNext()) {
-            @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), context);
+            @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), context);
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransactionAsClone();
             Timber.d("Recurring Transaction: %s", rx.toString());
             if (rx.getPaymentDate().after(mDateTo.toDate())) {

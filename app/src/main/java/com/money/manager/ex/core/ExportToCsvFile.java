@@ -114,16 +114,16 @@ public class ExportToCsvFile
 			while (data.moveToNext()) {
 				String[] record = new String[7];
 				// compose a records
-				record[0] = data.getString(data.getColumnIndex(QueryAllData.Date));
-				if (!TextUtils.isEmpty(data.getString(data.getColumnIndex(QueryAllData.PAYEENAME)))) {
-					record[1] = data.getString(data.getColumnIndex(QueryAllData.PAYEENAME));
+				record[0] = data.getString(data.getColumnIndexOrThrow(QueryAllData.Date));
+				if (!TextUtils.isEmpty(data.getString(data.getColumnIndexOrThrow(QueryAllData.PAYEENAME)))) {
+					record[1] = data.getString(data.getColumnIndexOrThrow(QueryAllData.PAYEENAME));
 				} else {
-					record[1] = data.getString(data.getColumnIndex(QueryAllData.AccountName));
+					record[1] = data.getString(data.getColumnIndexOrThrow(QueryAllData.AccountName));
 				}
-				record[2] = Double.toString(data.getDouble(data.getColumnIndex(QueryAllData.AMOUNT)));
-				record[3] = data.getString(data.getColumnIndex(QueryAllData.Category));
-				record[4] = Integer.toString(data.getInt(data.getColumnIndex(QueryAllData.TransactionNumber)));
-				record[5] = data.getString(data.getColumnIndex(QueryAllData.Notes));
+				record[2] = Double.toString(data.getDouble(data.getColumnIndexOrThrow(QueryAllData.AMOUNT)));
+				record[3] = data.getString(data.getColumnIndexOrThrow(QueryAllData.Category));
+				record[4] = Integer.toString(data.getInt(data.getColumnIndexOrThrow(QueryAllData.TransactionNumber)));
+				record[5] = data.getString(data.getColumnIndexOrThrow(QueryAllData.Notes));
 				// writer record
 				csvWriter.writeNext(record);
 				// move to next row

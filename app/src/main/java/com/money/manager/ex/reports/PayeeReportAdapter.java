@@ -54,9 +54,9 @@ public class PayeeReportAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         TextView txtColumn1 = view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = view.findViewById(R.id.textViewColumn2);
-        double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-        if (cursor.getColumnIndex(QueryAllData.PAYEENAME) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryAllData.PAYEENAME)))) {
-            txtColumn1.setText(cursor.getString(cursor.getColumnIndex(QueryAllData.PAYEENAME)));
+        double total = cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+        if (cursor.getColumnIndexOrThrow(QueryAllData.PAYEENAME) >= 0 && !TextUtils.isEmpty(cursor.getString(cursor.getColumnIndexOrThrow(QueryAllData.PAYEENAME)))) {
+            txtColumn1.setText(cursor.getString(cursor.getColumnIndexOrThrow(QueryAllData.PAYEENAME)));
         } else {
             txtColumn1.setText(context.getString(R.string.empty_payee));
         }

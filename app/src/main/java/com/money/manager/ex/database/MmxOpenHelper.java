@@ -278,7 +278,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         long recordId = Constants.NOT_SET;
         boolean recordExists = currencyCursor.moveToFirst();
         if (recordExists) {
-            recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
+            recordId = currencyCursor.getInt(currencyCursor.getColumnIndexOrThrow(Info.INFOID));
         }
         currencyCursor.close();
 

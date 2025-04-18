@@ -120,7 +120,7 @@ public class InfoService
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {
-                ret = cursor.getString(cursor.getColumnIndex(Info.INFOVALUE));
+                ret = cursor.getString(cursor.getColumnIndexOrThrow(Info.INFOVALUE));
             }
             cursor.close();
         } catch (Exception e) {

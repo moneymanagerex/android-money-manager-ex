@@ -61,13 +61,13 @@ public class IncomeVsExpensesAdapter
         TextView txtDifference = view.findViewById(R.id.textViewDifference);
         // take data
         int year, month;
-        year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
-        month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
+        year = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.YEAR));
+        month = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Month));
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);
         double income, expenses;
-        expenses = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
-        income = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
+        expenses = cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses));
+        income = cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income));
         // attach data
         txtYear.setText(Integer.toString(year));
         String formatMonth = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "MMM" : "MMMM";
