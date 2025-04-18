@@ -119,11 +119,11 @@ public class PayeeListFragment
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 TextView textView = (TextView) aView;
                 boolean active;
-                if (aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE)) == null) {
+                if (aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE)) == null) {
                     // issue 2216: consider true if active column is not set, backward compatibulity
                     active = true;
                 } else {
-                    active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Payee.ACTIVE))) != 0);
+                    active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE))) != 0);
                 }
                 CharSequence text = aCursor.getString(aColumnIndex);
                 if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
@@ -251,7 +251,7 @@ public class PayeeListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME)));
 
         PayeeService payeeService = new PayeeService(getActivity());
 
@@ -397,8 +397,8 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            long payeeId = cursor.getLong(cursor.getColumnIndex(Payee.PAYEEID));
-            String payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
+            long payeeId = cursor.getLong(cursor.getColumnIndexOrThrow(Payee.PAYEEID));
+            String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME));
 
             sendResultToActivity(payeeId, payeeName);
 

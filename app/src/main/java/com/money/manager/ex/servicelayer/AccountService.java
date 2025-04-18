@@ -142,7 +142,7 @@ public class AccountService
         // calculate balance.
         while (cursor.moveToNext()) {
             tx.contentValues.clear();
-            String transType = cursor.getString(cursor.getColumnIndex(ITransactionEntity.TRANSCODE));
+            String transType = cursor.getString(cursor.getColumnIndexOrThrow(ITransactionEntity.TRANSCODE));
 
             // Some users have invalid Transaction Type. Should we check .contains()?
 
@@ -335,8 +335,8 @@ public class AccountService
 
         // calculate summary
         while (cursor.moveToNext()) {
-//            curTotal = curTotal.add(MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTAL))));
-            curTotal = curTotal.add(MoneyFactory.fromString(cursor.getString(cursor.getColumnIndex(QueryAccountBills.TOTAL))));
+//            curTotal = curTotal.add(MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
+            curTotal = curTotal.add(MoneyFactory.fromString(cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
         }
         cursor.close();
 

@@ -213,15 +213,15 @@ public class QueryAccountBills
             return;
         }
 
-        this.setAccountId(c.getLong(c.getColumnIndex(ACCOUNTID)));
-        this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
-        this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));
-        this.setCurrencyId(c.getLong(c.getColumnIndex(CURRENCYID)));
-        this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
-        this.setReconciled(c.getDouble(c.getColumnIndex(RECONCILED)));
-        this.setReconciledBaseConvRate(c.getDouble(c.getColumnIndex(RECONCILEDBASECONVRATE)));
-        this.setStatus(c.getString(c.getColumnIndex(STATUS)));
-        this.setTotal(c.getDouble(c.getColumnIndex(TOTAL)));
-        this.setTotalBaseConvRate(c.getDouble(c.getColumnIndex(TOTALBASECONVRATE)));
+        this.setAccountId(c.getLong(c.getColumnIndexOrThrow(ACCOUNTID)));
+        this.setAccountName(c.getString(c.getColumnIndexOrThrow(ACCOUNTNAME)));
+        this.setAccountType(c.getString(c.getColumnIndexOrThrow(ACCOUNTTYPE)));
+        this.setCurrencyId(c.getLong(c.getColumnIndexOrThrow(CURRENCYID)));
+        this.setFavoriteAcct(c.getString(c.getColumnIndexOrThrow(FAVORITEACCT)));
+        this.setReconciled(c.getDouble(c.getColumnIndexOrThrow(RECONCILED)));
+        this.setReconciledBaseConvRate(c.getDouble(c.getColumnIndexOrThrow(RECONCILEDBASECONVRATE)));
+        this.setStatus(c.getString(c.getColumnIndexOrThrow(STATUS)));
+        this.setTotal(c.getDouble(c.getColumnIndexOrThrow(TOTAL)));
+        this.setTotalBaseConvRate(c.getDouble(c.getColumnIndexOrThrow(TOTALBASECONVRATE)));
     }
 }

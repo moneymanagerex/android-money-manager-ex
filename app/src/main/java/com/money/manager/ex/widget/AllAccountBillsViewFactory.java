@@ -79,12 +79,12 @@ public class AllAccountBillsViewFactory
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_item_account_bills);
         if (mCursor.moveToPosition(position)) {
-            int colindex = mCursor.getColumnIndex(QueryAccountBills.ACCOUNTNAME);
+            int colindex = mCursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME);
             String accountname = mCursor.getString(colindex);
             remoteViews.setTextViewText(R.id.textViewItemAccountName, accountname);
             String value = mCurrencyService.getCurrencyFormatted(
-                    mCursor.getLong(mCursor.getColumnIndex(QueryAccountBills.CURRENCYID)),
-                    MoneyFactory.fromDouble(mCursor.getDouble(mCursor.getColumnIndex(QueryAccountBills.TOTAL))));
+                    mCursor.getLong(mCursor.getColumnIndexOrThrow(QueryAccountBills.CURRENCYID)),
+                    MoneyFactory.fromDouble(mCursor.getDouble(mCursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
             remoteViews.setTextViewText(R.id.textViewItemAccountTotal, value);
         }
         return remoteViews;

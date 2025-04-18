@@ -138,9 +138,9 @@ L5,000.00
     }
 
     private Account loadAccount(Cursor cursor) {
-        long accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.TOACCOUNTID));
         if (accountId == -1) {
-            accountId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+            accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ACCOUNTID));
         }
         if (accountId == -1) {
             return null;

@@ -137,17 +137,17 @@ public class AllDataAdapter
         // take a holder
         AllDataViewHolder holder = (AllDataViewHolder) view.getTag();
 
-        String transactionType = cursor.getString(cursor.getColumnIndex(TRANSACTIONTYPE));
+        String transactionType = cursor.getString(cursor.getColumnIndexOrThrow(TRANSACTIONTYPE));
         boolean isTransfer = TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Transfer);
 
         // header index
-        long accountId = cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
+        long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(TOACCOUNTID));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
         // Status
-        String status = cursor.getString(cursor.getColumnIndex(STATUS));
+        String status = cursor.getString(cursor.getColumnIndexOrThrow(STATUS));
         holder.txtStatus.setText(TransactionStatus.getStatusAsString(mContext, status));
         // color status
         int colorBackground = TransactionStatus.getBackgroundColorFromStatus(mContext, status);
@@ -156,7 +156,7 @@ public class AllDataAdapter
 
         // Date
 
-        String dateString = cursor.getString(cursor.getColumnIndex(DATE));
+        String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DATE));
         if (!TextUtils.isEmpty(dateString)) {
             Locale locale = MmexApplication.getApp().getAppLocale();
             MmxDateTimeUtils dateUtils = new MmxDateTimeUtils(locale);
@@ -173,7 +173,7 @@ public class AllDataAdapter
             holder.txtDay.setText(day);
         }
 
-        boolean hasAttachment = cursor.getLong(cursor.getColumnIndex(ATTACHMENTCOUNT)) > 0;
+        boolean hasAttachment = cursor.getLong(cursor.getColumnIndexOrThrow(ATTACHMENTCOUNT)) > 0;
         // Show attachment status if applicable
         if (hasAttachment) {
 // in view            holder.txtAttachment.setText("\uD83D\uDCCE "); // unicode Attachment icon
@@ -183,7 +183,7 @@ public class AllDataAdapter
         }
 
         // tags
-        String tags = cursor.getString(cursor.getColumnIndex(TAGS));
+        String tags = cursor.getString(cursor.getColumnIndexOrThrow(TAGS));
         if (!TextUtils.isEmpty(tags)) {
 // in view            holder.textTags.setText(" \uD83C\uDFF7 "); // Tag icon
             holder.textTags.setVisibility(View.VISIBLE);
@@ -194,11 +194,11 @@ public class AllDataAdapter
         // Amount
         double amount;
         if (useDestinationValues(isTransfer, cursor)) {
-            amount = cursor.getDouble(cursor.getColumnIndex(TOAMOUNT));
-            setCurrencyId(cursor.getLong(cursor.getColumnIndex(TOCURRENCYID)));
+            amount = cursor.getDouble(cursor.getColumnIndexOrThrow(TOAMOUNT));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndexOrThrow(TOCURRENCYID)));
         } else {
-            amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
-            setCurrencyId(cursor.getLong(cursor.getColumnIndex(CURRENCYID)));
+            amount = cursor.getDouble(cursor.getColumnIndexOrThrow(AMOUNT));
+            setCurrencyId(cursor.getLong(cursor.getColumnIndexOrThrow(CURRENCYID)));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
@@ -218,7 +218,7 @@ public class AllDataAdapter
         // Group header - account name.
         if (isShowAccountName()) {
             if (mHeadersAccountIndex.containsValue(cursor.getPosition())) {
-                holder.txtAccountName.setText(cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME)));
+                holder.txtAccountName.setText(cursor.getString(cursor.getColumnIndexOrThrow(TOACCOUNTNAME)));
                 holder.txtAccountName.setVisibility(View.VISIBLE);
             } else {
                 holder.txtAccountName.setVisibility(View.GONE);
@@ -235,14 +235,14 @@ public class AllDataAdapter
 
         String categorySub;
         if (!isTransfer) {
-            categorySub = cursor.getString(cursor.getColumnIndex(CATEGORY));
+            categorySub = cursor.getString(cursor.getColumnIndexOrThrow(CATEGORY));
 
             categorySub = (categorySub == null ? "--not available--" : categorySub);  // in case of transaction with split created without category
 
-            boolean isSplited = cursor.getInt(cursor.getColumnIndex(SPLITTED)) == 1;
+            boolean isSplited = cursor.getInt(cursor.getColumnIndexOrThrow(SPLITTED)) == 1;
             // write category/subcategory format html
             if (!isSplited) {
-                long categoryId = cursor.getLong(cursor.getColumnIndex(CATEGID));
+                long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(CATEGID));
                 boolean isActive = true;
                 if (categoryId != Constants.NOT_SET) {
                     CategoryRepository categoryRepository = new CategoryRepository(context);
@@ -271,8 +271,8 @@ public class AllDataAdapter
         holder.txtCategorySub.setText(Html.fromHtml(categorySub, Html.FROM_HTML_MODE_LEGACY));
 
         // notes
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(NOTES)))) {
-            holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndex(NOTES)) + "</small>", Html.FROM_HTML_MODE_LEGACY));
+        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndexOrThrow(NOTES)))) {
+            holder.txtNotes.setText(Html.fromHtml("<small>" + cursor.getString(cursor.getColumnIndexOrThrow(NOTES)) + "</small>", Html.FROM_HTML_MODE_LEGACY));
             holder.txtNotes.setVisibility(View.VISIBLE);
         } else {
             holder.txtNotes.setVisibility(View.GONE);
@@ -288,7 +288,7 @@ public class AllDataAdapter
         displayBalanceAmountOrDaysLeft(holder, cursor, context);
 
         // color
-        int color = cursor.getInt(cursor.getColumnIndex(COLOR));
+        int color = cursor.getInt(cursor.getColumnIndexOrThrow(COLOR));
         if (color > 0 ) {
             InfoService infoService = new InfoService(context);
             holder.viewColor.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
@@ -419,7 +419,7 @@ public class AllDataAdapter
 //                calculateBalanceAmount(cursor, holder);
 
                 // Save transaction Id.
-                long txId = cursor.getLong(cursor.getColumnIndex(QueryAllData.ID));
+                long txId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ID));
                 holder.txtBalance.setTag(txId);
 
                 requestBalanceDisplay(holder.txtBalance);
@@ -428,7 +428,7 @@ public class AllDataAdapter
                 holder.txtBalance.setVisibility(View.GONE);
             }
         } else {
-            long daysLeft = cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
+            long daysLeft = cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.DAYSLEFT));
             if (daysLeft == 0) {
                 holder.txtBalance.setText(R.string.due_today);
             } else {
@@ -464,7 +464,7 @@ public class AllDataAdapter
                 // Account transactions
 
                 // See which value to use.
-                result = getAccountId() == cursor.getLong(cursor.getColumnIndex(TOACCOUNTID));
+                result = getAccountId() == cursor.getLong(cursor.getColumnIndexOrThrow(TOACCOUNTID));
             }
         } else {
             result = false;
@@ -482,23 +482,23 @@ public class AllDataAdapter
             if (mTypeCursor.equals(TypeCursor.RECURRINGTRANSACTION)) {
                 // Recurring transactions list.
                 // Show the destination for the transfer.
-                accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                accountName = cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNTNAME));
             } else {
                 // Account transactions list.
 
                 if (mAccountId == Constants.NOT_SET) {
                     // Search results or recurring transactions. Account id is always reset (-1).
-                    accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                    accountName = cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNTNAME));
                 } else {
                     // Standard checking account. See whether the other account is the source
                     // or the destination of the transfer.
-                    long cursorAccountId = cursor.getLong(cursor.getColumnIndex(ACCOUNTID));
+                    long cursorAccountId = cursor.getLong(cursor.getColumnIndexOrThrow(ACCOUNTID));
                     if (mAccountId != cursorAccountId) {
                         // This is in account transactions list where we display transfers to and from.
-                        accountName = cursor.getString(cursor.getColumnIndex(ACCOUNTNAME));
+                        accountName = cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNTNAME));
                     } else {
                         // Search results, where we display only incoming transactions.
-                        accountName = cursor.getString(cursor.getColumnIndex(TOACCOUNTNAME));
+                        accountName = cursor.getString(cursor.getColumnIndexOrThrow(TOACCOUNTNAME));
                     }
                 }
             }
@@ -509,7 +509,7 @@ public class AllDataAdapter
             result = accountName;
         } else {
             // compose payee description
-            result = cursor.getString(cursor.getColumnIndex(PAYEE));
+            result = cursor.getString(cursor.getColumnIndexOrThrow(PAYEE));
         }
 
         return result;

@@ -321,7 +321,7 @@ public class NestedCategoryListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME)));
 
         // context menu from resource
         menu.add(Menu.NONE, ContextMenuIds.ADD_SUB.getId(), Menu.NONE, getString(R.string.add_subcategory));
@@ -517,8 +517,8 @@ public class NestedCategoryListFragment
                 // no record or no record selected
                 sendResultToActivity(-1, null);
             } else {
-                @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(QueryNestedCategory.CATEGID));
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME));
+                @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGID));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME));
                 sendResultToActivity(id, name);
             }
 

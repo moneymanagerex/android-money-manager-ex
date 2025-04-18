@@ -15,12 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/************** Change Logs *****************
- * Created by velmuruganc on 11/24/2017.
- * Modification:
- * 2017/12/12 - velmuruganc :
- */
-
 package com.money.manager.ex.notifications;
 
 import java.text.SimpleDateFormat;
@@ -476,7 +470,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
             Cursor currencyCursor = openHelper.getReadableDatabase().query(query);
 
             if (currencyCursor.moveToFirst()) {
-                currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndex("CURRENCY_SYMBOL"));
+                currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndexOrThrow("CURRENCY_SYMBOL"));
             }
 
             currencyCursor.close();
@@ -827,9 +821,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 if(payeeCursor.moveToFirst()) {
                     payeeDetails = new String[] {
-                            payeeCursor.getString(payeeCursor.getColumnIndex("PAYEEID")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("PAYEENAME")),
-                            payeeCursor.getString(payeeCursor.getColumnIndex("CATEGID"))
+                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEEID")),
+                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEENAME")),
+                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("CATEGID"))
                     };
                 }
 
@@ -863,7 +857,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 Cursor txnCursor = openHelper.getReadableDatabase().query(sql);
 
                 if(txnCursor.moveToFirst()) {
-                    txnId = parseInt(txnCursor.getString(txnCursor.getColumnIndex("TRANSID")));
+                    txnId = parseInt(txnCursor.getString(txnCursor.getColumnIndexOrThrow("TRANSID")));
                 }
 
                 txnCursor.close();
@@ -896,8 +890,8 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                 if(cCursor.moveToFirst()) {
                     cTran = new String[]{
-                            cCursor.getString(cCursor.getColumnIndex("CATEGID")),
-                            cCursor.getString(cCursor.getColumnIndex("PARENTID"))
+                            cCursor.getString(cCursor.getColumnIndexOrThrow("CATEGID")),
+                            cCursor.getString(cCursor.getColumnIndexOrThrow("PARENTID"))
                     };
                 }
 
@@ -937,12 +931,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                     if(accountCursor.moveToFirst()) {
                         accountDetails = new String[] {
-                                accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTID")),
-                                accountCursor.getString(accountCursor.getColumnIndex("ACCOUNTNAME")),
-                                accountCursor.getString(accountCursor.getColumnIndex("CURRENCYID")),
-                                accountCursor.getString(accountCursor.getColumnIndex("CURRENCY_SYMBOL")),
-                                accountCursor.getString(accountCursor.getColumnIndex("DECIMAL_POINT")),
-                                accountCursor.getString(accountCursor.getColumnIndex("GROUP_SEPARATOR")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTID")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTNAME")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCYID")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCY_SYMBOL")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("DECIMAL_POINT")),
+                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("GROUP_SEPARATOR")),
                                 reqMatch[j]
                         };
                     }

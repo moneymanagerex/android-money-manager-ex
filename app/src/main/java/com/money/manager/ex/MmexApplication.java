@@ -334,7 +334,7 @@ public class MmexApplication
 
         // calculate summary
         while (cursor.moveToNext()) {
-            curTotal = curTotal + cursor.getDouble(cursor.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+            curTotal = curTotal + cursor.getDouble(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
         }
         cursor.close();
 

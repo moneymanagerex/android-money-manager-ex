@@ -139,7 +139,7 @@ public class PayeeReportFragment
             //parse cursor for calculate total
             double totalAmount = 0;
             while (data.moveToNext()) {
-                totalAmount += data.getDouble(data.getColumnIndex("TOTAL"));
+                totalAmount += data.getDouble(data.getColumnIndexOrThrow("TOTAL"));
             }
 
             CurrencyService currencyService = new CurrencyService(getContext());
@@ -221,9 +221,9 @@ public class PayeeReportFragment
         while (!cursor.isAfterLast()) {
             ValuePieEntry item = new ValuePieEntry();
             // total
-            double total = Math.abs(cursor.getDouble(cursor.getColumnIndex("TOTAL")));
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME)))) {
-                item.setText(cursor.getString(cursor.getColumnIndex(QueryMobileData.PAYEENAME)));
+            double total = Math.abs(cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL")));
+            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndexOrThrow(QueryMobileData.PAYEENAME)))) {
+                item.setText(cursor.getString(cursor.getColumnIndexOrThrow(QueryMobileData.PAYEENAME)));
             } else {
                 item.setText(getString(R.string.empty_payee));
             }
@@ -298,7 +298,7 @@ public class PayeeReportFragment
         Cursor cursor = (Cursor) item;
         Payee payee = new Payee();
         /*for (String col : cursor.getColumnNames()) {
-            long idx = cursor.getColumnIndex(col);
+            long idx = cursor.getColumnIndexOrThrow(col);
             Log.d("PayeeReportFragment", " Name " + col + "\t Type " + cursor.getType(idx) + "\t Value " + cursor.getString(idx));
         }*/
 //        payee.loadFromCursor(cursor);

@@ -151,17 +151,17 @@ public class CurrencyEditActivity
             return false;
         }
         // populate values
-        holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+        holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME)));
         holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
-            .indexOf(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL))), true);
-        holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndex(Currency.UNIT_NAME)));
-        holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndex(Currency.CENT_NAME)));
-        holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndex(Currency.PFX_SYMBOL)));
-        holder.edtSuffix.setText(cursor.getString(cursor.getColumnIndex(Currency.SFX_SYMBOL)));
-        holder.edtDecimal.setText(cursor.getString(cursor.getColumnIndex(Currency.DECIMAL_POINT)));
-        holder.edtGroup.setText(cursor.getString(cursor.getColumnIndex(Currency.GROUP_SEPARATOR)));
-        holder.edtScale.setText(cursor.getString(cursor.getColumnIndex(Currency.SCALE)));
-        holder.edtConversion.setText(cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE)));
+            .indexOf(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCY_SYMBOL))), true);
+        holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.UNIT_NAME)));
+        holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CENT_NAME)));
+        holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.PFX_SYMBOL)));
+        holder.edtSuffix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SFX_SYMBOL)));
+        holder.edtDecimal.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.DECIMAL_POINT)));
+        holder.edtGroup.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.GROUP_SEPARATOR)));
+        holder.edtScale.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SCALE)));
+        holder.edtConversion.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.BASECONVRATE)));
 
         cursor.close();
 

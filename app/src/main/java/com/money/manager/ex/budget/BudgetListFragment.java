@@ -161,7 +161,7 @@ public class BudgetListFragment
         SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
         Cursor cursor = (Cursor) adapter.getItem(info.position);
 
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(Budget.BUDGETYEARNAME)));
 
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
@@ -201,7 +201,7 @@ public class BudgetListFragment
 
         // Notify the parent to show the budget details.
         Cursor cursor = (Cursor) l.getItemAtPosition(position);
-        String budgetName = cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME));
+        String budgetName = cursor.getString(cursor.getColumnIndexOrThrow(Budget.BUDGETYEARNAME));
 
         EventBus.getDefault().post(new BudgetSelectedEvent(id, budgetName));
     }

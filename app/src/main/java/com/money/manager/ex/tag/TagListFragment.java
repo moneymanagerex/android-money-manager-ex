@@ -80,7 +80,7 @@ public class TagListFragment     extends BaseListFragment
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 TextView textView = (TextView) aView;
-                boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndex(Tag.ACTIVE))) != 0);
+                boolean active = ( Integer.parseInt(aCursor.getString(aCursor.getColumnIndexOrThrow(Tag.ACTIVE))) != 0);
                 CharSequence text = aCursor.getString(aColumnIndex);
                 if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
                     text = adapter.getCore().highlight(adapter.getHighlightFilter(),text.toString());
@@ -192,7 +192,7 @@ public class TagListFragment     extends BaseListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Tag.TAGNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(Tag.TAGNAME)));
 
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
@@ -334,8 +334,8 @@ public class TagListFragment     extends BaseListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            @SuppressLint("Range") long tagId = cursor.getLong(cursor.getColumnIndex(Tag.TAGID));
-            @SuppressLint("Range") String tagName = cursor.getString(cursor.getColumnIndex(Tag.TAGNAME));
+            @SuppressLint("Range") long tagId = cursor.getLong(cursor.getColumnIndexOrThrow(Tag.TAGID));
+            @SuppressLint("Range") String tagName = cursor.getString(cursor.getColumnIndexOrThrow(Tag.TAGNAME));
 
             sendResultToActivity(tagId, tagName);
 

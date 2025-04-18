@@ -463,7 +463,7 @@ public class CurrencyService
 
         // set BaseCurrencyId
         if (cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+            result = cursor.getInt(cursor.getColumnIndexOrThrow(Currency.CURRENCYID));
         }
         cursor.close();
 

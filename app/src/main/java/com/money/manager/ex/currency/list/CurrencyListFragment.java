@@ -219,7 +219,7 @@ public class CurrencyListFragment
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
         // set currency name
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME)));
 
         // compose context menu
         String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
@@ -238,7 +238,7 @@ public class CurrencyListFragment
         } else {
             cursor.moveToFirst();
         }
-        @SuppressLint("Range") long currencyId = cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID));
+        @SuppressLint("Range") long currencyId = cursor.getLong(cursor.getColumnIndexOrThrow(Currency.CURRENCYID));
 
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
@@ -295,9 +295,9 @@ public class CurrencyListFragment
 
                     result = new Intent();
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID,
-                            cursor.getLong(cursor.getColumnIndex(Currency.CURRENCYID)));
+                            cursor.getLong(cursor.getColumnIndexOrThrow(Currency.CURRENCYID)));
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME,
-                            cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+                            cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME)));
 
                     getActivity().setResult(Activity.RESULT_OK, result);
 

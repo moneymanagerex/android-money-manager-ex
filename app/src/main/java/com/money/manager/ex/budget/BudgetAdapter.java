@@ -267,8 +267,8 @@ public class BudgetAdapter
 
         boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub, false);
 
-        setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndex(QueryNestedCategory.CATEGNAME)));
-        long categoryId = cursor.getLong(cursor.getColumnIndex(BudgetNestedQuery.CATEGID));
+        setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME)));
+        long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
 
         // Frequency frequencyTextView
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);

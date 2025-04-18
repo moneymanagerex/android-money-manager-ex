@@ -149,10 +149,10 @@ public class CashFlowReportListFragment
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
-            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)), getContext());
+            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), getContext());
             // ignore transfert if both is on selected account
             // create recurring transaction
-            double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
+            double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(QueryBillDeposits.AMOUNT));
             RecurringTransaction rx = recurringTransactionService.getSimulatedTransaction();
             if (rx.getPaymentDate().after(endDate.toDate())) {
                 // first occurence of this transaction is over cashflow visibility
@@ -180,21 +180,21 @@ public class CashFlowReportListFragment
             }
 
             row = new HashMap<>();
-            row.put(ID, cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
-            row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
-            row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME)));
+            row.put(ID, cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)));
+            row.put(QueryBillDeposits.TRANSDATE, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.NEXTOCCURRENCEDATE)));
+            row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.PAYEENAME)));
             if (row.get(QueryBillDeposits.PAYEENAME) == null)
-                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
-            row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.CATEGNAME)));
+                row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.ACCOUNTNAME)));
+            row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.CATEGNAME)));
             if (row.get(QueryBillDeposits.CATEGNAME) == null)
                 row.put(QueryBillDeposits.CATEGNAME, getString(R.string.transfer));
-            row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.COLOR)), -1L)); // handle null #2235
-            row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.ATTACHMENTCOUNT)), 0L)); // handle null #2235
-            row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TAGS)), "")); // handle null #2235
-            row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NOTES)));
-            row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)));
+            row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.COLOR)), -1L)); // handle null #2235
+            row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.ATTACHMENTCOUNT)), 0L)); // handle null #2235
+            row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.TAGS)), "")); // handle null #2235
+            row.put(QueryBillDeposits.NOTES, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.NOTES)));
+            row.put(QueryBillDeposits.STATUS, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.STATUS)));
             row.put(QueryBillDeposits.AMOUNT, amount);
-            row.put("transCurrency", cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)));
+            row.put("transCurrency", cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.CURRENCYID)));
             row.put(BALANCE, 0);
             listRecurring.add(row);
 
@@ -300,8 +300,8 @@ public class CashFlowReportListFragment
         if (c != null) {
             totalAmount = 0;
             while (c.moveToNext()) {
-                selectedAccounts.add(c.getLong(c.getColumnIndex(QueryAccountBills.ACCOUNTID)));
-                totalAmount += c.getDouble(c.getColumnIndex(QueryAccountBills.TOTALBASECONVRATE));
+                selectedAccounts.add(c.getLong(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID)));
+                totalAmount += c.getDouble(c.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
             }
             c.close();
         }
@@ -499,7 +499,7 @@ public class CashFlowReportListFragment
     }
 
     private String getAsAmountFromCurrency(Cursor aCursor, int aColumnIndex) {
-        Long currency = aCursor.getLong(aCursor.getColumnIndex("transCurrency"));
+        Long currency = aCursor.getLong(aCursor.getColumnIndexOrThrow("transCurrency"));
         if (currency == null) currency = currencyService.getBaseCurrencyId();
         return currencyService.getCurrencyFormatted(
                 currency, MoneyFactory.fromDouble(
@@ -569,10 +569,10 @@ public class CashFlowReportListFragment
                     if ( c == null ) return false;
                     MatrixCursor matrixCursor = new MatrixCursor( new String[]{"_id", QueryAccountBills.ACCOUNTNAME, "CHECKED"} );
                     while (c.moveToNext()) {
-                        long id = c.getLong(c.getColumnIndex(QueryAccountBills.ACCOUNTID));
+                        long id = c.getLong(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
                         matrixCursor.newRow()
                                 .add("_id", id)
-                                .add(QueryAccountBills.ACCOUNTNAME, c.getString(c.getColumnIndex(QueryAccountBills.ACCOUNTNAME)))
+                                .add(QueryAccountBills.ACCOUNTNAME, c.getString(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME)))
                                 .add("CHECKED", ( selectedAccounts.contains(id) ? 1 : 0 ) );
                     }
                     c.close();
@@ -582,7 +582,7 @@ public class CashFlowReportListFragment
                     builder.setMultiChoiceItems(matrixCursor,"CHECKED", QueryAccountBills.ACCOUNTNAME,
                             (dialog, which, isChecked) -> {
                                 matrixCursor.moveToPosition(which);
-                                long id = matrixCursor.getInt(matrixCursor.getColumnIndex("_id"));
+                                long id = matrixCursor.getInt(matrixCursor.getColumnIndexOrThrow("_id"));
                                 if ( !isChecked ) {
 //                                    if ( selectedAccounts.contains(id) ) {
                                         selectedAccounts.remove(id);

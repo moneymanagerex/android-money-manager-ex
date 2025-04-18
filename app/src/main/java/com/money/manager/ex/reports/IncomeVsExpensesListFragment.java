@@ -175,9 +175,9 @@ public class IncomeVsExpensesListFragment
                 data.moveToPosition(-1);
 
                 while (data.moveToNext()) {
-                    if (data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
-                        income += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
-                        expenses += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
+                    if (data.getInt(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
+                        income += data.getDouble(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income));
+                        expenses += data.getDouble(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses));
                     }
                 }
                 updateListViewFooter(mFooterListView, income, expenses);
@@ -201,7 +201,7 @@ public class IncomeVsExpensesListFragment
                 if (data != null && data.moveToFirst()) {
 
                     while (!data.isAfterLast()) {
-                        int year = data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
+                        int year = data.getInt(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.YEAR));
                         if (!mYearsSelected.get(year, false)) {
                             mYearsSelected.put(year, false);
                         }
@@ -478,14 +478,14 @@ public class IncomeVsExpensesListFragment
         cursor.moveToPosition(-1);
         // cycle cursor
         while (cursor.moveToNext()) {
-            int month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
+            int month = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Month));
             // check if not subtotal
             if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                 // incomes and expenses
-                incomes.add(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income)));
-                expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses))));
+                incomes.add(cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income)));
+                expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses))));
                 // titles
-                int year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
+                int year = cursor.getInt(cursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.YEAR));
 
                 // format month
                 Calendar calendar = Calendar.getInstance();

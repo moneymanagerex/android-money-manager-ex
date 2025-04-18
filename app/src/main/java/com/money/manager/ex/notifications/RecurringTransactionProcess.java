@@ -198,24 +198,24 @@ public class RecurringTransactionProcess {
         CurrencyService currencyService = new CurrencyService(mContext);
 
         while (cursor.moveToNext()) {
-            @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
+            @SuppressLint("Range") String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.PAYEENAME));
 
             // EP get recurring mode
-            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getInt( cursor.getColumnIndex(QueryBillDeposits.REPEATS)));
+            @SuppressLint("Range") Recurrence recurringMode = Recurrence.recurringMode(cursor.getInt( cursor.getColumnIndexOrThrow(QueryBillDeposits.REPEATS)));
 
             // check if payee name is null, then put toAccountName
             if (TextUtils.isEmpty(payeeName))
-                payeeName = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.TOACCOUNTNAME));
+                payeeName = cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.TOACCOUNTNAME));
             // compose text
-            String line = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
+            String line = cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.NEXTOCCURRENCEDATE)) +
                     " " + payeeName +
-                    ": " + currencyService.getCurrencyFormatted(cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
-                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT)))) +
+                    ": " + currencyService.getCurrencyFormatted(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.CURRENCYID)),
+                    MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndexOrThrow(QueryBillDeposits.AMOUNT)))) +
                     " (" + Recurrence.recurringModeString( recurringMode ) + ")";
 
 //            result.inboxLine.add( Html.fromHtml("<small>" + line + "</small>").toString());
             result.addNotification(  line ,
-                    Recurrence.recurringModeString( recurringMode ), cursor.getLong(cursor.getColumnIndex(QueryBillDeposits.BDID)));
+                    Recurrence.recurringModeString( recurringMode ), cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)));
 
         }
 
