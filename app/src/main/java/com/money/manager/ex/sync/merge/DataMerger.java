@@ -15,14 +15,28 @@ import android.os.RemoteException;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.AttachmentRepository;
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IModificationTraceable;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.datalayer.RepositoryBase;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
+import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.datalayer.TagRepository;
+import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.sync.SyncServiceMessage;
 import com.money.manager.ex.sync.SyncServiceMessageHandler;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -53,12 +67,70 @@ public class DataMerger {
         // prepare local db (writeable)
         MmxDate lastLocalSyncDate = getLastLocalSyncDate(storage.getContext());
         StringBuilder log = new StringBuilder();
-        // merge payee
-        PayeeRepository localRepo = new PayeeRepository(storage.getContext());
-        mergeAll(tmpDBReadable, localRepo, lastLocalSyncDate, log);
-        // merge transactions
+        // merge table by table, start with the leafs in the structure
+        // AccountList_v1
+        AccountRepository localAccountRepo = new AccountRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localAccountRepo, lastLocalSyncDate, log);
+        // ASSETS_V1
+        // ??
+        // ATTACHMENT_V1
+        AttachmentRepository localAttachmentRepo = new AttachmentRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localAttachmentRepo, lastLocalSyncDate, log);
+        // PAYEE
+        PayeeRepository localPayeeRepo = new PayeeRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localPayeeRepo, lastLocalSyncDate, log);
+        // TAG
+        TagRepository localTagRepo = new TagRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localTagRepo, lastLocalSyncDate, log);
+        // CURRENCYFORMATS
+        // ??
+        // CURRENCYHISTORY
+        // ??
+        // CUSTOMFIELDDATA
+        // ??
+        // CUSTOMFIELD
+        // ??
+        // INFOTABLE
+        // ??
+        // CATEGORY_V1
+        CategoryRepository localCatRepo = new CategoryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localCatRepo, lastLocalSyncDate, log);
+        // BILLSDEPOSITS_V1
+        ScheduledTransactionRepository localBillDepoRepo = new ScheduledTransactionRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localBillDepoRepo, lastLocalSyncDate, log);
+        // BUDGETSPLITTRANSACTIONNS_V1
+        SplitScheduledCategoryRepository localBudgetSplitTranRepo = new SplitScheduledCategoryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localBudgetSplitTranRepo, lastLocalSyncDate, log);
+        // BUDGETTABLE_V1
+        BudgetEntryRepository localBudgetTableRepo = new BudgetEntryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localBudgetTableRepo, lastLocalSyncDate, log);
+        // BUDGETYEAR_V1
+        BudgetRepository localBudgetRepo = new BudgetRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localBudgetRepo, lastLocalSyncDate, log);
+        // CHECKINGACCOUNT
+        // ??
+        // REPORT
+        ReportRepository localReportRepo = new ReportRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localReportRepo, lastLocalSyncDate, log);
+        // SHAREINFO
+        // ??
+        // Transactions
         AccountTransactionRepository localAccTrans = new AccountTransactionRepository(storage.getContext());
         mergeAll(tmpDBReadable, localAccTrans, lastLocalSyncDate, log);
+        // SPLITTRANSACTION
+        SplitCategoryRepository localSplitTransRepo = new SplitCategoryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localSplitTransRepo, lastLocalSyncDate, log);
+        // STOCK
+        StockRepository localStockRepo = new StockRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localStockRepo, lastLocalSyncDate, log);
+        // STOCKHISTORY
+        StockHistoryRepository localStockHistRepo = new StockHistoryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localStockHistRepo, lastLocalSyncDate, log);
+        // TAGLINK
+        TaglinkRepository localTagLinkRepo = new TaglinkRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localTagLinkRepo, lastLocalSyncDate, log);
+        //TRANSLINK
+        // ??
     }
 
     public /* for ut */ <T extends EntityBase> void mergeAll(SupportSQLiteDatabase tmpDBReadable, RepositoryBase<T> localRepo, MmxDate lastLocalSyncDate, StringBuilder log) {
