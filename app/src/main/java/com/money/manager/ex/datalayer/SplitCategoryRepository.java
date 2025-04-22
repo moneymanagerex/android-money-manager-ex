@@ -82,7 +82,7 @@ public class SplitCategoryRepository
             splitCategory.loadFromCursor(curSplit);
 
             // load tags from table
-            splitCategory.setTagLinks(loadTaglinks(splitCategory.getId()));
+            splitCategory.setTagLinks(loadTagLinks(splitCategory.getId()));
 
             listSplitTrans.add(splitCategory);
         }

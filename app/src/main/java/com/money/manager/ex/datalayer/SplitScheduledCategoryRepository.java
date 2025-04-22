@@ -81,7 +81,7 @@ public class SplitScheduledCategoryRepository
             SplitRecurringCategory splitRecurringCategory = new SplitRecurringCategory();
             splitRecurringCategory.loadFromCursor(curSplit);
 
-            splitRecurringCategory.setTagLinks(loadTaglinks(splitRecurringCategory.getId()));
+            splitRecurringCategory.setTagLinks(loadTagLinks(splitRecurringCategory.getId()));
 
             listSplitTrans.add(splitRecurringCategory);
         }
