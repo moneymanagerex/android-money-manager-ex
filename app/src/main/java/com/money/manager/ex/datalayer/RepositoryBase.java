@@ -83,12 +83,11 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
         try {
-            Cursor cursor = getContext().getContentResolver().query(getUri(),
+            return getContext().getContentResolver().query(getUri(),
                     projection,
                     selection,
                     args,
                     sort);
-            return cursor;
         } catch (SQLiteDiskIOException ex) {
             Timber.e(ex, "querying database");
             return null;
@@ -328,7 +327,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         return repo.loadByRef(id, refType());
     }
 
-    public ArrayList<TagLink> loadTaglinks(long id) {
+    public ArrayList<TagLink> loadTagLinks(long id) {
         TaglinkRepository repo = new TaglinkRepository(getContext());
         return repo.loadByRef(id, refType());
     }
