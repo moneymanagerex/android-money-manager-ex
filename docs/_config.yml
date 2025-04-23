@@ -1,19 +1,100 @@
-# remote_theme: pages-themes/minimal@v0.2.0
-theme: jekyll-theme-minimal
+remote_theme: mmistakes/minimal-mistakes
+# theme: minimal-mistakes-jekyll
 plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
+  - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+#  - jekyll-feed
+  - jemoji
 
 # Name of website
 title: Money Manager Ex for Android
+email: android@moneymanager.org
+description: Android companion app for Money manager Ex
 
-# Your name to show in the footer
-author: moneymanagerex
+twitter_username: moneymanagerex
+github_username: moneymanagerex
+minimal_mistakes_skin: dirt
+search: true
+repository: "moneymanagerex/android-money-manager-ex"
 
-logo: /images/ic_logo_money_manager_ex.png
+markdown: kramdown
 
-show_downloads: true
+# Outputting
+permalink: /:categories/:title/
+paginate: 5 # amount of posts to show
+paginate_path: /page:num/
+# timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-release:
-  github: https://github.com/moneymanagerex/android-money-manager-ex
-  fdroid: https://f-droid.org/packages/com.money.manager.ex
-  playstore: https://play.google.com/store/apps/details?id=com.money.manager.ex.android
+include:
+  - _pages
+
+logo: /assets/images/ic_logo_money_manager_ex.png
+
+author:
+  name   : "AMMEX Team"
+#  avatar :
+#  bio    : "My awesome biography constrained to a sentence or two goes here."
+  links:
+    - label: "Anddoid Website"
+      icon: "fas fa-fw fa-link"
+      url: "https://android.moneymanagerex.org/"
+    - label: "Main Website"
+      icon: "fas fa-fw fa-link"
+      url: "https://moneymanagerex.org/"
+#    - label: "Twitter"
+#      icon: "fab fa-fw fa-twitter-square"
+#      url: "https://x.com/MoneyManagerEx"
+#    - label: "GitHub"
+#      icon: "fab fa-fw fa-github"
+#      url: "https://github.com/moneymanagerex/android-money-manager-ex"
+
+footer:
+  links:
+    - label: "Website"
+      icon: "fas fa-fw fa-link"
+      url: "https://android.moneymanagerex.org/"
+    - label: "Main Website"
+      icon: "fas fa-fw fa-link"
+      url: "https://moneymanagerex.org/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://x.com/MoneyManagerEx"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/moneymanagerex/android-money-manager-ex"
+    - label: "Privacy Policy"
+      icon: "fa-solid fa-shield-halved"
+      url: "privacypolicy.html"
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
+atom_feed:
+  hide: true

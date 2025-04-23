@@ -24,7 +24,7 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 [<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" width="240">](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)
 
 #### Documentation
-- [User Manual](docs/usermanual/index.md)
+- [User Manual](docs-old/usermanual/index.md)
 
 
 #### Contributing
