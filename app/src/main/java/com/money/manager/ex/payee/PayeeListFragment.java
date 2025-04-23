@@ -56,8 +56,6 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.settings.AppSettings;
 
-import java.util.Objects;
-
 /**
  * List of Payees. Used as a picker/selector also.
  */
@@ -314,7 +312,7 @@ public class PayeeListFragment
             int sortOrder = new AppSettings(getContext()).getPayeeSort();
 
             // Get whether to show inactive payees from app settings
-            boolean showInactive = (Objects.equals(mAction, Intent.ACTION_PICK) || !(new AppSettings(getContext()).getShowInactive()));
+            boolean showInactive = new AppSettings(getContext()).getShowInactive();
 
             // Use repository method to get the Cursor
             return payeeRepository.getPayees(mCurFilter, showInactive, sortOrder);
