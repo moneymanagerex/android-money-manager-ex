@@ -36,7 +36,7 @@ public class PayeeRepository
     private static final String ID_COLUMN = Payee.PAYEEID;
     private static final String NAME_COLUMN = Payee.PAYEENAME;
 
-    private static final int ORDER_BY_NAME = 0;
+    // private static final int ORDER_BY_NAME = 0;
     private static final int ORDER_BY_USAGE = 1;
     private static final int ORDER_BY_RECENT = 2;
 
