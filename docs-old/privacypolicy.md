@@ -1,8 +1,8 @@
 ---
-layout: single
 title: MoneyManagerEx for Android Privacy Policy
-permalink: /privacypolicy.html
 ---
+
+# MoneyManagerEx for Android Privacy Policy
 
 This Privacy Policy was last modified on 2015-09-10.
 

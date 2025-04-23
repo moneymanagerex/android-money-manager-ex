@@ -1,3 +1,6 @@
+- [ ] write instruction for backup and restore
+- [ ] add TOC into index
+
 **Resilio sync backup approach**
 - Create a sync folder using the Create folder option (alternatively, you can explore the Add backup option but then changes made on other devices won't be synced back to this device)
 - Create a new MMX db and add it to the folder that was created in the previous step

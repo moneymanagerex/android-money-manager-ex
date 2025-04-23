@@ -1,9 +1,4 @@
----
-title: "User Manual"
-layout: single
-toc: true
-toc_label: "Table of content"
----
+# Money Manager Ex - Android User Manual
 
 Welcome to the user manual for Money Manager Ex - Android, a free, open-source, cross-platform, and easy-to-use personal finance software.
 
@@ -36,9 +31,6 @@ Money Manager Ex - Android is a mobile version of the popular personal finance s
 
 To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store or F-Droid. Once installed, you can create an account and begin adding your financial information.
 
-You can also manually install from [github release page](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest). 
-Detail instruction [here](install.md).
-
 ## Features
 
 ### Expense Tracking
@@ -48,7 +40,6 @@ Track your expenses on the go, categorize transactions, and view detailed report
 ### Budget Management
 
 Set up budgets for different categories and track your progress over time. Receive notifications when you're nearing your budget limits.
-Monitor your budgets consumption with your actual and forecast ![Static Badge](https://img.shields.io/badge/since-5.2.3-green)
 
 ### Account Management
 
@@ -69,17 +60,26 @@ Protect your financial information with advanced security features, including pa
 ### Recurring Transactions
 
 Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch).
-> {: .notice--warning} **Notice!**
+> [!IMPORTANT]
 > Expired Recurring Transaction require to have correct Type set into transaction
 > AUTO: Means that transaction is auto posted when expired
 > PROMPT: Means that transaction is show in a notification with action skip/enter for user decision
 > MANUAL: Means that no action is taken on recurring transaction (no auto post, no notification)
 
-### Nested Category ![Static Badge](https://img.shields.io/badge/since-2024.08.25-green)
+
+### Nested Category
 
 Money Manager Ex on Desktop can manage nested subcategory.
 From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
-You can define (virtually) infinite subcategory level to categorize expenses. 
+
+#### Avilability
+Nested category is used in:
+* Category list
+* Transaction edit / insert
+* Recurring Transaction edit / insert
+* Transaction list
+* Reporting
+
 
 ## How to Use
 

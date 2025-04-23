@@ -1,0 +1,19 @@
+# remote_theme: pages-themes/minimal@v0.2.0
+theme: jekyll-theme-minimal
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
+
+# Name of website
+title: Money Manager Ex for Android
+
+# Your name to show in the footer
+author: moneymanagerex
+
+logo: /images/ic_logo_money_manager_ex.png
+
+show_downloads: true
+
+release:
+  github: https://github.com/moneymanagerex/android-money-manager-ex
+  fdroid: https://f-droid.org/packages/com.money.manager.ex
+  playstore: https://play.google.com/store/apps/details?id=com.money.manager.ex.android
