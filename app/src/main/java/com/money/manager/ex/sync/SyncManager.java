@@ -169,6 +169,12 @@ public class SyncManager {
                         .setContentTitle(getContext().getString(R.string.remote_unavailable))
                         .setContentText(getContext().getString(R.string.request_reopen) + remotePath);
 
+                Intent startMain = getRestartIntent(getContext(), R.string.remote_unavailable,R.string.request_reopen);
+                PendingIntent startMainPendingIntent = PendingIntent.getActivity(getContext(), 0, startMain, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                builder.addAction(R.drawable.ic_stat_notification,
+                        getContext().getString(R.string.request_reopen),
+                        startMainPendingIntent);
+
                 Notification notification = builder.build();
                 notificationManager.notify(1, notification);
 
@@ -410,12 +416,22 @@ public class SyncManager {
         return (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
     }
 
-    public void notifyUserSyncFailed(Context context, int resTitle, int resBody){
+    private Intent getRestartIntent(Context context, int resTitle, int resBody) {
         Intent localIntent = new Intent(context, MainActivity.class);
         localIntent.setAction(SyncConstants.REQUEST_CONFLICT_PROMPT);
         localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_TITLE, resTitle);
         localIntent.putExtra(SyncConstants.REQUEST_CONFLICT_PROMPT_BODY, resBody);
-        context.startActivity(localIntent);
+        return localIntent;
+    }
+
+    public void notifyUserSyncFailed(Context context, int resTitle, int resBody){
+        Intent localIntent = getRestartIntent(context, resTitle, resBody);
+        localIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // to start the activity from the background
+        try {
+            context.startActivity(localIntent);
+        } catch ( Exception ex ) {
+            Timber.i("Sync Conflict");
+        }
     }
 
 }
