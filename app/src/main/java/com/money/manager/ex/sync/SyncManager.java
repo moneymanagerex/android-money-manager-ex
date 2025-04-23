@@ -17,8 +17,6 @@
 
 package com.money.manager.ex.sync;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
