@@ -60,7 +60,7 @@ public class BudgetEditViewHolder {
     }
 
     public void refreshMonth() {
-        if (budgetNameTextView == null || model == null) return;
+        if (budgetMonthTextView == null || model == null) return;
         budgetMonthTextView.setText(model.getMonth());
     }
 }
