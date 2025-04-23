@@ -46,13 +46,11 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -74,14 +72,6 @@ public class PayeeListFragment
     private static final int ORDER_BY_NAME = 0;
     private static final int ORDER_BY_USAGE = 1;
     private static final int ORDER_BY_RECENT = 2;
-
-    private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
-    private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
-    private static final String SORT_BY_RECENT =
-            "(SELECT max( TRANSDATE ) \n" +
-                    " FROM CHECKINGACCOUNT_V1 \n" +
-                    " WHERE T.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID \n" +
-                    "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
     private Context mContext;
     private String mCurFilter;
@@ -315,35 +305,17 @@ public class PayeeListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_PAYEE) {
-            String whereClause = ""; // we don't filter inactive by default
-            if (mAction == Intent.ACTION_PICK
-                    || !(new AppSettings(getContext())).getShowInactive()) {
-                whereClause = "ACTIVE <> 0";
-            }
-            String[] selectionArgs = null;
-            if (!TextUtils.isEmpty(mCurFilter)) {
-                if (!whereClause.isEmpty()) whereClause += " AND ";
-                whereClause += Payee.PAYEENAME + " LIKE ?";
-                selectionArgs = new String[]{mCurFilter + '%'};
-            }
-            PayeeRepository repo = new PayeeRepository(getActivity());
-            String orderBy;
-            switch ((new AppSettings(getContext())).getPayeeSort()) {
-                case ORDER_BY_USAGE:
-                    orderBy = SORT_BY_USAGE;
-                    break;
-                case ORDER_BY_RECENT:
-                    orderBy = SORT_BY_RECENT;
-                    break;
-                default:
-                    orderBy = SORT_BY_NAME;
-                    break;
-            }
-            Select query = new Select(repo.getAllColumns())
-                    .where(whereClause, selectionArgs)
-                    .orderBy(orderBy);
+            // Initialize repository
+            PayeeRepository payeeRepository = new PayeeRepository(getActivity());
 
-            return new MmxCursorLoader(getActivity(), repo.getUri(), query);
+            // Get sort order from app settings
+            int sortOrder = new AppSettings(getContext()).getPayeeSort();
+
+            // Get whether to show inactive payees from app settings
+            boolean showInactive = new AppSettings(getContext()).getShowInactive();
+
+            // Use repository method to get the Cursor
+            return payeeRepository.getPayees(mCurFilter, showInactive, sortOrder);
         }
 
         return null;
