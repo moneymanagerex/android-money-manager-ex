@@ -39,7 +39,13 @@ To start using Money Manager Ex - Android, simply download and install the app f
 You can also manually install from [github release page](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest). 
 Detail instruction [here](install.md).
 
+Read [Quick Start Guide](/quickstart/) for initial documentation.
+
 ## Features
+
+### Open Database Format
+
+All information are stored in a sqllite [database](database.md).
 
 ### Expense Tracking
 
