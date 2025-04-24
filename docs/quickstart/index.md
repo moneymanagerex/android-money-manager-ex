@@ -20,6 +20,8 @@ Almost all feature can be used directly on mobile device. Feature can be:
 * Create Initial Account, set as default if you would like to has it as default when enter transaction
 * Start record your expenses
 
+Detail instruction [here](start_standalone.md)
+
 ### Quickstart as companion app for desktop
 * Use your own cloud provider to synchronize file created on desktop with your mobile device. Basically any cloud provider that support [SAF (Storage Access Framework)](https://developer.android.com/guide/topics/providers/document-provider) will work. Known work cloud providers:
   * Google Drive
@@ -30,7 +32,8 @@ Almost all feature can be used directly on mobile device. Feature can be:
 * On desktop save your file into your own cloud provider. 
 * On Android open file from your cloud provider.
 
-> **Notice!** {: .notice--warning }
+> {: .notice--warning } **Notice!** 
 > If your Remote Provider support offline file, please be sure to setup Offline availability on your cloud app.
 > For example, for Google Drive see [https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid](https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid)
 
+Detail instruction [here](start_companion.md)
