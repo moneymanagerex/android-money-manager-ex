@@ -448,7 +448,7 @@
     <string name="sort">Sort</string>
     <string name="sort_order">Sort Order</string>
     <string name="sort_by_name">Sort by name</string>
-    <string name="sort_by_usage">Fingerprint Authentication</string>
+    <string name="sort_by_usage">Sort by usage</string>
     <string name="sort_by_recent">Sort by recent</string>
     <string name="sort_date_desc">Sort by date descending</string>
     <string name="sort_date_asc">Sort by date ascending</string>
