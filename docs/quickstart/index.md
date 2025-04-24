@@ -32,8 +32,7 @@ Detail instruction [here](start_standalone.md)
 * On desktop save your file into your own cloud provider. 
 * On Android open file from your cloud provider.
 
-> {: .notice--warning } **Notice!** 
-> If your Remote Provider support offline file, please be sure to setup Offline availability on your cloud app.
-> For example, for Google Drive see [https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid](https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid)
+**Notice!** If your Remote Provider support offline file, please be sure to setup Offline availability on your cloud app. For example, for Google Drive see [https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid](https://support.google.com/drive/answer/2375012?hl=en&co=GENIE.Platform%3DAndroid)
+{: .notice--warning}
 
 Detail instruction [here](start_companion.md)

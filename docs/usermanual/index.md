@@ -69,11 +69,17 @@ Protect your financial information with advanced security features, including pa
 ### Recurring Transactions
 
 Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch).
-> {: .notice--warning} **Notice!**
+
+{% capture notice-2 %}
+> Notice!**
 > Expired Recurring Transaction require to have correct Type set into transaction
 > AUTO: Means that transaction is auto posted when expired
 > PROMPT: Means that transaction is show in a notification with action skip/enter for user decision
 > MANUAL: Means that no action is taken on recurring transaction (no auto post, no notification)
+{% endcapture %}
+<div class="notice--warning">
+  {{ notice-2 | markdownify }}
+</div>
 
 ### Nested Category ![Static Badge](https://img.shields.io/badge/since-2024.08.25-green)
 
