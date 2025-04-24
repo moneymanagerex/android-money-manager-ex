@@ -81,6 +81,8 @@ You can define (virtually) infinite subcategory level to categorize expenses.
 
 To add a new transaction, simply navigate to the transactions tab and click on the add button. Then, enter the details of the transaction, including the date, amount, category, and any additional notes.
 
+Detail instructions to how to enter transaction [here](add_transaction.md)
+
 ## Creating Budgets
 
 To create a new budget, go to the budgets tab and click on the add button. Then, enter the details of the budget, including the category, amount, and timeframe.
