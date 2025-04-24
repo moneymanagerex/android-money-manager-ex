@@ -50,17 +50,17 @@ public class BudgetEditViewHolder {
     }
 
     public void refreshName() {
-        if (budgetNameTextView == null) return;
+        if (budgetNameTextView == null || model == null) return;
         budgetNameTextView.setText(model.getName());
     }
 
     public void refreshYear() {
-        if (budgetYearTextView == null) return;
+        if (budgetNameTextView == null || model == null) return;
         budgetYearTextView.setText(model.getYear());
     }
 
     public void refreshMonth() {
-        if (budgetMonthTextView == null) return;
+        if (budgetMonthTextView == null || model == null) return;
         budgetMonthTextView.setText(model.getMonth());
     }
 }
