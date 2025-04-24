@@ -55,7 +55,7 @@ public class BudgetEditViewHolder {
     }
 
     public void refreshYear() {
-        if (budgetNameTextView == null || model == null) return;
+        if (budgetYearTextView == null || model == null) return;
         budgetYearTextView.setText(model.getYear());
     }
 
