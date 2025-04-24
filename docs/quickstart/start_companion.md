@@ -70,3 +70,12 @@ Open Microsoft OneDrive and navigate to your file
 
 Set it as "Download"
 ![img.png](img/sc_d_nextcloud_available_offline.png)
+
+### Sync Issue
+There is know issue on some cloud provider that lost connection to remote file. If this occurs, Android App is no longer able to sync file between local and remote provider. This can cause also lost of data.
+The app try to check if sync is available and, if not you get and error screen like this:
+![sync_error.png-th.png](..%2Fassets%2Fimages%2Fscreenshoot%2Fsync_error.png-th.png)
+
+At this point you can choice if you what to:
+* loose your local changes and reopen from remote
+* export your data to manually (and externaly) sync or overwrite remote file
