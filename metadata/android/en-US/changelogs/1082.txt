@@ -1,0 +1,28 @@
+## What's Changed
+
+### New Feature
+* Complete Website Redesign
+* Stock: Complete Refactor for new model
+* New Budget Feature
+* New Forecast Column in Budget to considere schedule transaction
+* Performance improvement on Budget Forecast
+* ORM: investment, from CursorAdapter/MVC => ArrayAdapter
+* Ask notification permission
+* Support user to handle sync error
+
+### Improvement
+* New Crowdin Translations
+* CrashReporter: refinement
+* ORM: complete missing domain model and repository
+* ORM: tag related typo fixes
+* ORM: move database logic from Fragment to Repo
+
+### BugFix
+* disable fab in category report
+* fix occasionally dump in budget
+* Hotfix for color > 7
+* Fix ANR from google for empty current DB
+* Be sure that is sync does not work the app does not crash
+* Replace all getColumnIndex with getColumnIndexOrThrow
+
+**Full Changelog**: https://github.com/moneymanagerex/android-money-manager-ex/compare/5.2.4...5.3
