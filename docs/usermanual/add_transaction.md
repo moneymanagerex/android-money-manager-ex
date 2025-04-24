@@ -34,10 +34,3 @@ Finally, press "Ok" button to save. If you want to abort the transaction, press 
 
 If you want to edit, delete or modify a transaction was a transaction hold over the desired transaction. Then it will open a context menu with the possible operations.
 
-## Transaction status
-- **Unreconciled** Transactions: means that transactions have not been verified with the statement from the financial institution.
-- **Reconciled** Transactions: A transaction can be considered reconciled when the details of the transaction match that from the financial institution.
-- **Void** transaction: this transaction has no effect on account balance. Is only used as placeholder 
-- **Follow up** transaction: special type of unreconciled transaction marked for future follow up 
-- **Duplicate** transaction:  duplicate transaction 
-
