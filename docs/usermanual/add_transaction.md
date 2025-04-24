@@ -1,8 +1,11 @@
-# Transactions
+---
+title: "Add Transaction"
+layout: single
+---
 
 - [Account Transactions List](account_transactions_list.md)
-- [Reconciling and Balancing Transactions](reconcile_transaction.md)
 
+# Transaction 
 What is an Transaction in <a href="/">MoneyManagerEx for Android</a>? A transaction is any money movement, including transfers, withdrawals, and deposits.
 
 To quickly enter a transaction, you can tap the Add Transaction (+) button in the main screen. 
@@ -31,8 +34,10 @@ Finally, press "Ok" button to save. If you want to abort the transaction, press 
 
 If you want to edit, delete or modify a transaction was a transaction hold over the desired transaction. Then it will open a context menu with the possible operations.
 
-### <a name="Reconciling_and_Balancing_Transactions"></a>Reconciling and Balancing Transactions
-
-- Unreconciled Transactions: means that transactions have not been verified with the statement from the financial institution.
-- Reconciled Transactions: A transaction can be considered reconciled when the details of the transaction match that from the financial institution.
+## Transaction status
+- **Unreconciled** Transactions: means that transactions have not been verified with the statement from the financial institution.
+- **Reconciled** Transactions: A transaction can be considered reconciled when the details of the transaction match that from the financial institution.
+- **Void** transaction: this transaction has no effect on account balance. Is only used as placeholder 
+- **Follow up** transaction: special type of unreconciled transaction marked for future follow up 
+- **Duplicate** transaction:  duplicate transaction 
 
