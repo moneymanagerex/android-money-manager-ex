@@ -16,7 +16,7 @@ From Desktop version, choose "file" -> "save as" and save your db into your pref
 **Notice!** At this point remember, next time you open Desktop version to select the file you saved in your cloud provider
 {: .notice--warning}
 
-**Notice!** Any cloud provider that support SAF (Storage Access Framework) will work as cloud provider to sync Money Manager DB. You can check if your Cloud Provider support Android SAF by simply search in google "Android SAF" + <your cloud provider>
+**Notice!** Any cloud provider that support SAF (Storage Access Framework) will work as cloud provider to sync Money Manager DB. You can check if your Cloud Provider support Android SAF by simply search in google "Android SAF" + your_cloud_provider
 {: .notice--info}
 
 **Supported & tested cloud provider**
