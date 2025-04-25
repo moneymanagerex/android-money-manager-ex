@@ -17,7 +17,7 @@ description: Android companion app for Money manager Ex
 analytics:
   provider: "google-gtag"
   google:
-    tracking_id: "12VNJRY8Y2"
+    tracking_id: "G-12VNJRY8Y2"
     anonymize_ip: false # default
 
 adsense:
