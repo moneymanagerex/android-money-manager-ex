@@ -48,7 +48,7 @@ Generate customizable reports to gain insights into your financial health. Analy
 
 Sync your financial data across multiple devices using cloud synchronization. Ensure that your information is always up to date, no matter where you are.
 
-Read How to [setup companion app](/quickstart/start_companion.md) for desktop.
+Read How to [setup companion app](/quickstart/start_companion/) for desktop.
 
 ## Security
 
@@ -101,4 +101,4 @@ Money Manager Ex - Android is an open-source project, and we welcome contributio
 
 # License
 
-Money Manager Ex - Android is licensed under the GNU General Public License version 3.0. For more information, please refer to the [LICENSE](../../License) file in the root of the project repository.
+Money Manager Ex - Android is licensed under the GNU General Public License version 3.0. For more information, please refer to the [LICENSE](https://github.com/moneymanagerex/android-money-manager-ex?tab=GPL-3.0-1-ov-file) file in the root of the project repository.

@@ -3,9 +3,6 @@ layout: single
 title: Quick start as companion app for Desktop
 ---
 
-**Notice!** This documentation is incomplete
-{: .notice--warning}
-
 # First setup on Desktop
 To use this app as companion app for Desktop version, you will need, of course, to download and install Desktop version from [here](https://moneymanagerex.org/docs/downloads/latest/). Please read also read [Desktop documentation](https://moneymanagerex.org/moneymanagerex/en_US/index.html#section5) to know how to create your db.
 
@@ -16,7 +13,7 @@ From Desktop version, choose "file" -> "save as" and save your db into your pref
 **Notice!** At this point remember, next time you open Desktop version to select the file you saved in your cloud provider
 {: .notice--warning}
 
-**Notice!** Any cloud provider that support SAF (Storage Access Framework) will work as cloud provider to sync Money Manager DB. You can check if your Cloud Provider support Android SAF by simply search in google "Android SAF" + <your cloud provider>
+**Notice!** Any cloud provider that support SAF (Storage Access Framework) will work as cloud provider to sync Money Manager DB. You can check if your Cloud Provider support Android SAF by simply search in google "Android SAF" + your_cloud_provider
 {: .notice--info}
 
 **Supported & tested cloud provider**
@@ -74,7 +71,7 @@ Set it as "Download"
 ### Sync Issue
 There is know issue on some cloud provider that lost connection to remote file. If this occurs, Android App is no longer able to sync file between local and remote provider. This can cause also lost of data.
 The app try to check if sync is available and, if not you get and error screen like this:
-![sync_error.png-th.png](..%2Fassets%2Fimages%2Fscreenshoot%2Fsync_error.png-th.png)
+![sync_error.png-th.png](/assets/images/screenshoot/sync_error.png-th.png)
 
 At this point you can choice if you what to:
 * loose your local changes and reopen from remote
