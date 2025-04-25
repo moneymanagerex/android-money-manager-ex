@@ -9,8 +9,6 @@ header:
      - label: "<i class='fa-brands fa-github'></i> Fork me on GitHub"
        url: "https://github.com/moneymanagerex/android-money-manager-ex/"
 
-{% include head.html %}
-
 excerpt: >
   A companion app for <a href="http://www.moneymanagerex.org/">Money Manager Ex</a>.<br />
   Perfect to manage your finance on-the-go.<br />
@@ -38,6 +36,8 @@ feature_row:
 ---
 
 {% include feature_row %}
+
+{% include head.html %}
 
 # Money Manager Ex for Android
 
