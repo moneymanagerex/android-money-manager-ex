@@ -14,14 +14,11 @@ title: Money Manager Ex for Android
 email: android@moneymanager.org
 description: Android companion app for Money manager Ex
 
-# google_analytics: G-12VNJRY8Y2
-
 analytics:
   provider: "google-gtag"
   google:
     tracking_id: "12VNJRY8Y2"
     anonymize_ip: false # default
-
 
 adsense:
   pub_id: "ca-pub-2857821988452598"
