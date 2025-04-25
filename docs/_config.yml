@@ -20,6 +20,10 @@ twitter_username: moneymanagerex
 github_username: moneymanagerex
 minimal_mistakes_skin: dirt
 search: true
+lunr:
+  search_within_pages: true
+  search_full_content: true
+
 repository: "moneymanagerex/android-money-manager-ex"
 
 markdown: kramdown

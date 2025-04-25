@@ -118,6 +118,8 @@ All the feature requests can be tracked at our [issue tracker](https://github.co
 
 If you like to contribute you can also enroll as [beta tester](https://play.google.com/apps/testing/com.money.manager.ex.android).
 
+Check [here](supported_android_version.md) if your Android version is supported.
+
 ## Screenshot
 ![Splash screen](/assets/images/screenshoot/0.splash.jpg-th.png)
 ![Select Or Create Db](/assets/images/screenshoot/1.SelectOrCreateDb.jpg-th.png)
