@@ -1,10 +1,8 @@
 ---
 layout: single
+title: "Manual Installation"
 ---
 
-# Install instruction
-
-## Manual instruction
 Install from [gPlay](https://play.google.com/store/apps/details?id=com.money.manager.ex.android) or [F-Droid](https://f-droid.org/packages/com.money.manager.ex) is better choice. But if you would like, for any reason, to install manually read this guide.
 
 * Enable unknow source (required for Android 10+)
