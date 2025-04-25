@@ -725,7 +725,9 @@
     <string name="filenames_differ">Die Dateinamen der lokalen und der Datei im Onlinespeicher unterscheiden sich. Breche die Synchronisierung ab.</string>
     <string name="both_files_modified">Sowohl die lokale als auch die Datenbank im Onlinespeicher wurden modifiziert!</string>
     <string name="sync_conflict">Synchronisierung fehlgeschlagen</string>
+    <string name="request_conflict_resolve">Konflikt lösen</string>
     <string name="no_remote_file">Bitte wählen Sie die externe Datei, die Sie für die Synchronisation verwenden wollen.</string>
+    <string name="request_conlict_reopen">Konflikt zwischen lokaler und Remote-Datei. Dies bedeutet, dass Ihre lokale Kopie nicht mit der Remote-Datei synchronisiert werden kann. Bitte exportieren Sie die Datenbank, wenn Sie Ihre lokale Kopie speichern möchten, oder öffnen Sie sie von Remote neu, wenn Sie Daten aus der Remote-Datei laden möchten.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Es stehen keine Konten zur Auswahl. Bitte passen Sie Ihre Einstellungen zur Konten-Filterung an oder markieren Sie Konten als Favorit.</string>
     <!-- Errors -->
@@ -733,6 +735,8 @@
     <string name="remote_file_not_found">Datei im Onlinespeicher nicht gefunden</string>
     <string name="error_checking_remote">Fehler beim Überprüfen der Datenbank im Onlinespeicher auf Änderungen.</string>
     <string name="no_remote_change_date">Das Datum der externen Änderung wurde in den Metadaten nicht gefunden.</string>
+    <string name="remote_unavailable">Remote-Datei ist nicht verfügbar.</string>
+    <string name="request_reopen">Remote-Datei ist nicht verfügbar. Dies bedeutet, dass Ihre lokale Kopie nicht mit einer Remote-Datei synchronisiert werden kann. Bitte exportieren Sie die Datenbank, wenn Sie Ihre lokale Kopie speichern möchten, oder öffnen Sie sie von Remote neu, wenn Sie Daten aus der Remote-Datei laden möchten.</string>
     <!-- Select database screen -->
     <string name="intro_text">Um MoneyManager Ex verwenden zu können, müssen Sie eine Datenbank haben, um Ihre Daten zu speichern. Bitte wählen Sie eine der verfügbaren Optionen.</string>
     <string name="intro_create_db">Sie können eine neue Datei erstellen und die ersten Einstellungen vornehmen.</string>
@@ -747,6 +751,7 @@
     <string name="save">Speichern</string>
     <string name="title_budget_show_simple_view">Zeige die einfache Budget-Ansicht</string>
     <string name="summary_budget_show_simple_view">Falls Budgets ausgewählt, einfache Ansicht benutzen</string>
+    <string name="title_budget_reload_forecast">Geplante Buchungen neu laden</string>
     <string name="title_pref_budget_financial_year">Geschäftsjahr im Budget verwenden</string>
     <string name="summary_pref_budget_financial_year">Wenn angekreuzt, verwenden die Budgets das Haushaltsjahr anstelle des Kalenderjahres</string>
     <string name="shares">Aktien</string>
@@ -804,6 +809,7 @@
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
     <string name="estimatedForPeriod">Schätzung für Periode</string>
     <string name="forecast_remain">Prognostiziere verbleibende</string>
+    <string name="forecast_calculate">Berechne Prognose. Bitte warten...</string>
     <string name="enter_budget">Budget eingeben</string>
     <string name="enter_budget_value">Für Kategorie %1$s setzen Sie Budget für Zeitraum %2$s. Verwenden Sie negativ für Ausgaben, positiv für Einnahmen:</string>
     <string name="enter_budget_value_plus_minus">Neuen Wert eingeben</string>
