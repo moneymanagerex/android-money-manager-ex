@@ -16,6 +16,21 @@ description: Android companion app for Money manager Ex
 
 google_analytics: G-12VNJRY8Y2
 
+adsense:
+  pub_id: "ca-pub-2857821988452598"
+  slot: "9821370883"
+  script: |
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2857821988452598"
+         data-ad-slot="9821370883"
+         data-ad-format="auto"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 twitter_username: moneymanagerex
 github_username: moneymanagerex
 minimal_mistakes_skin: dirt

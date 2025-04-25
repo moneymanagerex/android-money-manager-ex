@@ -49,23 +49,6 @@ feature_row:
   </script>
 {% endif %}
 
-<!-- Advertisement: Google AdSense Code - Bottom of the Page -->
-<div style="text-align: center; margin-top: 20px;">
-  <p><strong>Advertisement</strong></p> <!-- Adding Advertisement label -->
-  <!-- Google AdSense Code -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-2857821988452598"
-       data-ad-slot="9821370883"
-       data-ad-format="auto"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-  <!-- Ads Keep This Service Free -->
-  <p style="margin-top: 10px; font-size: 12px; color: #777;">Ads keep this service free.</p>
-</div>
-
 # Money Manager Ex for Android
 
 [Money Manager Ex](https://moneymanagerex.org/) is a free, open-source, cross-platform, easy-to-use personal finance software. It primarily helps organize one's finances and keeps track of where, when, and how the money flows
@@ -173,4 +156,4 @@ Our [Privacy Policy](privacypolicy.md)
 
 Money Manager Ex for Android is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). You are free to use, modify, and distribute this software in accordance with the terms of the license.
 
-
+{{ site.adsense.script }}
