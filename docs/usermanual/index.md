@@ -48,7 +48,7 @@ Generate customizable reports to gain insights into your financial health. Analy
 
 Sync your financial data across multiple devices using cloud synchronization. Ensure that your information is always up to date, no matter where you are.
 
-Read How to [setup companion app](/quickstart/start_companion.md) for desktop.
+Read How to [setup companion app](/quickstart/start_companion/) for desktop.
 
 ## Security
 
