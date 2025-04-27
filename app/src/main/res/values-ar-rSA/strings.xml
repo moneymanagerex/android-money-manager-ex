@@ -250,6 +250,7 @@
     <string name="enter_next_occurrence">أدخل التكرار التالي</string>
     <string name="skip_next_occurrence">تخطي التواجد التالي</string>
     <string name="skip_next_occurrence_confirmation">هل تريد تخطي التواجد التالي؟</string>
+    <string name="notification_repeating_transaction_expired"></string>
     <string name="notification_click_to_check_repeating_transaction">اللمس للتحقق من المعاملات المتأخرة</string>
     <string name="skip">تخطي</string>
     <string name="enter">ادخال</string>
