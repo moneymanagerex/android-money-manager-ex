@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.file.Files;
@@ -76,7 +77,9 @@ public class FileStorageHelper {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_TITLE, "your_data.mmb");
+            // set default file name as your_data_<creationDateAndTime>.mmb
+            String creationDateAndTime = new MmxDate().toString("yyyyMMdd_HHmmss");
+            intent.putExtra(Intent.EXTRA_TITLE, "your_data_" + creationDateAndTime + ".mmb");
             host.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
             Timber.e(e, "No storage providers found.");
@@ -101,6 +104,20 @@ public class FileStorageHelper {
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
+
+        // During creation if user select a file that already exists file name will be in form
+        // fileMetadata.Name = "<existing file name with extention> (1)"
+        // this cause subsequent issue becouse filename has no .mmb or emb extension
+        // see https://issuetracker.google.com/issues/37136466
+        if (!(fileMetadata.Name.endsWith(".mmb") || fileMetadata.Name.endsWith(".emb"))) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(_host);
+            alertDialog.setTitle("Invalid file name")
+                    .setMessage("Please select unique filename or use Open")
+                    .setPositiveButton(android.R.string.ok, null);
+            alertDialog.show();
+            return null;
+        }
+
         DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
         pullDatabase(metadata);

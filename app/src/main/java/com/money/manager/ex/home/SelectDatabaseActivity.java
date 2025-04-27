@@ -84,7 +84,9 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
             onDatabaseSelected();
         } else if (requestCode == RequestCodes.CREATE_DOCUMENT) {
             FileStorageHelper storageHelper = new FileStorageHelper(this);
-            storageHelper.createDatabase(data);
+            if ( storageHelper.createDatabase(data) == null ) {
+                return;
+            }
             onDatabaseSelected();
         }
     }
