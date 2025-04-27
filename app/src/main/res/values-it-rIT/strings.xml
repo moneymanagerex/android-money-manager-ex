@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Generale</string>
     <string name="preferences_perdatabase">Per Database</string>
+    <string name="preferences_display">Aspetto</string>
     <string name="preferences_behaviour">Comportamento</string>
     <string name="base_currency">Valuta base</string>
     <string name="base_currency_changed">Valuta base cambiata</string>
@@ -290,6 +291,7 @@
     <string name="enter_your_previous_passcode">Inserisci il tuo precedente passcode</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">codice di accesso non aggiornato</string>
+    <string name="fingerprint_passcode_deactivated">Il codice di accesso di sicurezza è stato attivato utilizzando Autenticazione con impronta digitale, quindi il codice di accesso è stato disattivato automaticamente, si prega di riattivare il codice di accesso con valore numerico</string>
     <string name="preferences_fingerprint_auth_key">Chiave Di Autenticazione Impronta Digitale</string>
     <string name="preferences_fingerprint_summary">Abilita l\'autenticazione con impronta digitale per l\'accesso e disabilita la schermata del codice di accesso. Tuttavia, l\'utente non può utilizzare l\'impronta digitale per attivare o modificare il codice di accesso.</string>
     <string name="preferences_fingerprint_title">Autenticazione con impronta digitale</string>
@@ -548,11 +550,13 @@
     <string name="budget">Budget</string>
     <string name="budget_list">Lista Budget</string>
     <string name="actual">Effettivo</string>
+    <string name="amount_available">Disponibile</string>
     <string name="base_currency_not_set">La valuta di base non è stata impostata</string>
     <string name="error">Errore</string>
     <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
     <string name="title_activity_currency_rates_report">Tassi di cambio</string>
     <string name="frequency">Frequenza</string>
+    <string name="select_columns">Seleziona Colonne Visibili</string>
     <string name="update_available">Aggiornamento disponibile</string>
     <string name="update_available_online">C\'è un file di database aggiornato disponibile online. Vuoi aggiornare?</string>
     <string name="currency_not_found">Valuta non trovata</string>
@@ -635,6 +639,7 @@
     <string name="budget_name">Nome del budget</string>
     <string name="budget_year">Budget per anno</string>
     <string name="budget_month">Budget per mese</string>
+    <string name="budget_month_optional">Budget Mensile (optional)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
     <string name="print">Stampa</string>
@@ -720,7 +725,9 @@
     <string name="filenames_differ">Il nome del file remoto e locale non è uguale. Sincronizzazione interrotta.</string>
     <string name="both_files_modified">E\' stato modificato sia il database locale che remoto!</string>
     <string name="sync_conflict">Conflitto di sincronizzazione</string>
+    <string name="request_conflict_resolve">Risolvi conflitto</string>
     <string name="no_remote_file">Selezionare il file remoto da usare per la sincronizzazione.</string>
+    <string name="request_conlict_reopen">Conflitto tra file locale e remoto. Ciò significa che la copia locale non può essere sincronizzata con quella remota. Si prega di esportare DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati da file remoto.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Non ci sono conti disponibili per la scelta. Si prega di modificare le preferenze dei filtri o contrassegnare alcuni conti come preferito.</string>
     <!-- Errors -->
@@ -728,6 +735,8 @@
     <string name="remote_file_not_found">File remoto non trovato</string>
     <string name="error_checking_remote">Controllo degli errori per modifiche remote.</string>
     <string name="no_remote_change_date">Data di modifica remota non trovata nei metadati.</string>
+    <string name="remote_unavailable">File remoto non disponibile.</string>
+    <string name="request_reopen">Il file remoto non è accessibile. Ciò non consente di sincronizzare la copia locale con quella remota. Si prega di esportare DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati da file remoto.</string>
     <!-- Select database screen -->
     <string name="intro_text">Per iniziare a utilizzare Money Manager Ex, è necessario avere un file di database per memorizzare i dati. Si prega di selezionare una delle opzioni disponibili qui sotto.</string>
     <string name="intro_create_db">Puoi creare un nuovo file e impostare le preferenze iniziali.</string>
@@ -742,6 +751,7 @@
     <string name="save">Salva</string>
     <string name="title_budget_show_simple_view">Mostra vista semplificata budget</string>
     <string name="summary_budget_show_simple_view">Se selezionato usa la vista semplificata per i budget</string>
+    <string name="title_budget_reload_forecast">Ricarica le Transazioni Pianificate</string>
     <string name="title_pref_budget_financial_year">Utilizzare l\'esercizio finanziario nel Budget</string>
     <string name="summary_pref_budget_financial_year">Se selezionato, i bilanci utilizzano l\'esercizio finanziario anziché l\'anno civile</string>
     <string name="shares">Azioni</string>
@@ -779,6 +789,7 @@
     <!--- New navigation mode -->
     <string name="dismiss">Ignora</string>
     <string name="category_nav_mode">È disponibile un nuovo metodo di navigazione nel menu.</string>
+    <string name="remember_later">Ricordamelo più tardi</string>
     <!--Upload/Downlaod warnning -->
     <string name="upload_warning">Carica Avviso</string>
     <string name="download_warning">Scarica Avviso</string>
@@ -787,5 +798,16 @@
     <string name="msg_uploading_overwrite">Il caricamento sovrascriverà la tua versione remota.\nVuoi continuare?</string>
     <string name="msg_downloading_overwrite">Il download sovrascriverà la tua versione locale.\nVuoi continuare?</string>
     <string name="menu_cashflow_all">Tutti i conti</string>
+    <string name="menu_cashflow_open">Conti aperti</string>
+    <string name="menu_cashflow_favorite">Conti Preferiti</string>
+    <string name="menu_cashflow_custom">Seleziona conti&#8230;</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Oops! Qualcosa è andato storto.</string>
+    <string name="bad_error_occurs">Siamo spiacenti di notare un errore in atteso. Vi preghiamo di segnalarlo agli sviluppatori. </string>
+    <string name="estimatedForPeriod">Stima Per Il Periodo</string>
+    <string name="forecast_remain">Previsione Rimanente</string>
+    <string name="forecast_calculate">Calcolo la previsione. Attendere&#8230;</string>
+    <string name="enter_budget">Inserisci Budget</string>
+    <string name="enter_budget_value">Per la categoria %1$s, impostare il budget per il periodo %2$s. Utilizzare negativo per le spese, positivo per i redditi:</string>
+    <string name="enter_budget_value_plus_minus">Inserisci nuovo valore</string>
 </resources>
