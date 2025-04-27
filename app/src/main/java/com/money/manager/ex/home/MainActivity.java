@@ -346,6 +346,9 @@ public class MainActivity
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
+                if (db2 == null)
+                    return;
+
                 changeDatabase(db2);
                 break;
             case RequestCodes.PASSCODE:
