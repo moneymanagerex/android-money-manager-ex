@@ -422,7 +422,7 @@
     <string name="show_chart">Show Chart</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="welcome_header">Welcome to MoneyManagerEx!</string>
-    <string name="welcome_body">Sve transakcije u MoneyManagerEx pripadaju računima.\n\nVi trenutno nemate vidljivih računa. Podesite filter za vidljive račune u postavkama ili odaberite jednu od opcija ispod.</string>
+    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Either adjust the filter for visible accounts in the Settings, or select one of the options below.</string>
     <string name="welcome_body_dropbox">If you already use MoneyManagerEx on Windows, Linux or Mac, you can link to a cloud storage provider to synchronize your database</string>
     <string name="configure_sync">Configure Synchronization</string>
     <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
