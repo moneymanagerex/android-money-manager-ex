@@ -121,6 +121,9 @@ public class GeneralSettingsFragment
     }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
+        if (requireContext() == null) {
+            return;
+        }
         final String[] values = getResources().getStringArray(idArrayValues);
         final String[] items = getResources().getStringArray(idArrayItems);
         for (int i = 0; i < values.length; i++) {
