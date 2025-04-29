@@ -101,18 +101,18 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
 
         // Column 2: Market Value and Shares
         Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
-        holder.marketValueTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), marketValue));
+        holder.marketValueTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), marketValue));
         holder.sharesTextView.setText(String.format("%.2f", stock.getNumberOfShares()));
 
         // Column 3: Current Price and Purchase Price
-        holder.currentPriceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getCurrentPrice()));
-        holder.purchasePriceTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getPurchasePrice()));
+        holder.currentPriceTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getCurrentPrice()));
+        holder.purchasePriceTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), stock.getPurchasePrice()));
 
         // Column 4: Unrealized G/L
         Money unrealizedAmount = calculateUnrealizedGainLoss(stock);
         double unrealizedPercent = calculateUnrealizedPercentage(stock);
 
-        holder.unrealizedGLAmountTextView.setText(mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), unrealizedAmount));
+        holder.unrealizedGLAmountTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), unrealizedAmount));
         holder.unrealizedGLPercentTextView.setText(String.format("%.2f%%", unrealizedPercent));
 
         // Zebra striping
