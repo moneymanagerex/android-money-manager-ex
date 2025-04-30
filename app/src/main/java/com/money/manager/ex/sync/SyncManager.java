@@ -146,7 +146,7 @@ public class SyncManager {
         });
         thread.start();
         try {
-            thread.join();
+            thread.join(4000); // setup limit to fix dump
         } catch (InterruptedException e) {
             isRemoteFileAccessibleExist = false;
         }
