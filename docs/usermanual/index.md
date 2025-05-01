@@ -44,6 +44,14 @@ Manage multiple accounts, including checking, savings, credit cards, and more. K
 
 Generate customizable reports to gain insights into your financial health. Analyze spending patterns, income trends, and more.
 
+### Internal Report
+
+internal report allow you to see information regarding your expenses like:
+- **Payee**: show amount spend for each payee
+- **Where the money goes**: show amount for each expenses category 
+- **Where the money comes**: show amount for each income category 
+
+
 ## Data Sync
 
 Sync your financial data across multiple devices using cloud synchronization. Ensure that your information is always up to date, no matter where you are.
