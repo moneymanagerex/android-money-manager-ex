@@ -12,6 +12,8 @@ Welcome to the user manual for Money Manager Ex - Android, a free, open-source, 
 
 Money Manager Ex - Android is a mobile version of the popular personal finance software Money Manager Ex. It allows you to manage your finances on the go, making it easy to track expenses, create budgets, and stay on top of your financial goals.
 
+See basic [Concept](concept.md).
+
 # Getting Started
 
 To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store or F-Droid. Once installed, you can create an account and begin adding your financial information.
