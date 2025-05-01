@@ -1,6 +1,7 @@
 ---
 title: "Concept"
 layout: single
+author_profile: true
 ---
 
 This page contains the basic concepts and assumptions applied in MoneyManagerEx for Android app.
