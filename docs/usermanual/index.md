@@ -44,12 +44,24 @@ Manage multiple accounts, including checking, savings, credit cards, and more. K
 
 Generate customizable reports to gain insights into your financial health. Analyze spending patterns, income trends, and more.
 
-### Internal Report
+### BuildIn Report
 
 internal report allow you to see information regarding your expenses like:
 - **Payee**: show amount spend for each payee
 - **Where the money goes**: show amount for each expenses category 
 - **Where the money comes**: show amount for each income category 
+- **Category**: show amount for each category 
+- **Income and Expenses**: show monthly income and expenses 
+- **Cashflow**: this report show your future cashflow based on schedule transaction 
+
+### General Report
+
+**Notice** this function is partially supported. 
+{: .notice--danger}
+
+General report allow you to execute report loaded from [General Report Feature](https://moneymanagerex.org/docs/features/generalreports/)
+
+Actually only execute SQL and HTML work. No LUA capability, and report need to be loaded from desktop version. There is actually no way to load from Android.
 
 
 ## Data Sync
