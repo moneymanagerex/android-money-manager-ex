@@ -31,10 +31,10 @@ All information are stored in a sqllite [database](database.md).
 
 Track your expenses on the go, categorize transactions, and view detailed reports to better understand your spending habits.
 
-## Budget Management
+## Budget Management ![Static Badge](https://img.shields.io/badge/since-5.2.3-green)
+Set up [budgets](budget.md) for different categories and track your progress over time. Receive notifications when you're nearing your [budgets](budget.md) limits.
+Monitor your [budgets](budget.md) consumption with your actual and forecast
 
-Set up budgets for different categories and track your progress over time. Receive notifications when you're nearing your budget limits.
-Monitor your budgets consumption with your actual and forecast ![Static Badge](https://img.shields.io/badge/since-5.2.3-green)
 
 ## Account Management
 
