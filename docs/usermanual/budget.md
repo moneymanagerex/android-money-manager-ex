@@ -44,5 +44,23 @@ Choosing "**Edit**" will allow you to set a value for that category relative to 
 ![4.AddBudgetValue.png](4.AddBudgetValue.png-th.png)
 Use $${\color{red}negative}$$ values for expenses and $${\color{green}positive}$$ values for income. For example, setting *Salary* to "+€12,000" in a Yearly budget means that you receive €1,000 per month.
 
+
+## table for frequency
+This are all supported frequency from desktop.
+
 **Notice** Due to current limitations on the Android Budget feature, the budget frequency is tied to the budget type. For Yearly budgets, the frequency is "Yearly," and for Monthly budgets, it's "Monthly." If you need to set up different values, please use the desktop version for now. Android can read different frequencies but cannot currently set them.
 {: .notice--warning}
+
+
+| Key    | new occurs | Result for Year | Result for Month |
+| -------|------------|-----------------| ---- |
+| None            | 0          | amount * 0      | 0 (ok) |
+| Weekly          | 52         | amount * 52     | amount * 52  / 12 = amount * 4,33 (ok)   |
+| Fortnightly     | 26         | amount * 26     | amount * 26  / 12 = amount * 2,16 (ok)   |
+| Monthly         | 12         | amount * 12     | amount * 12  / 12 = amount (ok)          |
+| Every 2 Months  | 6          | amount * 6      | amount * 6   / 12 = amount / 2 (ok)      |
+| Quarterly       | 4          | amount * 4      | amount * 4   / 12 = amount / 3 (ok)      |
+| Half-Yearly     | 2          | amount * 2      | amount * 2   / 12 = amount / 6 (ok)      |
+| Yearly          | 1          | amount * 1      | amount * 1   / 12 = amount / 12 (ok)     |
+| Daily           | 365        | amount * 365    | amount * 365 / 12 = amount * 30,41 (ok)  |
+
