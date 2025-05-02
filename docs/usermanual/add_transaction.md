@@ -1,6 +1,9 @@
 ---
 title: "Add Transaction"
 layout: single
+toc: true
+toc_label: "Table of content"
+author_profile: true
 ---
 
 - [Account Transactions List](account_transactions_list.md)
