@@ -48,12 +48,15 @@ author:
     - label: "Main Website"
       icon: "fas fa-fw fa-link"
       url: "https://moneymanagerex.org/"
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:android@moneymanager.org"
 #    - label: "Twitter"
 #      icon: "fab fa-fw fa-twitter-square"
 #      url: "https://x.com/MoneyManagerEx"
-#    - label: "GitHub"
-#      icon: "fab fa-fw fa-github"
-#      url: "https://github.com/moneymanagerex/android-money-manager-ex"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/moneymanagerex/android-money-manager-ex"
 
 footer:
   links:

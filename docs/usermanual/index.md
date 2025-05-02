@@ -21,21 +21,21 @@ To start using Money Manager Ex - Android, simply download and install the app f
 You can also manually install from [github release page](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest). 
 Detail instruction [here](install.md).
 
-Read [Quick Start Guide](/quickstart/) for initial documentation.
+Read [Quick Start Guide](../quickstart) for initial documentation.
 
 # Features
 
 ## Open Database Format
 
-All information are stored in a sqllite [database](database.md).
+All information are stored in a sql-lite [database](database.md).
 
 ## Expense Tracking
 
 Track your expenses on the go, categorize transactions, and view detailed reports to better understand your spending habits.
 
-## Budget Management ![Static Badge](https://img.shields.io/badge/since-5.2.3-green)
-Set up [budgets](budget.md) for different categories and track your progress over time. Receive notifications when you're nearing your [budgets](budget.md) limits.
-Monitor your [budgets](budget.md) consumption with your actual and forecast
+## Budget Management ![Static Badge](https://img.shields.io/badge/from%20release-5.2.3-green)
+Set up [budgets](budget/index) for different categories and track your progress over time. Receive notifications when you're nearing your [budgets](budget/index) limits.
+Monitor your [budgets](budget/index) consumption with your actual and forecast
 
 
 ## Account Management
@@ -54,7 +54,7 @@ internal report allow you to see information regarding your expenses like:
 - **Where the money comes**: show amount for each income category 
 - **Category**: show amount for each category 
 - **Income and Expenses**: show monthly income and expenses 
-- **Cashflow**: this report show your future cashflow based on schedule transaction 
+- **Cash-flow**: this report show your future cash-flow based on schedule transaction 
 
 ### General Report
 
@@ -70,7 +70,7 @@ Actually only execute SQL and HTML work. No LUA capability, and report need to b
 
 Sync your financial data across multiple devices using cloud synchronization. Ensure that your information is always up to date, no matter where you are.
 
-Read How to [setup companion app](/quickstart/start_companion/) for desktop.
+Read How to [setup companion app](../quickstart/start_companion) for desktop.
 
 ## Security
 
@@ -91,11 +91,12 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
   {{ notice-2 | markdownify }}
 </div>
 
-## Nested Category ![Static Badge](https://img.shields.io/badge/since-2024.08.25-green)
+## Nested Category ![Static Badge](https://img.shields.io/badge/from%20release-2024.08.25-green)
 
-Money Manager Ex on Desktop can manage nested subcategory.
-From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
+Money Manager Ex on Desktop can manage nested subcategory. From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
 You can define (virtually) infinite subcategory level to categorize expenses. 
+
+Read [how to use nested category](category)
 
 # How to Use
 

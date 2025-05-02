@@ -1,9 +1,13 @@
 ---
 title: "Budget"
 layout: single
+author_profile: true
+toc: true
+toc_label: "Table of content"
 ---
 
 Budgets are used to set up monthly or yearly amounts and compare budgeted values with both expenses and forecasts.
+Take a look also on documentation for [destkop version](https://moneymanagerex.org/moneymanagerex/en_US/budget.html).
 
 # Setting Up a Budget
 ![0.EmptyBudgetList.png](0.EmptyBudgetList.png-th.png)
@@ -49,7 +53,7 @@ Choosing "**Edit**" will allow you to set a value for that category relative to 
 
 ![4.AddBudgetValue.png](4.AddBudgetValue.png-th.png)
 
-Use <span style="color:red">negative</span>. values for expenses and <span style="color:gree">positive</span> values for income. For example, setting *Salary* to "+€12,000" in a Yearly budget means that you receive €1,000 per month.
+Use <span style="color:red">negative</span>. values for expenses and <span style="color:green">positive</span> values for income. For example, setting "_Salary_" to "+€12,000" in a Yearly budget means that you **receive** €1,000 per month. Set "_Grocery_" to "-6.000€" means that you **spend** 500€ per month.
 
 
 ## table for frequency
