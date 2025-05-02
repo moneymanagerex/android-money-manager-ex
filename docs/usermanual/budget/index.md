@@ -1,18 +1,25 @@
 ---
 title: "Budget"
 layout: single
+author_profile: true
+toc: true
+toc_label: "Table of content"
 ---
 
 Budgets are used to set up monthly or yearly amounts and compare budgeted values with both expenses and forecasts.
+Take a look also on documentation for [destkop version](https://moneymanagerex.org/moneymanagerex/en_US/budget.html).
 
 # Setting Up a Budget
 ![0.EmptyBudgetList.png](0.EmptyBudgetList.png-th.png)
+
 From the initial budget screen, press the "+" button to add a new budget.
 
 ![1.AddBudget.png](1.AddBudget.png-th.png)
+
 Enter the year and optionally the month (if you want to have a monthly budget).
 
 ![2.Budget2025.png](2.Budget2025.png-th.png)
+
 Your budget will appear in the list. Select it.
 
 ## Operating with a Budget
@@ -34,15 +41,19 @@ From the upper-right gear icon, you can:
   - **Forecast Remain**: The projected remaining amount, calculated as **Estimate** - **Actual** - **[sum of recurring transactions within the budget period]**.
 
 ## Setting Up Category Budgets
+
 ![3.Budget2025Empty.png](3.Budget2025Empty.png-th.png)
+
 From the budget category list, a long press on a category allows you to:
 - **Edit**: Set up or modify the budget **Amount**.
 - **Delete**: Remove the budget information for that category.
 - **View Transactions**: See the transactions that contribute to the "**Actual**" value.
 
 Choosing "**Edit**" will allow you to set a value for that category relative to the budget.
+
 ![4.AddBudgetValue.png](4.AddBudgetValue.png-th.png)
-Use $${\color{red}negative}$$ values for expenses and $${\color{green}positive}$$ values for income. For example, setting *Salary* to "+€12,000" in a Yearly budget means that you receive €1,000 per month.
+
+Use <span style="color:red">negative</span>. values for expenses and <span style="color:green">positive</span> values for income. For example, setting "_Salary_" to "+€12,000" in a Yearly budget means that you **receive** €1,000 per month. Set "_Grocery_" to "-6.000€" means that you **spend** 500€ per month.
 
 
 ## table for frequency
