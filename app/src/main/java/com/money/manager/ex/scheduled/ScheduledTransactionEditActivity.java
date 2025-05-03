@@ -45,6 +45,7 @@ import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
@@ -116,6 +117,21 @@ public class ScheduledTransactionEditActivity
                     long id = getIntent().getLongExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
                     loadRecurringTransaction(id);
+                } else if (action != null && action.equals(Intent.ACTION_INSERT) && getIntent().getLongExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET) != -1) {
+                    long id = getIntent().getLongExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
+                    // select data transaction
+                    loadRecurringTransaction(id);
+                    mCommon.transactionEntity.setId(null);
+                    // clear cross reference for tag, and split
+                    mCommon.transactionEntity.setTagLinks(TagLink.clearCrossReference(mCommon.transactionEntity.getTagLinks()));
+                    if ( mCommon.mSplitTransactions != null) {
+                        for (ISplitTransaction split : mCommon.mSplitTransactions) {
+                            SplitRecurringCategory splitEntity = (SplitRecurringCategory) split;
+                            splitEntity.setId(null);
+                            splitEntity.setTagLinks(TagLink.clearCrossReference(split.getTagLinks()));
+                            splitEntity.setTransId(-1);
+                        }
+                    }
                 } else {
                     mCommon.transactionEntity.setAccountId(getIntent().getLongExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
                 }

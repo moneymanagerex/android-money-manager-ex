@@ -30,6 +30,10 @@
         android:title="@string/edit">
     </item>
     <item
+        android:id="@+id/menu_duplicate_transactions"
+        android:title="@string/duplicate_selected_transactions">
+    </item>
+    <item
         android:id="@+id/menu_delete"
         android:title="@string/delete">
     </item>
