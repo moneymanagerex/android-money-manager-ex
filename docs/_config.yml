@@ -63,10 +63,10 @@ author:
 #  avatar :
 #  bio    : "My awesome biography constrained to a sentence or two goes here."
   links:
-    - label: "Anddoid Website"
+    - label: "Android Website"
       icon: "fas fa-fw fa-link"
       url: "https://android.moneymanagerex.org/"
-    - label: "Main Website"
+    - label: "Money Manager Ex Website"
       icon: "fas fa-fw fa-link"
       url: "https://moneymanagerex.org/"
     - label: "Email"
