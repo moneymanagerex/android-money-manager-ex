@@ -79,6 +79,7 @@ public class ScheduledTransactionListFragment
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
     private static final int REQUEST_EDIT_REPEATING_TRANSACTION = 1003;
+    private static final int REQUEST_COPY_TRANSACTION = 1004;
 
     private static final int ID_LOADER_REPEATING = 0;
 
@@ -206,6 +207,10 @@ public class ScheduledTransactionListFragment
 
             case R.id.menu_edit:
                 startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
+                break;
+
+            case R.id.menu_duplicate_transactions:
+                startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_COPY_TRANSACTION);
                 break;
 
             case R.id.menu_delete:
@@ -455,7 +460,11 @@ public class ScheduledTransactionListFragment
         // check transId not null
         if (billDepositsId != null) {
             intent.putExtra(ScheduledTransactionEditActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
-            intent.setAction(Intent.ACTION_EDIT);
+            if (purposeCode == REQUEST_COPY_TRANSACTION) {
+                intent.setAction(Intent.ACTION_INSERT);
+            } else {
+                intent.setAction(Intent.ACTION_EDIT);
+            }
         } else {
             intent.setAction(Intent.ACTION_INSERT);
         }
