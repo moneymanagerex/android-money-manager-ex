@@ -1,6 +1,7 @@
 ---
 layout: single
 title: Supported Android Version
+author_profile: true
 ---
 
 | Version              | Support Status                       |

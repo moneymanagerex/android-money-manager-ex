@@ -2,6 +2,9 @@
 layout: single
 title: MoneyManagerEx for Android Privacy Policy
 permalink: /privacypolicy.html
+author_profile: true
+toc: true
+toc_label: "Table of content"
 ---
 
 This Privacy Policy was last modified on 2015-09-10.

@@ -30,7 +30,9 @@ Sample view of Category in **Flat View** mode
 
 When you are in "Tree View" mode, you category show some contextual information.
 
-![img.png](2.category_command.png){: .align-left} "**+**" button on the left show that category has children and allow you to navigate into. "**lens**" button on right open the [contextual menu](#Contextual-menu-in-category) for that category.
+![img.png](2.category_command.png){: .align-center}
+
+"**+**" button on the left show that category has children and allow you to navigate into. "**lens**" button on right open the [contextual menu](#contextual-menu-in-category) for that category.
 
 # Setup a Category
 
