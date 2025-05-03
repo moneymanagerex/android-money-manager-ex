@@ -11,7 +11,7 @@ plugins:
 
 # Name of website
 title: Money Manager Ex for Android
-email: android@moneymanager.org
+email: android@moneymanagerex.org
 description: Android companion app for Money manager Ex
 
 analytics:
@@ -71,7 +71,7 @@ author:
       url: "https://moneymanagerex.org/"
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:android@moneymanager.org"
+      url: "mailto:android@moneymanagerex.org"
     - label: "Forum"
       icon: "fab fa-fw fa-solid fa-comments"
       url: "https://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186"
