@@ -8,35 +8,38 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.OperationCanceledException;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.RemoteException;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.AssetRepository;
 import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.CurrencyHistoryRepository;
+import com.money.manager.ex.datalayer.CustomFieldDataRepository;
+import com.money.manager.ex.datalayer.CustomFieldRepository;
 import com.money.manager.ex.datalayer.IModificationTraceable;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.ShareInfoRepository;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.datalayer.TransactionLinkRepository;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.sync.SyncServiceMessage;
-import com.money.manager.ex.sync.SyncServiceMessageHandler;
-import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -72,7 +75,8 @@ public class DataMerger {
         AccountRepository localAccountRepo = new AccountRepository(storage.getContext());
         mergeAll(tmpDBReadable, localAccountRepo, lastLocalSyncDate, log);
         // ASSETS_V1
-        // ??
+        AssetRepository localAssetsRepo = new AssetRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localAssetsRepo, lastLocalSyncDate, log);
         // ATTACHMENT_V1
         AttachmentRepository localAttachmentRepo = new AttachmentRepository(storage.getContext());
         mergeAll(tmpDBReadable, localAttachmentRepo, lastLocalSyncDate, log);
@@ -82,16 +86,21 @@ public class DataMerger {
         // TAG
         TagRepository localTagRepo = new TagRepository(storage.getContext());
         mergeAll(tmpDBReadable, localTagRepo, lastLocalSyncDate, log);
-        // CURRENCYFORMATS
-        // ??
+        // CURRENCYFORMATS - Currency
+        CurrencyRepository localCurrencyRepo = new CurrencyRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localCurrencyRepo, lastLocalSyncDate, log);
         // CURRENCYHISTORY
-        // ??
+        CurrencyHistoryRepository localCurrHistRepo = new CurrencyHistoryRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localCurrHistRepo, lastLocalSyncDate, log);
         // CUSTOMFIELDDATA
-        // ??
+        CustomFieldDataRepository localCustFieldDataRepo = new CustomFieldDataRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localCustFieldDataRepo, lastLocalSyncDate, log);
         // CUSTOMFIELD
-        // ??
+        CustomFieldRepository localCustFieldRepo = new CustomFieldRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localCustFieldRepo, lastLocalSyncDate, log);
         // INFOTABLE
-        // ??
+        InfoRepository localInfoRepo = new InfoRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localInfoRepo, lastLocalSyncDate, log);
         // CATEGORY_V1
         CategoryRepository localCatRepo = new CategoryRepository(storage.getContext());
         mergeAll(tmpDBReadable, localCatRepo, lastLocalSyncDate, log);
@@ -107,14 +116,13 @@ public class DataMerger {
         // BUDGETYEAR_V1
         BudgetRepository localBudgetRepo = new BudgetRepository(storage.getContext());
         mergeAll(tmpDBReadable, localBudgetRepo, lastLocalSyncDate, log);
-        // CHECKINGACCOUNT
-        // ??
         // REPORT
         ReportRepository localReportRepo = new ReportRepository(storage.getContext());
         mergeAll(tmpDBReadable, localReportRepo, lastLocalSyncDate, log);
         // SHAREINFO
-        // ??
-        // Transactions
+        ShareInfoRepository localShareInfo = new ShareInfoRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localShareInfo, lastLocalSyncDate, log);
+        // Transactions CHECKINGACCOUNT --> accountTransaction
         AccountTransactionRepository localAccTrans = new AccountTransactionRepository(storage.getContext());
         mergeAll(tmpDBReadable, localAccTrans, lastLocalSyncDate, log);
         // SPLITTRANSACTION
@@ -130,7 +138,8 @@ public class DataMerger {
         TaglinkRepository localTagLinkRepo = new TaglinkRepository(storage.getContext());
         mergeAll(tmpDBReadable, localTagLinkRepo, lastLocalSyncDate, log);
         //TRANSLINK
-        // ??
+        TransactionLinkRepository localTransLinkRepo = new TransactionLinkRepository(storage.getContext());
+        mergeAll(tmpDBReadable, localTransLinkRepo, lastLocalSyncDate, log);
     }
 
     public /* for ut */ <T extends EntityBase> void mergeAll(SupportSQLiteDatabase tmpDBReadable, RepositoryBase<T> localRepo, MmxDate lastLocalSyncDate, StringBuilder log) {
