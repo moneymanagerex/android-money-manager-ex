@@ -85,8 +85,11 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
 {% capture notice-2 %}
 > Notice!**
 > Expired Recurring Transaction require to have correct Type set into transaction
+>
 > AUTO: Means that transaction is auto posted when expired
+>
 > PROMPT: Means that transaction is show in a notification with action skip/enter for user decision
+> 
 > MANUAL: Means that no action is taken on recurring transaction (no auto post, no notification)
 {% endcapture %}
 <div class="notice--warning">
