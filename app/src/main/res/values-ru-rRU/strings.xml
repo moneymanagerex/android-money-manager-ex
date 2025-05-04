@@ -725,7 +725,9 @@
     <string name="filenames_differ">Имена удаленного и локального файлов отличаются. Синхронизация прервана.</string>
     <string name="both_files_modified">Произошли одновременные изменения как в локальном так и в удаленном файле!</string>
     <string name="sync_conflict">Конфликт синхронизации</string>
+    <string name="request_conflict_resolve">Разрешить конфликт</string>
     <string name="no_remote_file">Пожалуйста, выберите файл для синхронизации.</string>
+    <string name="request_conlict_reopen">Конфликт между локальным и удаленным файлом. Из-за него локальная копия  не может быть синхронизировано с удаленной. Пожалуйста, экспортируйте БД, если вы хотите сохранить локальную копию, или снова откройте удаленный файл, если хотите загрузить данные из него.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Нет учетных записей, доступных для выбора. Пожалуйста настройте ваши предпочтения для фильтрации учетной записи или отметить некоторые счета как избранное.</string>
     <!-- Errors -->
@@ -733,6 +735,8 @@
     <string name="remote_file_not_found">Удаленный файл не найден</string>
     <string name="error_checking_remote">Проверка на ошибки удаленных изменений.</string>
     <string name="no_remote_change_date">Дата удаленного изменения не найдена в метаданных.</string>
+    <string name="remote_unavailable">Удаленный файл недоступен</string>
+    <string name="request_reopen">Удаленный файл недоступен. Это значит, что локальная копия не может быть синхронизирована с удаленной. Пожалуйста, экспортируйте БД, если хотите сохранить локальную копию, или снова откройте удаленный файл, если хотите загрузить данные из него.</string>
     <!-- Select database screen -->
     <string name="intro_text">Чтобы начать использовать деньги Менеджер Ex, нужно иметь файл базы данных для хранения данных. Выберите один из вариантов ниже.</string>
     <string name="intro_create_db">Можно создать новый файл и начальные настройки.</string>
@@ -747,6 +751,7 @@
     <string name="save">Сохранить</string>
     <string name="title_budget_show_simple_view">Показать простой бюджет</string>
     <string name="summary_budget_show_simple_view">Если выбрано, показывать бюджеты в упрощённой форме</string>
+    <string name="title_budget_reload_forecast">Перезагрузить расписание</string>
     <string name="title_pref_budget_financial_year">Использовать финансовый год в бюджете</string>
     <string name="summary_pref_budget_financial_year">Если выбрано, бюджеты используют финансовый год вместо календарного</string>
     <string name="shares">Акции</string>
@@ -804,6 +809,7 @@
     <string name="bad_error_occurs">Нам очень грустно из-за этой непредвиденной ошибки. Пожалуйста, сообщите разработчику</string>
     <string name="estimatedForPeriod">Оценка за период</string>
     <string name="forecast_remain">Прогноз остатка</string>
+    <string name="forecast_calculate">Расчет прогноза. Подождите...</string>
     <string name="enter_budget">Введите бюджет</string>
     <string name="enter_budget_value">Для категории %1$s, определите лимит на период %2$s. Используйте отрицательные значения для расходов, положительные для доходов:</string>
     <string name="enter_budget_value_plus_minus">Введите новое значение</string>
