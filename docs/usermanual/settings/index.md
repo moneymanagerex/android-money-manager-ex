@@ -62,7 +62,9 @@ last 7 days, last 2 week.... and many other
 
 # Synchronization 
 
+http://ammex.prudenzano.org/quickstart/start_companion/
 
+- **Synchronized Interval**: how frequently app will synchronized with remote file.
 
 # Investment 
 
