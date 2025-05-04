@@ -102,6 +102,12 @@ Read [how to use nested category](category)
 
 # How to Use
 
+## Settings
+
+Setting area controll a lot of switches to customise behaviour of the app based on your need.
+
+Detail instructions (here)[settings/]
+
 ## Adding Transactions
 
 To add a new transaction, simply navigate to the transactions tab and click on the add button. Then, enter the details of the transaction, including the date, amount, category, and any additional notes.
