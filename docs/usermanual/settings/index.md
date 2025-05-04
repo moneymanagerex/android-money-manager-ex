@@ -51,9 +51,18 @@ last 7 days, last 2 week.... and many other
 
 - **Notification time**: at what time schedule engine check overdue schedule transaction.
 
+- **Filter in selection**: TBD
+
+- **Search by text Content...**: if enabled all search function work searching text into whole fields. If not search work only by searching field that begins with specific text.
+
+- **Process Bank Transaction**: this enable app to access to your SMS to read Bank SMS and try to automatically create transaction into DB.
+
+- **Auto Populate Transaction Number**: will automatically set transaction number while enter transaction.
 
 
 # Synchronization 
+
+
 
 # Investment 
 
