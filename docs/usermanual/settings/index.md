@@ -21,6 +21,14 @@ General settings allow you to manage general information of the app such as:
 
 # Per-Database
 
+this settings allow to control basic information at dB level. This information is shared with desktop version.
+
+- **user**: username in the app.
+- **Base Currency**: default currency in the app.
+- **Default Account**: default account used from home screen when enter transaction using "+" button.
+- **Date Format**: Date Format used in all report and transactions 
+
+
 # Look & Feel
 
 # Behaviour 
