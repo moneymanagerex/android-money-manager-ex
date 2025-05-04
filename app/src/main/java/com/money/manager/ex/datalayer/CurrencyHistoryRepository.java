@@ -16,7 +16,7 @@ public class CurrencyHistoryRepository extends RepositoryBase<CurrencyHistory> {
     }
 
     @Override
-    protected CurrencyHistory createEntity() {
+    public CurrencyHistory createEntity() {
         return new CurrencyHistory();
     }
 
