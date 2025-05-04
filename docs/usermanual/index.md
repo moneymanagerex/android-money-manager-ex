@@ -106,7 +106,7 @@ Read [how to use nested category](category)
 
 Setting area controll a lot of switches to customise behaviour of the app based on your need.
 
-Detail instructions (here)[settings/]
+Detail instructions [here](settings/)
 
 ## Adding Transactions
 
