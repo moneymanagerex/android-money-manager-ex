@@ -34,6 +34,17 @@ this settings allow to control basic information at dB level. This information i
 
 # Look & Feel
 
+Thos setting is local to android app.
+
+- **View Open Account**: view only open account. if not set also closed account will be shown in homepage.
+- **View favorite account**: if set only favorite account is shown. Otherwise all account is shown.
+- **Show transaction**: default timeframe for list transaction. Available value are: today, 
+last 7 days, last 2 week.... and many other
+- **Show balance for each transaction**: enabling this setting for every transaction is shown also account balance. This requires more resources to compute.
+- **Hide reconcile transaction**: hide reconcile transaction from list. Reconcile transaction are transaction that has paired and confirmed.
+- **Application Font**: select your prefered font for app.
+- **Application Font Size**: size of font.
+
 # Behaviour 
 
 # Synchronization 
