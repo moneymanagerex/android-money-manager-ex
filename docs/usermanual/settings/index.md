@@ -47,6 +47,12 @@ last 7 days, last 2 week.... and many other
 
 # Behaviour 
 
+- **Process Schedule Transaction**: this enable schedule transaction to be processed. If this is not enable schedule transaction are **NOT** automatic posted. See status meaning [here](/usermanual/#recurring-transactions)
+
+- **Notification time**: at what time schedule engine check overdue schedule transaction.
+
+
+
 # Synchronization 
 
 # Investment 
