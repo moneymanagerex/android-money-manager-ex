@@ -27,7 +27,11 @@ this settings allow to control basic information at dB level. This information i
 - **Base Currency**: default currency in the app.
 - **Default Account**: default account used from home screen when enter transaction using "+" button.
 - **Date Format**: Date Format used in all report and transactions 
-
+- **Financial Year** concept: A financial year is a 12-month period used for accounting and financial reporting purposes. this can be different from the calendar year.
+  - **Financial Year: Start day**: start day of financial year 
+  - **Financial Year: Start month**: start month of financial year
+> For example if you set financial day as 15 and financial month as April, the financial year start at April, 15 and end at April, 14 of next year.
+- **Attachments folder**: folder where attachment are saved. this function is not fully implemented.
 
 # Look & Feel
 
