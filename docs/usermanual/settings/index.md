@@ -112,4 +112,4 @@ This screen show useful information regarding the app, and allow you to ask for 
 
 ![0.about.png](0.about.png){: .align-right}
 
-This screen show information regargin "**Version**" of app, allow you to "**Send a feedback**", or "**Open issue on github**", view "**Issue Tracker on github**", send the "**logcat**" and finally make "**Donation**"
+This screen show information regarding "**Version**" of app, allow you to "**[Send a feedback](mailto:android@moneymanagerex.org)**", or "**[Open issue on github](https://github.com/moneymanagerex/android-money-manager-ex/issues)**", view "**[Issue Tracker on github](https://github.com/moneymanagerex/android-money-manager-ex/issues)**", send the "**logcat**" and finally make "**Donation**"
