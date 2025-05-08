@@ -257,6 +257,8 @@ public class DatabaseSettingsFragment
             e.printStackTrace();
             // Handle errors appropriately
             showToast("Backup failed");
+        } catch ( Exception e ) { // handle issue #2603
+            showToast("Unable to perform backup.");
         }
     }
 
