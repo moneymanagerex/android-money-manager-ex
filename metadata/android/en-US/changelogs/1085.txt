@@ -1,1 +1,1 @@
-Fix minor ANR issue: #2604, #2603, #2602
+Fix minor ANR issue: #2604, #2603, #2602, #2607
