@@ -289,7 +289,10 @@ public class AmountInputDialog
 
         mExpression = txtMain.getText().toString();
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
-        savedInstanceState.putParcelable(KEY_AMOUNT2, Parcels.wrap(mAmount));
+        // mAmount is part of Money, that is not parcelable. So we need to save as float and reload as float see issue #2602
+        // not understand when this occurs
+//        savedInstanceState.putParcelable(KEY_AMOUNT2, Parcels.wrap(mAmount));
+        savedInstanceState.putString(KEY_AMOUNT2, mAmount.toString());
     }
 
     // methods
@@ -411,7 +414,10 @@ public class AmountInputDialog
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
-        mAmount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_AMOUNT2));
+        // mAmount is part of Money, that is not parcelable. So we need to save as float and reload as float see issue #2602
+        // not understand when this occurs
+        // mAmount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_AMOUNT2));
+        mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT2));
     }
 
     /**
