@@ -281,10 +281,12 @@ public class NestedCategoryListFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
-        if (item.getItemId() == android.R.id.home) {
-            // we wont to invalidate cursor, so if back is pressed no item is select
+        if (item.getItemId() == android.R.id.home ) {
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            cursor.moveToPosition(-1);
+            // we wont to invalidate cursor, so if back is pressed no item is select
+            if (cursor != null ) {
+                cursor.moveToPosition(-1);
+            }
             // and continue with super
         }
 
