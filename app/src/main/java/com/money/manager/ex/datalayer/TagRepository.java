@@ -34,8 +34,13 @@ public class TagRepository extends RepositoryBase<Tag> {
 
 
     @Override
-    protected Tag createEntity() {
+    public Tag createEntity() {
         return new Tag();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

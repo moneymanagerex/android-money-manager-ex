@@ -35,6 +35,7 @@ import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
+import com.money.manager.ex.sync.merge.DataMerger;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -152,6 +153,8 @@ public class SyncService
     private void triggerSync(Messenger outMessenger, File localFile) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
+        // download remote file into tmp (this forces also a refresh of the meta data)
+        storage.pullDatabaseToTmpFile(currentDb);
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
@@ -169,15 +172,25 @@ public class SyncService
         }
 
         if (isLocalModified && isRemoteModified) {
-            // if both changed, there is a conflict!
-            Timber.w(getString(R.string.both_files_modified));
-            sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
- //           sendStopEvent();
-            MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-                put("authority", uri.getAuthority());
-                put("result", "Conflict");
-            }});
-            showNotificationForConflict();
+            // TODO duplicate local database in case the user aborts merge and want to resume
+            // start merge changes from remote to local
+            DataMerger merger = new DataMerger(outMessenger);
+            try {
+                merger.merge(currentDb, storage);
+                Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);
+                // upload file
+                storage.pushDatabase(currentDb);
+                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+            } catch (Exception e) {
+                Timber.e(e,"Could not complete sync");
+                sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
+                //           sendStopEvent();
+                MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
+                    put("authority", uri.getAuthority());
+                    put("result", "Conflict");
+                }});
+                showNotificationForConflict();
+            }
             return;
         }
         if (isRemoteModified) {
