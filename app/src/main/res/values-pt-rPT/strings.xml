@@ -69,6 +69,8 @@
     <string name="sync_on_start">Sincronizar ao iniciar</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processar SMS relativa a Transação bancária</string>
+    <string name="revoke_receive_sms_access"></string>
+    <string name="title_sms_trans_status_notification">Notificação de SMS de Estado de Transação</string>
     <!-- account -->
     <string name="account">Conta</string>
     <string name="account_list">Lista de Contas</string>
