@@ -30,7 +30,9 @@ public enum SyncServiceMessage {
     NOT_ON_WIFI(0x000E),
     ERROR(0x000F),
     SYNC_DISABLED(1),
-    CONFLICT(2);
+    CONFLICT(2),
+    USER_DIALOG_CONFLICT(3)
+    ;
 
     SyncServiceMessage(int value) {
         code = value;

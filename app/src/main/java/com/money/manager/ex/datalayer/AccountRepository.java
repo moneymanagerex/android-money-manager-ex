@@ -42,7 +42,7 @@ public class AccountRepository
     }
 
     @Override
-    protected Account createEntity() {
+    public Account createEntity() {
         return new Account();
     }
 
@@ -52,6 +52,10 @@ public class AccountRepository
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
+    }
+
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     /**
