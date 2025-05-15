@@ -99,6 +99,12 @@ public class DatabaseMetadata {
     public boolean isLocalFileChanged() {
         Date localModified = this.getLocalFileModifiedDate().toDate();
         // The timestamp when the local file was downloaded.
+        if (this.localSnapshotTimestamp == null ) {
+            // issue #2615
+            // no local snapshot
+            Timber.d("Local file modified time: %s, snapshot time: unavailable", localModified.toString());
+            return true;
+        }
         Date localSnapshot = MmxDate.fromIso8601(this.localSnapshotTimestamp).toDate();
 
         Timber.d("Local file modified time: %s, snapshot time: %s", localModified.toString(), localSnapshot.toString());
