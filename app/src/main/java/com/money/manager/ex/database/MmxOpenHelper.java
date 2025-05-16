@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
@@ -93,7 +94,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * Called when the database is being created.
      * @param db Database instance.
      */
-    public void onCreate(SupportSQLiteDatabase db) {
+    public void onCreate(@NonNull SupportSQLiteDatabase db) {
         Timber.d("OpenHelper onCreate");
 
         try {
@@ -111,7 +112,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 //        long version = db.getVersion();
     }
 
-    public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(@NonNull SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.d("Upgrading from version %d to %d", oldVersion, newVersion);
 
         try {
@@ -128,12 +129,12 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         updateDatabase(db, oldVersion, newVersion);
     }
 
-    public void onDowngrade (SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onDowngrade (@NonNull SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
     private SupportSQLiteDatabase getDatabase(boolean writable) {
-        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes(),null, true);
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
@@ -312,7 +313,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     }
 
     public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
-        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes());
+        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes(), null, true);
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
