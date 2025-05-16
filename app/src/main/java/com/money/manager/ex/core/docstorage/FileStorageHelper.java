@@ -280,8 +280,13 @@ public class FileStorageHelper {
             }
         });
 
-        // Wait for the async task to complete
-        downloadTask.get(); // Propagates exceptions if any
+        // Wait for the async task to complete, byt try to handle timeout
+        try {
+            downloadTask.get(); // Propagates exceptions if any
+        } catch ( Exception e ) {
+            Timber.e(e, "Error downloading database");
+            throw new RuntimeException(e); // propagate
+        }
 
         // Replace the local database with the downloaded version
         File localDatabaseFile = new File(localPath);
