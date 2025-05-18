@@ -808,6 +808,5 @@
     <string name="forecast_remain">Előrejelzés megmaradása</string>
     <string name="forecast_calculate">Előrejelzés kiszámítása. Kérjük, várjon&#8230;</string>
     <string name="enter_budget">Költségvetés megadása</string>
-    <string name="enter_budget_value">A(z) %1$s kategória esetében állítsa be a költségkeretet a(z) időtartamra. Használja a negatívot a kiadásokhoz, a pozitív a bevételekhez:</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
 </resources>
