@@ -30,8 +30,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -51,6 +53,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 
+import androidx.annotation.NonNull;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -112,6 +115,7 @@ public class BudgetEntryFragment
 //        return inflater.inflate(R.layout.fragment_budget_detail, container, false);
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        if (view == null) throw new AssertionError();
         ListView list = view.findViewById(android.R.id.list);
 
         // Add the column header.
@@ -214,7 +218,7 @@ public class BudgetEntryFragment
         ArrayList<Integer> visibleColumn = ((BudgetAdapter) getListAdapter()).getVisibleColumn();
         if (menu.findItem(R.id.menu_budget_columns) != null && menu.findItem(R.id.menu_budget_columns).isVisible()) {
             Menu menuColumns = menu.findItem(R.id.menu_budget_columns).getSubMenu();
-            for(int i = 0; i < menuColumns.size(); i++) {
+            for(int i = 0; i < (menuColumns != null ? menuColumns.size() : 0); i++) {
                 menuColumns.getItem(i).setChecked(visibleColumn.contains(menuColumns.getItem(i).getItemId()));
             }
 
@@ -267,7 +271,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
@@ -290,11 +294,14 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (info == null) return false;
+
         long categoryId = info.id;
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
+        if (menuId == null) return false;
 
         // get selected item name
         BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
@@ -341,12 +348,17 @@ public class BudgetEntryFragment
 
     public void editBudgetEntry(long budgetYearId, long categoryId, String category) {
         String budgetPeriodString;
+        // Set the custom layout
+        LayoutInflater inflater = getLayoutInflater();
+        View customLayout = inflater.inflate(R.layout.budget_edit_entry, null);
+
         // Create the EditText view for numeric input
-        final EditText input = new EditText(getContext());
+        final EditText input = customLayout.findViewById(R.id.budget_edit_value);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         input.setHint(R.string.enter_budget_value_plus_minus);
 
         BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getActivity());
+
 
         BudgetEntry budgetEntry = budgetEntryRepository.loadByYearAndCateID(budgetYearId, categoryId);
         if (budgetEntry != null) {
@@ -357,16 +369,43 @@ public class BudgetEntryFragment
             budgetPeriodString = (Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName());
         }
 
+        Spinner spinnerBudget = customLayout.findViewById(R.id.spinnerBudgetPeriod);
+        ArrayList<String> mBudgetListName = new ArrayList<>();
+        ArrayList<BudgetPeriodEnum>  mBudgetListId = new ArrayList<>();
+        int defPeriod = 0;
+        for (int x = 0; x < BudgetPeriodEnum.values().length; x++) {
+            mBudgetListId.add(BudgetPeriodEnum.values()[x]);
+            mBudgetListName.add(BudgetPeriodEnum.getTranslation(getContext(), BudgetPeriodEnum.values()[x]));
+            if (BudgetPeriodEnum.values()[x].getDisplayName().equals(budgetPeriodString)) {
+                defPeriod = x;
+            }
+        }
+
+        ArrayAdapter<String> budgetPeriodAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, mBudgetListName);
+
+        budgetPeriodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerBudget.setAdapter(budgetPeriodAdapter);
+        spinnerBudget.setSelection(defPeriod);
+
         // Set up the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        // TODO: set custom xml layout to manage both period and amount
+        // set custom xml layout to manage both period and amount
+        builder.setView(customLayout);
+
         builder.setTitle(R.string.enter_budget)
-                .setMessage(getString(R.string.enter_budget_value,category,budgetPeriodString))
-                .setView(input)
+                .setMessage(getString(R.string.enter_budget_value,category,budgetPeriodString));
+        //  Old Mode
+        //        .setView(input);
+        builder
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String newValue = input.getText().toString().trim();
+                        BudgetPeriodEnum selectedPeriod = mBudgetListId.get(spinnerBudget.getSelectedItemPosition());
+                        if (selectedPeriod == null) {
+                            selectedPeriod = mBudgetListId.get(0);
+                        }
                         if (newValue.isEmpty()) {
                             Toast.makeText(getActivity(), "Value cannot be empty", Toast.LENGTH_SHORT).show();
                         } else {
@@ -378,14 +417,9 @@ public class BudgetEntryFragment
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);
                                     budgetEntry.setCategoryId(categoryId);
-                                    budgetEntry.setPeriod((Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName()));
-                                } else {
-                                    // to fix wrong budget entry
-                                    if (budgetEntry.getPeriod().equals(BudgetPeriodEnum.NONE.getDisplayName())) {
-                                        budgetEntry.setPeriod(BudgetPeriodEnum.YEARLY.getDisplayName());
-                                    }
                                 }
 
+                                budgetEntry.setPeriod(selectedPeriod.getDisplayName());
                                 budgetEntry.setAmount(newValueNumeric);
                                 budgetEntryRepository.save(budgetEntry);
                                 Toast.makeText(getActivity(), "Budget entry updated", Toast.LENGTH_SHORT).show();
@@ -398,6 +432,7 @@ public class BudgetEntryFragment
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> setUpLoaderCallbacks() {
