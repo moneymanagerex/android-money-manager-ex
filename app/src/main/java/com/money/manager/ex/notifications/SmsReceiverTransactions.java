@@ -217,9 +217,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             extractAccountDetails(msgBody, transType);
 
                             if (!fromAccountDetails[0].isEmpty()) {
-                                fromAccountID = parseInt(fromAccountDetails[0]);
+                                fromAccountID = Long.parseLong(fromAccountDetails[0]);
                                 fromAccountName = fromAccountDetails[1];
-                                fromCurrencyID = parseInt(fromAccountDetails[2]);
+                                fromCurrencyID = Long.parseLong(fromAccountDetails[2]);
                                 fromAccCurrencySymbl = fromAccountDetails[3];
                                 mCommon.transactionEntity.setAccountId(fromAccountID);
                             }
@@ -257,9 +257,9 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
                                         if (!toAccountDetails[0].isEmpty()) { // if id exists then considering as account transfer
 
-                                            toAccountID = parseInt(toAccountDetails[0]);
+                                            toAccountID = Long.parseLong(toAccountDetails[0]);
                                             toAccountName = toAccountDetails[1];
-                                            toCurrencyID = parseInt(toAccountDetails[2]);
+                                            toCurrencyID = Long.parseLong(toAccountDetails[2]);
                                             toAccCurrencySymbl = toAccountDetails[3];
 
                                             mCommon.transactionEntity.setToAccountId(toAccountID);
@@ -785,7 +785,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 if (m != null && reqMatch.isEmpty()) {
                     while(m.find()) {
                         try {
-                            Double.parseDouble(m.group(getGroup[i]).trim()); // Can be Integer.parseInt(str) if checking for integers
+                            Long.parseLong(m.group(getGroup[i]).trim()); // Can be Integer.parseInt(str) if checking for integers
                             reqMatch = m.group(getGroup[i]).trim();
                             break;
                         } catch (NumberFormatException e) {
@@ -857,7 +857,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 Cursor txnCursor = openHelper.getReadableDatabase().query(sql);
 
                 if(txnCursor.moveToFirst()) {
-                    txnId = parseInt(txnCursor.getString(txnCursor.getColumnIndexOrThrow("TRANSID")));
+                    txnId = Long.parseLong(txnCursor.getString(txnCursor.getColumnIndexOrThrow("TRANSID")));
                 }
 
                 txnCursor.close();
