@@ -394,7 +394,7 @@ public class BudgetEntryFragment
         builder.setView(customLayout);
 
         builder.setTitle(R.string.enter_budget)
-                .setMessage(getString(R.string.enter_budget_value,category,budgetPeriodString));
+                .setMessage(getString(R.string.enter_budget_value,category));
         //  Old Mode
         //        .setView(input);
         builder
