@@ -916,7 +916,10 @@ public class MainActivity
         childItems.add(childReports);
 
         // general reports
-        childItems.add(getGeneralReportGroupDrawerMenuItems());
+        ArrayList<DrawerMenuItem> reportMenu = getGeneralReportGroupDrawerMenuItems();
+        if ( reportMenu.size() > 0) {
+            childItems.add(reportMenu);
+        }
 
         // Settings
         childItems.add(null);
@@ -1088,11 +1091,16 @@ public class MainActivity
         // .withDivider(true));
 
         // General reports
-        menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
-                .withText(getString(R.string.menu_general_report_group))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                .color(iconColor)));
-        // .withDivider(true));
+        // check if Exist at least one custom report
+        if ( getGeneralReportGroupDrawerMenuItems().size() > 0 ) {
+            menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
+                    .withText(getString(R.string.menu_general_report_group))
+                    .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                            .color(iconColor)));
+            // .withDivider(true));
+        }
+
+
 
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)

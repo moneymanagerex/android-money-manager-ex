@@ -117,6 +117,15 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
 
         // Zebra striping
         int bgColor = (position % 2 == 0) ? android.R.color.darker_gray : android.R.color.white;
+        int fgColor = (position % 2 == 0) ? android.R.color.white : android.R.color.black;
+        holder.currentPriceTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.purchasePriceTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.unrealizedGLAmountTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.unrealizedGLPercentTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.marketValueTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.sharesTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        holder.symbolTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
         holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), bgColor));
     }
 
