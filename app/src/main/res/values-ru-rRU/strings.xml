@@ -811,5 +811,6 @@
     <string name="forecast_remain">Прогноз остатка</string>
     <string name="forecast_calculate">Расчет прогноза. Подождите...</string>
     <string name="enter_budget">Введите бюджет</string>
+    <string name="enter_budget_value">Для категории %1$s, определите лимит на период. Используйте отрицательные значения для расходов, положительные для доходов:</string>
     <string name="enter_budget_value_plus_minus">Введите новое значение</string>
 </resources>
