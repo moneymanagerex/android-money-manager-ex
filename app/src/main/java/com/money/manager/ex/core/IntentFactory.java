@@ -36,13 +36,14 @@ import org.parceler.Parcels;
 
 public class IntentFactory {
     public static Intent getSyncServiceIntent(Context context, String action, String localFile,
-                                              String remoteFile, Messenger messenger) {
+                                              String remoteFile, Messenger messenger, boolean mergeOnSync) {
         Intent syncServiceIntent = new Intent(context, SyncService.class);
 
         syncServiceIntent.setAction(action);
 
         syncServiceIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
         syncServiceIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+        syncServiceIntent.putExtra(SyncConstants.INTENT_EXTRA_PREF_MERGE_ON_SYNC, mergeOnSync);
 
         if (messenger != null) {
             syncServiceIntent.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);

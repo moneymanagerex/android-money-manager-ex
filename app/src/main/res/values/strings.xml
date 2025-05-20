@@ -73,6 +73,8 @@
     <string name="auto_sync_via_wifi_summary">Auto-synchronize only when on WiFi connection.</string>
     <string name="sync_on_app_start">Synchronize on app start.</string>
     <string name="sync_on_start">Sync on start</string>
+    <string name="sync_merge_database">EXPERIMENTAL: Merge databases</string>
+    <string name="sync_merge_database_on_sync">Merge database differences on sync.</string>
 
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Process Bank Transaction SMS</string>

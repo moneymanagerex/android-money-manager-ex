@@ -57,6 +57,12 @@
         android:summary="@string/auto_sync_via_wifi_summary" />
 
     <!-- log out -->
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:icon="@null"
+        android:key="@string/pref_sync_merge_database"
+        android:summary="@string/sync_merge_database_on_sync"
+        android:title="@string/sync_merge_database" />
     <Preference
         android:icon="@null"
         android:key="@string/pref_reset_preferences"

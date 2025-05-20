@@ -54,6 +54,15 @@ import timber.log.Timber;
 public class SyncServiceMessageHandler
     extends Handler {
 
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
+    private final Context context;
+    private final AlertDialog progressDialog;
+    private final TextView textDiff;
+    private final Button btOurs;
+    private final ConflictDialogOnClickListener btOursListener;
+    private final Button btTheirs;
+    private final ConflictDialogOnClickListener btTheirsListener;
+
     public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
         super(Looper.getMainLooper()); // Explicitly use the main thread's Looper
         MmexApplication.getApp().iocComponent.inject(this);
@@ -68,15 +77,6 @@ public class SyncServiceMessageHandler
         this.btOursListener = new ConflictDialogOnClickListener(MergeConflictResolution.OURS);
         this.btOurs.setOnClickListener(btOursListener);
     }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-    private final Context context;
-    private final AlertDialog progressDialog;
-    private final TextView textDiff;
-    private final Button btOurs;
-    private final ConflictDialogOnClickListener btOursListener;
-    private final Button btTheirs;
-    private final ConflictDialogOnClickListener btTheirsListener;
 
     @Override
     public void handleMessage(Message msg) {

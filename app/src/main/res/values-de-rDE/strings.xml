@@ -68,6 +68,8 @@
     <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
     <string name="sync_on_app_start">Synchronisiere beim Start</string>
     <string name="sync_on_start">Beim Start synchronisieren</string>
+    <string name="sync_merge_database">EXPERIMENTELL: Führe Datenbanken zusammen</string>
+    <string name="sync_merge_database_on_sync">Führe Datenbankwerte zusammen beim Synchronisieren.</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Banktransaktions-SMS bearbeiten</string>
     <string name="summary_sms_auto_trans">Lies die Banktransaktions-Update SMS und erstelle automatisch eine Transaktion</string>

@@ -63,10 +63,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(RobolectricTestRunner.class)
 public class DataMergerTests {
-    @Before
-    public void setup() {
-
-    }
 
     @Test
     public void testMergeAccountTransactionTakeoverFromRemote() {

@@ -97,6 +97,7 @@ public class SyncService
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
             outMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
         }
+        boolean prefMergeOnSync = intent.getBooleanExtra(SyncConstants.INTENT_EXTRA_PREF_MERGE_ON_SYNC, false);
 
         String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
@@ -130,7 +131,7 @@ public class SyncService
                 sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
                 break;
             case SyncConstants.INTENT_ACTION_SYNC:
-                triggerSync(outMessenger, localFile);
+                triggerSync(outMessenger, localFile, prefMergeOnSync);
                 break;
             default:
                 break;
@@ -150,7 +151,7 @@ public class SyncService
         enqueueWork(context, SyncService.class, SyncService.SYNC_JOB_ID, intent);
     }
 
-    private void triggerSync(Messenger outMessenger, File localFile) {
+    private void triggerSync(Messenger outMessenger, File localFile, boolean prefMergeOnSync) {
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         // download remote file into tmp (this forces also a refresh of the meta data)
@@ -171,28 +172,33 @@ public class SyncService
             return;
         }
 
-        if (isLocalModified && isRemoteModified) {
-            // TODO duplicate local database in case the user aborts merge and want to resume
-            // start merge changes from remote to local
-            DataMerger merger = new DataMerger(outMessenger);
-            try {
-                merger.merge(currentDb, storage);
-                Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);
-                // upload file
-                storage.pushDatabase(currentDb);
-                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
-            } catch (Exception e) {
-                Timber.e(e,"Could not complete sync");
-                sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
-                //           sendStopEvent();
-                MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-                    put("authority", uri.getAuthority());
-                    put("result", "Conflict");
-                }});
-                showNotificationForConflict();
+            if (isLocalModified && isRemoteModified) {
+                // EXPERIMENTAL setting to merge on sync
+                if (prefMergeOnSync) {
+                    // TODO duplicate local database in case the user aborts merge and want to resume
+                    // start merge changes from remote to local
+                    DataMerger merger = new DataMerger(outMessenger);
+                    try {
+                        merger.merge(currentDb, storage);
+                        Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);
+                        // upload file
+                        storage.pushDatabase(currentDb);
+                        sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+                    } catch (Exception e) {
+                        Timber.e(e, "Could not complete sync");
+                        sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
+                        //           sendStopEvent();
+                        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
+                            put("authority", uri.getAuthority());
+                            put("result", "Conflict");
+                        }});
+                        showNotificationForConflict();
+                    }
+                } else {
+                    showNotificationForConflict();
+                }
+                return;
             }
-            return;
-        }
         if (isRemoteModified) {
             Timber.d("Remote file %s changed. Triggering download.", currentDb.remotePath);
             // download file
