@@ -809,5 +809,6 @@
     <string name="forecast_remain">முன் கணிப்பு மீதமுள்ளது</string>
     <string name="forecast_calculate">முன்னறிவிப்பைக் கணக்கிடுகிறது. தயவுசெய்து காத்திருங்கள்&#8230;</string>
     <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
+    <string name="enter_budget_value">%1$s வகைக்கு, காலத்திற்கான பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
     <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
 </resources>
