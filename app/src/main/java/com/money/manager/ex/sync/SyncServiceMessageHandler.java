@@ -141,6 +141,10 @@ public class SyncServiceMessageHandler
                 this.btTheirsListener.setReplyTo(replyTo);
                 setVisibilityConflictDialogElements(true);
                 break;
+            case USER_DIALOD_NOTIF:
+                this.textDiff.setText((String)msg.obj);
+                textDiff.setVisibility(View.VISIBLE);
+                break;
             default:
                 throw new RuntimeException("unknown message");
         }

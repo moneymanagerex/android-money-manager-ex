@@ -58,7 +58,7 @@ public class SplitScheduledCategoryRepository
             SplitRecurringCategory.SPLITTRANSID,
             SplitRecurringCategory.TRANSID,
             SplitRecurringCategory.CATEGID,
-            SplitRecurringCategory.SUBCATEGID,
+//            SplitRecurringCategory.SUBCATEGID,   // no loger exist
             SplitRecurringCategory.SPLITTRANSAMOUNT,
             SplitRecurringCategory.NOTES };
     }

@@ -31,7 +31,8 @@ public enum SyncServiceMessage {
     ERROR(0x000F),
     SYNC_DISABLED(1),
     CONFLICT(2),
-    USER_DIALOG_CONFLICT(3)
+    USER_DIALOG_CONFLICT(3),
+    USER_DIALOD_NOTIF(9999)
     ;
 
     SyncServiceMessage(int value) {

@@ -161,6 +161,12 @@ public class SyncService
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
         Uri uri = Uri.parse(currentDb.remotePath);
 
+        // for debug
+//        if (true) {
+//            isLocalModified = true;
+//            isRemoteModified = true;
+//        }
+
         // possible outcomes:
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(outMessenger, SyncServiceMessage.FILE_NOT_CHANGED);

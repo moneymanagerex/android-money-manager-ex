@@ -143,10 +143,14 @@ public class DataMerger {
     }
 
     public /* for ut */ <T extends EntityBase> void mergeAll(SupportSQLiteDatabase tmpDBReadable, RepositoryBase<T> localRepo, MmxDate lastLocalSyncDate, StringBuilder log) {
+        String message = "Merging all "+localRepo.getTableName();
+        Timber.d(message);
+        pingMessage(message, 0, 0);
         int updateCount = 0;
         // iterate through all entries from tmp file (remote copy)
-        try (Cursor remoteCursor = tmpDBReadable.query("SELECT * from "+localRepo.getTableName()+" WHERE 1")) {
+        try (Cursor remoteCursor = tmpDBReadable.query("SELECT "+String.join(",", localRepo.getAllColumns())+" from "+localRepo.getTableName()+" WHERE 1")) {
             while (remoteCursor.moveToNext()) {
+                pingMessage(message, remoteCursor.getPosition(), remoteCursor.getCount());
                 T remoteEntity = localRepo.createEntity();
                 remoteEntity.loadFromCursor(remoteCursor);
                 // test if local data is equal
@@ -261,6 +265,33 @@ public class DataMerger {
             synchronized (lock) {
                 lock.notify();
             }
+        }
+    }
+
+    String oldMsg = "";
+    int old_act;
+    int old_tot;
+    void pingMessage(String message, int act, int tot) {
+        if ( message.equals(oldMsg) &&
+                ( act < ( old_act + 100 ) ) &&
+                ( tot == old_tot ) ) {
+            return;
+        }
+        oldMsg = message;
+        old_act = act;
+        old_tot = tot;
+
+        Message msg = new Message();
+        msg.what = SyncServiceMessage.USER_DIALOD_NOTIF.code;
+        if ( tot == 0 ) {
+            msg.obj = message;
+        } else {
+            msg.obj = message + " [" + Integer.toString(act * 100 / tot) + "%]";
+        }
+        msg.setAsynchronous(false);
+        try {
+            messenger.send(msg);
+        } catch (Exception e) {
         }
     }
 

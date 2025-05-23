@@ -42,6 +42,10 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.CurrencyHistoryRepository;
+import com.money.manager.ex.datalayer.CustomFieldDataRepository;
+import com.money.manager.ex.datalayer.CustomFieldRepository;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.ReportRepository;
@@ -128,7 +132,11 @@ public class MmxContentProvider
                 new QueryNestedCategory(context),
                 new ReportRepository(context),
                 new TagRepository(context),
-                new TaglinkRepository(context)
+                new TaglinkRepository(context),
+                new CurrencyHistoryRepository(context),
+                new CustomFieldRepository(context),
+                new CustomFieldDataRepository(context),
+                new InfoRepository(context)
         );
 
         // Cycle all data sets for th
