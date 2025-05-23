@@ -573,18 +573,19 @@ public class CheckingTransactionEditActivity
                     {
                         AccountRepository accountRepository = new AccountRepository(this);
 
-                        if(Integer.parseInt(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
-                        {
+                        if(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
                             mCommon.transactionEntity.setAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+
+                        if(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)) > 0)
                             mCommon.transactionEntity.setToAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
-                            //convert the to amount from the both currency details
-                            CurrencyService currencyService = new CurrencyService(this);
-                            mCommon.transactionEntity.setToAmount(currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
-                                    mCommon.transactionEntity.getAmount(),
-                                    accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getToAccountId())));
-
-                        }
+                        //convert the to amount from the both currency details
+                        CurrencyService currencyService = new CurrencyService(this);
+                        mCommon.transactionEntity.setToAmount(
+                                currencyService.doCurrencyExchange(accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getAccountId()),
+                                        mCommon.transactionEntity.getAmount(),
+                                        accountRepository.loadCurrencyIdFor(mCommon.transactionEntity.getToAccountId()))
+                        );
 
                         mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(extras.getString(EditTransactionActivityConstants.KEY_TRANS_CODE)));
                         mCommon.transactionEntity.setAmount(MoneyFactory.fromString(extras.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
