@@ -244,7 +244,7 @@ public class SyncManager {
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog));
         }
 
-        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, current.localPath, current.remotePath, messenger);
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, current.localPath, current.remotePath, messenger, getPreferences().shouldSyncMergeDatabase());
         // start service
         SyncService.enqueueWork(getContext(), syncServiceIntent);
     }

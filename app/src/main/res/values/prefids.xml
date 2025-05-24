@@ -123,6 +123,7 @@
     <string name="pref_sync_upload">pref_sync_upload</string>
     <string name="pref_upload_immediately">pref_upload_immediately</string>
     <string name="pref_sync_on_app_start">pref_sync_on_app_start</string>
+    <string name="pref_sync_merge_database">pref_sync_merge_database</string>
     <!-- deprecated -->
     <string name="pref_is_local_file_changed">pref_is_local_file_changed</string>
     <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>

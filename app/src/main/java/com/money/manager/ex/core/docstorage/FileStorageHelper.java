@@ -166,6 +166,22 @@ public class FileStorageHelper {
     }
 
     /**
+     * Downloads the remote file into a temporary file.
+     *
+     * @param metadata Database file metadata.
+     */
+    public void pullDatabaseToTmpFile(DatabaseMetadata metadata) {
+        // copy the contents into a local database file.
+        Uri uri = Uri.parse(metadata.remotePath);
+        try {
+            this.downloadDatabase(uri, metadata.localTmpPath);
+        } catch (Exception e) {
+            Timber.e(e);
+            return;
+        }
+    }
+
+    /**
      * Pushes the local file to the document provider and updates the metadata.
      * @param metadata Database file metadata.
      */
@@ -229,6 +245,10 @@ public class FileStorageHelper {
      */
     private void uploadDatabase(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
+        MmxDatabaseUtils utils = new MmxDatabaseUtils(getContext());
+        MmxDate lastSyncDateBackup = utils.getLastSyncDate(); // in case the sync fails
+        utils.setLastSyncDate(new MmxDate(new Date()));
+        boolean successfullySynced = false;
         Uri remoteUri = Uri.parse(metadata.remotePath);
 
         File localFile = new File(metadata.localPath);
@@ -244,6 +264,7 @@ public class FileStorageHelper {
                 // Notify resolver to ensure synchronization
                 resolver.notifyChange(remoteUri, null);
                 Timber.d("Database stored %d bytes to %s",bytesCopied, remoteUri);
+                successfullySynced = true;
             }
         } catch (FileNotFoundException e) {
             Timber.e(e, "File not found during upload: %s, URI: %s", metadata.localPath, remoteUri);
@@ -251,6 +272,11 @@ public class FileStorageHelper {
             Timber.e(e, "IO error during upload: %s", metadata.localPath);
         } catch (Exception e) {
             Timber.e(e, "Error during upload: %s", remoteUri);
+        } finally {
+            if (!successfullySynced) {
+                // reset lastSync Date
+                utils.setLastSyncDate(lastSyncDateBackup);
+            }
         }
     }
 
