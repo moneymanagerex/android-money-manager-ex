@@ -54,6 +54,7 @@ public class StockPriceRepository {
                         return;
                     }
 
+                    try {
                     List<Long> timestamps = result.timestamps;
                     List<Double> prices = result.indicators.quote.get(0).closePrices;
 
@@ -71,6 +72,10 @@ public class StockPriceRepository {
                         model.price = moneyPrice;
                         model.date = date;
                         liveData.postValue(model);
+                    }
+                    }
+                    catch (Exception e) {
+                        Timber.e(e, "Error updating stock price");
                     }
                 }
             }
