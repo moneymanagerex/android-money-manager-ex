@@ -69,7 +69,12 @@ To setup synchronization see [here](/quickstart/start_companion/).
 - **Upload**: Allow you to force upload of Databse to remote provider
 - **Sync on Start**: Allow synchronization at start of application.
 - **Auto sync only on WiFi**: Allow synchronization only when you are in WiFi. Normally mobile data will used.
+- **Merge Databse**: Enable Merge Database functionality
 - **Reset preference**: Reset all this preference to default.
+
+**Notice** Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under APP --> Sync. When this setting is active, if both your local and remote files have been modified, the app will attempt to identify conflicts. A progress window will be displayed during this potentially lengthy process. Once conflicts are identified, you'll be prompted to choose which version of the file you'd like to keep.
+![Static Badge](https://img.shields.io/badge/new_in-5.4-gree)
+{: .notice--warning}
 
 # Investment 
 _ToDo_
