@@ -2,6 +2,8 @@
 
 See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.org/) for more user-oriented information.
 
+New [User Manual](https://android.moneymanagerex.org/usermanual/) is there.
+
 ## Badges
 [![GitHub License](https://img.shields.io/github/license/moneymanagerex/android-money-manager-ex)](https://github.com/wolfsolver/android-money-manager-ex/tree/master?tab=License-1-ov-file)
 [![GitHub Release](https://img.shields.io/github/v/release/moneymanagerex/android-money-manager-ex?include_prereleases&label=github%20release)](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
@@ -24,8 +26,7 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 [<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" width="240">](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)
 
 #### Documentation
-- [User Manual](docs-old/usermanual/index.md)
-
+- [User Manual](https://android.moneymanagerex.org/usermanual/)
 
 #### Contributing
 
