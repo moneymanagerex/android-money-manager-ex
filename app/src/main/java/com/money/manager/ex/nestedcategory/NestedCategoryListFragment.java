@@ -515,7 +515,8 @@ public class NestedCategoryListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.getCount() == 0 || cursor.getPosition() == -1) {
+            // check if cursor is null to be sure
+            if ( cursor == null || cursor.getCount() == 0 || cursor.getPosition() == -1) {
                 // no record or no record selected
                 sendResultToActivity(-1, null);
             } else {
