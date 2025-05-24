@@ -46,7 +46,7 @@ public class QueryAllDataRepository
 
     @Override
     public String getTableName() {
-        return ""; // FIXME
+        return "queryalldata"; // even this is not a table, but a view
     }
 
     @Override

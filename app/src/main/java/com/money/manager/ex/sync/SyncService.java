@@ -29,9 +29,10 @@ import android.text.TextUtils;
 import androidx.core.app.JobIntentService;
 
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.R;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
@@ -190,6 +191,11 @@ public class SyncService
                         // upload file
                         storage.pushDatabase(currentDb);
                         sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+                        // reload app
+                        Intent intent = IntentFactory.getMainActivityNew(getApplicationContext());
+                        // Send info to not check for updates as it is redundant in this case.
+                        intent.putExtra(MainActivity.EXTRA_SKIP_REMOTE_CHECK, true);
+                        getApplicationContext().startActivity(intent);
                     } catch (Exception e) {
                         Timber.e(e, "Could not complete sync");
                         sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
