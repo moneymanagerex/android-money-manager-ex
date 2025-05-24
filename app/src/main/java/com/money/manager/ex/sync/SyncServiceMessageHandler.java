@@ -142,7 +142,9 @@ public class SyncServiceMessageHandler
                 setVisibilityConflictDialogElements(true);
                 break;
             case USER_DIALOD_NOTIF:
-                this.textDiff.setText((String)msg.obj);
+                String[] objs = (String[])msg.obj;
+                String m = context.getResources().getString(R.string.sync_merge_dialog_msg_format);
+                this.textDiff.setText( String.format( m, objs[0], objs[1]) );
                 textDiff.setVisibility(View.VISIBLE);
                 break;
             default:

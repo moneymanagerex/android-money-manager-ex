@@ -75,6 +75,7 @@
     <string name="sync_on_start">Sync on start</string>
     <string name="sync_merge_database">EXPERIMENTAL: Merge databases</string>
     <string name="sync_merge_database_on_sync">Merge database differences on sync.</string>
+    <string name="sync_merge_dialog_msg_format">Merging all %1$s%2$s</string>
 
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Process Bank Transaction SMS</string>
@@ -903,7 +904,7 @@
     <string name="cash_ledger">Cash Ledger</string>
 
     <!-- Merge -->
-    <string name="merge_take_ours">Take ours</string>
+    <string name="merge_take_ours">Keep ours</string>
     <string name="merge_take_theirs">Take theirs</string>
 
     <!-- Error Handling -->
