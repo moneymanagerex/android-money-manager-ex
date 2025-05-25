@@ -904,8 +904,8 @@
     <string name="cash_ledger">Cash Ledger</string>
 
     <!-- Merge -->
-    <string name="merge_take_ours">Keep ours</string>
-    <string name="merge_take_theirs">Take theirs</string>
+    <string name="merge_take_ours">Keep local</string>
+    <string name="merge_take_theirs">Take remote</string>
 
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>
