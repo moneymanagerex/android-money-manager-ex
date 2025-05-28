@@ -16,7 +16,7 @@ public class AssetRepository extends RepositoryBase<Asset> {
     }
 
     @Override
-    protected Asset createEntity() {
+    public Asset createEntity() {
         return new Asset();
     }
 

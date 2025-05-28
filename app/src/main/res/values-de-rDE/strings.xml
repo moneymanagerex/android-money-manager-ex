@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
     <string name="sync_on_app_start">Synchronisiere beim Start</string>
     <string name="sync_on_start">Beim Start synchronisieren</string>
+    <string name="sync_merge_database">EXPERIMENTELL: Führe Datenbanken zusammen</string>
+    <string name="sync_merge_database_on_sync">Führe Datenbankwerte zusammen beim Synchronisieren.</string>
+    <string name="sync_merge_dialog_msg_format">Führe %1$s zusammen%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Banktransaktions-SMS bearbeiten</string>
     <string name="summary_sms_auto_trans">Lies die Banktransaktions-Update SMS und erstelle automatisch eine Transaktion</string>
@@ -804,6 +807,9 @@
     <string name="menu_cashflow_favorite">Favorisierte Konten</string>
     <string name="menu_cashflow_custom">Konten wählen&#8230;</string>
     <string name="cash_ledger">Kassenbuch</string>
+    <!-- Merge -->
+    <string name="merge_take_ours">Beibehalten</string>
+    <string name="merge_take_theirs">Übernehmen</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>

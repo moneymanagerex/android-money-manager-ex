@@ -28,6 +28,7 @@ public class SyncConstants {
     // intent extra
     public static final String INTENT_EXTRA_LOCAL_FILE = "SyncServiceIntent:LocalFile";
     public static final String INTENT_EXTRA_REMOTE_FILE = "SyncServiceIntent:RemoteFile";
+    public static final String INTENT_EXTRA_PREF_MERGE_ON_SYNC = "SyncServiceIntent:MergeOnSync";
 
     public static final int NOTIFICATION_SYNC_IN_PROGRESS = 0xCCCC;
     public static final int NOTIFICATION_SYNC_OPEN_FILE = 0xDDDD;
