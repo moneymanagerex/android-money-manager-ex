@@ -49,7 +49,7 @@ From the budget category list, a long press on a category allows you to:
 - **Delete**: Remove the budget information for that category.
 - **View Transactions**: See the transactions that contribute to the "**Actual**" value.
 
-Choosing "**Edit**" will allow you to set a value for that category relative to the budget.
+Choosing "**Edit**" will allow you to set **frequency** ![Static Badge](https://img.shields.io/badge/new_in-5.4-gree) and a **value** for that category relative to the budget.
 
 ![4.AddBudgetValue.png](4.AddBudgetValue.png-th.png)
 
@@ -59,19 +59,19 @@ Use <span style="color:red">negative</span>. values for expenses and <span style
 ## table for frequency
 This are all supported frequency from desktop.
 
-**Notice** Due to current limitations on the Android Budget feature, the budget frequency is tied to the budget type. For Yearly budgets, the frequency is "Yearly," and for Monthly budgets, it's "Monthly." If you need to set up different values, please use the desktop version for now. Android can read different frequencies but cannot currently set them.
+**Notice** From release 5.4 it's possible to define budget frequency also on mobile. ![Static Badge](https://img.shields.io/badge/new_in-5.4-gree)
 {: .notice--warning}
 
 
-| Key    | new occurs | Result for Year | Result for Month |
-| -------|------------|-----------------| ---- |
-| None            | 0          | amount * 0      | 0 (ok) |
-| Weekly          | 52         | amount * 52     | amount * 52  / 12 = amount * 4,33 (ok)   |
-| Fortnightly     | 26         | amount * 26     | amount * 26  / 12 = amount * 2,16 (ok)   |
-| Monthly         | 12         | amount * 12     | amount * 12  / 12 = amount (ok)          |
-| Every 2 Months  | 6          | amount * 6      | amount * 6   / 12 = amount / 2 (ok)      |
-| Quarterly       | 4          | amount * 4      | amount * 4   / 12 = amount / 3 (ok)      |
-| Half-Yearly     | 2          | amount * 2      | amount * 2   / 12 = amount / 6 (ok)      |
-| Yearly          | 1          | amount * 1      | amount * 1   / 12 = amount / 12 (ok)     |
-| Daily           | 365        | amount * 365    | amount * 365 / 12 = amount * 30,41 (ok)  |
+| Key    | annual occurences | Result for Year | Result for Month                        |
+| -------|-------------------|-----------------|-----------------------------------------|
+| None            | 0                 | amount * 0      | amount * 0 / 12 = 0                     |
+| Weekly          | 52                | amount * 52     | amount * 52  / 12 = amount * 4,33  |
+| Fortnightly     | 26                | amount * 26     | amount * 26  / 12 = amount * 2,16  |
+| Monthly         | 12                | amount * 12     | amount * 12  / 12 = amount        |
+| Every 2 Months  | 6                 | amount * 6      | amount * 6   / 12 = amount / 2      |
+| Quarterly       | 4                 | amount * 4      | amount * 4   / 12 = amount / 3      |
+| Half-Yearly     | 2                 | amount * 2      | amount * 2   / 12 = amount / 6      |
+| Yearly          | 1                 | amount * 1      | amount * 1   / 12 = amount / 12    |
+| Daily           | 365               | amount * 365    | amount * 365 / 12 = amount * 30,41  |
 
