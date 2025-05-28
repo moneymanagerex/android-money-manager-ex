@@ -749,5 +749,8 @@
     <string name="remember_later">Recordarme más tarde</string>
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Todas las cuentas</string>
+    <string name="menu_cashflow_open">Abrir Cuentas</string>
     <!-- Error Handling -->
+    <string name="forecast_calculate">Calculando la Predicción. Por favor espere&#8230;</string>
+    <string name="enter_budget">Ingresar Presupuesto</string>
 </resources>
