@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Algemeen</string>
     <string name="preferences_perdatabase">Per-Database</string>
+    <string name="preferences_display">Uiterlijk &amp; Stijl</string>
     <string name="preferences_behaviour">Gedrag</string>
     <string name="base_currency">Standaardvaluta</string>
     <string name="base_currency_changed">Standaardvaluta gewijzigd</string>
@@ -290,6 +291,7 @@
     <string name="enter_your_previous_passcode">Voer uw vorige wachtwoord in</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">wachtwoord werd niet bijgewerkt</string>
+    <string name="fingerprint_passcode_deactivated">Beveiligingswachtwoord is geactiveerd met behulp van vingerafdruk authenticatie, dus de toegangscode is automatisch gedeactiveerd, activeer alstublieft het wachtwoord opnieuw met een numerieke waarde</string>
     <string name="preferences_fingerprint_auth_key">Vingerafdruk authenticatie sleutel</string>
     <string name="preferences_fingerprint_summary">Inschakelen om de vingerafdruk authenticatie te gebruiken voor login en het wachtwoord uit te schakelen. Een gebruiker kan echter geen vingerafdruk gebruiken om de toegangscode te activeren of te bewerken</string>
     <string name="preferences_fingerprint_title">Vingerafdruk authenticatie</string>
@@ -548,11 +550,13 @@
     <string name="budget">Budget</string>
     <string name="budget_list">Begrotingslijst</string>
     <string name="actual">Actueel</string>
+    <string name="amount_available">Beschikbaar</string>
     <string name="base_currency_not_set">Standaardvaluta is nog niet opgegeven</string>
     <string name="error">Fout</string>
     <string name="unhandled_crash">Onverwachte fout opgetreden. Stuur ons alsjeblieft het log.</string>
     <string name="title_activity_currency_rates_report">Wisselkoersen</string>
     <string name="frequency">Frequentie</string>
+    <string name="select_columns">Selecteer zichtbare kolommen</string>
     <string name="update_available">Update beschikbaar</string>
     <string name="update_available_online">Er is een nieuwer databasebestand beschikbaar online. Wilt u updaten?</string>
     <string name="currency_not_found">Valuta niet gevonden</string>
@@ -635,6 +639,7 @@
     <string name="budget_name">Budgetnaam</string>
     <string name="budget_year">Budgetjaar</string>
     <string name="budget_month">Budgetmaand</string>
+    <string name="budget_month_optional">Begroting maand (optioneel)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">Het programma zal nu afsluiten om de wijzigingen door te voeren. Start programma opnieuw.</string>
     <string name="print">Afdrukken</string>
@@ -720,7 +725,9 @@
     <string name="filenames_differ">De externe en lokale bestandsnamen verschillen. Synchronisatie wordt afgebroken.</string>
     <string name="both_files_modified">Zowel de lokale als de externe databasebestanden werden gewijzigd!</string>
     <string name="sync_conflict">Synchronisatieconflict</string>
+    <string name="request_conflict_resolve">Conflict oplossen</string>
     <string name="no_remote_file">Selecteer het externe bestand om te gebruiken voor synchronisatie.</string>
+    <string name="request_conlict_reopen">Conflict tussen lokaal en extern bestand. Hierdoor kan je lokale kopie niet met het externe bestand worden gesynchroniseerd. Exporteer de DB als u uw lokale kopie wilt opslaan of als u gegevens wilt laden van het externe bestand.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Er zijn geen accounts beschikbaar voor selectie. Pas uw voorkeuren voor het filteren van rekeningen aan of markeer sommige rekeningen als favoriet.</string>
     <!-- Errors -->
@@ -728,6 +735,8 @@
     <string name="remote_file_not_found">Extern bestand niet gevonden</string>
     <string name="error_checking_remote">Fout bij het controleren op externe wijzigingen.</string>
     <string name="no_remote_change_date">Wijzigingsdatum niet gevonden in metadata.</string>
+    <string name="remote_unavailable">Extern bestand is niet beschikbaar</string>
+    <string name="request_reopen">Conflict tussen lokaal en extern bestand. Hierdoor kan de lokale kopie niet met het externe bestand worden gesynchroniseerd. Exporteer de DB als u uw lokale kopie wilt opslaan of als u gegevens wilt laden van het externe bestand.</string>
     <!-- Select database screen -->
     <string name="intro_text">Om te starten met Money Manager ex heeft u een database bestand nodig om uw data in te stockeren. Selecteer een van de onderstaande beschikbare opties.</string>
     <string name="intro_create_db">U kunt een nieuw bestand maken en de eerste voorkeuren instellen.</string>
@@ -742,6 +751,7 @@
     <string name="save">Opslaan</string>
     <string name="title_budget_show_simple_view">Eenvoudige budgetweergave tonen</string>
     <string name="summary_budget_show_simple_view">Indien aangevinkt gebruiken budgetten de eenvoudige weergave</string>
+    <string name="title_budget_reload_forecast">Opnieuw laden geplande transacties</string>
     <string name="title_pref_budget_financial_year">Gebruik boekjaar in begroting</string>
     <string name="summary_pref_budget_financial_year">Indien aangevinkt gebruik begroting boekjaar in plaats van kalenderjaar</string>
     <string name="shares">Aandelen</string>
@@ -790,5 +800,17 @@
     <string name="msg_uploading_overwrite">Uploaden overschrijft uw externe versie.\nWilt u doorgaan?</string>
     <string name="msg_downloading_overwrite">Downloaden overschrijft uw lokale versie.\nWilt u doorgaan?</string>
     <string name="menu_cashflow_all">Alle rekeningen</string>
+    <string name="menu_cashflow_open">Account openen</string>
+    <string name="menu_cashflow_favorite">Favoriete rekening</string>
+    <string name="menu_cashflow_custom">Selecteer rekeningen...</string>
+    <string name="cash_ledger">Kasboek</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Oeps! Er is iets fout gegaan.</string>
+    <string name="bad_error_occurs">Het spijt ons zeer dat we een onverwachte fout hebben opgemerkt. Meld dit alstublieft aan de ontwikkelaar.</string>
+    <string name="estimatedForPeriod">Schatting voor periode</string>
+    <string name="forecast_remain">Overgebleven voorspelling</string>
+    <string name="forecast_calculate">De prognose wordt berekend. Even geduld a.u.b.</string>
+    <string name="enter_budget">Begroting invoeren</string>
+    <string name="enter_budget_value">Stel voor categorie %1$s een budget in voor de periode. Gebruik negatief voor uitgaven en positief voor inkomsten.</string>
+    <string name="enter_budget_value_plus_minus">Voor een nieuwe waarde in</string>
 </resources>
