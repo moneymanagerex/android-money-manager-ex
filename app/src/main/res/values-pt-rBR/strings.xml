@@ -799,6 +799,7 @@
     <string name="menu_cashflow_favorite">Contas Favoritas</string>
     <string name="menu_cashflow_custom">Selecionar Contas&#8230;</string>
     <string name="cash_ledger">Contabilidade de Caixa</string>
+    <!-- Merge -->
     <!-- Error Handling -->
     <string name="title_activity_auth">Oops! Algo deu errado.</string>
     <string name="bad_error_occurs">Nós estamos muito tristes por notar um erro inesperado. Por favor, reporte ao desenvolvedor</string>

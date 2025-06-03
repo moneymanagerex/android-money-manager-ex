@@ -703,5 +703,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Tous les comptes</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

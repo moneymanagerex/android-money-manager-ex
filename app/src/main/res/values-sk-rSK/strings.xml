@@ -642,5 +642,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Všetky účty</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

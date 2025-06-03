@@ -747,5 +747,6 @@
     <string name="msg_uploading_overwrite">Yükleme, uzak sürümünüzün üzerine yazacaktır.\nDevam etmek ister misin?</string>
     <string name="msg_downloading_overwrite">İndirilen dosya yerel sürümünüzün üzerine yazacak.\nDevam etmek ister misin?</string>
     <string name="menu_cashflow_all">Tüm Hesaplar</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

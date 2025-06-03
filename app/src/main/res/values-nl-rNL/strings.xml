@@ -804,6 +804,7 @@
     <string name="menu_cashflow_favorite">Favoriete rekening</string>
     <string name="menu_cashflow_custom">Selecteer rekeningen...</string>
     <string name="cash_ledger">Kasboek</string>
+    <!-- Merge -->
     <!-- Error Handling -->
     <string name="title_activity_auth">Oeps! Er is iets fout gegaan.</string>
     <string name="bad_error_occurs">Het spijt ons zeer dat we een onverwachte fout hebben opgemerkt. Meld dit alstublieft aan de ontwikkelaar.</string>
