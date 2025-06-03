@@ -73,6 +73,9 @@
     <string name="auto_sync_via_wifi_summary">Auto-synchronize only when on WiFi connection.</string>
     <string name="sync_on_app_start">Synchronize on app start.</string>
     <string name="sync_on_start">Sync on start</string>
+    <string name="sync_merge_database">EXPERIMENTAL: Merge databases</string>
+    <string name="sync_merge_database_on_sync">Merge database differences on sync.</string>
+    <string name="sync_merge_dialog_msg_format">Merging all %1$s%2$s</string>
 
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Process Bank Transaction SMS</string>
@@ -900,6 +903,10 @@
     <string name="menu_cashflow_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Keep local</string>
+    <string name="merge_take_theirs">Take remote</string>
+
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
@@ -909,4 +916,5 @@
     <string name="enter_budget">Enter Budget</string>
     <string name="enter_budget_value">For Category %1$s, set budget for period. Use negative for expenses, positive for incomes:</string>
     <string name="enter_budget_value_plus_minus">Enter new value</string>
+    <string name="merge_table">"Merging Table: "</string>
 </resources>

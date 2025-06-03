@@ -16,7 +16,7 @@ public class TransactionLinkRepository extends RepositoryBase<TransactionLink> {
     }
 
     @Override
-    protected TransactionLink createEntity() {
+    public TransactionLink createEntity() {
         return new TransactionLink();
     }
 

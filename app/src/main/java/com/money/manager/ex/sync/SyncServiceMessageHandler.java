@@ -22,6 +22,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.MmexApplication;
@@ -29,9 +34,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
+import com.money.manager.ex.sync.merge.MergeConflictResolution;
 import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -47,17 +54,29 @@ import timber.log.Timber;
 public class SyncServiceMessageHandler
     extends Handler {
 
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
+    private final Context context;
+    private final AlertDialog progressDialog;
+    private final TextView textDiff;
+    private final Button btOurs;
+    private final ConflictDialogOnClickListener btOursListener;
+    private final Button btTheirs;
+    private final ConflictDialogOnClickListener btTheirsListener;
+
     public SyncServiceMessageHandler(Context context, AlertDialog progressDialog) {
         super(Looper.getMainLooper()); // Explicitly use the main thread's Looper
         MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
         this.progressDialog = progressDialog;
+        this.textDiff = progressDialog.findViewById(R.id.textDiff);
+        this.btOurs = progressDialog.findViewById(R.id.buttonMergeTakeOurs);
+        this.btTheirs = progressDialog.findViewById(R.id.buttonMergeTakeTheirs);
+        this.btTheirsListener = new ConflictDialogOnClickListener(MergeConflictResolution.THEIRS);
+        this.btTheirs.setOnClickListener(btTheirsListener);
+        this.btOursListener = new ConflictDialogOnClickListener(MergeConflictResolution.OURS);
+        this.btOurs.setOnClickListener(btOursListener);
     }
-
-    @Inject Lazy<RecentDatabasesProvider> mDatabases;
-    private final Context context;
-    private final AlertDialog progressDialog;
 
     @Override
     public void handleMessage(Message msg) {
@@ -115,9 +134,39 @@ public class SyncServiceMessageHandler
                 new UIHelper(getContext()).showToast(R.string.error, Toast.LENGTH_SHORT);
                 break;
 
+            case USER_DIALOG_CONFLICT:
+                final Messenger replyTo = msg.replyTo;
+                this.textDiff.setText((String)msg.obj);
+                this.btOursListener.setReplyTo(replyTo);
+                this.btTheirsListener.setReplyTo(replyTo);
+                setVisibilityConflictDialogElements(true);
+                break;
+            case USER_DIALOD_NOTIF:
+                String[] objs = (String[])msg.obj;
+                String m = context.getResources().getString(R.string.sync_merge_dialog_msg_format);
+                this.textDiff.setText( String.format( m, objs[0], objs[1]) );
+                textDiff.setVisibility(View.VISIBLE);
+                break;
             default:
                 throw new RuntimeException("unknown message");
         }
+    }
+
+    private void sendResponse(@NotNull Messenger replyTo, MergeConflictResolution resolution) {
+        Message msgResponse = new Message();
+        msgResponse.what = resolution.ordinal();
+        try {
+            replyTo.send(msgResponse);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void setVisibilityConflictDialogElements(boolean visibility) {
+        Timber.d("conflict dialog visibility: %s", visibility);
+        int vis = visibility ? View.VISIBLE : View.INVISIBLE;
+        textDiff.setVisibility(vis);
+        btOurs.setVisibility(vis);
+        btTheirs.setVisibility(vis);
     }
 
     public Context getContext() {
@@ -141,6 +190,31 @@ public class SyncServiceMessageHandler
             progressDialog.show();
         } catch (Exception e) {
             Timber.e(e, "showing progress dialog on sync.");
+        }
+    }
+
+    private class ConflictDialogOnClickListener implements View.OnClickListener {
+        private final MergeConflictResolution resolution;
+        private Messenger replyTo;
+
+        public ConflictDialogOnClickListener(MergeConflictResolution resolution) {
+            this.resolution = resolution;
+        }
+
+        @Override
+        public void onClick(View view) {
+            try {
+                Timber.d("sending response from user: %s", resolution);
+                sendResponse(replyTo, resolution);
+            } catch( Exception e) {
+                Timber.e(e);
+            } finally {
+                setVisibilityConflictDialogElements(false);
+            }
+        }
+
+        public void setReplyTo(Messenger replyTo) {
+            this.replyTo = replyTo;
         }
     }
 }

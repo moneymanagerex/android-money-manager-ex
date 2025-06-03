@@ -37,8 +37,13 @@ public class CategoryRepository
     }
 
     @Override
-    protected Category createEntity() {
+    public Category createEntity() {
         return new Category();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override

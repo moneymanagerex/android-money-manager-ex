@@ -316,7 +316,11 @@ public abstract class RepositoryBase<T extends EntityBase>
         }
     }
 
-    protected abstract T createEntity();
+    public abstract T createEntity();
+
+    public String getTableName() {
+        return getSource();
+    }
 
     protected RefType refType() {
         throw new UnsupportedOperationException("refType() method is not supported in this subclass.");

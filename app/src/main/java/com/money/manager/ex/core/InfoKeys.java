@@ -36,4 +36,5 @@ public class InfoKeys {
     public static final String EXCHANGE_RATE_PROVIDER = "EXCHANGE_RATE_PROVIDER";
     public static final String PASSCODE = "PASSCODEMOBILE";
     public static final String UID = "UID";
+    public static final String LAST_SYNC_DATE = "LAST_SYNC_DATE";
 }
