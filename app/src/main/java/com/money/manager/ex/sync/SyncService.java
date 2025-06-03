@@ -163,10 +163,10 @@ public class SyncService
         Uri uri = Uri.parse(currentDb.remotePath);
 
         // for debug
-//        if (true) {
-//            isLocalModified = true;
-//            isRemoteModified = true;
-//        }
+//         if (true) {
+//             isLocalModified = true;
+//             isRemoteModified = true;
+//         }
 
         // possible outcomes:
         if (!isLocalModified && !isRemoteModified) {
@@ -186,6 +186,7 @@ public class SyncService
                     // start merge changes from remote to local
                     DataMerger merger = new DataMerger(outMessenger);
                     try {
+                        getContentResolver();
                         merger.merge(currentDb, storage);
                         Timber.d("Local file %s, Remote file %s merged. Triggering upload.", localFile.getPath(), currentDb.remotePath);
                         // upload file

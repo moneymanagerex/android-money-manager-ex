@@ -10,33 +10,11 @@ import android.os.Messenger;
 import android.os.OperationCanceledException;
 import android.os.RemoteException;
 
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
-import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MmxOpenHelper;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.AssetRepository;
-import com.money.manager.ex.datalayer.AttachmentRepository;
-import com.money.manager.ex.datalayer.BudgetEntryRepository;
-import com.money.manager.ex.datalayer.BudgetRepository;
-import com.money.manager.ex.datalayer.CategoryRepository;
-import com.money.manager.ex.datalayer.CurrencyHistoryRepository;
-import com.money.manager.ex.datalayer.CustomFieldDataRepository;
-import com.money.manager.ex.datalayer.CustomFieldRepository;
 import com.money.manager.ex.datalayer.IModificationTraceable;
-import com.money.manager.ex.datalayer.InfoRepository;
-import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.datalayer.RepositoryBase;
-import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
-import com.money.manager.ex.datalayer.ShareInfoRepository;
-import com.money.manager.ex.datalayer.SplitCategoryRepository;
-import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
-import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.datalayer.TagRepository;
-import com.money.manager.ex.datalayer.TaglinkRepository;
-import com.money.manager.ex.datalayer.TransactionLinkRepository;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.sync.SyncServiceMessage;
@@ -47,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import java.util.List;
+
 import timber.log.Timber;
 
 public class DataMerger {
@@ -71,6 +52,13 @@ public class DataMerger {
         MmxDate lastLocalSyncDate = getLastLocalSyncDate(storage.getContext());
         StringBuilder log = new StringBuilder();
         // merge table by table, start with the leafs in the structure
+
+        List<RepositoryBase> l = MmxContentProvider.getRegisterDataSetForTables();
+        for (RepositoryBase d : l) {
+            mergeAll(tmpDBReadable, d, lastLocalSyncDate, log);
+        }
+
+/*
         // AccountList_v1
         AccountRepository localAccountRepo = new AccountRepository(storage.getContext());
         mergeAll(tmpDBReadable, localAccountRepo, lastLocalSyncDate, log);
@@ -140,6 +128,7 @@ public class DataMerger {
         //TRANSLINK
         TransactionLinkRepository localTransLinkRepo = new TransactionLinkRepository(storage.getContext());
         mergeAll(tmpDBReadable, localTransLinkRepo, lastLocalSyncDate, log);
+*/
     }
 
     public /* for ut */ <T extends EntityBase> void mergeAll(SupportSQLiteDatabase tmpDBReadable, RepositoryBase<T> localRepo, MmxDate lastLocalSyncDate, StringBuilder log) {
