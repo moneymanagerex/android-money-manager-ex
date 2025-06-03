@@ -1,5 +1,6 @@
 package com.money.manager.ex.sync.merge;
 
+import com.money.manager.ex.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,7 +41,10 @@ public class DataMerger {
 
     private final Object lock = new Object();
 
-    public DataMerger(@NotNull Messenger messenger) {
+    private Context context;
+
+    public DataMerger(@NotNull Messenger messenger, Context context) {
+        this.context = context;
         this.messenger = messenger;
     }
 
@@ -132,7 +136,7 @@ public class DataMerger {
     }
 
     public /* for ut */ <T extends EntityBase> void mergeAll(SupportSQLiteDatabase tmpDBReadable, RepositoryBase<T> localRepo, MmxDate lastLocalSyncDate, StringBuilder log) {
-        String msg  = "merging table: " + localRepo.getTableName();
+        String msg  = context.getResources().getString(R.string.merge_table) + localRepo.getTableName();
         Timber.d(msg);
         pingMessage(localRepo.getTableName(), 0, 0);
         int updateCount = 0;
@@ -149,7 +153,7 @@ public class DataMerger {
         } catch (Exception e) {
             Timber.e(e);
         }
-        log.append("Updated ").append(updateCount).append(" AccountTransaction");
+        log.append("Updated ").append(updateCount).append(localRepo.getTableName());
     }
 
     public <T extends EntityBase> int mergeEntity(RepositoryBase<T> localRepo, T localEntity, T remoteEntity, MmxDate lastLocalSyncDate, StringBuilder log) {

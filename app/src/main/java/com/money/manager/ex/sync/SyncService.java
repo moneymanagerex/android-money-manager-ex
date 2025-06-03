@@ -184,7 +184,7 @@ public class SyncService
                 if (prefMergeOnSync) {
                     // TODO duplicate local database in case the user aborts merge and want to resume
                     // start merge changes from remote to local
-                    DataMerger merger = new DataMerger(outMessenger);
+                    DataMerger merger = new DataMerger(outMessenger, getApplicationContext());
                     try {
                         getContentResolver();
                         merger.merge(currentDb, storage);
