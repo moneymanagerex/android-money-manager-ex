@@ -723,5 +723,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Всі рахунки</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

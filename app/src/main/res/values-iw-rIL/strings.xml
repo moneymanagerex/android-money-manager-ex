@@ -677,5 +677,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">כל החשבונות</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

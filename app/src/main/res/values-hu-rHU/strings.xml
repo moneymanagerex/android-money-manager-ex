@@ -801,6 +801,7 @@
     <string name="menu_cashflow_favorite">Kedvenc számlák</string>
     <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
     <string name="cash_ledger">Készpénzes főkönyv</string>
+    <!-- Merge -->
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppá! Hiba történt.</string>
     <string name="bad_error_occurs">Váratlan hiba történt. Kérlek jelezd a fejlesztőknek.</string>

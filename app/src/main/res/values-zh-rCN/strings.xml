@@ -744,5 +744,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">所有账户</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>

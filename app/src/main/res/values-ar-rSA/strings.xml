@@ -578,5 +578,6 @@
     <string name="menu_cashflow_all">كافة الحسابات</string>
     <string name="menu_cashflow_favorite">الحسابات المفضلة</string>
     <string name="menu_cashflow_custom">حدد الحسابات&#8230;</string>
+    <!-- Merge -->
     <!-- Error Handling -->
 </resources>
