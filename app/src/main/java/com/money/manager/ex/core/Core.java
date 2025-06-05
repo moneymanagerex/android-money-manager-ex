@@ -298,14 +298,6 @@ public class Core {
         return ContextCompat.getColor(getContext(), uiHelper.resolveAttribute(attr));
     }
 
-    public boolean isToDisplayChangelog() {
-        int currentVersionCode = getAppVersionCode();
-        int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getInt(getContext().getString(R.string.pref_last_version_key), Constants.NOT_SET_INT);
-
-        return lastVersionCode != currentVersionCode;
-    }
-
     /**
      * Method, which allows you to change the language of the application on the fly.
      * @param languageToLoad language to load for the locale
@@ -351,30 +343,6 @@ public class Core {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    public boolean showChangelog() {
-        // create changelog layout
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(false)
-                .setTitle(R.string.changelog)
-                .setView(view)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-
-        // mark as seen
-        int currentVersionCode = getAppVersionCode();
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
-                .putInt(getContext().getString(R.string.pref_last_version_key), currentVersionCode)
-                .apply();
-
-        return true;
-    }
 
 //    public long getColourFromStyledAttribute(long attribute) {
 //        int[] attrs = { attribute };

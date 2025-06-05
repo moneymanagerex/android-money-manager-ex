@@ -231,7 +231,6 @@
     <string name="future_transactions">Future transactions</string>
 
     <string name="show_transaction">Show Transaction</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaction number</string>
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
@@ -917,4 +916,10 @@
     <string name="enter_budget_value">For Category %1$s, set budget for period. Use negative for expenses, positive for incomes:</string>
     <string name="enter_budget_value_plus_minus">Enter new value</string>
     <string name="merge_table">"Merging Table: "</string>
+
+
+    <!-- changelog -->
+    <string name="changelog_title">Important What\'s new!!</string>
+    <string name="changelog_1086">New version 5.4\n- Added new Beta feature for Merge engine. Try to merge file when both are changed. Enable it in setting->Sync->Merge</string>
+
 </resources>

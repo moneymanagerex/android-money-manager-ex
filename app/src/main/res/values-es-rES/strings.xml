@@ -213,7 +213,6 @@
     <string name="current_year">Año en curso</string>
     <string name="future_transactions">Transacciones futuras</string>
     <string name="show_transaction">Visualizar las transacciones</string>
-    <string name="changelog">Registro de cambios</string>
     <string name="transaction_number">Número de transacción</string>
     <string name="widget_summary">Resumen</string>
     <string name="widget_all_accounts">Todas las cuentas</string>

@@ -196,7 +196,6 @@
     <string name="current_year">今年</string>
     <string name="future_transactions">未來的交易</string>
     <string name="show_transaction">顯示交易紀錄</string>
-    <string name="changelog">更新日誌</string>
     <string name="transaction_number">交易編號</string>
     <string name="widget_summary">摘要</string>
     <string name="widget_all_accounts">所有帳戶</string>

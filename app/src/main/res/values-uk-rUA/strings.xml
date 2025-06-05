@@ -209,7 +209,6 @@
     <string name="current_year">Поточний рік</string>
     <string name="future_transactions">Майбутні операції</string>
     <string name="show_transaction">Показати транзакцію</string>
-    <string name="changelog">Журнал змін</string>
     <string name="transaction_number">Номер транзакції</string>
     <string name="widget_summary">Підсумок</string>
     <string name="widget_all_accounts">Всі рахунки</string>

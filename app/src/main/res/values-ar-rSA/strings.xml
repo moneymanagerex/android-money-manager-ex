@@ -210,7 +210,6 @@
     <string name="current_year">العام الحالية</string>
     <string name="future_transactions">المعاملات المستقبلية</string>
     <string name="show_transaction">عرض المعاملة</string>
-    <string name="changelog">سِجل التغييرات</string>
     <string name="transaction_number">رقم المعاملة</string>
     <string name="widget_summary">مُلخص</string>
     <string name="widget_all_accounts">كافة الحسابات</string>

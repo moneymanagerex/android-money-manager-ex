@@ -196,7 +196,6 @@
     <string name="current_year">Τρέχων έτος</string>
     <string name="future_transactions">Μελλοντικές συναλλαγές</string>
     <string name="show_transaction">Εμφάνιση συναλλαγών</string>
-    <string name="changelog">Καταγραφή αλλαγών</string>
     <string name="transaction_number">Αριθμός συναλλαγής</string>
     <string name="widget_summary">Περίληψη</string>
     <string name="widget_all_accounts">Όλοι οι λογαριασμοί</string>
