@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Автосинхронизация только при соединении по WiFi.</string>
     <string name="sync_on_app_start">Синхронизация при запуске приложения.</string>
     <string name="sync_on_start">Синхронизация при запуске</string>
+    <string name="sync_merge_database">ЭКСПЕРИМЕНТАЛЬНО: Объединить базы данных</string>
+    <string name="sync_merge_database_on_sync">Объединить базы данных при синхронизации.</string>
+    <string name="sync_merge_dialog_msg_format">Объединение всех %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Обрабатывать SMS о платежах</string>
     <string name="summary_sms_auto_trans">Читать SMS от банка и автоматически создавать проводку</string>
@@ -805,6 +808,8 @@
     <string name="menu_cashflow_custom">Выберите счета&#8230;</string>
     <string name="cash_ledger">Кассовая книга</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Сохранить локальное значение</string>
+    <string name="merge_take_theirs">Принять значение из удаленного файла</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Ой! Что-то пошло не так.</string>
     <string name="bad_error_occurs">Нам очень грустно из-за этой непредвиденной ошибки. Пожалуйста, сообщите разработчику</string>
@@ -814,4 +819,5 @@
     <string name="enter_budget">Введите бюджет</string>
     <string name="enter_budget_value">Для категории %1$s, определите лимит на период. Используйте отрицательные значения для расходов, положительные для доходов:</string>
     <string name="enter_budget_value_plus_minus">Введите новое значение</string>
+    <string name="merge_table">"Слияние таблиц: "</string>
 </resources>
