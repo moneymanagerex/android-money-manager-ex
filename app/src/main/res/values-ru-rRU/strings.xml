@@ -214,7 +214,6 @@
     <string name="current_year">Текущий год</string>
     <string name="future_transactions">Будущие проводки</string>
     <string name="show_transaction">Показать проводки за</string>
-    <string name="changelog">История изменений</string>
     <string name="transaction_number">Номер проводки</string>
     <string name="widget_summary">Сводка</string>
     <string name="widget_all_accounts">Все счета</string>

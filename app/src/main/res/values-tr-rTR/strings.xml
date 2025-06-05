@@ -204,7 +204,6 @@
     <string name="current_year">Şu anki yıl</string>
     <string name="future_transactions">Gelecek işlemler</string>
     <string name="show_transaction">İlemi Göster</string>
-    <string name="changelog">Sürüm Bilgileri</string>
     <string name="transaction_number">İşlem Numarası</string>
     <string name="widget_summary">Özet</string>
     <string name="widget_all_accounts">Tüm Hesaplar</string>

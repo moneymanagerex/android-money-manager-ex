@@ -213,7 +213,6 @@
     <string name="current_year">Current year</string>
     <string name="future_transactions">Future transactions</string>
     <string name="show_transaction">Show Transaction</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaction number</string>
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>

@@ -198,7 +198,6 @@
     <string name="current_year">Bieżący rok</string>
     <string name="future_transactions">Przyszłe transkrypcje</string>
     <string name="show_transaction">Pokazuj transakcje</string>
-    <string name="changelog">Lista zmian</string>
     <string name="transaction_number">Numer transakcji</string>
     <string name="widget_summary">Podsumowanie</string>
     <string name="widget_all_accounts">Wszystkie konta</string>
