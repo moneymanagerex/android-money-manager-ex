@@ -812,4 +812,6 @@
     <string name="forecast_calculate">Berechne Prognose. Bitte warten...</string>
     <string name="enter_budget">Budget eingeben</string>
     <string name="enter_budget_value_plus_minus">Neuen Wert eingeben</string>
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
 </resources>

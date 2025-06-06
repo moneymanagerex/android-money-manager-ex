@@ -753,4 +753,6 @@
     <!-- Error Handling -->
     <string name="forecast_calculate">Calculando la Predicción. Por favor espere&#8230;</string>
     <string name="enter_budget">Ingresar Presupuesto</string>
+    <!-- changelog -->
+    <string name="changelog">Registro de cambios</string>
 </resources>

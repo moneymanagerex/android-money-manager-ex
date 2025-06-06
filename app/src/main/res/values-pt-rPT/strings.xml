@@ -687,4 +687,6 @@ Toque para marcar a transação como atrasada</string>
     <string name="menu_cashflow_all">Todas as Contas</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Registo de Alterações</string>
 </resources>

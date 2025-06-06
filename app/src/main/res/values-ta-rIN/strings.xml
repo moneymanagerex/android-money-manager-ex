@@ -817,4 +817,6 @@
     <string name="enter_budget_value">%1$s வகைக்கு, காலத்திற்கான பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
     <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
     <string name="merge_table">"இணைப்பு அட்டவணை:"</string>
+    <!-- changelog -->
+    <string name="changelog">மாற்றங்களின் பதிவு</string>
 </resources>

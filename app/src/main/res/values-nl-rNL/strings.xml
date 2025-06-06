@@ -813,4 +813,6 @@
     <string name="enter_budget">Begroting invoeren</string>
     <string name="enter_budget_value">Stel voor categorie %1$s een budget in voor de periode. Gebruik negatief voor uitgaven en positief voor inkomsten.</string>
     <string name="enter_budget_value_plus_minus">Voor een nieuwe waarde in</string>
+    <!-- changelog -->
+    <string name="changelog">Wijzigingslogboek</string>
 </resources>

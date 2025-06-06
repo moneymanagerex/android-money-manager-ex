@@ -724,4 +724,6 @@
     <string name="menu_cashflow_all">Всі рахунки</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Журнал змін</string>
 </resources>
