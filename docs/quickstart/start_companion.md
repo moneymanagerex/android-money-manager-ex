@@ -79,6 +79,6 @@ At this point you can choice if you what to:
 
 ### Merge Database ![Static Badge](https://img.shields.io/badge/new_in-5.4-green)
 
-Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under APP --> Sync.
+Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under Setting --> Sync.
 
 When this setting is active, if both your local and remote files have been modified, the app will attempt to identify conflicts. A progress window will be displayed during this potentially lengthy process. Once conflicts are identified, you'll be prompted to choose which version of the file you'd like to keep.
