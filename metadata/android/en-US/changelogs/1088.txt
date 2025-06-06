@@ -1,0 +1,14 @@
+## What's Changed
+* add documentation
+* Website refinement
+* New Crowdin Translations
+* Fix Error while create existing db
+* Fix dump on PortfolioListAdapter
+* Varius Fix ANR.
+* Duplicate Schedule Transaction
+* Handle Timeout in download database
+* Changed parseInt to Long.parseLong for accountid & txnid
+* Budget: new edit budget entry with amount and frequency.
+* hide General Report if it is empty
+* fix by google with cursor null
+* Sync with merge
