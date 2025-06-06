@@ -5,12 +5,12 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["master"]
-#    paths:
-#      - 'docs/*'
+    paths:
+      - 'docs/**'
   pull_request:
     branches: ["master"]
-#    paths:
-#      - 'docs/*'
+    paths:
+      - 'docs/**'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
