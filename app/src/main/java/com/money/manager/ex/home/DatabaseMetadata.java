@@ -136,8 +136,15 @@ public class DatabaseMetadata {
         // Local file will always be the same.
         String localPath = new DatabaseManager(context).getDefaultDatabaseDirectory();
         metadata.localPath = localPath + File.separator + docFileMetadata.Name;
-        metadata.localTmpPath = localPath + File.separator + docFileMetadata.Name + EXT_SYNC_TMP;
+        metadata.localTmpPath = metadata.getTmpFilePath();
 
         return metadata;
+    }
+
+    public String getTmpFilePath() {
+        if (TextUtils.isEmpty(this.localTmpPath)) {
+            this.localTmpPath = this.localPath + EXT_SYNC_TMP;
+        }
+        return this.localTmpPath;
     }
 }

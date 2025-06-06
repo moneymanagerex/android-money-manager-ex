@@ -50,7 +50,7 @@ public class DataMerger {
 
     public void merge(DatabaseMetadata metadata, FileStorageHelper storage) {
         // prepare remote db (readable) -> already downloaded in SyncService
-        MmxOpenHelper tmpDBHelper = new MmxOpenHelper(storage.getContext(), metadata.localTmpPath);
+        MmxOpenHelper tmpDBHelper = new MmxOpenHelper(storage.getContext(), metadata.getTmpFilePath());
         SupportSQLiteDatabase tmpDBReadable = tmpDBHelper.getReadableDatabase();
         // prepare local db (writeable)
         MmxDate lastLocalSyncDate = getLastLocalSyncDate(storage.getContext());
