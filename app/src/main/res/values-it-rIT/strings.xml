@@ -814,7 +814,7 @@
     <string name="forecast_remain">Previsione Rimanente</string>
     <string name="forecast_calculate">Calcolo la previsione. Attendere&#8230;</string>
     <string name="enter_budget">Inserisci Budget</string>
-    <string name="enter_budget_value">Per la categoria %1$s, impostare il budget per il periodo %2$s. Utilizzare negativo per le spese, positivo per le entrate:</string>
+    <string name="enter_budget_value">Per la categoria %1$s, impostare il budget per il periodo. Utilizzare negativo per le spese, positivo per le entrate:</string>
     <string name="enter_budget_value_plus_minus">Inserisci nuovo valore</string>
     <string name="merge_table">"Unione Tabella: "</string>
     <!-- changelog -->
