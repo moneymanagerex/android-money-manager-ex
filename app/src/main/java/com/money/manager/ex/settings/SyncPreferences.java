@@ -86,6 +86,8 @@ public class SyncPreferences
         return get(R.string.pref_sync_via_wifi, false);
     }
 
+    public boolean shouldSyncMergeDatabase() { return get("pref_sync_merge_database", false); }
+
     // private
 
     private String getKey(Integer resourceId) {

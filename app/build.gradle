@@ -34,9 +34,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1086
+        versionCode 1088
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.3.4"
+        versionName "5.4.1"
         // versionName getVersionAsDate()
 
         // $applicationId
@@ -216,6 +216,7 @@ dependencies {
             'junit:junit:4.13.2',
             'org.assertj:assertj-core:3.27.2',
             'org.robolectric:robolectric:4.14.1',
+            'org.mockito:mockito-core:5.15.2',
             // Matchers
             'org.hamcrest:hamcrest-core:2.2',
             'org.hamcrest:hamcrest-library:2.2',

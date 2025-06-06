@@ -209,7 +209,6 @@
     <string name="current_year">Aktuelle år</string>
     <string name="future_transactions">Fremtidige transaktioner</string>
     <string name="show_transaction">Vis transaktion</string>
-    <string name="changelog">Ændringsoversigt</string>
     <string name="transaction_number">Transaktionsnummer</string>
     <string name="widget_summary">Oversigt</string>
     <string name="widget_all_accounts">Alle konti</string>
@@ -705,10 +704,8 @@
     <string name="currency">Valuta</string>
     <string name="menu_create_database">Opret database</string>
     <string name="create_database">Opret database</string>
-    <string name="pref_anonymous_usage">præf_ano_brug</string>
     <string name="summary_anonymous_usage">Aktivér for at hjælpe os med at sende anonyme data om brug af MMEX</string>
     <string name="title_anonymous_usage">Send anonyme brugsdata</string>
-    <string name="pref_auto_transaction_number">præf_autotransaktionsnummer</string>
     <string name="title_auto_transaction_number">Autoudfyld transaktionsnummer</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Forfalden planlagt transaktion-notifikation </string>
@@ -723,5 +720,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Alle konti</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Ændringsoversigt</string>
 </resources>

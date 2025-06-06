@@ -35,7 +35,7 @@ import timber.log.Timber;
  * An entry in the recent databases list.
  */
 public class DatabaseMetadata {
-
+    private static final String EXT_SYNC_TMP = ".synctmp";
     public String localPath;
     public boolean isLocalFileChanged;
     /**
@@ -46,6 +46,8 @@ public class DatabaseMetadata {
     // SyncAdapterType
     public String remotePath;
     public String remoteLastChangedDate;
+    // tmp path for sync (changed remote file)
+    public String localTmpPath;
 
     public String getFileName() {
         if (TextUtils.isEmpty(this.localPath)) return "";
@@ -134,7 +136,15 @@ public class DatabaseMetadata {
         // Local file will always be the same.
         String localPath = new DatabaseManager(context).getDefaultDatabaseDirectory();
         metadata.localPath = localPath + File.separator + docFileMetadata.Name;
+        metadata.localTmpPath = metadata.getTmpFilePath();
 
         return metadata;
+    }
+
+    public String getTmpFilePath() {
+        if (TextUtils.isEmpty(this.localTmpPath)) {
+            this.localTmpPath = this.localPath + EXT_SYNC_TMP;
+        }
+        return this.localTmpPath;
     }
 }

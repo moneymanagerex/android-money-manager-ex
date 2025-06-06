@@ -196,7 +196,6 @@
     <string name="current_year">Kasulukuyang taon</string>
     <string name="future_transactions">Hinaharap na transaksyon</string>
     <string name="show_transaction">Ipakita ang transaksyon</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Numero ng transaksyon</string>
     <string name="widget_summary">Buod</string>
     <string name="widget_all_accounts">Lahat ng mga account</string>
@@ -677,5 +676,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Lahat ng mga account</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
 </resources>

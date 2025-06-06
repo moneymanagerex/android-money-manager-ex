@@ -198,7 +198,6 @@
     <string name="current_year">Bieżący rok</string>
     <string name="future_transactions">Przyszłe transkrypcje</string>
     <string name="show_transaction">Pokazuj transakcje</string>
-    <string name="changelog">Lista zmian</string>
     <string name="transaction_number">Numer transakcji</string>
     <string name="widget_summary">Podsumowanie</string>
     <string name="widget_all_accounts">Wszystkie konta</string>
@@ -699,5 +698,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Wszystkie konta</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Lista zmian</string>
 </resources>

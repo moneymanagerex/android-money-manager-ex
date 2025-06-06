@@ -196,7 +196,6 @@
     <string name="current_year">שנה נוכחית</string>
     <string name="future_transactions">תנועות עתידיות</string>
     <string name="show_transaction">הצג תנועה</string>
-    <string name="changelog">יומן שינוים</string>
     <string name="transaction_number">מספר תנועה</string>
     <string name="widget_summary">סיכום</string>
     <string name="widget_all_accounts">כל החשבונות</string>
@@ -677,5 +676,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">כל החשבונות</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">יומן שינוים</string>
 </resources>

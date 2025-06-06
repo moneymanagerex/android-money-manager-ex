@@ -77,7 +77,7 @@ At this point you can choice if you what to:
 * loose your local changes and reopen from remote
 * export your data to manually (and externaly) sync or overwrite remote file
 
-### Merge Database ![Static Badge](https://img.shields.io/badge/new_in-5.4-gree)
+### Merge Database ![Static Badge](https://img.shields.io/badge/new_in-5.4-green)
 
 Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under APP --> Sync.
 

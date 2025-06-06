@@ -213,7 +213,6 @@
     <string name="current_year">Current year</string>
     <string name="future_transactions">Future transactions</string>
     <string name="show_transaction">Show Transaction</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaction number</string>
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
@@ -751,10 +750,8 @@
     <string name="currency">Currency</string>
     <string name="menu_create_database">Create Database</string>
     <string name="create_database">Create Database</string>
-    <string name="pref_anonymous_usage">prefanonymoususage</string>
     <string name="summary_anonymous_usage">Enable to help us sending anonymous data about MMEX usage</string>
     <string name="title_anonymous_usage">Send anonymous usage data</string>
-    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Auto populate transaction number</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Notification Scheduled Transaction overdue </string>
@@ -790,5 +787,8 @@
     <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
     <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
     <string name="menu_cashflow_all">All Accounts</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
 </resources>

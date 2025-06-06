@@ -204,7 +204,6 @@
     <string name="current_year">Şu anki yıl</string>
     <string name="future_transactions">Gelecek işlemler</string>
     <string name="show_transaction">İlemi Göster</string>
-    <string name="changelog">Sürüm Bilgileri</string>
     <string name="transaction_number">İşlem Numarası</string>
     <string name="widget_summary">Özet</string>
     <string name="widget_all_accounts">Tüm Hesaplar</string>
@@ -747,5 +746,8 @@
     <string name="msg_uploading_overwrite">Yükleme, uzak sürümünüzün üzerine yazacaktır.\nDevam etmek ister misin?</string>
     <string name="msg_downloading_overwrite">İndirilen dosya yerel sürümünüzün üzerine yazacak.\nDevam etmek ister misin?</string>
     <string name="menu_cashflow_all">Tüm Hesaplar</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Sürüm Bilgileri</string>
 </resources>

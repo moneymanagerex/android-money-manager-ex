@@ -73,6 +73,9 @@
     <string name="auto_sync_via_wifi_summary">Auto-synchronize only when on WiFi connection.</string>
     <string name="sync_on_app_start">Synchronize on app start.</string>
     <string name="sync_on_start">Sync on start</string>
+    <string name="sync_merge_database">EXPERIMENTAL: Merge databases</string>
+    <string name="sync_merge_database_on_sync">Merge database differences on sync.</string>
+    <string name="sync_merge_dialog_msg_format">Merging all %1$s%2$s</string>
 
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Process Bank Transaction SMS</string>
@@ -228,7 +231,6 @@
     <string name="future_transactions">Future transactions</string>
 
     <string name="show_transaction">Show Transaction</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaction number</string>
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
@@ -850,10 +852,10 @@
     <string name="currency">Currency</string>
     <string name="menu_create_database">Create Database</string>
     <string name="create_database">Create Database</string>
-    <string name="pref_anonymous_usage">prefanonymoususage</string>
+    <string name="pref_anonymous_usage" translatable="false">prefanonymoususage</string>
     <string name="summary_anonymous_usage">Enable to help us sending anonymous data about MMEX usage</string>
     <string name="title_anonymous_usage">Send anonymous usage data</string>
-    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
+    <string name="pref_auto_transaction_number"  translatable="false">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Auto populate transaction number</string>
 
     <!-- Notification Setting -->
@@ -900,6 +902,10 @@
     <string name="menu_cashflow_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
+    <!-- Merge -->
+    <string name="merge_take_ours">Keep local</string>
+    <string name="merge_take_theirs">Take remote</string>
+
     <!-- Error Handling -->
     <string name="title_activity_auth">Opps! Something went wrong.</string>
     <string name="bad_error_occurs">We are so sad to notice an unexpected error. please report to developer</string>
@@ -909,4 +915,12 @@
     <string name="enter_budget">Enter Budget</string>
     <string name="enter_budget_value">For Category %1$s, set budget for period. Use negative for expenses, positive for incomes:</string>
     <string name="enter_budget_value_plus_minus">Enter new value</string>
+    <string name="merge_table">"Merging Table: "</string>
+
+
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
+    <string name="changelog_title">Important What\'s new!!</string>
+    <string name="changelog_1086">New version 5.4\n- Added new Beta feature for Merge engine. Try to merge file when both are changed. Enable it in setting->Sync->Merge</string>
+
 </resources>

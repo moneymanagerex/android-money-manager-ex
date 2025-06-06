@@ -209,7 +209,6 @@
     <string name="current_year">Поточний рік</string>
     <string name="future_transactions">Майбутні операції</string>
     <string name="show_transaction">Показати транзакцію</string>
-    <string name="changelog">Журнал змін</string>
     <string name="transaction_number">Номер транзакції</string>
     <string name="widget_summary">Підсумок</string>
     <string name="widget_all_accounts">Всі рахунки</string>
@@ -705,10 +704,8 @@
     <string name="currency">Валюта</string>
     <string name="menu_create_database">Створити базу даних</string>
     <string name="create_database">Створити базу даних</string>
-    <string name="pref_anonymous_usage">Анонимна статистика</string>
     <string name="summary_anonymous_usage">Увімкніть аби допомогти нам, надсилаючи анонімні дані про використання MMEX</string>
     <string name="title_anonymous_usage">Надсилати анонімні дані про використання</string>
-    <string name="pref_auto_transaction_number">Автонумерація операцій</string>
     <string name="title_auto_transaction_number">Автоматично заповнювати номер операції</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Сповіщення про протерміновану заплановану операцію</string>
@@ -723,5 +720,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Всі рахунки</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Журнал змін</string>
 </resources>

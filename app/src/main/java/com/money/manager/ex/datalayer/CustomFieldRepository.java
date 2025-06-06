@@ -16,7 +16,7 @@ public class CustomFieldRepository extends RepositoryBase<CustomField> {
     }
 
     @Override
-    protected CustomField createEntity() {
+    public CustomField createEntity() {
         return new CustomField();
     }
 

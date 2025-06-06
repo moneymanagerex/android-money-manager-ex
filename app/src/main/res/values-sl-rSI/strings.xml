@@ -206,7 +206,6 @@
     <string name="current_year">Trenutno leto</string>
     <string name="future_transactions">Prihodnje transakcije</string>
     <string name="show_transaction">Prikaži transakcije</string>
-    <string name="changelog">Nespremenjen</string>
     <string name="transaction_number">Številka transakcije</string>
     <string name="widget_summary">Povzetek</string>
     <string name="widget_all_accounts">Vsi računi</string>
@@ -573,5 +572,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Vsi računi</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Nespremenjen</string>
 </resources>

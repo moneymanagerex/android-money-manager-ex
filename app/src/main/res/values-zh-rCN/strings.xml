@@ -212,7 +212,6 @@
     <string name="current_year">今年</string>
     <string name="future_transactions">未来交易</string>
     <string name="show_transaction">显示多久之内的交易记录</string>
-    <string name="changelog">更新日志​​​​​</string>
     <string name="transaction_number">交易编号</string>
     <string name="widget_summary">摘要</string>
     <string name="widget_all_accounts">所有账户</string>
@@ -744,5 +743,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">所有账户</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">更新日志​​​​​</string>
 </resources>

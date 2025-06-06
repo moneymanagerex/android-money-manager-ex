@@ -196,7 +196,6 @@
     <string name="current_year">今年</string>
     <string name="future_transactions">将来の取引</string>
     <string name="show_transaction">取引を表示</string>
-    <string name="changelog">変更履歴</string>
     <string name="transaction_number">取引番号</string>
     <string name="widget_summary">概要</string>
     <string name="widget_all_accounts">すべての口座</string>
@@ -677,5 +676,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">すべての口座</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">変更履歴</string>
 </resources>

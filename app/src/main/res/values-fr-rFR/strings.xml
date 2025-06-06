@@ -199,7 +199,6 @@
     <string name="current_year">Année en cours</string>
     <string name="future_transactions">Opérations à venir</string>
     <string name="show_transaction">Voir opérations</string>
-    <string name="changelog">Journal des modifications</string>
     <string name="transaction_number">Numéro de l\'opération</string>
     <string name="widget_summary">Résumé</string>
     <string name="widget_all_accounts">Tous les comptes</string>
@@ -703,5 +702,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Tous les comptes</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Journal des modifications</string>
 </resources>

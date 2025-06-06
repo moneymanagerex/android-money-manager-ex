@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Sincronizza automaticamente solo con collegamento WiFi attivo.</string>
     <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
     <string name="sync_on_start">Sincronizza all\'avvio</string>
+    <string name="sync_merge_database">ESPERIMENTALE: Unisci database</string>
+    <string name="sync_merge_database_on_sync">Unisci le differenze del database alla sincronizzazione.</string>
+    <string name="sync_merge_dialog_msg_format">Unire tutti %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processa Transazione Bancaria via SMS</string>
     <string name="summary_sms_auto_trans">Leggi l\'aggiornamento della transazione bancaria SMS e crea automaticamente la transazione</string>
@@ -214,7 +217,6 @@
     <string name="current_year">Anno corrente</string>
     <string name="future_transactions">Transazioni future</string>
     <string name="show_transaction">Visualizzazione Transazioni</string>
-    <string name="changelog">Modifiche di Versione</string>
     <string name="transaction_number">Numero transazione</string>
     <string name="widget_summary">Riepilogo</string>
     <string name="widget_all_accounts">Tutti i conti</string>
@@ -801,6 +803,10 @@
     <string name="menu_cashflow_open">Conti aperti</string>
     <string name="menu_cashflow_favorite">Conti Preferiti</string>
     <string name="menu_cashflow_custom">Seleziona conti&#8230;</string>
+    <string name="cash_ledger">Libro Cassa</string>
+    <!-- Merge -->
+    <string name="merge_take_ours">Mantieni versione locale</string>
+    <string name="merge_take_theirs">Prendi versione remota</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Oops! Qualcosa è andato storto.</string>
     <string name="bad_error_occurs">Siamo spiacenti di notare un errore in atteso. Vi preghiamo di segnalarlo agli sviluppatori. </string>
@@ -808,5 +814,11 @@
     <string name="forecast_remain">Previsione Rimanente</string>
     <string name="forecast_calculate">Calcolo la previsione. Attendere&#8230;</string>
     <string name="enter_budget">Inserisci Budget</string>
+    <string name="enter_budget_value">Per la categoria %1$s, impostare il budget per il periodo %2$s. Utilizzare negativo per le spese, positivo per le entrate:</string>
     <string name="enter_budget_value_plus_minus">Inserisci nuovo valore</string>
+    <string name="merge_table">"Unione Tabella: "</string>
+    <!-- changelog -->
+    <string name="changelog">Modifiche di Versione</string>
+    <string name="changelog_title">Novità importanti!!</string>
+    <string name="changelog_1086">Nuova versione 5.4\n- Aggiunta la nuova funzionalità Beta per effettuare l\'unione di database. Prova a unire i file quando entrambi vengono modificati. Abilitala in Impostazioni -&gt; Sincronizzazione -&gt; Unisci</string>
 </resources>

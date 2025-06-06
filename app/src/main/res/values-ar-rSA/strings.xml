@@ -210,7 +210,6 @@
     <string name="current_year">العام الحالية</string>
     <string name="future_transactions">المعاملات المستقبلية</string>
     <string name="show_transaction">عرض المعاملة</string>
-    <string name="changelog">سِجل التغييرات</string>
     <string name="transaction_number">رقم المعاملة</string>
     <string name="widget_summary">مُلخص</string>
     <string name="widget_all_accounts">كافة الحسابات</string>
@@ -578,5 +577,8 @@
     <string name="menu_cashflow_all">كافة الحسابات</string>
     <string name="menu_cashflow_favorite">الحسابات المفضلة</string>
     <string name="menu_cashflow_custom">حدد الحسابات&#8230;</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">سِجل التغييرات</string>
 </resources>

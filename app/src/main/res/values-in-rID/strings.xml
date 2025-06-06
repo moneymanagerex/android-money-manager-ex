@@ -196,7 +196,6 @@
     <string name="current_year">Tahun ini</string>
     <string name="future_transactions">Transaksi masa depan</string>
     <string name="show_transaction">Tunjukkan transaksi</string>
-    <string name="changelog">Catatan perubahan</string>
     <string name="transaction_number">Nomor transaksi</string>
     <string name="widget_summary">Ringkasan</string>
     <string name="widget_all_accounts">Semua akun</string>
@@ -677,5 +676,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Semua akun</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Catatan perubahan</string>
 </resources>

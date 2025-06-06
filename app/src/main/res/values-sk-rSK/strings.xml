@@ -195,7 +195,6 @@
     <string name="current_year">Aktuálny rok</string>
     <string name="future_transactions">Budúce transakcie</string>
     <string name="show_transaction">Zobraziť transakciu</string>
-    <string name="changelog">Prehľad zmien</string>
     <string name="transaction_number">Číslo transakcie</string>
     <string name="widget_summary">Celkom</string>
     <string name="widget_all_accounts">Všetky účty</string>
@@ -642,5 +641,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Všetky účty</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Prehľad zmien</string>
 </resources>

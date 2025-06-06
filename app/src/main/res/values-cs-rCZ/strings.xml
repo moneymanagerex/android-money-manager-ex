@@ -196,7 +196,6 @@
     <string name="current_year">Aktuální rok</string>
     <string name="future_transactions">Budoucí transakce</string>
     <string name="show_transaction">Zobrazit transakce</string>
-    <string name="changelog">Přehled změn</string>
     <string name="transaction_number">Číslo transakce</string>
     <string name="widget_summary">Celkem</string>
     <string name="widget_all_accounts">Všechny účty</string>
@@ -666,5 +665,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Všechny účty</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Přehled změn</string>
 </resources>

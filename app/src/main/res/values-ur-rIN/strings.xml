@@ -196,7 +196,6 @@
     <string name="current_year">موجودہ سال</string>
     <string name="future_transactions">مستقبل لین دین</string>
     <string name="show_transaction">لین دین کی نمایش کریں</string>
-    <string name="changelog">لاگ تبدیل کریں</string>
     <string name="transaction_number">لین دین کا نمبر</string>
     <string name="widget_summary">خلاصہ</string>
     <string name="widget_all_accounts">تمام اکاؤنٹ</string>
@@ -677,5 +676,8 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">تمام اکاؤنٹ</string>
+    <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">لاگ تبدیل کریں</string>
 </resources>

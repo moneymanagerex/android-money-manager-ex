@@ -214,7 +214,6 @@
     <string name="current_year">Laufendes Jahr</string>
     <string name="future_transactions">Zukünftige Transaktionen</string>
     <string name="show_transaction">Transaktion anzeigen</string>
-    <string name="changelog">Changelog</string>
     <string name="transaction_number">Transaktionsnummer</string>
     <string name="widget_summary">Übersicht</string>
     <string name="widget_all_accounts">Alle Konten</string>
@@ -761,10 +760,8 @@
     <string name="currency">Währung</string>
     <string name="menu_create_database">Datenbank erstellen</string>
     <string name="create_database">Datenbank erstellen</string>
-    <string name="pref_anonymous_usage">Anonyme Voranmeldung</string>
     <string name="summary_anonymous_usage">Aktivieren Sie das Senden anonymer Daten über ihre MMEX Nutzung</string>
     <string name="title_anonymous_usage">Anonyme Nutzungsdaten senden</string>
-    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Transaktionsnummer automatisch ausfüllen</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Benachrichtigung: geplante Buchung überfällig </string>
@@ -804,6 +801,7 @@
     <string name="menu_cashflow_favorite">Favorisierte Konten</string>
     <string name="menu_cashflow_custom">Konten wählen&#8230;</string>
     <string name="cash_ledger">Kassenbuch</string>
+    <!-- Merge -->
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
@@ -812,4 +810,6 @@
     <string name="forecast_calculate">Berechne Prognose. Bitte warten...</string>
     <string name="enter_budget">Budget eingeben</string>
     <string name="enter_budget_value_plus_minus">Neuen Wert eingeben</string>
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
 </resources>

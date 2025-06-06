@@ -43,8 +43,13 @@ public class SplitScheduledCategoryRepository
     }
 
     @Override
-    protected SplitRecurringCategory createEntity() {
+    public SplitRecurringCategory createEntity() {
         return new SplitRecurringCategory();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class SplitScheduledCategoryRepository
             SplitRecurringCategory.SPLITTRANSID,
             SplitRecurringCategory.TRANSID,
             SplitRecurringCategory.CATEGID,
-            SplitRecurringCategory.SUBCATEGID,
+//            SplitRecurringCategory.SUBCATEGID,   // no loger exist
             SplitRecurringCategory.SPLITTRANSAMOUNT,
             SplitRecurringCategory.NOTES };
     }

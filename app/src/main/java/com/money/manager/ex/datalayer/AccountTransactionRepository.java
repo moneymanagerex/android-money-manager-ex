@@ -32,7 +32,7 @@ import com.money.manager.ex.utils.MmxDate;
 public class AccountTransactionRepository
     extends RepositoryBase<AccountTransaction> {
 
-    private static final String TABLE_NAME = "checkingaccount_v1";
+    public static final String TABLE_NAME = "checkingaccount_v1";
     private static final String ID_COLUMN = AccountTransaction.TRANSID;
     private static final String NAME_COLUMN = "";
 
@@ -41,8 +41,13 @@ public class AccountTransactionRepository
     }
 
     @Override
-    protected AccountTransaction createEntity() {
+    public AccountTransaction createEntity() {
         return new AccountTransaction();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
@@ -61,7 +66,8 @@ public class AccountTransactionRepository
                 ITransactionEntity.TRANSDATE,
                 ITransactionEntity.FOLLOWUPID,
                 ITransactionEntity.TOTRANSAMOUNT,
-                ITransactionEntity.COLOR
+                ITransactionEntity.COLOR,
+                AccountTransaction.LASTUPDATEDTIME
         };
     }
 
@@ -97,7 +103,7 @@ public class AccountTransactionRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
 
-        item.setLastUpdatedTime((new MmxDate()).toIsoCombinedString());
+        item.setLastUpdatedTime((new MmxDate()).toIsoString());
 
         return super.update(item, where.getWhere());
     }

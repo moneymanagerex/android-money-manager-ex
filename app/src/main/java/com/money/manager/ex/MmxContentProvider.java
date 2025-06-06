@@ -42,9 +42,14 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.CurrencyHistoryRepository;
+import com.money.manager.ex.datalayer.CustomFieldDataRepository;
+import com.money.manager.ex.datalayer.CustomFieldRepository;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.AttachmentRepository;
 import com.money.manager.ex.datalayer.ReportRepository;
+import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
@@ -54,6 +59,7 @@ import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -90,6 +96,18 @@ public class MmxContentProvider
 
     public static String getAuthority() {
         return mAuthority;
+    }
+    public static List<RepositoryBase> getRegisterDataSetForTables() {
+        if (mapContent == null)
+            return null;
+        List<RepositoryBase> objMoneyManager = new ArrayList<>();
+        for (int i = 0; i < mapContent.size(); i++) {
+            if ( mapContent.get(i) instanceof RepositoryBase &&
+                    ((RepositoryBase)mapContent.get(i)).getType() == DatasetType.TABLE) {
+                objMoneyManager.add((RepositoryBase)mapContent.get(i));
+            }
+        }
+        return objMoneyManager;
     }
 
     public static void setAuthority(String mAuthority) {
@@ -128,7 +146,11 @@ public class MmxContentProvider
                 new QueryNestedCategory(context),
                 new ReportRepository(context),
                 new TagRepository(context),
-                new TaglinkRepository(context)
+                new TaglinkRepository(context),
+                new CurrencyHistoryRepository(context),
+                new CustomFieldRepository(context),
+                new CustomFieldDataRepository(context),
+                new InfoRepository(context)
         );
 
         // Cycle all data sets for th
