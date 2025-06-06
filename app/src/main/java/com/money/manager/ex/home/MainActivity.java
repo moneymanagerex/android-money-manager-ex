@@ -65,6 +65,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.about.WhatNewManager;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
@@ -1486,13 +1487,8 @@ public class MainActivity
             return true;
         }
 
-        // todo: show webview changelog?
-
-//        // show change log dialog
-//        Core core = new Core(this);
-//        if (core.isToDisplayChangelog()) {
-//            core.showChangelog();
-//        }
+        // what's new
+        new WhatNewManager(this).showWhatsNewIfNeeded(this);
 
         return false;
     }

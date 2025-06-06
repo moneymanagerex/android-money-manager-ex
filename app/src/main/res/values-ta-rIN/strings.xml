@@ -217,7 +217,6 @@
     <string name="current_year">நடப்பு ஆண்டு</string>
     <string name="future_transactions">எதிர்கால பரிவர்த்தனைகள்</string>
     <string name="show_transaction">பரிவர்த்தனையைக் காட்டு</string>
-    <string name="changelog">மாற்றங்களின் பதிவு</string>
     <string name="transaction_number">பரிவர்த்தனை எண்</string>
     <string name="widget_summary">சுருக்கம்</string>
     <string name="widget_all_accounts">அனைத்து கணக்குகளும்</string>

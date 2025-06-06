@@ -209,7 +209,6 @@
     <string name="current_year">Aktuelle år</string>
     <string name="future_transactions">Fremtidige transaktioner</string>
     <string name="show_transaction">Vis transaktion</string>
-    <string name="changelog">Ændringsoversigt</string>
     <string name="transaction_number">Transaktionsnummer</string>
     <string name="widget_summary">Oversigt</string>
     <string name="widget_all_accounts">Alle konti</string>

@@ -214,7 +214,6 @@
     <string name="current_year">Anno corrente</string>
     <string name="future_transactions">Transazioni future</string>
     <string name="show_transaction">Visualizzazione Transazioni</string>
-    <string name="changelog">Modifiche di Versione</string>
     <string name="transaction_number">Numero transazione</string>
     <string name="widget_summary">Riepilogo</string>
     <string name="widget_all_accounts">Tutti i conti</string>

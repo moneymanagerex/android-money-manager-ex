@@ -200,7 +200,6 @@
     <string name="current_year">Tekuća godina</string>
     <string name="future_transactions">Buduće transakcije</string>
     <string name="show_transaction">Prikaz transakcije</string>
-    <string name="changelog">Log-zapis promjena</string>
     <string name="transaction_number">Broj transakcije</string>
     <string name="widget_summary">Sažetak</string>
     <string name="widget_all_accounts">Svi računi</string>

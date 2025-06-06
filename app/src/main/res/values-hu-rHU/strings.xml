@@ -214,7 +214,6 @@
     <string name="current_year">Aktuális év</string>
     <string name="future_transactions">Jövőbeni ügyletek</string>
     <string name="show_transaction">Ügyletek megjelenítése</string>
-    <string name="changelog">Újdonságok</string>
     <string name="transaction_number">Ügyletszám</string>
     <string name="widget_summary">Összesen</string>
     <string name="widget_all_accounts">Minden számla</string>

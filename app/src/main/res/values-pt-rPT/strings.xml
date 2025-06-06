@@ -201,7 +201,6 @@
     <string name="current_year">Este ano</string>
     <string name="future_transactions">Operações futuras</string>
     <string name="show_transaction">Mostrar Operação</string>
-    <string name="changelog">Registo de Alterações</string>
     <string name="transaction_number">Nº de operação</string>
     <string name="widget_summary">Resumo</string>
     <string name="widget_all_accounts">Todas as Contas</string>

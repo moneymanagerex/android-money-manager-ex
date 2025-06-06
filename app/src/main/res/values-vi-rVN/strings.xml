@@ -196,7 +196,6 @@
     <string name="current_year">Năm hiện tại</string>
     <string name="future_transactions">Giao dịch tương lai</string>
     <string name="show_transaction">Hiển thị giao dịch</string>
-    <string name="changelog">Thay đổi</string>
     <string name="transaction_number">Số giao dịch</string>
     <string name="widget_summary">Tóm lược</string>
     <string name="widget_all_accounts">Tất cả tài khoản</string>
