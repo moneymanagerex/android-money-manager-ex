@@ -678,4 +678,6 @@
     <string name="menu_cashflow_all">כל החשבונות</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">יומן שינוים</string>
 </resources>

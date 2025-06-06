@@ -745,4 +745,6 @@
     <string name="menu_cashflow_all">所有账户</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">更新日志​​​​​</string>
 </resources>

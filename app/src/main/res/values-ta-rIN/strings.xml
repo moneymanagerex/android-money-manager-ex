@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">வைஃபை இணைப்பில் இருக்கும்போது மட்டும் தானாக ஒத்திசைக்கவும்.</string>
     <string name="sync_on_app_start">பயன்பாட்டின் தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
     <string name="sync_on_start">தொடக்கத்தில் ஒத்திசைக்கவும்.</string>
+    <string name="sync_merge_database">பரிசோதனை: தரவுத்தளங்களை ஒன்றிணைத்தல்</string>
+    <string name="sync_merge_database_on_sync">ஒத்திசைவில் தரவுத்தள வேறுபாடுகளை ஒன்றிணைக்கவும்.</string>
+    <string name="sync_merge_dialog_msg_format">%1$s%2$s அனைத்தையும் இணைக்கிறது</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">செயல்முறை வங்கி பரிவர்த்தனை குறுஞ்செய்தி நிலை</string>
     <string name="summary_sms_auto_trans">வங்கி பரிவர்த்தனை புதுப்பிப்பு குருஞ்செய்தியை படித்து, தானாகவே பரிவர்த்தனையை உருவாக்கவும்</string>
@@ -802,6 +805,8 @@
     <string name="menu_cashflow_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
     <string name="cash_ledger">பண பேரேடு</string>
     <!-- Merge -->
+    <string name="merge_take_ours">மொபைல் கோப்புகளை வைத்திருங்கள்</string>
+    <string name="merge_take_theirs">தொலை கோப்புகளை எடுத்துக் கொள்ளுங்கள்</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">அச்சச்சோ! ஏதோ தவறு நடந்துவிட்டது.</string>
     <string name="bad_error_occurs">எதிர்பாராத பிழையைக் கண்டு நாங்கள் மிகவும் வருத்தமடைந்தோம். தயவுசெய்து டெவலப்பரிடம் புகாரளிக்கவும்.</string>
@@ -811,4 +816,7 @@
     <string name="enter_budget">பட்ஜெட்டை உள்ளிடவும்</string>
     <string name="enter_budget_value">%1$s வகைக்கு, காலத்திற்கான பட்ஜெட்டை அமைக்கவும். செலவுகளுக்கு எதிர்மறையையும், வருமானங்களுக்கு நேர்மறையையும் பயன்படுத்தவும்:</string>
     <string name="enter_budget_value_plus_minus">புதிய மதிப்பை உள்ளிடவும்</string>
+    <string name="merge_table">"இணைப்பு அட்டவணை:"</string>
+    <!-- changelog -->
+    <string name="changelog">மாற்றங்களின் பதிவு</string>
 </resources>

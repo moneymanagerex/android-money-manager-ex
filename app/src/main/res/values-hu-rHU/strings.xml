@@ -757,10 +757,8 @@
     <string name="currency">Pénznem</string>
     <string name="menu_create_database">Adatbázis létrehozása</string>
     <string name="create_database">Adatbázis létrehozása</string>
-    <string name="pref_anonymous_usage">előnyben részesítik a névtelen használatot</string>
     <string name="summary_anonymous_usage">Engedélyezze, hogy segítsen nekünk névtelen adatokat küldeni az MMEX használatáról</string>
     <string name="title_anonymous_usage">Névtelen használati adatok küldése</string>
-    <string name="pref_auto_transaction_number">előnyben részesítik az automatikus ügyletszám</string>
     <string name="title_auto_transaction_number">Ügyletszám automatikus kitöltése</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Ütemezett ügylet lejárati értesítés</string>
@@ -809,4 +807,6 @@
     <string name="forecast_calculate">Előrejelzés kiszámítása. Kérjük, várjon&#8230;</string>
     <string name="enter_budget">Költségvetés megadása</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
+    <!-- changelog -->
+    <string name="changelog">Újdonságok</string>
 </resources>

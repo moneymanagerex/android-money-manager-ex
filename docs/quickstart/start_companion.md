@@ -71,8 +71,14 @@ Set it as "Download"
 ### Sync Issue
 There is know issue on some cloud provider that lost connection to remote file. If this occurs, Android App is no longer able to sync file between local and remote provider. This can cause also lost of data.
 The app try to check if sync is available and, if not you get and error screen like this:
-![sync_error.png-th.png](/assets/images/screenshoot/sync_error.png-th.png)
+![sync_error.png-th.png](../assets/images/screenshoot/sync_error.png-th.png)
 
 At this point you can choice if you what to:
 * loose your local changes and reopen from remote
 * export your data to manually (and externaly) sync or overwrite remote file
+
+### Merge Database ![Static Badge](https://img.shields.io/badge/new_in-5.4-green)
+
+Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under APP --> Sync.
+
+When this setting is active, if both your local and remote files have been modified, the app will attempt to identify conflicts. A progress window will be displayed during this potentially lengthy process. Once conflicts are identified, you'll be prompted to choose which version of the file you'd like to keep.

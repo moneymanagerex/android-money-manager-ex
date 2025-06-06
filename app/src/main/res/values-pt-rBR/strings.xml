@@ -755,10 +755,8 @@
     <string name="currency">Moeda</string>
     <string name="menu_create_database">Criar Banco de Dados</string>
     <string name="create_database">Criar Banco de Dados</string>
-    <string name="pref_anonymous_usage">Uso anônimo</string>
     <string name="summary_anonymous_usage">Habilite para nos ajudar a enviar dados anônimos sobre o uso do MMEX</string>
     <string name="title_anonymous_usage">Envia dados de uso anônimos</string>
-    <string name="pref_auto_transaction_number">Número de transação automático</string>
     <string name="title_auto_transaction_number">Preencher automaticamente o número da transação</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Notificação de Transação Agendada vencida</string>
@@ -806,4 +804,6 @@
     <string name="forecast_remain">Previsão Restante</string>
     <string name="enter_budget">Digite o Orçamento</string>
     <string name="enter_budget_value_plus_minus">Digite o novo valor</string>
+    <!-- changelog -->
+    <string name="changelog">Registro de alterações</string>
 </resources>

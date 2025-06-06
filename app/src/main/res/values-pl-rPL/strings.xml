@@ -700,4 +700,6 @@
     <string name="menu_cashflow_all">Wszystkie konta</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Lista zmian</string>
 </resources>

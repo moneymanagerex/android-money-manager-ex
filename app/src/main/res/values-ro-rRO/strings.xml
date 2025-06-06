@@ -609,4 +609,6 @@
     <string name="menu_cashflow_all">Toate conturile</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Jurnalul modificărilor</string>
 </resources>

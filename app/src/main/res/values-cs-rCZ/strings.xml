@@ -667,4 +667,6 @@
     <string name="menu_cashflow_all">Všechny účty</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Přehled změn</string>
 </resources>

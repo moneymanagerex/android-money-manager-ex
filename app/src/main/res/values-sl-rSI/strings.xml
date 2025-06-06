@@ -574,4 +574,6 @@
     <string name="menu_cashflow_all">Vsi računi</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Nespremenjen</string>
 </resources>
