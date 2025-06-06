@@ -63,7 +63,7 @@ This are all supported frequency from desktop.
 {: .notice--warning}
 
 
-| Key    | annual occurences | Result for Year | Result for Month                        |
+| Key    | annual occurrences | Result for Year | Result for Month                        |
 | -------|-------------------|-----------------|-----------------------------------------|
 | None            | 0                 | amount * 0      | amount * 0 / 12 = 0                     |
 | Weekly          | 52                | amount * 52     | amount * 52  / 12 = amount * 4,33  |
