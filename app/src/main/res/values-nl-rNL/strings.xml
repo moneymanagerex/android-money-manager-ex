@@ -760,10 +760,8 @@
     <string name="currency">Geldeenheid</string>
     <string name="menu_create_database">Maak Databank aan</string>
     <string name="create_database">Maak Databank aan</string>
-    <string name="pref_anonymous_usage">prefanonymoususage</string>
     <string name="summary_anonymous_usage">Help ons met het versturen van anonieme gegevens over MMEX gebruik</string>
     <string name="title_anonymous_usage">Verzend anonieme gebruiksgegevens</string>
-    <string name="pref_auto_transaction_number">prefautotransactionnumber</string>
     <string name="title_auto_transaction_number">Transactienummer automatisch vullen</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Melding achterstallige Geplande transactie </string>

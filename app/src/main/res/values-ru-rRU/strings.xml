@@ -763,10 +763,8 @@
     <string name="currency">Валюта</string>
     <string name="menu_create_database">Создать БД</string>
     <string name="create_database">Создать БД</string>
-    <string name="pref_anonymous_usage">Анонимная статистика</string>
     <string name="summary_anonymous_usage">Включите, чтобы помочь нам, отправляя анонимные данные об использовании MMEX</string>
     <string name="title_anonymous_usage">Отправлять анонимные данные об использовании</string>
-    <string name="pref_auto_transaction_number">Автонумерация проводок</string>
     <string name="title_auto_transaction_number">Автозаполнение номера проводки</string>
     <!-- Notification Setting -->
     <string name="title_notifications_repeating_transaction">Уведомление о просроченной проводке </string>
