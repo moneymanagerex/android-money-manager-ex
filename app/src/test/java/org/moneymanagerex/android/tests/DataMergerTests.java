@@ -70,7 +70,7 @@ public class DataMergerTests {
 
         // prepare mocks
         Messenger msger = new Messenger(mock(Handler.class));
-        DataMerger testee = spy(new DataMerger(msger));
+        DataMerger testee = spy(new DataMerger(msger, null));
         AccountTransaction localEntity = null;
         AccountTransaction remoteEntity = new AccountTransaction();
         AccountTransactionRepository localAccTrans = mock(AccountTransactionRepository.class);
@@ -128,7 +128,7 @@ public class DataMergerTests {
     public void testMergeAccountTransactionRemoteWasModifiedAfterSync() {
         // prepare mocks
         Messenger msger = new Messenger(mock(Handler.class));
-        DataMerger testee = spy(new DataMerger(msger));
+        DataMerger testee = spy(new DataMerger(msger, null));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-20T18:42:18.000Z");
@@ -149,7 +149,7 @@ public class DataMergerTests {
     public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
         Messenger msger = new Messenger(mock(Handler.class));
-        DataMerger testee = spy(new DataMerger(msger));
+        DataMerger testee = spy(new DataMerger(msger, null));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
@@ -170,7 +170,7 @@ public class DataMergerTests {
     public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceTheirs() {
         // prepare mocks
         Messenger msger = new Messenger(mock(Handler.class));
-        DataMerger testee = spy(new DataMerger(msger));
+        DataMerger testee = spy(new DataMerger(msger, null));
         doReturn(MergeConflictResolution.THEIRS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "THEIRS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
@@ -190,7 +190,7 @@ public class DataMergerTests {
     public void testMergeAccountTransactionBothModifiedRemoteWasLaterModifiedUserChoiceOurs() {
         // prepare mocks
         Messenger msger = new Messenger(mock(Handler.class));
-        DataMerger testee = spy(new DataMerger(msger));
+        DataMerger testee = spy(new DataMerger(msger,null));
         doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-22T18:42:18.000Z");
@@ -211,7 +211,7 @@ public class DataMergerTests {
     public void testMergeAccountTransactionBothModifiedLocalWasLaterModifiedUserChoiceOurs() throws RemoteException {
         // prepare mocks
         Messenger msger = mock(Messenger.class);
-        final DataMerger testee = spy(new DataMerger(msger));
+        final DataMerger testee = spy(new DataMerger(msger,null));
         doReturn(MergeConflictResolution.OURS).when(testee).conflictResolutionByUser(any(), any()); // user ansers "OURS"
         AccountTransaction localEntity = new AccountTransaction();
         localEntity.setLastUpdatedTime("2020-01-23T18:42:18.000Z");
