@@ -704,4 +704,6 @@
     <string name="menu_cashflow_all">Tous les comptes</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Journal des modifications</string>
 </resources>

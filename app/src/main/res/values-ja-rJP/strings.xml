@@ -678,4 +678,6 @@
     <string name="menu_cashflow_all">すべての口座</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">変更履歴</string>
 </resources>

@@ -677,4 +677,6 @@
     <string name="menu_cashflow_all">Όλοι οι λογαριασμοί</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Καταγραφή αλλαγών</string>
 </resources>

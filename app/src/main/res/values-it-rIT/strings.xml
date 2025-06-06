@@ -809,4 +809,6 @@
     <string name="forecast_calculate">Calcolo la previsione. Attendere&#8230;</string>
     <string name="enter_budget">Inserisci Budget</string>
     <string name="enter_budget_value_plus_minus">Inserisci nuovo valore</string>
+    <!-- changelog -->
+    <string name="changelog">Modifiche di Versione</string>
 </resources>

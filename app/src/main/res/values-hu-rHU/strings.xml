@@ -809,4 +809,6 @@
     <string name="forecast_calculate">Előrejelzés kiszámítása. Kérjük, várjon&#8230;</string>
     <string name="enter_budget">Költségvetés megadása</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
+    <!-- changelog -->
+    <string name="changelog">Újdonságok</string>
 </resources>

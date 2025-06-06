@@ -806,4 +806,6 @@
     <string name="forecast_remain">Previsão Restante</string>
     <string name="enter_budget">Digite o Orçamento</string>
     <string name="enter_budget_value_plus_minus">Digite o novo valor</string>
+    <!-- changelog -->
+    <string name="changelog">Registro de alterações</string>
 </resources>

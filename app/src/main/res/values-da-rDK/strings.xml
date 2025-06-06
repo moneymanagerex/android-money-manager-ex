@@ -724,4 +724,6 @@
     <string name="menu_cashflow_all">Alle konti</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Ændringsoversigt</string>
 </resources>

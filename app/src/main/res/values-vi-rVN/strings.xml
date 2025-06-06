@@ -636,4 +636,6 @@
     <string name="menu_cashflow_all">Tất cả tài khoản</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Thay đổi</string>
 </resources>

@@ -710,4 +710,6 @@
     <string name="menu_cashflow_all">Svi računi</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Log-zapis promjena</string>
 </resources>

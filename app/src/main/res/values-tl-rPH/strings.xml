@@ -678,4 +678,6 @@
     <string name="menu_cashflow_all">Lahat ng mga account</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">Changelog</string>
 </resources>

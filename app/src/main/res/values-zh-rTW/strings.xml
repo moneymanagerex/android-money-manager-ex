@@ -680,4 +680,6 @@
     <string name="menu_cashflow_all">所有帳戶</string>
     <!-- Merge -->
     <!-- Error Handling -->
+    <!-- changelog -->
+    <string name="changelog">更新日誌</string>
 </resources>
