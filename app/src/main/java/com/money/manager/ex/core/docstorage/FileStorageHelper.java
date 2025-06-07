@@ -174,7 +174,8 @@ public class FileStorageHelper {
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
-            this.downloadDatabase(uri, metadata.localTmpPath);
+            // fix localTmpPtah null after first run
+            this.downloadDatabase(uri, metadata.getTmpFilePath());
         } catch (Exception e) {
             Timber.e(e);
             return;

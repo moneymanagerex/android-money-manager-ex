@@ -3,7 +3,6 @@ layout: single
 author_profile: true
 ---
 
-## Install from your preferred source
 [<img alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="240">](https://f-droid.org/packages/com.money.manager.ex)
 [<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
 [<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" width="240">](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)
