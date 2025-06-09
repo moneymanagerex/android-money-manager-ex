@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Alleen automatisch synchroniseren bij WiFi-verbinding.</string>
     <string name="sync_on_app_start">Synchroniseer bij opstarten app.</string>
     <string name="sync_on_start">Synchroniseer bij starten</string>
+    <string name="sync_merge_database">EXPERIMENTEEL: databases samenvoegen</string>
+    <string name="sync_merge_database_on_sync">Samenvoegen van databaseverschillen bij synchronisatie.</string>
+    <string name="sync_merge_dialog_msg_format">Alles wordt samengevoegd %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Verwerk banktransactie SMS</string>
     <string name="summary_sms_auto_trans">Lees de banktransactie SMS en maak de transactie automatisch aan</string>
@@ -802,6 +805,8 @@
     <string name="menu_cashflow_custom">Selecteer rekeningen...</string>
     <string name="cash_ledger">Kasboek</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Lokale gegevens behouden</string>
+    <string name="merge_take_theirs">Neem andere</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Oeps! Er is iets fout gegaan.</string>
     <string name="bad_error_occurs">Het spijt ons zeer dat we een onverwachte fout hebben opgemerkt. Meld dit alstublieft aan de ontwikkelaar.</string>
@@ -811,6 +816,9 @@
     <string name="enter_budget">Begroting invoeren</string>
     <string name="enter_budget_value">Stel voor categorie %1$s een budget in voor de periode. Gebruik negatief voor uitgaven en positief voor inkomsten.</string>
     <string name="enter_budget_value_plus_minus">Voor een nieuwe waarde in</string>
+    <string name="merge_table">"Tabel samenvoegen: "</string>
     <!-- changelog -->
     <string name="changelog">Wijzigingslogboek</string>
+    <string name="changelog_title">Belangrijk nieuws!!</string>
+    <string name="changelog_1086">Nieuwe versie 5.4\n- Nieuwe bèta-functie toegevoegd voor samenvoeg engine. Probeer het bestand samen te voegen wanneer beide worden gewijzigd. Schakel het in de instellingen&gt;Sync-&gt;Samenvoegen in</string>
 </resources>
