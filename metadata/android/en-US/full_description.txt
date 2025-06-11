@@ -2,17 +2,12 @@
 
 <b>Features</b>
 
-<ul>
-  <li>Management of single transactions</li>
-  <li>Account, payee, category, and currency management</li>
-  <li>Cloud storage-based synchronization, including:
-    <ul>
-      <li>Cloud storage such as Google Drive and Nextcloud</li>
-      <li>Sync services like Syncthing</li>
-    </ul>
-  </li>
-  <li>Support for SQLCipher encryption</li>
-  <li>Compatibility with Desktop MMEX</li>
-  <li>Repeating transactions</li>
-  <li>Charts for reports</li>
-</ul>
+- Management of single transactions<br>
+- Account, payee, category, and currency management<br>
+- Cloud storage-based synchronization, including:<br>
+&nbsp;&nbsp;- Cloud storage such as Google Drive and Nextcloud<br>
+&nbsp;&nbsp;- Sync services like Syncthing<br>
+- Support for SQLCipher encryption<br>
+- Compatibility with Desktop MMEX<br>
+- Repeating transactions<br>
+- Charts for reports<br>
