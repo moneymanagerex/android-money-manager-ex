@@ -819,4 +819,5 @@
     <string name="merge_table">"இணைப்பு அட்டவணை:"</string>
     <!-- changelog -->
     <string name="changelog">மாற்றங்களின் பதிவு</string>
+    <string name="changelog_title">என்ன புதுசு!!</string>
 </resources>
