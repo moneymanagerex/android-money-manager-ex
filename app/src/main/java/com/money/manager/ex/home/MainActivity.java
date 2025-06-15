@@ -123,8 +123,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -1222,21 +1220,18 @@ public class MainActivity
 
 
         // Open a db file
-        if (intent.getData() != null) {
-            String pathFile = getIntent().getData().getEncodedPath();
-            // decode
+        if ( Intent.ACTION_VIEW.equals(intent.getAction()) &&
+                intent.getData() != null) {
             try {
-                String filePath = URLDecoder.decode(pathFile, StandardCharsets.UTF_8); // decode file path
-                Timber.d("Path intent file to open: %s", filePath);
-
-                // Open this database.
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
+                FileStorageHelper storageHelper = new FileStorageHelper(this);
+                DatabaseMetadata db = storageHelper.selectDatabase(intent);
                 changeDatabase(db);
-                return;
-            } catch (Exception e) {
-                Timber.e(e, "opening database from intent");
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            } catch ( Exception ex ) {
+                Toast.makeText(this, "Unable to open DB from other app", Toast.LENGTH_SHORT).show();
+                Timber.d(ex);
             }
+            return;
         }
 
         this.dbUpdateCheckDone = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);

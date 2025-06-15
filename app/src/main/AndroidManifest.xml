@@ -154,33 +154,13 @@
             </intent-filter>
             <intent-filter android:label="@string/application_name">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="file" />
                 <data android:mimeType="*/*" />
-                <data android:host="*" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+
                 <data android:pathPattern=".*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb" />
                 <data android:pathPattern=".*\\.emb" />
-                <data android:pathPattern=".*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
             </intent-filter>
 
             <meta-data
