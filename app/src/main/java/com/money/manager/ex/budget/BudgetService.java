@@ -21,7 +21,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -134,18 +133,18 @@ public class BudgetService
     }
 
     public double getActualValueForCategoryAndPeriod(long categId, int year) {
-        return _getActualValueForCategoryAndChildrenAndPeriod(categId, null, year, 0);
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, null, year, 0);
     }
 
     public double getActualValueForCategoryAndPeriod(long categId, int year, int month) {
-        return _getActualValueForCategoryAndChildrenAndPeriod(categId, null, year, month);
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, null, year, month);
     }
 
     public double getActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
-        return _getActualValueForCategoryAndChildrenAndPeriod(categId, categoryName, year, month);
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, categoryName, year, month);
     }
 
-    private double _getActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
+    private double internalGetActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
         BudgetSettings budgetSettings = (new AppSettings(getContext()).getBudgetSettings());
 
         String[] projectionIn = new String[]{
@@ -158,13 +157,14 @@ public class BudgetService
         where.addStatement(QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')");
 
         if ( categoryName != null ) {
-            if ( categoryName.contains("'")) {
-                categoryName = categoryName.replace("\"", "\"\"");
+            String categoryNameTmp = categoryName;
+            if ( categoryNameTmp.contains("'")) {
+                categoryNameTmp = categoryNameTmp.replace("\"", "\"\"");
             }
             String localWhere = "( " +
                     QueryMobileData.CATEGID + " = " + categId
                     + " OR " +
-                    QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
+                    QueryMobileData.Category + " LIKE \"" + categoryNameTmp +":%\" )";
             where.addStatement(localWhere);
         } else {
             where.addStatement(QueryMobileData.CATEGID + " = " + categId);
