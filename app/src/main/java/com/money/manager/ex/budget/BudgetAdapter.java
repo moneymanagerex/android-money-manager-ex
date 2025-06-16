@@ -66,9 +66,6 @@ import timber.log.Timber;
 public class BudgetAdapter
         extends SimpleCursorAdapter {
 
-    @Inject
-    Lazy<BriteDatabase> databaseLazy;
-
     private final Context mContext;
 
     private final int mLayout;
@@ -106,6 +103,9 @@ public class BudgetAdapter
         super(context, R.layout.item_budget, cursor, from, to, flags);
         mContext = context;
 
+        // get Budget financial
+        budgetSettings = (new AppSettings(getContext())).getBudgetSettings();
+
         // switch to simple layout if the showSimpleView is set
         mLayout = (budgetSettings.getShowSimpleView())
                 ? R.layout.item_budget_simple
@@ -114,11 +114,6 @@ public class BudgetAdapter
         currencyService = new CurrencyService(mContext);
 
         scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
-
-        MmexApplication.getApp().iocComponent.inject(this);
-
-        // get Budget financial
-        budgetSettings = (new AppSettings(getContext())).getBudgetSettings();
 
         if (mLayout == R.layout.item_budget_simple) {
             addVisibleColumn(R.id.amountAvailableTextView);
