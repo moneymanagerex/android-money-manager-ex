@@ -73,7 +73,7 @@ public class BudgetAdapter
     @Inject
     Lazy<BriteDatabase> databaseLazy;
 
-    private Context mContext;
+    private final Context mContext;
 
     private final int mLayout;
     private String mBudgetName;
@@ -270,37 +270,37 @@ public class BudgetAdapter
         setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME)));
         long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
 
+        // get BudgetEntry
+        BudgetEntry budgetEntry = getBudgetEntry(categoryId);
+        if (budgetEntry == null) {
+            // create fake default entry
+            budgetEntry = new BudgetEntry();
+            budgetEntry.setActive(false);
+        }
+
         // Frequency frequencyTextView
-        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
-        setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
+        setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, budgetEntry.getPeriodEnum()));
 
         // amountTextView
-        double amount = 0;
-        amount = getBudgetAmountFor(categoryId);
+        double amount ;
+        amount = budgetEntry.getAmount();
         setViewElement(view, R.id.amountTextView, amount, currencyService);
 
         // Estimated estimatedForPeriodTextView
         double estimatedForPeriod = isMonthlyBudget(mBudgetName)
-                ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
-                : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if (Double.isNaN(estimatedForPeriod)) {
-            // this means that we don't have estimate for this category
-            // so estimate is 0
-            estimatedForPeriod = 0;
-        }
+                ? budgetEntry.getMonthlyAmount()
+                : budgetEntry.getYearlyAmount();
+
         if ( useSubCategory) {
             List<NestedCategoryEntity> children = (new QueryNestedCategory(context)).getChildrenNestedCategoryEntities(categoryId);
             for (NestedCategoryEntity child : children) {
                 if ( child.getId() != categoryId ) { // already computed
-                    BudgetPeriodEnum childPeriodEnum = getBudgetPeriodFor(child.getCategoryId());
-                    double childAmount = getBudgetAmountFor(child.getCategoryId());
-                    double childEstimatedForPeriod = isMonthlyBudget(mBudgetName)
-                            ? BudgetPeriods.getMonthlyEstimate(childPeriodEnum, childAmount)
-                            : BudgetPeriods.getYearlyEstimate(childPeriodEnum, childAmount);
-                    if (Double.isNaN(childEstimatedForPeriod)) {
-                        // this means that we don't have estimate for this category
-                        // so estimate is 0
-                        childEstimatedForPeriod = 0;
+                    BudgetEntry childBudgetEntry = getBudgetEntry(child.getCategoryId());
+                    double childEstimatedForPeriod = 0;
+                    if ( childBudgetEntry != null ) {
+                        childEstimatedForPeriod = isMonthlyBudget(mBudgetName)
+                                ? childBudgetEntry.getMonthlyAmount()
+                                : childBudgetEntry.getYearlyAmount();
                     }
                     estimatedForPeriod += childEstimatedForPeriod;
                 }
@@ -385,7 +385,7 @@ public class BudgetAdapter
     /**
      * As a side effect of the setter the budget entry thread cache is populated.
      *
-     * @param budgetYearId
+     * @param budgetYearId The budget year id
      */
     public void setBudgetYearId(long budgetYearId) {
         this.mBudgetYearId = budgetYearId;
@@ -409,37 +409,21 @@ public class BudgetAdapter
         return actual;
     }
 
-    /**
-     * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
-     *
-     * @param categoryId
-     * @return
-     */
-    private double getBudgetAmountFor(long categoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
-        return mBudgetEntries.containsKey(key)
-                ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
-                : 0;
-    }
 
     /**
-     * Returns the period of the budgeted amount or NONE if there isn't any.
-     *
-     * @param categoryId
-     * @return
+     * @param categoryId Category id
+     * @return Budget entry for category
      */
-    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId) {
+    private BudgetEntry getBudgetEntry(long categoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId);
-        return mBudgetEntries.containsKey(key)
-                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
-                : BudgetPeriodEnum.NONE;
+        return mBudgetEntries.getOrDefault(key, null);
     }
 
     /**
      * Builds a thread cache from the database for every category and subcategory present in
      * this budget.
      *
-     * @return
+     * @return HashMap of budget entries
      */
     private HashMap<String, BudgetEntry> populateThreadCache() {
         BudgetEntryRepository repo = new BudgetEntryRepository(mContext);
@@ -455,8 +439,7 @@ public class BudgetAdapter
             }
             where = "( " + where + " OR " + QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
         }
-        double total = loadTotalFor(where);
-        return total;
+        return loadTotalFor(where);
     }
 
     private double loadTotalFor(String where) {
@@ -533,8 +516,7 @@ public class BudgetAdapter
 
     private long getYearFromBudgetName(String budgetName) {
         String yearString = budgetName.substring(0, 4);
-        long year = Integer.parseInt(yearString);
-        return year;
+        return Integer.parseInt(yearString);
     }
 
     private MmxDate getStartDateForFinancialYear(String budgetName) {

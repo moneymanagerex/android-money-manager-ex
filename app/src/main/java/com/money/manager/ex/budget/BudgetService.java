@@ -19,6 +19,7 @@ package com.money.manager.ex.budget;
 
 import android.content.Context;
 
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.servicelayer.ServiceBase;
 
@@ -33,6 +34,11 @@ public class BudgetService
     }
 
     public boolean delete(long budgetId) {
+
+        // we need to delete both BudgetRepository and BudgetEntryRepository
+        BudgetEntryRepository entryRepo = new BudgetEntryRepository(getContext());
+        entryRepo.deleteForYear(budgetId);
+
         BudgetRepository repo = new BudgetRepository(getContext());
         return repo.delete(budgetId);
     }

@@ -18,6 +18,7 @@
 package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.money.manager.ex.budget.BudgetPeriodEnum;
 
@@ -34,6 +35,8 @@ public class BudgetEntry
     public static final String AMOUNT = "AMOUNT";
     public static final String NOTES = "NOTES";
     public static final String ACTIVE = "ACTIVE";
+    
+    private BudgetPeriodEnum periodEnum;
 
     // Default constructor setting ACTIVE to 1L
     public BudgetEntry() {
@@ -45,6 +48,13 @@ public class BudgetEntry
     // Constructor accepting ContentValues for initialization
     public BudgetEntry(ContentValues contentValues) {
         super(contentValues);
+        setPeriodEnum();
+    }
+
+    @Override
+    public void loadFromCursor(Cursor cursor) {
+        super.loadFromCursor(cursor);
+        setPeriodEnum();
     }
 
     // Getter and setter for BudgetEntryId
@@ -76,19 +86,30 @@ public class BudgetEntry
 
     // Getter and setter for Period
     public String getPeriod() {
-        return getString(BudgetEntry.PERIOD);
+        String value = getString(BudgetEntry.PERIOD);
+        return value == null ? BudgetPeriodEnum.NONE.getDisplayName() : value;
     }
 
     public void setPeriod(String value) {
         setString(BudgetEntry.PERIOD, value);
+        setPeriodEnum();
     }
 
+    private void setPeriodEnum() {
+        periodEnum = BudgetPeriodEnum.fromString(getPeriod());
+    }
+
+
     // Getter and setter for Amount
-    public Double getAmount() {
-        return getDouble(BudgetEntry.AMOUNT);
+    public double getAmount() {
+        Double amount = getDouble(BudgetEntry.AMOUNT);
+        return amount == null ? 0.0 : amount;
     }
 
     public void setAmount(Double value) {
+        if (value == null) {
+            value = 0.0;
+        }
         setDouble(BudgetEntry.AMOUNT, value);
     }
 
@@ -113,5 +134,25 @@ public class BudgetEntry
     @Override
     public String getPrimaryKeyColumn() {
         return BudgetEntry.BUDGETENTRYID;  // This returns the column name specific to Report
+    }
+    
+    // getter for period Amount via BudgetPeriod
+
+    public BudgetPeriodEnum getPeriodEnum() {
+        if (periodEnum == null) {
+            // try to set default
+            setPeriodEnum();
+        }
+        return  periodEnum ;
+    }
+
+    public double getYearlyAmount() {
+//        return BudgetPeriods.getYearlyEstimate(getPeriodEnum(), getAmount());
+        return getAmount() * periodEnum.getOccursTimes() ;
+    }
+
+    public double getMonthlyAmount() {
+//        return BudgetPeriods.getMonthlyEstimate(getPeriodEnum(), getAmount());
+        return getYearlyAmount() / 12 ;
     }
 }

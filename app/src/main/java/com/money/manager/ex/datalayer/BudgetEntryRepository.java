@@ -69,8 +69,8 @@ public class BudgetEntryRepository
     /**
      * Returns a string value which is used as a key in the budget entry thread cache
      *
-     * @param categoryId
-     * @return
+     * @param categoryId Category ID
+     * @return key for budget entry thread cache
      */
     public static String getKeyForCategories(long categoryId) {
         // Wolfsolver - adapt budget for category & sub category.
@@ -108,6 +108,19 @@ public class BudgetEntryRepository
 
         return budgetEntryHashMap;
     }
+
+    public boolean deleteForYear(long budgetYearId) {
+        if (budgetYearId == Constants.NOT_SET) return false;
+
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(BudgetEntry.BUDGETYEARID, "=", budgetYearId);
+
+        return getContext().getContentResolver().delete( getUri(),
+                where.getWhere(),
+                null) > 0;
+
+    }
+
 
     // custom func
     public boolean hasBudget(long yearId, long cateId) {
