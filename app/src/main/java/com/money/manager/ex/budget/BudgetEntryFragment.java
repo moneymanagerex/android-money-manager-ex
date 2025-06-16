@@ -203,7 +203,7 @@ public class BudgetEntryFragment
         }
         menu.findItem(R.id.menu_budget_columns).setVisible(!useBudgetSimplifyView);
 
-        // remove for now. TODO apply needted budget
+        // remove for now. TODO apply nested budget
         if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
             menu.findItem(R.id.menu_budget_category_with_sub).setVisible(false);
         }
