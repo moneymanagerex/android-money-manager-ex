@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -35,6 +36,7 @@ import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -69,10 +71,19 @@ public class BudgetService
      * Need to get the budget destination period. The period can be only a year/month like the
      * original budget.
      *
-     * @param budgetId The budget to copy.
+     * @param fromBudgetId The budget to copy.
+     * @param toBudgetId The budget destination.
      */
-    public void copy(long budgetId) {
-        //todo complete
+    public void copy(long fromBudgetId, long toBudgetId) {
+
+        BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getContext());
+        HashMap<String, BudgetEntry>  result = budgetEntryRepository.loadForYear(fromBudgetId);
+        if (result == null) return;
+        for (BudgetEntry entry : result.values()) {
+            entry.setBudgetYearId(toBudgetId);
+            entry.setId(Constants.NOT_SET);
+            budgetEntryRepository.save(entry);
+        }
     }
 
     public boolean isCategoryOverDueBudget(long categId, Date date) {
@@ -104,8 +115,8 @@ public class BudgetService
         if (budgetEntry.getPeriodEnum() == BudgetPeriodEnum.NONE)
             return false;
 
-        double actualValue = 0;
-        double budgetValue = 0;
+        double actualValue;
+        double budgetValue;
         if (budget.isMonthlyBudget()) {
             actualValue = getActualValueForCategoryAndPeriod(categId, budget.getYear(), budget.getMonth());
             budgetValue = budgetEntry.getMonthlyAmount();

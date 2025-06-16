@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -101,6 +102,7 @@ public class BudgetListFragment
 
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
                         // refresh budget list
+
                         LoaderManager.getInstance(BudgetListFragment.this).restartLoader(LOADER_BUDGETS, null, BudgetListFragment.this);
                     }
                 }
@@ -169,7 +171,8 @@ public class BudgetListFragment
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
         menuHelper.addDeleteToContextMenu(true);
-        //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
+
+        menu.add(Menu.NONE, ContextMenuIds.COPY.getId(), Menu.NONE, getString(R.string.copy));
     }
 
     @Override
@@ -188,8 +191,7 @@ public class BudgetListFragment
                 confirmDelete(budgetId);
                 break;
             case COPY:
-                BudgetService service = new BudgetService(getActivity());
-                service.copy(budgetId);
+                copyBudget(budgetId);
                 break;
             default:
                 return false;
@@ -236,6 +238,16 @@ public class BudgetListFragment
         intent.setAction(Intent.ACTION_EDIT);
         editBudgetLauncher.launch(intent);
     }
+
+    private void copyBudget(long budgetId) {
+        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+        intent.putExtra(BudgetEditActivity.SOURCE_KEY_BUDGET_ID, budgetId);
+        intent.setAction(Intent.ACTION_INSERT);
+        editBudgetLauncher.launch(intent);
+    }
+//    BudgetService service = new BudgetService(getActivity());
+//    service.copy(budgetId);
+
 
     private void createBudget() {
         Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
