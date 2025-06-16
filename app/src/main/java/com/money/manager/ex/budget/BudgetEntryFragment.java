@@ -188,7 +188,7 @@ public class BudgetEntryFragment
 
         boolean useBudgetFinancialYear = (new AppSettings(getContext())).getBudgetSettings().getBudgetFinancialYear();
         if (menu.findItem(R.id.menu_budget_financial_year) != null) {
-            if (Budget.isMontlyBudget(mBudgetName)) {
+            if (Budget.isMonthlyBudget(mBudgetName)) {
                 // does not sense to have financial year for monthly budget
                 menu.findItem(R.id.menu_budget_financial_year).setVisible(false);
             } else {
@@ -336,7 +336,7 @@ public class BudgetEntryFragment
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     BudgetEntryRepository repo = new BudgetEntryRepository(getActivity());
-                    BudgetEntry budgetEntry = repo.loadByYearAndCateID(yearId, categoryId);
+                    BudgetEntry budgetEntry = repo.loadByYearIdAndCateID(yearId, categoryId);
                     if (budgetEntry != null) {
                         repo.delete(budgetEntry.getId());
                         restartLoader();
@@ -360,13 +360,13 @@ public class BudgetEntryFragment
         BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getActivity());
 
 
-        BudgetEntry budgetEntry = budgetEntryRepository.loadByYearAndCateID(budgetYearId, categoryId);
+        BudgetEntry budgetEntry = budgetEntryRepository.loadByYearIdAndCateID(budgetYearId, categoryId);
         if (budgetEntry != null) {
             // Set the current value as the initial value in the EditText
             input.setText(String.valueOf(budgetEntry.getAmount()));
             budgetPeriodString = budgetEntry.getPeriod();
         } else {
-            budgetPeriodString = (Budget.isMontlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName());
+            budgetPeriodString = (Budget.isMonthlyBudget(mBudgetName) ? BudgetPeriodEnum.MONTHLY.getDisplayName() : BudgetPeriodEnum.YEARLY.getDisplayName());
         }
 
         Spinner spinnerBudget = customLayout.findViewById(R.id.spinnerBudgetPeriod);
@@ -412,7 +412,7 @@ public class BudgetEntryFragment
                             try {
                                 // Parse the input as a double
                                 double newValueNumeric = Double.parseDouble(newValue);
-                                BudgetEntry budgetEntry = budgetEntryRepository.loadByYearAndCateID(mBudgetYearId, categoryId);
+                                BudgetEntry budgetEntry = budgetEntryRepository.loadByYearIdAndCateID(mBudgetYearId, categoryId);
                                 if (budgetEntry == null) {
                                     budgetEntry = new BudgetEntry();
                                     budgetEntry.setBudgetYearId(mBudgetYearId);

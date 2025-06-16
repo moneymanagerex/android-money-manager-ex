@@ -23,9 +23,11 @@ import android.database.Cursor;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
+import com.money.manager.ex.utils.MmxDate;
 
 import java.util.HashMap;
 
@@ -128,9 +130,26 @@ public class BudgetEntryRepository
                 , new String[]{Long.toString(yearId), Long.toString(cateId)} ) > 0;
     }
 
-    public BudgetEntry loadByYearAndCateID(long yearId, long cateId) {
+    public BudgetEntry loadByYearIdAndCateID(long yearId, long cateId) {
         return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
                 , new String[]{Long.toString(yearId), Long.toString(cateId)}
                 , null);
     }
+
+
+    /**
+     * @param categId Category to Analize
+     * @param date Date to Analize
+     * @return Return BudgetEntry for given category and date.
+     *         If montky budget is present this has precedences
+     */
+    public BudgetEntry loadByDateAndCateID( MmxDate date, long categId) {
+        BudgetRepository budgetRepository = new BudgetRepository(getContext());
+        Budget budget =  budgetRepository.loadFromDate(date);
+
+        if ( budget == null ) return null;
+
+        return loadByYearIdAndCateID(budget.getId(), categId);
+    }
+
 }

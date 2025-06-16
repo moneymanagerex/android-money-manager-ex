@@ -108,9 +108,10 @@ public class BudgetEntry
 
     public void setAmount(Double value) {
         if (value == null) {
-            value = 0.0;
+            setDouble(BudgetEntry.AMOUNT, 0.0);
+        } else {
+            setDouble(BudgetEntry.AMOUNT, value);
         }
-        setDouble(BudgetEntry.AMOUNT, value);
     }
 
     // Getter and setter for Notes
@@ -147,12 +148,10 @@ public class BudgetEntry
     }
 
     public double getYearlyAmount() {
-//        return BudgetPeriods.getYearlyEstimate(getPeriodEnum(), getAmount());
         return getAmount() * periodEnum.getOccursTimes() ;
     }
 
     public double getMonthlyAmount() {
-//        return BudgetPeriods.getMonthlyEstimate(getPeriodEnum(), getAmount());
         return getYearlyAmount() / 12 ;
     }
 }
