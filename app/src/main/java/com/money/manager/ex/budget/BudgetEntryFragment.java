@@ -173,7 +173,6 @@ public class BudgetEntryFragment
                 new String[]{BudgetNestedQuery.CATEGNAME},
                 new int[]{R.id.categoryTextView},
                 0);
-        adapter.setBudgetName(mBudgetName);
         adapter.setBudgetYearId(mBudgetYearId);
 
         adapter.setVisibleTextFieldsForView(mHeader);
@@ -203,7 +202,7 @@ public class BudgetEntryFragment
         }
         menu.findItem(R.id.menu_budget_columns).setVisible(!useBudgetSimplifyView);
 
-        // remove for now. TODO apply nested budget
+        // TODO apply nested budget remove this and enable comment, need to tested
         if (menu.findItem(R.id.menu_budget_category_with_sub) != null) {
             menu.findItem(R.id.menu_budget_category_with_sub).setVisible(false);
         }

@@ -134,10 +134,18 @@ public class BudgetService
     }
 
     public double getActualValueForCategoryAndPeriod(long categId, int year) {
-        return getActualValueForCategoryAndPeriod(categId, year, 0);
+        return _getActualValueForCategoryAndChildrenAndPeriod(categId, null, year, 0);
     }
 
     public double getActualValueForCategoryAndPeriod(long categId, int year, int month) {
+        return _getActualValueForCategoryAndChildrenAndPeriod(categId, null, year, month);
+    }
+
+    public double getActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
+        return _getActualValueForCategoryAndChildrenAndPeriod(categId, categoryName, year, month);
+    }
+
+    private double _getActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
         BudgetSettings budgetSettings = (new AppSettings(getContext()).getBudgetSettings());
 
         String[] projectionIn = new String[]{
@@ -148,8 +156,19 @@ public class BudgetService
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(QueryMobileData.Status + "<>'V'");
         where.addStatement(QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')");
-        where.addStatement(QueryMobileData.CATEGID + " = " + categId);
 
+        if ( categoryName != null ) {
+            if ( categoryName.contains("'")) {
+                categoryName = categoryName.replace("\"", "\"\"");
+            }
+            String localWhere = "( " +
+                    QueryMobileData.CATEGID + " = " + categId
+                    + " OR " +
+                    QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
+            where.addStatement(localWhere);
+        } else {
+            where.addStatement(QueryMobileData.CATEGID + " = " + categId);
+        }
         if (month > 0) {
             // month
             where.addStatement(QueryMobileData.Month + "=" + month);
@@ -174,6 +193,4 @@ public class BudgetService
 
         return total;
     }
-
-
 }
