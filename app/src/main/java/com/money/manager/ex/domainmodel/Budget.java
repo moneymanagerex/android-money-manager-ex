@@ -45,11 +45,32 @@ public class Budget
         setString(BUDGETYEARNAME, value);
     }
 
-    public boolean isMontlyBudget() {
+    public boolean isMonthlyBudget() {
         return getName().contains("-");
     }
 
-    public static boolean isMontlyBudget(String budgetName) {
+    public static boolean isMonthlyBudget(String budgetName) {
         return budgetName.contains("-");
     }
+
+    /**
+     * @return return year of budget
+     */
+    public int getYear() {
+        String[] parts = getName().split("-");
+        return Integer.parseInt(parts[0]);
+    }
+
+    /**
+     * @return return month of budget if is monthly budget or 0 otherwise
+     */
+    public int getMonth() {
+        if (isMonthlyBudget()) {
+            String[] parts = getName().split("-");
+            return Integer.parseInt(parts[1]);
+        } else {
+            return 0;
+        }
+    }
+
 }

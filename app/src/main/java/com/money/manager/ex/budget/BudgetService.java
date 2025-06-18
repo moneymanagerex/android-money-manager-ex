@@ -18,9 +18,29 @@
 package com.money.manager.ex.budget;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.database.QueryMobileData;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.servicelayer.ServiceBase;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.BudgetSettings;
+import com.money.manager.ex.utils.MmxDate;
+import com.squareup.sqlbrite3.BriteDatabase;
+
+import java.util.Date;
+import java.util.HashMap;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 
 /**
  * Budgets business logic
@@ -28,11 +48,20 @@ import com.money.manager.ex.servicelayer.ServiceBase;
 public class BudgetService
         extends ServiceBase {
 
+    @Inject
+    Lazy<BriteDatabase> databaseLazy;
+
     public BudgetService(Context context) {
         super(context);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     public boolean delete(long budgetId) {
+
+        // we need to delete both BudgetRepository and BudgetEntryRepository
+        BudgetEntryRepository entryRepo = new BudgetEntryRepository(getContext());
+        entryRepo.deleteForYear(budgetId);
+
         BudgetRepository repo = new BudgetRepository(getContext());
         return repo.delete(budgetId);
     }
@@ -41,9 +70,138 @@ public class BudgetService
      * Copy budget. It will load the budget with entries and create a copy.
      * Need to get the budget destination period. The period can be only a year/month like the
      * original budget.
-     * @param budgetId The budget to copy.
+     *
+     * @param fromBudgetId The budget to copy.
+     * @param toBudgetId The budget destination.
      */
-    public void copy(long budgetId) {
-        //todo complete
+    public void copy(long fromBudgetId, long toBudgetId) {
+
+        BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getContext());
+        HashMap<String, BudgetEntry>  result = budgetEntryRepository.loadForYear(fromBudgetId);
+        if (result == null) return;
+        for (BudgetEntry entry : result.values()) {
+            entry.setBudgetYearId(toBudgetId);
+            entry.setId(Constants.NOT_SET);
+            budgetEntryRepository.save(entry);
+        }
+    }
+
+    public boolean isCategoryOverDueBudget(long categId, Date date) {
+        MmxDate mmxDate = new MmxDate(date);
+        return isCategoryOverDueBudget(categId, mmxDate, 0);
+    }
+    public boolean isCategoryOverDueBudget(long categId, MmxDate date) {
+        return isCategoryOverDueBudget(categId, date, 0);
+    }
+
+    public boolean isCategoryOverDueBudget(long categId, Date date, double amount) {
+        MmxDate mmxDate = new MmxDate(date);
+        return isCategoryOverDueBudget(categId, mmxDate, amount);
+    }
+
+    public boolean isCategoryOverDueBudget(long categId, MmxDate date, double amount) {
+        // we need BudgetEntry to get amount of budget
+        // and actual value
+
+        // get Budget from transaction date, if no budget no overdue
+        Budget budget = new BudgetRepository(getContext()).loadFromDate(date);
+        if (budget == null) return false;
+
+        // get Budget Entry from transaction date, if no budget no overdue
+        BudgetEntry budgetEntry = loadByYearIDAndCateID(budget.getId(), categId);
+        if (budgetEntry == null) return false;
+
+        // if budget not set, no overdue
+        if (budgetEntry.getPeriodEnum() == BudgetPeriodEnum.NONE)
+            return false;
+
+        double actualValue;
+        double budgetValue;
+        if (budget.isMonthlyBudget()) {
+            actualValue = getActualValueForCategoryAndPeriod(categId, budget.getYear(), budget.getMonth());
+            budgetValue = budgetEntry.getMonthlyAmount();
+        } else {
+            actualValue = getActualValueForCategoryAndPeriod(categId, budget.getYear());
+            budgetValue = budgetEntry.getYearlyAmount();
+        }
+
+        if ( actualValue > 0 || budgetValue > 0 ) {
+            return false; // for now no overdue for income
+        }
+        // Amount and ActualAmount is negative for expences
+        return ( actualValue + amount ) < budgetValue;
+
+    }
+
+    public BudgetEntry loadByDateAndCateID(MmxDate date, long categId) {
+        BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getContext());
+        return budgetEntryRepository.loadByDateAndCateID(date, categId);
+    }
+
+    public BudgetEntry loadByYearIDAndCateID(long yearId, long categId) {
+        BudgetEntryRepository budgetEntryRepository = new BudgetEntryRepository(getContext());
+        return budgetEntryRepository.loadByYearIdAndCateID(yearId, categId);
+    }
+
+    public double getActualValueForCategoryAndPeriod(long categId, int year) {
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, null, year, 0);
+    }
+
+    public double getActualValueForCategoryAndPeriod(long categId, int year, int month) {
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, null, year, month);
+    }
+
+    public double getActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
+        return internalGetActualValueForCategoryAndChildrenAndPeriod(categId, categoryName, year, month);
+    }
+
+    private double internalGetActualValueForCategoryAndChildrenAndPeriod(long categId, String categoryName, int year, int month) {
+        BudgetSettings budgetSettings = (new AppSettings(getContext()).getBudgetSettings());
+
+        String[] projectionIn = new String[]{
+                QueryMobileData.CATEGID,
+                "SUM( " + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
+        };
+
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(QueryMobileData.Status + "<>'V'");
+        where.addStatement(QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')");
+
+        if ( categoryName != null ) {
+            String categoryNameTmp = categoryName;
+            if ( categoryNameTmp.contains("'")) {
+                categoryNameTmp = categoryNameTmp.replace("\"", "\"\"");
+            }
+            String localWhere = "( " +
+                    QueryMobileData.CATEGID + " = " + categId
+                    + " OR " +
+                    QueryMobileData.Category + " LIKE \"" + categoryNameTmp +":%\" )";
+            where.addStatement(localWhere);
+        } else {
+            where.addStatement(QueryMobileData.CATEGID + " = " + categId);
+        }
+        if (month > 0) {
+            // month
+            where.addStatement(QueryMobileData.Month + "=" + month);
+            where.addStatement(QueryMobileData.Year + "=" + year);
+        } else {
+            where.addStatement(QueryMobileData.Date + " BETWEEN '" + budgetSettings.getBudgetDateFromForYear(year).toIsoDateString() + "' AND '" + budgetSettings.getBudgetDateToForYear(year).toIsoDateString()+"'");
+        }
+
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        QueryMobileData mobileData = new QueryMobileData(getContext());
+        builder.setTables(mobileData.getSource());
+        String sql = builder.buildQuery(projectionIn, where.getWhere(), QueryMobileData.CATEGID, null, null, null);
+        Cursor cursor = databaseLazy.get().query(sql);
+
+        if (cursor == null) return 0;
+        // add all the categories and subcategories together.
+        double total = 0;
+        while (cursor.moveToNext()) {
+            total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+        }
+        cursor.close();
+
+        return total;
     }
 }
