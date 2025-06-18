@@ -94,7 +94,18 @@ public class GeneralReportFragment extends Fragment {
                         || columnName.toLowerCase().contains("total")
                         || columnName.toLowerCase().contains("initialbal")) {
 
-                    double amount = Double.valueOf(row.getOrDefault(columnName, "0")); // default value is 0 #2604
+                    double amount = 0;
+                    String rawAmount = row.getOrDefault(columnName, "0").trim();
+
+                    //added for #2663
+                    if (!rawAmount.isBlank()) {
+                        try {
+                            amount = Double.parseDouble(rawAmount);
+                        } catch (NumberFormatException e) {
+                            amount = 0; // fallback to default
+                        }
+                    }
+
                     if (amount < 0) {
                         htmlTable.append("<td style='color:red'>").append(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
                                 MoneyFactory.fromDouble(amount))).append("</td>");
