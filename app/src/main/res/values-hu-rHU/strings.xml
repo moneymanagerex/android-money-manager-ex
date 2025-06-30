@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Automatikus összehangolás engedélyezése csak WiFi-hálózati kapcsolat használata esetén.</string>
     <string name="sync_on_app_start">Összehangolás az alkalmazás indításakor.</string>
     <string name="sync_on_start">Összehangolás indításkor</string>
+    <string name="sync_merge_database">KÍSÉRLETI: Adatbázisok egyesítése</string>
+    <string name="sync_merge_database_on_sync">Adatbázis-különbségek egyesítése összehangoláskor.</string>
+    <string name="sync_merge_dialog_msg_format">Az összes %1$s%2$s egyesítése</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Banki ügylet SMS feldolgozása</string>
     <string name="summary_sms_auto_trans">Banki ügylet frissítése SMS-olvasás és ügylet létrehozása automatikusan</string>
@@ -210,8 +213,8 @@
     <string name="today">Ma</string>
     <string name="last7days">Elmúlt 7 nap</string>
     <string name="last15days">Elmúlt 2 hét</string>
-    <string name="current_month">Aktuális hónap</string>
-    <string name="current_year">Aktuális év</string>
+    <string name="current_month">Jelenlegi hónap</string>
+    <string name="current_year">Jelenlegi év</string>
     <string name="future_transactions">Jövőbeni ügyletek</string>
     <string name="show_transaction">Ügyletek megjelenítése</string>
     <string name="transaction_number">Ügyletszám</string>
@@ -296,7 +299,7 @@
     <string name="preferences_fingerprint_title">Ujjlenyomat-hitelesítés</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Kereséskor használhatja a % helyettesítő karaktert</string>
-    <string name="income_vs_expenses_current_month">Bevételek-Kiadások: Aktuális hónap</string>
+    <string name="income_vs_expenses_current_month">Bevételek/kiadások: Jelenlegi hónap</string>
     <string name="income">Bevételek</string>
     <string name="expenses">Kiadások</string>
     <string name="difference">Különbség</string>
@@ -307,7 +310,7 @@
     <string name="menu_reports">Beépített jelentések</string>
     <string name="menu_general_report_group">Általános jelentések</string>
     <string name="title_activity_general_report">Általános jelentés</string>
-    <string name="menu_report_income_vs_expenses">Bevételek - Kiadások</string>
+    <string name="menu_report_income_vs_expenses">Bevételek/kiadások</string>
     <string name="menu_report_cashflow">Pénzforgalom</string>
     <string name="total">Összesen</string>
     <!--<string name="option">Option</string>-->
@@ -560,7 +563,7 @@
     <string name="update_available_online">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
     <string name="currency_not_found">Nem található pénznem</string>
     <string name="homepage">Honlapunk: https://moneymanagerex.org/</string>
-    <string name="current_database">Aktuális adatbázis</string>
+    <string name="current_database">Jelenlegi adatbázis</string>
     <string name="about_logcat_header">Elküldheti nekünk az alkalmazásnaplót az alábbi gombra kattintva.</string>
     <string name="transaction_type_filter">Szűrés tranzakció típusa szerint</string>
     <string name="status_filter">Szűrés állapot szerint</string>
@@ -585,7 +588,7 @@
     <string name="symbol">Szimbólum</string>
     <string name="number_of_shares">Részvények száma</string>
     <string name="purchase_price">Vételár</string>
-    <string name="current_price">Aktuális ár</string>
+    <string name="current_price">Jelenlegi ár</string>
     <string name="price_date">Ár dátuma</string>
     <string name="commission">Jutalék</string>
     <string name="value">Érték</string>
@@ -611,7 +614,7 @@
     <string name="securities">Értékpapírok</string>
     <string name="no_records_found_create">Nincsenek bejegyzések. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="current_value">Jelenlegi érték</string>
-    <string name="current">Aktuális</string>
+    <string name="current">Jelenlegi</string>
     <string name="parent">Szülő</string>
     <string name="name">Név</string>
     <string name="stock">Készlet</string>
@@ -723,8 +726,10 @@
     <string name="synchronization_disabled">Az összehangolás ki van kapcsolva.</string>
     <string name="filenames_differ">A távoli és a helyi fájlnév különbözik. Összehangolás megszakítása.</string>
     <string name="both_files_modified">Mind a helyi, mind a távoli adatbázis fájlok módosultak!</string>
-    <string name="sync_conflict">Összehangolási hiba</string>
+    <string name="sync_conflict">Összehangolási ütközés</string>
+    <string name="request_conflict_resolve">Ütközés feloldása</string>
     <string name="no_remote_file">Kérjük, jelölje ki az összehangoláshoz használni kívánt távoli fájlt.</string>
+    <string name="request_conlict_reopen">Ütközés a helyi és a távoli fájl között. Emiatt a helyi másolat nem összehangolható a távolival. Exportálja az adatbázist, ha menteni szeretné a helyi másolatot, vagy nyissa meg újra távolról, ha távoli fájlból szeretne adatokat betölteni.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Kijelölhető számlák nem állnak rendelkezésre. Kérjük, módosítsa a számlaszűrési beállításokat, vagy jelöljön meg néhány számlát kedvencként.</string>
     <!-- Errors -->
@@ -733,6 +738,7 @@
     <string name="error_checking_remote">Hiba történt a távoli módosítások ellenőrzésekor.</string>
     <string name="no_remote_change_date">A távoli módosítás dátuma nem található a metaadatokban.</string>
     <string name="remote_unavailable">A távoli fájl nem érhető el.</string>
+    <string name="request_reopen">A távoli fájl nem érhető el. Emiatt a helyi másolat nem összehangolható a távolival. Exportálja az adatbázist, ha menteni szeretné a helyi másolatot, vagy nyissa meg újra távolról, ha távoli fájlból szeretne adatokat betölteni.</string>
     <!-- Select database screen -->
     <string name="intro_text">Az MMEX használatának megkezdéséhez rendelkeznie kell egy adatbázisfájllal az adatok tárolására. Kérjük, jelölje meg az alábbi lehetőségek egyikét.</string>
     <string name="intro_create_db">Új fájl létrehozása és a kezdeti beállítások beállítása.</string>
@@ -799,6 +805,8 @@
     <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
     <string name="cash_ledger">Készpénzes főkönyv</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Helyi megőrzés</string>
+    <string name="merge_take_theirs">Távoli megőrzés</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppá! Hiba történt.</string>
     <string name="bad_error_occurs">Váratlan hiba történt. Kérlek jelezd a fejlesztőknek.</string>
@@ -806,7 +814,11 @@
     <string name="forecast_remain">Előrejelzés megmaradása</string>
     <string name="forecast_calculate">Előrejelzés kiszámítása. Kérjük, várjon&#8230;</string>
     <string name="enter_budget">Költségvetés megadása</string>
+    <string name="enter_budget_value">A(z) %1$s kategória esetében állítsa be az időszak költségvetését. Használjon negatív értéket a kiadásokhoz, pozitívat a bevételekhez:</string>
     <string name="enter_budget_value_plus_minus">Új érték megadása</string>
+    <string name="merge_table">"Egyesítő tábla: "</string>
     <!-- changelog -->
     <string name="changelog">Újdonságok</string>
+    <string name="changelog_title">Fontos újdonságok!!</string>
+    <string name="changelog_1086">Új 5.4-es verzió\n- Új béta funkciót adtunk hozzá az Egyesítés folyamatrendszeréhez. Megpróbálja egyesíteni a fájlokat, ha mindkettő megváltozik. Engedélyezze a Beállítások → Összehangolás → Egyesítés menüpontban.</string>
 </resources>
