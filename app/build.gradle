@@ -100,19 +100,12 @@ android {
         //     applicationId "com.money.manager.ex"
         // }
     }
-
-    lintOptions {
-        // stop the gradle build if errors are found - affects XML resources (strings, etc.).
-        abortOnError false
-    }
-
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/DEPENDENCIES']
+        }
     }
+
 
     signingConfigs {
         debug {
@@ -137,6 +130,9 @@ android {
     namespace 'com.money.manager.ex'
     buildFeatures {
         buildConfig true
+    }
+    lint {
+        abortOnError false
     }
 }
 
