@@ -28,6 +28,9 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 #### Documentation
 - [User Manual](https://android.moneymanagerex.org/usermanual/)
 
+##### Discord Channel (unofficial)
+thanks to [snaggletoothlover](https://github.com/snaggletoothlover) unofficial Discord channel for support: [https://discord.gg/XJJP4BQ7FE](https://discord.gg/XJJP4BQ7FE)
+
 #### Contributing
 
 There are several ways you can contribute to the project:
