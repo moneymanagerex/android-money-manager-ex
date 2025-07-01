@@ -28,6 +28,9 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.QueryMobileData;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
@@ -50,18 +53,25 @@ public class RecurringTransactionService
     extends ServiceBase {
 
     public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
-    public long recurringTransactionId = Constants.NOT_SET;
     private ScheduledTransactionRepository mRepository;
+
+    // TODO a service will not refer to a specific transaction. this is a violation of SRP
+    public long recurringTransactionId = Constants.NOT_SET;
     private RecurringTransaction mRecurringTransaction;
 
-    public RecurringTransactionService(Context context){
-        super(context);
+    // TODO we better need to refer to other variable like taglink, account...
 
+    public RecurringTransactionService(Context context){
+        this(context, new ScheduledTransactionRepository(context), Constants.NOT_SET);
     }
 
     public RecurringTransactionService(long recurringTransactionId, Context context){
-        super(context);
+        this(context, new ScheduledTransactionRepository(context), recurringTransactionId);
+    }
 
+    public RecurringTransactionService(Context context, ScheduledTransactionRepository repository, long recurringTransactionId ){
+        super(context);
+        this.mRepository = repository;
         this.recurringTransactionId = recurringTransactionId;
     }
 
@@ -161,12 +171,71 @@ public class RecurringTransactionService
         return result.toDate();
     }
 
-    public ScheduledTransactionRepository getRepository(){
-        if (mRepository == null) {
-            mRepository = new ScheduledTransactionRepository(getContext());
+    /**
+     * Calcola il numero di occorrenze di una schedulazione in un dato periodo.
+     *
+     * @param scheduleDate La data di partenza della schedulazione (s.Date).
+     * @param repeatType Il tipo di ricorrenza (es. WEEKLY, MONTHLY).
+     * @param numberOfPeriods Il parametro per le ricorrenze "ogni X" (PARAM in DB).
+     * @param startPeriod La data di inizio del periodo di osservazione (inclusa).
+     * @param endPeriod La data di fine del periodo di osservazione (inclusa).
+     * @return Il numero di occorrenze nel periodo specificato.
+     */
+    public int getNumberOfScheduledDate(Date scheduleDate, Recurrence repeatType, Integer numberOfPeriods, Date startPeriod, Date endPeriod) {
+        int occurrences = 0;
+        final int MAX_EXPECTED_OCCURRENCES = 367; // Un piccolo margine oltre 366 per sicurezza
+
+        // Validazione del periodo
+        if (startPeriod.after(endPeriod)) {
+            throw new IllegalArgumentException("StartPeriod cannot be after EndPeriod.");
         }
 
-        return mRepository;
+        // Caso speciale per ONCE: gestito senza iterazione.
+        // Conta 1 occorrenza se la scheduleDate è esattamente nel periodo, altrimenti 0.
+        if (repeatType == Recurrence.ONCE) {
+            // Include StartPeriod e EndPeriod (boundaries inclusive)
+            if (!scheduleDate.before(startPeriod) && !scheduleDate.after(endPeriod)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        // Inizializzazione della data corrente per l'iterazione.
+        // Dobbiamo iniziare dalla 'scheduleDate' o dalla 'startPeriod', a seconda di quale sia successiva.
+        Date currentIterationDate = scheduleDate;
+
+        // Avanza 'currentIterationDate' finché non raggiunge o supera 'startPeriod'.
+        // Questo loop trova la PRIMA occorrenza che cade nel periodo di osservazione o dopo.
+        while (currentIterationDate.before(startPeriod)) {
+            currentIterationDate = getNextScheduledDate(currentIterationDate, repeatType, numberOfPeriods);
+            // Se la nextDate non avanza (potrebbe accadere con logiche errate di getNextScheduledDate
+            // o con ONCE se non gestito separatamente come abbiamo fatto), esci per evitare loop infiniti.
+            if (currentIterationDate.equals(scheduleDate)) { // Se non si è mosso rispetto all'originale
+                throw new IllegalStateException("Error while try to find initial valid date.");
+            }
+        }
+
+        // Ora 'currentIterationDate' è la prima occorrenza valida >= startPeriod.
+        // Conta quante occorrenze rientrano nel periodo [startPeriod, endPeriod].
+        // Questo loop avanza la data e incrementa il contatore finché la data non supera endPeriod.
+        while (!currentIterationDate.after(endPeriod)) { // Continua finché currentIterationDate <= endPeriod
+            occurrences++;
+            currentIterationDate = getNextScheduledDate(currentIterationDate, repeatType, numberOfPeriods);
+            // Previene loop infiniti nel caso in cui getNextScheduledDate non avanzi
+            if (occurrences > MAX_EXPECTED_OCCURRENCES ) {
+                // Se non è giornaliero e abbiamo molte occorrenze, potrebbe esserci un problema
+                // Questo è un controllo di sicurezza per loop inaspettati su periodi molto lunghi
+                throw new IllegalStateException("Exceeded maximum expected occurrences (" + MAX_EXPECTED_OCCURRENCES + ") for a yearly period. Check recurrence logic or period definition.");
+            }
+        }
+
+        return occurrences;
+    }
+
+
+    public ScheduledTransactionRepository getRepository(){
+      return mRepository;
     }
 
     public RecurringTransaction load(long id) {
@@ -595,5 +664,27 @@ public class RecurringTransactionService
         return true;
     }
 
+    public double getForecastValueForCategoryAndPeriod(long categId, MmxDate dateFrom, MmxDate dateTo) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(ITransactionEntity.STATUS + "<>'V'");
+        where.addStatement(ITransactionEntity.TRANSCODE + " IN ('Withdrawal', 'Deposit')");
+        where.addStatement(ITransactionEntity.CATEGID + " = " + categId);
+        Cursor cursor = mRepository.openCursor(mRepository.getAllColumns(), where.getWhere(), null);
+        Double amount = 0.0;
+        if (cursor == null) return 0;
+        while (cursor.moveToNext()) {
+            int numOfOccurrence = getNumberOfScheduledDate(
+                    MmxDate.fromIso8601(cursor.getString(cursor.getColumnIndexOrThrow(ITransactionEntity.TRANSDATE))).toDate(),
+                    Recurrence.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(RecurringTransaction.REPEATS))),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(RecurringTransaction.NUMOCCURRENCES)),
+                    dateFrom.toDate(),
+                    dateTo.toDate()
+            );
+            // TODO apply currency
+            amount += cursor.getDouble(cursor.getColumnIndexOrThrow(ITransactionEntity.TRANSAMOUNT)) * numOfOccurrence;
+        }
+        cursor.close();
+        return amount;
+    }
 
 }

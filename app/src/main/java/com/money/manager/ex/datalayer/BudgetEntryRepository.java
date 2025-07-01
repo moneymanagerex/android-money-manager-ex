@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.budget.BudgetPeriodEnum;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Budget;
@@ -29,7 +30,9 @@ import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.utils.MmxDate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Budget Entry repository.
@@ -79,7 +82,7 @@ public class BudgetEntryRepository
         return "_" + categoryId;
     }
 
-    public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {
+    public List<BudgetEntry> loadForBudgetId(long budgetYearId) {
         if (budgetYearId == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
@@ -92,7 +95,8 @@ public class BudgetEntryRepository
                 null);
         if (cursor == null) return null;
 
-        HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
+        List<BudgetEntry> budgetEntryList = new ArrayList<>();
+        ArrayList<BudgetEntry> budgetEntryArrayList = new ArrayList<>();
 
         // use nested category
         QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
@@ -104,20 +108,31 @@ public class BudgetEntryRepository
             if (nestedCategory == null) {
                 continue;
             }
-            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getCategoryId()), budgetEntry);
+            budgetEntryList.add(budgetEntry);
         }
         cursor.close();
 
+        return budgetEntryList;
+    }
+
+
+    public HashMap<String, BudgetEntry> loadForYear(long budgetYearId) {
+        HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
+        List<BudgetEntry> budgetEntryList = loadForBudgetId(budgetYearId);
+        if (budgetEntryList == null) return null;
+        for (BudgetEntry budgetEntry : budgetEntryList) {
+            budgetEntryHashMap.put(getKeyForCategories(budgetEntry.getCategoryId()), budgetEntry);
+        }
         return budgetEntryHashMap;
     }
 
-    public boolean deleteForYear(long budgetYearId) {
+    public boolean deleteForBudgetId(long budgetYearId) {
         if (budgetYearId == Constants.NOT_SET) return false;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(BudgetEntry.BUDGETYEARID, "=", budgetYearId);
 
-        return getContext().getContentResolver().delete( getUri(),
+        return getContext().getContentResolver().delete(getUri(),
                 where.getWhere(),
                 null) > 0;
 
@@ -126,12 +141,12 @@ public class BudgetEntryRepository
 
     // custom func
     public boolean hasBudget(long yearId, long cateId) {
-        return this.count(BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
-                , new String[]{Long.toString(yearId), Long.toString(cateId)} ) > 0;
+        return this.count(BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID + " = ?"
+                , new String[]{Long.toString(yearId), Long.toString(cateId)}) > 0;
     }
 
     public BudgetEntry loadByYearIdAndCateID(long yearId, long cateId) {
-        return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID  + " = ?"
+        return first(getAllColumns(), BudgetEntry.BUDGETYEARID + " = ? AND " + BudgetEntry.CATEGID + " = ?"
                 , new String[]{Long.toString(yearId), Long.toString(cateId)}
                 , null);
     }
@@ -139,17 +154,35 @@ public class BudgetEntryRepository
 
     /**
      * @param categId Category to Analize
-     * @param date Date to Analize
+     * @param date    Date to Analize
      * @return Return BudgetEntry for given category and date.
-     *         If montky budget is present this has precedences
+     * If montky budget is present this has precedences
      */
-    public BudgetEntry loadByDateAndCateID( MmxDate date, long categId) {
+    public BudgetEntry loadByDateAndCateID(MmxDate date, long categId) {
         BudgetRepository budgetRepository = new BudgetRepository(getContext());
-        Budget budget =  budgetRepository.loadFromDate(date);
+        Budget budget = budgetRepository.loadFromDate(date);
 
-        if ( budget == null ) return null;
+        if (budget == null) return null;
 
         return loadByYearIdAndCateID(budget.getId(), categId);
+    }
+
+    public void saveAll(List<BudgetEntry> budgetEntryList) {
+        for (BudgetEntry budgetEntry : budgetEntryList) {
+            // whe have some possibility:
+            // itemId is not null and frequenry is NONE ==> Delete
+            // else update or create
+            if (budgetEntry.getBudgetEntryId() != Constants.NOT_SET &&
+                    budgetEntry.getPeriodEnum() == BudgetPeriodEnum.NONE) {
+                // delete entry
+                delete(budgetEntry.getBudgetEntryId());
+            } else if (budgetEntry.getBudgetEntryId() == Constants.NOT_SET &&
+                    budgetEntry.getPeriodEnum() == BudgetPeriodEnum.NONE) {
+                // nothing to do. entry is new and is not set, so we don't need to save
+            } else {
+                save(budgetEntry);
+            }
+        }
     }
 
 }

@@ -843,7 +843,8 @@
     <string name="title_budget_reload_forecast">Reload Schedule Transaction</string>
     <string name="title_pref_budget_financial_year">Use financial year in budget</string>
     <string name="summary_pref_budget_financial_year">If checked budgets use financial year instead of calendar year</string>
-
+    <string name="title_budget_generate_value">Generate values for budget...</string>
+    <string name="title_budget_generate_value_message">This delete all budget value and rebuild it from different sources:</string>
 
     <string name="shares">Shares</string>
     <string name="loan">Loan</string>

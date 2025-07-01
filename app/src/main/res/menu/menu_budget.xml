@@ -26,6 +26,9 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/menu_budget_generate_value"
+                android:title="@string/title_budget_generate_value" />
+            <item
                 android:id="@+id/menu_budget_reload_forecast"
                 android:title="@string/title_budget_reload_forecast" />
             <item

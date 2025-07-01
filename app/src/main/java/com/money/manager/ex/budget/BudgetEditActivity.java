@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.servicelayer.BudgetService;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
@@ -194,7 +195,7 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
 
         if ( getSourceBudgetId() != Constants.NOT_SET ) {
             BudgetService service = new BudgetService(this);
-            service.copy(getSourceBudgetId(), budget.getId());
+            service.copyFullBudget(getSourceBudgetId(), budget.getId());
         }
         return true;
     }

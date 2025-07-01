@@ -32,7 +32,8 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.budget.BudgetService;
+import com.money.manager.ex.servicelayer.BudgetReportingService;
+import com.money.manager.ex.servicelayer.BudgetService;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
@@ -727,8 +728,8 @@ public class CheckingTransactionEditActivity
     }
 
     private void checkTransactionAgainstBudget(long categoryId, Date date, double amount) {
-        BudgetService budgetService = new BudgetService(this);
-        if ( budgetService.isCategoryOverDueBudget(categoryId, date, amount) ) {
+        BudgetReportingService budgetReportingService = new BudgetReportingService(this);
+        if ( budgetReportingService.isOverBudget(categoryId, date, amount) ) {
             new UIHelper(this).showToast("You reach budget limit for this Category", Toast.LENGTH_LONG);
         }
     }

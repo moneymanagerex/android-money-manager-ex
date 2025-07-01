@@ -37,6 +37,7 @@ import androidx.loader.content.Loader;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
+import com.money.manager.ex.servicelayer.BudgetService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
@@ -261,7 +262,7 @@ public class BudgetListFragment
                 .setMessage(R.string.confirmDelete)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     BudgetService service = new BudgetService(getActivity());
-                    service.delete(budgetId);
+                    service.deleteFullBudget(budgetId);
                     LoaderManager.getInstance(BudgetListFragment.this).restartLoader(LOADER_BUDGETS, null, BudgetListFragment.this);
                 })
                 .setNegativeButton(android.R.string.cancel, null)

@@ -43,6 +43,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
@@ -51,6 +52,7 @@ import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.servicelayer.BudgetReportingService;
 import com.money.manager.ex.settings.AppSettings;
 
 import androidx.annotation.NonNull;
@@ -61,6 +63,7 @@ import androidx.loader.content.Loader;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Use the {@link BudgetEntryFragment#newInstance} factory method to
@@ -230,6 +233,13 @@ public class BudgetEntryFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_budget_generate_value) {
+            // we can:
+            // - generate from actual value
+            // - generate from actual value + forecast transaction
+            // - copy from another budget
+            askRebuildBudget();
+        }
         if (item.getItemId() == R.id.menu_budget_reload_forecast ) {
             ScheduledTransactionForecastListServices.destroyInstance();
             restartLoader();
@@ -488,6 +498,31 @@ public class BudgetEntryFragment
         intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
+    }
+
+    private void askRebuildBudget() {
+        LayoutInflater inflater = getLayoutInflater();
+        View customLayout = inflater.inflate(R.layout.budget_edit_entry, null);
+        final String[] items = {"Create from Actual Value", "Create from Schedule Transaction"};
+        boolean[] checkedItems = {true, true};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.title_budget_generate_value)
+                .setMessage(R.string.title_budget_generate_value_message)
+                .setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
+                    checkedItems[which] = isChecked;
+                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    rebuildBudget(mBudgetYearId, checkedItems[0], checkedItems[1]);
+                    restartLoader();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void rebuildBudget(long budgetYearId, boolean useActual, boolean useSchedule) {
+            // todo call budget Report
+        BudgetReportingService service = new BudgetReportingService(getActivity());
+        service.rebuildBudget(budgetYearId, useActual, useSchedule);
     }
 
 }

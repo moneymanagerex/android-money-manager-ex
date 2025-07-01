@@ -20,7 +20,7 @@ package com.money.manager.ex.core.ioc;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.about.AboutFragment;
 import com.money.manager.ex.budget.BudgetAdapter;
-import com.money.manager.ex.budget.BudgetService;
+import com.money.manager.ex.servicelayer.BudgetService;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
@@ -41,6 +41,7 @@ import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
 import com.money.manager.ex.search.SearchParametersFragment;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.servicelayer.TransactionService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SettingsActivity;
@@ -117,4 +118,6 @@ public interface MmxComponent {
 
     // Adapters
     void inject(BudgetAdapter adapter);
+
+    void inject(TransactionService transactionService);
 }

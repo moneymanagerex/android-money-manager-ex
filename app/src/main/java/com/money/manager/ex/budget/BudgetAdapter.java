@@ -22,41 +22,27 @@ import android.database.Cursor;
 
 import androidx.core.content.ContextCompat;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.budget.models.BudgetModel;
+import com.money.manager.ex.servicelayer.BudgetReportingService;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.datalayer.BudgetEntryRepository;
-import com.money.manager.ex.datalayer.BudgetRepository;
-import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
-import com.money.manager.ex.scheduled.ScheduleTransactionForecastList;
-import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
-import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.BudgetSettings;
 import com.money.manager.ex.utils.MmxDate;
-import com.squareup.sqlbrite3.BriteDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
-import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -69,18 +55,10 @@ public class BudgetAdapter
     private final Context mContext;
 
     private final int mLayout;
-    private Budget mBudget;
-    private HashMap<String, BudgetEntry> mBudgetEntries;
+    private BudgetModel mBudget;
 
-    // budget financial year
-    private BudgetSettings budgetSettings;
-
-    //private ScheduleTransactionForecastList mScheduleTransactionForecastList;
-    private final ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
-    //private CompletableFuture<ScheduleTransactionForecastList> mScheduleTransactionForecastListFuture;
-    private final List<View> fieldRequestUpdate = new ArrayList<>();
-    private final HashMap<Long, Double> categoryIdAmountAvailable = new HashMap<>();
-    private final HashMap<Long, Double> categoryIdForecastAmount = new HashMap<>();
+    // repo
+    private final BudgetReportingService budgetReportingService;
     private final CurrencyService currencyService;
 
     private final ArrayList<Integer> mVisibleColumn = new ArrayList<>();
@@ -103,64 +81,32 @@ public class BudgetAdapter
         super(context, R.layout.item_budget, cursor, from, to, flags);
         mContext = context;
 
-        // get Budget financial
-        budgetSettings = (new AppSettings(getContext())).getBudgetSettings();
+        budgetReportingService = new BudgetReportingService(mContext);
 
         // switch to simple layout if the showSimpleView is set
-        mLayout = (budgetSettings.getShowSimpleView())
+        mLayout = (budgetReportingService.getBudgetSettings().getShowSimpleView())
                 ? R.layout.item_budget_simple
                 : R.layout.item_budget;
 
         currencyService = new CurrencyService(mContext);
 
-        scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
-
         if (mLayout == R.layout.item_budget_simple) {
             addVisibleColumn(R.id.amountAvailableTextView);
         } else {
             // read from setting
-            if (budgetSettings.getColumnVisible(R.id.frequencyTextView, true)) addVisibleColumn(R.id.frequencyTextView);
-            if (budgetSettings.getColumnVisible(R.id.amountTextView, true)) addVisibleColumn(R.id.amountTextView);
-            if (budgetSettings.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
-            if (budgetSettings.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
-            if (budgetSettings.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
-            if (budgetSettings.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.frequencyTextView, true))
+                addVisibleColumn(R.id.frequencyTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.amountTextView, true))
+                addVisibleColumn(R.id.amountTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.estimatedForPeriodTextView, false))
+                addVisibleColumn(R.id.estimatedForPeriodTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.actualTextView, true))
+                addVisibleColumn(R.id.actualTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.amountAvailableTextView, false))
+                addVisibleColumn(R.id.amountAvailableTextView);
+            if (budgetReportingService.getBudgetSettings().getColumnVisible(R.id.forecastRemainTextView, false))
+                addVisibleColumn(R.id.forecastRemainTextView);
         }
-    }
-
-    private void createForecastEntry(){
-        if (!mVisibleColumn.contains(R.id.forecastRemainTextView))
-            return;
-        if (!scheduledTransactionForecastListServices.isReady()) {
-            Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
-            scheduledTransactionForecastListServices
-                    .setDateTo(budgetSettings.getBudgetDateToForYear(mBudget.getYear()))
-                    .createScheduledTransactionForecastAsync(mContext, result -> {
-                        Handler mHandler = new Handler(Looper.getMainLooper());
-                        mHandler.post(() -> processForecast((ScheduleTransactionForecastList) result));
-                        return result;
-                    });
-        }
-
-    }
-
-    public void processForecast(ScheduleTransactionForecastList result){
-        for (int i = 0; i < fieldRequestUpdate.size(); i++) {
-            View view = fieldRequestUpdate.get(i);
-            long categoryId = (long) view.getTag();
-            double forecastRemain;
-            if (categoryIdForecastAmount.containsKey( categoryId ) ) {
-                // reuse from cache
-                forecastRemain = categoryIdAmountAvailable.get(categoryId) - categoryIdForecastAmount.get(categoryId);
-            } else {
-                double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
-                double amountAvailable = categoryIdAmountAvailable.get(categoryId);
-                forecastRemain = amountAvailable - totalFromSchedule;
-            }
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
-            view.postInvalidate();
-        }
-        fieldRequestUpdate.clear();
     }
 
     public void addVisibleColumn(int column) {
@@ -173,8 +119,13 @@ public class BudgetAdapter
             mVisibleColumn.remove(column);
     }
 
-    public MmxDate getDateFrom() { return budgetSettings.getBudgetDateFromForYear(mBudget.getYear()) ;}
-    public MmxDate getDateTo() { return budgetSettings.getBudgetDateToForYear(mBudget.getYear());}
+    public MmxDate getDateFrom() {
+        return mBudget.getDateFrom(budgetReportingService.getBudgetSettings());
+    }
+
+    public MmxDate getDateTo() {
+        return mBudget.getDateTo(budgetReportingService.getBudgetSettings());
+    }
 
     ArrayList<Integer> getVisibleColumn() {
         return mVisibleColumn;
@@ -225,7 +176,7 @@ public class BudgetAdapter
                         );
                     }
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 Timber.e(e, "setViewElement");
             }
         }
@@ -247,7 +198,7 @@ public class BudgetAdapter
 
         setVisibleTextFieldsForView(view);
 
-        boolean useSubCategory = budgetSettings.get(R.id.menu_budget_category_with_sub, false);
+        boolean useSubCategory = budgetReportingService.getBudgetSettings().get(R.id.menu_budget_category_with_sub, false);
 
         setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME)));
         long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
@@ -264,7 +215,7 @@ public class BudgetAdapter
         setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, budgetEntry.getPeriodEnum()));
 
         // amountTextView
-        double amount ;
+        double amount;
         amount = budgetEntry.getAmount();
         setViewElement(view, R.id.amountTextView, amount, currencyService);
 
@@ -273,13 +224,13 @@ public class BudgetAdapter
                 ? budgetEntry.getMonthlyAmount()
                 : budgetEntry.getYearlyAmount();
 
-        if ( useSubCategory) {
+        if (useSubCategory) {
             List<NestedCategoryEntity> children = (new QueryNestedCategory(context)).getChildrenNestedCategoryEntities(categoryId);
             for (NestedCategoryEntity child : children) {
-                if ( child.getId() != categoryId ) { // already computed
+                if (child.getId() != categoryId) { // already computed
                     BudgetEntry childBudgetEntry = getBudgetEntry(child.getCategoryId());
                     double childEstimatedForPeriod = 0;
-                    if ( childBudgetEntry != null ) {
+                    if (childBudgetEntry != null) {
                         childEstimatedForPeriod = mBudget.isMonthlyBudget()
                                 ? childBudgetEntry.getMonthlyAmount()
                                 : childBudgetEntry.getYearlyAmount();
@@ -302,41 +253,22 @@ public class BudgetAdapter
         } else {
             setViewElement(view, R.id.amountAvailableTextView, amountAvailable, currencyService);
         }
-        categoryIdAmountAvailable.put(categoryId, amountAvailable);
 
         // forecastRemainTextView
-        if (!ScheduledTransactionForecastListServices.getInstance().isReady()){
-            setViewElement(view, R.id.forecastRemainTextView, "<...>");
-            view.setTag(categoryId);
-            fieldRequestUpdate.add(view);
-        } else {
-            double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
-            double forecastRemain = amountAvailable - totalFromSchedule;
-            setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
-        }
+        double totalFromSchedule = getEstimateFromRecurringTransaction(categoryId);
+        double forecastRemain = amountAvailable - totalFromSchedule;
+        setViewElement(view, R.id.forecastRemainTextView, forecastRemain, currencyService, forecastRemain > 0);
     }
 
     private double getEstimateFromRecurringTransaction(long categoryId) {
-        if (categoryIdForecastAmount.isEmpty()) {
-            Timber.i("Calculate local cache");
-        }
-        // Get Value for this category from recurring transaction
-        if ( categoryIdForecastAmount.containsKey(categoryId) ) {
-            return categoryIdForecastAmount.get(categoryId);
-        }
 
-        if ( ! scheduledTransactionForecastListServices.isReady() ) return 0;
+        return budgetReportingService.getRecurringTransactionService().
+                getForecastValueForCategoryAndPeriod(
+                        categoryId,
+                        getDateFrom(),
+                        getDateTo());
 
-        // budget is based on year, Year financial, or monthly
-        MmxDate date = new MmxDate(getDateTo().toDate());
-        Double total = 0.0;
-        ScheduleTransactionForecastList list = scheduledTransactionForecastListServices.getRecurringTransactions();
-        while (date.toDate().compareTo(getDateTo().toDate()) < 0) {
-            total += list.getForecastAmountFromCache(categoryId, date.getYear(), date.getMonth());
-            date.addMonth(1);
-        }
-        categoryIdForecastAmount.put(categoryId, total);
-        return categoryIdForecastAmount.get(categoryId);
+
     }
 
     public Context getContext() {
@@ -349,16 +281,7 @@ public class BudgetAdapter
      * @param budgetYearId The budget year id
      */
     public void setBudgetYearId(long budgetYearId) {
-        BudgetRepository repo = new BudgetRepository(getContext());
-        mBudget = repo.load(budgetYearId);
-
-        if (mBudgetEntries != null) {
-            mBudgetEntries.clear();
-        }
-        // populate thread cache HashMap
-        mBudgetEntries = populateThreadCache();
-        // populate forecast entry
-        createForecastEntry();
+        mBudget = budgetReportingService.getBudgetService().loadFullBudget(budgetYearId);
     }
 
     private double getActualAmount(Boolean useSubCategory, Cursor cursor) {
@@ -377,27 +300,22 @@ public class BudgetAdapter
      * @return Budget entry for category
      */
     private BudgetEntry getBudgetEntry(long categoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
-        return mBudgetEntries.getOrDefault(key, null);
-    }
-
-    /**
-     * Builds a thread cache from the database for every category and subcategory present in
-     * this budget.
-     *
-     * @return HashMap of budget entries
-     */
-    private HashMap<String, BudgetEntry> populateThreadCache() {
-        BudgetEntryRepository repo = new BudgetEntryRepository(mContext);
-        return repo.loadForYear(mBudget.getId());
+        return mBudget.getItem(categoryId);
     }
 
     private double getAmountForCategory(Boolean useSubCategory, long categoryId, String categoryName) {
-        BudgetService service = new BudgetService(getContext());
         if (useSubCategory) {
-            return service.getActualValueForCategoryAndChildrenAndPeriod(categoryId, categoryName, mBudget.getYear(), mBudget.getMonth());
+            return budgetReportingService.getTransactionService().getActualValueForCategoryAndChildrenAndPeriod(
+                    categoryId,
+                    categoryName,
+                    getDateFrom(),
+                    getDateTo());
+        } else {
+            return budgetReportingService.getTransactionService().getActualValueForCategoryAndPeriod(
+                    categoryId,
+                    getDateFrom(),
+                    getDateTo());
         }
-        return service.getActualValueForCategoryAndChildrenAndPeriod(categoryId, null, mBudget.getYear(), mBudget.getMonth());
     }
 
 }

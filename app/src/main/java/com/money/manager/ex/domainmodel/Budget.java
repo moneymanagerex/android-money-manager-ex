@@ -46,6 +46,7 @@ public class Budget
     }
 
     public boolean isMonthlyBudget() {
+        if (getName() == null) return false;
         return getName().contains("-");
     }
 

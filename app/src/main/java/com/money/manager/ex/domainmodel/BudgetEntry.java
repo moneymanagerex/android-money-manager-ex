@@ -66,6 +66,14 @@ public class BudgetEntry
         setLong(BudgetEntry.BUDGETENTRYID, value);
     }
 
+    public String getKey() {
+        return BudgetEntry.getKeyForCategories(getCategoryId());
+    }
+
+    public static String getKeyForCategories(long categoryId) {
+        return "_" + categoryId;
+    }
+
     // Getter and setter for BudgetYearId
     public Long getBudgetYearId() {
         return getLong(BudgetEntry.BUDGETYEARID);
