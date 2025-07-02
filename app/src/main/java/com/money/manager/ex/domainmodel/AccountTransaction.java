@@ -47,9 +47,9 @@ public class AccountTransaction
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
-    private ArrayList<Attachment> mAttachments;
-    private ArrayList<TagLink> tagLinks = null;
-    private ArrayList<ISplitTransaction> splitTransactions = null;
+    ArrayList<Attachment> mAttachments;
+    ArrayList<TagLink> tagLinks = null;
+    ArrayList<ISplitTransaction> splitTransactions = null;
 
     /**
      * Creates default, empty transaction.
@@ -132,8 +132,7 @@ public class AccountTransaction
         if (amount == null) {
             amount = 0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
-        return result;
+        return MoneyFactory.fromDouble(amount);
     }
 
     public void setAmount(Money value) {
@@ -145,8 +144,7 @@ public class AccountTransaction
         if (amount == null) {
             amount = 0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
-        return result;
+        return MoneyFactory.fromDouble(amount);
     }
 
     public void setToAmount(Money value) {
