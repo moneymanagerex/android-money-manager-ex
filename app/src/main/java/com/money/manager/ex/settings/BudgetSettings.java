@@ -22,6 +22,9 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.utils.MmxDate;
 
 /**
  * Budget preferences
@@ -53,6 +56,34 @@ public class BudgetSettings
     public void setBudgetFinancialYear( Boolean value ) {
         set(R.string.pref_budget_financial_year, value);
     }
+
+    public MmxDate getBudgetDateFromForYear(int year) {
+        if ( getBudgetFinancialYear() ) {
+            MmxDate newDate = MmxDate.newDate();
+            try {
+                InfoService infoService = new InfoService(getContext());
+                int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+                int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
+                newDate.setYear(year);
+                newDate.setDate(financialYearStartDay);
+                newDate.setMonth(financialYearStartMonth);
+            } catch (Exception e) {
+                newDate.setYear(year);
+                newDate.setDate(1);
+                newDate.setMonth(0);
+            }
+            return newDate;
+        } else {
+            return new MmxDate(year, 0, 1);
+        }
+    }
+
+    public MmxDate getBudgetDateToForYear(int year) {
+        MmxDate newDate = getBudgetDateFromForYear(year);
+        newDate.addYear(1).minusDays(1);
+        return newDate;
+    }
+
 
     public boolean getColumnVisible(int id, boolean defaultValue) {
         String key = "budgetColumn_" + id;

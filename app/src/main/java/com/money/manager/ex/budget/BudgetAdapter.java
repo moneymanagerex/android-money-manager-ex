@@ -19,13 +19,11 @@ package com.money.manager.ex.budget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
 
 import androidx.core.content.ContextCompat;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,20 +31,18 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.scheduled.ScheduleTransactionForecastList;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.BudgetSettings;
 import com.money.manager.ex.utils.MmxDate;
@@ -70,20 +66,14 @@ import timber.log.Timber;
 public class BudgetAdapter
         extends SimpleCursorAdapter {
 
-    @Inject
-    Lazy<BriteDatabase> databaseLazy;
-
-    private Context mContext;
+    private final Context mContext;
 
     private final int mLayout;
-    private String mBudgetName;
-    private long mBudgetYearId;
+    private Budget mBudget;
     private HashMap<String, BudgetEntry> mBudgetEntries;
 
     // budget financial year
-    private boolean useBudgetFinancialYear = false;
-    private MmxDate dateFrom;
-    private MmxDate dateTo;
+    private BudgetSettings budgetSettings;
 
     //private ScheduleTransactionForecastList mScheduleTransactionForecastList;
     private final ScheduledTransactionForecastListServices scheduledTransactionForecastListServices;
@@ -113,9 +103,11 @@ public class BudgetAdapter
         super(context, R.layout.item_budget, cursor, from, to, flags);
         mContext = context;
 
+        // get Budget financial
+        budgetSettings = (new AppSettings(getContext())).getBudgetSettings();
+
         // switch to simple layout if the showSimpleView is set
-        AppSettings settings = new AppSettings(getContext());
-        mLayout = (settings.getBudgetSettings().getShowSimpleView())
+        mLayout = (budgetSettings.getShowSimpleView())
                 ? R.layout.item_budget_simple
                 : R.layout.item_budget;
 
@@ -123,26 +115,16 @@ public class BudgetAdapter
 
         scheduledTransactionForecastListServices = ScheduledTransactionForecastListServices.getInstance();
 
-        MmexApplication.getApp().iocComponent.inject(this);
-
-        // get Budget financial
-        try {
-            useBudgetFinancialYear = (new AppSettings(getContext()).getBudgetSettings().getBudgetFinancialYear());
-        } catch (Exception e) {
-            useBudgetFinancialYear = false;
-        }
-
         if (mLayout == R.layout.item_budget_simple) {
             addVisibleColumn(R.id.amountAvailableTextView);
         } else {
             // read from setting
-            BudgetSettings setting = (new AppSettings(getContext())).getBudgetSettings();
-            if (setting.getColumnVisible(R.id.frequencyTextView, true)) addVisibleColumn(R.id.frequencyTextView);
-            if (setting.getColumnVisible(R.id.amountTextView, true)) addVisibleColumn(R.id.amountTextView);
-            if (setting.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
-            if (setting.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
-            if (setting.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
-            if (setting.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
+            if (budgetSettings.getColumnVisible(R.id.frequencyTextView, true)) addVisibleColumn(R.id.frequencyTextView);
+            if (budgetSettings.getColumnVisible(R.id.amountTextView, true)) addVisibleColumn(R.id.amountTextView);
+            if (budgetSettings.getColumnVisible(R.id.estimatedForPeriodTextView, false)) addVisibleColumn(R.id.estimatedForPeriodTextView);
+            if (budgetSettings.getColumnVisible(R.id.actualTextView, true)) addVisibleColumn(R.id.actualTextView);
+            if (budgetSettings.getColumnVisible(R.id.amountAvailableTextView, false)) addVisibleColumn(R.id.amountAvailableTextView);
+            if (budgetSettings.getColumnVisible(R.id.forecastRemainTextView, false)) addVisibleColumn(R.id.forecastRemainTextView);
         }
     }
 
@@ -152,7 +134,7 @@ public class BudgetAdapter
         if (!scheduledTransactionForecastListServices.isReady()) {
             Toast.makeText(mContext, R.string.forecast_calculate, Toast.LENGTH_LONG).show();
             scheduledTransactionForecastListServices
-                    .setDateTo(dateTo)
+                    .setDateTo(budgetSettings.getBudgetDateToForYear(mBudget.getYear()))
                     .createScheduledTransactionForecastAsync(mContext, result -> {
                         Handler mHandler = new Handler(Looper.getMainLooper());
                         mHandler.post(() -> processForecast((ScheduleTransactionForecastList) result));
@@ -191,8 +173,8 @@ public class BudgetAdapter
             mVisibleColumn.remove(column);
     }
 
-    public MmxDate getDateFrom() { return dateFrom ;}
-    public MmxDate getDateTo() { return dateTo ;}
+    public MmxDate getDateFrom() { return budgetSettings.getBudgetDateFromForYear(mBudget.getYear()) ;}
+    public MmxDate getDateTo() { return budgetSettings.getBudgetDateToForYear(mBudget.getYear());}
 
     ArrayList<Integer> getVisibleColumn() {
         return mVisibleColumn;
@@ -265,42 +247,42 @@ public class BudgetAdapter
 
         setVisibleTextFieldsForView(view);
 
-        boolean useSubCategory = (new AppSettings(getContext())).getBudgetSettings().get(R.id.menu_budget_category_with_sub, false);
+        boolean useSubCategory = budgetSettings.get(R.id.menu_budget_category_with_sub, false);
 
         setViewElement(view, R.id.categoryTextView, cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME)));
         long categoryId = cursor.getLong(cursor.getColumnIndexOrThrow(BudgetNestedQuery.CATEGID));
 
+        // get BudgetEntry
+        BudgetEntry budgetEntry = getBudgetEntry(categoryId);
+        if (budgetEntry == null) {
+            // create fake default entry
+            budgetEntry = new BudgetEntry();
+            budgetEntry.setActive(false);
+        }
+
         // Frequency frequencyTextView
-        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId);
-        setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
+        setViewElement(view, R.id.frequencyTextView, BudgetPeriods.getPeriodTranslationForEnum(mContext, budgetEntry.getPeriodEnum()));
 
         // amountTextView
-        double amount = 0;
-        amount = getBudgetAmountFor(categoryId);
+        double amount ;
+        amount = budgetEntry.getAmount();
         setViewElement(view, R.id.amountTextView, amount, currencyService);
 
         // Estimated estimatedForPeriodTextView
-        double estimatedForPeriod = isMonthlyBudget(mBudgetName)
-                ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
-                : BudgetPeriods.getYearlyEstimate(periodEnum, amount);
-        if (Double.isNaN(estimatedForPeriod)) {
-            // this means that we don't have estimate for this category
-            // so estimate is 0
-            estimatedForPeriod = 0;
-        }
+        double estimatedForPeriod = mBudget.isMonthlyBudget()
+                ? budgetEntry.getMonthlyAmount()
+                : budgetEntry.getYearlyAmount();
+
         if ( useSubCategory) {
             List<NestedCategoryEntity> children = (new QueryNestedCategory(context)).getChildrenNestedCategoryEntities(categoryId);
             for (NestedCategoryEntity child : children) {
                 if ( child.getId() != categoryId ) { // already computed
-                    BudgetPeriodEnum childPeriodEnum = getBudgetPeriodFor(child.getCategoryId());
-                    double childAmount = getBudgetAmountFor(child.getCategoryId());
-                    double childEstimatedForPeriod = isMonthlyBudget(mBudgetName)
-                            ? BudgetPeriods.getMonthlyEstimate(childPeriodEnum, childAmount)
-                            : BudgetPeriods.getYearlyEstimate(childPeriodEnum, childAmount);
-                    if (Double.isNaN(childEstimatedForPeriod)) {
-                        // this means that we don't have estimate for this category
-                        // so estimate is 0
-                        childEstimatedForPeriod = 0;
+                    BudgetEntry childBudgetEntry = getBudgetEntry(child.getCategoryId());
+                    double childEstimatedForPeriod = 0;
+                    if ( childBudgetEntry != null ) {
+                        childEstimatedForPeriod = mBudget.isMonthlyBudget()
+                                ? childBudgetEntry.getMonthlyAmount()
+                                : childBudgetEntry.getYearlyAmount();
                     }
                     estimatedForPeriod += childEstimatedForPeriod;
                 }
@@ -346,10 +328,10 @@ public class BudgetAdapter
         if ( ! scheduledTransactionForecastListServices.isReady() ) return 0;
 
         // budget is based on year, Year financial, or monthly
-        MmxDate date = new MmxDate(dateFrom.toDate());
+        MmxDate date = new MmxDate(getDateTo().toDate());
         Double total = 0.0;
         ScheduleTransactionForecastList list = scheduledTransactionForecastListServices.getRecurringTransactions();
-        while (date.toDate().compareTo(dateTo.toDate()) < 0) {
+        while (date.toDate().compareTo(getDateTo().toDate()) < 0) {
             total += list.getForecastAmountFromCache(categoryId, date.getYear(), date.getMonth());
             date.addMonth(1);
         }
@@ -361,34 +343,14 @@ public class BudgetAdapter
         return mContext;
     }
 
-    public void setBudgetName(String budgetName) {
-        mBudgetName = budgetName;
-        long year = getYearFromBudgetName(mBudgetName);
-        long month = getMonthFromBudgetName(mBudgetName);
-        if ( month != Constants.NOT_SET ) {
-            month--;
-            // monthly budget
-            dateFrom = new MmxDate((int) year, (int) month, 1);
-            dateTo = new MmxDate((int) year, (int) month + 1, 1).minusDays(1);
-        } else if ( useBudgetFinancialYear ){
-            // year financial budget
-            dateFrom = getStartDateForFinancialYear(mBudgetName);
-            dateTo = new MmxDate(dateFrom.toDate());
-            dateTo.addYear(1).minusDays(1);
-        } else {
-            // year budget
-            dateFrom = new MmxDate((int) year, 0, 1);
-            dateTo = new MmxDate((int) year, 11, 31);
-        }
-    }
-
     /**
      * As a side effect of the setter the budget entry thread cache is populated.
      *
-     * @param budgetYearId
+     * @param budgetYearId The budget year id
      */
     public void setBudgetYearId(long budgetYearId) {
-        this.mBudgetYearId = budgetYearId;
+        BudgetRepository repo = new BudgetRepository(getContext());
+        mBudget = repo.load(budgetYearId);
 
         if (mBudgetEntries != null) {
             mBudgetEntries.clear();
@@ -409,162 +371,33 @@ public class BudgetAdapter
         return actual;
     }
 
-    /**
-     * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
-     *
-     * @param categoryId
-     * @return
-     */
-    private double getBudgetAmountFor(long categoryId) {
-        String key = BudgetEntryRepository.getKeyForCategories(categoryId);
-        return mBudgetEntries.containsKey(key)
-                ? mBudgetEntries.get(key).getDouble(BudgetQuery.AMOUNT)
-                : 0;
-    }
 
     /**
-     * Returns the period of the budgeted amount or NONE if there isn't any.
-     *
-     * @param categoryId
-     * @return
+     * @param categoryId Category id
+     * @return Budget entry for category
      */
-    private BudgetPeriodEnum getBudgetPeriodFor(long categoryId) {
+    private BudgetEntry getBudgetEntry(long categoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId);
-        return mBudgetEntries.containsKey(key)
-                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getString(BudgetQuery.PERIOD))
-                : BudgetPeriodEnum.NONE;
+        return mBudgetEntries.getOrDefault(key, null);
     }
 
     /**
      * Builds a thread cache from the database for every category and subcategory present in
      * this budget.
      *
-     * @return
+     * @return HashMap of budget entries
      */
     private HashMap<String, BudgetEntry> populateThreadCache() {
         BudgetEntryRepository repo = new BudgetEntryRepository(mContext);
-        return repo.loadForYear(mBudgetYearId);
+        return repo.loadForYear(mBudget.getId());
     }
 
     private double getAmountForCategory(Boolean useSubCategory, long categoryId, String categoryName) {
-        String where;
-        where = QueryNestedCategory.CATEGID + "=" + categoryId;
+        BudgetService service = new BudgetService(getContext());
         if (useSubCategory) {
-            if ( categoryName.contains("'")) {
-                categoryName = categoryName.replace("\"", "\"\"");
-            }
-            where = "( " + where + " OR " + QueryMobileData.Category + " LIKE \"" + categoryName +":%\" )";
+            return service.getActualValueForCategoryAndChildrenAndPeriod(categoryId, categoryName, mBudget.getYear(), mBudget.getMonth());
         }
-        double total = loadTotalFor(where);
-        return total;
-    }
-
-    private double loadTotalFor(String where) {
-        double total = 0;
-
-        // if month use month budget
-        // if year check if financial or calendar
-        long year = getYearFromBudgetName(mBudgetName);
-        long month = getMonthFromBudgetName(mBudgetName);
-        if (month != Constants.NOT_SET) {
-            // month
-            where += " AND " + QueryMobileData.Month + "=" + month;
-            where += " AND " + QueryMobileData.Year + "=" + year;
-        } else if (!useBudgetFinancialYear || dateFrom == null || dateTo == null) {
-            // annual
-            where += " AND " + QueryMobileData.Year + "=" + year;
-        } else {
-            // financial
-            where += " AND " + QueryMobileData.Date + " BETWEEN '" + dateFrom.toIsoDateString() + "' AND '" + dateTo.toIsoDateString() + "'";
-        }
-
-        try {
-            // WolfSolver adapt query for nested category
-            String query = prepareQuery(where);
-            Cursor cursor = databaseLazy.get().query(query);
-            if (cursor == null) return 0;
-            // add all the categories and subcategories together.
-            while (cursor.moveToNext()) {
-                total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
-            }
-            cursor.close();
-        } catch (IllegalStateException ise) {
-            Timber.e(ise, "loading category total");
-        }
-
-        return total;
-    }
-
-    private String prepareQuery(String whereClause) {
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        QueryMobileData mobileData = new QueryMobileData(getContext());
-
-        //data to compose builder
-        String[] projectionIn = new String[]{
-                "ID AS _id", QueryMobileData.CATEGID, QueryMobileData.Category,
-                "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"
-        };
-
-        String selection = QueryMobileData.Status + "<>'V' AND " +
-                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
-        if (!TextUtils.isEmpty(whereClause)) {
-            selection += " AND " + whereClause;
-        }
-
-        String groupBy = QueryMobileData.CATEGID + ", " + QueryMobileData.Category;
-
-        String having = null;
-//        if (!TextUtils.isEmpty(((CategoriesReportActivity) context).mFilter)) {
-//            String filter = ((CategoriesReportActivity) context).mFilter;
-//            if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
-//                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") < 0";
-//            } else {
-//                having = "SUM(" + QueryMobileData.AmountBaseConvRate + ") > 0";
-//            }
-//        }
-
-        String sortOrder = QueryMobileData.Category;
-        String limit = null;
-
-        builder.setTables(mobileData.getSource());
-
-        return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-    }
-
-    private long getYearFromBudgetName(String budgetName) {
-        String yearString = budgetName.substring(0, 4);
-        long year = Integer.parseInt(yearString);
-        return year;
-    }
-
-    private MmxDate getStartDateForFinancialYear(String budgetName) {
-        MmxDate newDate = MmxDate.newDate();
-        try {
-            InfoService infoService = new InfoService(getContext());
-            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "0")) - 1;
-            newDate.setYear((int) getYearFromBudgetName(budgetName));
-            newDate.setDate(financialYearStartDay);
-            newDate.setMonth(financialYearStartMonth);
-        } catch (Exception e) {
-        }
-        return newDate;
-    }
-
-    private boolean isMonthlyBudget(String budgetName) {
-        return budgetName.contains("-");
-    }
-
-    private long getMonthFromBudgetName(String budgetName) {
-        long result = Constants.NOT_SET;
-
-        if (!isMonthlyBudget(budgetName)) return result;
-
-        int separatorLocation = budgetName.indexOf("-");
-        String monthString = budgetName.substring(separatorLocation + 1, separatorLocation + 3);
-
-        result = Integer.parseInt(monthString);
-        return result;
+        return service.getActualValueForCategoryAndChildrenAndPeriod(categoryId, null, mBudget.getYear(), mBudget.getMonth());
     }
 
 }

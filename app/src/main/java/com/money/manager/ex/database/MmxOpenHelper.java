@@ -27,8 +27,6 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.google.common.io.Files;
 import com.money.manager.ex.Constants;
-// import com.money.manager.ex.sqlite3mc.SupportFactory;
-import net.sqlcipher.database.SupportFactory;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -39,6 +37,8 @@ import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxFileUtils;
+
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +71,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
         // Load the sqlite3mc native library.
         // System.loadLibrary("sqliteX");
+        System.loadLibrary("sqlcipher");
     }
 
     private final Context mContext;
@@ -134,7 +135,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     }
 
     private SupportSQLiteDatabase getDatabase(boolean writable) {
-        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes(),null, true);
+        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)
@@ -313,7 +314,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     }
 
     public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
-        SupportSQLiteOpenHelper.Factory factory = new SupportFactory(this.mPassword.getBytes(), null, true);
+        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
         SupportSQLiteOpenHelper.Configuration configuration =
                 SupportSQLiteOpenHelper.Configuration.builder(mContext)
                         .name(this.dbPath)

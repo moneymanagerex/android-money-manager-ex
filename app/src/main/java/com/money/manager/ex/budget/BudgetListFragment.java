@@ -21,12 +21,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -100,6 +102,7 @@ public class BudgetListFragment
 
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
                         // refresh budget list
+
                         LoaderManager.getInstance(BudgetListFragment.this).restartLoader(LOADER_BUDGETS, null, BudgetListFragment.this);
                     }
                 }
@@ -115,6 +118,7 @@ public class BudgetListFragment
 
     // Loader events
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Loader<Cursor> result = null;
@@ -126,6 +130,7 @@ public class BudgetListFragment
 
             result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
+        assert result != null;
         return result;
     }
 
@@ -152,7 +157,7 @@ public class BudgetListFragment
     // Context Menu
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -166,16 +171,18 @@ public class BudgetListFragment
         MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
         menuHelper.addEditToContextMenu();
         menuHelper.addDeleteToContextMenu(true);
-        //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
+
+        menu.add(Menu.NONE, ContextMenuIds.COPY.getId(), Menu.NONE, getString(R.string.copy));
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (info == null ) return false; // not processed here
         long budgetId = info.id;
         int id = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(id);
-
+        if ( menuId == null ) return false; // not processed here
         switch (menuId) {
             case EDIT:
                 editBudget(budgetId);
@@ -184,8 +191,7 @@ public class BudgetListFragment
                 confirmDelete(budgetId);
                 break;
             case COPY:
-                BudgetService service = new BudgetService(getActivity());
-                service.copy(budgetId);
+                copyBudget(budgetId);
                 break;
             default:
                 return false;
@@ -233,6 +239,16 @@ public class BudgetListFragment
         editBudgetLauncher.launch(intent);
     }
 
+    private void copyBudget(long budgetId) {
+        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+        intent.putExtra(BudgetEditActivity.SOURCE_KEY_BUDGET_ID, budgetId);
+        intent.setAction(Intent.ACTION_INSERT);
+        editBudgetLauncher.launch(intent);
+    }
+//    BudgetService service = new BudgetService(getActivity());
+//    service.copy(budgetId);
+
+
     private void createBudget() {
         Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
@@ -246,6 +262,7 @@ public class BudgetListFragment
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     BudgetService service = new BudgetService(getActivity());
                     service.delete(budgetId);
+                    LoaderManager.getInstance(BudgetListFragment.this).restartLoader(LOADER_BUDGETS, null, BudgetListFragment.this);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();

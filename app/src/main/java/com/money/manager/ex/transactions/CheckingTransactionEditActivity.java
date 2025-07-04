@@ -18,6 +18,8 @@ package com.money.manager.ex.transactions;
 
 import android.content.Intent;
 import android.net.Uri;
+
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.budget.BudgetService;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
@@ -723,6 +726,13 @@ public class CheckingTransactionEditActivity
         return true;
     }
 
+    private void checkTransactionAgainstBudget(long categoryId, Date date, double amount) {
+        BudgetService budgetService = new BudgetService(this);
+        if ( budgetService.isCategoryOverDueBudget(categoryId, date, amount) ) {
+            new UIHelper(this).showToast("You reach budget limit for this Category", Toast.LENGTH_LONG);
+        }
+    }
+
     private void saveDefaultPayee(boolean isTransfer) {
         if ((isTransfer) || !mCommon.hasPayee() || mCommon.hasSplitCategories()) {
             return;
@@ -795,6 +805,11 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveTransaction() {
+        // check Budget Value
+        if ( mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Withdrawal) ) {
+            // only for expenses for now
+            checkTransactionAgainstBudget(this.mCommon.transactionEntity.getCategoryId(), this.mCommon.transactionEntity.getDate(), 0-mCommon.transactionEntity.getAmount().toDouble());
+        }
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
 
         if (!mCommon.transactionEntity.hasId()) {

@@ -132,6 +132,7 @@ public class MmexApplication
         registerCustomFonts();
 
         // Loggers
+        // IDE give error, but it's working... not now why
         if (BuildConfig.DEBUG) {
             plant(new DebugTree());
         } else {

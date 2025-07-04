@@ -26,8 +26,8 @@ public class BudgetPeriods {
 
     /**
      * Returns proper enum for period name in the database
-     * @param periodString
-     * @return
+     * @param periodString String to parse
+     * @return Value for BudgetPeriodEnum for PeriodString
      */
     public static BudgetPeriodEnum getEnum(String periodString) {
         return BudgetPeriodEnum.fromString(periodString);
@@ -35,9 +35,9 @@ public class BudgetPeriods {
 
     /**
      * Trampoline for translation by enum
-     * @param context
-     * @param periodString
-     * @return
+     * @param context context of application
+     * @param periodString String to translate
+     * @return translated string
      */
     public static String getPeriodTranslationForEnum(Context context, String periodString) {
         return getPeriodTranslationForEnum(context, getEnum(periodString));
@@ -45,35 +45,12 @@ public class BudgetPeriods {
 
     /**
      * Helper function to translate the string literals of period in the database.
-     * @param context
-     * @param periodEnum
+     * @param context context of application
+     * @param periodEnum Period Value
      * @return translated string
      */
     public static String getPeriodTranslationForEnum(Context context, BudgetPeriodEnum periodEnum) {
         return BudgetPeriodEnum.getTranslation(context, periodEnum);
     }
 
-    /**
-     * Method to estimate monthly equivalent for a given period
-     * @param periodEnum
-     * @param amount
-     * @return
-     */
-    public static double getMonthlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-//        double daysInPeriod = periodEnum.getDaysInPeriod();
-//        return (amount / daysInPeriod) * 30; // Simplified calculation for monthly estimate
-        return ( getYearlyEstimate(periodEnum, amount) / 12) ; // compute 1/12 of annual value
-    }
-
-    /**
-     * Method to estimate yearly equivalent for a given period
-     * @param periodEnum
-     * @param amount
-     * @return
-     */
-    public static double getYearlyEstimate(BudgetPeriodEnum periodEnum, double amount) {
-//        double daysInPeriod = periodEnum.getDaysInPeriod();
-//        return (amount / daysInPeriod) * 365; // Simplified calculation for yearly estimate
-        return ( amount * periodEnum.getOccursTimes() );
-    }
 }

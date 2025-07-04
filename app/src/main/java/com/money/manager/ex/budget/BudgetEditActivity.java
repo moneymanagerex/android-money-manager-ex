@@ -41,6 +41,7 @@ import timber.log.Timber;
 public class BudgetEditActivity extends MmxBaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
+    public static final String SOURCE_KEY_BUDGET_ID = "sourceBudgetId";
 
     private BudgetViewModel mModel;
     private BudgetEditViewHolder viewHolder;
@@ -148,6 +149,11 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         return getIntent().getLongExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
+    private long getSourceBudgetId() {
+        return getIntent().getLongExtra(SOURCE_KEY_BUDGET_ID, Constants.NOT_SET);
+    }
+
+
     private void initializeModel() {
         Budget budget = null;
         Intent intent = getIntent();
@@ -184,7 +190,13 @@ public class BudgetEditActivity extends MmxBaseFragmentActivity {
         mModel.saveTo(budget);
 
         BudgetRepository repo = new BudgetRepository(this);
-        return repo.save(budget);
+        if ( !repo.save(budget)) return false;
+
+        if ( getSourceBudgetId() != Constants.NOT_SET ) {
+            BudgetService service = new BudgetService(this);
+            service.copy(getSourceBudgetId(), budget.getId());
+        }
+        return true;
     }
 
     private void showModel() {

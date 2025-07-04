@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.utils.MmxDate;
 
 /**
  * Budget repository.
@@ -50,4 +51,26 @@ public class BudgetRepository
     public String[] getAllColumns() {
         return new String[] {ID_COLUMN + " AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
+
+
+    /**
+     * Load budget for given date. If exist montly budget, return it,
+     * otherwise try to get yearly...
+     * @param date reference date
+     * @return budget for given date
+     */
+    public Budget loadFromDate(MmxDate date) {
+        String budgetName = date.toString("YYYY-MM");
+
+        Budget budget = loadByName(budgetName);
+
+        if ( budget == null ) {
+            budgetName = date.toString("YYYY");
+            budget = loadByName(budgetName);
+        }
+
+        return budget;
+    }
+
+
 }
