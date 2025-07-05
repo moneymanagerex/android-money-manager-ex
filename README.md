@@ -28,6 +28,9 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 #### Documentation
 - [User Manual](https://android.moneymanagerex.org/usermanual/)
 
+##### Discord Channel (unofficial)
+thanks to [snaggletoothlover](https://github.com/snaggletoothlover) unofficial Discord channel for support: [https://discord.gg/XJJP4BQ7FE](https://discord.gg/XJJP4BQ7FE)
+
 #### Contributing
 
 There are several ways you can contribute to the project:
@@ -45,9 +48,9 @@ If you want to join our translation team: [MMEX4Android on Crowdin](https://crow
 
 To build the project, the following settings are recommended:
 
-- current stable version of Android Studio,
+- version of Android Studio (>= Android Studio Narwhal | 2025.1.1 )
 - use embedded JDK (now compatible with JDK17+),
-- use gradle wrapper.
+- use gradle wrapper 8.6.1
 
 ## Continuous Integration
 

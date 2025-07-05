@@ -20,6 +20,7 @@ package com.money.manager.ex.core.ioc;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.about.AboutFragment;
 import com.money.manager.ex.budget.BudgetAdapter;
+import com.money.manager.ex.budget.BudgetService;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
@@ -109,6 +110,7 @@ public interface MmxComponent {
     // Business Services
     void inject(CurrencyService service);
     void inject(InfoService service);
+    void inject(BudgetService service);
 
     // Intent Services
     void inject(SyncService service);
