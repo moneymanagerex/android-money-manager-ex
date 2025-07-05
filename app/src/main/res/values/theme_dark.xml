@@ -18,9 +18,15 @@
 <!--
 https://developer.android.com/training/material/theme.html
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Dark Theme -->
     <style name="Theme.Money.Manager.Dark" parent="Theme.AppCompat.NoActionBar">
+        <!-- Edge-to-Edge Setup -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item> <!-- Si adatta al tema chiaro/scuro -->
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
+
         <!-- md palette colors -->
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
         <item name="colorPrimary">@color/md_primary</item>
