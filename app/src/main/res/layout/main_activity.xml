@@ -22,6 +22,7 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_content_container_for_edge_to_edge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
