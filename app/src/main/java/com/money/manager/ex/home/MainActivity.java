@@ -53,10 +53,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -1645,7 +1642,9 @@ public class MainActivity
     }
 
     private void requestPostNotificationsPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+        }
     }
 
 
