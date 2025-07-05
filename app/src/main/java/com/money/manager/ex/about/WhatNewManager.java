@@ -40,6 +40,12 @@ public class WhatNewManager {
     public void showWhatsNewIfNeeded(Activity activity) {
         int lastSeenVersion = getLastSeenVersion(); // Recupera l'ultima versione vista
         int currentVersion = getCurrentAppVersion(); // Recupera la versione corrente dell'app
+        if (lastSeenVersion == 0) {
+            // we don't need to notify the user on new release since it was just downloaded
+            // set this as last seen version
+            saveLastSeenVersion(currentVersion);
+            return ;
+        }
 
         Timber.d( TAG + ": Last seen version: " + lastSeenVersion + ", current version: " + currentVersion);
 
@@ -54,6 +60,7 @@ public class WhatNewManager {
 
         // Se non ci sono changelog specifici  non mostra nulla
         if (changelogs.isEmpty()) {
+            saveLastSeenVersion(currentVersion);
             return;
         }
 

@@ -53,7 +53,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -1291,6 +1294,25 @@ public class MainActivity
         mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
         mDrawer.addDrawerListener(mDrawerToggle);
 
+        /*
+        // TODO handle edge-to-edge
+        ViewCompat.setOnApplyWindowInsetsListener(mDrawer, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Apply inset as padding
+            v.setPadding(
+                    insets.left,
+                    insets.top,
+                    insets.right,
+                    insets.bottom
+            );
+
+            // notify consumed inset
+            // use WindowInsetsCompat.CONSUMED if you don't want to handle the inset
+            // return windowInsets.inset(insets);
+            // issue becouse main app is not rounded...
+            return windowInsets.inset(insets);
+        });
+*/
         // create drawer menu
         initializeDrawerVariables();
         createExpandableDrawer();

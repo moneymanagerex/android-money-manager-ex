@@ -29,10 +29,17 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import me.relex.circleindicator.CircleIndicator3;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import android.view.View;
+import androidx.core.view.OnApplyWindowInsetsListener; // Importa specificamente OnApplyWindowInsetsListener
+
 
 /**
  * Horizontal Swipe View
@@ -48,11 +55,39 @@ public class TutorialActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Hide the zygote background to speed up rendering. Only when activities have
         // their own background set.
         // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
         // getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
+
+        // TODO Move into better place...
+        // handle edge-to-edge
+        // Nella tua Activity o Fragment
+        View mainLayout = findViewById(R.id.main_content_container_for_edge_to_edge); // Assicurati che R.id.main_layout esista
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Applica gli inset come padding alla vista
+            // Non c'è un metodo diretto view.updatePadding in Java come l'extension function di Kotlin.
+            // Devi usare setPadding.
+            v.setPadding(
+                    insets.left,
+                    insets.top,
+                    insets.right,
+                    insets.bottom
+            );
+
+            // Restituisci gli inset consumati per indicare che li hai gestiti.
+            // Puoi anche restituire windowInsets se vuoi che altri listener ricevano gli stessi inset,
+            // ma per il padding di solito si consumano.
+            return WindowInsetsCompat.CONSUMED; // O in alcuni casi potresti voler restituire windowInsets.inset(insets)
+            // se vuoi propagare gli inset rimanenti dopo aver applicato il padding.
+            // Per un semplice padding, CONSUMED è spesso appropriato.
+        });
+
+
 
         CircleIndicator3 circleIndicator = findViewById(R.id.indicator_default);
         ViewPager2 viewpager = findViewById(R.id.viewpager_default);

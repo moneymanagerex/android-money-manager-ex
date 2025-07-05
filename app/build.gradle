@@ -34,9 +34,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1090
+        versionCode 1091
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.4.3"
+        versionName "5.4.4"
         // versionName getVersionAsDate()
 
         // $applicationId
@@ -176,7 +176,7 @@ dependencies {
             , 'androidx.biometric:biometric:1.1.0' // or the latest version
             , 'androidx.documentfile:documentfile:1.0.1'
             , 'com.caverock:androidsvg-aar:1.4'
-
+            , 'androidx.core:core-splashscreen:1.0.1' // splash screen for Android 15
     )
     implementation 'androidx.core:core:1.16.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
