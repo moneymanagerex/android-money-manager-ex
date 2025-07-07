@@ -16,102 +16,108 @@ import timber.log.Timber;
 
 public class WhatNewManager {
     private static final String TAG = "WhatNewManager";
-    private static final String PREFS_NAME = "WhatNewPrefs"; // Nome del file di preferenze
-    private static final String KEY_LAST_SEEN_VERSION = "last_seen_version"; // Chiave per salvare l'ultima versione vista
+    private static final String PREFS_NAME = "WhatNewPrefs"; // Name of the preferences file
+    private static final String KEY_LAST_SEEN_VERSION = "last_seen_version"; // Key to save the last seen version
 
-    private final Context context; // Contesto dell'applicazione
+    private final Context context; // Application context
 
     /**
-     * Costruttore della classe WhatNewManager.
+     * Constructor for the WhatNewManager class.
      *
-     * @param context Il contesto dell'applicazione.
+     * @param context The application context.
      */
     public WhatNewManager(Context context) {
         this.context = context;
     }
 
     /**
-     * Mostra il dialogo "What's New" se la versione corrente dell'app è
-     * superiore all'ultima versione che l'utente ha visto.
+     * Shows the "What's New" dialog if the current app version is
+     * greater than the last version the user has seen.
      *
-     * @param activity L'attività (Activity) da cui viene chiamato questo metodo,
-     * necessaria per mostrare il dialogo.
+     * @param activity The Activity from which this method is called,
+     * necessary to show the dialog.
      */
     public void showWhatsNewIfNeeded(Activity activity) {
-        int lastSeenVersion = getLastSeenVersion(); // Recupera l'ultima versione vista
-        int currentVersion = getCurrentAppVersion(); // Recupera la versione corrente dell'app
+        int lastSeenVersion = getLastSeenVersion(); // Retrieve the last seen version
+        int currentVersion = getCurrentAppVersion(); // Retrieve the current app version
+        if (lastSeenVersion == 0) {
+            // we don't need to notify the user on new release since it was just downloaded
+            // set this as last seen version
+            saveLastSeenVersion(currentVersion);
+            return ;
+        }
 
         Timber.d( TAG + ": Last seen version: " + lastSeenVersion + ", current version: " + currentVersion);
 
-        // Se la versione corrente è minore o uguale all'ultima vista, non fare nulla.
+        // If the current version is less than or equal to the last seen, do nothing.
         if (currentVersion <= lastSeenVersion) {
-            Timber.d( TAG +": no news to show");
+            Timber.d( "%s: no news to show", TAG);
             return;
         }
 
-        // Recupera le stringhe del changelog tra l'ultima versione vista e la corrente.
+        // Retrieve changelog strings between the last seen version and the current one.
         List<String> changelogs = getChangelogStrings(lastSeenVersion + 1, currentVersion);
 
-        // Se non ci sono changelog specifici  non mostra nulla
+        // If there are no specific changelogs, do not show anything
         if (changelogs.isEmpty()) {
+            saveLastSeenVersion(currentVersion);
             return;
         }
 
-        // Costruisce il messaggio del dialogo.
+        // Build the dialog message.
         StringBuilder message = new StringBuilder();
         for (String log : changelogs) {
-            message.append(log).append("\n-------\n"); // Aggiunge un punto elenco per ogni voce
+            message.append(log).append("\n-------\n"); // Add a bullet point for each entry
         }
 
-        // Crea e mostra il dialogo AlertDialog.
+        // Create and show the AlertDialog dialog.
         new AlertDialog.Builder(activity)
-                .setTitle(context.getString(R.string.changelog_title)) // Titolo del dialogo
-                .setMessage(message.toString()) // Messaggio con i changelog
+                .setTitle(context.getString(R.string.changelog_title)) // Dialog title
+                .setMessage(message.toString()) // Message with changelogs
                 .setPositiveButton(context.getString(R.string.dismiss), (dialog, which) -> {
-                    // Quando l'utente preme "Dimiss", salva la versione corrente come l'ultima vista.
+                    // When the user presses "Dismiss", save the current version as the last seen.
                     saveLastSeenVersion(currentVersion);
                     Timber.d(TAG+ ": Version " + currentVersion + " saved as last seen.");
-                    dialog.dismiss(); // Chiude il dialogo
+                    dialog.dismiss(); // Close the dialog
                 })
                 .setNegativeButton(context.getString(R.string.remember_later), (dialog, which) -> {
-                    // Se l'utente preme "Ricordamelo", semplicemente chiude il dialogo.
-                    // La versione non viene salvata, quindi il dialogo riapparirà al prossimo avvio.
-                    Timber.d(TAG + ": L'utente ha scelto 'Ricordamelo'. Il dialogo riapparirà.");
-                    dialog.dismiss(); // Chiude il dialogo
+                    // If the user presses "Remind me later", simply close the dialog.
+                    // The version is not saved, so the dialog will reappear on the next launch.
+                    dialog.dismiss(); // Close the dialog
                 })
-                .setCancelable(false) // Rende il dialogo non annullabile tramite tocco esterno o tasto indietro
-                .show(); // Mostra il dialogo
+                .setCancelable(false) // Makes the dialog non-cancelable by outside touch or back button
+                .show(); // Show the dialog
     }
 
     /**
-     * Recupera l'ultima versione dell'app che è stata visualizzata dall'utente
-     * dalle SharedPreferences.
+     * Retrieves the last seen app version by the user
+     * from SharedPreferences.
      *
-     * @return L'ultima versione vista, o 0 se non è mai stata salvata.
+     * @return The last seen version, or 0 if it has never been saved.
      */
     private int getLastSeenVersion() {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        // Restituisce il valore salvato, o 0 se non esiste (prima esecuzione).
+        // Returns the saved value, or 0 if it doesn't exist (first run).
         return prefs.getInt(KEY_LAST_SEEN_VERSION, 0);
     }
 
     /**
-     * Salva la versione corrente dell'app nelle SharedPreferences
-     * come l'ultima versione vista dall'utente.
+     * Saves the current app version to SharedPreferences
+     * as the last version seen by the user.
      *
-     * @param version La versione da salvare.
+     * @param version The version to save.
      */
     private void saveLastSeenVersion(int version) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(KEY_LAST_SEEN_VERSION, version);
-        editor.apply(); // Applica le modifiche in background
+        editor.apply(); // Apply changes in the background
     }
 
     /**
-     * Recupera il codice della versione corrente dell'app dal PackageManager.
+     * Retrieves the current app version code from PackageManager.
      *
-     * @return Il codice della versione corrente dell'app, o -1 in caso di errore.
+     * @return The current app version code, or -1 in case of error.
      */
     private int getCurrentAppVersion() {
         Core core = new Core(context);
@@ -119,28 +125,28 @@ public class WhatNewManager {
     }
 
     /**
-     * Recupera le stringhe del changelog da R.string.changelog_XXXX
-     * per un intervallo di versioni.
+     * Retrieves changelog strings from R.string.changelog_XXXX
+     * for a range of versions.
      *
-     * @param startVersion La versione iniziale (inclusa) da cui iniziare a cercare i changelog.
-     * @param endVersion   La versione finale (inclusa) fino a cui cercare i changelog.
-     * @return Una lista di stringhe di changelog trovate.
+     * @param startVersion The starting version (inclusive) from which to search for changelogs.
+     * @param endVersion   The ending version (inclusive) up to which to search for changelogs.
+     * @return A list of found changelog strings.
      */
     private List<String> getChangelogStrings(int startVersion, int endVersion) {
         List<String> changelogs = new ArrayList<>();
-        // Itera da startVersion a endVersion per recuperare le stringhe.
+        // Iterate from startVersion to endVersion to retrieve the strings.
         for (int i = startVersion; i <= endVersion; i++) {
-            // Costruisce il nome della risorsa stringa, es. "changelog_1081".
+            // Build the string resource name, e.g., "changelog_1081".
             String resourceName = "changelog_" + i;
-            // Ottiene l'ID della risorsa stringa.
+            // Get the ID of the string resource.
             @SuppressLint("DiscouragedApi") int resourceId = context.getResources().getIdentifier(resourceName, "string", context.getPackageName());
 
-            // Se la risorsa esiste (ID non è 0), recupera la stringa e la aggiunge alla lista.
+            // If the resource exists (ID is not 0), retrieve the string and add it to the list.
             if (resourceId != 0) {
                 changelogs.add(context.getString(resourceId));
-                Timber.d(TAG+ ": Trovato changelog per versione " + i);
+                Timber.d(TAG+ ": Changelog found for version " + i);
             } else {
-                Timber.d(TAG+ ": Nessun changelog trovato per versione " + i);
+                Timber.d(TAG+ ": No changelog found for version " + i);
             }
         }
         return changelogs;

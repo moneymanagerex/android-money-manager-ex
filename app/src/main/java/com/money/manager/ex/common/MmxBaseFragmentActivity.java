@@ -23,8 +23,13 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.provider.DocumentsContract;
@@ -32,6 +37,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -104,10 +110,19 @@ public abstract class MmxBaseFragmentActivity
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-
         mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) setSupportActionBar(mToolbar);
+
+        if (setEdgeToEdge(R.id.main_content_container_for_edge_to_edge)) return;
+        // TODO implement identify main view
+        try {
+            View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+            setEdgeToEdge(rootView);
+        } catch (Exception e) {
+
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -319,6 +334,32 @@ public abstract class MmxBaseFragmentActivity
             }
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    public void setEdgeToEdge(@NonNull View mainLayout) {
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Apply inset as padding
+            v.setPadding(
+                    insets.left,
+                    insets.top,
+                    insets.right,
+                    insets.bottom
+            );
+
+            // notify consumed inset
+            // use WindowInsetsCompat.CONSUMED if you don't want to handle the inset
+            // return windowInsets.inset(insets);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
+
+        public boolean setEdgeToEdge(@IdRes int mainView) {
+        // handle edge-to-edge
+        View mainLayout = findViewById(mainView);
+        if (mainLayout == null) return false;
+        setEdgeToEdge(mainLayout);
+        return true;
     }
 
 }
