@@ -144,9 +144,9 @@ public class WhatNewManager {
             // If the resource exists (ID is not 0), retrieve the string and add it to the list.
             if (resourceId != 0) {
                 changelogs.add(context.getString(resourceId));
-                Timber.d(TAG+ ": Changelog found for version " + i);
-            } else {
-                Timber.d(TAG+ ": No changelog found for version " + i);
+//                Timber.d(TAG+ ": Changelog found for version " + i);
+//            } else {
+//                Timber.d(TAG+ ": No changelog found for version " + i);
             }
         }
         return changelogs;
