@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -51,6 +52,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
+
 
 public abstract class MmxBaseFragmentActivity
         extends AppCompatActivity {
@@ -118,7 +120,8 @@ public abstract class MmxBaseFragmentActivity
         if (setEdgeToEdge(R.id.main_content_container_for_edge_to_edge)) return;
         try {
             View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-            setEdgeToEdge(rootView);
+            ScrollView scrollView = findViewById(R.id.scrollView);
+            setEdgeToEdge(rootView, scrollView);
         } catch (Exception e) {
 
         }
@@ -339,7 +342,7 @@ public abstract class MmxBaseFragmentActivity
         return super.onKeyUp(keyCode, event);
     }
 
-    public void setEdgeToEdge(@NonNull View mainLayout) {
+    public void setEdgeToEdge(@NonNull View mainLayout, ScrollView scrollView) {
         ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             // Apply inset as padding
@@ -350,6 +353,19 @@ public abstract class MmxBaseFragmentActivity
                     insets.bottom
             );
 
+            if (scrollView != null ) {
+                // Get the insets for the system bars (status bar, navigation bar)
+                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                // Get the insets for the IME (on-screen keyboard)
+                Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+
+                scrollView.setPadding(
+                        scrollView.getPaddingLeft(),
+                        scrollView.getPaddingTop(),
+                        scrollView.getPaddingRight(),
+                        imeInsets.bottom + systemBarsInsets.bottom
+                );
+            }
             // notify consumed inset
             // use WindowInsetsCompat.CONSUMED if you don't want to handle the inset
             // return windowInsets.inset(insets);
@@ -361,7 +377,7 @@ public abstract class MmxBaseFragmentActivity
         // handle edge-to-edge
         View mainLayout = findViewById(mainView);
         if (mainLayout == null) return false;
-        setEdgeToEdge(mainLayout);
+        setEdgeToEdge(mainLayout, null);
         return true;
     }
 

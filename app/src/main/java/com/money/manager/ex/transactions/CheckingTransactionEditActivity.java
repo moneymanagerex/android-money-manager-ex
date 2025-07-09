@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Parcelable;
+
 import androidx.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
