@@ -69,7 +69,7 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         new CrashReporter(this);
 
