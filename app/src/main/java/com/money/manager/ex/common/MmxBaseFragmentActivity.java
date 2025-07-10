@@ -20,6 +20,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -29,15 +36,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
-
-import android.provider.DocumentsContract;
-import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -52,8 +53,9 @@ import org.greenrobot.eventbus.Subscribe;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
+
 public abstract class MmxBaseFragmentActivity
-    extends AppCompatActivity {
+        extends AppCompatActivity {
     private ActivityResultLauncher<Intent> openDocumentLauncher;
     private ActivityResultLauncher<Intent> directoryPickerLauncher;
 
@@ -67,6 +69,8 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         new CrashReporter(this);
 
         setTheme();
@@ -92,7 +96,7 @@ public abstract class MmxBaseFragmentActivity
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         // Permission granted, handle the selected content URI here
                         Uri uri = result.getData().getData();
-                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
                 });
         // Initialize the ActivityResultLauncher
@@ -102,7 +106,7 @@ public abstract class MmxBaseFragmentActivity
                         Uri treeUri = result.getData().getData();
                         // Handle the selected directory URI
                         // Perform actions using the selected directory URI
-                        getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     }
                 });
     }
@@ -114,10 +118,10 @@ public abstract class MmxBaseFragmentActivity
         if (mToolbar != null) setSupportActionBar(mToolbar);
 
         if (setEdgeToEdge(R.id.main_content_container_for_edge_to_edge)) return;
-        // TODO implement identify main view
         try {
             View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-            setEdgeToEdge(rootView);
+            ScrollView scrollView = findViewById(R.id.scrollView);
+            setEdgeToEdge(rootView, scrollView);
         } catch (Exception e) {
 
         }
@@ -154,7 +158,7 @@ public abstract class MmxBaseFragmentActivity
     @Override
     protected void onStart() {
         super.onStart();
-            // set elevation actionbar 0
+        // set elevation actionbar 0
 //            if (getSupportActionBar() != null) {
 //                getSupportActionBar().setElevation(0);
 //            }
@@ -182,7 +186,7 @@ public abstract class MmxBaseFragmentActivity
 
         try {
             super.onDestroy();
-        } catch (Exception e){
+        } catch (Exception e) {
             Timber.e(e.getMessage());
         }
     }
@@ -217,6 +221,7 @@ public abstract class MmxBaseFragmentActivity
 
     /**
      * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
+     *
      * @param toolbar Toolbar element.
      */
     public void showStandardToolbarActions(View toolbar) {
@@ -225,9 +230,10 @@ public abstract class MmxBaseFragmentActivity
 
     /**
      * Allows customization of the toolbar buttons
-     * @param toolbar       Toolbar element to attach to.
-     * @param actionCancel  R.id of the negative (cancel) button
-     * @param actionDone    R.id of the positive (action) button
+     *
+     * @param toolbar      Toolbar element to attach to.
+     * @param actionCancel R.id of the negative (cancel) button
+     * @param actionDone   R.id of the positive (action) button
      */
     public void showStandardToolbarActions(View toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
@@ -289,14 +295,14 @@ public abstract class MmxBaseFragmentActivity
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setData(uri);
-        intent.setType("image/*") ;
+        intent.setType("image/*");
         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
         openDocumentLauncher.launch(intent);
     }
 
     public void openDirectoryPicker(Uri uri) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-       // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+        // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
         directoryPickerLauncher.launch(intent);
     }
 
@@ -336,7 +342,7 @@ public abstract class MmxBaseFragmentActivity
         return super.onKeyUp(keyCode, event);
     }
 
-    public void setEdgeToEdge(@NonNull View mainLayout) {
+    public void setEdgeToEdge(@NonNull View mainLayout, ScrollView scrollView) {
         ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             // Apply inset as padding
@@ -347,6 +353,19 @@ public abstract class MmxBaseFragmentActivity
                     insets.bottom
             );
 
+            if (scrollView != null ) {
+                // Get the insets for the system bars (status bar, navigation bar)
+                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                // Get the insets for the IME (on-screen keyboard)
+                Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+
+                scrollView.setPadding(
+                        scrollView.getPaddingLeft(),
+                        scrollView.getPaddingTop(),
+                        scrollView.getPaddingRight(),
+                        imeInsets.bottom + systemBarsInsets.bottom
+                );
+            }
             // notify consumed inset
             // use WindowInsetsCompat.CONSUMED if you don't want to handle the inset
             // return windowInsets.inset(insets);
@@ -354,11 +373,11 @@ public abstract class MmxBaseFragmentActivity
         });
     }
 
-        public boolean setEdgeToEdge(@IdRes int mainView) {
+    public boolean setEdgeToEdge(@IdRes int mainView) {
         // handle edge-to-edge
         View mainLayout = findViewById(mainView);
         if (mainLayout == null) return false;
-        setEdgeToEdge(mainLayout);
+        setEdgeToEdge(mainLayout, null);
         return true;
     }
 

@@ -820,5 +820,4 @@
     <!-- changelog -->
     <string name="changelog">Wijzigingslogboek</string>
     <string name="changelog_title">Belangrijk nieuws!!</string>
-    <string name="changelog_1086">Nieuwe versie 5.4\n- Nieuwe bèta-functie toegevoegd voor samenvoeg engine. Probeer het bestand samen te voegen wanneer beide worden gewijzigd. Schakel het in de instellingen&gt;Sync-&gt;Samenvoegen in</string>
 </resources>
