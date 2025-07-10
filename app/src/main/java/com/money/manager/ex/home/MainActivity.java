@@ -1291,25 +1291,6 @@ public class MainActivity
         mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
         mDrawer.addDrawerListener(mDrawerToggle);
 
-        /*
-        // TODO handle edge-to-edge
-        ViewCompat.setOnApplyWindowInsetsListener(mDrawer, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            // Apply inset as padding
-            v.setPadding(
-                    insets.left,
-                    insets.top,
-                    insets.right,
-                    insets.bottom
-            );
-
-            // notify consumed inset
-            // use WindowInsetsCompat.CONSUMED if you don't want to handle the inset
-            // return windowInsets.inset(insets);
-            // issue becouse main app is not rounded...
-            return windowInsets.inset(insets);
-        });
-*/
         // create drawer menu
         initializeDrawerVariables();
         createExpandableDrawer();
@@ -1642,9 +1623,7 @@ public class MainActivity
     }
 
     private void requestPostNotificationsPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
-        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
     }
 
 

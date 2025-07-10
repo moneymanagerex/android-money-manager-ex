@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -71,7 +70,6 @@ public class EditTransactionViewHolder {
     public RecyclerView recyclerAttachments;
     public TextView tagsListTextView;
     public TextView colorTextView;
-    public ScrollView scrollView;
 
     public EditTransactionViewHolder(AppCompatActivity activity) {
         // Initialize views using findViewById
@@ -110,8 +108,6 @@ public class EditTransactionViewHolder {
         tagsListTextView = activity.findViewById(R.id.tagsList);
 
         colorTextView = activity.findViewById(R.id.colorView);
-
-        scrollView = activity.findViewById(R.id.scrollView);
 
         // Add custom icons
         UIHelper uiHelper = new UIHelper(activity);

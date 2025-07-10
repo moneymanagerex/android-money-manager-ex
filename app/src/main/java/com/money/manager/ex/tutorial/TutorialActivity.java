@@ -29,62 +29,30 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import me.relex.circleindicator.CircleIndicator3;
-import androidx.core.graphics.Insets;
-import androidx.core.view.WindowInsetsCompat;
-import android.view.View;
-// Specifically import OnApplyWindowInsetsListener
-
 
 /**
  * Horizontal Swipe View
- * See: <a href="http://developer.android.com/training/implementing-navigation/lateral.html">developer info</a>
+ * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
 public class TutorialActivity extends FragmentActivity {
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
     public static final int RESULT_OK = 1;
 
+    private TextView skipTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Hide the zygote background to speed up rendering. Only when activities have
         // their own background set.
         // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
         // getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
-
-        // TODO Move into better place...
-        // handle edge-to-edge
-        // In your Activity or Fragment
-        View mainLayout = findViewById(R.id.main_content_container_for_edge_to_edge); // Make sure R.id.main_layout exists
-        ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            // Apply insets as padding to the view
-            // There is no direct view.updatePadding method in Java like Kotlin's extension function.
-            // You must use setPadding.
-            v.setPadding(
-                    insets.left,
-                    insets.top,
-                    insets.right,
-                    insets.bottom
-            );
-
-            // Return the consumed insets to indicate that you have handled them.
-            // You can also return windowInsets if you want other listeners to receive the same insets,
-            // but for padding, they are usually consumed.
-            return WindowInsetsCompat.CONSUMED; // Or in some cases you might want to return windowInsets.inset(insets)
-            // if you want to propagate the remaining insets after applying the padding.
-            // For simple padding, CONSUMED is often appropriate.
-        });
-
-
 
         CircleIndicator3 circleIndicator = findViewById(R.id.indicator_default);
         ViewPager2 viewpager = findViewById(R.id.viewpager_default);
@@ -92,7 +60,7 @@ public class TutorialActivity extends FragmentActivity {
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 
-        TextView skipTextView = findViewById(R.id.skipTextView);
+        skipTextView = findViewById(R.id.skipTextView);
         skipTextView.setOnClickListener(view -> onCloseClicked());
 
     }

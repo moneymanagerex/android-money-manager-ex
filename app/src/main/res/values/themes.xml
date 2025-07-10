@@ -22,9 +22,5 @@
     <style name="Theme.Splash" parent="@style/Theme.AppCompat">
         <item name="android:windowBackground">@drawable/background_logo</item>
         <item name="windowNoTitle">true</item>
-
-        <!-- Per edge-to-edge anche nello splash screen (API 31+) -->
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
-
     </style>
 </resources>

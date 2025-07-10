@@ -32,7 +32,6 @@ public class MyActionBarDrawerToggle extends ActionBarDrawerToggle {
     public MyActionBarDrawerToggle(AppCompatActivity activity, DrawerLayout drawerLayout,
                                    int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
-
     }
 
     public MyActionBarDrawerToggle(AppCompatActivity activity, DrawerLayout drawerLayout, Toolbar toolbar,
