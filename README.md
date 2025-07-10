@@ -48,9 +48,9 @@ If you want to join our translation team: [MMEX4Android on Crowdin](https://crow
 
 To build the project, the following settings are recommended:
 
-- version of Android Studio (>= Android Studio Narwhal | 2025.1.1 )
+- current stable version of Android Studio,
 - use embedded JDK (now compatible with JDK17+),
-- use gradle wrapper 8.6.1
+- use gradle wrapper.
 
 ## Continuous Integration
 

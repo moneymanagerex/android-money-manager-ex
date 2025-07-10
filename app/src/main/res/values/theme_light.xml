@@ -15,7 +15,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Light Theme -->
 
     <!-- base for the base of the light theme. -->
@@ -30,13 +30,6 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="md_dark_theme">false</item>
-
-        <!-- Edge-to-Edge Setup -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item> <!-- Si adatta al tema chiaro/scuro -->
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
-
     </style>
 
     <!-- The version for API 21 has additional settings. So we split here to add them. -->

@@ -47,9 +47,9 @@ public class AccountTransaction
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
 
-    ArrayList<Attachment> mAttachments;
-    ArrayList<TagLink> tagLinks = null;
-    ArrayList<ISplitTransaction> splitTransactions = null;
+    private ArrayList<Attachment> mAttachments;
+    private ArrayList<TagLink> tagLinks = null;
+    private ArrayList<ISplitTransaction> splitTransactions = null;
 
     /**
      * Creates default, empty transaction.
