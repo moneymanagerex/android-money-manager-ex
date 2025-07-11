@@ -22,7 +22,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
@@ -34,7 +33,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -598,18 +596,6 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setNotes(editable.toString());
             }
         });
-
-        // This is a workarround to get focus... not the best solution
-        viewHolder.edtNotes.setOnFocusChangeListener(
-                (v, hasFocus) -> {
-                    if (hasFocus && viewHolder.scrollView != null ) {
-                        viewHolder.scrollView.postDelayed(() -> {
-
-                            viewHolder.scrollView.smoothScrollTo(0,
-                                    Integer.max(0, getScrollYForView( viewHolder.scrollView, viewHolder.edtNotes) ) );
-                        }, 500);
-                    }
-                });
     }
 
     public void initTagsControls() {
@@ -1676,19 +1662,6 @@ public class EditTransactionCommonFunctions {
             taglinkRepository.deleteForType(transactionEntity.getId(), transactionEntity.getTransactionModel() );
         }
 
-    }
-
-
-    private int getScrollYForView(ScrollView scrollView, View viewToScrollTo) {
-        int y = viewToScrollTo.getTop(); // Posizione di viewToScrollTo rispetto al suo genitore diretto
-        View parent = (View) viewToScrollTo.getParent();
-
-        // Summa le posizioni di tutti i genitori fino a raggiungere la ScrollView
-        while (parent != null && parent != scrollView) {
-            y += parent.getTop();
-            parent = (View) parent.getParent();
-        }
-        return y;
     }
 
 }
