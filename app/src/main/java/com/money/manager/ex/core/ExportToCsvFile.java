@@ -109,8 +109,10 @@ public class ExportToCsvFile
 		Cursor data = mAdapter.getCursor();
 		// create object to write csv file
 		try {
-			CSVWriter csvWriter = new CSVWriter(new FileWriter(mFileName), CSVWriter.DEFAULT_SEPARATOR,
-					CSVWriter.NO_QUOTE_CHARACTER);
+			CSVWriter csvWriter = new CSVWriter(
+					new FileWriter(mFileName) ) ;
+//					, CSVWriter.DEFAULT_SEPARATOR
+//					, CSVWriter.NO_QUOTE_CHARACTER);
 			while (data.moveToNext()) {
 				String[] record = new String[7];
 				// compose a records

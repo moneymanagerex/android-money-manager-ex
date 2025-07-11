@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -40,6 +41,7 @@ public class AboutActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
         setDisplayHomeAsUpEnabled(true);

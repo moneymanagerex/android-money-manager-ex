@@ -65,5 +65,5 @@ dependencies {
             'com.mikepenz:iconics-core:3.2.5@aar',
             'com.mikepenz:iconics-views:3.2.5@aar'
     )
-    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'androidx.appcompat:appcompat:1.7.1'
 }

@@ -100,19 +100,12 @@ android {
         //     applicationId "com.money.manager.ex"
         // }
     }
-
-    lintOptions {
-        // stop the gradle build if errors are found - affects XML resources (strings, etc.).
-        abortOnError false
-    }
-
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/DEPENDENCIES']
+        }
     }
+
 
     signingConfigs {
         debug {
@@ -138,6 +131,9 @@ android {
     buildFeatures {
         buildConfig true
     }
+    lint {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -147,22 +143,21 @@ dependencies {
 
     implementation(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , 'com.opencsv:opencsv:4.6'
+            , 'com.opencsv:opencsv:5.11.2'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'com.github.pedrovgs:lynx:1.6'
-            , 'de.hdodenhof:circleimageview:2.2.0'
+            , 'de.hdodenhof:circleimageview:3.1.0'
             , 'me.relex:circleindicator:2.1.6'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             , 'org.javamoney:moneta-bp:1.4.1'
-            , 'com.google.code.gson:gson:2.11.0'
-//            , 'net.zetetic:android-database-sqlcipher:4.5.4'   // database encryption
+            , 'com.google.code.gson:gson:2.13.1'
             , 'net.zetetic:sqlcipher-android:4.9.0@aar'              // new db encryption
             , 'org.greenrobot:eventbus:3.3.1'
-            , 'androidx.recyclerview:recyclerview:1.3.0'
+            , 'androidx.recyclerview:recyclerview:1.4.0'
             // For control over item selection of both touch and mouse driven selection
-            , "androidx.recyclerview:recyclerview-selection:1.1.0"
-            , 'org.jsoup:jsoup:1.18.3'              // HTML parsing.
+            , 'androidx.recyclerview:recyclerview-selection:1.2.0'
+            , 'org.jsoup:jsoup:1.21.1'              // HTML parsing.
             , 'androidx.multidex:multidex:2.0.1'  // multidex support
             , 'io.reactivex.rxjava2:rxandroid:2.1.1'
             , 'io.reactivex.rxjava2:rxjava:2.2.21'
@@ -175,52 +170,53 @@ dependencies {
             , 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar' // MD icons
             , 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
             , 'com.roomorama:caldroid:3.0.1'
-            , 'androidx.work:work-runtime:2.8.1'
-            , 'androidx.fragment:fragment:1.5.6'
+            , 'androidx.work:work-runtime:2.10.2'
+            , 'androidx.fragment:fragment:1.8.8'
             , 'androidx.biometric:biometric:1.1.0' // or the latest version
-            , 'androidx.documentfile:documentfile:1.0.1'
+            , 'androidx.documentfile:documentfile:1.1.0'
             , 'com.caverock:androidsvg-aar:1.4'
             , 'androidx.core:core-splashscreen:1.0.1' // splash screen for Android 15
     )
-    implementation 'androidx.core:core:1.13.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.2.1'
-    implementation 'androidx.annotation:annotation:1.6.0'
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'            // Retrofit
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.11.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.11.0'
-    implementation 'com.google.android.material:material:1.10.0'
-    implementation 'androidx.sqlite:sqlite:2.3.1'
-    implementation 'androidx.sqlite:sqlite-framework:2.3.1'
-    api 'com.google.guava:guava:33.4.0-jre' // collection libraries
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.gridlayout:gridlayout:1.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'            // Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:3.0.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:3.0.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.sqlite:sqlite-ktx:2.5.2'
+    implementation 'androidx.sqlite:sqlite-framework:2.5.2'
+    api 'com.google.guava:guava:33.4.8-jre' // collection libraries
 
-    implementation('com.mikepenz:aboutlibraries:6.2.3@aar') {
+    implementation('com.mikepenz:aboutlibraries:12.2.4@jar') {
         transitive = true
     }
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.13'
     // implementation fileTree(dir: 'sqlite3mc', include: ['*.aar', '*.jar'], exclude: [])
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.3.0'
     annotationProcessor 'org.parceler:parceler:1.1.13'
     // Dagger 2
-    implementation 'com.google.dagger:dagger:2.55'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.55'
+    implementation 'com.google.dagger:dagger:2.56.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.56.2'
     // picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'org.hamcrest:hamcrest-core:3.0'
 
     testImplementation(
             // Robolectric
             'junit:junit:4.13.2',
-            'org.assertj:assertj-core:3.27.2',
-            'org.robolectric:robolectric:4.14.1',
-            'org.mockito:mockito-core:5.15.2',
+            'org.assertj:assertj-core:3.27.3',
+            'org.robolectric:robolectric:4.15.1',
+            'org.mockito:mockito-core:5.18.0'
             // Matchers
-            'org.hamcrest:hamcrest-core:2.2',
-            'org.hamcrest:hamcrest-library:2.2',
+            ,
+            'org.hamcrest:hamcrest-library:3.0',
             'org.hamcrest:hamcrest-integration:1.3'
             , 'io.selendroid:selendroid-client:0.17.0'
 
@@ -232,20 +228,20 @@ dependencies {
 
     // UI testing
     androidTestImplementation(
-            'androidx.test:runner:1.5.2',
+            'androidx.test:runner:1.6.2',
             // Set this dependency to use JUnit 4 rules
-            'androidx.test:rules:1.5.0',
+            'androidx.test:rules:1.6.1',
             // Set this dependency to build and run Espresso tests
-            'androidx.test.espresso:espresso-core:3.5.1',
-            'androidx.test.espresso:espresso-contrib:3.5.1',
-            'org.hamcrest:hamcrest-core:2.2',
-            'org.hamcrest:hamcrest-library:2.2',
+            'androidx.test.espresso:espresso-core:3.6.1',
+            'androidx.test.espresso:espresso-contrib:3.6.1',
+            'org.hamcrest:hamcrest-core:3.0',
+            'org.hamcrest:hamcrest-library:3.0',
             'com.squareup.assertj:assertj-android:1.2.0',
-            'org.assertj:assertj-core:3.27.2',
+            'org.assertj:assertj-core:3.27.3',
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    implementation 'com.amplitude:analytics-android:1.19.2'
+    implementation 'com.amplitude:analytics-android:1.21.4'
 }
 
 configurations {

@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -48,9 +50,9 @@ public class RecurringTransaction
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
 
-    private ArrayList<Attachment> mAttachments;
-    private ArrayList<TagLink> tagLinks = null;
-    private ArrayList<ISplitTransaction> splitTransactions;
+    ArrayList<Attachment> mAttachments;
+    ArrayList<TagLink> tagLinks = null;
+    ArrayList<ISplitTransaction> splitTransactions;
 
     /**
      * Payment Date
@@ -124,8 +126,7 @@ public class RecurringTransaction
         if (amount == null) {
             amount = 0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
-        return result;
+        return MoneyFactory.fromDouble(amount);
     }
 
     public void setAmount(Money value) {
@@ -137,8 +138,7 @@ public class RecurringTransaction
         if (amount == null) {
             amount = 0D;
         }
-        Money result = MoneyFactory.fromDouble(amount);
-        return result;
+        return MoneyFactory.fromDouble(amount);
     }
 
     public Money getRealSignedAmount() {
@@ -405,6 +405,7 @@ public class RecurringTransaction
         return splitTransactions;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "RecurringTransaction{" +
