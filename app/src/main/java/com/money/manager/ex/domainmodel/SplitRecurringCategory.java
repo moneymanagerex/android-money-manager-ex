@@ -50,7 +50,7 @@ public class SplitRecurringCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
 
-    private ArrayList<TagLink> tagLinks = null;
+    ArrayList<TagLink> tagLinks = null;
 
     public static SplitRecurringCategory create(long transactionId, long categoryId,
                                                 TransactionTypes parentTransactionType, Money amount, String notes) {

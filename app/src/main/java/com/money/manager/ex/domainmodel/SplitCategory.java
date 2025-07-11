@@ -49,7 +49,7 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
     public static final String NOTES = "NOTES";
 
-    private ArrayList<TagLink> tagLinks = null;
+    ArrayList<TagLink> tagLinks = null;
 
     public static SplitCategory create(long transactionId, long categoryId, TransactionTypes parentTransactionType, Money amount, String notes) {
         SplitCategory entity = new SplitCategory();
