@@ -22,5 +22,7 @@
     <style name="Theme.Splash" parent="@style/Theme.AppCompat">
         <item name="android:windowBackground">@drawable/background_logo</item>
         <item name="windowNoTitle">true</item>
+        <!-- Opt-out Edge-to-Edge in Android 15 / SDK 35+ -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>
