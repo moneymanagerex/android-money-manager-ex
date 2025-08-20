@@ -65,7 +65,7 @@
     <string name="preferences_behaviour_focus_filter_title">Selectiefilter</string>
     <string name="preferences_behaviour_focus_filter_summary">Focus op filter in selecties. Anders browsen.</string>
     <string name="auto_sync_via_wifi">Auto-sync alleen op WiFi</string>
-    <string name="auto_sync_via_wifi_summary">Alleen automatisch synchroniseren bij WiFi-verbinding.</string>
+    <string name="auto_sync_via_wifi_summary">Automatisch synchroniseren alleen bij Wifi-verbinding.</string>
     <string name="sync_on_app_start">Synchroniseer bij opstarten app.</string>
     <string name="sync_on_start">Synchroniseer bij starten</string>
     <string name="sync_merge_database">EXPERIMENTEEL: databases samenvoegen</string>
@@ -74,7 +74,7 @@
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Verwerk banktransactie SMS</string>
     <string name="summary_sms_auto_trans">Lees de banktransactie SMS en maak de transactie automatisch aan</string>
-    <string name="deny_receive_sms_error">Je hebt de toestemming om sms te ontvangen geweigerd, zodat je banktransactie-SMS niet wordt verwerkt</string>
+    <string name="deny_receive_sms_error">Je hebt de toestemming om sms te ontvangen geweigerd, zo zal je banktransactie-SMS niet worden verwerkt</string>
     <string name="granted_receive_sms_access">Toestemming al verleend voor RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Ga naar Instellingen &gt;&gt; Apps &gt;&gt; Money Manager Ex &gt;&gt; Toestemmingen en weiger toegang tot SMS</string>
     <string name="title_sms_trans_status_notification">SMS Transactie Status Melding</string>
@@ -820,4 +820,5 @@
     <!-- changelog -->
     <string name="changelog">Wijzigingslogboek</string>
     <string name="changelog_title">Belangrijk nieuws!!</string>
+    <string name="changelog_1086">Nieuwe versie 5.4\n- Nieuwe bèta-functie toegevoegd voor Samenvoeg engine. Probeer het bestand samen te voegen wanneer beide worden gewijzigd. Schakel het in de instellingen&gt;Sync-&gt;Samenvoegen in</string>
 </resources>
