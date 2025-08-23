@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">Prosta i łatwa w użyciu aplikacja do zarządzania osobistymi wydatkami, kontami bankowymi, rodzinnym budżetem itp.</string>
+    <string name="application_credits">MoneyManagerEx dla Androida używa biblioteki ActionBarSherlock</string>
     <string name="application_license">Licencje open source</string>
     <!-- database -->
     <string name="db_insert_failed">Dodanie danych nie powiodło się</string>
@@ -46,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Ogólne</string>
     <string name="preferences_perdatabase">Na bazę danych</string>
+    <string name="preferences_display">Wygląd i Wygoda</string>
     <string name="preferences_behaviour">Zachowanie</string>
     <string name="base_currency">Podstawowa waluta</string>
     <string name="base_currency_changed">Zmieniono podstawową walutę</string>
@@ -56,6 +58,7 @@
     <string name="version">Wersja</string>
     <string name="build">Kompilacja</string>
     <string name="path">Ścieżka do bazy danych</string>
+    <string name="remote_path">Ścieżka zdalna:</string>
     <string name="database_version">Wersja bazy danych</string>
     <string name="title_show_tutorial">Włącz samouczek</string>
     <string name="summary_show_tutorial">Włączyć samouczek przy następnym uruchomieniu aplikacji?</string>
@@ -65,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Autosynchronizacja tylko na połączeniu z WiFi.</string>
     <string name="sync_on_app_start">Synchronizuj podczas włączania aplikacji.</string>
     <string name="sync_on_start">Rozpocznij synchronizację</string>
+    <string name="sync_merge_database">EKSPERYMENTALNE: Scal bazy danych</string>
+    <string name="sync_merge_database_on_sync">Scal różnice bazy danych podczas synchronizacji.</string>
+    <string name="sync_merge_dialog_msg_format">Łączenie wszystkich %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="notification_click_to_edit_transaction">Dotknij, aby edytować operację&#8230;</string>
     <!-- account -->
@@ -239,6 +245,8 @@
     <string name="enter">Enter</string>
     <string name="enter_amount">Podaj ilość</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Auto transakcja</string>
+    <string name="manual">Wprowadź ręcznie</string>
     <!-- 20121121 -->
     <string name="send_feedback">Prześlij opinię</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -264,13 +272,17 @@
     <string name="no_stock_data">Brak  dostępnych danych o akcjach dla tego konta.</string>
     <string name="month">Miesiąc</string>
     <string name="year">Bieżący rok</string>
+    <string name="title_activity_general_report">Sprawozdanie ogólne</string>
     <string name="menu_report_income_vs_expenses">Przychody a wydatki</string>
+    <string name="menu_report_cashflow">Przepływ Pieniędzy</string>
     <string name="total">Łącznie</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Wszystko</string>
     <string name="last_month">Poprzedni miesiąc</string>
     <string name="last30days">Ostatnie 30 dni</string>
     <string name="last_year">Poprzedni rok</string>
+    <string name="current_fin_year">bieżący rok finansowy</string>
+    <string name="last_fin_year">poprzedni rok finansowy</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Liczba znalezionych transakcji: %1$d</string>
@@ -278,6 +290,7 @@
     <string name="date_format">Format daty</string>
     <string name="financial_year_start_day">Rok finansowy: początkowy dzień</string>
     <string name="financial_year_start_month">Rok finansowy: początkowy miesiąc</string>
+    <string name="financial_year_not_set">Ustaw datę rozpoczęcia roku finansowego w ustawieniach.</string>
     <string name="menu_move_database_to_external_storage">Eksportuj bazę danych</string>
     <string name="database_has_been_moved">Baza danych została przeniesiona: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Kopiowanie bazy danych na zewnętrzny nośnik nie powiodło się</string>
@@ -491,11 +504,13 @@
     <string name="budget">Budżet</string>
     <string name="budget_list">Budżet</string>
     <string name="actual">Rzeczywisty</string>
+    <string name="amount_available">Dostępne</string>
     <string name="base_currency_not_set">Waluta bazowa nie została ustawiona</string>
     <string name="error">Błąd</string>
     <string name="unhandled_crash">Nieoczekiwany błąd. Proszę prześlij do nas informację z logiem błędu.</string>
     <string name="title_activity_currency_rates_report">Kursy walut</string>
     <string name="frequency">Częstotliwość</string>
+    <string name="select_columns">Wybierz Widoczne Kolumny</string>
     <string name="update_available">Dostępna aktualizacja</string>
     <string name="update_available_online">Jest dostępna aktualizacja bazy danych online. Czy chcesz aktualizować?</string>
     <string name="currency_not_found">Nie znaleziono walut</string>
@@ -510,6 +525,8 @@
     <string name="fingerprint_info">Zeskanuj odcisk palca, żeby odblokować</string>
     <string name="fingerprint_no_hardware">Twoje urządzenie nie obsługuje uwierzytelniania odciskiem palca</string>
     <string name="fingerprint_check_permission">Proszę włącz uprawnienia odcisku palca</string>
+    <string name="fingerprint_has_enrolled">Nie skonfigurowano odcisku palca. Zarejestruj przynajmniej jeden odcisk palca w ustawieniach urządzenia</string>
+    <string name="fingerprint_is_keyguard_secure">Proszę włączyć ekranu blokady w ustawieniach urządzenia</string>
     <string name="income_expense_period">Okres przychodu/wydatku</string>
     <string name="income_expense_period_summary">Okres dla podglądu przychodów/wydatków w stopce ekranu głównego.</string>
     <string name="appwidget_text">PRZYKŁAD</string>
@@ -528,6 +545,8 @@
     <string name="commission">Prowizja</string>
     <string name="value">Wartość</string>
     <string name="view_transactions">Zobacz transakcje</string>
+    <string name="view_transactions_sub">Zobacz transakcje z podkategoriami</string>
+    <string name="switch_active">Przełącz aktywne/nieaktywne</string>
     <string name="error_downloading_symbol">Błąd pobierania cena symbolu</string>
     <string name="error_updating_rates">Błąd aktualizacji kursów</string>
     <string name="error_no_price_found_for_symbol">Nie znaleziono ceny dla symbolu</string>
@@ -554,6 +573,8 @@
     <string name="all_accounts">Wszystkie konta</string>
     <string name="records">zapisy</string>
     <!-- db password entry -->
+    <string name="enter_password">Podaj hasło (opcjonalne)</string>
+    <string name="password_hint">Tylko dla pliku .emb</string>
     <string name="success">Operacja powiodła się</string>
     <string name="overview">Przegląd</string>
     <string name="title_activity_asset_allocation_overview">Przegląd przydziału aktywów</string>
@@ -572,6 +593,7 @@
     <string name="budget_name">Nazwa budżetu</string>
     <string name="budget_year">Rok budżetu</string>
     <string name="budget_month">Miesiąc budżetu</string>
+    <string name="budget_month_optional">Budżet Miesieczny (opcjonalnie)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikacja zostanie zamknięta w celu zastosowania zmian. Proszę uruchomić ją ponownie.</string>
     <string name="print">Drukuj</string>
@@ -657,7 +679,9 @@
     <string name="filenames_differ">Zdalna oraz lokalna nazwa różnią się. Przerywanie synchronizacji.</string>
     <string name="both_files_modified">Lokalna oraz zdalna baza danych została zmodyfikowana!</string>
     <string name="sync_conflict">Konflikt synchronizacji</string>
+    <string name="request_conflict_resolve">Rozwiąż konflikt</string>
     <string name="no_remote_file">Wybierz zdalny plik do użycia przy synchronizacji.</string>
+    <string name="request_conlict_reopen">Konflikt między lokalnym i zdalnym plikiem. To powoduje, że lokalna kopia nie może być zsynchronizowana ze zdalna. Proszę wyeksportuj bazę danych, jeśli chcesz zapisać swoją kopię lokalną, lub ponownie otwórz ze zdalnego, jeśli chcesz załadować dane ze zdalnego pliku.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Nie ma kont dostępnych dla tego zaznaczenia. Dopasuj opcje filtrowania kont lub oznacz jakieś konta jako ulubione.</string>
     <!-- Errors -->
@@ -665,6 +689,8 @@
     <string name="remote_file_not_found">Nie znaleziono pliku zdalnego</string>
     <string name="error_checking_remote">Błąd przy sprawdzaniu zmian zdalnych.</string>
     <string name="no_remote_change_date">Data zmiany zdalnej nie została znaleziona w metadanych.</string>
+    <string name="remote_unavailable">Plik zdalny jest niedostępny.</string>
+    <string name="request_reopen">Konflikt między lokalnym i zdalnym plikiem. To powoduje, że lokalna kopia nie może być zsynchronizowana ze zdalna. Proszę wyeksportuj bazę danych, jeśli chcesz zapisać swoją kopię lokalną, lub ponownie otwórz ze zdalnego, jeśli chcesz załadować dane ze zdalnego pliku.</string>
     <!-- Select database screen -->
     <string name="intro_text">Aby zacząć używać Money Manager Ex musisz mieć plik bazy danych do przechowywania swoich danych. Wybierz jedną z dostępnych opcji poniżej.</string>
     <string name="intro_create_db">Możesz tworzyć nowy plik i ustawić wstępne ustawienia.</string>
@@ -679,6 +705,9 @@
     <string name="save">Zapisz</string>
     <string name="title_budget_show_simple_view">Pokaż prosty widok budżetu</string>
     <string name="summary_budget_show_simple_view">Jeśli zaznaczono budżety, użyj uproszczonego widoku</string>
+    <string name="title_budget_reload_forecast">Usuń Zaplanowaną operację</string>
+    <string name="title_pref_budget_financial_year">Użyj roku budżetowego w budżecie</string>
+    <string name="summary_pref_budget_financial_year">Jeśli zaznaczone budżety używają roku budżetowego zamiast roku kalendarzowego</string>
     <string name="shares">Udostępnienia</string>
     <string name="loan">Pożyczki</string>
     <string name="loan_account">Konta pożyczek</string>
@@ -690,16 +719,51 @@
     <string name="title_anonymous_usage">Wyślij anonimowe dane użytkowania</string>
     <string name="title_auto_transaction_number">Automatyczne wypełnianie numeru transakcji</string>
     <!-- Notification Setting -->
+    <string name="title_notifications_repeating_transaction">Powiadomienie o zaległych regularnych transakcjach </string>
+    <string name="summary_notifications_repeating_transaction">Pokazuj powiadomienia o zaległych regularnych transakcjach</string>
+    <string name="notification_channel_recurring">Powiadomienie o zaplanowanej transakcji</string>
+    <string name="notification_channel_recurring__description">Powiadomienie o zaplanowanej zaległej transakcji</string>
+    <string name="notification_channel_remotefile">Zdalna operacja plików</string>
+    <string name="notification_channel_remotefile__description">Powiadomienie o operacji zdalnego pliku</string>
     <string name="notification_channel_fileoperation_downloadin">Pobieranie Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Przesyłanie Mmex</string>
     <string name="notification_channel_fileoperation_complete">Przesyłanie Mmex zakończone</string>
     <string name="notification_channel_fileoperation_conflict">Konflikt synchronizacji Mmex</string>
+    <string name="show">Wyświetl</string>
+    <string name="attachment_folder">Folder załączników</string>
+    <string name="attachment_folder_summary">Wybierz folder, w którym będą zapisywane załączniki</string>
+    <string name="pref_attachment_folder">Folder załączników</string>
+    <string name="version_copied_to_clipboard">Numer wersji skopiowany do schowka</string>
+    <string name="issue_open">"Zgłoś problem na GitHub"</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Wyczyść wszystko</string>
+    <string name="empty_color_message">Wybierz kolor</string>
+    <string name="menu_show_inactive">Pokaż nieaktywne</string>
+    <string name="btn_continue">Kontynuuj</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Odrzuć</string>
+    <string name="category_nav_mode">Nowy tryb nawigacji jest dostępny w menu</string>
+    <string name="remember_later">Zapamiętaj mnie później</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Ostrzeżenie o wysyłaniu</string>
+    <string name="download_warning">Ostrzeżenie o pobieraniu</string>
+    <string name="remote_file_change">Zdalny wskaźnik zmian pliku: </string>
+    <string name="local_file_change">Zdalny wskaźnik zmian pliku: </string>
+    <string name="msg_uploading_overwrite">Przesyłanie nadpisze twoją zdalną wersję.\nCzy chcesz kontynuować?</string>
+    <string name="msg_downloading_overwrite">Pobieranie nadpisze twoją zdalną wersję.\nCzy chcesz kontynuować?</string>
     <string name="menu_cashflow_all">Wszystkie konta</string>
+    <string name="menu_cashflow_open">Otwarte Konta</string>
+    <string name="menu_cashflow_favorite">Ulubione konta</string>
+    <string name="menu_cashflow_custom">Wybierz konta</string>
+    <string name="cash_ledger">Księga kasowa</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Przechowuj lokalnie</string>
+    <string name="merge_take_theirs">Zabierz zdalnie</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Ups! Coś poszło nie tak.</string>
+    <string name="bad_error_occurs">Ze smutkiem ogłaszamy, że powstał nieoczekiwany błąd. Zgłoś to deweloperowi</string>
+    <string name="estimatedForPeriod">Oszacuj za Okres</string>
+    <string name="forecast_remain">Prognoza Pozostałości</string>
     <!-- changelog -->
     <string name="changelog">Lista zmian</string>
 </resources>
