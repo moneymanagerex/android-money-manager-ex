@@ -222,8 +222,12 @@ public class SyncService
         if (isLocalModified) {
             Timber.d("Local file %s changed. Triggering upload.", localFile.getPath());
             // upload file
-            storage.pushDatabase(currentDb);
-            sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+            try {
+                storage.pushDatabase(currentDb);
+                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+            } catch (Exception e) {
+                sendMessage(outMessenger, SyncServiceMessage.ERROR);
+            }
             return;
         }
     }
