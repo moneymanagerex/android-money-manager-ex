@@ -582,7 +582,7 @@ public class CashFlowReportListFragment
                     builder.setMultiChoiceItems(matrixCursor,"CHECKED", QueryAccountBills.ACCOUNTNAME,
                             (dialog, which, isChecked) -> {
                                 matrixCursor.moveToPosition(which);
-                                long id = matrixCursor.getInt(matrixCursor.getColumnIndexOrThrow("_id"));
+                                long id = matrixCursor.getLong(matrixCursor.getColumnIndexOrThrow("_id"));
                                 if ( !isChecked ) {
 //                                    if ( selectedAccounts.contains(id) ) {
                                         selectedAccounts.remove(id);
