@@ -34,9 +34,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1094
+        versionCode 1095
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.4.7"
+        versionName "5.4.8"
         // versionName getVersionAsDate()
 
         // $applicationId
