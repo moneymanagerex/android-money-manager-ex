@@ -50,7 +50,12 @@ public class InfoRepositorySql
             .from(TABLE_NAME)
             .where(Info.INFONAME + "=?", infoName);
 
-        Cursor c = this.query(sql);
+        Cursor c;
+        try {
+            c = this.query(sql);
+        } catch (Exception e) {
+            c = null;
+        }
         if (c == null) return null;
 
         List<Info> results = new ArrayList<>();

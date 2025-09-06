@@ -68,7 +68,7 @@
     <string name="auto_sync_via_wifi_summary">Автосинхронизация только при соединении по WiFi.</string>
     <string name="sync_on_app_start">Синхронизация при запуске приложения.</string>
     <string name="sync_on_start">Синхронизация при запуске</string>
-    <string name="sync_merge_database">ЭКСПЕРИМЕНТАЛЬНО: Объединение баз данных</string>
+    <string name="sync_merge_database">Объединение баз данных</string>
     <string name="sync_merge_database_on_sync">Объединить базы данных при синхронизации.</string>
     <string name="sync_merge_dialog_msg_format">Объединение всех %1$s%2$s</string>
     <!-- Receive SMS strings -->
@@ -820,4 +820,5 @@
     <!-- changelog -->
     <string name="changelog">История изменений</string>
     <string name="changelog_title">Важно! Что нового!!</string>
+    <string name="changelog_1086">Новая версия 5.4\n- Добавлена бета-версия возможности объединения. Попробуйте объединить файлы при их изменении. Включите ее в Настройках-&gt;Синхронизация-&gt;Объединение баз данных</string>
 </resources>

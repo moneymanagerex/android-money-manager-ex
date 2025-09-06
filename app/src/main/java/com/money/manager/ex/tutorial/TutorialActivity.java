@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
@@ -29,6 +30,9 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -36,14 +40,12 @@ import me.relex.circleindicator.CircleIndicator3;
 
 /**
  * Horizontal Swipe View
- * See: http://developer.android.com/training/implementing-navigation/lateral.html
+ * See: <a href="http://developer.android.com/training/implementing-navigation/lateral.html">http://developer.android.com/training/implementing-navigation/lateral.html</a>
  */
 public class TutorialActivity extends FragmentActivity {
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
     public static final int RESULT_OK = 1;
-
-    private TextView skipTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +56,38 @@ public class TutorialActivity extends FragmentActivity {
         // getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
 
+        // handle edge-to-edge
+        // In your Activity or Fragment
+        View mainLayout = findViewById(R.id.main_content_container_for_edge_to_edge); // Make sure R.id.main_layout exists
+        ViewCompat.setOnApplyWindowInsetsListener(mainLayout, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Apply insets as padding to the view
+            // There is no direct view.updatePadding method in Java like Kotlin's extension function.
+            // You must use setPadding.
+            v.setPadding(
+                    insets.left,
+                    insets.top,
+                    insets.right,
+                    insets.bottom
+            );
+
+            // Return the consumed insets to indicate that you have handled them.
+            // You can also return windowInsets if you want other listeners to receive the same insets,
+            // but for padding, they are usually consumed.
+            return WindowInsetsCompat.CONSUMED; // Or in some cases you might want to return windowInsets.inset(insets)
+            // if you want to propagate the remaining insets after applying the padding.
+            // For simple padding, CONSUMED is often appropriate.
+        });
+
+
         CircleIndicator3 circleIndicator = findViewById(R.id.indicator_default);
         ViewPager2 viewpager = findViewById(R.id.viewpager_default);
         TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(this);
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 
-        skipTextView = findViewById(R.id.skipTextView);
+        TextView skipTextView = findViewById(R.id.skipTextView);
         skipTextView.setOnClickListener(view -> onCloseClicked());
 
     }
