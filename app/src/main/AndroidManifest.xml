@@ -36,8 +36,10 @@
     <!--<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />-->
 
     <!-- SMS Interface -->
+    <!-- Issue on gplay for
     <uses-permission android:name="android.permission.RECEIVE_SMS"
         android:required="false" />
+    -->
     <!-- this is not really mandator
         uses-permission android:name="android.permission.READ_SMS"
         android:required="false" / -->
@@ -134,12 +136,14 @@
                 android:resource="@xml/widget_info_single_account" />
         </receiver>
 
+        <!-- remove SMS
         <receiver android:name=".notifications.SmsReceiverTransactions"
                   android:label="SMS Receiver" android:exported="true">
             <intent-filter >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        -->
 
         <!-- activities -->
 
