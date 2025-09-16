@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+
+    <!-- SMS Interface -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS"
+        android:required="false" />
+
+    <application
+        android:name=".MmexApplication"
+        android:allowBackup="true"
+        android:backupAgent=".core.MoneyManagerBackupAgentHelper"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/application_name"
+        android:theme="@style/Theme.Splash"
+        tools:replace="android:label"
+        android:supportsRtl="true">
+
+    <receiver android:name=".notifications.SmsReceiverTransactions"
+                  android:label="SMS Receiver" android:exported="true"
+        android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
