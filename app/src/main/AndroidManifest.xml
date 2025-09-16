@@ -39,7 +39,6 @@
 
     <!-- SMS Interface -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
 
     <!-- Fingerprint Interface -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
