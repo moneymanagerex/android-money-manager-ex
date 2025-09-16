@@ -300,7 +300,7 @@ public class FileStorageHelper {
                     throw new IOException("InputStream is null for URI: " + uri);
                 }
                 long bytesCopied = ByteStreams.copy(is, os);
-                Timber.i("Copied %d bytes", bytesCopied);
+                Timber.d("Copied %d bytes", bytesCopied);
             } catch (Exception e) {
                 Timber.e(e, "Error downloading database");
                 throw new RuntimeException(e); // Wrap exception for CompletableFuture
