@@ -29,6 +29,7 @@
     <string name="category_10">세금</string>
     <string name="category_11">기타잡비</string>
     <string name="category_12">선물비용</string>
+    <string name="category_13">수입</string>
     <string name="category_14">기타 수입</string>
     <string name="category_15">기타 지출</string>
     <!-- default subcategory -->
