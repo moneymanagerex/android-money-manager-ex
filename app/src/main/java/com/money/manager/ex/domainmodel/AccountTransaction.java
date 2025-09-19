@@ -28,6 +28,7 @@ import com.money.manager.ex.datalayer.IModificationTraceable;
 import com.money.manager.ex.utils.MmxDate;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -256,21 +257,25 @@ public class AccountTransaction
     }
 
     @Override
+    @ParcelProperty("mAttachments")
     public void setAttachments(ArrayList<Attachment> attachments) {
         this.mAttachments = attachments;
     }
 
     @Override
+    @ParcelProperty("mAttachments")
     public ArrayList<Attachment> getAttachments() {
         return this.mAttachments;
     }
 
     @Override
+    @ParcelProperty("tagLinks")
     public void setTagLinks(ArrayList<TagLink> tagLinks) {
         this.tagLinks = tagLinks;
     }
 
     @Override
+    @ParcelProperty("tagLinks")
     public ArrayList<TagLink> getTagLinks() {
         return tagLinks;
     }
@@ -289,11 +294,13 @@ public class AccountTransaction
     }
 
     @Override
+    @ParcelProperty("splitTransactions")
     public void setSplit(ArrayList<ISplitTransaction> split) {
         splitTransactions = split;
     }
 
     @Override
+    @ParcelProperty("splitTransactions")
     public ArrayList<ISplitTransaction> getSplit() {
         return splitTransactions;
     }
