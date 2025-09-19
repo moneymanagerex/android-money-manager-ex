@@ -189,8 +189,8 @@ public class PayeeReportFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
 
         // pie chart
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
@@ -202,12 +202,12 @@ public class PayeeReportFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_chart) {
             showChart();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     public void showChart() {

@@ -138,7 +138,7 @@ public class PieChartFragment
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
         }
         // set has option menu
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
     }
 
     @Override

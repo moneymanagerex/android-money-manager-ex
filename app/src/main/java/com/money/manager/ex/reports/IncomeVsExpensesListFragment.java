@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -64,6 +63,11 @@ import java.util.List;
 
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 /**
  * Income/Expense Report, list.
@@ -85,7 +89,8 @@ public class IncomeVsExpensesListFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
+        setupMenuProviders();
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
                 savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
@@ -115,6 +120,30 @@ public class IncomeVsExpensesListFragment
     }
 
     // Loader
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -214,9 +243,7 @@ public class IncomeVsExpensesListFragment
 
     // Menu
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
@@ -228,8 +255,7 @@ public class IncomeVsExpensesListFragment
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             getActivity().finish();
         } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
@@ -242,7 +268,7 @@ public class IncomeVsExpensesListFragment
             showDialogYears();
         }
 
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     //

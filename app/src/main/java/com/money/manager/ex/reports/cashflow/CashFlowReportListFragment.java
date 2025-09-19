@@ -37,7 +37,11 @@ import android.widget.TextView;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
@@ -364,7 +368,7 @@ public class CashFlowReportListFragment
         // set default text
         setEmptyText(getActivity().getResources().getString(R.string.loading));
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         Locale locale = MmexApplication.getApp().getAppLocale();
         dateUtils = new MmxDateTimeUtils(locale);
@@ -518,13 +522,12 @@ public class CashFlowReportListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        MmexApplication.getApp().iocComponent.inject(this);
-        setHasOptionsMenu(false);
+        // setHasOptionsMenu(false);
 //        Intent i = getActivity().getParentActivityIntent();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         // set accounts Filter
         inflater.inflate(R.menu.menu_cashflow, menu);
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
@@ -535,7 +538,7 @@ public class CashFlowReportListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle accounts filter
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
 //        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);

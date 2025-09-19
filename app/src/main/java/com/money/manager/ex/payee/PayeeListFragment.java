@@ -95,7 +95,7 @@ public class PayeeListFragment
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.payee_empty_list));
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         int layout = android.R.layout.simple_list_item_1;
 
@@ -159,8 +159,8 @@ public class PayeeListFragment
 
     // Menu
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
 
         AppSettings settings = new AppSettings(mContext);
@@ -193,7 +193,7 @@ public class PayeeListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         AppSettings settings = new AppSettings(mContext);
 
         switch (item.getItemId()) {
@@ -230,7 +230,7 @@ public class PayeeListFragment
                 getActivity().finish();
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     // Context Menu

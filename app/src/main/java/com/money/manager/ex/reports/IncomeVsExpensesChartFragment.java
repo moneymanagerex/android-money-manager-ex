@@ -17,10 +17,17 @@
 package com.money.manager.ex.reports;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,12 +140,39 @@ public class IncomeVsExpensesChartFragment
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
         }
         // set has option menu
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
+
+    }
+
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return buildChart();
+        setupMenuProviders();
+
         mLayout = (LinearLayout) inflater.inflate(R.layout.chart_bar_fragment, container, false);
 
         mChart = mLayout.findViewById(R.id.chartBar);
@@ -163,13 +197,12 @@ public class IncomeVsExpensesChartFragment
         buildChart();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             getActivity().onBackPressed();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     @Override

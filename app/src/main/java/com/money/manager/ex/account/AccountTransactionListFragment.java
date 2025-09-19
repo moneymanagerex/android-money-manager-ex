@@ -24,6 +24,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -150,10 +153,44 @@ public class AccountTransactionListFragment
         mFilter.transactionStatus = new StatusFilter();
 
         restoreInstanceState(savedInstanceState);
+
+    }
+
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+
+            @Override
+            public void onPrepareMenu(@NonNull Menu menu) {
+                old_onPrepareOptionsMenu(menu);
+            }
+
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setupMenuProviders();
+
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getLong(KEY_CONTENT);
         }
@@ -179,7 +216,7 @@ public class AccountTransactionListFragment
             setImageViewFavorite();
         }
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         return view;
     }
@@ -224,9 +261,7 @@ public class AccountTransactionListFragment
 
     // Menu
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         // hide the title
         if (getActivity() instanceof AppCompatActivity) {
@@ -246,12 +281,10 @@ public class AccountTransactionListFragment
         initializeFilterMenu(menu);
 
         // call create option menu of fragment
-        mAllDataListFragment.onCreateOptionsMenu(menu, inflater);
+        mAllDataListFragment.old_onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public void old_onPrepareOptionsMenu(Menu menu) {
 
         //force show add transaction
         MenuItem itemAddTransaction = menu.findItem(R.id.menu_add_transaction_account);
@@ -283,8 +316,7 @@ public class AccountTransactionListFragment
         selectCurrentStatus(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         boolean result;
 
         result = datePeriodItemSelected(item);
@@ -316,7 +348,7 @@ public class AccountTransactionListFragment
         if (result) {
             return result;
         } else {
-            return super.onOptionsItemSelected(item);
+            return false;
         }
     }
 

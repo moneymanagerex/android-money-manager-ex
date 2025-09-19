@@ -129,7 +129,7 @@ public class BudgetEntryFragment
 
         setUpAdapter();
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         return view;
     }
@@ -179,9 +179,8 @@ public class BudgetEntryFragment
         setListAdapter(adapter);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         // set accounts Filter
         inflater.inflate(R.menu.menu_budget, menu);
 
@@ -229,7 +228,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_budget_reload_forecast ) {
             ScheduledTransactionForecastListServices.destroyInstance();
             restartLoader();

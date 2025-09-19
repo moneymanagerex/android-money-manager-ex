@@ -26,7 +26,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.lifecycle.Lifecycle;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -39,7 +43,6 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -79,7 +82,7 @@ public abstract class BaseReportFragment
         super.onActivityCreated(savedInstanceState);
 
         //set list view
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
 
@@ -101,8 +104,23 @@ public abstract class BaseReportFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // add menu
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         //inflate menu
         inflater.inflate(R.menu.menu_report, menu);
         inflater.inflate(R.menu.menu_period_picker, menu);
@@ -112,6 +130,86 @@ public abstract class BaseReportFragment
             item.setChecked(true);
         }
     }
+
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
+//        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
+        MmxDate dateTime = MmxDate.newDate();
+
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_current_month) {
+            mDateFrom = dateTime.firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_month) {
+            mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_30_days) {
+            mDateTo = dateTime.toDate();
+            mDateFrom = dateTime.minusDays(30).toDate();
+        } else if (itemId == R.id.menu_current_year) {
+            mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+        } else if (itemId == R.id.menu_last_year) {
+            mDateFrom = dateTime.minusYears(1)
+                    .firstMonthOfYear()
+                    .firstDayOfMonth()
+                    .toDate();
+            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
+// issue #1790 - handling financial year
+        } else if (itemId == R.id.menu_current_fin_year ||
+                itemId == R.id.menu_last_fin_year) {
+            InfoService infoService = new InfoService(getActivity());
+            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1"))-1;
+            if (financialYearStartMonth < 0) financialYearStartMonth = 0;
+            MmxDate newDate = MmxDate.newDate();
+            newDate.setDate(financialYearStartDay);
+            newDate.setMonth(financialYearStartMonth);
+            if (newDate.toDate().after(dateTime.toDate())) {
+                // today is not part of current financial year, so we need to go back on year
+                newDate.minusYears(1);
+            }
+            // right now newDAte is start of current fiscal year
+            if (itemId == R.id.menu_last_fin_year) {
+                newDate.minusYears(1);
+            }
+            mDateFrom = newDate.toDate();
+            mDateTo = newDate.addYear(1).minusDays(1).toDate();
+            Timber.v("FISCAL YEAR from: " + mDateFrom.toString() + " to: " + mDateTo.toString());
+        } else if (itemId == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+        } else if (itemId == R.id.menu_custom_dates) {
+            // Check item
+            item.setChecked(true);
+            mItemSelected = itemId;
+            // Show custom dates dialog
+            showDialogCustomDates();
+            return true;
+        } else {
+            return super.old_onOptionsItemSelected(item);
+        }
+
+        String whereClause = null;
+        if (mDateFrom != null && mDateTo != null) {
+            whereClause = QueryAllData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
+                    "' AND " + QueryAllData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
+        }
+
+        //check item
+        item.setChecked(true);
+        mItemSelected = item.getItemId();
+
+        //compose bundle
+        Bundle args = new Bundle();
+        args.putString(KEY_WHERE_CLAUSE, whereClause);
+
+        //starts loader
+        startLoader(args);
+
+        return true;
+    }
+
 
     // Loader events
 
@@ -151,86 +249,6 @@ public abstract class BaseReportFragment
                 setListShownNoAnimation(true);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
-        MmxDate dateTime = MmxDate.newDate();
-
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.menu_current_month) {
-            mDateFrom = dateTime.firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_month) {
-            mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_30_days) {
-            mDateTo = dateTime.toDate();
-            mDateFrom = dateTime.minusDays(30).toDate();
-        } else if (itemId == R.id.menu_current_year) {
-            mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_year) {
-            mDateFrom = dateTime.minusYears(1)
-                    .firstMonthOfYear()
-                    .firstDayOfMonth()
-                    .toDate();
-            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-// issue #1790 - handling financial year
-        } else if (itemId == R.id.menu_current_fin_year ||
-                   itemId == R.id.menu_last_fin_year) {
-            InfoService infoService = new InfoService(getActivity());
-            int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1"))-1;
-            if (financialYearStartMonth < 0) financialYearStartMonth = 0;
-            MmxDate newDate = MmxDate.newDate();
-            newDate.setDate(financialYearStartDay);
-            newDate.setMonth(financialYearStartMonth);
-            if (newDate.toDate().after(dateTime.toDate())) {
-                // today is not part of current financial year, so we need to go back on year
-                newDate.minusYears(1);
-            }
-            // right now newDAte is start of current fiscal year
-            if (itemId == R.id.menu_last_fin_year) {
-                newDate.minusYears(1);
-            }
-            mDateFrom = newDate.toDate();
-            mDateTo = newDate.addYear(1).minusDays(1).toDate();
-            Timber.v("FISCAL YEAR from: " + mDateFrom.toString() + " to: " + mDateTo.toString());
-        } else if (itemId == R.id.menu_all_time) {
-            mDateFrom = null;
-            mDateTo = null;
-        } else if (itemId == R.id.menu_custom_dates) {
-            // Check item
-            item.setChecked(true);
-            mItemSelected = itemId;
-            // Show custom dates dialog
-            showDialogCustomDates();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-
-        String whereClause = null;
-        if (mDateFrom != null && mDateTo != null) {
-            whereClause = QueryAllData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
-                "' AND " + QueryAllData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
-        }
-
-        //check item
-        item.setChecked(true);
-        mItemSelected = item.getItemId();
-
-        //compose bundle
-        Bundle args = new Bundle();
-        args.putString(KEY_WHERE_CLAUSE, whereClause);
-
-        //starts loader
-        startLoader(args);
-
-        return true;
     }
 
     @Override

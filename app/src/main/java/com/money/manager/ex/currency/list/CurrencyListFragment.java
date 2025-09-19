@@ -60,6 +60,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -132,7 +133,7 @@ public class CurrencyListFragment
 
         setEmptyText(requireActivity().getResources().getString(R.string.currencies_empty));
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         // create and link the adapter
         CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
@@ -157,8 +158,8 @@ public class CurrencyListFragment
     // Menu.
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
 
         UIHelper ui = new UIHelper(getActivity());
@@ -172,7 +173,8 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void old_onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.old_onPrepareOptionsMenu(menu);
         MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
         if (showOnlyUsed != null) {
             showOnlyUsed.setChecked(mShowOnlyUsedCurrencies);
@@ -180,7 +182,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
         switch (item.getItemId()) {
@@ -206,7 +208,7 @@ public class CurrencyListFragment
                 }
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     // Context menu

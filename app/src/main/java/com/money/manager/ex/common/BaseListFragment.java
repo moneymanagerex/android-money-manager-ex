@@ -60,27 +60,37 @@ public abstract class BaseListFragment
 
     public static String mAction = null;
 
-    private MenuHost menuHost;
-
     // abstract method
     public abstract String getSubTitle();
-
-    // retryice Menu
-    public MenuHost getMenuHost() {return menuHost;}
-
-    // for compatibility
-    public void oldOnCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-    }
-
-    // for compatibility
-    public boolean oldOnOptionsItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupMenuProviders();
+
+        setupFloatingActionButton(view);
+
+        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+            private boolean isFabVisible = true;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem > 0 && isFabVisible) {
+                    isFabVisible = false;
+                } else if (firstVisibleItem == 0 && !isFabVisible) {
+                    isFabVisible = true;
+                }
+                setFabVisible(isFabVisible);
+            }
+        });
+    }
+
+    private void setupMenuProviders() {
         // Get the MenuHost from the parent Activity
         MenuHost menuHost = requireActivity();
         // Add the MenuProvider to the MenuHost
@@ -117,7 +127,7 @@ public abstract class BaseListFragment
 
                     formatter.format(searchView);
                 }
-                oldOnCreateOptionsMenu(menu, menuInflater);
+                old_onCreateOptionsMenu(menu, menuInflater);
             }
 
             @Override
@@ -127,28 +137,35 @@ public abstract class BaseListFragment
                     setResultAndFinish();
                     return true; // consumed here
                 }
-                return oldOnOptionsItemSelected(menuItem);
+                return old_onOptionsItemSelected(menuItem);
             }
+
+            @Override
+            public void onPrepareMenu(@NonNull Menu menu) {
+                old_onPrepareOptionsMenu(menu);
+            }
+
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
-        setupFloatingActionButton(view);
 
-        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-            private boolean isFabVisible = true;
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
 
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(@SuppressWarnings("unused") MenuHost menuHost) {
+        // Implementazione di default vuota
+    }
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem > 0 && isFabVisible) {
-                    isFabVisible = false;
-                } else if (firstVisibleItem == 0 && !isFabVisible) {
-                    isFabVisible = true;
-                }
-                setFabVisible(isFabVisible);
-            }
-        });
+    // for retrocompatibility
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    }
+    // for retrocompatibility
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
+        // Handle menu item clicks
+        return false;
+    }
+    // for retrocompatibility
+    public void old_onPrepareOptionsMenu(@NonNull Menu menu) {
     }
 
     @Override
