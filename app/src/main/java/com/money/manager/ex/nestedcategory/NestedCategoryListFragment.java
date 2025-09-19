@@ -97,9 +97,9 @@ public class NestedCategoryListFragment
             " WHERE T.CATEGID = CHECKINGACCOUNT_V1.CATEGID \n" +
             "   AND (CHECKINGACCOUNT_V1.DELETEDTIME IS NULL OR CHECKINGACCOUNT_V1.DELETEDTIME = '') ) DESC";
 
-    private static int NAVMODE_UNKNOW = -1;
-    private static int NAVMODE_LIST = 0;
-    private static int NAVMODE_TREE = 1;
+    private static final int NAVMODE_UNKNOW = -1;
+    private static final int NAVMODE_LIST = 0;
+    private static final int NAVMODE_TREE = 1;
 
 
     //    private Context mContext;
@@ -131,8 +131,6 @@ public class NestedCategoryListFragment
             new AppSettings(getActivity()).setCategoryNavMode(levelMode);
         }
         rootCategoryId = -1; // reset filter
-
-        setHasOptionsMenu(true);
 
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
@@ -242,8 +240,8 @@ public class NestedCategoryListFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void oldOnCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.oldOnCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
 
         switch ((new AppSettings(getActivity())).getCategorySort()) {
@@ -279,7 +277,7 @@ public class NestedCategoryListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean oldOnOptionsItemSelected(MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
         if (item.getItemId() == android.R.id.home ) {
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
