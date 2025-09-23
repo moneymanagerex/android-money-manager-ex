@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -112,7 +113,7 @@ public class TagListFragment     extends BaseListFragment
     // Menu
 
     @Override
-    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.old_onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
         //Check the default sort order
@@ -143,7 +144,7 @@ public class TagListFragment     extends BaseListFragment
     }
 
     @Override
-    public boolean old_onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
 
         switch (item.getItemId()) {

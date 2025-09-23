@@ -240,7 +240,7 @@ public class NestedCategoryListFragment
     }
 
     @Override
-    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.old_onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
 
@@ -277,7 +277,7 @@ public class NestedCategoryListFragment
     }
 
     @Override
-    public boolean old_onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
         if (item.getItemId() == android.R.id.home ) {
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();

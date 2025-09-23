@@ -64,7 +64,7 @@ public abstract class BaseListFragment
     public abstract String getSubTitle();
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         setupMenuProviders();

@@ -101,7 +101,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // todo initializeSwipeToRefresh();
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -150,7 +150,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerForContextMenu(getListView());
     }

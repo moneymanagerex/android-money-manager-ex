@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -132,7 +133,7 @@ public class ScheduledTransactionListFragment
     // Menu
 
     @Override
-    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.old_onCreateOptionsMenu(menu, inflater);
 
 //        MenuInflater inflater = getMenuInflater();
@@ -145,7 +146,7 @@ public class ScheduledTransactionListFragment
     }
 
     @Override
-    public boolean old_onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle calendar
         if (item.getItemId() == R.id.menuCalendar) {
             showCaldroidFragment();
