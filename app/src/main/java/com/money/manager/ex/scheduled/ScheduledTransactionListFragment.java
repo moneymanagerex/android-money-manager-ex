@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -99,7 +100,7 @@ public class ScheduledTransactionListFragment
         mBillDeposits = new QueryBillDeposits(getActivity());
         // set list view
         setEmptyText(getActivity().getResources().getString(R.string.repeating_empty_transaction));
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
         registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         UIHelper uiHelper = new UIHelper(getActivity());
@@ -119,7 +120,7 @@ public class ScheduledTransactionListFragment
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
         Intent i = getActivity().getParentActivityIntent();
     }
 
@@ -132,8 +133,8 @@ public class ScheduledTransactionListFragment
     // Menu
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
 
 //        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_item_calendar, menu);
@@ -145,12 +146,12 @@ public class ScheduledTransactionListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle calendar
         if (item.getItemId() == R.id.menuCalendar) {
             showCaldroidFragment();
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     @Override

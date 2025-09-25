@@ -45,6 +45,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.Loader;
@@ -189,8 +190,8 @@ public class PayeeReportFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
 
         // pie chart
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
@@ -202,12 +203,12 @@ public class PayeeReportFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_chart) {
             showChart();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     public void showChart() {

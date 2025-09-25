@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.loader.app.LoaderManager;
@@ -67,7 +68,7 @@ public class TagListFragment     extends BaseListFragment
         setMenuItemSearchIconified(!focusOnSearch);
 
         setEmptyText(getActivity().getResources().getString(R.string.tag_empty_list));
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         int layout = android.R.layout.simple_list_item_1;
 
@@ -112,8 +113,8 @@ public class TagListFragment     extends BaseListFragment
     // Menu
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_sort, menu);
         //Check the default sort order
         final MenuItem item;
@@ -143,7 +144,7 @@ public class TagListFragment     extends BaseListFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
 
         switch (item.getItemId()) {
@@ -180,7 +181,7 @@ public class TagListFragment     extends BaseListFragment
                 getActivity().finish();
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     // Context Menu

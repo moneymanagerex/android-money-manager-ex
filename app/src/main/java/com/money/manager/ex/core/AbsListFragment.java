@@ -19,6 +19,8 @@ package com.money.manager.ex.core;
 
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,8 +79,9 @@ public class AbsListFragment
      * way to have the built-in indeterminant progress state be shown.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.abs_list_fragment, container, false);
     }
 
@@ -86,7 +89,7 @@ public class AbsListFragment
      * Attach to list view once the view hierarchy has been created.
      */
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ensureList();
     }
@@ -126,7 +129,7 @@ public class AbsListFragment
      * Set the currently selected list item to the specified
      * position with the adapter's data
      *
-     * @param position
+     * @param position The position of the item to select
      */
     public void setSelection(int position) {
         ensureList();

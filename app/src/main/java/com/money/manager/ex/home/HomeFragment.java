@@ -38,10 +38,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -154,12 +158,37 @@ public class HomeFragment
         refreshSettings();
 
         // The fragment is using a custom option in the actionbar menu.
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
             this.accountBalancedId = savedInstanceState.getLong(TAG_BALANCE_ACCOUNT);
         }
+    }
+
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
     }
 
     @Override
@@ -196,6 +225,7 @@ public class HomeFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupMenuProviders();
 
         mExpandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private boolean isFabVisible = true;
@@ -361,26 +391,19 @@ public class HomeFragment
 
     // Menu
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         boolean result = false;
 
         if (item.getItemId() == R.id.menu_search) {
             startActivity(new Intent(getActivity(), SearchActivity.class));
-            result = true;
+            return true;
         }
 
-        if (result) {
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+            return false;
     }
 
     // End menu.

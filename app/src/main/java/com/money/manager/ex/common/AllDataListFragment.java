@@ -209,17 +209,18 @@ public class AllDataListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setHasOptionsMenu(true);
+//        // setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Get the MenuHost from the parent Activity
         MenuHost menuHost = requireActivity();
         // Add the MenuProvider to the MenuHost
@@ -390,16 +391,6 @@ public class AllDataListFragment
 
     // End loader event handlers
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        Activity activity = getActivity();
-        if (activity == null) return;
-
-    }
-
     @Override
     public void onDestroy() {
         if (mMultiChoiceModeListener != null)
@@ -430,37 +421,6 @@ public class AllDataListFragment
         } catch (Exception e) {
             Timber.e(e, "stopping the all-data fragment");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        long itemId = item.getItemId();
-
-        if (itemId == R.id.menu_export_to_csv) {
-            exportDataToCSVFile();
-            return true;
-        }
-        if (itemId == R.id.menu_qif_export) {
-            // export visible transactions.
-            exportToQif();
-        }
-
-        if (itemId == R.id.menu_sort_date_desc) {
-            item.setChecked(true);
-            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_DESC);
-            // restart search
-            restartLoader();
-            return true;
-        }
-        if (itemId == R.id.menu_sort_date_asc) {
-            item.setChecked(true);
-            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_ASC);
-            // restart search
-            restartLoader();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void restartLoader() {

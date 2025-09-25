@@ -67,7 +67,7 @@ public class AccountListFragment
         setSearchMenuVisible(true);
         // set default value
         setEmptyText(requireActivity().getResources().getString(R.string.account_empty_list));
-        setHasOptionsMenu(true);
+//        // setHasOptionsMenu(true);
 
         int layout = Intent.ACTION_PICK.equals(mAction)
                 ? android.R.layout.simple_list_item_multiple_choice
