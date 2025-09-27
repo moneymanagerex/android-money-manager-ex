@@ -19,6 +19,7 @@ package com.money.manager.ex.core;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public abstract class AbsRecyclerFragment extends Fragment {
     private RecyclerView.Adapter<?> mAdapter;
 
     // Handler to manage UI updates like focusing on the RecyclerView
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     // Check if RecyclerView is empty
     private final Runnable mRequestFocus = new Runnable() {

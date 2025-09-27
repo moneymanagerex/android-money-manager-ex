@@ -22,6 +22,8 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ import com.money.manager.ex.R;
 public class AbsListFragment
     extends Fragment {
 
-    final private Handler mHandler = new Handler();
+    final private Handler mHandler = new Handler(Looper.getMainLooper());
     final private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             onListItemClick((ListView) parent, v, position, id);

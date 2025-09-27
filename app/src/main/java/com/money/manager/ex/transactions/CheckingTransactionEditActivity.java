@@ -668,17 +668,17 @@ public class CheckingTransactionEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
+        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY, Parcelable.class);
         mCommon.transactionEntity = Parcels.unwrap(parcelTx);
 
         mCommon.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommon.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommon.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
 
-        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION));
+        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, Parcelable.class));
 
         mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
-                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
+                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,  Parcelable.class));
 
         mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
 
