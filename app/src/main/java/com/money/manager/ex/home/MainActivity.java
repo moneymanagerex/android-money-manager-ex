@@ -457,18 +457,13 @@ public class MainActivity
     }
 
     @Override
-    public void onBackPressed() {
+//    public void onBackPressed() {
+    public boolean onHandleOnBackPressed() {
         if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            try {
-                super.onBackPressed();
-            } catch (IllegalStateException e) {
-                Timber.e(e, "IllegalStateException in onBackPressed");
-            } catch (NullPointerException e) {
-                Timber.e(e, "NullPointerException in onBackPressed");
-            }
+            return true;
         }
+        return false;
     }
 
     // Events (EventBus)

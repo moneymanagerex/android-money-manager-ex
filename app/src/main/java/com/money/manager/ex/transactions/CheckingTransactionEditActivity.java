@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -129,6 +131,7 @@ public class CheckingTransactionEditActivity
         mCommon.displayCategoryName();
 //        mCommon.displayTags();  already in init
         mCommon.setDirty(false);
+
     }
 
     @Override
@@ -185,13 +188,6 @@ public class CheckingTransactionEditActivity
     @Override
     public boolean onActionCancelClick() {
         return mCommon.onActionCancelClick();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!onActionCancelClick()) {
-            super.onBackPressed();
-        }
     }
 
     @Override

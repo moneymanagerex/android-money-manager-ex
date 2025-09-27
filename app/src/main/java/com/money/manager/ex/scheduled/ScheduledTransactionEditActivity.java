@@ -216,10 +216,15 @@ public class ScheduledTransactionEditActivity
     }
 
     @Override
-    public void onBackPressed() {
-        if (!onActionCancelClick())
-            super.onBackPressed();
+    public boolean onHandleOnBackPressed() {
+        return !onActionCancelClick();
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        if (!onActionCancelClick())
+//            super.onBackPressed();
+//    }
 
     @Override
     public boolean onActionDoneClick() {

@@ -173,20 +173,6 @@ public class InvestmentTransactionEditActivity
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        onActionCancelClick();
-    }
-
-    @Override
-    public boolean onActionCancelClick() {
-        setResult(Activity.RESULT_CANCELED);
-        finish();
-
-        return true;
-    }
-
-    @Override
     public boolean onActionDoneClick() {
         if (save()) {
             // set result ok and finish activity
