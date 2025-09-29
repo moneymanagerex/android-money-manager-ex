@@ -28,16 +28,25 @@ public class GeneralReportFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_general_report, group, false);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    // To remove Obsolete code we need to:
+    // a) move all view related instruction into onViewCreated
+    // b) move all fragment related instruction into onCreate
+    // c) move all activity related instruction into onStart
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        //Log.d("TAG-htmlReport", htmlContent);
+//    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         WebView webView = (WebView) getActivity().findViewById(R.id.GeneralReportWebView);
         String htmlContent = getHtmlReport(GeneralReportActivity.currentReportName);
 
         webView.setWebViewClient(new WebViewClient());
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
-        //Log.d("TAG-htmlReport", htmlContent);
+
     }
 
     @Override

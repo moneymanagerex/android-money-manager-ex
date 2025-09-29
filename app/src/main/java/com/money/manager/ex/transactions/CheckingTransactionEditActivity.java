@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -129,6 +131,7 @@ public class CheckingTransactionEditActivity
         mCommon.displayCategoryName();
 //        mCommon.displayTags();  already in init
         mCommon.setDirty(false);
+
     }
 
     @Override
@@ -185,13 +188,6 @@ public class CheckingTransactionEditActivity
     @Override
     public boolean onActionCancelClick() {
         return mCommon.onActionCancelClick();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!onActionCancelClick()) {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -668,17 +664,17 @@ public class CheckingTransactionEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
+        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY, Parcelable.class);
         mCommon.transactionEntity = Parcels.unwrap(parcelTx);
 
         mCommon.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommon.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommon.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
 
-        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION));
+        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, Parcelable.class));
 
         mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
-                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
+                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,  Parcelable.class));
 
         mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
 

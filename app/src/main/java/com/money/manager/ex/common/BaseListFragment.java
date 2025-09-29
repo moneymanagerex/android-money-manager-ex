@@ -67,6 +67,9 @@ public abstract class BaseListFragment
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // set animation
+        getListView().setLayoutTransition(new LayoutTransition());
+
         setupMenuProviders();
 
         setupFloatingActionButton(view);
@@ -168,16 +171,27 @@ public abstract class BaseListFragment
     public void old_onPrepareOptionsMenu(@NonNull Menu menu) {
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    // To remove Obsolete code we need to:
+    // a) move all view related instruction into onViewCreated
+    // b) move all fragment related instruction into onCreate
+    // c) move all activity related instruction into onStart
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
-        // set animation
-        getListView().setLayoutTransition(new LayoutTransition());
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // saved instance
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
             isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         // set subtitle in actionbar
         String subTitle = getSubTitle();
@@ -187,11 +201,8 @@ public abstract class BaseListFragment
                 activity.getSupportActionBar().setSubtitle(subTitle);
             }
         }
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+
         // show tooltip wildcard
         // check search type
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())

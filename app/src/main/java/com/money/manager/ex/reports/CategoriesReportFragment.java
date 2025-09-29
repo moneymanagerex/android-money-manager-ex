@@ -24,6 +24,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -191,7 +192,7 @@ public class CategoriesReportFragment
             }
 
             if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
-                Handler handler = new Handler();
+                Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(() -> showChart(), 1000);
             }
         }

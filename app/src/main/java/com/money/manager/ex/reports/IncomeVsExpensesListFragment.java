@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -87,11 +88,15 @@ public class IncomeVsExpensesListFragment
     private String mSort = SORT_ASCENDING;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         // setHasOptionsMenu(true);
         setupMenuProviders();
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
                 savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
             for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
@@ -107,7 +112,7 @@ public class IncomeVsExpensesListFragment
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //        AppCompatActivity activity = (AppCompatActivity) getActivity();
 //        if (activity != null) {
-            //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
 
         // create adapter
@@ -118,6 +123,16 @@ public class IncomeVsExpensesListFragment
         //getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
         getLoaderManager().initLoader(ID_LOADER_YEARS, null, this);
     }
+
+    // To remove Obsolete code we need to:
+    // a) move all view related instruction into onViewCreated
+    // b) move all fragment related instruction into onCreate
+    // c) move all activity related instruction into onStart
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+ //    }
 
     // Loader
     private void setupMenuProviders() {
@@ -216,7 +231,7 @@ public class IncomeVsExpensesListFragment
                 }
 
                 if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
-                    Handler handler = new Handler();
+                    Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
