@@ -25,6 +25,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -56,8 +58,8 @@ import timber.log.Timber;
 public class PerDatabaseFragment
     extends PreferenceFragmentCompat {
 
-    public static final int REQUEST_PICK_CURRENCY = 1;
-    public static final int REQUEST_PICK_ATTACHMENT_FOLDER = 2;
+    private ActivityResultLauncher<Intent> currencyPickerLauncher;
+    private ActivityResultLauncher<Intent> folderPickerLauncher;
 
     public PerDatabaseFragment() {
         // Required empty public constructor
@@ -66,14 +68,61 @@ public class PerDatabaseFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getActivity() != null ) {
+            getActivity().setTitle(R.string.preferences_perdatabase);
+        }
 
-        getActivity().setTitle(R.string.preferences_perdatabase);
+        // 1. Initialize the ActivityResultLauncher for the Currency Picker
+        currencyPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == AppCompatActivity.RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
+                        long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
+                        // set preference
+                        CurrencyService utils = new CurrencyService(requireActivity());
+                        utils.setBaseCurrencyId(currencyId);
+                        // refresh the displayed value.
+                        showCurrentDefaultCurrency();
+                        // notify the user to update exchange rates!
+                        showCurrencyChangeNotification();
+                    }
+                });
+
+        // 2. Initialize the ActivityResultLauncher for the Folder Picker
+        folderPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == AppCompatActivity.RESULT_OK && result.getData() != null) {
+                        Uri treeUri = result.getData().getData();
+                        if (treeUri != null) {
+                            // Persist permissions for the selected folder
+                            requireContext().getContentResolver().takePersistableUriPermission(treeUri,
+                                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                            // Save the folder URI to SharedPreferences
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("attachment_folder_uri", treeUri.toString());
+                            editor.apply();
+
+                            // Update the summary with the selected folder
+                            Preference pAttachmentFolder = findPreference(getString(R.string.pref_attachment_folder));
+                            if (pAttachmentFolder != null) {
+                                pAttachmentFolder.setSummary(treeUri.toString());
+                            }
+                        }
+                    }
+                });
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.preferences_perdatabase);
+        if (getActivity() != null ) {
+            getActivity().setTitle(R.string.preferences_perdatabase);
+        }
     }
 
     @Override
@@ -81,46 +130,6 @@ public class PerDatabaseFragment
         addPreferencesFromResource(R.xml.preferences_per_database);
 
         initializeControls();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_PICK_CURRENCY) {// Returning from the currency picker screen.
-            if ((resultCode == AppCompatActivity.RESULT_OK) && (data != null)) {
-                long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
-                // set preference
-                CurrencyService utils = new CurrencyService(getActivity());
-                utils.setBaseCurrencyId(currencyId);
-                // refresh the displayed value.
-                showCurrentDefaultCurrency();
-
-                // notify the user to update exchange rates!
-                showCurrencyChangeNotification();
-            }
-        }
-
-        if (requestCode == REQUEST_PICK_ATTACHMENT_FOLDER && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            Uri treeUri = data.getData();
-            if (treeUri != null) {
-                // Persist permissions for the selected folder
-                getContext().getContentResolver().takePersistableUriPermission(treeUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-                // Save the folder URI to SharedPreferences
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("attachment_folder_uri", treeUri.toString());
-                editor.apply();
-
-                // Update the summary with the selected folder
-                Preference pAttachmentFolder = findPreference(getString(R.string.pref_attachment_folder));
-                if (pAttachmentFolder != null) {
-                    pAttachmentFolder.setSummary(treeUri.toString());
-                }
-            }
-        }
     }
 
     private void initializeControls() {
@@ -189,7 +198,7 @@ public class PerDatabaseFragment
             });
         }
 
-        final Core core = new Core(getActivity().getApplicationContext());
+        final Core core = new Core(requireContext().getApplicationContext());
 
         // Financial year/month
 
@@ -251,8 +260,7 @@ public class PerDatabaseFragment
             // show the currencies activity
             Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
             intent.setAction(Intent.ACTION_PICK);
-            startActivityForResult(intent, REQUEST_PICK_CURRENCY);
-
+            currencyPickerLauncher.launch(intent);
             return true;
         });
     }
@@ -277,12 +285,12 @@ public class PerDatabaseFragment
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | // Include write permission
                         Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                startActivityForResult(intent, REQUEST_PICK_ATTACHMENT_FOLDER);
+                folderPickerLauncher.launch(intent);
                 return true;
             });
 
             // Display the currently selected folder (if any)
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             String folderUri = preferences.getString("attachment_folder_uri", null);
             if (folderUri != null) {
                 pAttachmentFolder.setSummary("Selected Folder: " + folderUri);
@@ -344,7 +352,7 @@ public class PerDatabaseFragment
         Preference baseCurrency = findPreference(getString(PreferenceConstants.PREF_BASE_CURRENCY));
         if (baseCurrency == null) return;
 
-        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+        CurrencyService currencyService = new CurrencyService(requireContext().getApplicationContext());
         Long currencyId = currencyService.getBaseCurrencyId();
 
         Currency tableCurrency = currencyService.getCurrency(currencyId);
