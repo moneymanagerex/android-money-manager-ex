@@ -168,9 +168,9 @@ public abstract class EntityBase implements IEntity {
             sb.append("theirs is empty"); // should not happen on merge
         } else if (theirs.contentValues == null && this.contentValues == null) {
             sb.append("both entities empty"); // should not happen on merge
-        } else if (this.contentValues == null || this.contentValues.size() != 0) { // backwards compatibility
+        } else if (this.contentValues == null || this.contentValues.size() == 0) { // backwards compatibility
             sb.append("ours is empty"); // should not happen on merge
-        } else if (theirs.contentValues == null || theirs.contentValues.size() != 0) { // backwards compatibility
+        } else if (theirs.contentValues == null || theirs.contentValues.size() == 0) { // backwards compatibility
             sb.append("theirs is empty");// should not happen on merge
         } else {
             for (Map.Entry<String, Object> kvOurs : this.contentValues.valueSet()) {
