@@ -27,8 +27,10 @@ import android.os.Messenger;
 import android.text.TextUtils;
 
 import androidx.core.app.JobIntentService;
+import androidx.core.app.NotificationCompat;
 
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -38,6 +40,7 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.sync.merge.DataMerger;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.money.manager.ex.utils.NotificationUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -63,6 +66,8 @@ public class SyncService
 
     public static final int SYNC_JOB_ID = 1000;
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
+
+    private static final int FOREGROUND_NOTIFICATION_ID = 2; // A unique ID for the foreground notification
 
 //    public SyncService() {
 //        super("com.money.manager.ex.sync.SyncService");
@@ -91,51 +96,71 @@ public class SyncService
                 ? intent.getAction()
                 : "null";
         Timber.d("Running sync job: %s", action);
-//        sendStartEvent();
 
-        // Check if there is a messenger. Used to send the messages back.
-        Messenger outMessenger = null;
-        if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
-            outMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
-        }
-        boolean prefMergeOnSync = intent.getBooleanExtra(SyncConstants.INTENT_EXTRA_PREF_MERGE_ON_SYNC, false);
+        // Be sure to use correct notification channel
+        NotificationUtils.createNotificationChannel(getApplicationContext(), NotificationUtils.CHANNEL_ID_SYNC_IN_PROCESS);
+        Notification notification = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_SYNC_IN_PROCESS)
+                .setContentTitle("Synchronizing database")
+                .setContentText("Sync in progress...")
+                .setSmallIcon(R.drawable.ic_menu_sync) // Use an appropriate icon
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
+        // This call promotes the service to the foreground.
+        // It MUST be called within a few seconds of the service starting.
+        startForeground(FOREGROUND_NOTIFICATION_ID, notification);
 
-        String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
-        String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
-        // check if file is correct
-        if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) {
+        try {
+            // *** STEP 3.2: Wrap your entire sync logic in a try-finally block ***
+            // This ensures stopForeground() is always called.
+
+
+            // Check if there is a messenger. Used to send the messages back.
+            Messenger outMessenger = null;
+            if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
+                outMessenger = intent.getParcelableExtra(SyncService.INTENT_EXTRA_MESSENGER);
+            }
+            boolean prefMergeOnSync = intent.getBooleanExtra(SyncConstants.INTENT_EXTRA_PREF_MERGE_ON_SYNC, false);
+
+            String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
+            String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
+            // check if file is correct
+            if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) {
 //            sendStopEvent();
-            return;
-        }
+                return;
+            }
 
-        // check if the device is online.
-        NetworkUtils network = new NetworkUtils(getApplicationContext());
-        if (!network.isOnline() && !Uri.parse(remoteFilename).getAuthority().startsWith("com.android")) {
-            Timber.i("Can't sync. Device not online.");
-            sendMessage(outMessenger, SyncServiceMessage.NOT_ON_WIFI);
+            // check if the device is online.
+            NetworkUtils network = new NetworkUtils(getApplicationContext());
+            if (!network.isOnline() && !Uri.parse(remoteFilename).getAuthority().startsWith("com.android")) {
+                Timber.i("Can't sync. Device not online.");
+                sendMessage(outMessenger, SyncServiceMessage.NOT_ON_WIFI);
 //            sendStopEvent();
-            return;
-        }
+                return;
+            }
 
-        File localFile = new File(localFilename);
-        DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
-        FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
+            File localFile = new File(localFilename);
+            DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
+            FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
 
-        // Execute action.
-        switch (action) {
-            case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                storage.pullDatabase(currentDb);
-                sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
-                break;
-            case SyncConstants.INTENT_ACTION_UPLOAD:
-                storage.pushDatabase(currentDb);
-                sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
-                break;
-            case SyncConstants.INTENT_ACTION_SYNC:
-                triggerSync(outMessenger, localFile, prefMergeOnSync);
-                break;
-            default:
-                break;
+            // Execute action.
+            switch (action) {
+                case SyncConstants.INTENT_ACTION_DOWNLOAD:
+                    storage.pullDatabase(currentDb);
+                    sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
+                    break;
+                case SyncConstants.INTENT_ACTION_UPLOAD:
+                    storage.pushDatabase(currentDb);
+                    sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+                    break;
+                case SyncConstants.INTENT_ACTION_SYNC:
+                    triggerSync(outMessenger, localFile, prefMergeOnSync);
+                    break;
+                default:
+                    break;
+            }
+        } finally {
+            stopForeground(true);
+            Timber.d("Sync Complete");
         }
     }
 
