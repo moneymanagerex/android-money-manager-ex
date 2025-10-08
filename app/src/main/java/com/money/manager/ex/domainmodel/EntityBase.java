@@ -21,16 +21,15 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.utils.MmxDate;
 
-import org.parceler.Parcel;
-
 import java.util.Date;
 import java.util.Map;
 
-import androidx.annotation.Nullable;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -151,7 +150,7 @@ public abstract class EntityBase implements IEntity {
     }
     public Long getId() {
         return getLong(this.getPrimaryKeyColumn());
-    };
+    }
 
     // Abstract method to return all columns
     // public abstract String[] getAllColumns();
@@ -169,9 +168,9 @@ public abstract class EntityBase implements IEntity {
             sb.append("theirs is empty"); // should not happen on merge
         } else if (theirs.contentValues == null && this.contentValues == null) {
             sb.append("both entities empty"); // should not happen on merge
-        } else if (this.contentValues == null || this.contentValues.isEmpty()) {
+        } else if (this.contentValues == null || this.contentValues.size() == 0) { // backwards compatibility
             sb.append("ours is empty"); // should not happen on merge
-        } else if (theirs.contentValues == null || theirs.contentValues.isEmpty()) {
+        } else if (theirs.contentValues == null || theirs.contentValues.size() == 0) { // backwards compatibility
             sb.append("theirs is empty");// should not happen on merge
         } else {
             for (Map.Entry<String, Object> kvOurs : this.contentValues.valueSet()) {
