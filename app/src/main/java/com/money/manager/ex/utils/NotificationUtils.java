@@ -40,12 +40,16 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_UPLOADING = "notification_channel_fileoperation_uploadin";
     public static final String CHANNEL_ID_UPLOAD_COMPLETE = "notification_channel_fileoperation_complete";
     public static final String CHANNEL_ID_CONFLICT = "notification_channel_fileoperation_conflict";
+    public static final String CHANNEL_ID_SYNC_IN_PROCESS = "notification_channel_syncing";
 
     public static void createNotificationChannel(Context context, String channelId) {
 
 //            CharSequence channelName = NOTIFICATION_CHANNEL_NAME;
         //int importance = NotificationManager.IMPORTANCE_LOW;
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        if (channelId.equals(CHANNEL_ID_SYNC_IN_PROCESS)) {
+            importance = NotificationManager.IMPORTANCE_LOW ; // avoid vibrate or beep
+        }
 
         // Replace channelName with channelId or similar to resolve issue #1244
         // add language support
@@ -84,14 +88,16 @@ public class NotificationUtils {
 
         //channel.setSound();
 
-        channel.enableLights(true);
-        channel.setLightColor(Color.RED);
-        channel.enableVibration(true);
-        channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-
+        if (importance != NotificationManager.IMPORTANCE_LOW) {
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        }
         //return channel;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(channel);
+        if ( notificationManager != null )
+            notificationManager.createNotificationChannel(channel);
     }
 }
