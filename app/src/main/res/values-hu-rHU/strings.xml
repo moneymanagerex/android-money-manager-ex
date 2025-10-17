@@ -777,6 +777,8 @@
     <string name="notification_channel_fileoperation_uploadin">MMEX feltöltése</string>
     <string name="notification_channel_fileoperation_complete">Mmex feltöltés kész</string>
     <string name="notification_channel_fileoperation_conflict">MMEX összehangolási ütközés</string>
+    <string name="notification_channel_syncing">Csatorna összehangolása</string>
+    <string name="notification_channel_syncing__description">Értesítési csatorna összehangolása folyamatban</string>
     <string name="show">Megjelenítés</string>
     <string name="attachment_folder">Melléklet mappa</string>
     <string name="attachment_folder_summary">Mappa kijelölése, ahová a mellékletek mentésre kerülnek</string>
@@ -821,4 +823,5 @@
     <string name="changelog">Újdonságok</string>
     <string name="changelog_title">Fontos újdonságok!!</string>
     <string name="changelog_1086">Új 5.4-es verzió\n- Új béta funkciót adtunk hozzá az Egyesítés folyamatrendszeréhez. Megpróbálja egyesíteni a fájlokat, ha mindkettő megváltozik. Engedélyezze a Beállítások → Összehangolás → Egyesítés menüpontban.</string>
+    <string name="currency_save_error">Hiba történt a pénznem beírásakor. Valószínűleg a(z) %s pénznem már definiálva van.</string>
 </resources>

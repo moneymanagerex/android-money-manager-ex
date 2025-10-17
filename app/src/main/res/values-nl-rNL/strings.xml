@@ -777,6 +777,8 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex uploaden</string>
     <string name="notification_channel_fileoperation_complete">Mmex upload voltooid</string>
     <string name="notification_channel_fileoperation_conflict">Mmex synchronisatie conflict</string>
+    <string name="notification_channel_syncing">Synchroniseer kanaal</string>
+    <string name="notification_channel_syncing__description">Synchroniseer in uitvoering zijnde notificatiekanaal</string>
     <string name="show">Weergeven</string>
     <string name="attachment_folder">Bijlage map</string>
     <string name="attachment_folder_summary">Selecteer de map waar bijlagen worden opgeslagen</string>
@@ -821,4 +823,5 @@
     <string name="changelog">Wijzigingslogboek</string>
     <string name="changelog_title">Belangrijk nieuws!!</string>
     <string name="changelog_1086">Nieuwe versie 5.4\n- Nieuwe bèta-functie toegevoegd voor Samenvoeg engine. Probeer het bestand samen te voegen wanneer beide worden gewijzigd. Schakel het in de instellingen&gt;Sync-&gt;Samenvoegen in</string>
+    <string name="currency_save_error">Fout tijdens het toevoegen van valuta. Valuta %s is waarschijnlijk al gedefinieerd.</string>
 </resources>
