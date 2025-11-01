@@ -25,6 +25,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -84,6 +85,12 @@ public abstract class MmxBaseFragmentActivity
 
         super.onCreate(savedInstanceState);
 
+        // Enable edge-to-edge by allowing the app to draw behind system bars.
+        // Individual activities/fragments should consume insets where needed.
+        try {
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        } catch (Exception ignored) {}
+
         // Initialize the ActivityResultLauncher
         openDocumentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -118,6 +125,19 @@ public abstract class MmxBaseFragmentActivity
         };
         onBackDispatcher.addCallback(this, callbackForOnBackPressed);
 
+    }
+
+    /**
+     * Launch a generic intent using Activity Result API registered launchers.
+     * This replaces legacy startActivityForResult calls from helper classes.
+     */
+    public void launchIntentForResult(Intent intent) {
+        if (openDocumentLauncher != null) {
+            openDocumentLauncher.launch(intent);
+        } else {
+            // fallback
+            startActivity(intent);
+        }
     }
 
     public boolean onHandleOnBackPressed() {

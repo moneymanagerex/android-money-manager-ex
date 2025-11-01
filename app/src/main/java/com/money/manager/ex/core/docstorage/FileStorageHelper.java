@@ -63,7 +63,12 @@ public class FileStorageHelper {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
-            host.startActivityForResult(intent, requestCode);
+            // Use Activity Result API when host is our base activity which provides launcher
+            if (host instanceof com.money.manager.ex.common.MmxBaseFragmentActivity) {
+                ((com.money.manager.ex.common.MmxBaseFragmentActivity) host).launchIntentForResult(intent);
+            } else {
+                host.startActivity(intent);
+            }
         } catch (ActivityNotFoundException e) {
             Timber.e(e, "No storage providers found.");
         }
@@ -80,7 +85,11 @@ public class FileStorageHelper {
             // set default file name as your_data_<creationDateAndTime>.mmb
             String creationDateAndTime = new MmxDate().toString("yyyyMMdd_HHmmss");
             intent.putExtra(Intent.EXTRA_TITLE, "your_data_" + creationDateAndTime + ".mmb");
-            host.startActivityForResult(intent, requestCode);
+            if (host instanceof com.money.manager.ex.common.MmxBaseFragmentActivity) {
+                ((com.money.manager.ex.common.MmxBaseFragmentActivity) host).launchIntentForResult(intent);
+            } else {
+                host.startActivity(intent);
+            }
         } catch (ActivityNotFoundException e) {
             Timber.e(e, "No storage providers found.");
         }

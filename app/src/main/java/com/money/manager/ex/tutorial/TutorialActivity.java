@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.app.Activity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.view.View;
 import android.widget.TextView;
 
@@ -47,9 +50,22 @@ public class TutorialActivity extends FragmentActivity {
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
     public static final int RESULT_OK = 1;
 
+    private ActivityResultLauncher<Intent> settingsLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // register Activity Result launcher for settings
+        settingsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) { // back from general preferences.
+                setResult(AppCompatActivity.RESULT_OK);
+
+                // Mark tutorial as seen.
+                new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
+
+                startMainActivity();
+            }
+        });
         // Hide the zygote background to speed up rendering. Only when activities have
         // their own background set.
         // tip from http://cyrilmottier.com/2013/01/23/android-app-launching-made-gorgeous/
@@ -92,25 +108,12 @@ public class TutorialActivity extends FragmentActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_GENERAL_PREFERENCES) { // back from general preferences.
-            setResult(AppCompatActivity.RESULT_OK);
-
-            // Mark tutorial as seen.
-            new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
-
-            startMainActivity();
-        }
-    }
 
     private void onCloseClicked() {
         // show general preferences (language)
         Intent intent = new Intent(this, GeneralSettingsActivity.class);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
+        settingsLauncher.launch(intent);
     }
 
     @Override
