@@ -105,9 +105,29 @@ public class SyncService
                 .setSmallIcon(R.drawable.ic_menu_sync) // Use an appropriate icon
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
-        // This call promotes the service to the foreground.
-        // It MUST be called within a few seconds of the service starting.
-        startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+        // Try to promote the service to the foreground. If the system disallows
+        // starting a foreground service in this context (e.g. when running as a
+        // JobIntentService on some Android versions), fall back to posting a
+        // regular notification so the user still sees progress.
+        boolean promotedToForeground = false;
+        try {
+            // This call promotes the service to the foreground.
+            // It MUST be called within a few seconds of the service starting.
+            startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+            promotedToForeground = true;
+        } catch (Throwable t) {
+            // ForegroundServiceStartNotAllowedException or other runtime errors
+            // may be thrown when startForeground is not permitted. Fall back to
+            // showing a normal notification.
+            Timber.w(t, "startForeground not allowed, falling back to notification");
+            if (mNotificationManager != null) {
+                try {
+                    mNotificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification);
+                } catch (Exception e) {
+                    Timber.e(e, "Failed to post fallback notification");
+                }
+            }
+        }
 
         try {
             // *** STEP 3.2: Wrap your entire sync logic in a try-finally block ***
@@ -159,7 +179,17 @@ public class SyncService
                     break;
             }
         } finally {
-            stopForeground(true);
+            // If we promoted the service to foreground we must call stopForeground;
+            // otherwise cancel the fallback notification if we posted one.
+            try {
+                if (promotedToForeground) {
+                    stopForeground(true);
+                } else if (mNotificationManager != null) {
+                    mNotificationManager.cancel(FOREGROUND_NOTIFICATION_ID);
+                }
+            } catch (Throwable t) {
+                Timber.w(t, "Error while stopping/cleaning up notifications");
+            }
             Timber.d("Sync Complete");
         }
     }
