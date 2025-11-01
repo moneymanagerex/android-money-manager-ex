@@ -26,6 +26,9 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.view.WindowCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -160,7 +163,17 @@ public abstract class MmxBaseFragmentActivity
         super.setContentView(layoutResID);
 
         mToolbar = findViewById(R.id.toolbar);
-        if (mToolbar != null) setSupportActionBar(mToolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            // Ensure toolbar is placed below the status bar when using edge-to-edge.
+            try {
+                ViewCompat.setOnApplyWindowInsetsListener(mToolbar, (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
+                    v.setPadding(v.getPaddingLeft(), insets.top, v.getPaddingRight(), v.getPaddingBottom());
+                    return windowInsets;
+                });
+            } catch (Exception ignored) {}
+        }
     }
 
     @Override
