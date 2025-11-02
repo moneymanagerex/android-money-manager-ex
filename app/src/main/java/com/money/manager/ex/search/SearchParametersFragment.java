@@ -36,8 +36,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -123,16 +127,42 @@ public class SearchParametersFragment
 
         MmexApplication.getApp().iocComponent.inject(this);
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         if (getSearchParameters() == null) {
             setSearchParameters(new SearchParameters());
         }
     }
 
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
+        setupMenuProviders();
 
         View view = inflater.inflate(R.layout.search_parameters_fragment, container, false);
 
@@ -303,8 +333,7 @@ public class SearchParametersFragment
         savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, Parcels.wrap(searchParameters));
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         UIHelper ui = new UIHelper(getActivity());
 
         // 'Reset' toolbar item
@@ -313,17 +342,15 @@ public class SearchParametersFragment
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_clear));
 
-        super.onCreateOptionsMenu(menu,inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.clearMenuItem) {
             setSearchParameters(new SearchParameters());
             displaySearchCriteria();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     /*

@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -456,18 +457,13 @@ public class MainActivity
     }
 
     @Override
-    public void onBackPressed() {
+//    public void onBackPressed() {
+    public boolean onHandleOnBackPressed() {
         if (mDrawer != null && mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            try {
-                super.onBackPressed();
-            } catch (IllegalStateException e) {
-                Timber.e(e, "IllegalStateException in onBackPressed");
-            } catch (NullPointerException e) {
-                Timber.e(e, "NullPointerException in onBackPressed");
-            }
+            return true;
         }
+        return false;
     }
 
     // Events (EventBus)
@@ -949,7 +945,7 @@ public class MainActivity
             final DrawerMenuItem item = (DrawerMenuItem) drawerList.getExpandableListAdapter()
                     .getGroup(groupPosition);
             if (item != null) {
-                new Handler().postDelayed(() -> {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     // execute operation
                     onDrawerMenuAndOptionMenuSelected(item);
                 }, 200);
@@ -965,7 +961,7 @@ public class MainActivity
             ArrayList<Object> children = (ArrayList) childItems.get(groupPosition);
             final DrawerMenuItem selectedItem = (DrawerMenuItem) children.get(childPosition);
             if (selectedItem != null) {
-                new Handler().postDelayed(() -> onDrawerMenuAndOptionMenuSelected(selectedItem), 200);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> onDrawerMenuAndOptionMenuSelected(selectedItem), 200);
                 return true;
             } else {
                 return false;

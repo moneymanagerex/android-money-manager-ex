@@ -1,0 +1,12 @@
+## What's Changed
+* New Crowdin Translations
+* Remove Copy message from screen
+* Gplay release without sms
+* Remove deprecated code
+* Fix EntityBase Merge Message for Backwards Compatibility
+* Enable Sync Notification to try to prevent db corruption
+* Show error if currency is already defined
+* Fix scrolling in Split Category screen
+* add check for paused app
+
+**Full Changelog**: https://github.com/moneymanagerex/android-money-manager-ex/compare/5.4.9...5.4.10

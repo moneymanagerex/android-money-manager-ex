@@ -38,8 +38,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.lifecycle.Lifecycle;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -136,6 +141,7 @@ public class AllDataListFragment
         setListShown(false);
 
         // Read arguments
+        assert getArguments() != null;
         this.accountId = getArguments().getLong(ARG_ACCOUNT_ID);
 
         // Read header indicator directly from the activity.
@@ -203,15 +209,95 @@ public class AllDataListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
+//        // setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    // Loader event handlers
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get the MenuHost from the parent Activity
+        MenuHost menuHost = requireActivity();
+        // Add the MenuProvider to the MenuHost
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                Activity activity = getActivity();
+                if (activity == null) return;
+
+                // Inflate the menu resource
+                MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
+                if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
+                MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
+
+                if (itemSearch != null) {
+                    itemSearch.setVisible(!activity.getClass().getSimpleName()
+                            .equals(SearchActivity.class.getSimpleName()));
+                }
+
+                // show this on all transactions lists later?
+                // show this menu only when on Search Activity for now.
+                if (activity.getClass().getSimpleName().equals(SearchActivity.class.getSimpleName())) {
+                    // Add default menu options. todo: check why this is executed twice.
+                    // Includes menu item for .qif export
+                    MenuItem qifExport = menu.findItem(R.id.menu_qif_export);
+                    if (qifExport == null) {
+                        menuInflater.inflate(R.menu.menu_alldata_operations, menu);
+                    }
+
+                    // add sort menu in transaction list
+                    menuInflater.inflate(R.menu.menu_sort_transaction, menu);
+                    switch (new AppSettings(getContext()).getTransactionSort()) {
+                        case SORT_BY_DATE_ASC:
+                            menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
+                            break;
+                        default:
+                            menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                // Handle menu item clicks here
+                int itemId = menuItem.getItemId();
+
+                if (itemId == R.id.menu_export_to_csv) {
+                    exportDataToCSVFile();
+                    return true;
+                }
+                if (itemId == R.id.menu_qif_export) {
+                    // export visible transactions.
+                    exportToQif();
+                }
+
+                if (itemId == R.id.menu_sort_date_desc) {
+                    menuItem.setChecked(true);
+                    (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_DESC);
+                    // restart search
+                    restartLoader();
+                    return true;
+                }
+                if (itemId == R.id.menu_sort_date_asc) {
+                    menuItem.setChecked(true);
+                    (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_ASC);
+                    // restart search
+                    restartLoader();
+                    return true;
+                }
+
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+        // Loader event handlers
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -305,48 +391,6 @@ public class AllDataListFragment
 
     // End loader event handlers
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        Activity activity = getActivity();
-        if (activity == null) return;
-
-        MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
-        if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
-        MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
-
-        if (itemSearch != null) {
-            itemSearch.setVisible(!activity.getClass().getSimpleName()
-                    .equals(SearchActivity.class.getSimpleName()));
-        }
-
-        // show this on all transactions lists later?
-        // show this menu only when on Search Activity for now.
-        if (activity.getClass().getSimpleName().equals(SearchActivity.class.getSimpleName())) {
-            // Add default menu options. todo: check why this is executed twice.
-            // Includes menu item for .qif export
-            MenuItem qifExport = menu.findItem(R.id.menu_qif_export);
-            if (qifExport == null) {
-                inflater.inflate(R.menu.menu_alldata_operations, menu);
-            }
-
-            // add sort menu in transaction list
-            inflater.inflate(R.menu.menu_sort_transaction, menu);
-            switch (new AppSettings(getContext()).getTransactionSort()) {
-                case SORT_BY_DATE_ASC:
-                    menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
-                    break;
-                default:
-                    menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
-                    break;
-            }
-
-
-        }
-    }
-
     @Override
     public void onDestroy() {
         if (mMultiChoiceModeListener != null)
@@ -377,37 +421,6 @@ public class AllDataListFragment
         } catch (Exception e) {
             Timber.e(e, "stopping the all-data fragment");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        long itemId = item.getItemId();
-
-        if (itemId == R.id.menu_export_to_csv) {
-            exportDataToCSVFile();
-            return true;
-        }
-        if (itemId == R.id.menu_qif_export) {
-            // export visible transactions.
-            exportToQif();
-        }
-
-        if (itemId == R.id.menu_sort_date_desc) {
-            item.setChecked(true);
-            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_DESC);
-            // restart search
-            restartLoader();
-            return true;
-        }
-        if (itemId == R.id.menu_sort_date_asc) {
-            item.setChecked(true);
-            (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_ASC);
-            // restart search
-            restartLoader();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void restartLoader() {

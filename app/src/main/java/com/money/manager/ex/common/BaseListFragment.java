@@ -18,6 +18,10 @@ package com.money.manager.ex.common;
 
 import android.animation.LayoutTransition;
 import android.os.Bundle;
+
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -31,7 +35,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import androidx.annotation.NonNull;
@@ -61,8 +64,13 @@ public abstract class BaseListFragment
     public abstract String getSubTitle();
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // set animation
+        getListView().setLayoutTransition(new LayoutTransition());
+
+        setupMenuProviders();
 
         setupFloatingActionButton(view);
 
@@ -85,16 +93,105 @@ public abstract class BaseListFragment
         });
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void setupMenuProviders() {
+        // Get the MenuHost from the parent Activity
+        MenuHost menuHost = requireActivity();
+        // Add the MenuProvider to the MenuHost
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
+                    // Place an action bar item for searching.
+                    final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
+                    itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        // set animation
-        getListView().setLayoutTransition(new LayoutTransition());
+                    SearchView searchView = new SearchView(getActivity());
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            return BaseListFragment.this.onPreQueryTextChange(s);
+                        }
+                    });
+                    searchView.setIconified(isMenuItemSearchIconified());
+                    itemSearch.setActionView(searchView);
+
+                    SearchViewFormatter formatter = new SearchViewFormatter();
+                    formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
+                    formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
+                    formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
+                    //formatter.setSearchHintColorResource(R.color.mmx_hint_foreground_material_dark);
+
+                    formatter.setSearchHintText(getSearchHint());
+
+                    formatter.format(searchView);
+                }
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == android.R.id.home) {
+                    // set result and exit
+                    setResultAndFinish();
+                    return true; // consumed here
+                }
+                return old_onOptionsItemSelected(menuItem);
+            }
+
+            @Override
+            public void onPrepareMenu(@NonNull Menu menu) {
+                old_onPrepareOptionsMenu(menu);
+            }
+
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(@SuppressWarnings("unused") MenuHost menuHost) {
+        // Implementazione di default vuota
+    }
+
+    // for retrocompatibility
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    }
+    // for retrocompatibility
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
+        // Handle menu item clicks
+        return false;
+    }
+    // for retrocompatibility
+    public void old_onPrepareOptionsMenu(@NonNull Menu menu) {
+    }
+
+    // To remove Obsolete code we need to:
+    // a) move all view related instruction into onViewCreated
+    // b) move all fragment related instruction into onCreate
+    // c) move all activity related instruction into onStart
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // saved instance
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
             isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         // set subtitle in actionbar
         String subTitle = getSubTitle();
@@ -104,11 +201,8 @@ public abstract class BaseListFragment
                 activity.getSupportActionBar().setSubtitle(subTitle);
             }
         }
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+
         // show tooltip wildcard
         // check search type
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
@@ -124,57 +218,6 @@ public abstract class BaseListFragment
                 isShowTipsWildcard = true; // set shown
             }
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
-            // Place an action bar item for searching.
-            final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
-            itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-            SearchView searchView = new SearchView(getActivity());
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return BaseListFragment.this.onPreQueryTextChange(s);
-                }
-            });
-//            searchView.setIconifiedByDefault(isMenuItemSearchIconified());
-            searchView.setIconified(isMenuItemSearchIconified());
-            itemSearch.setActionView(searchView);
-
-            SearchViewFormatter formatter = new SearchViewFormatter();
-            formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
-            formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
-            formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-            //formatter.setSearchHintColorResource(R.color.mmx_hint_foreground_material_dark);
-
-            formatter.setSearchHintText(getSearchHint());
-
-            formatter.format(searchView);
-
-//            if (getSearchCollapsed()) {
-//                itemSearch.collapseActionView();
-//            }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (getActivity() != null && getActivity() instanceof MainActivity)
-                return super.onOptionsItemSelected(item);
-            // set result and exit
-            this.setResultAndFinish();
-            return true; // consumed here
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

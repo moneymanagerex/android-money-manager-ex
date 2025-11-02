@@ -86,7 +86,7 @@ public class DashboardFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //set has option menu to close dashboard item
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
     }
 
     @Override

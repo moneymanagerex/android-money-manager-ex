@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">개인 재정, 은행 계좌, 가족 예산 등을 간단하게 관리할수 있는 앱 입니다.</string>
+    <string name="application_credits">Money Manager Ex for Android 프로젝트는 ActionBarSherlock 라이브러리를 사용합니다</string>
     <string name="application_license">오픈소스 라이선스</string>
     <!-- database -->
     <string name="db_insert_failed">데이터 추가 실패</string>
@@ -27,10 +28,12 @@
     <string name="db_update_failed">데이터 업데이트 실패</string>
     <!-- menu -->
     <!--<string name="menu">Menu</string>-->
+    <string name="menu_exit">출구</string>
     <!--<string name="menu_import_export">Import/Export</string>-->
     <!--<string name="menu_sync">Synchronize</string>-->
     <!--<string name="menu_import_from_storage">Import from storage</string>-->
     <!--<string name="menu_export_to_storage">Export to storage</string>-->
+    <string name="menu_manage">관리</string>
     <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
     <!--<string name="menu_tools">Tools</string>-->
     <!--<string name="menu_use_external_db">Use External Database</string>-->
@@ -42,57 +45,238 @@
     <!--<string name="import_export_success">Import / Export completed successfully</string>-->
     <!--<string name="import_export_failed">Import / Export failed</string>-->
     <!-- preferences -->
+    <string name="preferences_general">일반</string>
+    <string name="preferences_perdatabase">데이터베이스별</string>
+    <string name="preferences_display">룩 &amp; 필</string>
+    <string name="preferences_behaviour">행동</string>
+    <string name="base_currency">기본 통화</string>
+    <string name="base_currency_changed">기본 통화가 변경되었습니다</string>
+    <string name="base_currency_change_notification">기본 통화가 변경되었습니다. 새로운 기본 통화로 정확한 금액을 확인하려면 환율을 업데이트해 주십시오.</string>
+    <string name="view_accounts_opened">열린 계정 보기</string>
+    <string name="if_not_selected_willShowAllAccounts">선택하지 않으면 모든 계정이 표시됩니다</string>
+    <string name="view_accounts_favorites">즐겨찾기 계정 보기</string>
     <string name="version">버전</string>
+    <string name="build">빌드</string>
     <string name="path">데이터베이스 경로</string>
+    <string name="remote_path">원격 경로</string>
     <string name="database_version">데이터베이스 버전</string>
     <string name="title_show_tutorial">기본 사용법 보기</string>
     <string name="summary_show_tutorial">다음번 실행시에 튜토리얼을 표시합니까?</string>
+    <string name="preferences_behaviour_focus_filter_title">선택자 내 필터</string>
+    <string name="preferences_behaviour_focus_filter_summary">선택기에서 필터에 집중하세요. 그렇지 않으면 탐색합니다.</string>
     <string name="auto_sync_via_wifi">WiFi 가 켜져 있을때만 동기화 수행</string>
+    <string name="auto_sync_via_wifi_summary">WiFi 연결 시에만 자동으로 동기화됩니다.</string>
+    <string name="sync_on_app_start">앱 시작 시 동기화합니다.</string>
     <string name="sync_on_start">어플리케이션 시작 시 동기화</string>
+    <string name="sync_merge_database">실험: 데이터베이스 병합</string>
+    <string name="sync_merge_database_on_sync">동기화 시 데이터베이스 차이를 병합합니다.</string>
+    <string name="sync_merge_dialog_msg_format">모든 %1$s%2$s 병합하기</string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">은행 거래 SMS 처리</string>
+    <string name="summary_sms_auto_trans">은행 거래 업데이트 SMS를 읽고 자동으로 거래 생성</string>
+    <string name="deny_receive_sms_error">SMS 수신 권한을 거부했기 때문에 은행 거래 SMS가 처리되지 않습니다</string>
+    <string name="granted_receive_sms_access">RECEIVE_SMS 에 대한 권한이 이미 부여되었습니다</string>
+    <string name="revoke_receive_sms_access">설정 &gt;&gt; 앱 &gt;&gt; Money Manager Ex &gt;&gt; 권한으로 이동하여 SMS 접근 권한을 거부하세요</string>
+    <string name="title_sms_trans_status_notification">SMS 거래 상태 알림</string>
+    <string name="summary_sms_trans_status_notification">은행 거래 SMS 프로세스의 상태를 알림 영역에 표시하는 대신 토스트 메시지 또는 새 거래 화면으로 표시할 수 있습니다</string>
+    <string name="notification_click_to_edit_transaction">트랜잭션을 편집하려면 터치하세요&#8230;</string>
+    <string name="notification_process_sms_transaction_status">은행 거래 SMS 상태 처리</string>
+    <string name="notification_process_sms_channel_description">AMMEX SMS 알림 채널</string>
     <!-- account -->
     <string name="account">계좌</string>
     <string name="account_list">계좌 목록</string>
     <string name="account_empty_list">계좌를 발견하지 못했습니다. 새로 만드시려면 녹색의 + 버튼을 탭해 주세요.</string>
     <string name="account_balance">계좌 잔고</string>
+    <string name="account_reconciled_balance">조정 잔액</string>
     <string name="delete_account">계좌 삭제</string>
     <string name="account_name">계좌명</string>
     <string name="account_type">계좌 유형</string>
     <string name="account_number">계좌번호</string>
+    <string name="account_held_at">개최 장소</string>
     <string name="account_status">계좌 상태</string>
+    <string name="favourite_account">즐겨찾기 계정</string>
     <string name="select_currency">통화 선택</string>
     <string name="checking">확인 중</string>
+    <string name="investment">투자</string>
+    <string name="investment_accounts">투자 계정</string>
+    <string name="term">약관</string>
     <string name="db_account_insert_failed">계좌 추가 오류</string>
     <string name="db_account_update_failed">계좌 업데이트 오류</string>
     <string name="error_currency_not_selected">통화를 입력하십시오</string>
+    <string name="error_saving_default_currency">기본 통화 저장 오류</string>
+    <string name="error_initialbal_empty">계정 초기 잔액이 필요합니다</string>
+    <string name="error_accountname_empty">계정 이름이 필요합니다</string>
+    <string name="error_accounttype_empty">계정 유형이 필요합니다</string>
+    <string name="error_status_empty">계정 상태가 필요합니다</string>
+    <string name="error_amount_must_be_positive">금액은 양수여야 합니다. 부호는 거래 유형에 따라 결정됩니다.</string>
     <!-- payee -->
+    <string name="payee_name">수취인 이름</string>
+    <string name="edit_payeeName">수취인 편집</string>
+    <string name="delete_payee">수취인 삭제</string>
+    <string name="payee">수취인</string>
+    <string name="select_payee">수취인 선택</string>
+    <string name="payee_empty_list">수취인을 찾을 수 없습니다. 수취인을 만들려면 녹색 더하기 버튼을 탭하세요.</string>
+    <string name="from">시작 날짜:</string>
+    <string name="db_payee_update_failed">수취인 업데이트 실패</string>
     <!-- category / subcategory -->
+    <string name="category">카테고리</string>
+    <string name="subcategory">하위 카테고리 </string>
+    <string name="category_empty_list">카테고리가 없습니다. 생성하려면 녹색 더하기 버튼을 탭하세요.</string>
+    <string name="select_category">카테고리 선택</string>
+    <string name="add_category">카테고리 추가</string>
+    <string name="add_subcategory">하위 카테고리 추가</string>
+    <string name="edit_categoryName">카테고리 수정</string>
+    <string name="delete_category">카테고리 삭제</string>
+    <string name="search_sub_category">하위 카테고리 포함</string>
     <!-- currency -->
+    <string name="currency_name">통화 이름</string>
     <string name="currency_symbol">통화 기호</string>
     <string name="delete_currency">통화 삭제</string>
     <string name="unit_name">단위 명</string>
+    <string name="cents_name">센트 이름</string>
+    <string name="decimal_char">소수점 문자</string>
+    <string name="group_char">그룹 문자</string>
+    <string name="scale">스케일 표시</string>
+    <string name="conversion_to_base_rate">전환권</string>
+    <string name="currency_name_empty">통화 이름이 필요합니다</string>
+    <string name="new_edit_currency">통화 새로 만들기/수정</string>
+    <string name="missing_default_currency">설정에서 기본 통화 누락</string>
     <!-- transaction -->
+    <string name="amount">금액</string>
+    <string name="total_amount">총 금액</string>
+    <string name="deposit">입금</string>
+    <string name="status">상태</string>
+    <string name="status_reconciled">조정됨</string>
+    <string name="status_follow_up">후속 조치</string>
+    <string name="status_duplicate">복제하기</string>
+    <string name="status_none">없음</string>
+    <string name="transaction_type">거래 유형</string>
+    <string name="transaction_status">상태</string>
+    <string name="withdrawal">출금</string>
+    <string name="delete_transaction">거래 삭제</string>
+    <string name="new_transaction">새 거래</string>
+    <string name="error_payee_not_selected">수취인이 필요합니다</string>
+    <string name="error_fromaccount_not_selected">계정에서 발송이 필요합니다</string>
+    <string name="error_category_not_selected">카테고리가 필요합니다</string>
+    <string name="error_totamount_empty">총 금액이 필요합니다</string>
+    <string name="about">정보</string>
+    <string name="add">추가</string>
+    <string name="confirmDelete">이 기록을 정말 삭제하시겠습니까?</string>
+    <string name="date">날짜</string>
+    <string name="delete">삭제</string>
+    <string name="download">다운로드</string>
+    <string name="edit">편집</string>
     <string name="home">집</string>
+    <string name="logo">로고</string>
+    <string name="refresh">새로고침</string>
+    <string name="search">검색</string>
     <string name="settings">설정</string>
     <string name="summary">요약</string>
+    <string name="synchronize">동기화</string>
+    <string name="open">열기 </string>
+    <string name="user">사용자</string>
+    <string name="upload">올리기</string>
+    <string name="username">사용자 이름</string>
+    <string name="to">받는 사람</string>
+    <string name="website">웹사이트</string>
+    <string name="contact">연락처</string>
+    <string name="access_info">접근 정보</string>
+    <string name="initial_balance">초기 잔액</string>
+    <string name="notes">메모</string>
+    <string name="notes_hint">메모 삽입</string>
+    <string name="theme_application">테마</string>
+    <string name="theme_holo">어두운</string>
+    <string name="theme_light">밝은</string>
     <!-- 20120906 -->
+    <string name="close_application">응용 프로그램 닫기</string>
+    <string name="question_close_application">응용 프로그램을 종료하시겠습니까?</string>
+    <string name="attention">주의</string>
+    <string name="payee_can_not_deleted">선택한 수취인은 참조되므로 삭제할 수 없습니다</string>
+    <string name="account_can_not_deleted">선택한 계정은 참조되므로 삭제할 수 없습니다</string>
+    <string name="currency_can_not_deleted">선택한 통화는 참조되므로 삭제할 수 없습니다</string>
+    <string name="category_can_not_deleted">선택한 카테고리는 참조되므로 삭제할 수 없습니다</string>
     <!-- transaction list periods -->
+    <string name="all_transaction">모든 거래</string>
+    <string name="today">오늘</string>
     <string name="current_month">이번 달</string>
     <string name="widget_summary">요약</string>
     <!-- TAG -->
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
+    <string name="none">없음</string>
+    <string name="new_edit_repeating_transaction">새로 만들기/예약된 거래 수정</string>
+    <string name="due_date">마감일</string>
+    <string name="next_occurrence">다음 발생</string>
+    <string name="payment_date">결제 날짜</string>
+    <string name="repeats">반복</string>
+    <string name="occurs">발생</string>
+    <string name="due_date_required">마감일이 필요합니다</string>
+    <string name="error_next_occurrence_not_populate">다음 발생이 필요합니다</string>
+    <string name="enter_next_occurrence">다음 발생 시 입력</string>
+    <string name="skip_next_occurrence">다음 발생 시 건너뛰기</string>
+    <string name="skip_next_occurrence_confirmation">다음 사건은 건너뛰고 싶으신가요?</string>
+    <string name="notification_repeating_transaction_expired">만료된 예약된 거래가 있습니다</string>
+    <string name="notification_click_to_check_repeating_transaction">연체된 거래를 확인하려면 터치하세요</string>
+    <string name="num_repeating_transaction_expired">%1$d 건 예정된 거래가 연체되었습니다.</string>
+    <string name="skip">건너뛰기</string>
+    <string name="enter">입력</string>
+    <string name="enter_amount">금액 입력</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">자동 거래</string>
+    <string name="manual">수동 입력</string>
+    <string name="auto">자동 입장</string>
     <!-- 20121121 -->
+    <string name="send_feedback">피드백 보내기</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
     <!-- 20121122 -->
+    <string name="preferences_info_application">정보</string>
+    <string name="preferences_security">보안</string>
+    <string name="preferences_active_passcode">비밀번호 활성화</string>
+    <string name="enter_your_passcode">비밀번호 입력</string>
+    <string name="reinsert_your_passcode">새 비밀번호 다시 입력</string>
+    <string name="passocde_no_macth">비밀번호가 일치하지 않습니다</string>
+    <string name="preferences_edit_passcode">비밀번호 변경</string>
+    <string name="preferences_disable_passcode">비밀번호 비활성화</string>
+    <string name="enter_your_previous_passcode">이전 비밀번호 입력</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
+    <string name="passcode_not_update">비밀번호가 업데이트되지 않았습니다</string>
+    <string name="fingerprint_passcode_deactivated">지문 인증을 사용하여 보안 비밀번호가 활성화되었으므로 비밀번호가 자동으로 비활성화되었습니다. 비밀번호를 숫자 값으로 다시 활성화해 주세요.</string>
+    <string name="preferences_fingerprint_auth_key">지문 인증 키</string>
+    <string name="preferences_fingerprint_summary">로그인 시 지문 인증을 사용하고 비밀번호 화면을 비활성화합니다. 그러나 사용자는 비밀번호를 활성화하거나 수정할 때 지문을 사용할 수 없습니다.</string>
+    <string name="preferences_fingerprint_title">지문 인증</string>
     <!-- 20121217 -->
+    <string name="lookups_wildcard">조회의 경우 % 와일드카드 문자를 사용할 수 있습니다</string>
+    <string name="income_vs_expenses_current_month">수입 대 지출: 현재 월</string>
+    <string name="income">수입</string>
+    <string name="expenses">지출</string>
     <string name="difference">차액</string>
+    <string name="no_data">기록이 없습니다. 표시 기간을 조정하거나 녹색 더하기 버튼을 탭하여 새로 생성해 보세요. </string>
+    <string name="no_stock_data">이 계정에 대한 재고 데이터가 없습니다.</string>
+    <string name="month">월</string>
+    <string name="year">년</string>
+    <string name="menu_reports">내장 보고서</string>
+    <string name="menu_general_report_group">일반 보고서</string>
+    <string name="title_activity_general_report">일반 보고서</string>
+    <string name="menu_report_income_vs_expenses">수입 대 지출</string>
     <!--<string name="option">Option</string>-->
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <!-- 20130108 -->
     <!-- Split Categories -->
+    <string name="title_transaction_shown_balance">각 거래의 잔액을 표시합니다</string>
+    <string name="summary_transaction_shown_balance">각 거래별 잔액을 표시합니다. 잔액 표시로 인해 애플리케이션 속도가 느려질 수 있습니다.</string>
+    <string name="menu_open_database">데이터베이스 열기</string>
+    <string name="database">데이터 베이스</string>
+    <string name="tips">팁</string>
+    <string name="title_application_font">애프리케이션 글꼴</string>
+    <string name="summary_application_font">애플리케이션에 제공할 글꼴 선택</string>
+    <string name="title_application_font_size">애플리케이션 글꼴 크기</string>
+    <string name="summary_application_font_size">애플리케이션에 제공할 글꼴 선택</string>
+    <string name="micro">마이크로</string>
+    <string name="small">작은</string>
+    <string name="Default">기본값</string>
+    <string name="large">큰</string>
+    <string name="menu_report_where_money_goes">나가는 돈</string>
+    <string name="menu_report_where_money_comes_from">들어오는 돈</string>
     <string name="cash_accounts">현금 계정</string>
     <string name="bank_accounts">은행 계좌</string>
     <!-- languages -->
@@ -113,6 +297,7 @@
     <!-- Select database screen -->
     <!-- Create Database screen -->
     <!-- Settings -->
+    <string name="per_database_settings">데이터베이스별</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
     <!--- New navigation mode -->

@@ -18,17 +18,14 @@ package com.money.manager.ex.transactions;
 
 import android.content.Intent;
 import android.net.Uri;
-
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-
-import androidx.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -36,13 +33,21 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.budget.BudgetService;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -50,14 +55,6 @@ import com.money.manager.ex.domainmodel.TagLink;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.ScheduledTransactionRepository;
-import com.money.manager.ex.datalayer.SplitCategoryRepository;
-import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
@@ -69,6 +66,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -129,6 +129,7 @@ public class CheckingTransactionEditActivity
         mCommon.displayCategoryName();
 //        mCommon.displayTags();  already in init
         mCommon.setDirty(false);
+
     }
 
     @Override
@@ -188,13 +189,6 @@ public class CheckingTransactionEditActivity
     }
 
     @Override
-    public void onBackPressed() {
-        if (!onActionCancelClick()) {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public boolean onActionDoneClick() {
         if (saveData()) {
             setResult(RESULT_OK);
@@ -216,7 +210,7 @@ public class CheckingTransactionEditActivity
     /**
      * Handle user's confirmation to delete any Split Categories when switching to
      * Transfer transaction type.
-     * @param event
+     * @param event event
      */
     @Subscribe
     public void onEvent(DialogPositiveClickedEvent event) {
@@ -524,7 +518,7 @@ public class CheckingTransactionEditActivity
 
         // New transaction
 
-        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
+        if (mIntentAction != null && mIntentAction.equals(Intent.ACTION_INSERT)) {
             if (mCommon.transactionEntity.getStatus() == null) {
                 String defaultStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
@@ -668,22 +662,50 @@ public class CheckingTransactionEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
-        mCommon.transactionEntity = Parcels.unwrap(parcelTx);
 
-        mCommon.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mCommon.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
-        mCommon.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
+            if (savedInstanceState == null) {
+                return; // Nothing to restore
+            }
 
-        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION));
+            // Restore transactionEntity
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // TIRAMISU is API 33
+                // Use the new, type-safe method for API 33+
+                mCommon.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(
+                        EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY, Parcelable.class));
+            } else {
+                // Use the old, deprecated method for older APIs
+                // The @SuppressWarnings is needed to hide the deprecation warning
+                @SuppressWarnings("deprecation")
+                Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
+                mCommon.transactionEntity = Parcels.unwrap(parcelTx);
+            }
 
-        mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
-                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
+            mCommon.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
+            mCommon.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+            mCommon.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
 
-        mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
+            // Restore mSplitTransactions
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(
+                        EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, Parcelable.class));
+            } else {
+                @SuppressWarnings("deprecation")
+                Parcelable splitParcel = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
+                mCommon.mSplitTransactions = Parcels.unwrap(splitParcel);
+            }
 
-        // action
-//        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
+            // Restore mSplitTransactionsDeleted
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
+                        EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED, Parcelable.class));
+            } else {
+                @SuppressWarnings("deprecation")
+                Parcelable deletedSplitParcel = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
+                mCommon.mSplitTransactionsDeleted = Parcels.unwrap(deletedSplitParcel);
+            }
+
+            mScheduledTransactionId = savedInstanceState.getLong(EditTransactionActivityConstants.KEY_BDID_ID);
+
     }
 
     /**

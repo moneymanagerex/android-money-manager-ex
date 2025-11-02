@@ -16,13 +16,13 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -64,6 +64,11 @@ import java.util.List;
 
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 /**
  * Income/Expense Report, list.
@@ -83,10 +88,15 @@ public class IncomeVsExpensesListFragment
     private String mSort = SORT_ASCENDING;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
+    public void onStart() {
+        super.onStart();
+        // setHasOptionsMenu(true);
+        setupMenuProviders();
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
                 savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
             for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
@@ -102,7 +112,7 @@ public class IncomeVsExpensesListFragment
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //        AppCompatActivity activity = (AppCompatActivity) getActivity();
 //        if (activity != null) {
-            //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
 
         // create adapter
@@ -114,7 +124,41 @@ public class IncomeVsExpensesListFragment
         getLoaderManager().initLoader(ID_LOADER_YEARS, null, this);
     }
 
+    // To remove Obsolete code we need to:
+    // a) move all view related instruction into onViewCreated
+    // b) move all fragment related instruction into onCreate
+    // c) move all activity related instruction into onStart
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+ //    }
+
     // Loader
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        // MenuProvider comune
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // Chiamata al metodo che le classi derivate possono sovrascrivere
+        addCustomMenuProviders(menuHost);
+    }
+
+    // Metodo hook che le classi derivate possono sovrascrivere
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        // Implementazione di default vuota
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -187,7 +231,7 @@ public class IncomeVsExpensesListFragment
                 }
 
                 if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
-                    Handler handler = new Handler();
+                    Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -214,9 +258,7 @@ public class IncomeVsExpensesListFragment
 
     // Menu
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
@@ -228,8 +270,7 @@ public class IncomeVsExpensesListFragment
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             getActivity().finish();
         } else if (item.getItemId() == R.id.menu_sort_asceding || item.getItemId() == R.id.menu_sort_desceding) {
@@ -242,7 +283,7 @@ public class IncomeVsExpensesListFragment
             showDialogYears();
         }
 
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     //

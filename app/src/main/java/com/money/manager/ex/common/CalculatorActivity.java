@@ -156,7 +156,7 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
                 mAmount = MoneyFactory.fromString(Double.toString(result)).truncate(precision);
             } catch (IllegalArgumentException ex) {
                 displayFormattedAmount();
-                txtTop.setTextColor(getResources().getColor(R.color.material_amber_800));
+                txtTop.setTextColor(getResources().getColor(R.color.material_amber_800, null));
                 return false;
             } catch (Exception e) {
                 Timber.e(e, "evaluating expression");

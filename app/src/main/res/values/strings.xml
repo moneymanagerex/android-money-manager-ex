@@ -871,6 +871,9 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex Uploading</string>
     <string name="notification_channel_fileoperation_complete">Mmex Upload Complete</string>
     <string name="notification_channel_fileoperation_conflict">Mmex Sync Conflict</string>
+    <string name="notification_channel_syncing">Sync Channel</string>
+    <string name="notification_channel_syncing__description">Sync in progress notification channel</string>
+
     <string name="show">Show</string>
     <string name="attachment_folder">Attachment Folder</string>
     <string name="attachment_folder_summary">Select the folder where attachments will be saved</string>
@@ -922,5 +925,6 @@
     <string name="changelog">Changelog</string>
     <string name="changelog_title">Important What\'s new!!</string>
     <string name="changelog_1086">New version 5.4\n- Added new Beta feature for Merge engine. Try to merge file when both are changed. Enable it in setting->Sync->Merge</string>
+    <string name="currency_save_error">Error while insert Currency. Probably currency %s is already defined.</string>
 
 </resources>

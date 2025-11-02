@@ -16,14 +16,14 @@
  */
 package com.money.manager.ex.settings;
 
-import static android.app.Activity.RESULT_OK;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -31,7 +31,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -60,6 +59,7 @@ public class DatabaseSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if( getActivity() == null) return;
 
         getActivity().setTitle(R.string.database);
 
@@ -214,15 +214,31 @@ public class DatabaseSettingsFragment
         });
     }
 
+    private final ActivityResultLauncher<Intent> backupLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        // Questo blocco viene eseguito quando la SecondActivity si chiude
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            Uri uri = data.getData();
+                            if (uri != null) {
+                                // Perform the backup operation using the selected URI
+                                backupDatabase(uri);
+                            }
+                        }
+                    });
+
     private void requestBackup() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_TITLE, "your_export_db.mmb"); // Set a default file name
 
-        startActivityForResult(intent, RequestCodes.CODE_BACKUP);
+//        startActivityForResult(intent, RequestCodes.CODE_BACKUP);
+        backupLauncher.launch(intent);
     }
 
+/* Relpace with backupLauncher
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -235,6 +251,7 @@ public class DatabaseSettingsFragment
             }
         }
     }
+*/
 
     private void backupDatabase(Uri destinationUri) {
         try {
@@ -284,24 +301,21 @@ public class DatabaseSettingsFragment
         Preference preference = findPreference(getString(R.string.pref_db_fix_duplicates));
         if (preference == null) return;
 
-        preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                MmxDatabaseUtils utils = new MmxDatabaseUtils(getActivity());
+        preference.setOnPreferenceClickListener(preference1 -> {
+            MmxDatabaseUtils utils = new MmxDatabaseUtils(getActivity());
 
-                if (BuildConfig.DEBUG) {
-                    Log.d(this.getClass().getSimpleName(), "fixing duplicates");
-                }
-
-                boolean result = utils.fixDuplicates();
-
-                if (result) {
-                    showToast(R.string.success, Toast.LENGTH_SHORT);
-                } else {
-                    showToast(R.string.error, Toast.LENGTH_SHORT);
-                }
-                return false;
+            if (BuildConfig.DEBUG) {
+                Timber.d("fixing duplicates");
             }
+
+            boolean result = utils.fixDuplicates();
+
+            if (result) {
+                showToast(R.string.success, Toast.LENGTH_SHORT);
+            } else {
+                showToast(R.string.error, Toast.LENGTH_SHORT);
+            }
+            return false;
         });
     }
 

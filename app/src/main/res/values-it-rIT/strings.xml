@@ -68,8 +68,8 @@
     <string name="auto_sync_via_wifi_summary">Sincronizza automaticamente solo con collegamento WiFi attivo.</string>
     <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
     <string name="sync_on_start">Sincronizza all\'avvio</string>
-    <string name="sync_merge_database">ESPERIMENTALE: Unisci database</string>
-    <string name="sync_merge_database_on_sync">Unisci le differenze del database alla sincronizzazione.</string>
+    <string name="sync_merge_database">SPERIMENTALE: Unisci database</string>
+    <string name="sync_merge_database_on_sync">Unisci le differenze tra i database durante la sincronizzazione.</string>
     <string name="sync_merge_dialog_msg_format">Unire tutti %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processa Transazione Bancaria via SMS</string>
@@ -163,7 +163,7 @@
     <string name="delete_transaction">Elimina Transazione</string>
     <string name="new_transaction">Nuova transazione</string>
     <string name="error_payee_not_selected">Il beneficiario è richiesto</string>
-    <string name="error_fromaccount_not_selected">Conto di Origine richiesto</string>
+    <string name="error_fromaccount_not_selected">Conto di provenienza richiesto</string>
     <string name="error_toaccount_not_selected">Il conto di destinazione è richiesto</string>
     <string name="error_category_not_selected">La categoria è richiesta</string>
     <string name="error_totamount_empty">L\'importo totale è richiesto</string>
@@ -293,8 +293,8 @@
     <string name="enter_your_previous_passcode">Inserisci il tuo precedente passcode</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">codice di accesso non aggiornato</string>
-    <string name="fingerprint_passcode_deactivated">Il codice di accesso di sicurezza è stato attivato utilizzando Autenticazione con impronta digitale, quindi il codice di accesso è stato disattivato automaticamente, si prega di riattivare il codice di accesso con valore numerico</string>
-    <string name="preferences_fingerprint_auth_key">Chiave Di Autenticazione Impronta Digitale</string>
+    <string name="fingerprint_passcode_deactivated">Il codice di accesso di sicurezza è stato attivato utilizzando l\'autenticazione con impronta digitale, quindi il codice di accesso è stato disattivato automaticamente, riattivare il codice di accesso con valore numerico</string>
+    <string name="preferences_fingerprint_auth_key">Chiave di autenticazione impronta digitale</string>
     <string name="preferences_fingerprint_summary">Abilita l\'autenticazione con impronta digitale per l\'accesso e disabilita la schermata del codice di accesso. Tuttavia, l\'utente non può utilizzare l\'impronta digitale per attivare o modificare il codice di accesso.</string>
     <string name="preferences_fingerprint_title">Autenticazione con impronta digitale</string>
     <!-- 20121217 -->
@@ -307,11 +307,11 @@
     <string name="no_stock_data">Nessun Azione disposibile per questo conto</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
-    <string name="menu_reports">Resoconti Predefiniti</string>
-    <string name="menu_general_report_group">Resoconti Generali</string>
-    <string name="title_activity_general_report">Resoconto Generale</string>
+    <string name="menu_reports">Resoconti integrati</string>
+    <string name="menu_general_report_group">Resoconti generali</string>
+    <string name="title_activity_general_report">Resoconto generale</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
-    <string name="menu_report_cashflow">Flusso Di Cassa</string>
+    <string name="menu_report_cashflow">Flusso di cassa</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -558,7 +558,7 @@
     <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
     <string name="title_activity_currency_rates_report">Tassi di cambio</string>
     <string name="frequency">Frequenza</string>
-    <string name="select_columns">Seleziona Colonne Visibili</string>
+    <string name="select_columns">Seleziona colonne visibili</string>
     <string name="update_available">Aggiornamento disponibile</string>
     <string name="update_available_online">C\'è un file di database aggiornato disponibile online. Vuoi aggiornare?</string>
     <string name="currency_not_found">Valuta non trovata</string>
@@ -567,7 +567,7 @@
     <string name="about_logcat_header">Potete inviarci il registro dell\'applicazione cliccando sul pulsante qui sotto.</string>
     <string name="transaction_type_filter">Filtra per tipo di operazione</string>
     <string name="status_filter">Filtra per stato</string>
-    <string name="filter_options_info">Opzioni sui filtri ed Info</string>
+    <string name="filter_options_info">Opzioni su filtro e informazioni</string>
     <!-- Password entry activity -->
     <string name="title_activity_password">Inserire la password del database</string>
     <string name="fingerprint_info">Scansiona l\'impronta digitale per sbloccare</string>
@@ -641,7 +641,7 @@
     <string name="budget_name">Nome del budget</string>
     <string name="budget_year">Budget per anno</string>
     <string name="budget_month">Budget per mese</string>
-    <string name="budget_month_optional">Budget Mensile (optional)</string>
+    <string name="budget_month_optional">Bilancio mensile (facoltativo)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
     <string name="print">Stampa</string>
@@ -729,7 +729,7 @@
     <string name="sync_conflict">Conflitto di sincronizzazione</string>
     <string name="request_conflict_resolve">Risolvi conflitto</string>
     <string name="no_remote_file">Selezionare il file remoto da usare per la sincronizzazione.</string>
-    <string name="request_conlict_reopen">Conflitto tra file locale e remoto. Ciò significa che la copia locale non può essere sincronizzata con quella remota. Si prega di esportare DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati da file remoto.</string>
+    <string name="request_conlict_reopen">Conflitto tra il file locale e quello remoto. Ciò significa che la copia locale non può essere sincronizzata con quella remota. Esportare il DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati dal file remoto.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Non ci sono conti disponibili per la scelta. Si prega di modificare le preferenze dei filtri o contrassegnare alcuni conti come preferito.</string>
     <!-- Errors -->
@@ -738,7 +738,7 @@
     <string name="error_checking_remote">Controllo degli errori per modifiche remote.</string>
     <string name="no_remote_change_date">Data di modifica remota non trovata nei metadati.</string>
     <string name="remote_unavailable">File remoto non disponibile.</string>
-    <string name="request_reopen">Il file remoto non è accessibile. Ciò non consente di sincronizzare la copia locale con quella remota. Si prega di esportare DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati da file remoto.</string>
+    <string name="request_reopen">Il file remoto non è accessibile. Ciò non consente di sincronizzare la copia locale con quella remota. Esportare il DB se si desidera salvare la propria copia locale o riaprire da remoto se si desidera caricare i dati dal file remoto.</string>
     <!-- Select database screen -->
     <string name="intro_text">Per iniziare a utilizzare Money Manager Ex, è necessario avere un file di database per memorizzare i dati. Si prega di selezionare una delle opzioni disponibili qui sotto.</string>
     <string name="intro_create_db">Puoi creare un nuovo file e impostare le preferenze iniziali.</string>
@@ -753,7 +753,7 @@
     <string name="save">Salva</string>
     <string name="title_budget_show_simple_view">Mostra vista semplificata budget</string>
     <string name="summary_budget_show_simple_view">Se selezionato usa la vista semplificata per i budget</string>
-    <string name="title_budget_reload_forecast">Ricarica le Transazioni Pianificate</string>
+    <string name="title_budget_reload_forecast">Ricarica transazione pianificata</string>
     <string name="title_pref_budget_financial_year">Utilizzare l\'esercizio finanziario nel Budget</string>
     <string name="summary_pref_budget_financial_year">Se selezionato, i bilanci utilizzano l\'esercizio finanziario anziché l\'anno civile</string>
     <string name="shares">Azioni</string>
@@ -790,7 +790,7 @@
     <string name="btn_continue">Continua</string>
     <!--- New navigation mode -->
     <string name="dismiss">Ignora</string>
-    <string name="category_nav_mode">È disponibile un nuovo metodo di navigazione nel menu.</string>
+    <string name="category_nav_mode">È disponibile un nuovo metodo di navigazione nel menu</string>
     <string name="remember_later">Ricordamelo più tardi</string>
     <!--Upload/Downlaod warnning -->
     <string name="upload_warning">Carica Avviso</string>

@@ -237,7 +237,7 @@ public class MmexApplication
         // in case the above failed
         if (locale == null) {
             // use the default locale.
-            locale = context.getResources().getConfiguration().locale;
+            locale = context.getResources().getConfiguration().getLocales().get(0);
         }
         if (locale == null) {
             locale = Locale.getDefault();

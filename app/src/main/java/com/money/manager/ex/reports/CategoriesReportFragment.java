@@ -24,6 +24,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,6 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
@@ -48,8 +48,12 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.loader.content.Loader;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -104,9 +108,24 @@ public class CategoriesReportFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    protected void addCustomMenuProviders(MenuHost menuHost) {
+        super.addCustomMenuProviders(menuHost);
+        // add menu
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+            }
 
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return old_onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         // pie chart
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
@@ -115,6 +134,30 @@ public class CategoriesReportFragment
             itemChart.setIcon(uiHelper.resolveAttribute(R.attr.ic_action_pie_chart));
         }
     }
+
+
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_chart) {
+            showChart();
+        }
+
+        if (item.getItemId() < 0) {
+            // category
+            String whereClause = getWhereClause();
+            if (!TextUtils.isEmpty(whereClause))
+                whereClause += " AND ";
+            else
+                whereClause = "";
+            whereClause += " " + QueryMobileData.CATEGID + "=" + Math.abs(item.getItemId());
+            //create arguments
+            Bundle args = new Bundle();
+            args.putString(KEY_WHERE_CLAUSE, whereClause);
+            //starts loader
+            startLoader(args);
+        }
+        return super.old_onOptionsItemSelected(item);
+    }
+
 
     // Loader
 
@@ -149,33 +192,10 @@ public class CategoriesReportFragment
             }
 
             if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
-                Handler handler = new Handler();
+                Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(() -> showChart(), 1000);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_chart) {
-            showChart();
-        }
-
-        if (item.getItemId() < 0) {
-            // category
-            String whereClause = getWhereClause();
-            if (!TextUtils.isEmpty(whereClause))
-                whereClause += " AND ";
-            else
-                whereClause = "";
-            whereClause += " " + QueryMobileData.CATEGID + "=" + Math.abs(item.getItemId());
-            //create arguments
-            Bundle args = new Bundle();
-            args.putString(KEY_WHERE_CLAUSE, whereClause);
-            //starts loader
-            startLoader(args);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

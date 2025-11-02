@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
     <string name="sync_on_app_start">Synchronisiere beim Start</string>
     <string name="sync_on_start">Beim Start synchronisieren</string>
+    <string name="sync_merge_database">EXPERIMENTIEL: Datenbanken zusammenführen</string>
+    <string name="sync_merge_database_on_sync">Datenbankunterschiede beim Synchronisieren zusammenführen.</string>
+    <string name="sync_merge_dialog_msg_format"></string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Banktransaktions-SMS bearbeiten</string>
     <string name="summary_sms_auto_trans">Lies die Banktransaktions-Update SMS und erstelle automatisch eine Transaktion</string>
@@ -802,6 +805,8 @@
     <string name="menu_cashflow_custom">Konten wählen&#8230;</string>
     <string name="cash_ledger">Kassenbuch</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Lokal behalten</string>
+    <string name="merge_take_theirs">Fernbedienung</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Hoppla, etwas ist schiefgelaufen.</string>
     <string name="bad_error_occurs">Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an die Entwickler</string>
@@ -809,7 +814,11 @@
     <string name="forecast_remain">Prognostiziere verbleibende</string>
     <string name="forecast_calculate">Berechne Prognose. Bitte warten...</string>
     <string name="enter_budget">Budget eingeben</string>
+    <string name="enter_budget_value">Für Kategorie %1$s Budget für Zeitraum festlegen. Negative Werte für Ausgaben, positive Werte für Einnahmen verwenden:</string>
     <string name="enter_budget_value_plus_minus">Neuen Wert eingeben</string>
+    <string name="merge_table">"Tabelle zusammenführen: "</string>
     <!-- changelog -->
     <string name="changelog">Changelog</string>
+    <string name="changelog_title">Wichtig! Was ist neu!!</string>
+    <string name="changelog_1086">Neue Version 5.4\n- Neue Beta-Funktion für die Merge-Engine hinzugefügt. Versucht die Dateien zusammenzuführen, wenn beide geändert wurden. Aktivieren Sie diese Funktion unter „Einstellungen“ > „Synchronisieren“ > „Zusammenführen“.</string>
 </resources>

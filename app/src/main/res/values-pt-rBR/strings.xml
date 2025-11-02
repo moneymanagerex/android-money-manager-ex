@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Sincronizar automaticamente apenas com wifi.</string>
     <string name="sync_on_app_start">Sincronizar ao iniciar app.</string>
     <string name="sync_on_start">Sincronização ao iniciar</string>
+    <string name="sync_merge_database">EXPERIMENTAL: Fundir bancos de dados</string>
+    <string name="sync_merge_database_on_sync">Mesclar diferenças de banco durante sincronização.</string>
+    <string name="sync_merge_dialog_msg_format">Mesclando todos %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processar SMS de transação bancária</string>
     <string name="summary_sms_auto_trans">Leia o SMS de atualização da transação bancária e crie a transação automaticamente</string>
@@ -304,7 +307,7 @@
     <string name="no_stock_data">Não há dados de ações disponíveis para esta conta.</string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
-    <string name="menu_reports">Relatórios de Construção</string>
+    <string name="menu_reports">Relatórios integrados</string>
     <string name="menu_general_report_group">Relatórios Gerais</string>
     <string name="title_activity_general_report">Relatório Geral</string>
     <string name="menu_report_income_vs_expenses">Receitas x Despesas</string>
@@ -724,7 +727,9 @@
     <string name="filenames_differ">Os nomes dos arquivos remotos e locais diferem. Abortando a sincronização.</string>
     <string name="both_files_modified">Ambos os arquivos de banco de dados local e remoto foram modificados!</string>
     <string name="sync_conflict">Conflito de sincronização</string>
+    <string name="request_conflict_resolve">Resolver Conflito</string>
     <string name="no_remote_file">Por favor, selecione o arquivo remoto usado para sincronização.</string>
+    <string name="request_conlict_reopen">Conflito entre o arquivo local e remoto. Isso faz com que sua cópia local não possa ser sincronizada com a versão remota. Por favor, exporte BD se você quiser salvar sua cópia local, ou reabra do remoto se você quiser carregar os dados do arquivo remoto.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Não há contas disponíveis para seleção. Ajuste suas preferências para a filtragem de contas ou marque algumas contas como favoritas.</string>
     <!-- Errors -->
@@ -732,6 +737,8 @@
     <string name="remote_file_not_found">Arquivo remoto não encontrado</string>
     <string name="error_checking_remote">Erro ao verificar por alterações remotas.</string>
     <string name="no_remote_change_date">O controle remoto alterar Dados não encontrada no arquivo.</string>
+    <string name="remote_unavailable">Arquivo remoto não disponível</string>
+    <string name="request_reopen">Arquivo remoto não está acessível. Isso faz com que sua cópia local não possa ser sincronizada com a versão remota. Por favor, exporte o banco de dados se você quiser salvar sua cópia local, ou reabra do remoto se você quiser carregar os dados do arquivo remoto.</string>
     <!-- Select database screen -->
     <string name="intro_text">Para começar a utilizar o Money Manager Ex, você precisa ter um arquivo de banco de dados para armazenar seus dados. Por favor, selecione uma das opções disponíveis abaixo.</string>
     <string name="intro_create_db">Você pode criar um novo arquivo e configurar as preferências iniciais.</string>

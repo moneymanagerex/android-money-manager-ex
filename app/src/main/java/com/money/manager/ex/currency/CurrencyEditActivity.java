@@ -33,6 +33,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
+import timber.log.Timber;
+
 /**
  * Edit currency
  */
@@ -257,6 +259,9 @@ public class CurrencyEditActivity
             }
         } catch (Exception e) {
             success = false;
+        }
+        if (!success) {
+            Timber.i(getString(R.string.currency_save_error),currency.getCode());
         }
         return success;
     }

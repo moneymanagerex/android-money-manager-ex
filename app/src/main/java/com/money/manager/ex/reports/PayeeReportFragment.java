@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +46,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.Loader;
@@ -154,7 +156,7 @@ public class PayeeReportFragment
             }
             // handler to show chart
             if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
-                Handler handler = new Handler();
+                Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(() -> showChart(), 1000);
             }
         }
@@ -189,8 +191,8 @@ public class PayeeReportFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
 
         // pie chart
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
@@ -202,12 +204,12 @@ public class PayeeReportFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_chart) {
             showChart();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.old_onOptionsItemSelected(item);
     }
 
     public void showChart() {

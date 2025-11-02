@@ -109,7 +109,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_budget_detail, container, false);
@@ -129,7 +129,7 @@ public class BudgetEntryFragment
 
         setUpAdapter();
 
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true);
 
         return view;
     }
@@ -145,7 +145,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         displayBudget();
     }
@@ -179,9 +179,8 @@ public class BudgetEntryFragment
         setListAdapter(adapter);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.old_onCreateOptionsMenu(menu, inflater);
         // set accounts Filter
         inflater.inflate(R.menu.menu_budget, menu);
 
@@ -229,7 +228,7 @@ public class BudgetEntryFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_budget_reload_forecast ) {
             ScheduledTransactionForecastListServices.destroyInstance();
             restartLoader();
