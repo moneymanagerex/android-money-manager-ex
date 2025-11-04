@@ -30,7 +30,6 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
-import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
@@ -99,15 +98,11 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
     }
 
     private void onCreateDatabaseClick() {
-        startActivity(new Intent(this, PasswordActivity.class));
-        FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showCreateFilePicker();
+        (new FileStorageHelper(this)).showCreateFilePicker();
     }
 
     private void onOpenDatabaseClick() {
-        startActivity(new Intent(this, PasswordActivity.class));
-        FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showStorageFilePicker();
+        (new FileStorageHelper(this)).showStorageFilePicker();
     }
 
     private void onDatabaseSelected() {

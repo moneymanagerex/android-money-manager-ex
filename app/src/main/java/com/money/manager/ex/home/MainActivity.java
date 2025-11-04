@@ -42,7 +42,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,7 +92,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.payee.PayeeListFragment;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -548,6 +546,9 @@ public class MainActivity
         // invalidate Cache for ScheduledTransactionForecastListServices
         ScheduledTransactionForecastListServices.destroyInstance();
 
+        // TODO put here password prompt if necessary
+        // for linearity probably is better to call always passowrd ask and then if not necessary caome back
+
         // Reuse existing metadata, if found.
         DatabaseMetadata existing = Objects.requireNonNull(mDatabases.get()).get(database.localPath);
         if (existing != null) {
@@ -612,11 +613,8 @@ public class MainActivity
             String key = item.getTag().toString();
             DatabaseMetadata selectedDatabase = getDatabases().get(key);
             if (selectedDatabase != null) {
-                // TODO request password 1/3 upon testing instead of extension
-                Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
-                intent.putExtra(EXTRA_DATABASE_PATH, key);
-                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
-
+                // TODO EP Check here for password
+                onOpenDatabaseClick(selectedDatabase);
                 return result;
             }
         }
@@ -630,12 +628,9 @@ public class MainActivity
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
         } else if (itemId == R.id.menu_open_database) {
-            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-            FileStorageHelper helper = new FileStorageHelper(this);
-            helper.showStorageFilePicker();
+            (new FileStorageHelper(this)).showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
-            startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
         } else if (itemId == R.id.menu_account) {
@@ -1206,9 +1201,7 @@ public class MainActivity
 
         // Handle Sync Conflict Open
         if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_OPEN)) {
-            startActivity(new Intent(this, PasswordActivity.class));
-            FileStorageHelper helper = new FileStorageHelper(this);
-            helper.showStorageFilePicker();
+            (new FileStorageHelper(this)).showStorageFilePicker();
             this.dbUpdateCheckDone = true;
             return;
         }
@@ -1232,7 +1225,6 @@ public class MainActivity
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
-                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
                 DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
                 changeDatabase(db);
                 return;
