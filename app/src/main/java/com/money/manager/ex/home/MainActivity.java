@@ -132,6 +132,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -479,13 +480,15 @@ public class MainActivity
     }
 
     @Subscribe
-    public void onEvent(RequestOpenDatabaseEvent event) {
+    public void onEvent(RequestOpenDatabaseEvent ignoredEvent) {
         FileStorageHelper helper = new FileStorageHelper(this);
         helper.showStorageFilePicker();
+        // todo remove this code.. not used
+        throw new RuntimeException("RequestOpenDatabaseEvent not used");
     }
 
     @Subscribe
-    public void onEvent(UsernameLoadedEvent event) {
+    public void onEvent(UsernameLoadedEvent ignoredEvent) {
         setDrawerUserName(MmexApplication.getApp().getUserName());
     }
 
@@ -497,10 +500,10 @@ public class MainActivity
     /**
      * Force execution on the main thread as the event can be received on the service thread.
      *
-     * @param event Sync started event.
+     * @param ignoredEvent Sync started event.
      */
     @Subscribe
-    public void onEvent(SyncStartingEvent event) {
+    public void onEvent(SyncStartingEvent ignoredEvent) {
         Single.fromCallable((Callable<Void>) () -> {
             mIsSynchronizing = true;
             invalidateOptionsMenu();
@@ -514,10 +517,10 @@ public class MainActivity
     /**
      * Force execution on the main thread as the event can be received on the service thread.
      *
-     * @param event Sync stopped event.
+     * @param ignoredEvent Sync stopped event.
      */
     @Subscribe
-    public void onEvent(SyncStoppingEvent event) {
+    public void onEvent(SyncStoppingEvent ignoredEvent) {
         Single.fromCallable((Callable<Void>) () -> {
             mIsSynchronizing = false;
             invalidateOptionsMenu();
@@ -532,7 +535,7 @@ public class MainActivity
      * A newer database file has just been downloaded. Reload.
      */
     @Subscribe
-    public void onEvent(DbFileDownloadedEvent event) {
+    public void onEvent(DbFileDownloadedEvent ignoredEvent) {
         // open the new database.
         new SyncManager(this).useDownloadedDatabase();
     }
@@ -546,7 +549,7 @@ public class MainActivity
         ScheduledTransactionForecastListServices.destroyInstance();
 
         // Reuse existing metadata, if found.
-        DatabaseMetadata existing = mDatabases.get().get(database.localPath);
+        DatabaseMetadata existing = Objects.requireNonNull(mDatabases.get()).get(database.localPath);
         if (existing != null) {
             Timber.v("Existing database found. Reusing metadata.");
             database = existing;
@@ -555,7 +558,10 @@ public class MainActivity
         try {
             MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
             dbUtils.useDatabase(database);
-            dbUtils.checkIntegrity();
+            if (!dbUtils.checkIntegrity()) {
+                showSelectDatabaseActivity();
+                return;
+            }
         } catch (Exception e) {
             if (e instanceof IllegalArgumentException) {
                 Timber.w(e);
@@ -914,7 +920,7 @@ public class MainActivity
 
         // general reports
         ArrayList<DrawerMenuItem> reportMenu = getGeneralReportGroupDrawerMenuItems();
-        if ( reportMenu.size() > 0) {
+        if (!reportMenu.isEmpty()) {
             childItems.add(reportMenu);
         }
 
@@ -1089,7 +1095,7 @@ public class MainActivity
 
         // General reports
         // check if Exist at least one custom report
-        if ( getGeneralReportGroupDrawerMenuItems().size() > 0 ) {
+        if (!getGeneralReportGroupDrawerMenuItems().isEmpty()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_general_report_group)
                     .withText(getString(R.string.menu_general_report_group))
                     .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
@@ -1219,9 +1225,9 @@ public class MainActivity
 
         // Open a db file
         if (intent.getData() != null) {
-            String pathFile = getIntent().getData().getEncodedPath();
-            // decode
             try {
+                String pathFile = Objects.requireNonNull(getIntent().getData()).getEncodedPath();
+                // decode
                 String filePath = URLDecoder.decode(pathFile, StandardCharsets.UTF_8); // decode file path
                 Timber.d("Path intent file to open: %s", filePath);
 
@@ -1293,7 +1299,7 @@ public class MainActivity
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
     }
 
     private void initHomeFragment() {
@@ -1583,15 +1589,12 @@ public class MainActivity
             AlertDialog dialog = builder.create();
 
             // Set item click listener for ListView
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
-                    intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportNames.get(position) );
-                    intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
-                    startActivity(intent);
-                    dialog.dismiss();
-                }
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                Intent intent = new Intent(MainActivity.this, GeneralReportActivity.class);
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_NAME, reportNames.get(position) );
+                intent.putExtra(GeneralReportActivity.GENERAL_REPORT_GROUP_NAME, groupName );
+                startActivity(intent);
+                dialog.dismiss();
             });
 
             dialog.show();
@@ -1619,7 +1622,9 @@ public class MainActivity
     }
 
     private void requestPostNotificationsPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+        }
     }
 
 

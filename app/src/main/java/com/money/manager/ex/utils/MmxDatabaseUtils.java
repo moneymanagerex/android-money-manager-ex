@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -66,12 +67,11 @@ public class MmxDatabaseUtils {
     }
 
     public static String[] getArgsForId(Long id) {
-        String[] result = new String[] { Long.toString(id) };
-        return result;
+        return new String[] { Long.toString(id) };
     }
 
     public static boolean isEncryptedDatabase(String dbPath) {
-        return dbPath.contains(".emb");
+        return dbPath != null && dbPath.endsWith(".emb");
     }
 
     public static boolean isValidDbFile(String dbFilePath) {
@@ -110,9 +110,37 @@ public class MmxDatabaseUtils {
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
-        boolean result = openHelper.get().getReadableDatabase()
-                .isDatabaseIntegrityOk();
-        return result;
+        if (openHelper == null || openHelper.get() == null || Objects.requireNonNull(openHelper.get()).getReadableDatabase() == null )
+            return false;
+
+        if (!Objects.requireNonNull(openHelper.get()).getReadableDatabase()
+                .isDatabaseIntegrityOk()) {
+            return false;
+        }
+
+        // add check to see if is really valid db
+        SupportSQLiteDatabase db = Objects.requireNonNull(openHelper.get()).getReadableDatabase();
+        if (db == null) {
+            return false;
+        }
+
+        Cursor cursor = null;
+        boolean isValid = false;
+        try {
+            cursor = db.query("SELECT COUNT(*) FROM INFOTABLE_V1");
+            if (cursor.moveToFirst()) {
+                int count = cursor.getInt(0);
+                isValid = (count > 0); // at least DATAVERSION exist
+            }
+        } catch (Exception e) {
+            // isValid = false;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return isValid;
     }
 
     /**
@@ -155,6 +183,7 @@ public class MmxDatabaseUtils {
 
         // check if there are duplicate records in Info Table
         InfoRepositorySql repo = infoRepositorySqlLazy.get(); //new InfoRepositorySql(getContext());
+        if (repo == null) return false;
         List<Info> results = repo.loadAll(InfoKeys.DATEFORMAT);
         if (results == null) return false;
 
@@ -209,7 +238,7 @@ public class MmxDatabaseUtils {
                 .setDatabasePath(database.localPath);
 
         // Store the Recent Database entry.
-        boolean added = mDatabasesLazy.get().add(database);
+        boolean added = Objects.requireNonNull(mDatabasesLazy.get()).add(database);
         if (!added) {
             throw new RuntimeException("could not add to recent files");
         }
@@ -335,7 +364,7 @@ public class MmxDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
+        SupportSQLiteDatabase db = Objects.requireNonNull(openHelper.get()).getReadableDatabase();
 
         Cursor c = db.query("SELECT name FROM sqlite_master WHERE type='table'");
         ArrayList<String> result = new ArrayList<>();
@@ -376,7 +405,7 @@ public class MmxDatabaseUtils {
     }
 
     private Info internalGetLastSyncInfoEntry() {
-        List<Info> infoList = infoRepositorySqlLazy.get().loadAll(InfoKeys.LAST_SYNC_DATE);
+        List<Info> infoList = Objects.requireNonNull(infoRepositorySqlLazy.get()).loadAll(InfoKeys.LAST_SYNC_DATE);
         if (infoList != null && ! infoList.isEmpty()) {
             return infoList.get(0);
         }
@@ -392,11 +421,11 @@ public class MmxDatabaseUtils {
         if (info == null) {
             // create new entry
             info = Info.create(InfoKeys.LAST_SYNC_DATE, newDate.toIsoString());
-            infoRepositorySqlLazy.get().insert(info);
+            Objects.requireNonNull(infoRepositorySqlLazy.get()).insert(info);
         } else {
             // update entry
             info.setValue(newDate.toIsoString());
-            infoRepositorySqlLazy.get().update(info);
+            Objects.requireNonNull(infoRepositorySqlLazy.get()).update(info);
         }
     }
 }
