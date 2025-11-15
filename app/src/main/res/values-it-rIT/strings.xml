@@ -87,7 +87,7 @@
     <string name="account_list">Elenco dei Conti</string>
     <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="account_balance">Saldo</string>
-    <string name="account_reconciled_balance">Saldo Contabilizzato</string>
+    <string name="account_reconciled_balance">Saldo Riconciliato</string>
     <string name="delete_account">Elimina Conto</string>
     <string name="account_name">Nome del conto</string>
     <string name="account_type">Tipo di conto</string>
@@ -777,6 +777,7 @@
     <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
     <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
     <string name="notification_channel_fileoperation_conflict">Conflitto Di Sincronizzazione Mmex</string>
+    <string name="notification_channel_syncing__description">Sincronizza in corso canale di notifica</string>
     <string name="show">Mostra</string>
     <string name="attachment_folder">Cartella Allegati</string>
     <string name="attachment_folder_summary">Seleziona la cartella in cui verranno salvati gli allegati</string>
@@ -820,4 +821,6 @@
     <!-- changelog -->
     <string name="changelog">Modifiche di Versione</string>
     <string name="changelog_title">Novità importanti!!</string>
+    <string name="changelog_1086">Nuova versione 5.4\n- Aggiunta la nuova funzionalità Beta per effettuare l\'unione di database. Prova a unire i file quando entrambi vengono modificati. Abilitala in Impostazioni -&gt; Sincronizzazione -&gt; Unisci</string>
+    <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
 </resources>
