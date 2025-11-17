@@ -163,7 +163,7 @@
     <string name="delete_transaction">Elimina Transazione</string>
     <string name="new_transaction">Nuova transazione</string>
     <string name="error_payee_not_selected">Il beneficiario è richiesto</string>
-    <string name="error_fromaccount_not_selected">Conto di provenienza richiesto</string>
+    <string name="error_fromaccount_not_selected">Conto di Origine richiesto</string>
     <string name="error_toaccount_not_selected">Il conto di destinazione è richiesto</string>
     <string name="error_category_not_selected">La categoria è richiesta</string>
     <string name="error_totamount_empty">L\'importo totale è richiesto</string>
@@ -294,7 +294,7 @@
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">codice di accesso non aggiornato</string>
     <string name="fingerprint_passcode_deactivated">Il codice di accesso di sicurezza è stato attivato utilizzando l\'autenticazione con impronta digitale, quindi il codice di accesso è stato disattivato automaticamente, riattivare il codice di accesso con valore numerico</string>
-    <string name="preferences_fingerprint_auth_key">Chiave di autenticazione impronta digitale</string>
+    <string name="preferences_fingerprint_auth_key">Chiave Di Autenticazione Impronta Digitale</string>
     <string name="preferences_fingerprint_summary">Abilita l\'autenticazione con impronta digitale per l\'accesso e disabilita la schermata del codice di accesso. Tuttavia, l\'utente non può utilizzare l\'impronta digitale per attivare o modificare il codice di accesso.</string>
     <string name="preferences_fingerprint_title">Autenticazione con impronta digitale</string>
     <!-- 20121217 -->
@@ -307,11 +307,11 @@
     <string name="no_stock_data">Nessun Azione disposibile per questo conto</string>
     <string name="month">Mese</string>
     <string name="year">Anno</string>
-    <string name="menu_reports">Resoconti integrati</string>
-    <string name="menu_general_report_group">Resoconti generali</string>
-    <string name="title_activity_general_report">Resoconto generale</string>
+    <string name="menu_reports">Resoconti Predefiniti</string>
+    <string name="menu_general_report_group">Resoconti Generali</string>
+    <string name="title_activity_general_report">Resoconto Generale</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
-    <string name="menu_report_cashflow">Flusso di cassa</string>
+    <string name="menu_report_cashflow">Flusso Di Cassa</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -558,7 +558,7 @@
     <string name="unhandled_crash">Errore imprevisto. Si prega di inviare il log.</string>
     <string name="title_activity_currency_rates_report">Tassi di cambio</string>
     <string name="frequency">Frequenza</string>
-    <string name="select_columns">Seleziona colonne visibili</string>
+    <string name="select_columns">Seleziona Colonne Visibili</string>
     <string name="update_available">Aggiornamento disponibile</string>
     <string name="update_available_online">C\'è un file di database aggiornato disponibile online. Vuoi aggiornare?</string>
     <string name="currency_not_found">Valuta non trovata</string>
@@ -641,7 +641,7 @@
     <string name="budget_name">Nome del budget</string>
     <string name="budget_year">Budget per anno</string>
     <string name="budget_month">Budget per mese</string>
-    <string name="budget_month_optional">Bilancio mensile (facoltativo)</string>
+    <string name="budget_month_optional">Budget Mensile (optional)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
     <string name="print">Stampa</string>
@@ -753,7 +753,7 @@
     <string name="save">Salva</string>
     <string name="title_budget_show_simple_view">Mostra vista semplificata budget</string>
     <string name="summary_budget_show_simple_view">Se selezionato usa la vista semplificata per i budget</string>
-    <string name="title_budget_reload_forecast">Ricarica transazione pianificata</string>
+    <string name="title_budget_reload_forecast">Ricarica Transazione Pianificata</string>
     <string name="title_pref_budget_financial_year">Utilizzare l\'esercizio finanziario nel Budget</string>
     <string name="summary_pref_budget_financial_year">Se selezionato, i bilanci utilizzano l\'esercizio finanziario anziché l\'anno civile</string>
     <string name="shares">Azioni</string>
@@ -777,6 +777,7 @@
     <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
     <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
     <string name="notification_channel_fileoperation_conflict">Conflitto Di Sincronizzazione Mmex</string>
+    <string name="notification_channel_syncing">Sincronizza Canale</string>
     <string name="notification_channel_syncing__description">Sincronizza in corso canale di notifica</string>
     <string name="show">Mostra</string>
     <string name="attachment_folder">Cartella Allegati</string>
@@ -809,7 +810,7 @@
     <string name="merge_take_ours">Mantieni versione locale</string>
     <string name="merge_take_theirs">Prendi versione remota</string>
     <!-- Error Handling -->
-    <string name="title_activity_auth">Oops! Qualcosa è andato storto.</string>
+    <string name="title_activity_auth">Ops! Qualcosa è andato storto.</string>
     <string name="bad_error_occurs">Siamo spiacenti di notare un errore in atteso. Vi preghiamo di segnalarlo agli sviluppatori. </string>
     <string name="estimatedForPeriod">Stima Per Il Periodo</string>
     <string name="forecast_remain">Previsione Rimanente</string>
