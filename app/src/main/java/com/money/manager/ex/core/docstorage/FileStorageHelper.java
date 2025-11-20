@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,8 +19,13 @@ import java.nio.file.Files;
 
 import com.google.common.io.ByteStreams;
 import com.money.manager.ex.MmexApplication;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.database.Password;
+import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -96,7 +103,7 @@ public class FileStorageHelper {
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
         DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
-        pullDatabase(metadata);
+        if (!pullDatabase(metadata)) return null;
 
         return metadata;
     }
@@ -120,7 +127,7 @@ public class FileStorageHelper {
 
         DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
-        pullDatabase(metadata);
+        if(!pullDatabase(metadata)) return null;
 
         return metadata;
     }
@@ -132,14 +139,14 @@ public class FileStorageHelper {
      * Copies the remote database locally and updates the metadata.
      * @param metadata Database file metadata.
      */
-    public void pullDatabase(DatabaseMetadata metadata) {
+    public boolean pullDatabase(DatabaseMetadata metadata) {
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
             this.downloadDatabase(uri, metadata.localPath);
         } catch (Exception e) {
             Timber.e(e);
-            return;
+            return false;
         }
 
         metadata.remoteLastChangedDate = metadata.getRemoteFileModifiedDate(_host).toIsoString();
@@ -149,6 +156,42 @@ public class FileStorageHelper {
         // store the metadata.
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
 
+        // check password
+        if (MmxDatabaseUtils.isEncryptedDatabase(metadata.localPath)) {
+            // password is requested
+            String pwd = MmexApplication.getApp().getPassword();
+            if (TextUtils.isEmpty(pwd)) {
+                Intent pwdIntent = new Intent(_host, PasswordActivity.class);
+                pwdIntent.putExtra(MainActivity.EXTRA_DATABASE_PATH, metadata.localPath);
+                _host.startActivity(pwdIntent);
+
+/*
+                // Use the new utility class to ask for the password.
+                Password.ask(
+                        _host,
+                        new Password.PasswordCallback() {
+                            @Override
+                            public void onPasswordEntered(@NonNull String password) {
+                                // The user has entered a valid password.
+                                // Save it
+                                MmexApplication.getApp().setPassword(password);
+                                // open the main activity
+                                Intent intent = IntentFactory.getMainActivityNew(_host);
+                                _host.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onPasswordCancelled() {
+                                // The user has cancelled the operation.
+                                MmexApplication.getApp().setPassword(null);
+                            }
+                        }
+                );
+ */
+                return false;
+            }
+        }
+
         // issue #1359
         try {
             dbUtils.useDatabase(metadata);
@@ -157,12 +200,13 @@ public class FileStorageHelper {
             try {
                 Toast.makeText(getContext(), "Unable to open DB. Not a .mmb file.", Toast.LENGTH_SHORT).show();
             } catch (Exception ignored) {}
-            return;
+            return false;
         }
         MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
             put("authority", uri.getAuthority());
             put("result", "pullDatabase");
         }});
+        return true;
     }
 
     /**

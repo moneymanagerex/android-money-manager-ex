@@ -342,14 +342,17 @@ public class MainActivity
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
+                if (db == null) {
+                    return;
+                }
                 changeDatabase(db);
                 break;
             case RequestCodes.CREATE_DOCUMENT:
                 FileStorageHelper storageHelper2 = new FileStorageHelper(this);
                 DatabaseMetadata db2 = storageHelper2.createDatabase(data);
-                if (db2 == null)
+                if (db2 == null) {
                     return;
-
+                }
                 changeDatabase(db2);
                 break;
             case RequestCodes.PASSCODE:
@@ -689,6 +692,7 @@ public class MainActivity
     /**
      * for the change setting restart process application
      */
+    @Override
     public void restartActivity() {
         if (!mRestartActivity) return;
 

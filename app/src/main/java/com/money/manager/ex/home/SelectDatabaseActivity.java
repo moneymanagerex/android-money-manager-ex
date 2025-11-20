@@ -79,7 +79,9 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         if (requestCode == RequestCodes.SELECT_DOCUMENT) {
             // file selected at a Storage Access Framework.
             FileStorageHelper storageHelper = new FileStorageHelper(this);
-            storageHelper.selectDatabase(data);
+            if (storageHelper.selectDatabase(data) == null) {
+                return;
+            }
             onDatabaseSelected();
         } else if (requestCode == RequestCodes.CREATE_DOCUMENT) {
             FileStorageHelper storageHelper = new FileStorageHelper(this);

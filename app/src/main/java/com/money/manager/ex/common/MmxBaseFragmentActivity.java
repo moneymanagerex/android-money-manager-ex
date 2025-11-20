@@ -38,6 +38,7 @@ import android.view.View.OnClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.crashreport.CrashReporter;
 import com.money.manager.ex.home.HomeFragment;
@@ -339,6 +340,12 @@ public abstract class MmxBaseFragmentActivity
                     .commit();
         }
 
+    }
+
+    public void restartActivity() {
+        Intent intent = new Intent(this, this.getClass());
+        startActivity(intent);
+        finish();
     }
 
 }
