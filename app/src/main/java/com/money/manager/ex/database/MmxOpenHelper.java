@@ -54,8 +54,15 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     /**
      * Database schema version.
      */
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION_MIN = 20;
+    private static final int DATABASE_VERSION_MAX = 21;
     private final String dbPath;
+
+    private int originalVersion;
+
+    private final Context mContext;
+    private String mPassword;
+
 
     // Dynamic
 
@@ -64,18 +71,16 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
-        super(DATABASE_VERSION);
+        super(DATABASE_VERSION_MAX);
         this.mContext = context;
         this.dbPath = dbPath;
         this.mPassword = MmexApplication.getApp().getPassword();
+        originalVersion = -1;
 
         // Load the sqlite3mc native library.
         // System.loadLibrary("sqliteX");
         System.loadLibrary("sqlcipher");
     }
-
-    private final Context mContext;
-    private String mPassword = "";
 
     public Context getContext() {
         return this.mContext;
@@ -108,13 +113,22 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     public void onOpen(SupportSQLiteDatabase db) {
         db.disableWriteAheadLogging();
-   //     super.onOpen(db);
+        Timber.d("Actual DB version is %d", db.getVersion());
+
+        if (originalVersion >= DATABASE_VERSION_MIN) {
+            db.setVersion(originalVersion);
+            Timber.d("Force DB version to %d", db.getVersion());
+        }
+
+        //     super.onOpen(db);
 
 //        long version = db.getVersion();
     }
 
     public void onUpgrade(@NonNull SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.d("Upgrading from version %d to %d", oldVersion, newVersion);
+
+        originalVersion = (originalVersion == -1) ? oldVersion : originalVersion;
 
         try {
             String currentDbFile = db.getPath();
@@ -131,7 +145,14 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     }
 
     public void onDowngrade (@NonNull SupportSQLiteDatabase db, int oldVersion, int newVersion) {
-        super.onDowngrade(db, oldVersion, newVersion);
+        originalVersion = (originalVersion == -1) ? oldVersion : originalVersion;
+
+        if (oldVersion >= DATABASE_VERSION_MAX) {
+            // source db version is too hight. we need to download to newVersion
+            Timber.d("Downgrading from version %d to %d", oldVersion, newVersion);
+            super.onDowngrade(db, oldVersion, newVersion);
+        }
+
     }
 
     private SupportSQLiteDatabase getDatabase(boolean writable) {
@@ -141,10 +162,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
                         .name(this.dbPath)
                         .callback(this)
                         .build();
-        SupportSQLiteDatabase sqLiteDatabase = writable
+        return writable
                 ? factory.create(configuration).getWritableDatabase()
                 : factory.create(configuration).getReadableDatabase();
-        return sqLiteDatabase;
     }
 
     public SupportSQLiteDatabase getReadableDatabase() {
