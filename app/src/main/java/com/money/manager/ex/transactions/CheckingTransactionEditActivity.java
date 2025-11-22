@@ -566,16 +566,18 @@ public class CheckingTransactionEditActivity
                     Bundle extras = intent.getExtras();
 
                     if(extras != null &&
+                            extras.containsKey(EditTransactionActivityConstants.KEY_TRANS_SOURCE) &&
+                            extras.get(EditTransactionActivityConstants.KEY_TRANS_SOURCE) != null &&
                             extras.getString(EditTransactionActivityConstants.KEY_TRANS_SOURCE)
                                     .contentEquals("SmsReceiverTransactions.java"))
                     {
                         AccountRepository accountRepository = new AccountRepository(this);
 
-                        if(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
-                            mCommon.transactionEntity.setAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
+                        if(parseLongWithDefault(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)) > 0)
+                            mCommon.transactionEntity.setAccountId(parseLongWithDefault(extras.getString(EditTransactionActivityConstants.KEY_ACCOUNT_ID)));
 
-                        if(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)) > 0)
-                            mCommon.transactionEntity.setToAccountId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
+                        if(parseLongWithDefault(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)) > 0)
+                            mCommon.transactionEntity.setToAccountId(parseLongWithDefault(extras.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID)));
 
                         //convert the to amount from the both currency details
                         CurrencyService currencyService = new CurrencyService(this);
@@ -610,7 +612,7 @@ public class CheckingTransactionEditActivity
                         }
                         else
                         {
-                            mCommon.transactionEntity.setPayeeId(Long.parseLong(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
+                            mCommon.transactionEntity.setPayeeId(parseLongWithDefault(extras.getString(EditTransactionActivityConstants.KEY_PAYEE_ID)));
                             mCommon.payeeName = extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
                             mCommon.setCategoryFromPayee(mCommon.transactionEntity.getPayeeId());
                         }
@@ -619,7 +621,7 @@ public class CheckingTransactionEditActivity
                         if(mCommon.payeeName.isEmpty())
                         {
                             String catID = extras.getString(EditTransactionActivityConstants.KEY_CATEGORY_ID);
-                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(Long.parseLong(catID)); }
+                            if (!catID.isEmpty()) { mCommon.transactionEntity.setCategoryId(parseLongWithDefault(catID)); }
 
                             mCommon.loadCategoryName();
                         }
@@ -858,4 +860,13 @@ public class CheckingTransactionEditActivity
 
         return true;
     }
+
+    private long parseLongWithDefault(String s) {
+        try {
+            return Long.parseLong(s);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
 }
