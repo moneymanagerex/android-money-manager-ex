@@ -566,6 +566,8 @@ public class CheckingTransactionEditActivity
                     Bundle extras = intent.getExtras();
 
                     if(extras != null &&
+                            extras.containsKey(EditTransactionActivityConstants.KEY_TRANS_SOURCE) &&
+                            extras.get(EditTransactionActivityConstants.KEY_TRANS_SOURCE) != null &&
                             extras.getString(EditTransactionActivityConstants.KEY_TRANS_SOURCE)
                                     .contentEquals("SmsReceiverTransactions.java"))
                     {
