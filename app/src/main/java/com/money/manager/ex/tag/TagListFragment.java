@@ -335,8 +335,10 @@ public class TagListFragment     extends BaseListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            @SuppressLint("Range") long tagId = cursor.getLong(cursor.getColumnIndexOrThrow(Tag.TAGID));
-            @SuppressLint("Range") String tagName = cursor.getString(cursor.getColumnIndexOrThrow(Tag.TAGNAME));
+            if (cursor.isBeforeFirst() || cursor.isAfterLast())
+                return;
+            long tagId = cursor.getLong(cursor.getColumnIndexOrThrow(Tag.TAGID));
+            String tagName = cursor.getString(cursor.getColumnIndexOrThrow(Tag.TAGNAME));
 
             sendResultToActivity(tagId, tagName);
 
