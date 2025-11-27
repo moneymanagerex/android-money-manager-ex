@@ -71,7 +71,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * @param context Current context.
      */
     public MmxOpenHelper(Context context, String dbPath) {
-        super(DATABASE_VERSION_MAX);
+        super(DATABASE_VERSION_MIN);
         this.mContext = context;
         this.dbPath = dbPath;
         this.mPassword = MmexApplication.getApp().getPassword();
@@ -115,8 +115,8 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         db.disableWriteAheadLogging();
         Timber.d("Actual DB version is %d", db.getVersion());
 
-        if (originalVersion >= DATABASE_VERSION_MIN &&
-            originalVersion < DATABASE_VERSION_MAX ) {
+        if (originalVersion > DATABASE_VERSION_MIN &&
+            originalVersion <= DATABASE_VERSION_MAX ) {
             db.setVersion(originalVersion);
             Timber.d("Force DB version to %d", db.getVersion());
         }
