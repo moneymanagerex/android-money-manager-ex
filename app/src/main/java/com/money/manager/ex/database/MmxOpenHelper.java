@@ -148,7 +148,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     public void onDowngrade (@NonNull SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         originalVersion = (originalVersion == -1) ? oldVersion : originalVersion;
 
-        if (oldVersion >= DATABASE_VERSION_MAX) {
+        if (oldVersion > DATABASE_VERSION_MAX) {
             // source db version is too hight. we need to download to newVersion
             Timber.d("Downgrading from version %d to %d", oldVersion, newVersion);
             super.onDowngrade(db, oldVersion, newVersion);
