@@ -45,6 +45,14 @@ feature_row:
 Support our development teams with a coffee.
 <table width="100%">
 <tr>
+  <td>
+<center>    
+**Buy Me a Coffe**<br>
+<a href="https://www.buymeacoffee.com/wolfsolver" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+</a>    
+  </center>
+  </td>
 <td>
 <center>
 Donate via Paypal<br>

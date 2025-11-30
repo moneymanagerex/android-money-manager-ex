@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.datalayer;
 
-import static android.database.sqlite.SQLiteDatabase.CONFLICT_FAIL;
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -42,7 +42,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     public String tableName;
 
     public long insert(ContentValues values) {
-        return database.insert(tableName, CONFLICT_FAIL, values);
+        return database.insert(tableName, CONFLICT_REPLACE, values);
     }
 
     public long delete(String where, String... whereArgs) {
@@ -104,7 +104,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         values.remove("_id");
 
         long updateResult = database.update(tableName,
-                CONFLICT_FAIL,
+                CONFLICT_REPLACE,
                 values,
                 where,
                 selectionArgs

@@ -514,12 +514,15 @@ public class NestedCategoryListFragment
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
             // check if cursor is null to be sure
-            if ( cursor == null || cursor.getCount() == 0 || cursor.getPosition() == -1) {
+            if ( cursor == null ||
+                    cursor.getCount() == 0 ||
+                    cursor.isBeforeFirst() ||
+                    cursor.isAfterLast() ) {
                 // no record or no record selected
                 sendResultToActivity(-1, null);
             } else {
-                @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGID));
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(QueryNestedCategory.CATEGNAME));
                 sendResultToActivity(id, name);
             }
 

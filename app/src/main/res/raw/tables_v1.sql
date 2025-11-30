@@ -2,7 +2,7 @@
 CREATE TABLE ACCOUNTLIST_V1(
 ACCOUNTID integer primary key
 , ACCOUNTNAME TEXT COLLATE NOCASE NOT NULL UNIQUE
-, ACCOUNTTYPE TEXT NOT NULL /* Checking, Term, Investment, Credit Card */
+, ACCOUNTTYPE TEXT NOT NULL /* Cash, Checking, Term, Investment, Credit Card, Loan, Asset, Shares */
 , ACCOUNTNUM TEXT
 , STATUS TEXT NOT NULL /* Open, Closed */
 , NOTES TEXT
@@ -162,6 +162,16 @@ INSERT INTO CATEGORY_V1 VALUES(54,'Investment Income',1,51);
 INSERT INTO CATEGORY_V1 VALUES(55,'Other Income',1,-1);
 INSERT INTO CATEGORY_V1 VALUES(56,'Other Expenses',1,-1);
 INSERT INTO CATEGORY_V1 VALUES(57,'Transfer',1,-1);
+INSERT INTO CATEGORY_V1 VALUES(58, 'Investment', 1, -1);
+INSERT INTO CATEGORY_V1 VALUES(59, 'Purchase', 1, 58);           -- Buying
+INSERT INTO CATEGORY_V1 VALUES(60, 'Sale', 1, 58);               -- Selling
+INSERT INTO CATEGORY_V1 VALUES(61, 'Dividend', 1, 58);           -- Dividend
+INSERT INTO CATEGORY_V1 VALUES(62, 'Capital Gains', 1, 58);      -- Capital gains
+INSERT INTO CATEGORY_V1 VALUES(63, 'Brokerage Fees', 1, 58);     -- Brokerage fees
+INSERT INTO CATEGORY_V1 VALUES(64, 'Interest', 1, 58);           -- Investment interest
+INSERT INTO CATEGORY_V1 VALUES(65, 'Taxes', 1, 58);              -- Investment taxes
+INSERT INTO CATEGORY_V1 VALUES(66, 'Split', 1, 58);              -- Stock split
+INSERT INTO CATEGORY_V1 VALUES(67, 'Merger', 1, 58);             -- Stock merger
 
 -- Describe CHECKINGACCOUNT_V1
 CREATE TABLE CHECKINGACCOUNT_V1(
@@ -279,7 +289,7 @@ INSERT INTO CURRENCYFORMATS_V1 VALUES(60,'Guyanaese dollar','GY$','','.',' ','',
 INSERT INTO CURRENCYFORMATS_V1 VALUES(61,'Haitian gourde','G','','.',' ','','',100,1,'HTG','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(62,'Honduran lempira','L','','.',' ','','',100,1,'HNL','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(63,'Hong Kong dollar','HK$','','.',' ','','',100,1,'HKD','Fiat');
-INSERT INTO CURRENCYFORMATS_V1 VALUES(64,'Hungarian forint','Ft','','.',' ','','',1,1,'HUF','Fiat');
+INSERT INTO CURRENCYFORMATS_V1 VALUES(64,'Hungarian forint','','Ft','.',' ','','',1,1,'HUF','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(65,'Icelandic króna','kr','','.',' ','','',1,1,'ISK','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(66,'Indian rupee','₹','','.',' ','','',100,1,'INR','Fiat');
 INSERT INTO CURRENCYFORMATS_V1 VALUES(67,'Indonesian rupiah','Rp','','.',' ','','',1,1,'IDR','Fiat');

@@ -51,6 +51,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -284,7 +285,13 @@ public class AboutFragment extends Fragment {
             Timber.e(e, "reading stdout");
         }
 
-        return output.toString();
+        String rtn;
+        try {
+            rtn = output.toString();
+        } catch ( Exception e) {
+            rtn = "Too big.";
+        }
+        return rtn;
     }
 
     /**
@@ -305,7 +312,10 @@ public class AboutFragment extends Fragment {
         String body;
         Core core = new Core(getActivity());
         int build = core.getAppVersionCode();
-        DatabaseMetadata db = mDatabases.get().getCurrent();
+        DatabaseMetadata db = null;
+        if ( mDatabases != null &&
+                mDatabases.get() != null)
+            db = Objects.requireNonNull(mDatabases.get()).getCurrent();
 
         body = "[Put here your description]\n" +
                 "App Version: " + core.getAppVersionName() + " (" + build + ")\n"+
