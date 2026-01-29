@@ -371,6 +371,7 @@
     <string name="result_search">Résultat de votre recherche</string>
     <string name="new_repeating_transaction">Nouvelle transaction planifiée</string>
     <string name="edit_repeating_transaction">Modifier une transaction planifiée</string>
+    <string name="no_recurring_transaction">Le rapport de flux de trésorerie utilise la transaction planifiée, mais aucune transaction planifiée n\'a été trouvée</string>
     <string name="path_database_not_exists">Le chemin de la base de données n\'existe pas</string>
     <string name="database_can_not_open_write">La base de données ne peut pas être ouvert en écriture</string>
     <string name="time_frame">Délai</string>
@@ -661,6 +662,7 @@
     <string name="both_files_modified">Le fichier distant et le fichier local de la base de données ont été modifiés !</string>
     <string name="sync_conflict">Conflit de synchronisation</string>
     <string name="no_remote_file">Veuillez sélectionner le fichier distant à utiliser pour la synchronisation.</string>
+    <string name="request_conlict_reopen">Conflit entre le fichier local et le fichier distant. Cela signifie que votre copie locale ne peut pas être synchronisée avec le fichier distant. Veuillez exporter la base de données manuellement si vous voulez enregistrer votre copie locale, ou télécharger manuellement le fichier distant si vous voulez charger les données du fichier distant.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Aucun compte à sélectionner. Veuillez ajuster vos préférences pour le filtrage du compte ou de marquer certains comptes comme favoris.</string>
     <!-- Errors -->
@@ -668,6 +670,8 @@
     <string name="remote_file_not_found">Fichier distant introuvable</string>
     <string name="error_checking_remote">Erreur de vérification des changements distants.</string>
     <string name="no_remote_change_date">La date de changement à distance est introuvable dans les métadonnées.</string>
+    <string name="remote_unavailable"></string>
+    <string name="request_reopen">Le fichier distant n\'est pas accessible. Votre copie locale ne peut pas être synchronisée avec le fichier distant. Veuillez exporter la base de données manuellement si vous voulez enregistrer votre copie locale, ou télécharger manuellement le fichier distant si vous voulez charger les données du fichier distant.</string>
     <!-- Select database screen -->
     <string name="intro_text">Pour commencer à utiliser Money Manager Ex, vous devez avoir un fichier de base de données pour stocker vos données. Veuillez sélectionner une des options disponibles ci-dessous.</string>
     <string name="intro_create_db">Vous pouvez créer un nouveau fichier et configurer les préférences de base.</string>

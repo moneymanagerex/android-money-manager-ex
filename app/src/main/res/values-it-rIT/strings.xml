@@ -69,7 +69,7 @@
     <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
     <string name="sync_on_start">Sincronizza all\'avvio</string>
     <string name="sync_merge_database">SPERIMENTALE: Unisci database</string>
-    <string name="sync_merge_database_on_sync">Unisci le differenze tra i database durante la sincronizzazione.</string>
+    <string name="sync_merge_database_on_sync">Unisci le differenze del database alla sincronizzazione.</string>
     <string name="sync_merge_dialog_msg_format">Unire tutti %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processa Transazione Bancaria via SMS</string>
