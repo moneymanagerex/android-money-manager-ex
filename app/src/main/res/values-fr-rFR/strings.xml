@@ -706,6 +706,7 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">Tous les comptes</string>
+    <string name="menu_cashflow_custom">Sélectionnez les comptes&#8230;</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->
