@@ -25,7 +25,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -44,6 +43,8 @@ import com.money.manager.ex.settings.AppSettings;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Objects;
 
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -285,7 +286,7 @@ public abstract class MmxBaseFragmentActivity
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
         } catch (Exception e) {
             //
         }
@@ -327,7 +328,11 @@ public abstract class MmxBaseFragmentActivity
         FRAGMENTTAG = mFragmentTAG;
 
         // enable home button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+            //
+        }
 
         // process intent
         FragmentManager fm = getSupportFragmentManager();
