@@ -68,6 +68,16 @@ Open Microsoft OneDrive and navigate to your file
 Set it as "Download"
 ![img.png](img/sc_d_nextcloud_available_offline.png)
 
+### Sync Conflict
+The app is designed to keep your local data in sync with your cloud provider (e.g., Dropbox, Google Drive). However, sync issues may occasionally occur due to network interruptions or concurrent modifications on different devices.
+
+A **Sync Conflict** happens when both the local database on your Android device and the remote file on the cloud have been modified independently. Since the app cannot automatically merge these changes without risking data corruption, it asks for your intervention. **Common cause**: Modifying the database on Windows while the PC is offline, or before the cloud client (Dropbox/OneDrive) has finished updating the local file.
+
+**How to resolve the conflict**
+When the app detects a discrepancy, you will see a resolution screen with two options:
+* Open Database (Reopen from Remote): Use this if you want to discard the changes made on your Android device and download the latest version from the cloud.
+* Database Export (Manual Sync): Use this if your local Android changes are the most important ones. This allows you to export your current local database as a file. You can then manually upload this file to your cloud storage to overwrite the conflicting remote version.
+
 ### Sync Issue
 There is know issue on some cloud provider that lost connection to remote file. If this occurs, Android App is no longer able to sync file between local and remote provider. This can cause also lost of data.
 The app try to check if sync is available and, if not you get and error screen like this:
