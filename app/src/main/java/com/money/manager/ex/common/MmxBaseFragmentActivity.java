@@ -25,6 +25,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -132,7 +133,7 @@ public abstract class MmxBaseFragmentActivity
         if (FRAGMENTTAG != null) {
             fragment = getSupportFragmentManager()
                     .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
+            if (fragment != null && fragment.getActivity() != null ) {
                 fragment.getActivity().setResult(RESULT_CANCELED);
                 fragment.getActivity().finish();
                 return true;
@@ -196,7 +197,7 @@ public abstract class MmxBaseFragmentActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
@@ -261,21 +262,10 @@ public abstract class MmxBaseFragmentActivity
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)
-                cancelActionView.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        onActionCancelClick();
-                    }
-                });
+                cancelActionView.setOnClickListener(v -> onActionCancelClick());
             View doneActionView = toolbar.findViewById(actionDone);
             if (doneActionView != null)
-                doneActionView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onActionDoneClick();
-                    }
-                });
+                doneActionView.setOnClickListener(v -> onActionDoneClick());
         }
     }
 
@@ -295,7 +285,11 @@ public abstract class MmxBaseFragmentActivity
 
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+        } catch (Exception e) {
+            //
+        }
     }
 
     // protected
