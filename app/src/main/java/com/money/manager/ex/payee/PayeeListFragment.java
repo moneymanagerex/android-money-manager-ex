@@ -18,7 +18,6 @@ package com.money.manager.ex.payee;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -39,6 +38,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -83,12 +83,13 @@ public class PayeeListFragment
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
-        // mAction is not aways set since PayeeActivity is not call from main #2217
-        mAction = getActivity().getIntent().getAction();
-        if (mAction == null || !mAction.equals(Intent.ACTION_PICK)) {
-            mAction = Intent.ACTION_EDIT;
+        if (mContext != null && getActivity().getIntent() != null) {
+            // mAction is not aways set since PayeeActivity is not call from main #2217
+            mAction = getActivity().getIntent().getAction();
+            if (mAction == null || !mAction.equals(Intent.ACTION_PICK)) {
+                mAction = Intent.ACTION_EDIT;
+            }
         }
-
         setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(mContext);
@@ -106,27 +107,25 @@ public class PayeeListFragment
                 new int[]{android.R.id.text1}, 0);
 
         // overwrite to set inactive
-        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                TextView textView = (TextView) aView;
-                boolean active;
-                if (aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE)) == null) {
-                    // issue 2216: consider true if active column is not set, backward compatibulity
-                    active = true;
-                } else {
-                    active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE))) != 0);
-                }
-                CharSequence text = aCursor.getString(aColumnIndex);
-                if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
-                    text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
-                }
-                if (!active) {
-                    textView.setText(Html.fromHtml("<i>" + text + " [" + mContext.getString(R.string.inactive) + "]</i>", Html.FROM_HTML_MODE_COMPACT));
-                } else {
-                    textView.setText(text);
-                }
-                return true;
+        adapter.setViewBinder((aView, aCursor, aColumnIndex) -> {
+            TextView textView = (TextView) aView;
+            boolean active;
+            if (aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE)) == null) {
+                // issue 2216: consider true if active column is not set, backward compatibulity
+                active = true;
+            } else {
+                active = (Integer.parseInt(aCursor.getString(aCursor.getColumnIndexOrThrow(Payee.ACTIVE))) != 0);
             }
+            CharSequence text = aCursor.getString(aColumnIndex);
+            if (!TextUtils.isEmpty(adapter.getHighlightFilter())) {
+                text = adapter.getCore().highlight(adapter.getHighlightFilter(), text.toString());
+            }
+            if (!active) {
+                textView.setText(Html.fromHtml("<i>" + text + " [" + mContext.getString(R.string.inactive) + "]</i>", Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                textView.setText(text);
+            }
+            return true;
         });
 
 
@@ -185,7 +184,7 @@ public class PayeeListFragment
                 break;
         }
 
-        if (mAction.equals(Intent.ACTION_PICK) ) {
+        if (mAction.equals(Intent.ACTION_PICK)) {
             menu.findItem(R.id.menu_show_inactive).setVisible(false);
         } else {
             menu.findItem(R.id.menu_show_inactive).setVisible(true);
@@ -197,40 +196,41 @@ public class PayeeListFragment
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         AppSettings settings = new AppSettings(mContext);
 
-        switch (item.getItemId()) {
-            case R.id.menu_sort_name:
-                item.setChecked(true);
-                settings.setPayeeSort(ORDER_BY_NAME);
-                // restart search
-                restartLoader();
-                return true;
+        // use if instead of switch due gradle plunin requirement
+        int id = item.getItemId();
 
-            case R.id.menu_sort_usage:
-                item.setChecked(true);
-                settings.setPayeeSort(ORDER_BY_USAGE);
-                // restart search
-                restartLoader();
-                return true;
-
-            case R.id.menu_sort_recent:
-                item.setChecked(true);
-                settings.setPayeeSort(ORDER_BY_RECENT);
-                // restart search
-                restartLoader();
-                return true;
-
-            case R.id.menu_show_inactive:
-                item.setChecked(!item.isChecked());
-                settings.setShowInactive(item.isChecked());
-                // restart search
-                restartLoader();
-                return true;
-
-            case android.R.id.home:
-                getActivity().setResult(PayeeActivity.RESULT_CANCELED);
-                getActivity().finish();
-                return true;
+        if (id == R.id.menu_sort_name) {
+            item.setChecked(true);
+            settings.setPayeeSort(ORDER_BY_NAME);
+            restartLoader();
+            return true;
+        } else if (id == R.id.menu_sort_usage) {
+            item.setChecked(true);
+            settings.setPayeeSort(ORDER_BY_USAGE);
+            restartLoader();
+            return true;
+        } else if (id == R.id.menu_sort_recent) {
+            item.setChecked(true);
+            settings.setPayeeSort(ORDER_BY_RECENT);
+            restartLoader();
+            return true;
+        } else if (id == R.id.menu_show_inactive) {
+            item.setChecked(!item.isChecked());
+            settings.setShowInactive(item.isChecked());
+            restartLoader();
+            return true;
+        } else if (id == android.R.id.home) {
+            try {
+                FragmentActivity activity = getActivity();
+                assert activity != null;
+                activity.setResult(PayeeActivity.RESULT_CANCELED);
+                activity.finish();
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
         }
+
         return super.old_onOptionsItemSelected(item);
     }
 
@@ -254,7 +254,7 @@ public class PayeeListFragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = null;
+        AdapterView.AdapterContextMenuInfo info;
         if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         } else {
@@ -370,7 +370,7 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.isBeforeFirst() || cursor.isAfterLast())
+            if (cursor == null || cursor.isBeforeFirst() || cursor.isAfterLast())
                 return;
             long payeeId = cursor.getLong(cursor.getColumnIndexOrThrow(Payee.PAYEEID));
             String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME));
@@ -380,7 +380,8 @@ public class PayeeListFragment
             return;
         }
 
-        getActivity().setResult(PayeeActivity.RESULT_CANCELED);
+        if (getActivity() != null)
+            getActivity().setResult(PayeeActivity.RESULT_CANCELED);
     }
 
     private void sendResultToActivity(long payeeId, String payeeName) {
@@ -388,9 +389,11 @@ public class PayeeListFragment
         result.putExtra(PayeeActivity.INTENT_RESULT_PAYEEID, payeeId);
         result.putExtra(PayeeActivity.INTENT_RESULT_PAYEENAME, payeeName);
 
-        getActivity().setResult(AppCompatActivity.RESULT_OK, result);
-
-        getActivity().finish();
+        FragmentActivity activity = getActivity();
+        if (activity != null ) {
+            activity.setResult(AppCompatActivity.RESULT_OK, result);
+            activity.finish();
+        }
     }
 
     private void showDialogDeletePayee(final long payeeId) {
@@ -398,23 +401,15 @@ public class PayeeListFragment
                 .setTitle(R.string.delete_payee)
                 .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
                 .setMessage(R.string.confirmDelete)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PayeeRepository repo = new PayeeRepository(getActivity());
-                        boolean success = repo.delete(payeeId);
-                        if (success) {
-                            Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-                        }
-                        restartLoader();
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    PayeeRepository repo = new PayeeRepository(getActivity());
+                    boolean success = repo.delete(payeeId);
+                    if (success) {
+                        Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                     }
+                    restartLoader();
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
@@ -434,51 +429,43 @@ public class PayeeListFragment
 
         builder.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_person))
                 .setTitle(R.string.edit_payeeName)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // take payee name from the input field.
-                        String name = edtPayeeName.getText().toString();
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // take payee name from the input field.
+                    String name = edtPayeeName.getText().toString();
 
-                        PayeeService service = new PayeeService(mContext);
+                    PayeeService service = new PayeeService(mContext);
 
-                        // check if action is update or insert
-                        switch (type) {
-                            case INSERT:
-                                Payee payee = service.createNew(name);
-                                if (payee != null && payee.getId() != null) {
-                                    // Created a new payee. But only if picking a payee for another activity.
-                                    if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
-                                        // Select it and close.
-                                        sendResultToActivity(payee.getId(), name);
-                                        return;
-                                    }
-                                } else {
-                                    // error inserting.
-                                    Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
+                    // check if action is update or insert
+                    switch (type) {
+                        case INSERT:
+                            Payee payee = service.createNew(name);
+                            if (payee != null && payee.getId() != null) {
+                                // Created a new payee. But only if picking a payee for another activity.
+                                if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
+                                    // Select it and close.
+                                    sendResultToActivity(payee.getId(), name);
+                                    return;
                                 }
-                                break;
-                            case UPDATE:
-                                long updateResult = service.update(payeeId, name);
-                                if (updateResult <= 0) {
-                                    Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case DELETE:
-                                break;
-                            default:
-                                break;
-                        }
-                        // restart loader
-                        restartLoader();
+                            } else {
+                                // error inserting.
+                                Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case UPDATE:
+                            long updateResult = service.update(payeeId, name);
+                            if (updateResult <= 0) {
+                                Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case DELETE:
+                            break;
+                        default:
+                            break;
                     }
+                    // restart loader
+                    restartLoader();
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
         // Create and show the AlertDialog
         builder.create().show();
@@ -500,7 +487,7 @@ public class PayeeListFragment
         super.onListItemClick(l, v, position, id);
 
         // On select go back to the calling activity (if there is one)
-        if (getActivity().getCallingActivity() != null) {
+        if (getActivity() != null && getActivity().getCallingActivity() != null) {
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
             if (cursor != null) {
                 if (cursor.moveToPosition(position)) {

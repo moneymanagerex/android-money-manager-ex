@@ -31,21 +31,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.provider.DocumentsContract;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.crashreport.CrashReporter;
-import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.settings.AppSettings;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Objects;
 
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -90,7 +89,9 @@ public abstract class MmxBaseFragmentActivity
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         // Permission granted, handle the selected content URI here
                         Uri uri = result.getData().getData();
-                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        if (uri != null) {
+                            getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        }
                     }
                 });
         // Initialize the ActivityResultLauncher
@@ -100,7 +101,9 @@ public abstract class MmxBaseFragmentActivity
                         Uri treeUri = result.getData().getData();
                         // Handle the selected directory URI
                         // Perform actions using the selected directory URI
-                        getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        if (treeUri != null) {
+                            getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        }
                     }
                 });
 
@@ -112,7 +115,12 @@ public abstract class MmxBaseFragmentActivity
             public void handleOnBackPressed() {
                 if (!onHandleOnBackPressed()) {
                     setEnabled(false);
-                    getOnBackPressedDispatcher().onBackPressed();
+                    // back can has null pointer
+                    try {
+                        getOnBackPressedDispatcher().onBackPressed();
+                    } catch (Exception e) {
+                        //
+                    }
                 }
             }
         };
@@ -125,7 +133,7 @@ public abstract class MmxBaseFragmentActivity
         if (FRAGMENTTAG != null) {
             fragment = getSupportFragmentManager()
                     .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
+            if (fragment != null && fragment.getActivity() != null ) {
                 fragment.getActivity().setResult(RESULT_CANCELED);
                 fragment.getActivity().finish();
                 return true;
@@ -254,21 +262,10 @@ public abstract class MmxBaseFragmentActivity
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)
-                cancelActionView.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        onActionCancelClick();
-                    }
-                });
+                cancelActionView.setOnClickListener(v -> onActionCancelClick());
             View doneActionView = toolbar.findViewById(actionDone);
             if (doneActionView != null)
-                doneActionView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onActionDoneClick();
-                    }
-                });
+                doneActionView.setOnClickListener(v -> onActionDoneClick());
         }
     }
 
@@ -288,7 +285,11 @@ public abstract class MmxBaseFragmentActivity
 
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
+        } catch (Exception e) {
+            //
+        }
     }
 
     // protected
@@ -327,7 +328,11 @@ public abstract class MmxBaseFragmentActivity
         FRAGMENTTAG = mFragmentTAG;
 
         // enable home button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+            //
+        }
 
         // process intent
         FragmentManager fm = getSupportFragmentManager();
