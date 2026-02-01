@@ -370,7 +370,7 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.isBeforeFirst() || cursor.isAfterLast())
+            if (cursor == null || cursor.isBeforeFirst() || cursor.isAfterLast())
                 return;
             long payeeId = cursor.getLong(cursor.getColumnIndexOrThrow(Payee.PAYEEID));
             String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME));
