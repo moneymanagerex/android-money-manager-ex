@@ -34,7 +34,6 @@ import androidx.fragment.app.FragmentManager;
 import android.provider.DocumentsContract;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -119,7 +118,7 @@ public abstract class MmxBaseFragmentActivity
                     try {
                         getOnBackPressedDispatcher().onBackPressed();
                     } catch (Exception e) {
-                        Timber.d(e.getMessage());
+                        //
                     }
                 }
             }
@@ -197,7 +196,7 @@ public abstract class MmxBaseFragmentActivity
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
