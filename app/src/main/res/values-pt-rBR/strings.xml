@@ -753,6 +753,7 @@
     <string name="save">Salvar</string>
     <string name="title_budget_show_simple_view">Mostrar orçamento simples vista</string>
     <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
+    <string name="title_budget_reload_forecast">Excluir Transação Agendada</string>
     <string name="title_pref_budget_financial_year">Usar exercício financeiro no orçamento</string>
     <string name="summary_pref_budget_financial_year">Se verificado o orçamento usa o exercício financeiro em vez do ano</string>
     <string name="shares">Compartilhar</string>
@@ -776,6 +777,8 @@
     <string name="notification_channel_fileoperation_uploadin">Enviando Mmex</string>
     <string name="notification_channel_fileoperation_complete">Envio Mmex Concluído</string>
     <string name="notification_channel_fileoperation_conflict">Conflito de Sincronização Mmex</string>
+    <string name="notification_channel_syncing">Canal de sincronização</string>
+    <string name="notification_channel_syncing__description">Sincronização em andamento do canal de notificação</string>
     <string name="show">Exibir</string>
     <string name="attachment_folder">Pasta de Anexo</string>
     <string name="attachment_folder_summary">Selecione a pasta onde os anexos serão salvos</string>
@@ -804,13 +807,21 @@
     <string name="menu_cashflow_custom">Selecionar Contas&#8230;</string>
     <string name="cash_ledger">Contabilidade de Caixa</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Deixar local</string>
+    <string name="merge_take_theirs">Tirar controle</string>
     <!-- Error Handling -->
     <string name="title_activity_auth">Oops! Algo deu errado.</string>
     <string name="bad_error_occurs">Nós estamos muito tristes por notar um erro inesperado. Por favor, reporte ao desenvolvedor</string>
     <string name="estimatedForPeriod">Estimativa Para o Período</string>
     <string name="forecast_remain">Previsão Restante</string>
+    <string name="forecast_calculate">Previsão de Calculação. Por favor, espere...</string>
     <string name="enter_budget">Digite o Orçamento</string>
+    <string name="enter_budget_value">Para Categoria %1$s, defina o ganho para o período %2$s. Use negativo para despesas, positivo para renda:</string>
     <string name="enter_budget_value_plus_minus">Digite o novo valor</string>
+    <string name="merge_table">"Mesclagem de Mesa: "</string>
     <!-- changelog -->
     <string name="changelog">Registro de alterações</string>
+    <string name="changelog_title">Principais novidades!!</string>
+    <string name="changelog_1086">Nova versão 5.4\n- Adicionado novo recurso Beta para o motor de mesclagem. Tente mesclar o arquivo quando ambos forem alterados. Habilite nas configurações-&gt;Sincronização-&gt;Mesclar</string>
+    <string name="currency_save_error">Erro ao inserir Currency. Provavelmente a moeda %s já está definida.</string>
 </resources>
