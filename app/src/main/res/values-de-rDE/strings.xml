@@ -777,6 +777,8 @@
     <string name="notification_channel_fileoperation_uploadin">MMEX hochladen</string>
     <string name="notification_channel_fileoperation_complete">MMEX hochladen abgeschlossen</string>
     <string name="notification_channel_fileoperation_conflict">MMEX Sync Konflikt</string>
+    <string name="notification_channel_syncing">Sync-Kanal</string>
+    <string name="notification_channel_syncing__description">Synchronisation im laufenden Benachrichtigungskanal</string>
     <string name="show">Anzeigen</string>
     <string name="attachment_folder">Dateianhang Ordner</string>
     <string name="attachment_folder_summary">Wählen Sie den Ordner, in dem Anhänge gespeichert werden</string>
@@ -821,4 +823,5 @@
     <string name="changelog">Changelog</string>
     <string name="changelog_title">Wichtig! Was ist neu!!</string>
     <string name="changelog_1086">Neue Version 5.4\n- Neue Beta-Funktion für die Merge-Engine hinzugefügt. Versucht die Dateien zusammenzuführen, wenn beide geändert wurden. Aktivieren Sie diese Funktion unter „Einstellungen“ > „Synchronisieren“ > „Zusammenführen“.</string>
+    <string name="currency_save_error">Fehler beim Einfügen der Währung. Wahrscheinlich ist die Währung %s bereits definiert.</string>
 </resources>
