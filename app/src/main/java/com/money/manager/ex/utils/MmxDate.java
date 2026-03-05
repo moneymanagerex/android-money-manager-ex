@@ -386,6 +386,11 @@ public class MmxDate {
      */
 
     private static SimpleDateFormat getFormatterFor(String format) {
-        return new SimpleDateFormat(format, Locale.ENGLISH);
+        try {
+            return new SimpleDateFormat(format, Locale.ENGLISH);
+        } catch (Exception e) {
+            Timber.e(e, "Error formatting date with [" + format + "]");
+            return new SimpleDateFormat(Constants.ISO_DATE_FORMAT, Locale.ENGLISH);
+        }
     }
 }
