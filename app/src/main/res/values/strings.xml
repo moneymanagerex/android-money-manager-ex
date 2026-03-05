@@ -925,6 +925,7 @@
     <string name="changelog">Changelog</string>
     <string name="changelog_title">Important What\'s new!!</string>
     <string name="changelog_1086">New version 5.4\n- Added new Beta feature for Merge engine. Try to merge file when both are changed. Enable it in setting->Sync->Merge</string>
+    <string name="changelog_1104">New version 5.5\n- Enable Android 16 Full Compatibility with Edge-To-Edge</string>
     <string name="currency_save_error">Error while insert Currency. Probably currency %s is already defined.</string>
 
 </resources>

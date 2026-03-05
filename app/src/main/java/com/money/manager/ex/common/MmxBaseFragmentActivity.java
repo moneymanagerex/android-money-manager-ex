@@ -27,12 +27,16 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.provider.DocumentsContract;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -148,7 +152,38 @@ public abstract class MmxBaseFragmentActivity
         super.setContentView(layoutResID);
 
         mToolbar = findViewById(R.id.toolbar);
-        if (mToolbar != null) setSupportActionBar(mToolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+
+            // Handle system insets for the Toolbar to support Edge-to-Edge on Android 15+
+            ViewCompat.setOnApplyWindowInsetsListener(mToolbar, (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                // Apply the top inset as padding to the Toolbar so it sits below the status bar
+                v.setPadding(v.getPaddingLeft(), insets.top, v.getPaddingRight(), v.getPaddingBottom());
+
+                return windowInsets;
+            });
+        }
+
+        // Handle bottom insets for the root view to support Edge-to-Edge and IME (keyboard)
+        ViewGroup androidContent = findViewById(android.R.id.content);
+        if (androidContent != null && androidContent.getChildCount() > 0) {
+            View root = androidContent.getChildAt(0);
+            // Only apply manual insets if the view doesn't handle them automatically
+            if (root != null && !root.getFitsSystemWindows()) {
+                ViewCompat.setOnApplyWindowInsetsListener(root, (v, windowInsets) -> {
+                    Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    Insets ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+
+                    // Apply bottom padding for navigation bar and keyboard
+                    v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                            Math.max(systemBars.bottom, ime.bottom));
+
+                    return windowInsets;
+                });
+            }
+        }
     }
 
     @Override
@@ -252,11 +287,9 @@ public abstract class MmxBaseFragmentActivity
     }
 
     /**
-     * Allows customization of the toolbar buttons
+     * Sets the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
      *
-     * @param toolbar      Toolbar element to attach to.
-     * @param actionCancel R.id of the negative (cancel) button
-     * @param actionDone   R.id of the positive (action) button
+     * @param toolbar Toolbar element.
      */
     public void showStandardToolbarActions(View toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
@@ -316,7 +349,7 @@ public abstract class MmxBaseFragmentActivity
         openDocumentLauncher.launch(intent);
     }
 
-    public void openDirectoryPicker(Uri uri) {
+    public void onDirectoryPicker(Uri uri) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         // intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
         directoryPickerLauncher.launch(intent);

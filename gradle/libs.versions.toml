@@ -1,0 +1,56 @@
+[versions]
+aboutlibraries = "13.2.1"
+agp = "9.1.0"
+analyticsAndroid = "1.26.0"
+annotation = "1.9.1"
+appcompat = "1.7.1"
+cardview = "1.0.0"
+coordinatorlayout = "1.3.0"
+core = "1.17.0"
+dagger = "2.59.2"
+gradle = "9.1.0"
+gradleToolchainsFoojayResolverConvention = "1.0.0"
+gridlayout = "1.1.0"
+guava = "33.5.0-jre"
+kotlinGradlePlugin = "2.3.10"
+material = "1.13.0"
+parceler = "1.1.13"
+picasso = "2.71828"
+preference = "1.2.1"
+recyclerview = "1.4.0"
+retrofit2 = "3.0.0"
+selendroidStandalone = "0.17.0"
+sqlite = "2.6.2"
+compileSdk = "36"
+
+[libraries]
+aboutlibraries = { group = "com.mikepenz", name = "aboutlibraries", version.ref = "aboutlibraries" }
+adapter-rxjava = { group = "com.squareup.retrofit2", name = "adapter-rxjava", version.ref = "retrofit2" }
+analytics-android = { group = "com.amplitude", name = "analytics-android", version.ref = "analyticsAndroid" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
+converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit2" }
+coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "coordinatorlayout" }
+core = { group = "androidx.core", name = "core", version.ref = "core" }
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+parceler = { group = "org.parceler", name = "parceler", version.ref = "parceler" }
+parceler-api = { group = "org.parceler", name = "parceler-api", version.ref = "parceler" }
+picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+selendroid-standalone = { group = "io.selendroid", name = "selendroid-standalone", version.ref = "selendroidStandalone" }
+sqlite = { group = "androidx.sqlite", name = "sqlite", version.ref = "sqlite" }
+sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "sqlite" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }
