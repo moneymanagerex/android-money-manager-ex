@@ -28,7 +28,6 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class CashFlowReportActivity extends MmxBaseFragmentActivity {
 
-    public long MONTH_LIMIT = 12;
     public boolean mIsDualPanel = false;
     private final CashFlowReportListFragment listFragment = new CashFlowReportListFragment();
 

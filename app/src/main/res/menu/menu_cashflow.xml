@@ -39,6 +39,10 @@
                     android:id="@+id/menu_cashflow_custom"
                     android:title="@string/menu_cashflow_custom" />
             </group>
+            <item
+                android:id="@+id/menu_cashflow_24_months"
+                android:title="@string/menu_cashflow_24_months"
+                android:checkable="true" />
         </menu>
     </item>
 </menu>

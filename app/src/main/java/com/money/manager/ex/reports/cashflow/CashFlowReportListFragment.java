@@ -93,7 +93,7 @@ public class CashFlowReportListFragment
     private double totalAmount = 0;
     private static final String ID = "_id";
     private static final String BALANCE = "BALANCE";
-    private static final int monthInAdvance = 12;
+    private static int monthInAdvance = 12;
 
     private UIHelper ui;
     private MatrixCursor matrixCursor;
@@ -313,11 +313,14 @@ public class CashFlowReportListFragment
 
     @Override
     public String getSubTitle() {
-        return "12 month view";
+        return monthInAdvance + " month view";
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+
+        monthInAdvance = ( settings.get(R.id.menu_cashflow_24_months, false) ) ? 24 : 12;
 
         ui = new UIHelper(getActivity());
 
@@ -531,6 +534,12 @@ public class CashFlowReportListFragment
         // set accounts Filter
         inflater.inflate(R.menu.menu_cashflow, menu);
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+
+        if (settings.get(R.id.menu_cashflow_24_months, false)) {
+            monthInAdvance = 24;
+            menu.findItem(R.id.menu_cashflow_24_months).setChecked(true);
+        }
+
         int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
         if ( menu.findItem(accountFilter) != null ) {
             menu.findItem(accountFilter).setChecked(true);
@@ -543,6 +552,12 @@ public class CashFlowReportListFragment
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
 //        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
         switch (item.getItemId()) {
+            case R.id.menu_cashflow_24_months:
+                monthInAdvance = (item.isChecked()) ? 24 : 12;
+                item.setChecked(!item.isChecked());
+                settings.set(R.id.menu_cashflow_24_months, item.isChecked());
+                getActivity().recreate();
+                return true;
             case R.id.menu_cashflow_all:
             case R.id.menu_cashflow_open:
             case R.id.menu_cashflow_favorite:
