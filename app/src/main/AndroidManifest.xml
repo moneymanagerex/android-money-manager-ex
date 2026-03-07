@@ -174,7 +174,9 @@
         </activity>
         <activity
                 android:name=".transactions.CheckingTransactionEditActivity"
-                android:label="@string/new_edit_transaction" android:exported="true">
+                android:label="@string/new_edit_transaction"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -229,7 +231,9 @@
         </activity>
         <activity
                 android:name=".account.AccountEditActivity"
-                android:label="@string/account_list" android:exported="true">
+                android:label="@string/account_list"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.INSERT" />
@@ -268,19 +272,6 @@
         <activity
             android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
-        <activity
-                android:name=".settings.SyncPreferencesActivity"
-                android:label="@string/synchronization"
-                android:launchMode="singleTask" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="com.money.manager.ex" />
-            </intent-filter>
-        </activity>
         <activity android:name=".passcode.PasscodeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
@@ -298,6 +289,19 @@
         <activity
             android:name=".reports.CategoriesReportActivity"
             android:label="@string/category" />
+        <activity
+                android:name=".settings.SyncPreferencesActivity"
+                android:label="@string/synchronization"
+                android:launchMode="singleTask" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="com.money.manager.ex" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".search.SearchActivity"
             android:label="@string/search" />

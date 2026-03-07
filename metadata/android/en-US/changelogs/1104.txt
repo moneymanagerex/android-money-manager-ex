@@ -1,0 +1,3 @@
+Upgrade to Gradle 8.7
+Upgrade to sdk 36 (Android 16)
+Enable Edge-To-Edge

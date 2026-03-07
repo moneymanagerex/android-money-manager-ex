@@ -27,7 +27,6 @@ android {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdk rootProject.ext.targetSdk
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
@@ -50,8 +49,14 @@ android {
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    testOptions {
+        targetSdk 36
+    }
+    lint {
+        targetSdk 36
     }
 }
 if (project.hasProperty('pushall') || project.hasProperty('MMEXIconFontonly')) {
