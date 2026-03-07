@@ -369,13 +369,17 @@ public class PayeeListFragment
     protected void setResult() {
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
-            Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor == null || cursor.isBeforeFirst() || cursor.isAfterLast())
-                return;
-            long payeeId = cursor.getLong(cursor.getColumnIndexOrThrow(Payee.PAYEEID));
-            String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME));
+            try {
+                Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+                if (cursor == null || cursor.isBeforeFirst() || cursor.isAfterLast())
+                    return;
+                long payeeId = cursor.getLong(cursor.getColumnIndexOrThrow(Payee.PAYEEID));
+                String payeeName = cursor.getString(cursor.getColumnIndexOrThrow(Payee.PAYEENAME));
 
-            sendResultToActivity(payeeId, payeeName);
+                sendResultToActivity(payeeId, payeeName);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
 
             return;
         }
