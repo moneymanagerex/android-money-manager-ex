@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">عام</string>
     <string name="preferences_perdatabase">في قاعدة البيانات</string>
+    <string name="preferences_display">المظهر &amp; الشكل</string>
     <string name="preferences_behaviour">السلوك</string>
     <string name="base_currency">العملة الأساسية</string>
     <string name="base_currency_changed">تم تغيير العملة الأساسية</string>
@@ -284,6 +285,7 @@
     <string name="no_stock_data">لا توجد بيانات الأسهم المتاحة لهذا الحساب.</string>
     <string name="month">شهر</string>
     <string name="year">السنة</string>
+    <string name="menu_reports">تقارير البرنامِج</string>
     <string name="menu_general_report_group">تقارير عامة</string>
     <string name="title_activity_general_report">تقرير عام</string>
     <string name="menu_report_income_vs_expenses">الإيرادات مقابل المصروفات</string>
@@ -406,6 +408,7 @@
     <string name="entities">الكيانات</string>
     <string name="loading">جاري التحميل&#8230;</string>
     <string name="change_status">تغيير الحالة</string>
+    <string name="duplicate_selected_transactions">تكرار المعاملات المحددة</string>
     <string name="sort">الترتيب</string>
     <string name="sort_by_name">الترتيب حسب الاسم</string>
     <string name="sort_by_usage">الترتيب حسب الاستخدام</string>
@@ -416,6 +419,7 @@
     <string name="credit_card">بطاقة ائتمان</string>
     <string name="cash_accounts">الحسابات النقدية</string>
     <string name="bank_accounts">الحسابات المصرفية</string>
+    <string name="credit_card_accounts">حسابات بطاقة الائتمان</string>
     <string name="montly_last_days">شهريا (آخر يوم)</string>
     <string name="montly_last_bussines_day">شهريا (آخر يوم عمل)</string>
     <!-- languages -->
@@ -570,11 +574,13 @@
     <string name="attachment_folder_summary">حدد المجلد الذي سيتم حفظ المرفقات به</string>
     <string name="pref_attachment_folder">مجلد المرفقات</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">إزالة الكل</string>
     <string name="empty_color_message">إختر لون</string>
     <string name="menu_show_inactive">عرض الغير نشط</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_cashflow_all">كافة الحسابات</string>
+    <string name="menu_cashflow_open">الحسابات المفتوحة</string>
     <string name="menu_cashflow_favorite">الحسابات المفضلة</string>
     <string name="menu_cashflow_custom">حدد الحسابات&#8230;</string>
     <!-- Merge -->
