@@ -20,44 +20,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:animateLayoutChanges="true"
     tools:context=".transactions.SplitCategoriesActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:elevation="@dimen/mmx_toolbar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
 
         <include layout="@layout/toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="?attr/actionBarSize"
-            >
+            android:layout_height="wrap_content"
+            android:text="@string/swipe_to_dismiss"
+            android:textStyle="italic" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/splitsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/swipe_to_dismiss"
-                android:textStyle="italic" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/splitsRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        </LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
