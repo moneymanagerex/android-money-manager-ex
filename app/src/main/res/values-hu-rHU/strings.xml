@@ -823,5 +823,7 @@
     <string name="changelog">Újdonságok</string>
     <string name="changelog_title">Fontos újdonságok!!</string>
     <string name="changelog_1086">Új 5.4-es verzió\n- Új béta funkciót adtunk hozzá az Egyesítés folyamatrendszeréhez. Megpróbálja egyesíteni a fájlokat, ha mindkettő megváltozik. Engedélyezze a Beállítások → Összehangolás → Egyesítés menüpontban.</string>
+    <string name="changelog_1104">Új 5.5-ös verzió\n – Teljes Android 16 kompatibilitás engedélyezése éltől élig funkcióval</string>
     <string name="currency_save_error">Hiba történt a pénznem beírásakor. Valószínűleg a(z) %s pénznem már definiálva van.</string>
+    <string name="menu_cashflow_24_months">24 hónapos nézet</string>
 </resources>
