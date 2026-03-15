@@ -823,5 +823,7 @@
     <string name="changelog">Wijzigingslogboek</string>
     <string name="changelog_title">Belangrijk nieuws!!</string>
     <string name="changelog_1086">Nieuwe versie 5.4\n- Nieuwe bèta-functie toegevoegd voor Samenvoeg engine. Probeer het bestand samen te voegen wanneer beide worden gewijzigd. Schakel het in de instellingen&gt;Sync-&gt;Samenvoegen in</string>
+    <string name="changelog_1104">Nieuwe versie 5.5\n- Android 16 volledige compatibiliteit met Edge-To-Edge inschakelen</string>
     <string name="currency_save_error">Fout tijdens het toevoegen van valuta. Valuta %s is waarschijnlijk al gedefinieerd.</string>
+    <string name="menu_cashflow_24_months">24 maanden overzicht</string>
 </resources>
