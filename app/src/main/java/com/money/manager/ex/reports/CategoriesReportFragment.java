@@ -114,50 +114,41 @@ public class CategoriesReportFragment
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                old_onCreateOptionsMenu(menu, menuInflater);
+                // pie chart
+                MenuItem itemChart = menu.findItem(R.id.menu_chart);
+                if (itemChart != null) {
+                    itemChart.setVisible(!(((CategoriesReportActivity) getActivity()).mIsDualPanel));
+                    UIHelper uiHelper = new UIHelper(getActivity());
+                    itemChart.setIcon(uiHelper.resolveAttribute(R.attr.ic_action_pie_chart));
+                }
             }
 
             @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                return old_onOptionsItemSelected(menuItem);
+            public boolean onMenuItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.menu_chart) {
+                    showChart();
+                    return true;
+                }
+
+                if (item.getItemId() < 0) {
+                    // category
+                    String whereClause = getWhereClause();
+                    if (!TextUtils.isEmpty(whereClause))
+                        whereClause += " AND ";
+                    else
+                        whereClause = "";
+                    whereClause += " " + QueryMobileData.CATEGID + "=" + Math.abs(item.getItemId());
+                    //create arguments
+                    Bundle args = new Bundle();
+                    args.putString(KEY_WHERE_CLAUSE, whereClause);
+                    //starts loader
+                    startLoader(args);
+                    return true;
+                }
+                return false;
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
-
-    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.old_onCreateOptionsMenu(menu, inflater);
-        // pie chart
-        MenuItem itemChart = menu.findItem(R.id.menu_chart);
-        if (itemChart != null) {
-            itemChart.setVisible(!(((CategoriesReportActivity) getActivity()).mIsDualPanel));
-            UIHelper uiHelper = new UIHelper(getActivity());
-            itemChart.setIcon(uiHelper.resolveAttribute(R.attr.ic_action_pie_chart));
-        }
-    }
-
-
-    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_chart) {
-            showChart();
-        }
-
-        if (item.getItemId() < 0) {
-            // category
-            String whereClause = getWhereClause();
-            if (!TextUtils.isEmpty(whereClause))
-                whereClause += " AND ";
-            else
-                whereClause = "";
-            whereClause += " " + QueryMobileData.CATEGID + "=" + Math.abs(item.getItemId());
-            //create arguments
-            Bundle args = new Bundle();
-            args.putString(KEY_WHERE_CLAUSE, whereClause);
-            //starts loader
-            startLoader(args);
-        }
-        return super.old_onOptionsItemSelected(item);
-    }
-
 
     // Loader
 
@@ -204,21 +195,25 @@ public class CategoriesReportFragment
         String whereClause = getWhereClause();
         if (whereClause == null) whereClause = "";
 
-        int start = whereClause.indexOf("/** */");
-        if (start > 0) {
-            int end = whereClause.indexOf("/** */", start + 1) + "/** */".length();
+        String markStart = "/** START */";
+        String markEnd = "/** END */";
+
+        int start = whereClause.indexOf(markStart);
+        int end   = whereClause.indexOf(markEnd);
+        if (start > 0 || end > 0) {
+            end += markEnd.length();
             whereClause = whereClause.substring(0, start) + whereClause.substring(end);
             // trim some space
             whereClause = whereClause.trim();
         }
 
         if (!TextUtils.isEmpty(whereClause)) {
-            whereClause += " /** */AND ";
+            whereClause = "(" + whereClause +" ) " + markStart + " AND ";
         } else {
-            whereClause = "/** */";
+            whereClause += markStart;
         }
         // use token to replace criteria
-        whereClause += "(" + QueryMobileData.Category + " Like '%" + newText + "%')";
+        whereClause += "(" + QueryMobileData.Category + " Like '%" + newText + "%')" + markEnd;
 
         //create arguments
         Bundle args = new Bundle();
