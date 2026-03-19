@@ -18,23 +18,20 @@
 <!--
 These are the new styles.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- full-screen numeric input styles -->
     <style name="Money.Button.Input.Dialog.Full" parent="Widget.AppCompat.Button">
-        <!--Widget.AppCompat.Button.Colored-->
-        <!--Base.Widget.AppCompat.Button-->
+        <item name="android:layout_width">0dp</item>
+        <item name="app:layout_columnWeight">1</item>
+        <item name="android:minWidth">0dp</item>
         <item name="android:textSize">@dimen/input_dialog_text_size</item>
         <item name="android:layout_height">@dimen/input_dialog_button_height</item>
         <item name="android:padding">2dp</item>
     </style>
+
     <style name="Money.Button.Input.Dialog.Full.Operator" parent="Money.Button.Input.Dialog.Full">
         <item name="android:textColor">@color/md_primary</item>
-        <!--<item name="android:background">?attr/calculator_button_operator_background</item>-->
-        <!--<item name="colorButtonNormal">?attr/colorPrimary</item>-->
-        <!--<item name="colorControlHighlight">?attr/colorAccent</item>-->
-        <!--<item name="colorButtonNormal">@color/material_light_blue_500</item>-->
-        <!--<item name="colorControlHighlight">@color/material_purple_500</item>-->
     </style>
 
 </resources>

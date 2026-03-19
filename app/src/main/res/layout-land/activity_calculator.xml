@@ -67,15 +67,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
         <androidx.gridlayout.widget.GridLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:columnCount="5"
             app:rowCount="4"
-            app:alignmentMode="alignBounds"
-            android:layout_gravity="center">
+            app:alignmentMode="alignBounds">
 
             <com.money.manager.ex.view.RobotoButton
                 android:id="@+id/buttonKeyClear"
