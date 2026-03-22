@@ -280,6 +280,7 @@ public class AllDataListFragment
                 if (itemId == R.id.menu_sort_date_desc) {
                     menuItem.setChecked(true);
                     (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_DESC);
+                    updateSearchSortArguments();
                     // restart search
                     restartLoader();
                     return true;
@@ -287,6 +288,7 @@ public class AllDataListFragment
                 if (itemId == R.id.menu_sort_date_asc) {
                     menuItem.setChecked(true);
                     (new AppSettings(getContext())).setTransactionSort(SORT_BY_DATE_ASC);
+                    updateSearchSortArguments();
                     // restart search
                     restartLoader();
                     return true;
@@ -425,6 +427,23 @@ public class AllDataListFragment
 
     private void restartLoader() {
         LoaderManager.getInstance(this).restartLoader(ID_LOADER_ALL_DATA_DETAIL, getLatestArguments(), this);
+    }
+
+    private void updateSearchSortArguments() {
+        Activity activity = getActivity();
+        if (!(activity instanceof SearchActivity)) return;
+
+        Bundle latestArguments = getLatestArguments();
+        if (latestArguments == null || !latestArguments.containsKey(KEY_ARGUMENTS_SORT)) return;
+
+        String sortDirection = (new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC
+                ? "DESC"
+                : "ASC";
+
+        String searchSort = QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + " " + sortDirection
+                + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID + " " + sortDirection;
+        latestArguments.putString(KEY_ARGUMENTS_SORT, searchSort);
+        setLatestArguments(latestArguments);
     }
 
     @Override
