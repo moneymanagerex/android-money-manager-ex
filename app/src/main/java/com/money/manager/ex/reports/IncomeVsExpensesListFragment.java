@@ -86,17 +86,13 @@ public class IncomeVsExpensesListFragment
     private View mFooterListView;
     private final SparseBooleanArray mYearsSelected = new SparseBooleanArray();
     private String mSort = SORT_ASCENDING;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // setHasOptionsMenu(true);
-        setupMenuProviders();
-    }
+    private boolean mMenuProviderRegistered = false;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupMenuProviders();
+
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
                 savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
             for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
@@ -124,6 +120,12 @@ public class IncomeVsExpensesListFragment
         getLoaderManager().initLoader(ID_LOADER_YEARS, null, this);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mMenuProviderRegistered = false;
+    }
+
     // To remove Obsolete code we need to:
     // a) move all view related instruction into onViewCreated
     // b) move all fragment related instruction into onCreate
@@ -136,6 +138,8 @@ public class IncomeVsExpensesListFragment
 
     // Loader
     private void setupMenuProviders() {
+        if (mMenuProviderRegistered) return;
+
         MenuHost menuHost = requireActivity();
 
         // MenuProvider comune
@@ -150,6 +154,8 @@ public class IncomeVsExpensesListFragment
                 return old_onOptionsItemSelected(menuItem);
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        mMenuProviderRegistered = true;
 
         // Chiamata al metodo che le classi derivate possono sovrascrivere
         addCustomMenuProviders(menuHost);
