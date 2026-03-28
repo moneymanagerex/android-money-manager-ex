@@ -823,5 +823,7 @@
     <string name="changelog">Changelog</string>
     <string name="changelog_title">Wichtig! Was ist neu!!</string>
     <string name="changelog_1086">Neue Version 5.4\n- Neue Beta-Funktion für die Merge-Engine hinzugefügt. Versucht die Dateien zusammenzuführen, wenn beide geändert wurden. Aktivieren Sie diese Funktion unter „Einstellungen“ > „Synchronisieren“ > „Zusammenführen“.</string>
+    <string name="changelog_1104">Neue Version 5.5\n- Aktiviere Android 16 volle Kompatibilität mit Edge-To-Edge</string>
     <string name="currency_save_error">Fehler beim Einfügen der Währung. Wahrscheinlich ist die Währung %s bereits definiert.</string>
+    <string name="menu_cashflow_24_months">24 Monate Ansicht</string>
 </resources>

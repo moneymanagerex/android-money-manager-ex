@@ -31,6 +31,7 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.settings.AppSettings;
 
 import org.parceler.Parcels;
 
@@ -197,9 +198,10 @@ public class SearchActivity
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
 
         // Sorting
+        String sortDirection = (new AppSettings(this)).getTransactionSort() == 0 ? "DESC" : "ASC";
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +
-                        QueryAllData.TransactionType + ", " + QueryAllData.ID);
+            QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + " " + sortDirection + ", " +
+                QueryAllData.TransactionType + ", " + QueryAllData.ID + " " + sortDirection);
         //set arguments
         searchResultsFragment.getArguments().putAll(args);
 

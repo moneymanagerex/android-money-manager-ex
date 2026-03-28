@@ -20,6 +20,7 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">Jednostavna, lagana za korištenje aplikacija za upravljanje osobnim financijama, bankovnim računima, obiteljskim proračunom, i tako dalje.</string>
+    <string name="application_credits">Projekt MoneyManagerEx za Android koristi ActionBarSherlock biblioteku</string>
     <string name="application_license">Licence otvorenog koda</string>
     <!-- database -->
     <string name="db_insert_failed">Umetanje podataka nije uspjelo</string>
@@ -46,16 +47,18 @@
     <!-- preferences -->
     <string name="preferences_general">Općenito</string>
     <string name="preferences_perdatabase">Po bazi podataka</string>
+    <string name="preferences_display">Izgled i osjećaj</string>
     <string name="preferences_behaviour">Ponašanje</string>
     <string name="base_currency">Osnovna valuta</string>
     <string name="base_currency_changed">Osnovna valuta promijenjena</string>
-    <string name="base_currency_change_notification">Osnovna valuta je promijenjena. Molimo ažurirajte valutne tečajeve kako bi dobili točne iznose u novoj osnovnoj valuti.</string>
+    <string name="base_currency_change_notification">Osnovna valuta je promijenjena. Aktualiziraj valutne tečajeve za dobivanje točnih iznosa u novoj osnovnoj valuti.</string>
     <string name="view_accounts_opened">Prikaži otvorene račune</string>
     <string name="if_not_selected_willShowAllAccounts">Ako nije odabrano, prikazat će sve račune</string>
     <string name="view_accounts_favorites">Prikaži omiljene račune</string>
     <string name="version">Verzija</string>
     <string name="build">Izgradnja</string>
     <string name="path">Staza baze podataka</string>
+    <string name="remote_path">Udaljena staza</string>
     <string name="database_version">Verzija baze podataka</string>
     <string name="title_show_tutorial">Prikaži vodič</string>
     <string name="summary_show_tutorial">Prikazati vodič prilikom sljedećeg pokretanja?</string>
@@ -66,6 +69,8 @@
     <string name="sync_on_app_start">Sinkroniziraj prilikom pokretanja aplikacije.</string>
     <string name="sync_on_start">Sinkroniziraj prilikom pokretanja</string>
     <!-- Receive SMS strings -->
+    <string name="granted_receive_sms_access">Dozvola za RECEIVE_SMS je već odobrena</string>
+    <string name="revoke_receive_sms_access">Idi u Postavke &gt;&gt; Aplikacije &gt;&gt; Money Manager Ex &gt;&gt; Dozvole i zabrani pristup za SMS-ove</string>
     <string name="title_sms_trans_status_notification">SMS obavijest o stanju transakcije</string>
     <string name="notification_click_to_edit_transaction">Dodirni za uređivanje transakcije &#8230;</string>
     <string name="notification_process_sms_channel_description">Kanal za AMMEX SMS obavijesti</string>
@@ -88,7 +93,7 @@
     <string name="investment_accounts">Investicijski računi</string>
     <string name="term">Oročeni</string>
     <string name="db_account_insert_failed">Greška prilikom umetanja računa</string>
-    <string name="db_account_update_failed">Pogreška prilikom ažuriranja računa</string>
+    <string name="db_account_update_failed">Greška prilikom aktualiziranja računa</string>
     <string name="error_currency_not_selected">Valuta je obavezna</string>
     <string name="error_saving_default_currency">Greška prilikom spremanja zadane valute</string>
     <string name="error_initialbal_empty">Moraš unijeti početno stanje računa</string>
@@ -102,18 +107,19 @@
     <string name="delete_payee">Izbriši primatelja</string>
     <string name="payee">Primatelj</string>
     <string name="select_payee">Odaberi primatelja</string>
-    <string name="payee_empty_list">Nije nađen nijedan primatelj. Za izradu primatelja, dodirni zelenu plus-tipku.</string>
+    <string name="payee_empty_list">Nije pronađen nijedan primatelj. Za izradu primatelja, dodirni zeleni gumb plus.</string>
     <string name="from">Iz</string>
     <string name="db_payee_update_failed">Aktualiziranje primatelja nije uspjelo</string>
     <!-- category / subcategory -->
     <string name="category">Kategorija</string>
     <string name="subcategory">Podkategorija</string>
-    <string name="category_empty_list">Nije nađena nijedna kategorija. Za izradu kategorije, dodirni zelenu plus-tipku.</string>
+    <string name="category_empty_list">Nije pronađena nijedna kategorija. Za izradu kategorije, dodirni zeleni gumb plus.</string>
     <string name="select_category">Odaberi kategoriju</string>
     <string name="add_category">Dodaj kategoriju</string>
     <string name="add_subcategory">Dodaj podkategoriju</string>
     <string name="edit_categoryName">Uredi kategoriju</string>
     <string name="delete_category">Izbriši kategoriju</string>
+    <string name="search_sub_category">Uključi podkategorije</string>
     <!-- currency -->
     <string name="currency_name">Ime valute</string>
     <string name="currency_symbol">Simbol valute</string>
@@ -125,8 +131,10 @@
     <string name="decimal_char">Decimalni znak</string>
     <string name="group_char">Znak razdvajanja</string>
     <string name="scale">Mjera</string>
+    <string name="conversion_to_base_rate">Konverzija</string>
     <string name="currency_name_empty">Ime valute je obavezno</string>
     <string name="new_edit_currency">Nova valuta/Uredi valutu</string>
+    <string name="missing_default_currency">Nedostaje standardna valuta u postavkama</string>
     <!-- transaction -->
     <string name="amount">Iznos</string>
     <string name="total_amount">Ukupni iznos</string>
@@ -143,11 +151,12 @@
     <string name="transaction_status">Status</string>
     <string name="withdrawal">Isplata</string>
     <string name="db_checking_insert_failed">Umetanje transakcije nije uspjelo</string>
-    <string name="db_checking_update_failed">Ažuriranje transakcije nije uspjelo</string>
+    <string name="db_checking_update_failed">Aktualiziranje transakcije nije uspjelo</string>
     <string name="delete_transaction">Brisanje transakcije</string>
     <string name="new_transaction">Nova transakcija</string>
     <string name="error_payee_not_selected">Primatelj plaćanja je potreban</string>
-    <string name="error_toaccount_not_selected">Za račun je potrebno</string>
+    <string name="error_fromaccount_not_selected">Račun pošiljatelja je obavezno</string>
+    <string name="error_toaccount_not_selected">Račun primatelja je obavezno</string>
     <string name="error_category_not_selected">Kategorija je potrebna</string>
     <string name="error_totamount_empty">Ukupni iznos je potreban</string>
     <string name="error_transfer_to_same_account">Dva računa za prijenos moraju biti različita</string>
@@ -205,6 +214,15 @@
     <string name="widget_all_accounts">Svi računi</string>
     <string name="widget_add_transaction">Dodaj transakciju</string>
     <!-- TAG -->
+    <string name="tag">Oznaka/Etiketa</string>
+    <string name="tagsList_transactions">Oznaka za transakciju</string>
+    <string name="tag_name">Ime oznake</string>
+    <string name="edit_tagName">Uredi oznaku</string>
+    <string name="delete_tag">Izbriši oznaku</string>
+    <string name="select_tag">Odaberi oznaku</string>
+    <string name="tag_empty_list">Nije pronađena nijedna oznaka. Za izradu oznake, dodirni zeleni gumb plus.</string>
+    <string name="tag_can_not_deleted">Odabrana oznaka se ne može izbrisati jer je referencirana</string>
+    <string name="db_tag_update_failed">Aktualiziranje oznake nije uspjelo</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nijedna</string>
     <string name="once">Jednom</string>
@@ -212,6 +230,7 @@
     <string name="bi_weekly">Dvotjedno</string>
     <string name="monthly">Mjesečno</string>
     <string name="bi_monthly">Dvomjesečno</string>
+    <string name="quarterly">Kvartalno</string>
     <string name="half_year">Polugodišnje</string>
     <string name="yearly">Godišnje</string>
     <string name="four_months">Četveromjesečno</string>
@@ -224,6 +243,8 @@
     <string name="repeating_empty_transaction">Nije pronađena nijedna zakazana transakcija. Dodirni zeleni gumb plus za izradu transakcije.</string>
     <string name="inactive">Neaktivano</string>
     <string name="activates">Aktiviranja</string>
+    <string name="days_overdue">Dospjelo prije %d dana!</string>
+    <string name="days_remaining">%d dana preostalo</string>
     <string name="new_edit_repeating_transaction">Nova zakazana transakcija/Uredi zakazanu transakciju</string>
     <string name="due_date">Datum dospijeća</string>
     <string name="next_occurrence">Sljedeći događaj</string>
@@ -231,9 +252,9 @@
     <string name="repeats">Ponavljanja</string>
     <string name="occurs">Događaji</string>
     <string name="payments_left">Preostala plaćanja</string>
-    <string name="payments_left_required">Potrebna su preostala plaćanja</string>
-    <string name="due_date_required">Potreban je datum dospijeća</string>
-    <string name="error_next_occurrence_not_populate">Potreban je sljedeći događaj</string>
+    <string name="payments_left_required">Vrijednost preostalih plaćanja je obavezno</string>
+    <string name="due_date_required">Datum dospijeća je obavezan</string>
+    <string name="error_next_occurrence_not_populate">Sljedeći događaj je obavezan</string>
     <string name="enter_next_occurrence">Unesi sljedeći događaj</string>
     <string name="skip_next_occurrence">Preskoči sljedeći događaj</string>
     <string name="skip_next_occurrence_confirmation">Želiš li preskočiti sljedeći dogoađaj?</string>
@@ -244,6 +265,10 @@
     <string name="enter">Unesi</string>
     <string name="enter_amount">Unesi iznos</string>
     <!-- EP Recurring mode recurring_mode -->
+    <string name="recurringModeLabel">Automatska transakcija</string>
+    <string name="manual">Ručni unos</string>
+    <string name="prompt">Prozor za unos</string>
+    <string name="auto">Automatski unos</string>
     <!-- 20121121 -->
     <string name="send_feedback">Pošalji feedback</string>
     <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -258,7 +283,7 @@
     <string name="preferences_disable_passcode">Deaktiviraj lozinku</string>
     <string name="enter_your_previous_passcode">Unesi staru lozinku</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
-    <string name="passcode_not_update">Lozinka nije aktualizirana</string>
+    <string name="passcode_not_update">lozinka nije aktualizirana</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Za pretraživanje možeš koristiti zamjenski znak %</string>
     <string name="income_vs_expenses_current_month">Prihod/Troškovi: Tekući mjesec</string>
@@ -269,13 +294,19 @@
     <string name="no_stock_data">Za ovaj račun nisu pronađeni podaci o vlasničkom udjelu.</string>
     <string name="month">Mjesec</string>
     <string name="year">Godina</string>
+    <string name="menu_reports">Ugrađeni izvještaji</string>
+    <string name="menu_general_report_group">Opći izvještaji</string>
+    <string name="title_activity_general_report">Opći izvještaj</string>
     <string name="menu_report_income_vs_expenses">Prihod/Troškovi</string>
+    <string name="menu_report_cashflow">Novčani tijek</string>
     <string name="total">Ukupno</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Svo vrijeme</string>
     <string name="last_month">Prethodni mjesec</string>
     <string name="last30days">Zadnjih 30 dana</string>
     <string name="last_year">Prethodna godina</string>
+    <string name="current_fin_year">Tekuća fiskalna godina</string>
+    <string name="last_fin_year">Prethodna fiskalna godina</string>
     <!-- 20130106 -->
     <!--<string name="result">Result</string>-->
     <string name="number_transaction_found">Broj pronađenih transakcija: %1$d</string>
@@ -290,7 +321,7 @@
     <!-- Split Categories -->
     <string name="split_transaction">Podijeljena transakcija</string>
     <string name="split">Podjela</string>
-    <string name="error_split_transaction_empty">Potrebna je barem jedna podijeljena transakcija</string>
+    <string name="error_split_transaction_empty">Barem jedna podijeljena transakcija je obavezna</string>
     <string name="swipe_to_dismiss">Povuci stavke, koje želiš ukloniti.</string>
     <string name="export_data_to_csv">Izvezi podatke u CSV datoteku</string>
     <string name="export_data_in_progress">Izvoz podataka. Pričekaj &#8230;</string>
@@ -392,6 +423,10 @@
     <string name="donate_in_app_already_donate">Već si podržao/la razvoj MoneyManagerEx za Android svojom donacijom! \n\nHvala ti!</string>
     <string name="donate_in_app_retrieving_status">Dohvaćanje statusa tvoje donacije iz Google Playa. Pričekaj &#8230;</string>
     <string name="donate_in_app_error">Nije moguće korištenje ugrađenog plaćanja. Provjeri je li instalirana najnovija verzija Play Store aplikacije.</string>
+    <string name="title_repeating_transaction_process">Obradi zakazanu transakciju</string>
+    <string name="summary_repeating_transaction_process">Obrada zakazane transakcije kasni (objava, upit, ručno)</string>
+    <string name="title_use_nested_category">Koristi novi ugniježđeni model kategorija</string>
+    <string name="summary_use_nested_category">Koristi novi ugniježđeni model kategorija umjesto modela kategorija:podkategorija</string>
     <string name="tools">Alati</string>
     <string name="entities">Entiteti</string>
     <string name="loading">Učitavanje &#8230;</string>
@@ -402,6 +437,9 @@
     <string name="sort_order">Razvrstaj redoslijed</string>
     <string name="sort_by_name">Razvrstaj po imenu</string>
     <string name="sort_by_usage">Razvrstaj po korištenju</string>
+    <string name="sort_by_recent">Poredaj po nedavnim</string>
+    <string name="sort_date_desc">Poredaj po datumu silazno</string>
+    <string name="sort_date_asc">Poredaj po datumu uzlazno</string>
     <string name="choose_sorting">Odaberi način razvrstavanja</string>
     <string name="credit_card">Kreditna kartica</string>
     <string name="cash_accounts">Gotovinski računi</string>
@@ -498,12 +536,14 @@
     <string name="budget">Budžet</string>
     <string name="budget_list">Popis budžeta</string>
     <string name="actual">Stvarno</string>
+    <string name="amount_available">Dostupno</string>
     <string name="base_currency_not_set">Osnovna valuta nije postavljena</string>
     <string name="error">Greška</string>
     <string name="unhandled_crash">Neočekivana greška. Molimo te, da nam pošalješ log-zapis.</string>
     <string name="title_activity_currency_rates_report">Tečajevi valuta</string>
     <string name="frequency">Učestalost</string>
-    <string name="update_available">Dostupni su novi podaci</string>
+    <string name="select_columns">Odaberi vidljive stupce</string>
+    <string name="update_available">Dostupna je nadogradnja</string>
     <string name="update_available_online">Novija verzija datoteke baze podataka je pronađena online. Želiš li aktualizirati?</string>
     <string name="currency_not_found">Valuta nije pronađena</string>
     <string name="homepage">Naša početna web stranica je https://moneymanagerex.org/</string>
@@ -517,6 +557,7 @@
     <string name="fingerprint_info">Koristi otisak prsta za otključavanje</string>
     <string name="fingerprint_no_hardware">Tvoj uređaj ne pordžava autentifikaciju otiskom prsta</string>
     <string name="fingerprint_check_permission">Aktiviraj dozvolu za autentifikaciju otiskom prsta</string>
+    <string name="fingerprint_is_keyguard_secure">Aktiviraj sigurnost zaključanog ekrana u postavkama uređaja</string>
     <string name="income_expense_period">Prihod/Troškovi razdoblja</string>
     <string name="income_expense_period_summary">Razdoblje za pregled Prihoda/Troškova u podnožju sučelja.</string>
     <string name="appwidget_text">PRIMJER</string>
@@ -535,6 +576,8 @@
     <string name="commission">Naknada</string>
     <string name="value">Vrijednost</string>
     <string name="view_transactions">Prikaži transakcije</string>
+    <string name="view_transactions_sub">Pogledaj transakcije s podkategorijama</string>
+    <string name="switch_active">Prebacivanje aktivno/neaktivno</string>
     <string name="error_downloading_symbol">Greška u preuzimanju cijene oznake</string>
     <string name="error_updating_rates">Greška prilikom aktualiziranja tečajeva</string>
     <string name="error_no_price_found_for_symbol">Za oznaku nije pronađena cijena</string>
@@ -561,6 +604,8 @@
     <string name="all_accounts">Svi računi</string>
     <string name="records">Zapisi</string>
     <!-- db password entry -->
+    <string name="enter_password">Upiši lozinku (opcionalno)</string>
+    <string name="password_hint">Samo za .emb datoteku</string>
     <string name="success">Operacija je uspjela</string>
     <string name="overview">Pregled</string>
     <string name="title_activity_asset_allocation_overview">Pregled raspodjele imovine</string>
@@ -568,7 +613,7 @@
     <string name="asset_allocation_diff_threshold_summary">Prag koji će pokrenuti bojanje vrijednosti razlika.</string>
     <string name="error_saving_record">Greška prilikom spremanja zapisa</string>
     <string name="error_loading_currency">Greška prilikom učitavanja valute</string>
-    <string name="symbol_required">Oznaka je potrebna</string>
+    <string name="symbol_required">Simbol je obavezan</string>
     <string name="recurrence_type_not_set">Vrsta ponavljanja nije postavljena</string>
     <string name="invalid_recurrence_type">Vrsta ponavljanja nije valjana</string>
     <string name="account_not_found">Račun nije pronađen</string>
@@ -664,7 +709,9 @@
     <string name="filenames_differ">Ime vanjske i lokalne datoteke se razlikuju. Prekid sinkronizacije.</string>
     <string name="both_files_modified">Datoteke lokalne i vanjske baze podataka su promijenjene!</string>
     <string name="sync_conflict">Konflikt u sinkronizaciji</string>
+    <string name="request_conflict_resolve">Riješi konflikt</string>
     <string name="no_remote_file">Odaberi vanjsku datoteku za sinkronizaciju.</string>
+    <string name="request_conlict_reopen">Konflikt između lokalne i udaljene datoteke. Zbog toga se tvoja lokalna kopija ne može sinkronizirati s udaljenom. Izvezi bazu podataka ako želiš spremiti lokalnu kopiju ili je ponovo otvori s udaljene datoteke ako želiš učitati podatke iz udaljene datoteke.</string>
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">Nema računa dostupnih za odabir. Prilagodi svoje postavke za filtriranje računa ili označi neke račune kao favorite.</string>
     <!-- Errors -->
@@ -672,6 +719,7 @@
     <string name="remote_file_not_found">Vanjska datoteka nije pronađena</string>
     <string name="error_checking_remote">Došlo je do greške prilikom provjere vanjskih promjena.</string>
     <string name="no_remote_change_date">Datum posljednje promjene nije pronađen u metapodacima vanjske datoteke.</string>
+    <string name="remote_unavailable">Udaljena datoteka nije dostupna.</string>
     <!-- Select database screen -->
     <string name="intro_text">Za korištenje Money Manager Ex, moraš imati datoteku baze podataka za spremanje podataka. Odaberi jednu od dostupnih opcija.</string>
     <string name="intro_create_db">Možeš stvoriti novu datoteku i urediti izvorne postavke.</string>
@@ -685,6 +733,9 @@
     <string name="save">Spremi</string>
     <string name="title_budget_show_simple_view">Prikaži jednostavni prikaz budžeta</string>
     <string name="summary_budget_show_simple_view">Ako je aktivirano, koristit će se jednostavni prikaz budžeta</string>
+    <string name="title_budget_reload_forecast">Ponovo učitaj zakazanu transakciju</string>
+    <string name="title_pref_budget_financial_year">Koristi fiskalnu godinu u budžetu</string>
+    <string name="summary_pref_budget_financial_year">Ako je označeno, budžeti koriste kalendarsku godinu umjesto fiskalnu godinu</string>
     <string name="shares">Dionice</string>
     <string name="loan">Kredit/Zajam</string>
     <string name="loan_account">Računi kredita/zajmova</string>
@@ -704,12 +755,48 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex prijenos</string>
     <string name="notification_channel_fileoperation_complete">Mmex prijenos završen</string>
     <string name="notification_channel_fileoperation_conflict">Konflikt u Mmex sinkronizaciji</string>
+    <string name="notification_channel_syncing">Sinkronizacija kanala</string>
+    <string name="show">Prikaži</string>
+    <string name="attachment_folder">Mapa priloga</string>
+    <string name="attachment_folder_summary">Odaberi mapu u koju će se prilozi spremati</string>
+    <string name="pref_attachment_folder">Mapa priloga</string>
+    <string name="version_copied_to_clipboard">Broj verzije je kopiran u međuspremnik</string>
+    <string name="issue_open">"Otvori problem na GitHub-u "</string>
     <!-- Builder button -->
+    <string name="CLEAR_ALL">Izbriši sve</string>
+    <string name="empty_color_message">odaberi boju</string>
+    <string name="menu_show_inactive">Prikaži neaktivne</string>
+    <string name="btn_continue">Nastavi</string>
     <!--- New navigation mode -->
+    <string name="dismiss">Odbaci</string>
+    <string name="category_nav_mode">U izborniku je dostupan novi način navigacije</string>
+    <string name="remember_later">Podsjeti me kasnije</string>
     <!--Upload/Downlaod warnning -->
+    <string name="upload_warning">Upozorenje o prijenosu</string>
+    <string name="download_warning">Upozorenje o preuzimanju</string>
+    <string name="msg_uploading_overwrite">Prijenos će prepisati tvoju udaljenu verziju.\nŽeliš li nastaviti?</string>
+    <string name="msg_downloading_overwrite">Preuzimanje će prepisati tvoju lokalnu verziju.\nŽeliš li nastaviti?</string>
     <string name="menu_cashflow_all">Svi računi</string>
+    <string name="menu_cashflow_open">Otvori račune</string>
+    <string name="menu_cashflow_favorite">Favorizirani računi</string>
+    <string name="menu_cashflow_custom">Odaberi račune &#8230;</string>
+    <string name="cash_ledger">Knjiga gotovine</string>
     <!-- Merge -->
+    <string name="merge_take_ours">Zadrži lokalno</string>
+    <string name="merge_take_theirs">Uzmi udaljenu verziju</string>
     <!-- Error Handling -->
+    <string name="title_activity_auth">Dogodila se greška.</string>
+    <string name="bad_error_occurs">Žao nam je da se dogodila neočekivana greška. Prijavi grešku programeru.</string>
+    <string name="estimatedForPeriod">Procjena za razdoblje</string>
+    <string name="forecast_remain">Prognoza za preostalo</string>
+    <string name="forecast_calculate">Izračunavanje prognoze. Pričekaj &#8230;</string>
+    <string name="enter_budget">Upiši budžet</string>
+    <string name="enter_budget_value">Za kategoriju %1$s postavi budžet za razdoblje. Koristi negativne iznose za troškove, pozitivne za prihode:</string>
+    <string name="enter_budget_value_plus_minus">Upiši novu vrijednost</string>
+    <string name="merge_table">"Spajanje tablice: "</string>
     <!-- changelog -->
     <string name="changelog">Log-zapis promjena</string>
+    <string name="changelog_title">Važno. Što je novo!!</string>
+    <string name="currency_save_error">Greška prilikom unosa valute. Vjerojatno je valuta %s već definirana.</string>
+    <string name="menu_cashflow_24_months">Prikaz za 24 mjeseca</string>
 </resources>

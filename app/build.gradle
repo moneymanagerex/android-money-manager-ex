@@ -20,7 +20,8 @@ plugins {
 }
 
 android {
-    compileSdk libs.versions.compileSdk.get().toInteger()
+    // old compileSdk libs.versions.compileSdk.get().toInteger()
+    compileSdk = libs.versions.compileSdk.get().toInteger()
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -29,9 +30,9 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 1105
+        versionCode 1109
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.5.1"
+        versionName "5.5.4"
         // versionName getVersionAsDate()
 
         minSdkVersion rootProject.ext.minSdkVersion

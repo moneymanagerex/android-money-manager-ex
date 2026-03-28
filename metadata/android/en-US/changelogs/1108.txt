@@ -1,0 +1,2 @@
+* Fix search in category report
+* Fix menu in category report
