@@ -1,0 +1,6 @@
+## What's Changed
+* Allow sort by descending in search by @JoshuaLampert in https://github.com/moneymanagerex/android-money-manager-ex/pull/2847
+* New Crowdin Translations
+
+## New Contributors
+* @JoshuaLampert made their first contribution in https://github.com/moneymanagerex/android-money-manager-ex/pull/2847
