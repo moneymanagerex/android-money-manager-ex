@@ -114,7 +114,14 @@ public class SearchActivity
                 return true;
 
             case R.id.searchMenuItem:
-                performSearch();
+                // In single-panel mode, report drill-down opens directly on results.
+                // If parameters are not visible, bring the form back instead of reloading the same query.
+                if (!mIsDualPanel && !isSearchParametersVisible() &&
+                        getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                } else {
+                    performSearch();
+                }
                 return true;
 
             default:
@@ -170,6 +177,11 @@ public class SearchActivity
         SearchParametersFragment searchParametersFragment = getSearchFragment();
         String where = searchParametersFragment.getWhereStatement();
         showSearchResultsFragment(where);
+    }
+
+    private boolean isSearchParametersVisible() {
+        SearchParametersFragment searchParametersFragment = getSearchFragment();
+        return searchParametersFragment != null && searchParametersFragment.isVisible();
     }
 
     private void showSearchResultsFragment(String where) {
