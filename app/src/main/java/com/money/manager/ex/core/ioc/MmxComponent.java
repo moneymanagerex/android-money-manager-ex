@@ -36,6 +36,7 @@ import com.money.manager.ex.investment.prices.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.PriceEditModel;
+import com.money.manager.ex.notifications.SmsReceiverTransactions;
 import com.money.manager.ex.scheduled.ScheduledTransactionEditActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
@@ -102,6 +103,7 @@ public interface MmxComponent {
     void inject(SyncServiceMessageHandler handler);
     void inject(Passcode object);
     void inject(EditTransactionCommonFunctions object);
+    void inject(SmsReceiverTransactions receiver);
 
     // Helpers
     void inject(UIHelper helper);
