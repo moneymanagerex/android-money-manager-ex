@@ -67,6 +67,7 @@
     <string name="auto_sync_via_wifi_summary">Авто-синхронізуватися лише коли є Wi-Fi підключення.</string>
     <string name="sync_on_app_start">Синхронізувати при старті додатку.</string>
     <string name="sync_on_start">Синхронізувати при старті</string>
+    <string name="sync_merge_dialog_msg_format">Об’єднання всього %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Обробляти SMS з операціями від банку </string>
     <string name="summary_sms_auto_trans">Зчитувати SMS з операціями від банку та автоматично створювати транзакції</string>
