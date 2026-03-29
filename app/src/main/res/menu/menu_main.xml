@@ -115,6 +115,9 @@
                 <item
                     android:id="@+id/menu_report_cashflow"
                     android:title="@string/menu_report_cashflow"/>
+                <item
+                    android:id="@+id/menu_report_summary_of_accounts"
+                    android:title="@string/menu_report_summary_of_accounts"/>
             </menu>
         </item>
         <item

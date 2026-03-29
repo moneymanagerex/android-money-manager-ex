@@ -331,6 +331,7 @@
     <string name="title_activity_general_report">General Report</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
     <string name="menu_report_cashflow">Cash Flow</string>
+    <string name="menu_report_summary_of_accounts">Summary of Accounts</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">All Time</string>
