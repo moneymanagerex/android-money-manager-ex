@@ -143,48 +143,66 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private ReportTableModel buildModel() {
         AccountFilter accountFilter = getAccountFilter();
-        Map<Long, String> accountTypeById = new HashMap<>();
-        LinkedHashSet<String> accountTypesInUse = new LinkedHashSet<>();
-        List<BalanceEvent> events = new ArrayList<>();
+        BuildState state = new BuildState();
 
-        LocalDate minDate = null;
-        LocalDate maxDate = null;
+        loadAccounts(state, getAccountWhereClause(accountFilter));
+        loadTransactions(state);
 
-        String accountWhere = getAccountWhereClause(accountFilter);
+        normalizeDateBounds(state);
 
+        List<String> orderedTypes = orderAccountTypes(state.accountTypesInUse);
+        Map<String, String> typeLabels = getTypeLabels(orderedTypes);
+
+        LocalDate visibleStartDate = resolveVisibleStart(state.minDate, state.maxDate);
+        LocalDate visibleEndDate = resolveVisibleEnd(state.minDate, state.maxDate);
+        LocalDate[] normalizedRange = normalizeVisibleRange(visibleStartDate, visibleEndDate);
+
+        state.events.sort(Comparator.comparing(BalanceEvent::getDate));
+        List<MonthRow> rows = buildRows(state, orderedTypes, normalizedRange[0], normalizedRange[1]);
+
+        if (mSortSelected == SORT_DESCENDING) {
+            rows.sort((left, right) -> right.month.compareTo(left.month));
+        }
+
+        return new ReportTableModel(orderedTypes, typeLabels, rows);
+    }
+
+    private void loadAccounts(BuildState state, String accountWhere) {
         Cursor accountCursor = executeSqlQuery("SELECT "
                 + "a.ACCOUNTID, "
                 + "a.ACCOUNTTYPE, "
                 + "ifnull(a.INITIALBAL, 0) * ifnull(c.BASECONVRATE, 1) AS INITIALBASE, "
                 + "date(ifnull(a.INITIALDATE, '1900-01-01')) AS INITIALDATE "
                 + "FROM ACCOUNTLIST_V1 a "
-            + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
-            + accountWhere);
+                + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
+                + accountWhere);
 
-        if (accountCursor != null) {
-            try {
-                while (accountCursor.moveToNext()) {
-                    long accountId = accountCursor.getLong(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
-                    String accountType = accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_TYPE));
-                    double initialBase = accountCursor.getDouble(accountCursor.getColumnIndexOrThrow(COL_INITIAL_BASE));
-                    LocalDate initialDate = parseDate(accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_INITIAL_DATE)));
-
-                    accountTypeById.put(accountId, accountType);
-                    accountTypesInUse.add(accountType);
-
-                    if (initialDate != null && initialBase != 0d) {
-                        events.add(new BalanceEvent(initialDate, accountId, initialBase));
-                    }
-
-                    if (initialDate != null && (minDate == null || initialDate.isBefore(minDate))) {
-                        minDate = initialDate;
-                    }
-                }
-            } finally {
-                accountCursor.close();
-            }
+        if (accountCursor == null) {
+            return;
         }
 
+        try {
+            while (accountCursor.moveToNext()) {
+                long accountId = accountCursor.getLong(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
+                String accountType = accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_TYPE));
+                double initialBase = accountCursor.getDouble(accountCursor.getColumnIndexOrThrow(COL_INITIAL_BASE));
+                LocalDate initialDate = parseDate(accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_INITIAL_DATE)));
+
+                state.accountTypeById.put(accountId, accountType);
+                state.accountTypesInUse.add(accountType);
+
+                if (initialDate != null && initialBase != 0d) {
+                    state.events.add(new BalanceEvent(initialDate, accountId, initialBase));
+                }
+
+                state.minDate = minDate(state.minDate, initialDate);
+            }
+        } finally {
+            accountCursor.close();
+        }
+    }
+
+    private void loadTransactions(BuildState state) {
         Cursor transactionCursor = executeSqlQuery("SELECT "
                 + "date(t.TRANSDATE) AS TRANSDATE, "
                 + "t.TRANSCODE, "
@@ -201,93 +219,102 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 + "AND t.STATUS IN ('R', 'F', 'D', '') "
                 + "ORDER BY date(t.TRANSDATE), t.TRANSID");
 
-        if (transactionCursor != null) {
-            try {
-                while (transactionCursor.moveToNext()) {
-                    LocalDate txDate = parseDate(transactionCursor.getString(transactionCursor.getColumnIndexOrThrow(COL_TRANS_DATE)));
-                    if (txDate == null) {
-                        continue;
-                    }
+        if (transactionCursor == null) {
+            return;
+        }
 
-                    if (minDate == null || txDate.isBefore(minDate)) {
-                    }
-
-                    long fromAccountId = transactionCursor.getLong(transactionCursor.getColumnIndexOrThrow(COL_FROM_ACCOUNT_ID));
-                    long toAccountId = transactionCursor.getLong(transactionCursor.getColumnIndexOrThrow(COL_TO_ACCOUNT_ID));
-                    String transCode = transactionCursor.getString(transactionCursor.getColumnIndexOrThrow(COL_TRANS_CODE));
-                    double fromAmountBase = transactionCursor.getDouble(transactionCursor.getColumnIndexOrThrow(COL_FROM_AMOUNT_BASE));
-                    double toAmountBase = transactionCursor.getDouble(transactionCursor.getColumnIndexOrThrow(COL_TO_AMOUNT_BASE));
-
-                    if ("Withdrawal".equalsIgnoreCase(transCode)) {
-                        events.add(new BalanceEvent(txDate, fromAccountId, -fromAmountBase));
-                    } else if ("Deposit".equalsIgnoreCase(transCode)) {
-                        events.add(new BalanceEvent(txDate, fromAccountId, fromAmountBase));
-                    } else if ("Transfer".equalsIgnoreCase(transCode)) {
-                        events.add(new BalanceEvent(txDate, fromAccountId, -fromAmountBase));
-                        if (toAccountId > 0) {
-                            events.add(new BalanceEvent(txDate, toAccountId, toAmountBase));
-                        }
-                    }
-
-                    boolean touchesIncludedAccount = accountTypeById.containsKey(fromAccountId)
-                            || (toAccountId > 0 && accountTypeById.containsKey(toAccountId));
-                    if (touchesIncludedAccount) {
-                        if (minDate == null || txDate.isBefore(minDate)) {
-                            minDate = txDate;
-                        }
-                        if (maxDate == null || txDate.isAfter(maxDate)) {
-                            maxDate = txDate;
-                        }
-                    }
+        try {
+            while (transactionCursor.moveToNext()) {
+                LocalDate txDate = parseDate(transactionCursor.getString(transactionCursor.getColumnIndexOrThrow(COL_TRANS_DATE)));
+                if (txDate == null) {
+                    continue;
                 }
-            } finally {
-                transactionCursor.close();
+
+                long fromAccountId = transactionCursor.getLong(transactionCursor.getColumnIndexOrThrow(COL_FROM_ACCOUNT_ID));
+                long toAccountId = transactionCursor.getLong(transactionCursor.getColumnIndexOrThrow(COL_TO_ACCOUNT_ID));
+                String transCode = transactionCursor.getString(transactionCursor.getColumnIndexOrThrow(COL_TRANS_CODE));
+                double fromAmountBase = transactionCursor.getDouble(transactionCursor.getColumnIndexOrThrow(COL_FROM_AMOUNT_BASE));
+                double toAmountBase = transactionCursor.getDouble(transactionCursor.getColumnIndexOrThrow(COL_TO_AMOUNT_BASE));
+
+                addTransactionEvents(state.events, txDate, transCode, fromAccountId, toAccountId, fromAmountBase, toAmountBase);
+                updateDateBoundsForIncludedAccounts(state, txDate, fromAccountId, toAccountId);
+            }
+        } finally {
+            transactionCursor.close();
+        }
+    }
+
+    private void addTransactionEvents(List<BalanceEvent> events, LocalDate txDate, String transCode,
+            long fromAccountId, long toAccountId, double fromAmountBase, double toAmountBase) {
+        if ("Withdrawal".equalsIgnoreCase(transCode)) {
+            events.add(new BalanceEvent(txDate, fromAccountId, -fromAmountBase));
+            return;
+        }
+
+        if ("Deposit".equalsIgnoreCase(transCode)) {
+            events.add(new BalanceEvent(txDate, fromAccountId, fromAmountBase));
+            return;
+        }
+
+        if ("Transfer".equalsIgnoreCase(transCode)) {
+            events.add(new BalanceEvent(txDate, fromAccountId, -fromAmountBase));
+            if (toAccountId > 0) {
+                events.add(new BalanceEvent(txDate, toAccountId, toAmountBase));
             }
         }
+    }
 
-        if (maxDate == null) {
-            maxDate = LocalDate.now();
-        }
-        if (minDate == null) {
-            minDate = maxDate;
-        }
+    private void updateDateBoundsForIncludedAccounts(BuildState state, LocalDate txDate, long fromAccountId, long toAccountId) {
+        boolean touchesIncludedAccount = state.accountTypeById.containsKey(fromAccountId)
+                || (toAccountId > 0 && state.accountTypeById.containsKey(toAccountId));
 
-        List<String> orderedTypes = orderAccountTypes(accountTypesInUse);
-        Map<String, String> typeLabels = getTypeLabels(orderedTypes);
-
-        LocalDate visibleStartDate = mDateFrom == null ? minDate : toLocalDate(mDateFrom);
-        LocalDate visibleEndDate = mDateTo == null ? maxDate : toLocalDate(mDateTo);
-
-        if (visibleStartDate == null) {
-            visibleStartDate = minDate;
-        }
-        if (visibleEndDate == null) {
-            visibleEndDate = maxDate;
+        if (!touchesIncludedAccount) {
+            return;
         }
 
-        if (visibleStartDate == null && visibleEndDate == null) {
-            visibleStartDate = LocalDate.now();
-            visibleEndDate = visibleStartDate;
-        } else if (visibleStartDate == null) {
-            visibleStartDate = visibleEndDate;
-        } else if (visibleEndDate == null) {
-            visibleEndDate = visibleStartDate;
+        state.minDate = minDate(state.minDate, txDate);
+        state.maxDate = maxDate(state.maxDate, txDate);
+    }
+
+    private void normalizeDateBounds(BuildState state) {
+        if (state.maxDate == null) {
+            state.maxDate = LocalDate.now();
         }
-
-        if (visibleStartDate.isAfter(visibleEndDate)) {
-            LocalDate temp = visibleStartDate;
-            visibleStartDate = visibleEndDate;
-            visibleEndDate = temp;
+        if (state.minDate == null) {
+            state.minDate = state.maxDate;
         }
+    }
 
-        events.sort(Comparator.comparing(BalanceEvent::getDate));
+    private LocalDate resolveVisibleStart(LocalDate minDate, LocalDate maxDate) {
+        LocalDate start = mDateFrom == null ? minDate : toLocalDate(mDateFrom);
+        if (start != null) {
+            return start;
+        }
+        return maxDate == null ? LocalDate.now() : maxDate;
+    }
 
+    private LocalDate resolveVisibleEnd(LocalDate minDate, LocalDate maxDate) {
+        LocalDate end = mDateTo == null ? maxDate : toLocalDate(mDateTo);
+        if (end != null) {
+            return end;
+        }
+        return minDate == null ? LocalDate.now() : minDate;
+    }
+
+    private LocalDate[] normalizeVisibleRange(LocalDate start, LocalDate end) {
+        LocalDate safeStart = start == null ? LocalDate.now() : start;
+        LocalDate safeEnd = end == null ? safeStart : end;
+
+        if (safeStart.isAfter(safeEnd)) {
+            return new LocalDate[]{safeEnd, safeStart};
+        }
+        return new LocalDate[]{safeStart, safeEnd};
+    }
+
+    private List<MonthRow> buildRows(BuildState state, List<String> orderedTypes, LocalDate visibleStartDate,
+            LocalDate visibleEndDate) {
         List<MonthRow> rows = new ArrayList<>();
-        Map<Long, Double> accountBalances = new HashMap<>();
-        Map<String, Double> typeTotals = new LinkedHashMap<>();
-        for (String type : orderedTypes) {
-            typeTotals.put(type, 0d);
-        }
+        Map<String, Double> typeTotals = createTypeTotals(orderedTypes);
 
         int eventIndex = 0;
         YearMonth month = YearMonth.from(visibleStartDate);
@@ -295,26 +322,53 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
         while (!month.isAfter(end)) {
             LocalDate monthEnd = month.atEndOfMonth();
-
-            while (eventIndex < events.size() && !events.get(eventIndex).getDate().isAfter(monthEnd)) {
-                BalanceEvent event = events.get(eventIndex);
-                String accountType = accountTypeById.get(event.getAccountId());
-                if (accountType != null && typeTotals.containsKey(accountType)) {
-                    accountBalances.put(event.getAccountId(), accountBalances.getOrDefault(event.getAccountId(), 0d) + event.getDelta());
-                    typeTotals.put(accountType, typeTotals.get(accountType) + event.getDelta());
-                }
-                eventIndex++;
-            }
-
+            eventIndex = consumeEventsUntil(monthEnd, state, typeTotals, eventIndex);
             rows.add(new MonthRow(month, new LinkedHashMap<>(typeTotals)));
             month = month.plusMonths(1);
         }
 
-        if (mSortSelected == SORT_DESCENDING) {
-            rows.sort((left, right) -> right.month.compareTo(left.month));
-        }
+        return rows;
+    }
 
-        return new ReportTableModel(orderedTypes, typeLabels, rows);
+    private Map<String, Double> createTypeTotals(List<String> orderedTypes) {
+        Map<String, Double> typeTotals = new LinkedHashMap<>();
+        for (String type : orderedTypes) {
+            typeTotals.put(type, 0d);
+        }
+        return typeTotals;
+    }
+
+    private int consumeEventsUntil(LocalDate monthEnd, BuildState state, Map<String, Double> typeTotals, int startIndex) {
+        int eventIndex = startIndex;
+        while (eventIndex < state.events.size() && !state.events.get(eventIndex).getDate().isAfter(monthEnd)) {
+            BalanceEvent event = state.events.get(eventIndex);
+            String accountType = state.accountTypeById.get(event.getAccountId());
+            if (accountType != null && typeTotals.containsKey(accountType)) {
+                typeTotals.put(accountType, typeTotals.get(accountType) + event.getDelta());
+            }
+            eventIndex++;
+        }
+        return eventIndex;
+    }
+
+    private LocalDate minDate(LocalDate current, LocalDate candidate) {
+        if (candidate == null) {
+            return current;
+        }
+        if (current == null || candidate.isBefore(current)) {
+            return candidate;
+        }
+        return current;
+    }
+
+    private LocalDate maxDate(LocalDate current, LocalDate candidate) {
+        if (candidate == null) {
+            return current;
+        }
+        if (current == null || candidate.isAfter(current)) {
+            return candidate;
+        }
+        return current;
     }
 
     private void renderModel(ReportTableModel model) {
@@ -417,18 +471,8 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.menu_summary_accounts_all
-                        || itemId == R.id.menu_summary_accounts_open
-                        || itemId == R.id.menu_summary_accounts_favorite
-                        || itemId == R.id.menu_summary_accounts_custom) {
-                    item.setChecked(true);
-                    saveFilterMode(itemId);
-
-                    if (itemId == R.id.menu_summary_accounts_custom) {
-                        showAccountSelectionDialog();
-                    } else {
-                        loadReportAsync();
-                    }
+                if (isAccountFilterMenuItem(itemId)) {
+                    handleAccountFilterItemSelected(itemId, item);
                     return true;
                 }
 
@@ -437,10 +481,8 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                     return true;
                 }
 
-                if (itemId == R.id.menu_sort_asceding || itemId == R.id.menu_sort_desceding) {
-                    mSortSelected = itemId;
-                    item.setChecked(true);
-                    loadReportAsync();
+                if (isSortMenuItem(itemId)) {
+                    handleSortItemSelected(itemId, item);
                     return true;
                 }
 
@@ -451,6 +493,35 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 return false;
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+    private boolean isAccountFilterMenuItem(int itemId) {
+        return itemId == R.id.menu_summary_accounts_all
+                || itemId == R.id.menu_summary_accounts_open
+                || itemId == R.id.menu_summary_accounts_favorite
+                || itemId == R.id.menu_summary_accounts_custom;
+    }
+
+    private void handleAccountFilterItemSelected(int itemId, @NonNull MenuItem item) {
+        item.setChecked(true);
+        saveFilterMode(itemId);
+
+        if (itemId == R.id.menu_summary_accounts_custom) {
+            showAccountSelectionDialog();
+            return;
+        }
+
+        loadReportAsync();
+    }
+
+    private boolean isSortMenuItem(int itemId) {
+        return itemId == R.id.menu_sort_asceding || itemId == R.id.menu_sort_desceding;
+    }
+
+    private void handleSortItemSelected(int itemId, @NonNull MenuItem item) {
+        mSortSelected = itemId;
+        item.setChecked(true);
+        loadReportAsync();
     }
 
     private boolean handlePeriodSelection(@NonNull MenuItem menuItem) {
@@ -814,5 +885,13 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             this.mode = mode;
             this.customAccountIds = customAccountIds;
         }
+    }
+
+    private static class BuildState {
+        private final Map<Long, String> accountTypeById = new HashMap<>();
+        private final LinkedHashSet<String> accountTypesInUse = new LinkedHashSet<>();
+        private final List<BalanceEvent> events = new ArrayList<>();
+        private LocalDate minDate;
+        private LocalDate maxDate;
     }
 }

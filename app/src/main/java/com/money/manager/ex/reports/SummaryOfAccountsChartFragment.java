@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -67,7 +66,6 @@ public class SummaryOfAccountsChartFragment extends Fragment {
             R.color.material_grey_500
     };
 
-    private LinearLayout layout;
     private BarChart chart;
     private int textColor;
 
@@ -79,14 +77,14 @@ public class SummaryOfAccountsChartFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        layout = (LinearLayout) inflater.inflate(R.layout.chart_bar_fragment, container, false);
-        chart = layout.findViewById(R.id.chartBar);
+        View rootView = inflater.inflate(R.layout.chart_bar_fragment, container, false);
+        chart = rootView.findViewById(R.id.chartBar);
         chart.setDescription("");
         chart.setPinchZoom(false);
         chart.setDrawBarShadow(false);
         chart.setDrawGridBackground(false);
         chart.setDrawValueAboveBar(true);
-        return layout;
+        return rootView;
     }
 
     @Override
@@ -96,47 +94,73 @@ public class SummaryOfAccountsChartFragment extends Fragment {
     }
 
     private void buildChart() {
+        ChartInput chartInput = readChartInput();
+        if (chartInput == null) {
+            return;
+        }
+
+        BarData data = buildBarData(chartInput);
+        chart.setData(data);
+        chart.animateXY(1200, 1200);
+        chart.invalidate();
+
+        styleChartAxes(chartInput.xTitles);
+        styleChartLegend();
+    }
+
+    @Nullable
+    private ChartInput readChartInput() {
         Bundle args = getArguments();
         if (args == null) {
-            return;
+            return null;
         }
 
         String[] xTitles = args.getStringArray(KEY_X_TITLES);
         String[] stackLabels = args.getStringArray(KEY_STACK_LABELS);
         Object rawValues = args.getSerializable(KEY_STACK_VALUES);
-
         if (xTitles == null || stackLabels == null || !(rawValues instanceof float[][])) {
-            return;
+            return null;
         }
 
-        float[][] stackValues = (float[][]) rawValues;
-        ArrayList<BarEntry> entries = new ArrayList<>();
+        return new ChartInput(xTitles, stackLabels, (float[][]) rawValues);
+    }
 
-        for (int i = 0; i < xTitles.length; i++) {
-            float[] values = i < stackValues.length ? stackValues[i] : new float[stackLabels.length];
-            entries.add(new BarEntry(values, i));
-        }
-
+    private BarData buildBarData(ChartInput chartInput) {
+        ArrayList<BarEntry> entries = createEntries(chartInput);
         BarDataSet dataSet = new BarDataSet(entries, getString(R.string.menu_report_summary_of_accounts));
-        dataSet.setStackLabels(stackLabels);
-
-        ArrayList<Integer> colors = new ArrayList<>();
-        for (int i = 0; i < stackLabels.length; i++) {
-            colors.add(getResources().getColor(COLORS[i % COLORS.length]));
-        }
-        dataSet.setColors(colors);
+        dataSet.setStackLabels(chartInput.stackLabels);
+        dataSet.setColors(createDataSetColors(chartInput.stackLabels.length));
 
         List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSet);
 
-        BarData data = new BarData(xTitles, dataSets);
+        BarData data = new BarData(chartInput.xTitles, dataSets);
         if (textColor != -1) {
             data.setValueTextColor(getResources().getColor(textColor));
         }
-        chart.setData(data);
-        chart.animateXY(1200, 1200);
-        chart.invalidate();
+        return data;
+    }
 
+    private ArrayList<BarEntry> createEntries(ChartInput chartInput) {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        for (int i = 0; i < chartInput.xTitles.length; i++) {
+            float[] values = i < chartInput.stackValues.length
+                    ? chartInput.stackValues[i]
+                    : new float[chartInput.stackLabels.length];
+            entries.add(new BarEntry(values, i));
+        }
+        return entries;
+    }
+
+    private ArrayList<Integer> createDataSetColors(int stackCount) {
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int i = 0; i < stackCount; i++) {
+            colors.add(getResources().getColor(COLORS[i % COLORS.length]));
+        }
+        return colors;
+    }
+
+    private void styleChartAxes(String[] xTitles) {
         XAxis xAxis = chart.getXAxis();
         if (xAxis != null) {
             if (textColor != -1) {
@@ -154,10 +178,24 @@ public class SummaryOfAccountsChartFragment extends Fragment {
         if (right != null && textColor != -1) {
             right.setTextColor(getResources().getColor(textColor));
         }
+    }
 
+    private void styleChartLegend() {
         Legend legend = chart.getLegend();
         if (legend != null && textColor != -1) {
             legend.setTextColor(getResources().getColor(textColor));
+        }
+    }
+
+    private static class ChartInput {
+        private final String[] xTitles;
+        private final String[] stackLabels;
+        private final float[][] stackValues;
+
+        ChartInput(String[] xTitles, String[] stackLabels, float[][] stackValues) {
+            this.xTitles = xTitles;
+            this.stackLabels = stackLabels;
+            this.stackValues = stackValues;
         }
     }
 }
