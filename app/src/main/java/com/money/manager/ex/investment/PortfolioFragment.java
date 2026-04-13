@@ -179,13 +179,11 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         });
 
         viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
-            if (priceModel != null) {
-                if (!isBulkDownloadInProgress) {
-                    Toast.makeText(getContext(),
-                            getString(R.string.downloaded_price_for_symbol, priceModel.symbol, priceModel.price),
-                            Toast.LENGTH_SHORT).show();
-                    viewModel.loadStocks(mAccountId);
-                }
+            if (priceModel != null && !isBulkDownloadInProgress) {
+                Toast.makeText(getContext(),
+                        getString(R.string.downloaded_price_for_symbol, priceModel.symbol, priceModel.price),
+                        Toast.LENGTH_SHORT).show();
+                viewModel.loadStocks(mAccountId);
             }
         });
 
