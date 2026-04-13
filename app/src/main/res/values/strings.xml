@@ -575,6 +575,7 @@
     <string name="price_updated">Price updated</string>
     <string name="all_prices_updated">All prices have been updated.</string>
     <string name="download_complete">Download complete.</string>
+    <string name="downloaded_price_for_symbol">Downloaded: %1$s @ %2$s</string>
     <string name="downloaded_prices_count">Downloaded %1$d/%2$d prices</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
     <string name="starting_price_update">Downloading prices, please wait…</string>

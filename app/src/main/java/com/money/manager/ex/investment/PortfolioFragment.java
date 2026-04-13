@@ -182,7 +182,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
             if (priceModel != null) {
                 if (!isBulkDownloadInProgress) {
                     Toast.makeText(getContext(),
-                            "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
+                            getString(R.string.downloaded_price_for_symbol, priceModel.symbol, priceModel.price),
                             Toast.LENGTH_SHORT).show();
                     viewModel.loadStocks(mAccountId);
                 }
