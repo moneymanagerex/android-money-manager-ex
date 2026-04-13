@@ -49,6 +49,11 @@ public class StockViewModel extends AndroidViewModel {
     public LiveData<Account> getAccount() {return account; }
     public LiveData<int[]> getAllDownloadedPricesResult() { return allDownloadedPricesResult; }
 
+    public void clearDownloadEvents() {
+        latestDownloadedPrice.setValue(null);
+        allDownloadedPricesResult.setValue(null);
+    }
+
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
         ExecutorService executor = Executors.newFixedThreadPool(2);

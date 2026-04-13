@@ -171,6 +171,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
         viewModel = new ViewModelProvider(requireActivity(), factory).get(StockViewModel.class);
+        viewModel.clearDownloadEvents();
 
         viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
             mAdapter.submitList(stocks);
@@ -189,7 +190,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         });
 
         viewModel.getAllDownloadedPricesResult().observe(getViewLifecycleOwner(), result -> {
-            if (result == null || result.length < 2) return;
+            if (result == null || result.length < 2 || !isBulkDownloadInProgress) return;
 
             isBulkDownloadInProgress = false;
 
