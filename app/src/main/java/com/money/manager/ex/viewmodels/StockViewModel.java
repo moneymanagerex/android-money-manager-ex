@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -15,8 +16,14 @@ import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.yahoofinance.StockPriceRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import android.text.TextUtils;
+
+import java.util.LinkedHashSet;
 
 // StockViewModel.java
 public class StockViewModel extends AndroidViewModel {
@@ -27,6 +34,7 @@ public class StockViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<Account> account = new MutableLiveData<>();
     private final MutableLiveData<SecurityPriceModel> latestDownloadedPrice = new MutableLiveData<>();
+    private final MutableLiveData<int[]> allDownloadedPricesResult = new MutableLiveData<>();
 
     public StockViewModel(@NonNull Application application, StockRepository repository) {
         super(application);
@@ -39,6 +47,7 @@ public class StockViewModel extends AndroidViewModel {
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<SecurityPriceModel> getLatestDownloadedPrice() { return latestDownloadedPrice; }
     public LiveData<Account> getAccount() {return account; }
+    public LiveData<int[]> getAllDownloadedPricesResult() { return allDownloadedPricesResult; }
 
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
@@ -67,5 +76,50 @@ public class StockViewModel extends AndroidViewModel {
             }
             isLoading.postValue(false);
         });
+    }
+
+    public void downloadAllStockPrices(List<Stock> stocks) {
+        if (stocks == null || stocks.isEmpty()) {
+            allDownloadedPricesResult.postValue(new int[]{0, 0});
+            return;
+        }
+
+        Set<String> symbols = new LinkedHashSet<>();
+        for (Stock stock : stocks) {
+            if (stock == null || TextUtils.isEmpty(stock.getSymbol())) continue;
+            symbols.add(stock.getSymbol().trim());
+        }
+
+        if (symbols.isEmpty()) {
+            allDownloadedPricesResult.postValue(new int[]{0, 0});
+            return;
+        }
+
+        isLoading.postValue(true);
+
+        final int total = symbols.size();
+        AtomicInteger completed = new AtomicInteger(0);
+        AtomicInteger successful = new AtomicInteger(0);
+
+        for (String symbol : symbols) {
+            LiveData<SecurityPriceModel> source = stockPriceRepository.downloadPrice(symbol);
+            Observer<SecurityPriceModel> observer = new Observer<>() {
+                @Override
+                public void onChanged(SecurityPriceModel priceModel) {
+                    if (priceModel != null) {
+                        successful.incrementAndGet();
+                        latestDownloadedPrice.postValue(priceModel);
+                    }
+
+                    source.removeObserver(this);
+
+                    if (completed.incrementAndGet() == total) {
+                        isLoading.postValue(false);
+                        allDownloadedPricesResult.postValue(new int[]{successful.get(), total});
+                    }
+                }
+            };
+            source.observeForever(observer);
+        }
     }
 }

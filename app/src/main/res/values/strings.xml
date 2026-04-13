@@ -570,10 +570,12 @@
     <string name="update_prices">Update prices</string>
     <string name="update_price">Update price</string>
     <string name="download_price">Download price</string>
+    <string name="download_all_prices">Download all prices</string>
     <string name="edit_price">Edit price</string>
     <string name="price_updated">Price updated</string>
     <string name="all_prices_updated">All prices have been updated.</string>
     <string name="download_complete">Download complete.</string>
+    <string name="downloaded_prices_count">Downloaded %1$d/%2$d prices</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
     <string name="starting_price_update">Downloading prices, please wait…</string>
     <string name="database_migrate_14_to_20">Migrate database from v1.4</string>
