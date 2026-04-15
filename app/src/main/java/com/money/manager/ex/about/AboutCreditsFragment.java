@@ -19,6 +19,8 @@ package com.money.manager.ex.about;
 
 import static com.money.manager.ex.R.raw.credits_thirdparty;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import androidx.annotation.NonNull;
@@ -59,6 +62,16 @@ public class AboutCreditsFragment extends Fragment {
         // Display Unicode characters.
         WebSettings settings = webView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
+
+        if (new UIHelper(requireContext()).isUsingDarkTheme()) {
+            webView.setBackgroundColor(Color.TRANSPARENT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                settings.setAlgorithmicDarkeningAllowed(true);
+            } else {
+                //noinspection deprecation
+                settings.setForceDark(WebSettings.FORCE_DARK_ON);
+            }
+        }
 
         webView.loadData(MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), credits_thirdparty),
                 "text/html; charset=utf-8", null);
