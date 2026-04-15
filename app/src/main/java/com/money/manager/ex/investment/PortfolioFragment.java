@@ -19,6 +19,8 @@ package com.money.manager.ex.investment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -39,9 +41,13 @@ import com.money.manager.ex.viewmodels.ViewModelFactory;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,12 +57,15 @@ import java.util.Objects;
 public class PortfolioFragment extends BaseRecyclerFragment {
 
     private static final String ARG_ACCOUNT_ID = "PortfolioFragment:accountId";
+    private static final int MENU_DOWNLOAD_ALL_PRICES = 1001;
 
     private StockViewModel viewModel;
     private PortfolioListAdapter mAdapter;
     private Long mAccountId;
     private Account mAccount;
     private Stock selectedStock;
+    private boolean isBulkDownloadInProgress;
+    private boolean isMenuProviderRegistered;
 
     private ActivityResultLauncher<Intent> editPriceLauncher;
     private ActivityResultLauncher<Intent> editInvestmentLauncher;
@@ -100,10 +109,17 @@ public class PortfolioFragment extends BaseRecyclerFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupMenuProvider();
         setupViewModel();
         enableFab(true);
         registerForContextMenu(getRecyclerView());
         setupActivityResultLaunchers();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isMenuProviderRegistered = false;
     }
 
     @Override
@@ -155,6 +171,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         StockRepository repository = new StockRepository(requireContext());
         ViewModelFactory factory = new ViewModelFactory(requireActivity().getApplication(), repository);
         viewModel = new ViewModelProvider(requireActivity(), factory).get(StockViewModel.class);
+        viewModel.clearDownloadEvents();
 
         viewModel.getStocks().observe(getViewLifecycleOwner(), stocks -> {
             mAdapter.submitList(stocks);
@@ -162,12 +179,25 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         });
 
         viewModel.getLatestDownloadedPrice().observe(getViewLifecycleOwner(), priceModel -> {
-            if (priceModel != null) {
+            if (priceModel != null && !isBulkDownloadInProgress) {
                 Toast.makeText(getContext(),
-                        "Downloaded: " + priceModel.symbol + " @ " + priceModel.price,
+                        getString(R.string.downloaded_price_for_symbol, priceModel.symbol, priceModel.price),
                         Toast.LENGTH_SHORT).show();
                 viewModel.loadStocks(mAccountId);
             }
+        });
+
+        viewModel.getAllDownloadedPricesResult().observe(getViewLifecycleOwner(), result -> {
+            if (result == null || result.length < 2 || !isBulkDownloadInProgress) return;
+
+            isBulkDownloadInProgress = false;
+
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.downloaded_prices_count, result[0], result[1]),
+                    Toast.LENGTH_SHORT
+            ).show();
+            viewModel.loadStocks(mAccountId);
         });
 
         viewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
@@ -233,5 +263,42 @@ public class PortfolioFragment extends BaseRecyclerFragment {
                     }
                 }
         );
+    }
+
+    private void setupMenuProvider() {
+        if (isMenuProviderRegistered) return;
+
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                if (menu.findItem(MENU_DOWNLOAD_ALL_PRICES) == null) {
+                    menu.add(Menu.NONE, MENU_DOWNLOAD_ALL_PRICES, Menu.NONE, R.string.download_all_prices);
+                }
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == MENU_DOWNLOAD_ALL_PRICES) {
+                    downloadAllPrices();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        isMenuProviderRegistered = true;
+    }
+
+    private void downloadAllPrices() {
+        List<Stock> stocks = viewModel.getStocks().getValue();
+        if (stocks == null || stocks.isEmpty()) {
+            Toast.makeText(getContext(), R.string.no_stock_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        isBulkDownloadInProgress = true;
+        Toast.makeText(getContext(), R.string.starting_price_update, Toast.LENGTH_SHORT).show();
+        viewModel.downloadAllStockPrices(stocks);
     }
 }
