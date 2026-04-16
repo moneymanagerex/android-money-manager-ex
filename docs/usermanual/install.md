@@ -6,13 +6,13 @@ author_profile: true
 
 Install from [gPlay](https://play.google.com/store/apps/details?id=com.money.manager.ex.android) or [F-Droid](https://f-droid.org/packages/com.money.manager.ex) is better choice. But if you would like, for any reason, to install manually read this guide.
 
-* Enable unknow source (required for Android 10+)
+* Enable unknown sources (required for Android 10+)
   * Open the Settings app on your Android device.
   * In the Settings menu, tap Apps (see picture 1) --> Special app access (see picture 2)
-  * choose Chrome (or Browser) and enable (Picture 3 and 4)
+  * Choose Chrome (or Browser) and enable it (Picture 3 and 4)
 * Download latest version from [latest release](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest).
 * Open downloaded apk from download history (see picture 6)
-* Follow on screen instruction
+* Follow the on-screen instructions
 
 Picture 1
 <img width="216" alt="image" src="https://github.com/moneymanagerex/android-money-manager-ex/assets/3205448/42110e12-f091-4bcc-89f6-0043d2e2b882">
