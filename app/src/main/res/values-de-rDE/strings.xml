@@ -312,6 +312,7 @@
     <string name="title_activity_general_report">Allgemeiner Bericht</string>
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
     <string name="menu_report_cashflow">Geldfluss</string>
+    <string name="menu_report_summary_of_accounts">Kontenübersicht</string>
     <string name="total">Gesamt</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Gesamter Zeitraum</string>
@@ -503,10 +504,13 @@
     <string name="update_prices">Preise aktualisieren</string>
     <string name="update_price">Preis aktualisieren</string>
     <string name="download_price">Preis herunterladen</string>
+    <string name="download_all_prices">Alle Preise herunterladen</string>
     <string name="edit_price">Preis bearbeiten</string>
     <string name="price_updated">Preis aktualisiert</string>
     <string name="all_prices_updated">Alle Preise wurden aktualisiert.</string>
     <string name="download_complete">Download abgeschlossen.</string>
+    <string name="downloaded_price_for_symbol">Heruntergeladen: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">%1$d/%2$d Preise heruntergeladen</string>
     <string name="confirm_price_download">Möchten Sie Sicherheitspreise online aktualisieren?</string>
     <string name="starting_price_update">Download Preise, bitte warten...</string>
     <string name="database_migrate_14_to_20">Migration der Datenbank von v1. 4</string>
