@@ -57,6 +57,7 @@ internal report allow you to see information regarding your expenses like:
 - **Category**: show amount for each category 
 - **Income and Expenses**: show monthly income and expenses 
 - **Cash-flow**: this report show your future cash-flow based on schedule transaction 
+- **Summary of Accounts**: show month-by-month balance summary grouped by account type (with total), with period selection, sort order, account filters (open, favorite, custom), and chart view.
 
 ### General Report
 
