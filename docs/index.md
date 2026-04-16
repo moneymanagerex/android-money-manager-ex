@@ -126,7 +126,7 @@ If you like to contribute you can also enroll as [beta tester](https://play.goog
 
 Check [here](supported_android_version.md) if your Android version is supported.
 
-## Screenshot
+## Screenshots
 ![Splash screen](/assets/images/screenshoot/0.splash.jpg-th.png)
 ![Select Or Create Db](/assets/images/screenshoot/1.SelectOrCreateDb.jpg-th.png)
 ![Open Db](/assets/images/screenshoot/2.OpenDb.jpg-th.png)
