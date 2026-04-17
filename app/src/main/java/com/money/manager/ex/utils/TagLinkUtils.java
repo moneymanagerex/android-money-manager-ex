@@ -3,6 +3,7 @@ package com.money.manager.ex.utils;
 import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -140,17 +141,23 @@ public class TagLinkUtils {
                 }
             });
 
-            builder.setNeutralButton(R.string.CLEAR_ALL, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    mTagLinks.clear();
-                    displayTags(tagTextView);
-                    callback(onTagSelected);
+            builder.setNeutralButton(R.string.CLEAR_ALL, null);
+
+            // show dialog
+            mDialog = builder.create();
+            mDialog.show();
+
+            mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(view -> {
+                for (int j = 0; j < tagsFlag.length; j++) {
+                    tagsFlag[j] = false;
+                }
+                ListView listView = mDialog.getListView();
+                if (listView != null) {
+                    for (int j = 0; j < listView.getCount(); j++) {
+                        listView.setItemChecked(j, false);
+                    }
                 }
             });
-            // show dialog
-            setMDialog(builder.create());
-            builder.show();
         });
 
     }
