@@ -334,10 +334,12 @@ public class AllDataListFragment
                 sort = args.getString(KEY_ARGUMENTS_SORT);
             } else {
                 if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC";
+                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC, " +
+                            ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " DESC";
                 }
                 if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC";
+                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC, " +
+                            ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " ASC";
                 }
 
             }
