@@ -332,7 +332,7 @@ public class AllDataListFragment
             String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
 
             //#2810: Transaction list order is inconsistent for transactions created on the same day
-            if (!TextUtils.isEmpty(sort)) {
+            if (TextUtils.isEmpty(sort)) {
                 String sortDirection = (new AppSettings(getContext())).getTransactionSort() == 0 ? "DESC" : "ASC";
                     sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " " + sortDirection + ", " +
                             ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " " + sortDirection;
