@@ -127,7 +127,7 @@ public class SummaryOfAccountsChartFragment extends Fragment {
 
     private BarData buildBarData(ChartInput chartInput) {
         ArrayList<BarEntry> entries = createEntries(chartInput);
-        BarDataSet dataSet = new BarDataSet(entries, getString(R.string.menu_report_summary_of_accounts));
+        BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setStackLabels(chartInput.stackLabels);
         dataSet.setColors(createDataSetColors(chartInput.stackLabels.length));
 
@@ -182,9 +182,20 @@ public class SummaryOfAccountsChartFragment extends Fragment {
 
     private void styleChartLegend() {
         Legend legend = chart.getLegend();
-        if (legend != null && textColor != -1) {
+        if (legend == null) {
+            return;
+        }
+
+        if (textColor != -1) {
             legend.setTextColor(getResources().getColor(textColor));
         }
+
+        // Allow multi-row legends when many account labels are present.
+        legend.setWordWrapEnabled(true);
+        legend.setMaxSizePercent(0.95f);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(false);
+        legend.setYEntrySpace(4f);
     }
 
     private static class ChartInput {

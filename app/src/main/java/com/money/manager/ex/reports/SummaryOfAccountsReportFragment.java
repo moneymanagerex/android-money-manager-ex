@@ -75,12 +75,16 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private static final String PREF_FILTER_MODE = "SummaryAccountsFilterMode";
     private static final String PREF_FILTER_CUSTOM = "SummaryAccountsFilterCustom";
+    private static final String PREF_GROUP_MODE = "SummaryAccountsGroupMode";
 
     private static final int PERIOD_ALL_TIME = R.id.menu_all_time;
     private static final int SORT_ASCENDING = R.id.menu_sort_asceding;
     private static final int SORT_DESCENDING = R.id.menu_sort_desceding;
+    private static final int GROUP_BY_ACCOUNT_TYPE = R.id.menu_group_by_account_type;
+    private static final int GROUP_BY_ACCOUNT = R.id.menu_group_by_account;
 
     private static final String COL_ACCOUNT_ID = "ACCOUNTID";
+    private static final String COL_ACCOUNT_NAME = "ACCOUNTNAME";
     private static final String COL_ACCOUNT_TYPE = "ACCOUNTTYPE";
     private static final String COL_INITIAL_BASE = "INITIALBASE";
     private static final String COL_INITIAL_DATE = "INITIALDATE";
@@ -143,6 +147,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private ReportTableModel buildModel() {
         AccountFilter accountFilter = getAccountFilter();
+        int groupMode = getGroupMode();
         BuildState state = new BuildState();
 
         loadAccounts(state, getAccountWhereClause(accountFilter));
@@ -150,32 +155,34 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
         normalizeDateBounds(state);
 
-        List<String> orderedTypes = orderAccountTypes(state.accountTypesInUse);
-        Map<String, String> typeLabels = getTypeLabels(orderedTypes);
+        List<String> orderedColumns = getOrderedColumns(state, groupMode);
+        Map<String, String> columnLabels = getColumnLabels(state, orderedColumns, groupMode);
 
         LocalDate visibleStartDate = resolveVisibleStart(state.minDate, state.maxDate);
         LocalDate visibleEndDate = resolveVisibleEnd(state.minDate, state.maxDate);
         LocalDate[] normalizedRange = normalizeVisibleRange(visibleStartDate, visibleEndDate);
 
         state.events.sort(Comparator.comparing(BalanceEvent::getDate));
-        List<MonthRow> rows = buildRows(state, orderedTypes, normalizedRange[0], normalizedRange[1]);
+        List<MonthRow> rows = buildRows(state, orderedColumns, normalizedRange[0], normalizedRange[1], groupMode);
 
         if (mSortSelected == SORT_DESCENDING) {
             rows.sort((left, right) -> right.month.compareTo(left.month));
         }
 
-        return new ReportTableModel(orderedTypes, typeLabels, rows);
+        return new ReportTableModel(orderedColumns, columnLabels, rows);
     }
 
     private void loadAccounts(BuildState state, String accountWhere) {
         Cursor accountCursor = executeSqlQuery("SELECT "
                 + "a.ACCOUNTID, "
+                + "a.ACCOUNTNAME, "
                 + "a.ACCOUNTTYPE, "
                 + "ifnull(a.INITIALBAL, 0) * ifnull(c.BASECONVRATE, 1) AS INITIALBASE, "
                 + "date(ifnull(a.INITIALDATE, '1900-01-01')) AS INITIALDATE "
                 + "FROM ACCOUNTLIST_V1 a "
                 + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
-                + accountWhere);
+                + accountWhere
+                + " ORDER BY a.ACCOUNTTYPE, upper(a.ACCOUNTNAME)");
 
         if (accountCursor == null) {
             return;
@@ -184,12 +191,15 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         try {
             while (accountCursor.moveToNext()) {
                 long accountId = accountCursor.getLong(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
+                String accountName = accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_NAME));
                 String accountType = accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_TYPE));
                 double initialBase = accountCursor.getDouble(accountCursor.getColumnIndexOrThrow(COL_INITIAL_BASE));
                 LocalDate initialDate = parseDate(accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_INITIAL_DATE)));
 
+                state.accountNameById.put(accountId, accountName);
                 state.accountTypeById.put(accountId, accountType);
                 state.accountTypesInUse.add(accountType);
+                state.accountIdsInUse.add(accountId);
 
                 if (initialDate != null && initialBase != 0d) {
                     state.events.add(new BalanceEvent(initialDate, accountId, initialBase));
@@ -311,10 +321,10 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         return new LocalDate[]{safeStart, safeEnd};
     }
 
-    private List<MonthRow> buildRows(BuildState state, List<String> orderedTypes, LocalDate visibleStartDate,
-            LocalDate visibleEndDate) {
+    private List<MonthRow> buildRows(BuildState state, List<String> orderedColumns, LocalDate visibleStartDate,
+            LocalDate visibleEndDate, int groupMode) {
         List<MonthRow> rows = new ArrayList<>();
-        Map<String, Double> typeTotals = createTypeTotals(orderedTypes);
+        Map<String, Double> columnTotals = createColumnTotals(orderedColumns);
 
         int eventIndex = 0;
         YearMonth month = YearMonth.from(visibleStartDate);
@@ -322,33 +332,42 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
         while (!month.isAfter(end)) {
             LocalDate monthEnd = month.atEndOfMonth();
-            eventIndex = consumeEventsUntil(monthEnd, state, typeTotals, eventIndex);
-            rows.add(new MonthRow(month, new LinkedHashMap<>(typeTotals)));
+            eventIndex = consumeEventsUntil(monthEnd, state, columnTotals, eventIndex, groupMode);
+            rows.add(new MonthRow(month, new LinkedHashMap<>(columnTotals)));
             month = month.plusMonths(1);
         }
 
         return rows;
     }
 
-    private Map<String, Double> createTypeTotals(List<String> orderedTypes) {
-        Map<String, Double> typeTotals = new LinkedHashMap<>();
-        for (String type : orderedTypes) {
-            typeTotals.put(type, 0d);
+    private Map<String, Double> createColumnTotals(List<String> orderedColumns) {
+        Map<String, Double> columnTotals = new LinkedHashMap<>();
+        for (String column : orderedColumns) {
+            columnTotals.put(column, 0d);
         }
-        return typeTotals;
+        return columnTotals;
     }
 
-    private int consumeEventsUntil(LocalDate monthEnd, BuildState state, Map<String, Double> typeTotals, int startIndex) {
+    private int consumeEventsUntil(LocalDate monthEnd, BuildState state, Map<String, Double> columnTotals, int startIndex,
+            int groupMode) {
         int eventIndex = startIndex;
         while (eventIndex < state.events.size() && !state.events.get(eventIndex).getDate().isAfter(monthEnd)) {
             BalanceEvent event = state.events.get(eventIndex);
-            String accountType = state.accountTypeById.get(event.getAccountId());
-            if (accountType != null && typeTotals.containsKey(accountType)) {
-                typeTotals.put(accountType, typeTotals.get(accountType) + event.getDelta());
+            String columnKey = getColumnKeyForAccountId(state, event.getAccountId(), groupMode);
+            if (columnKey != null && columnTotals.containsKey(columnKey)) {
+                columnTotals.put(columnKey, columnTotals.get(columnKey) + event.getDelta());
             }
             eventIndex++;
         }
         return eventIndex;
+    }
+
+    @Nullable
+    private String getColumnKeyForAccountId(BuildState state, long accountId, int groupMode) {
+        if (groupMode == GROUP_BY_ACCOUNT) {
+            return Long.toString(accountId);
+        }
+        return state.accountTypeById.get(accountId);
     }
 
     private LocalDate minDate(LocalDate current, LocalDate candidate) {
@@ -457,6 +476,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                     selectedItem.setChecked(true);
                 }
 
+                int selectedGroupMode = getGroupMode();
+                MenuItem selectedGroupItem = menu.findItem(selectedGroupMode);
+                if (selectedGroupItem != null) {
+                    selectedGroupItem.setChecked(true);
+                }
+
                 MenuItem selectedPeriod = menu.findItem(mItemSelected);
                 if (selectedPeriod != null) {
                     selectedPeriod.setChecked(true);
@@ -483,6 +508,11 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
                 if (isSortMenuItem(itemId)) {
                     handleSortItemSelected(itemId, item);
+                    return true;
+                }
+
+                if (isGroupMenuItem(itemId)) {
+                    handleGroupItemSelected(itemId, item);
                     return true;
                 }
 
@@ -521,6 +551,16 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     private void handleSortItemSelected(int itemId, @NonNull MenuItem item) {
         mSortSelected = itemId;
         item.setChecked(true);
+        loadReportAsync();
+    }
+
+    private boolean isGroupMenuItem(int itemId) {
+        return itemId == R.id.menu_group_by_account_type || itemId == R.id.menu_group_by_account;
+    }
+
+    private void handleGroupItemSelected(int itemId, @NonNull MenuItem item) {
+        item.setChecked(true);
+        saveGroupMode(itemId);
         loadReportAsync();
     }
 
@@ -658,6 +698,25 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     private void saveFilterMode(int mode) {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
         settings.set(PREF_FILTER_MODE, Integer.toString(mode));
+    }
+
+    private int getGroupMode() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        String storedValue = settings.get(PREF_GROUP_MODE, Integer.toString(GROUP_BY_ACCOUNT_TYPE));
+        try {
+            int mode = Integer.parseInt(storedValue);
+            if (mode == GROUP_BY_ACCOUNT || mode == GROUP_BY_ACCOUNT_TYPE) {
+                return mode;
+            }
+        } catch (Exception ignored) {
+            // ignore invalid persisted values and use default below.
+        }
+        return GROUP_BY_ACCOUNT_TYPE;
+    }
+
+    private void saveGroupMode(int mode) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(PREF_GROUP_MODE, Integer.toString(mode));
     }
 
     private AccountFilter getAccountFilter() {
@@ -814,6 +873,21 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         return ordered;
     }
 
+    private List<String> orderAccounts(LinkedHashSet<Long> accountIdsInUse) {
+        List<String> ordered = new ArrayList<>();
+        for (Long accountId : accountIdsInUse) {
+            ordered.add(Long.toString(accountId));
+        }
+        return ordered;
+    }
+
+    private List<String> getOrderedColumns(BuildState state, int groupMode) {
+        if (groupMode == GROUP_BY_ACCOUNT) {
+            return orderAccounts(state.accountIdsInUse);
+        }
+        return orderAccountTypes(state.accountTypesInUse);
+    }
+
     private Map<String, String> getTypeLabels(List<String> orderedTypes) {
         Map<String, String> labels = new HashMap<>();
         String[] values = AccountTypes.getNames();
@@ -829,6 +903,29 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         }
 
         return labels;
+    }
+
+    private Map<String, String> getAccountLabels(List<String> orderedAccounts, Map<Long, String> accountNameById) {
+        Map<String, String> labels = new HashMap<>();
+
+        for (String accountId : orderedAccounts) {
+            try {
+                long parsedId = Long.parseLong(accountId);
+                String accountName = accountNameById.get(parsedId);
+                labels.put(accountId, TextUtils.isEmpty(accountName) ? accountId : accountName);
+            } catch (Exception e) {
+                labels.put(accountId, accountId);
+            }
+        }
+
+        return labels;
+    }
+
+    private Map<String, String> getColumnLabels(BuildState state, List<String> orderedColumns, int groupMode) {
+        if (groupMode == GROUP_BY_ACCOUNT) {
+            return getAccountLabels(orderedColumns, state.accountNameById);
+        }
+        return getTypeLabels(orderedColumns);
     }
 
     private static class BalanceEvent {
@@ -888,7 +985,9 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private static class BuildState {
+        private final Map<Long, String> accountNameById = new HashMap<>();
         private final Map<Long, String> accountTypeById = new HashMap<>();
+        private final LinkedHashSet<Long> accountIdsInUse = new LinkedHashSet<>();
         private final LinkedHashSet<String> accountTypesInUse = new LinkedHashSet<>();
         private final List<BalanceEvent> events = new ArrayList<>();
         private LocalDate minDate;
