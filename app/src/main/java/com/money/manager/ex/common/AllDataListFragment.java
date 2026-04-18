@@ -329,10 +329,10 @@ public class AllDataListFragment
             }
 
             // set sort
-            String sort = "";
-            if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                sort = args.getString(KEY_ARGUMENTS_SORT);
-            } else {
+            String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
+
+            //#2810: Transaction list order is inconsistent for transactions created on the same day
+            if (!TextUtils.isEmpty(sort)) {
                 if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
                     sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC, " +
                             ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " DESC";
