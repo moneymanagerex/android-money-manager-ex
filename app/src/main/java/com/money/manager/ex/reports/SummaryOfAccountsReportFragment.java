@@ -45,7 +45,6 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
@@ -146,11 +145,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private ReportTableModel buildModel() {
-        AccountFilter accountFilter = getAccountFilter();
+        int filterMode = getFilterMode();
+        List<Long> selectedAccountIds = getSelectedAccountIds();
         int groupMode = getGroupMode();
         BuildState state = new BuildState();
 
-        loadAccounts(state, getAccountWhereClause(accountFilter));
+        loadAccounts(state, getAccountWhereClause(filterMode, selectedAccountIds));
         loadTransactions(state);
 
         normalizeDateBounds(state);
@@ -526,10 +526,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private boolean isAccountFilterMenuItem(int itemId) {
-        return itemId == R.id.menu_account_filter_all
-            || itemId == R.id.menu_account_filter_open
-            || itemId == R.id.menu_account_filter_favorite
-            || itemId == R.id.menu_account_filter_custom;
+        return AccountFilterSupport.isAccountFilterMenuItem(itemId);
     }
 
     private void handleAccountFilterItemSelected(int itemId, @NonNull MenuItem item) {
@@ -687,17 +684,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private int getFilterMode() {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        String storedValue = settings.get(PREF_FILTER_MODE, Integer.toString(R.id.menu_account_filter_open));
-        try {
-            return Integer.parseInt(storedValue);
-        } catch (Exception e) {
-            return R.id.menu_account_filter_open;
-        }
+        return AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
     }
 
     private void saveFilterMode(int mode) {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        settings.set(PREF_FILTER_MODE, Integer.toString(mode));
+        AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, mode);
     }
 
     private int getGroupMode() {
@@ -719,118 +711,26 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         settings.set(PREF_GROUP_MODE, Integer.toString(mode));
     }
 
-    private AccountFilter getAccountFilter() {
-        int mode = getFilterMode();
-        List<Long> customAccountIds = parseSelectedAccountIds();
-        return new AccountFilter(mode, customAccountIds);
+    private List<Long> getSelectedAccountIds() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        return AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
     }
 
-    private String getAccountWhereClause(AccountFilter filter) {
-        if (filter.mode == R.id.menu_account_filter_all) {
+    private String getAccountWhereClause(int mode, List<Long> selectedAccountIds) {
+        String selection = AccountFilterSupport.getSelectionForAccountIdColumn(mode, selectedAccountIds, "a.ACCOUNTID");
+        if (TextUtils.isEmpty(selection)) {
             return "";
         }
-        if (filter.mode == R.id.menu_account_filter_open) {
-            return "WHERE lower(a.STATUS) = 'open'";
-        }
-        if (filter.mode == R.id.menu_account_filter_favorite) {
-            return "WHERE lower(a.FAVORITEACCT) = 'true'";
-        }
-        if (filter.mode == R.id.menu_account_filter_custom) {
-            if (filter.customAccountIds.isEmpty()) {
-                return "WHERE 1=2";
-            }
-            return "WHERE a.ACCOUNTID IN (" + joinIds(filter.customAccountIds) + ")";
-        }
-        return "";
+        return "WHERE " + selection;
     }
 
     private void showAccountSelectionDialog() {
-        ArrayList<Long> selected = new ArrayList<>(parseSelectedAccountIds());
-
-        QueryAccountBills queryAccountBills = new QueryAccountBills(requireContext());
-        Cursor cursor = requireContext().getContentResolver().query(
-                queryAccountBills.getUri(),
-                null,
-                null,
-                null,
-                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
-
-        if (cursor == null) {
-            return;
-        }
-
-        final ArrayList<Long> accountIds = new ArrayList<>();
-        final ArrayList<String> accountNames = new ArrayList<>();
-        try {
-            while (cursor.moveToNext()) {
-                long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
-                String accountName = cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME));
-                accountIds.add(accountId);
-                accountNames.add(accountName);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        final boolean[] checkedItems = new boolean[accountIds.size()];
-        for (int i = 0; i < accountIds.size(); i++) {
-            checkedItems[i] = selected.contains(accountIds.get(i));
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.menu_account_filter_custom);
-        builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
-                (dialog, which, isChecked) -> checkedItems[which] = isChecked);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            ArrayList<Long> selectedIds = new ArrayList<>();
-            for (int i = 0; i < accountIds.size(); i++) {
-                if (checkedItems[i]) {
-                    selectedIds.add(accountIds.get(i));
-                }
-            }
-            saveSelectedAccountIds(selectedIds);
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        List<Long> selected = AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
+        AccountFilterSupport.showAccountSelectionDialog(requireContext(), selected, selectedIds -> {
+            AccountFilterSupport.saveSelectedAccountIds(settings, PREF_FILTER_CUSTOM, selectedIds);
             loadReportAsync();
         });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.show();
-    }
-
-    private ArrayList<Long> parseSelectedAccountIds() {
-        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        String raw = settings.get(PREF_FILTER_CUSTOM, "");
-        ArrayList<Long> result = new ArrayList<>();
-        if (raw.trim().isEmpty()) {
-            return result;
-        }
-
-        String[] ids = raw.split(",");
-        for (String id : ids) {
-            if (id.trim().isEmpty()) {
-                continue;
-            }
-            try {
-                result.add(Long.parseLong(id.trim()));
-            } catch (Exception e) {
-                Timber.w(e, "Invalid account id in filter: %s", id);
-            }
-        }
-        return result;
-    }
-
-    private void saveSelectedAccountIds(List<Long> ids) {
-        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        settings.set(PREF_FILTER_CUSTOM, joinIds(ids));
-    }
-
-    private String joinIds(List<Long> ids) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < ids.size(); i++) {
-            if (i > 0) {
-                builder.append(',');
-            }
-            builder.append(ids.get(i));
-        }
-        return builder.toString();
     }
 
     private LocalDate toLocalDate(@Nullable Date date) {
@@ -971,16 +871,6 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             this.orderedTypes = orderedTypes;
             this.typeLabels = typeLabels;
             this.rows = rows;
-        }
-    }
-
-    private static class AccountFilter {
-        private final int mode;
-        private final List<Long> customAccountIds;
-
-        AccountFilter(int mode, List<Long> customAccountIds) {
-            this.mode = mode;
-            this.customAccountIds = customAccountIds;
         }
     }
 

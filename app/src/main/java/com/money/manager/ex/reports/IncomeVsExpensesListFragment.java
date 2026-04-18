@@ -53,6 +53,8 @@ import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -82,6 +84,8 @@ public class IncomeVsExpensesListFragment
     private static final String SORT_ASCENDING = "ASC";
     private static final String SORT_DESCENDING = "DESC";
     private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
+    private static final String PREF_FILTER_MODE = "IncomeVsExpensesFilterMode";
+    private static final String PREF_FILTER_CUSTOM = "IncomeVsExpensesFilterCustom";
 
     private View mFooterListView;
     private final SparseBooleanArray mYearsSelected = new SparseBooleanArray();
@@ -183,12 +187,11 @@ public class IncomeVsExpensesListFragment
                 if (TextUtils.isEmpty(selection)) {
                     selection = "1=2";
                 }
-                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                query = new Select(report.getAllColumns())
-                    .where(selection)
-                    .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
+                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity(), getAccountFilterSelection());
+                String reportSql = buildIncomeVsExpensesQuery(report, selection);
+                query = new Select().where(reportSql);
 
-                return new MmxCursorLoader(getActivity(), report.getUri(), query);
+                return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
 
             case ID_LOADER_YEARS:
                 QueryMobileData mobileData = new QueryMobileData(getContext());
@@ -266,6 +269,13 @@ public class IncomeVsExpensesListFragment
 
     public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
+        if (menu.findItem(R.id.menu_account_filter) == null) {
+            inflater.inflate(R.menu.menu_report_account_filter, menu);
+        }
+        MenuItem selectedFilter = menu.findItem(getAccountFilterMode());
+        if (selectedFilter != null) {
+            selectedFilter.setChecked(true);
+        }
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
@@ -287,9 +297,69 @@ public class IncomeVsExpensesListFragment
             showChart();
         } else if (item.getItemId() == R.id.menu_period) {
             showDialogYears();
+        } else if (isAccountFilterMenuItem(item.getItemId())) {
+            item.setChecked(true);
+            saveAccountFilterMode(item.getItemId());
+            if (item.getItemId() == R.id.menu_account_filter_custom) {
+                showAccountSelectionDialog();
+            } else {
+                startLoader();
+            }
+            return true;
         }
 
         return false;
+    }
+
+    private boolean isAccountFilterMenuItem(int itemId) {
+        return AccountFilterSupport.isAccountFilterMenuItem(itemId);
+    }
+
+    private int getAccountFilterMode() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        return AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
+    }
+
+    private void saveAccountFilterMode(int mode) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, mode);
+    }
+
+    private String getAccountFilterSelection() {
+        int mode = getAccountFilterMode();
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        List<Long> selectedIds = AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
+        return AccountFilterSupport.getSelectionForAccountIdColumn(mode, selectedIds, "TX.ACCOUNTID");
+    }
+
+    private void showAccountSelectionDialog() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        List<Long> selected = AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
+        AccountFilterSupport.showAccountSelectionDialog(requireContext(), selected, selectedIds -> {
+            AccountFilterSupport.saveSelectedAccountIds(settings, PREF_FILTER_CUSTOM, selectedIds);
+            startLoader();
+        });
+    }
+
+    private String buildIncomeVsExpensesQuery(QueryReportIncomeVsExpenses report, String selection) {
+        StringBuilder sql = new StringBuilder("SELECT ");
+        String[] columns = report.getAllColumns();
+        for (int i = 0; i < columns.length; i++) {
+            if (i > 0) {
+                sql.append(", ");
+            }
+            sql.append(columns[i]);
+        }
+        sql.append(" FROM (").append(report.getSource()).append(") T");
+        if (!TextUtils.isEmpty(selection)) {
+            sql.append(" WHERE ").append(selection);
+        }
+        sql.append(" ORDER BY ")
+                .append(IncomeVsExpenseReportEntity.YEAR).append(" ").append(mSort)
+                .append(", ")
+                .append(IncomeVsExpenseReportEntity.Month).append(" ").append(mSort);
+
+        return sql.toString();
     }
 
     //
