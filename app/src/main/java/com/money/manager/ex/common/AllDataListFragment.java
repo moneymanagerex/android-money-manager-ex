@@ -332,6 +332,7 @@ public class AllDataListFragment
             String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
 
             //#2810: Transaction list order is inconsistent for transactions created on the same day
+            // if sort is null, then alwasy consider as DESC
             if (!TextUtils.isEmpty(sort)) {
                     sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC, " +
                             ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " DESC";
