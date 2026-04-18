@@ -907,15 +907,15 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                         .color(iconColor)));
-        // CashFlow
-        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_cashflow)
-                .withText(getString(R.string.menu_report_cashflow))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                        .color(iconColor)));
         // summary of accounts
         childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_accounts)
             .withText(getString(R.string.menu_report_summary_of_accounts))
             .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                .color(iconColor)));
+        // CashFlow
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_cashflow)
+            .withText(getString(R.string.menu_report_cashflow))
+            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_show_chart)
                 .color(iconColor)));
 
         childItems.add(childReports);
