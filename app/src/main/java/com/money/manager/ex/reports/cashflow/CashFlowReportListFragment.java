@@ -228,6 +228,9 @@ public class CashFlowReportListFragment
         for (int x = 0; x < 31 * monthInAdvance; x++) {
             graphValue.add(null);
         }
+        if (!graphValue.isEmpty()) {
+            graphValue.set(0, totalAmount);
+        }
 
         Date olderDate = MmxDate.newDate().toDate();
         // copy to matrix cursor
@@ -305,7 +308,7 @@ public class CashFlowReportListFragment
 
     @Override
     public String getSubTitle() {
-        return monthInAdvance + " month view";
+        return getString(R.string.menu_cashflow_24_months).replace("24", String.valueOf(monthInAdvance));
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -331,6 +334,9 @@ public class CashFlowReportListFragment
                 } else {
                     adapter.swapCursor(matrixCursor);
                     adapter.notifyDataSetChanged();
+
+                    buildChartInfo();
+
                     getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -339,7 +345,7 @@ public class CashFlowReportListFragment
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //                            if (cursorPosition != null ) {
-                              if ( chart != null ) {
+                              if ( chart != null && chart.getData() != null && firstVisibleItem >= 0 && firstVisibleItem < dayPosition.size() ) {
 //                                Timber.d("Position: %d",firstVisibleItem);
 //                                chart.getXAxis().removeLimitLine(cursorPosition);
                                 int pos = dayPosition.get(firstVisibleItem);
@@ -352,7 +358,6 @@ public class CashFlowReportListFragment
                             }
                         }
                     });
-                    buildChartInfo();
                 }
                 setListShown(true);
             });
