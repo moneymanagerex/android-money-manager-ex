@@ -27,6 +27,23 @@
     </item>
 
     <item
+        android:id="@+id/menu_group_by"
+        android:title="@string/group_by"
+        app:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_group_by_account_type"
+                    android:title="@string/account_type"
+                    android:checked="true" />
+                <item
+                    android:id="@+id/menu_group_by_account"
+                    android:title="@string/account" />
+            </group>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/menu_summary_accounts"
         android:icon="@drawable/ic_action_settings_dark"
         android:title="@string/settings"
