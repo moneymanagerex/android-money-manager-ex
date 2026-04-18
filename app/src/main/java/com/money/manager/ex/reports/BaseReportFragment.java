@@ -65,6 +65,11 @@ public abstract class BaseReportFragment
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
+    @Override
+    protected boolean isFabAutoToggleEnabled() {
+        return false;
+    }
+
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
