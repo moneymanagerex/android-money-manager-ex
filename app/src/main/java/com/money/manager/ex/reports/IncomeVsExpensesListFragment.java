@@ -305,14 +305,6 @@ public class IncomeVsExpensesListFragment
         return year + "-" + month;
     }
 
-    private boolean isBefore(int year, int month, int compareYear, int compareMonth) {
-        return year < compareYear || (year == compareYear && month < compareMonth);
-    }
-
-    private boolean isAfter(int year, int month, int compareYear, int compareMonth) {
-        return year > compareYear || (year == compareYear && month > compareMonth);
-    }
-
     private static class MonthValues {
         double income;
         double expenses;
