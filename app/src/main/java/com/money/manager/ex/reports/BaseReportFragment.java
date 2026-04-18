@@ -16,15 +16,12 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
@@ -34,26 +31,19 @@ import androidx.lifecycle.Lifecycle;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.Lazy;
 import timber.log.Timber;
 
 public abstract class BaseReportFragment
@@ -66,21 +56,12 @@ public abstract class BaseReportFragment
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
 
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
 
     protected static final int ACCOUNT_FILTER_DEFAULT_MODE = R.id.menu_account_filter_open;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
