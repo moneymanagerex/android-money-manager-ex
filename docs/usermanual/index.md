@@ -57,7 +57,7 @@ Built-in reports allow you to see information regarding your expenses, such as:
 - **Category**: shows the amount for each category
 - **Income and Expenses**: shows monthly income and expenses
 - **Cash-flow**: this report shows your future cash flow based on scheduled transactions
-- **Summary of Accounts**: shows a month-by-month balance summary grouped by account type (with total), with period selection, sort order, account filters (open, favorite, custom), and chart view.
+- **Summary of Accounts**: shows a month-by-month balance summary grouped by account types or accounts (with total), with period selection, sort order, account filters (open, favorite, custom), and chart view.
 
 ### General Report
 
