@@ -331,6 +331,9 @@ public class CashFlowReportListFragment
                 } else {
                     adapter.swapCursor(matrixCursor);
                     adapter.notifyDataSetChanged();
+
+                    buildChartInfo();
+
                     getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -339,7 +342,7 @@ public class CashFlowReportListFragment
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //                            if (cursorPosition != null ) {
-                              if ( chart != null ) {
+                              if ( chart != null && chart.getData() != null && firstVisibleItem >= 0 && firstVisibleItem < dayPosition.size() ) {
 //                                Timber.d("Position: %d",firstVisibleItem);
 //                                chart.getXAxis().removeLimitLine(cursorPosition);
                                 int pos = dayPosition.get(firstVisibleItem);
@@ -352,7 +355,6 @@ public class CashFlowReportListFragment
                             }
                         }
                     });
-                    buildChartInfo();
                 }
                 setListShown(true);
             });
