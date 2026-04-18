@@ -228,6 +228,9 @@ public class CashFlowReportListFragment
         for (int x = 0; x < 31 * monthInAdvance; x++) {
             graphValue.add(null);
         }
+        if (!graphValue.isEmpty()) {
+            graphValue.set(0, totalAmount);
+        }
 
         Date olderDate = MmxDate.newDate().toDate();
         // copy to matrix cursor
