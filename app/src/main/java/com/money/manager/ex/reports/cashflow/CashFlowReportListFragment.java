@@ -305,7 +305,7 @@ public class CashFlowReportListFragment
 
     @Override
     public String getSubTitle() {
-        return monthInAdvance + " month view";
+        return getString(R.string.menu_cashflow_24_months).replace("24", String.valueOf(monthInAdvance));
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
