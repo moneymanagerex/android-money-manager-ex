@@ -219,26 +219,6 @@ public class PayeeReportFragment
         return super.old_onOptionsItemSelected(item);
     }
 
-    @Override
-    protected boolean isAccountFilterEnabled() {
-        return true;
-    }
-
-    @Override
-    protected boolean isPeriodPickerActionVisible() {
-        return true;
-    }
-
-    @Override
-    protected String getAccountFilterModePrefKey() {
-        return "PayeesFilterMode";
-    }
-
-    @Override
-    protected String getAccountFilterCustomPrefKey() {
-        return "PayeesFilterCustom";
-    }
-
     public void showChart() {
         PayeeReportAdapter adapter = (PayeeReportAdapter) getListAdapter();
         if (adapter == null) return;

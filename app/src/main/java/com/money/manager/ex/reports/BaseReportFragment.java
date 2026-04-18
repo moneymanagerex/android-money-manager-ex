@@ -334,11 +334,11 @@ public abstract class BaseReportFragment
     }
 
     protected boolean isAccountFilterEnabled() {
-        return false;
+        return true;
     }
 
     protected boolean isPeriodPickerActionVisible() {
-        return false;
+        return true;
     }
 
     protected String getAccountFilterModePrefKey() {
