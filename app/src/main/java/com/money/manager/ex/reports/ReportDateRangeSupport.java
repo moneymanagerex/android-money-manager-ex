@@ -45,50 +45,75 @@ public final class ReportDateRangeSupport {
     }
 
     public static DateRange resolveDateRange(Context context, int itemId) {
+        switch (itemId) {
+            case R.id.menu_current_month:
+                return resolveCurrentMonthRange();
+            case R.id.menu_last_month:
+                return resolveLastMonthRange();
+            case R.id.menu_last_30_days:
+                return resolveLast30DaysRange();
+            case R.id.menu_current_year:
+                return resolveCurrentYearRange();
+            case R.id.menu_last_year:
+                return resolveLastYearRange();
+            case R.id.menu_current_fin_year:
+                return resolveFinancialYearRange(context, false);
+            case R.id.menu_last_fin_year:
+                return resolveFinancialYearRange(context, true);
+            default:
+                return null;
+        }
+    }
+
+    private static DateRange resolveCurrentMonthRange() {
         MmxDate dateTime = MmxDate.newDate();
+        return new DateRange(dateTime.firstDayOfMonth().toDate(), dateTime.lastDayOfMonth().toDate());
+    }
 
-        if (itemId == R.id.menu_current_month) {
-            return new DateRange(dateTime.firstDayOfMonth().toDate(), dateTime.lastDayOfMonth().toDate());
-        }
-        if (itemId == R.id.menu_last_month) {
-            MmxDate lastMonth = dateTime.minusMonths(1);
-            return new DateRange(lastMonth.firstDayOfMonth().toDate(), lastMonth.lastDayOfMonth().toDate());
-        }
-        if (itemId == R.id.menu_last_30_days) {
-            Date fromDate = MmxDate.newDate().minusDays(30).toDate();
-            Date toDate = MmxDate.newDate().toDate();
-            return new DateRange(fromDate, toDate);
-        }
-        if (itemId == R.id.menu_current_year) {
-            return new DateRange(dateTime.firstMonthOfYear().firstDayOfMonth().toDate(),
-                    dateTime.lastMonthOfYear().lastDayOfMonth().toDate());
-        }
-        if (itemId == R.id.menu_last_year) {
-            MmxDate lastYear = dateTime.minusYears(1);
-            return new DateRange(lastYear.firstMonthOfYear().firstDayOfMonth().toDate(),
-                    lastYear.lastMonthOfYear().lastDayOfMonth().toDate());
-        }
-        if (itemId == R.id.menu_current_fin_year || itemId == R.id.menu_last_fin_year) {
-            InfoService infoService = new InfoService(context);
-            int financialYearStartDay = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1")) - 1;
-            if (financialYearStartMonth < 0) {
-                financialYearStartMonth = 0;
-            }
+    private static DateRange resolveLastMonthRange() {
+        MmxDate lastMonth = MmxDate.newDate().minusMonths(1);
+        return new DateRange(lastMonth.firstDayOfMonth().toDate(), lastMonth.lastDayOfMonth().toDate());
+    }
 
-            MmxDate fiscalStart = MmxDate.newDate();
-            fiscalStart.setDate(financialYearStartDay);
-            fiscalStart.setMonth(financialYearStartMonth);
-            if (fiscalStart.toDate().after(dateTime.toDate())) {
-                fiscalStart.minusYears(1);
-            }
-            if (itemId == R.id.menu_last_fin_year) {
-                fiscalStart.minusYears(1);
-            }
-            return new DateRange(fiscalStart.toDate(), fiscalStart.addYear(1).minusDays(1).toDate());
+    private static DateRange resolveLast30DaysRange() {
+        Date fromDate = MmxDate.newDate().minusDays(30).toDate();
+        Date toDate = MmxDate.newDate().toDate();
+        return new DateRange(fromDate, toDate);
+    }
+
+    private static DateRange resolveCurrentYearRange() {
+        MmxDate dateTime = MmxDate.newDate();
+        return new DateRange(dateTime.firstMonthOfYear().firstDayOfMonth().toDate(),
+                dateTime.lastMonthOfYear().lastDayOfMonth().toDate());
+    }
+
+    private static DateRange resolveLastYearRange() {
+        MmxDate lastYear = MmxDate.newDate().minusYears(1);
+        return new DateRange(lastYear.firstMonthOfYear().firstDayOfMonth().toDate(),
+                lastYear.lastMonthOfYear().lastDayOfMonth().toDate());
+    }
+
+    private static DateRange resolveFinancialYearRange(Context context, boolean previousFinancialYear) {
+        InfoService infoService = new InfoService(context);
+        int financialYearStartDay = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
+        int financialYearStartMonth = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1")) - 1;
+        if (financialYearStartMonth < 0) {
+            financialYearStartMonth = 0;
         }
 
-        return null;
+        MmxDate fiscalStart = MmxDate.newDate();
+        MmxDate today = MmxDate.newDate();
+        fiscalStart.setDate(financialYearStartDay);
+        fiscalStart.setMonth(financialYearStartMonth);
+
+        if (fiscalStart.toDate().after(today.toDate())) {
+            fiscalStart.minusYears(1);
+        }
+        if (previousFinancialYear) {
+            fiscalStart.minusYears(1);
+        }
+
+        return new DateRange(fiscalStart.toDate(), fiscalStart.addYear(1).minusDays(1).toDate());
     }
 
     public static String buildWhereClause(Date fromDate, Date toDate, String dateColumn) {
