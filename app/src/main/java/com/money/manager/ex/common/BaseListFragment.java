@@ -100,6 +100,8 @@ public abstract class BaseListFragment
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+
                 if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
                     // Place an action bar item for searching.
                     final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
@@ -130,7 +132,6 @@ public abstract class BaseListFragment
 
                     formatter.format(searchView);
                 }
-                old_onCreateOptionsMenu(menu, menuInflater);
             }
 
             @Override

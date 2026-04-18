@@ -640,7 +640,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">Všetky účty</string>
+    <string name="menu_account_filter_all">Všetky účty</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

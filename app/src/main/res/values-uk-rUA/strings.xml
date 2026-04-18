@@ -720,7 +720,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">Всі рахунки</string>
+    <string name="menu_account_filter_all">Всі рахунки</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

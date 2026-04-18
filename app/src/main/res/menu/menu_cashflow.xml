@@ -27,17 +27,17 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/menu_cashflow_all"
-                    android:title="@string/menu_cashflow_all" />
+                    android:id="@+id/menu_account_filter_all"
+                    android:title="@string/menu_account_filter_all" />
                 <item
-                    android:id="@+id/menu_cashflow_open"
-                    android:title="@string/menu_cashflow_open" />
+                    android:id="@+id/menu_account_filter_open"
+                    android:title="@string/menu_account_filter_open" />
                 <item
-                    android:id="@+id/menu_cashflow_favorite"
-                    android:title="@string/menu_cashflow_favorite" />
+                    android:id="@+id/menu_account_filter_favorite"
+                    android:title="@string/menu_account_filter_favorite" />
                 <item
-                    android:id="@+id/menu_cashflow_custom"
-                    android:title="@string/menu_cashflow_custom" />
+                    android:id="@+id/menu_account_filter_custom"
+                    android:title="@string/menu_account_filter_custom" />
             </group>
             <item
                 android:id="@+id/menu_cashflow_24_months"

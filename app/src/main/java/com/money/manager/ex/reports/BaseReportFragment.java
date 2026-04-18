@@ -39,14 +39,19 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -69,6 +74,8 @@ public abstract class BaseReportFragment
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
+
+    protected static final int ACCOUNT_FILTER_DEFAULT_MODE = R.id.menu_account_filter_open;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +120,24 @@ public abstract class BaseReportFragment
                 // move into original onCreateMenu
                 menuInflater.inflate(R.menu.menu_report, menu);
                 menuInflater.inflate(R.menu.menu_period_picker, menu);
+
+                if (isPeriodPickerActionVisible()) {
+                    MenuItem periodItem = menu.findItem(R.id.menu_period);
+                    if (periodItem != null) {
+                        periodItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    }
+                }
+
+                if (isAccountFilterEnabled() && menu.findItem(R.id.menu_account_filter) == null) {
+                    menuInflater.inflate(R.menu.menu_report_account_filter, menu);
+
+                    int selectedMode = getAccountFilterMode();
+                    MenuItem selectedItem = menu.findItem(selectedMode);
+                    if (selectedItem != null) {
+                        selectedItem.setChecked(true);
+                    }
+                }
+
                 //checked item
                 MenuItem item = menu.findItem(mItemSelected);
                 if (item != null) {
@@ -127,6 +152,18 @@ public abstract class BaseReportFragment
                 MmxDate dateTime = MmxDate.newDate();
 
                 int itemId = menuItem.getItemId();
+
+                if (isAccountFilterEnabled() && isAccountFilterMenuItem(itemId)) {
+                    menuItem.setChecked(true);
+                    saveAccountFilterMode(itemId);
+
+                    if (itemId == R.id.menu_account_filter_custom) {
+                        showAccountSelectionDialog();
+                    } else {
+                        onAccountFilterChanged();
+                    }
+                    return true;
+                }
 
                 if (itemId == R.id.menu_current_month) {
                     mDateFrom = dateTime.firstDayOfMonth().toDate();
@@ -294,6 +331,175 @@ public abstract class BaseReportFragment
 
     protected String getWhereClause() {
         return mWhereClause;
+    }
+
+    protected boolean isAccountFilterEnabled() {
+        return false;
+    }
+
+    protected boolean isPeriodPickerActionVisible() {
+        return false;
+    }
+
+    protected String getAccountFilterModePrefKey() {
+        return getClass().getSimpleName() + ":FilterMode";
+    }
+
+    protected String getAccountFilterCustomPrefKey() {
+        return getClass().getSimpleName() + ":FilterCustom";
+    }
+
+    protected String getAccountFilterSelection(String accountIdColumn) {
+        AccountFilter filter = getAccountFilter();
+        if (filter.mode == R.id.menu_account_filter_all) {
+            return "";
+        }
+        if (filter.mode == R.id.menu_account_filter_open) {
+            return accountIdColumn
+                    + " IN (SELECT ACCOUNTID FROM ACCOUNTLIST_V1 WHERE lower(STATUS) = 'open')";
+        }
+        if (filter.mode == R.id.menu_account_filter_favorite) {
+            return accountIdColumn
+                    + " IN (SELECT ACCOUNTID FROM ACCOUNTLIST_V1 WHERE lower(FAVORITEACCT) = 'true')";
+        }
+        if (filter.mode == R.id.menu_account_filter_custom) {
+            if (filter.customAccountIds.isEmpty()) {
+                return "1=2";
+            }
+            return accountIdColumn + " IN (" + joinIds(filter.customAccountIds) + ")";
+        }
+        return "";
+    }
+
+    protected void onAccountFilterChanged() {
+        startLoader(new Bundle());
+    }
+
+    private boolean isAccountFilterMenuItem(int itemId) {
+        return itemId == R.id.menu_account_filter_all
+            || itemId == R.id.menu_account_filter_open
+            || itemId == R.id.menu_account_filter_favorite
+            || itemId == R.id.menu_account_filter_custom;
+    }
+
+    private int getAccountFilterMode() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        String storedValue = settings.get(getAccountFilterModePrefKey(), Integer.toString(ACCOUNT_FILTER_DEFAULT_MODE));
+        try {
+            return Integer.parseInt(storedValue);
+        } catch (Exception e) {
+            return ACCOUNT_FILTER_DEFAULT_MODE;
+        }
+    }
+
+    private void saveAccountFilterMode(int mode) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(getAccountFilterModePrefKey(), Integer.toString(mode));
+    }
+
+    private AccountFilter getAccountFilter() {
+        int mode = getAccountFilterMode();
+        List<Long> customAccountIds = parseSelectedAccountIds();
+        return new AccountFilter(mode, customAccountIds);
+    }
+
+    private void showAccountSelectionDialog() {
+        ArrayList<Long> selected = new ArrayList<>(parseSelectedAccountIds());
+
+        QueryAccountBills queryAccountBills = new QueryAccountBills(requireContext());
+        Cursor cursor = requireContext().getContentResolver().query(
+                queryAccountBills.getUri(),
+                null,
+                null,
+                null,
+                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
+
+        if (cursor == null) {
+            return;
+        }
+
+        final ArrayList<Long> accountIds = new ArrayList<>();
+        final ArrayList<String> accountNames = new ArrayList<>();
+        try {
+            while (cursor.moveToNext()) {
+                long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
+                String accountName = cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME));
+                accountIds.add(accountId);
+                accountNames.add(accountName);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        final boolean[] checkedItems = new boolean[accountIds.size()];
+        for (int i = 0; i < accountIds.size(); i++) {
+            checkedItems[i] = selected.contains(accountIds.get(i));
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.menu_account_filter_custom);
+        builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
+                (dialog, which, isChecked) -> checkedItems[which] = isChecked);
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            ArrayList<Long> selectedIds = new ArrayList<>();
+            for (int i = 0; i < accountIds.size(); i++) {
+                if (checkedItems[i]) {
+                    selectedIds.add(accountIds.get(i));
+                }
+            }
+            saveSelectedAccountIds(selectedIds);
+            onAccountFilterChanged();
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+    }
+
+    private ArrayList<Long> parseSelectedAccountIds() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        String raw = settings.get(getAccountFilterCustomPrefKey(), "");
+        ArrayList<Long> result = new ArrayList<>();
+        if (raw.trim().isEmpty()) {
+            return result;
+        }
+
+        String[] ids = raw.split(",");
+        for (String id : ids) {
+            if (id.trim().isEmpty()) {
+                continue;
+            }
+            try {
+                result.add(Long.parseLong(id.trim()));
+            } catch (Exception e) {
+                Timber.w(e, "Invalid account id in filter: %s", id);
+            }
+        }
+        return result;
+    }
+
+    private void saveSelectedAccountIds(List<Long> ids) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(getAccountFilterCustomPrefKey(), joinIds(ids));
+    }
+
+    private String joinIds(List<Long> ids) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < ids.size(); i++) {
+            if (i > 0) {
+                builder.append(',');
+            }
+            builder.append(ids.get(i));
+        }
+        return builder.toString();
+    }
+
+    private static final class AccountFilter {
+        final int mode;
+        final List<Long> customAccountIds;
+
+        AccountFilter(int mode, List<Long> customAccountIds) {
+            this.mode = mode;
+            this.customAccountIds = customAccountIds;
+        }
     }
 
     private void showDialogCustomDates() {

@@ -571,7 +571,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">Vsi računi</string>
+    <string name="menu_account_filter_all">Vsi računi</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

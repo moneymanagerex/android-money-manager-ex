@@ -526,17 +526,17 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private boolean isAccountFilterMenuItem(int itemId) {
-        return itemId == R.id.menu_summary_accounts_all
-                || itemId == R.id.menu_summary_accounts_open
-                || itemId == R.id.menu_summary_accounts_favorite
-                || itemId == R.id.menu_summary_accounts_custom;
+        return itemId == R.id.menu_account_filter_all
+            || itemId == R.id.menu_account_filter_open
+            || itemId == R.id.menu_account_filter_favorite
+            || itemId == R.id.menu_account_filter_custom;
     }
 
     private void handleAccountFilterItemSelected(int itemId, @NonNull MenuItem item) {
         item.setChecked(true);
         saveFilterMode(itemId);
 
-        if (itemId == R.id.menu_summary_accounts_custom) {
+        if (itemId == R.id.menu_account_filter_custom) {
             showAccountSelectionDialog();
             return;
         }
@@ -687,11 +687,11 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private int getFilterMode() {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        String storedValue = settings.get(PREF_FILTER_MODE, Integer.toString(R.id.menu_summary_accounts_open));
+        String storedValue = settings.get(PREF_FILTER_MODE, Integer.toString(R.id.menu_account_filter_open));
         try {
             return Integer.parseInt(storedValue);
         } catch (Exception e) {
-            return R.id.menu_summary_accounts_open;
+            return R.id.menu_account_filter_open;
         }
     }
 
@@ -726,16 +726,16 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private String getAccountWhereClause(AccountFilter filter) {
-        if (filter.mode == R.id.menu_summary_accounts_all) {
+        if (filter.mode == R.id.menu_account_filter_all) {
             return "";
         }
-        if (filter.mode == R.id.menu_summary_accounts_open) {
+        if (filter.mode == R.id.menu_account_filter_open) {
             return "WHERE lower(a.STATUS) = 'open'";
         }
-        if (filter.mode == R.id.menu_summary_accounts_favorite) {
+        if (filter.mode == R.id.menu_account_filter_favorite) {
             return "WHERE lower(a.FAVORITEACCT) = 'true'";
         }
-        if (filter.mode == R.id.menu_summary_accounts_custom) {
+        if (filter.mode == R.id.menu_account_filter_custom) {
             if (filter.customAccountIds.isEmpty()) {
                 return "WHERE 1=2";
             }
@@ -778,7 +778,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.menu_cashflow_custom);
+        builder.setTitle(R.string.menu_account_filter_custom);
         builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
                 (dialog, which, isChecked) -> checkedItems[which] = isChecked);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {

@@ -751,10 +751,10 @@
     <string name="local_file_change">Zdalny wskaźnik zmian pliku: </string>
     <string name="msg_uploading_overwrite">Przesyłanie nadpisze twoją zdalną wersję.\nCzy chcesz kontynuować?</string>
     <string name="msg_downloading_overwrite">Pobieranie nadpisze twoją zdalną wersję.\nCzy chcesz kontynuować?</string>
-    <string name="menu_cashflow_all">Wszystkie konta</string>
-    <string name="menu_cashflow_open">Otwarte Konta</string>
-    <string name="menu_cashflow_favorite">Ulubione konta</string>
-    <string name="menu_cashflow_custom">Wybierz konta</string>
+    <string name="menu_account_filter_all">Wszystkie konta</string>
+    <string name="menu_account_filter_open">Otwarte Konta</string>
+    <string name="menu_account_filter_favorite">Ulubione konta</string>
+    <string name="menu_account_filter_custom">Wybierz konta</string>
     <string name="cash_ledger">Księga kasowa</string>
     <!-- Merge -->
     <string name="merge_take_ours">Przechowuj lokalnie</string>

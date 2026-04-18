@@ -273,18 +273,18 @@ public class CashFlowReportListFragment
 
     private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
-        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_account_filter_open);
         String accountCustomFilters = "";
-        if ( accountFilter == R.id.menu_cashflow_custom ) {
+        if ( accountFilter == R.id.menu_account_filter_custom ) {
             accountCustomFilters = settings.get("AccountFilterCustom", "");
         }
         // compose whereClause
         String where = "";
-        if (accountFilter == R.id.menu_cashflow_open) {
+        if (accountFilter == R.id.menu_account_filter_open) {
             where += "LOWER(" + QueryAccountBills.STATUS + ") = 'open'";
-        } else if (accountFilter == R.id.menu_cashflow_favorite) {
+        } else if (accountFilter == R.id.menu_account_filter_favorite) {
             where += "LOWER(" + QueryAccountBills.FAVORITEACCT + ") = 'true'";
-        } else if (accountFilter == R.id.menu_cashflow_custom) {
+        } else if (accountFilter == R.id.menu_account_filter_custom) {
             where += QueryAccountBills.ACCOUNTID + " IN ( " + accountCustomFilters + " )";
         }
 
@@ -527,7 +527,7 @@ public class CashFlowReportListFragment
             menu.findItem(R.id.menu_cashflow_24_months).setChecked(true);
         }
 
-        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_account_filter_open);
         if ( menu.findItem(accountFilter) != null ) {
             menu.findItem(accountFilter).setChecked(true);
         }
@@ -537,7 +537,7 @@ public class CashFlowReportListFragment
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle accounts filter
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
-//        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+//        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_account_filter_open);
         int itemId = item.getItemId();
         if (itemId == R.id.menu_cashflow_24_months) {
             monthInAdvance = (item.isChecked()) ? 12 : 24;
@@ -545,10 +545,10 @@ public class CashFlowReportListFragment
             settings.set(R.id.menu_cashflow_24_months, item.isChecked());
             getActivity().recreate();
             return true;
-        } else if (itemId == R.id.menu_cashflow_all || itemId == R.id.menu_cashflow_open || itemId == R.id.menu_cashflow_favorite || itemId == R.id.menu_cashflow_custom) {
+        } else if (itemId == R.id.menu_account_filter_all || itemId == R.id.menu_account_filter_open || itemId == R.id.menu_account_filter_favorite || itemId == R.id.menu_account_filter_custom) {
             item.setChecked(true);
             settings.set(R.menu.menu_cashflow, item.getItemId());
-            if (item.getItemId() == R.id.menu_cashflow_custom) {
+            if (item.getItemId() == R.id.menu_account_filter_custom) {
                 // call popup
                 String where = "";
                 if (settings.getViewOpenAccounts()) {

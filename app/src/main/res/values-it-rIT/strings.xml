@@ -801,10 +801,10 @@
     <string name="local_file_change">Indicatore di modifiche file locali: </string>
     <string name="msg_uploading_overwrite">Il caricamento sovrascriverà la tua versione remota.\nVuoi continuare?</string>
     <string name="msg_downloading_overwrite">Il download sovrascriverà la tua versione locale.\nVuoi continuare?</string>
-    <string name="menu_cashflow_all">Tutti i conti</string>
-    <string name="menu_cashflow_open">Conti aperti</string>
-    <string name="menu_cashflow_favorite">Conti Preferiti</string>
-    <string name="menu_cashflow_custom">Seleziona conti&#8230;</string>
+    <string name="menu_account_filter_all">Tutti i conti</string>
+    <string name="menu_account_filter_open">Conti aperti</string>
+    <string name="menu_account_filter_favorite">Conti Preferiti</string>
+    <string name="menu_account_filter_custom">Seleziona conti&#8230;</string>
     <string name="cash_ledger">Libro Cassa</string>
     <!-- Merge -->
     <string name="merge_take_ours">Mantieni versione locale</string>

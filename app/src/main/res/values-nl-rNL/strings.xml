@@ -805,10 +805,10 @@
     <string name="local_file_change">Indicator voor lokale bestandswijzigingen: </string>
     <string name="msg_uploading_overwrite">Uploaden overschrijft uw externe versie.\nWilt u doorgaan?</string>
     <string name="msg_downloading_overwrite">Downloaden overschrijft uw lokale versie.\nWilt u doorgaan?</string>
-    <string name="menu_cashflow_all">Alle rekeningen</string>
-    <string name="menu_cashflow_open">Account openen</string>
-    <string name="menu_cashflow_favorite">Favoriete rekening</string>
-    <string name="menu_cashflow_custom">Selecteer rekeningen...</string>
+    <string name="menu_account_filter_all">Alle rekeningen</string>
+    <string name="menu_account_filter_open">Account openen</string>
+    <string name="menu_account_filter_favorite">Favoriete rekening</string>
+    <string name="menu_account_filter_custom">Selecteer rekeningen...</string>
     <string name="cash_ledger">Kasboek</string>
     <!-- Merge -->
     <string name="merge_take_ours">Lokale gegevens behouden</string>

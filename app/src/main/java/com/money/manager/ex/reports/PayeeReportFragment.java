@@ -177,6 +177,11 @@ public class PayeeReportFragment
                 QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
                 QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
 
+        String accountFilterSelection = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
+        if (!TextUtils.isEmpty(accountFilterSelection)) {
+            selection += " AND " + accountFilterSelection;
+        }
+
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
@@ -205,11 +210,33 @@ public class PayeeReportFragment
 
     @Override
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_chart) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_chart) {
             showChart();
             return true;
         }
+
         return super.old_onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected boolean isAccountFilterEnabled() {
+        return true;
+    }
+
+    @Override
+    protected boolean isPeriodPickerActionVisible() {
+        return true;
+    }
+
+    @Override
+    protected String getAccountFilterModePrefKey() {
+        return "PayeesFilterMode";
+    }
+
+    @Override
+    protected String getAccountFilterCustomPrefKey() {
+        return "PayeesFilterCustom";
     }
 
     public void showChart() {

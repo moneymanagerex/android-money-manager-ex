@@ -579,10 +579,10 @@
     <string name="menu_show_inactive">عرض الغير نشط</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">كافة الحسابات</string>
-    <string name="menu_cashflow_open">الحسابات المفتوحة</string>
-    <string name="menu_cashflow_favorite">الحسابات المفضلة</string>
-    <string name="menu_cashflow_custom">حدد الحسابات&#8230;</string>
+    <string name="menu_account_filter_all">كافة الحسابات</string>
+    <string name="menu_account_filter_open">الحسابات المفتوحة</string>
+    <string name="menu_account_filter_favorite">الحسابات المفضلة</string>
+    <string name="menu_account_filter_custom">حدد الحسابات&#8230;</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

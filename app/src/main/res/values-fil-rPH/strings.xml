@@ -675,7 +675,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">Lahat ng account</string>
+    <string name="menu_account_filter_all">Lahat ng account</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->
