@@ -146,11 +146,20 @@ public class IncomeVsExpensesListFragment
     }
 
     private Cursor buildDisplayCursor(Cursor sourceCursor) {
-        Map<String, MonthValues> sourceValues = new HashMap<>();
-        Integer minYear = null;
-        Integer minMonth = null;
-        Integer maxYear = null;
-        Integer maxMonth = null;
+        SourceMonthData sourceData = extractSourceMonthData(sourceCursor);
+        MonthRange range = resolveDisplayRange(sourceData);
+        if (range == null) {
+            return sourceCursor;
+        }
+
+        ArrayList<RowValues> rows = buildMonthRows(sourceData.valuesByMonth, range);
+        appendYearSubtotals(rows);
+        sortRows(rows);
+        return toMatrixCursor(rows);
+    }
+
+    private SourceMonthData extractSourceMonthData(Cursor sourceCursor) {
+        SourceMonthData sourceData = new SourceMonthData();
 
         sourceCursor.moveToPosition(-1);
         while (sourceCursor.moveToNext()) {
@@ -164,70 +173,79 @@ public class IncomeVsExpensesListFragment
             monthValues.income = sourceCursor.getDouble(sourceCursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Income));
             monthValues.expenses = sourceCursor.getDouble(sourceCursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Expenses));
             monthValues.transfers = sourceCursor.getDouble(sourceCursor.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.Transfers));
-            sourceValues.put(getMonthKey(year, month), monthValues);
+            sourceData.valuesByMonth.put(getMonthKey(year, month), monthValues);
 
-            if (minYear == null || isBefore(year, month, minYear, minMonth)) {
-                minYear = year;
-                minMonth = month;
-            }
-            if (maxYear == null || isAfter(year, month, maxYear, maxMonth)) {
-                maxYear = year;
-                maxMonth = month;
-            }
+            sourceData.updateBounds(year, month);
         }
 
-        Calendar startMonth = Calendar.getInstance();
-        Calendar endMonth = Calendar.getInstance();
+        return sourceData;
+    }
 
+    private MonthRange resolveDisplayRange(SourceMonthData sourceData) {
         if (mDateFrom != null && mDateTo != null) {
-            startMonth.setTime(mDateFrom);
-            startMonth.set(Calendar.DAY_OF_MONTH, 1);
-
-            endMonth.setTime(mDateTo);
-            endMonth.set(Calendar.DAY_OF_MONTH, 1);
-
+            Calendar startMonth = calendarMonthFromDate(mDateFrom);
+            Calendar endMonth = calendarMonthFromDate(mDateTo);
             if (startMonth.after(endMonth)) {
                 Calendar temp = (Calendar) startMonth.clone();
                 startMonth = endMonth;
                 endMonth = temp;
             }
-        } else {
-            if (minYear == null || maxYear == null) {
-                return sourceCursor;
-            }
-
-            startMonth.clear();
-            startMonth.set(minYear, minMonth - 1, 1);
-
-            endMonth.clear();
-            endMonth.set(maxYear, maxMonth - 1, 1);
+            return new MonthRange(startMonth, endMonth);
         }
 
-        ArrayList<RowValues> rows = new ArrayList<>();
-        Map<Integer, MonthValues> subtotalByYear = new HashMap<>();
+        if (!sourceData.hasBounds()) {
+            return null;
+        }
 
-        Calendar monthIterator = (Calendar) startMonth.clone();
-        while (!monthIterator.after(endMonth)) {
+        Calendar startMonth = Calendar.getInstance();
+        startMonth.clear();
+        startMonth.set(sourceData.minYear, sourceData.minMonth - 1, 1);
+
+        Calendar endMonth = Calendar.getInstance();
+        endMonth.clear();
+        endMonth.set(sourceData.maxYear, sourceData.maxMonth - 1, 1);
+
+        return new MonthRange(startMonth, endMonth);
+    }
+
+    private Calendar calendarMonthFromDate(java.util.Date date) {
+        Calendar month = Calendar.getInstance();
+        month.setTime(date);
+        month.set(Calendar.DAY_OF_MONTH, 1);
+        return month;
+    }
+
+    private ArrayList<RowValues> buildMonthRows(Map<String, MonthValues> valuesByMonth, MonthRange range) {
+        ArrayList<RowValues> rows = new ArrayList<>();
+        Calendar monthIterator = (Calendar) range.startMonth.clone();
+
+        while (!monthIterator.after(range.endMonth)) {
             int year = monthIterator.get(Calendar.YEAR);
             int month = monthIterator.get(Calendar.MONTH) + 1;
-
-            MonthValues monthValues = sourceValues.get(getMonthKey(year, month));
+            MonthValues monthValues = valuesByMonth.get(getMonthKey(year, month));
             if (monthValues == null) {
                 monthValues = new MonthValues();
             }
 
             rows.add(new RowValues(year, month, monthValues.income, monthValues.expenses, monthValues.transfers));
+            monthIterator.add(Calendar.MONTH, 1);
+        }
 
-            MonthValues subtotal = subtotalByYear.get(year);
+        return rows;
+    }
+
+    private void appendYearSubtotals(ArrayList<RowValues> rows) {
+        Map<Integer, MonthValues> subtotalByYear = new HashMap<>();
+        for (RowValues row : rows) {
+            MonthValues subtotal = subtotalByYear.get(row.year);
             if (subtotal == null) {
                 subtotal = new MonthValues();
-                subtotalByYear.put(year, subtotal);
+                subtotalByYear.put(row.year, subtotal);
             }
-            subtotal.income += monthValues.income;
-            subtotal.expenses += monthValues.expenses;
-            subtotal.transfers += monthValues.transfers;
 
-            monthIterator.add(Calendar.MONTH, 1);
+            subtotal.income += row.income;
+            subtotal.expenses += row.expenses;
+            subtotal.transfers += row.transfers;
         }
 
         for (Map.Entry<Integer, MonthValues> entry : subtotalByYear.entrySet()) {
@@ -236,7 +254,9 @@ public class IncomeVsExpensesListFragment
             rows.add(new RowValues(year, (int) IncomeVsExpensesActivity.SUBTOTAL_MONTH,
                     subtotal.income, subtotal.expenses, subtotal.transfers));
         }
+    }
 
+    private void sortRows(ArrayList<RowValues> rows) {
         rows.sort((left, right) -> {
             int yearCompare = Integer.compare(left.year, right.year);
             if (yearCompare == 0) {
@@ -254,7 +274,9 @@ public class IncomeVsExpensesListFragment
                 return yearCompare;
             });
         }
+    }
 
+    private MatrixCursor toMatrixCursor(ArrayList<RowValues> rows) {
         MatrixCursor displayCursor = new MatrixCursor(new String[]{
                 "_id",
                 IncomeVsExpenseReportEntity.YEAR,
@@ -295,6 +317,40 @@ public class IncomeVsExpensesListFragment
         double income;
         double expenses;
         double transfers;
+    }
+
+    private static class SourceMonthData {
+        final Map<String, MonthValues> valuesByMonth = new HashMap<>();
+        Integer minYear;
+        Integer minMonth;
+        Integer maxYear;
+        Integer maxMonth;
+
+        void updateBounds(int year, int month) {
+            if (minYear == null || (year < minYear || (year == minYear && month < minMonth))) {
+                minYear = year;
+                minMonth = month;
+            }
+
+            if (maxYear == null || (year > maxYear || (year == maxYear && month > maxMonth))) {
+                maxYear = year;
+                maxMonth = month;
+            }
+        }
+
+        boolean hasBounds() {
+            return minYear != null && minMonth != null && maxYear != null && maxMonth != null;
+        }
+    }
+
+    private static class MonthRange {
+        final Calendar startMonth;
+        final Calendar endMonth;
+
+        MonthRange(Calendar startMonth, Calendar endMonth) {
+            this.startMonth = startMonth;
+            this.endMonth = endMonth;
+        }
     }
 
     private static class RowValues {
