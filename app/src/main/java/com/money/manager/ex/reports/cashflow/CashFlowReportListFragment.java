@@ -276,12 +276,12 @@ public class CashFlowReportListFragment
     private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
         int accountFilter = AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
-        List<Long> selectedCustomAccounts = AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
         // compose whereClause
         String where = AccountFilterSupport.getSelectionForAccountIdColumn(
-                accountFilter,
-                selectedCustomAccounts,
-                QueryAccountBills.ACCOUNTID);
+            accountFilter,
+            settings,
+            PREF_FILTER_CUSTOM,
+            QueryAccountBills.ACCOUNTID);
 
         QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
         selectedAccounts = new ArrayList<>();
@@ -543,11 +543,8 @@ public class CashFlowReportListFragment
             item.setChecked(true);
             AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, item.getItemId());
             if (item.getItemId() == R.id.menu_account_filter_custom) {
-                List<Long> selected = AccountFilterSupport.parseSelectedAccountIds(settings, PREF_FILTER_CUSTOM);
-                AccountFilterSupport.showAccountSelectionDialog(requireContext(), selected, selectedIds -> {
-                    AccountFilterSupport.saveSelectedAccountIds(settings, PREF_FILTER_CUSTOM, selectedIds);
-                    getActivity().recreate();
-                });
+                AccountFilterSupport.showAndPersistAccountSelectionDialog(
+                        requireContext(), settings, PREF_FILTER_CUSTOM, () -> getActivity().recreate());
                 return true;
             }
             getActivity().recreate();

@@ -104,6 +104,30 @@ public final class AccountFilterSupport {
         return "";
     }
 
+    public static String getSelectionForAccountIdColumn(int mode, LookAndFeelSettings settings,
+            String customPrefKey, String accountIdColumn) {
+        List<Long> selectedAccountIds = parseSelectedAccountIds(settings, customPrefKey);
+        return getSelectionForAccountIdColumn(mode, selectedAccountIds, accountIdColumn);
+    }
+
+    public static String getWhereClauseForAccountIdColumn(int mode, LookAndFeelSettings settings,
+            String customPrefKey, String accountIdColumn) {
+        String selection = getSelectionForAccountIdColumn(mode, settings, customPrefKey, accountIdColumn);
+        if (selection.trim().isEmpty()) {
+            return "";
+        }
+        return "WHERE " + selection;
+    }
+
+    public static void showAndPersistAccountSelectionDialog(Context context, LookAndFeelSettings settings,
+            String customPrefKey, Runnable onSelectionSaved) {
+        List<Long> selected = parseSelectedAccountIds(settings, customPrefKey);
+        showAccountSelectionDialog(context, selected, selectedIds -> {
+            saveSelectedAccountIds(settings, customPrefKey, selectedIds);
+            onSelectionSaved.run();
+        });
+    }
+
     public static void showAccountSelectionDialog(Context context, List<Long> selected,
             OnAccountsSelectedListener listener) {
         QueryAccountBills queryAccountBills = new QueryAccountBills(context);
