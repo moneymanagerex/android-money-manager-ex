@@ -312,6 +312,7 @@
     <string name="title_activity_general_report">Algemeen Rapport</string>
     <string name="menu_report_income_vs_expenses">Inkomsten vs Uitgaven</string>
     <string name="menu_report_cashflow">Cash Flow</string>
+    <string name="menu_report_summary_of_accounts">Samenvatting van rekeningen</string>
     <string name="total">Totaal</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sinds het begin</string>
@@ -503,10 +504,13 @@
     <string name="update_prices">Prijzen bijwerken</string>
     <string name="update_price">Prijs bijwerken</string>
     <string name="download_price">Prijs downloaden</string>
+    <string name="download_all_prices">Download alle prijzen</string>
     <string name="edit_price">Prijzen bewerken</string>
     <string name="price_updated">Prijzen bijgewerkt</string>
     <string name="all_prices_updated">Alle prijzen zijn bijgewerkt.</string>
     <string name="download_complete">Download voltooid.</string>
+    <string name="downloaded_price_for_symbol">Gedownload: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">Gedownloade %1$d/%2$d prijzen</string>
     <string name="confirm_price_download">Wilt u de aandelenprijzen online bijwerken?</string>
     <string name="starting_price_update">Bezig met downloaden prijzen, moment geduld alsjeblieft&#8230;</string>
     <string name="database_migrate_14_to_20">Database migreren van v1.4</string>
