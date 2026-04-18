@@ -56,18 +56,19 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Currency Symbol -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/currency_symbol" />
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/spinCurrencySymbol"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/currencies_code" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editCurrencySymbol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/currency_symbol"
+                    android:maxLength="3"
+                    android:inputType="textCapCharacters" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Unit / Cents Name -->
             <LinearLayout
@@ -206,7 +207,5 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <include layout="@layout/action_buttons" />
 
 </LinearLayout>

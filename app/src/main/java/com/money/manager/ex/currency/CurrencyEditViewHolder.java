@@ -17,7 +17,6 @@
 package com.money.manager.ex.currency;
 
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.money.manager.ex.R;
 
@@ -31,7 +30,7 @@ public class CurrencyEditViewHolder {
         CurrencyEditViewHolder holder = new CurrencyEditViewHolder();
 
         holder.edtCurrencyName = activity.findViewById(R.id.editTextCurrencyName);
-        holder.spinCurrencySymbol = activity.findViewById(R.id.spinCurrencySymbol);
+        holder.editCurrencySymbol = activity.findViewById(R.id.editCurrencySymbol);
         holder.edtUnitName = activity.findViewById(R.id.editTextUnitName);
         holder.edtCentsName = activity.findViewById(R.id.editTextCentsName);
         holder.edtPrefix = activity.findViewById(R.id.editTextPrefixSymbol);
@@ -46,6 +45,6 @@ public class CurrencyEditViewHolder {
 
     public EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix,
         edtDecimal, edtGroup, edtScale, edtConversion;
-    public Spinner spinCurrencySymbol;
+    public EditText editCurrencySymbol;
 
 }
