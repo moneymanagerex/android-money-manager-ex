@@ -333,15 +333,8 @@ public class AllDataListFragment
 
             //#2810: Transaction list order is inconsistent for transactions created on the same day
             if (!TextUtils.isEmpty(sort)) {
-                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
                     sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC, " +
                             ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " DESC";
-                }
-                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC, " +
-                            ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " ASC";
-                }
-
             }
 
             Select query = new Select(allData.getAllColumns())

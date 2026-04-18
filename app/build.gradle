@@ -59,6 +59,9 @@ android {
     }
 
     buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
         debug {
 //            applicationIdSuffix ".debug"
             versionNameSuffix "-debug-" + getCurrentBranch() + "-" + getVersionAsDate()
