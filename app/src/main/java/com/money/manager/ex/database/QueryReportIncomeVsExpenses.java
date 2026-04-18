@@ -33,6 +33,12 @@ public class QueryReportIncomeVsExpenses
         initialize(context, null);
     }
 
+    public QueryReportIncomeVsExpenses(Context context, String whereStatement) {
+        super("", DatasetType.QUERY, "report_income_vs_expenses");
+
+        initialize(context, whereStatement);
+    }
+
     @Override
     public String[] getAllColumns() {
         return new String[]{"0 AS _id",
@@ -45,14 +51,17 @@ public class QueryReportIncomeVsExpenses
 
     private void initialize(Context context, String whereStatement) {
         QueryMobileData mobileData = new QueryMobileData(context);
-        // add where statement
-        if(!TextUtils.isEmpty(whereStatement)) {
-            mobileData.setWhere(whereStatement);
-        }
         String mobileDataQuery = mobileData.getSource();
 
         // assemble the source statement by combining queries.
         String source = MmxFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
+
+        if (!TextUtils.isEmpty(whereStatement)) {
+            String baseWhere = "where not(mobiledata.status = 'V')";
+            String filteredWhere = "where (" + whereStatement + ") and not(mobiledata.status = 'V')";
+            source = source.replace(baseWhere, filteredWhere);
+        }
+
         source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileDataQuery);
         source = "(" + source + ") xxxx";
         this.setSource(source);
