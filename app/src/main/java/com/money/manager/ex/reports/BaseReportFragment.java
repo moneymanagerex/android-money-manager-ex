@@ -55,6 +55,7 @@ public abstract class BaseReportFragment
     protected static final String KEY_WHERE_CLAUSE = "PayeeReportFragment:WhereClause";
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
+    protected static final int ACCOUNT_FILTER_DEFAULT_MODE = R.id.menu_account_filter_open;
 
     @Override
     protected boolean isFabAutoToggleEnabled() {
@@ -65,8 +66,6 @@ public abstract class BaseReportFragment
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
-
-    protected static final int ACCOUNT_FILTER_DEFAULT_MODE = R.id.menu_account_filter_open;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
