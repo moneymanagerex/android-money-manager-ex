@@ -489,6 +489,7 @@
     <string name="title_activity_currency_chart">Wechselkursdiagramm</string>
     <string name="sort_by_ascending">Nach Jahr und Monat aufsteigend ordnen</string>
     <string name="sort_by_desceding">Nach Jahr und Monat absteigend ordnen</string>
+    <string name="group_by">Gruppiere nach</string>
     <string name="years">Jahre</string>
     <string name="select_the_years_to_be_displayed">Wählen Sie die anzuzeigenden Jahre</string>
     <string name="to_date">Bis heute</string>
