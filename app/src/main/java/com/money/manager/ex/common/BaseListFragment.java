@@ -74,23 +74,27 @@ public abstract class BaseListFragment
 
         setupFloatingActionButton(view);
 
-        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-            private boolean isFabVisible = true;
+        if (isFabAutoToggleEnabled()) {
+            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                private boolean isFabVisible = true;
 
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem > 0 && isFabVisible) {
-                    isFabVisible = false;
-                } else if (firstVisibleItem == 0 && !isFabVisible) {
-                    isFabVisible = true;
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
                 }
-                setFabVisible(isFabVisible);
-            }
-        });
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if (firstVisibleItem > 0 && isFabVisible) {
+                        isFabVisible = false;
+                    } else if (firstVisibleItem == 0 && !isFabVisible) {
+                        isFabVisible = true;
+                    }
+                    setFabVisible(isFabVisible);
+                }
+            });
+        } else {
+            setFabVisible(false);
+        }
     }
 
     private void setupMenuProviders() {
@@ -299,5 +303,9 @@ public abstract class BaseListFragment
                 }
             });
         }
+    }
+
+    protected boolean isFabAutoToggleEnabled() {
+        return true;
     }
 }
