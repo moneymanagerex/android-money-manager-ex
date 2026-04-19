@@ -197,6 +197,7 @@ public class PieChartFragment
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                // Intentionally empty: this fragment only intercepts toolbar home navigation.
             }
 
             @Override
