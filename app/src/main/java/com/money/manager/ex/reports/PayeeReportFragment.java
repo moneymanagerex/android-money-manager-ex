@@ -65,9 +65,6 @@ public class PayeeReportFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setSearchMenuVisible(true);
-
-        // disable fab issue #2504
-        setFabVisible(false);
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = mHeaderListView.findViewById(R.id.textViewColumn1);

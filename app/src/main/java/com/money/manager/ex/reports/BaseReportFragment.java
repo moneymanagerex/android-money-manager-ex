@@ -56,6 +56,13 @@ public abstract class BaseReportFragment
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
 
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
+    @Override
+    protected boolean isFabAutoToggleEnabled() {
+        return false;
+    }
+
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;

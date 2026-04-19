@@ -95,6 +95,11 @@ public class CashFlowReportListFragment
     private static final String BALANCE = "BALANCE";
     private static int monthInAdvance = 12;
 
+    @Override
+    protected boolean isFabAutoToggleEnabled() {
+        return false;
+    }
+
     private UIHelper ui;
     private MatrixCursor matrixCursor;
     String[] columnNames;
@@ -472,9 +477,6 @@ public class CashFlowReportListFragment
         setListShown(false);
 
 //        getLoaderManager().initLoader(ID_LOADER_REPORT, null, this);
-
-        // show floating button.
-        setFabVisible(false);
         // attachFloatingActionButtonToListView();
 
     }
