@@ -103,7 +103,7 @@
     <string name="db_account_insert_failed">Errore nell\'inserimento del conto</string>
     <string name="db_account_update_failed">Errore nell\'aggiornamento del conto</string>
     <string name="error_currency_not_selected">E\' richiesta la valuta</string>
-    <string name="error_saving_default_currency">Errore nel salvataggio della valuta predefinita</string>
+    <string name="error_saving_default_currency">Errore durante il salvataggio la valuta predefinita</string>
     <string name="error_initialbal_empty">È richiesto il saldo iniziale del conto</string>
     <string name="error_accountname_empty">E\' richiesto il nome del conto</string>
     <string name="error_accounttype_empty">E\' richiesto il tipo di conto</string>
@@ -141,7 +141,7 @@
     <string name="scale">Scala</string>
     <string name="conversion_to_base_rate">Tasso di cambio</string>
     <string name="currency_name_empty">Il nome della valuta è richiesto</string>
-    <string name="new_edit_currency">Nuova / Modifica Valuta</string>
+    <string name="new_edit_currency">Nuovo/Modifica Valuta</string>
     <string name="missing_default_currency">Manca la Valuta Predefinita nelle impostazioni</string>
     <!-- transaction -->
     <string name="amount">Importo</string>
@@ -312,6 +312,7 @@
     <string name="title_activity_general_report">Resoconto Generale</string>
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
     <string name="menu_report_cashflow">Flusso Di Cassa</string>
+    <string name="menu_report_summary_of_accounts">Saldo dei Conti</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -488,6 +489,7 @@
     <string name="title_activity_currency_chart">Grafico del tasso di cambio valuta</string>
     <string name="sort_by_ascending">Ordina per anno e mese crescente</string>
     <string name="sort_by_desceding">Ordina per anno e mese decrescente</string>
+    <string name="group_by">Raggruppa per</string>
     <string name="years">Anni</string>
     <string name="select_the_years_to_be_displayed">Seleziona gli anni da visualizzare</string>
     <string name="to_date">Alla data</string>
@@ -503,10 +505,13 @@
     <string name="update_prices">Aggiornamento prezzi</string>
     <string name="update_price">Aggiornamento prezzo</string>
     <string name="download_price">Scarica prezzo</string>
+    <string name="download_all_prices">Scarica tutti i prezzi</string>
     <string name="edit_price">Modifica prezzo</string>
     <string name="price_updated">Prezzo aggiornato</string>
     <string name="all_prices_updated">Tutti i prezzi sono stati aggiornati.</string>
     <string name="download_complete">Download completato.</string>
+    <string name="downloaded_price_for_symbol">Scaricato: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">Scaricato %1$d/%2$d prezzi</string>
     <string name="confirm_price_download">Si desidera aggiornare i prezzi online?</string>
     <string name="starting_price_update">Download prezzi, attendere prego&#8230;</string>
     <string name="database_migrate_14_to_20">Migra il database dalla versione 1.4</string>
@@ -823,5 +828,7 @@
     <string name="changelog">Modifiche di Versione</string>
     <string name="changelog_title">Novità importanti!!</string>
     <string name="changelog_1086">Nuova versione 5.4\n- Aggiunta la nuova funzionalità Beta per effettuare l\'unione di database. Prova a unire i file quando entrambi vengono modificati. Abilitala in Impostazioni -&gt; Sincronizzazione -&gt; Unisci</string>
+    <string name="changelog_1104">Nuova versione 5.5\n-Compatibilità completa con Android 16 e modalità edge-to-edge</string>
     <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
+    <string name="menu_cashflow_24_months">Vista 24 mesi</string>
 </resources>
