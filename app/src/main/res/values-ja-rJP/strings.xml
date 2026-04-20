@@ -675,7 +675,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">すべての口座</string>
+    <string name="menu_account_filter_all">すべての口座</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

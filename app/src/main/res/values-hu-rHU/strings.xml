@@ -801,10 +801,10 @@
     <string name="local_file_change">Helyi fájlváltozások jelzője: </string>
     <string name="msg_uploading_overwrite">A feltöltés felülírja a távoli verziót.\nFolytatja?</string>
     <string name="msg_downloading_overwrite">A letöltés felülírja a helyi verziót.\nFolytatja?</string>
-    <string name="menu_cashflow_all">Minden számla</string>
-    <string name="menu_cashflow_open">Nyitott számlák</string>
-    <string name="menu_cashflow_favorite">Kedvenc számlák</string>
-    <string name="menu_cashflow_custom">Számlák kijelölése&#8230;</string>
+    <string name="menu_account_filter_all">Minden számla</string>
+    <string name="menu_account_filter_open">Nyitott számlák</string>
+    <string name="menu_account_filter_favorite">Kedvenc számlák</string>
+    <string name="menu_account_filter_custom">Számlák kijelölése&#8230;</string>
     <string name="cash_ledger">Készpénzes főkönyv</string>
     <!-- Merge -->
     <string name="merge_take_ours">Helyi megőrzés</string>

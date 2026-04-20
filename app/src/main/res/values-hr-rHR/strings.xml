@@ -776,10 +776,10 @@
     <string name="download_warning">Upozorenje o preuzimanju</string>
     <string name="msg_uploading_overwrite">Prijenos će prepisati tvoju udaljenu verziju.\nŽeliš li nastaviti?</string>
     <string name="msg_downloading_overwrite">Preuzimanje će prepisati tvoju lokalnu verziju.\nŽeliš li nastaviti?</string>
-    <string name="menu_cashflow_all">Svi računi</string>
-    <string name="menu_cashflow_open">Otvori račune</string>
-    <string name="menu_cashflow_favorite">Favorizirani računi</string>
-    <string name="menu_cashflow_custom">Odaberi račune &#8230;</string>
+    <string name="menu_account_filter_all">Svi računi</string>
+    <string name="menu_account_filter_open">Otvori račune</string>
+    <string name="menu_account_filter_favorite">Favorizirani računi</string>
+    <string name="menu_account_filter_custom">Odaberi račune &#8230;</string>
     <string name="cash_ledger">Knjiga gotovine</string>
     <!-- Merge -->
     <string name="merge_take_ours">Zadrži lokalno</string>

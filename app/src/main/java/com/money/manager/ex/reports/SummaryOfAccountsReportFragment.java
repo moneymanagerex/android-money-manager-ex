@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -42,16 +40,12 @@ import androidx.lifecycle.Lifecycle;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -146,11 +140,14 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private ReportTableModel buildModel() {
-        AccountFilter accountFilter = getAccountFilter();
+        int filterMode = getFilterMode();
         int groupMode = getGroupMode();
         BuildState state = new BuildState();
 
-        loadAccounts(state, getAccountWhereClause(accountFilter));
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        String accountWhere = AccountFilterSupport.getWhereClauseForAccountIdColumn(
+            filterMode, settings, PREF_FILTER_CUSTOM, "a.ACCOUNTID");
+        loadAccounts(state, accountWhere);
         loadTransactions(state);
 
         normalizeDateBounds(state);
@@ -526,17 +523,14 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private boolean isAccountFilterMenuItem(int itemId) {
-        return itemId == R.id.menu_summary_accounts_all
-                || itemId == R.id.menu_summary_accounts_open
-                || itemId == R.id.menu_summary_accounts_favorite
-                || itemId == R.id.menu_summary_accounts_custom;
+        return AccountFilterSupport.isAccountFilterMenuItem(itemId);
     }
 
     private void handleAccountFilterItemSelected(int itemId, @NonNull MenuItem item) {
         item.setChecked(true);
         saveFilterMode(itemId);
 
-        if (itemId == R.id.menu_summary_accounts_custom) {
+        if (itemId == R.id.menu_account_filter_custom) {
             showAccountSelectionDialog();
             return;
         }
@@ -565,44 +559,9 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private boolean handlePeriodSelection(@NonNull MenuItem menuItem) {
-        MmxDate dateTime = MmxDate.newDate();
         int itemId = menuItem.getItemId();
 
-        if (itemId == R.id.menu_current_month) {
-            mDateFrom = dateTime.firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_month) {
-            mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_30_days) {
-            mDateTo = dateTime.toDate();
-            mDateFrom = dateTime.minusDays(30).toDate();
-        } else if (itemId == R.id.menu_current_year) {
-            mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_last_year) {
-            mDateFrom = dateTime.minusYears(1).firstMonthOfYear().firstDayOfMonth().toDate();
-            mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-        } else if (itemId == R.id.menu_current_fin_year || itemId == R.id.menu_last_fin_year) {
-            InfoService infoService = new InfoService(requireContext());
-            int financialYearStartDay = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-            int financialYearStartMonth = Integer.parseInt(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1")) - 1;
-            if (financialYearStartMonth < 0) {
-                financialYearStartMonth = 0;
-            }
-
-            MmxDate fiscalStart = MmxDate.newDate();
-            fiscalStart.setDate(financialYearStartDay);
-            fiscalStart.setMonth(financialYearStartMonth);
-            if (fiscalStart.toDate().after(dateTime.toDate())) {
-                fiscalStart.minusYears(1);
-            }
-            if (itemId == R.id.menu_last_fin_year) {
-                fiscalStart.minusYears(1);
-            }
-            mDateFrom = fiscalStart.toDate();
-            mDateTo = fiscalStart.addYear(1).minusDays(1).toDate();
-        } else if (itemId == R.id.menu_all_time) {
+        if (itemId == R.id.menu_all_time) {
             mDateFrom = null;
             mDateTo = null;
         } else if (itemId == R.id.menu_custom_dates) {
@@ -611,7 +570,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             showDialogCustomDates();
             return true;
         } else {
-            return false;
+            com.money.manager.ex.core.DateRange dateRange = ReportDateRangeSupport.resolveDateRange(requireContext(), itemId);
+            if (dateRange == null) {
+                return false;
+            }
+            mDateFrom = dateRange.dateFrom;
+            mDateTo = dateRange.dateTo;
         }
 
         mItemSelected = itemId;
@@ -658,46 +622,21 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private void showDialogCustomDates() {
-        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_choose_date_report, null);
-        DatePicker fromDatePicker = dialogView.findViewById(R.id.datePickerFromDate);
-        DatePicker toDatePicker = dialogView.findViewById(R.id.datePickerToDate);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils(Locale.getDefault());
-                    mDateFrom = dateTimeUtils.from(fromDatePicker);
-                    mDateTo = dateTimeUtils.from(toDatePicker);
-                    loadReportAsync();
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-
-        if (mDateFrom == null) {
-            mDateFrom = new MmxDate().today().toDate();
-        }
-        if (mDateTo == null) {
-            mDateTo = new MmxDate().today().toDate();
-        }
-
-        MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils(Locale.getDefault());
-        dateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
-        dateTimeUtils.setDatePicker(mDateTo, toDatePicker);
+        ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
+            mDateFrom = fromDate;
+            mDateTo = toDate;
+            loadReportAsync();
+        });
     }
 
     private int getFilterMode() {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        String storedValue = settings.get(PREF_FILTER_MODE, Integer.toString(R.id.menu_summary_accounts_open));
-        try {
-            return Integer.parseInt(storedValue);
-        } catch (Exception e) {
-            return R.id.menu_summary_accounts_open;
-        }
+        return AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
     }
 
     private void saveFilterMode(int mode) {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        settings.set(PREF_FILTER_MODE, Integer.toString(mode));
+        AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, mode);
     }
 
     private int getGroupMode() {
@@ -719,118 +658,10 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         settings.set(PREF_GROUP_MODE, Integer.toString(mode));
     }
 
-    private AccountFilter getAccountFilter() {
-        int mode = getFilterMode();
-        List<Long> customAccountIds = parseSelectedAccountIds();
-        return new AccountFilter(mode, customAccountIds);
-    }
-
-    private String getAccountWhereClause(AccountFilter filter) {
-        if (filter.mode == R.id.menu_summary_accounts_all) {
-            return "";
-        }
-        if (filter.mode == R.id.menu_summary_accounts_open) {
-            return "WHERE lower(a.STATUS) = 'open'";
-        }
-        if (filter.mode == R.id.menu_summary_accounts_favorite) {
-            return "WHERE lower(a.FAVORITEACCT) = 'true'";
-        }
-        if (filter.mode == R.id.menu_summary_accounts_custom) {
-            if (filter.customAccountIds.isEmpty()) {
-                return "WHERE 1=2";
-            }
-            return "WHERE a.ACCOUNTID IN (" + joinIds(filter.customAccountIds) + ")";
-        }
-        return "";
-    }
-
     private void showAccountSelectionDialog() {
-        ArrayList<Long> selected = new ArrayList<>(parseSelectedAccountIds());
-
-        QueryAccountBills queryAccountBills = new QueryAccountBills(requireContext());
-        Cursor cursor = requireContext().getContentResolver().query(
-                queryAccountBills.getUri(),
-                null,
-                null,
-                null,
-                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
-
-        if (cursor == null) {
-            return;
-        }
-
-        final ArrayList<Long> accountIds = new ArrayList<>();
-        final ArrayList<String> accountNames = new ArrayList<>();
-        try {
-            while (cursor.moveToNext()) {
-                long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
-                String accountName = cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME));
-                accountIds.add(accountId);
-                accountNames.add(accountName);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        final boolean[] checkedItems = new boolean[accountIds.size()];
-        for (int i = 0; i < accountIds.size(); i++) {
-            checkedItems[i] = selected.contains(accountIds.get(i));
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.menu_cashflow_custom);
-        builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
-                (dialog, which, isChecked) -> checkedItems[which] = isChecked);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            ArrayList<Long> selectedIds = new ArrayList<>();
-            for (int i = 0; i < accountIds.size(); i++) {
-                if (checkedItems[i]) {
-                    selectedIds.add(accountIds.get(i));
-                }
-            }
-            saveSelectedAccountIds(selectedIds);
-            loadReportAsync();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.show();
-    }
-
-    private ArrayList<Long> parseSelectedAccountIds() {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        String raw = settings.get(PREF_FILTER_CUSTOM, "");
-        ArrayList<Long> result = new ArrayList<>();
-        if (raw.trim().isEmpty()) {
-            return result;
-        }
-
-        String[] ids = raw.split(",");
-        for (String id : ids) {
-            if (id.trim().isEmpty()) {
-                continue;
-            }
-            try {
-                result.add(Long.parseLong(id.trim()));
-            } catch (Exception e) {
-                Timber.w(e, "Invalid account id in filter: %s", id);
-            }
-        }
-        return result;
-    }
-
-    private void saveSelectedAccountIds(List<Long> ids) {
-        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
-        settings.set(PREF_FILTER_CUSTOM, joinIds(ids));
-    }
-
-    private String joinIds(List<Long> ids) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < ids.size(); i++) {
-            if (i > 0) {
-                builder.append(',');
-            }
-            builder.append(ids.get(i));
-        }
-        return builder.toString();
+        AccountFilterSupport.showAndPersistAccountSelectionDialog(
+                requireContext(), settings, PREF_FILTER_CUSTOM, this::loadReportAsync);
     }
 
     private LocalDate toLocalDate(@Nullable Date date) {
@@ -971,16 +802,6 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             this.orderedTypes = orderedTypes;
             this.typeLabels = typeLabels;
             this.rows = rows;
-        }
-    }
-
-    private static class AccountFilter {
-        private final int mode;
-        private final List<Long> customAccountIds;
-
-        AccountFilter(int mode, List<Long> customAccountIds) {
-            this.mode = mode;
-            this.customAccountIds = customAccountIds;
         }
     }
 

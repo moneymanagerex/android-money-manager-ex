@@ -238,6 +238,10 @@ public class CategoriesReportFragment
                 " AND " +
                 QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
                 QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
+        String accountFilterSelection = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
+        if (!TextUtils.isEmpty(accountFilterSelection)) {
+            selection += " AND " + accountFilterSelection;
+        }
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }

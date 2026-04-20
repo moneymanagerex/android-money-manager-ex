@@ -33,6 +33,12 @@ public class QueryReportIncomeVsExpenses
         initialize(context, null);
     }
 
+    public QueryReportIncomeVsExpenses(Context context, String whereStatement) {
+        super("", DatasetType.QUERY, "report_income_vs_expenses");
+
+        initialize(context, whereStatement);
+    }
+
     @Override
     public String[] getAllColumns() {
         return new String[]{"0 AS _id",

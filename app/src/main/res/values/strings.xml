@@ -904,10 +904,10 @@
     <string name="local_file_change">Local file changes indicator: </string>
     <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
     <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
-    <string name="menu_cashflow_all">All Accounts</string>
-    <string name="menu_cashflow_open">Open Accounts</string>
-    <string name="menu_cashflow_favorite">Favorite Accounts</string>
-    <string name="menu_cashflow_custom">Select Accounts…</string>
+    <string name="menu_account_filter_all">All Accounts</string>
+    <string name="menu_account_filter_open">Open Accounts</string>
+    <string name="menu_account_filter_favorite">Favorite Accounts</string>
+    <string name="menu_account_filter_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
     <!-- Merge -->
