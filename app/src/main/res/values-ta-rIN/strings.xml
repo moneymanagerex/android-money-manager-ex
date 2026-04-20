@@ -800,9 +800,6 @@
     <string name="msg_uploading_overwrite">பதிவேற்றினால் உங்கள் தொலைநிலைப் பதிப்பு மேலெழுதப்படும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="msg_downloading_overwrite">பதிவிறக்குவது உங்கள் உள்ளூர் பதிப்பை மேலெழுதும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="menu_account_filter_all">அனைத்து கணக்குகளும்</string>
-    <string name="menu_account_filter_open">திறந்த கணக்குகள்</string>
-    <string name="menu_account_filter_favorite">பிடித்த கணக்குகள்</string>
-    <string name="menu_account_filter_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
     <string name="cash_ledger">பண பேரேடு</string>
     <!-- Merge -->
     <string name="merge_take_ours">மொபைல் கோப்புகளை வைத்திருங்கள்</string>

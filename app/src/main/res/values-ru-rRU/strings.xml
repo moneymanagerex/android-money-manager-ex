@@ -800,9 +800,6 @@
     <string name="msg_uploading_overwrite">Загруженная версия перезапишет существующую.\nПродолжить?</string>
     <string name="msg_downloading_overwrite">Скачанная версия перезапишет существующую.\nПродолжить?</string>
     <string name="menu_account_filter_all">Все счета</string>
-    <string name="menu_account_filter_open">Открытые счета</string>
-    <string name="menu_account_filter_favorite">Избранные счета</string>
-    <string name="menu_account_filter_custom">Выберите счета&#8230;</string>
     <string name="cash_ledger">Кассовая книга</string>
     <!-- Merge -->
     <string name="merge_take_ours">Сохранить локальное значение</string>
