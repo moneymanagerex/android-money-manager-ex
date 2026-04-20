@@ -67,6 +67,11 @@ import timber.log.Timber;
 
 public class SummaryOfAccountsReportFragment extends Fragment {
 
+    private static final String KEY_ITEM_SELECTED = "SummaryAccountsReportFragment:ItemSelected";
+    private static final String KEY_SORT_SELECTED = "SummaryAccountsReportFragment:SortSelected";
+    private static final String KEY_FROM_DATE = "SummaryAccountsReportFragment:FromDate";
+    private static final String KEY_TO_DATE = "SummaryAccountsReportFragment:ToDate";
+
     private static final String PREF_FILTER_MODE = "SummaryAccountsFilterMode";
     private static final String PREF_FILTER_CUSTOM = "SummaryAccountsFilterCustom";
     private static final String PREF_GROUP_MODE = "SummaryAccountsGroupMode";
@@ -105,10 +110,27 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_summary_of_accounts_report, container, false);
+
+        restoreInstanceState(savedInstanceState);
+
         tableLayout = view.findViewById(R.id.summaryAccountsTable);
         emptyView = view.findViewById(R.id.summaryAccountsEmpty);
         setupMenuProviders();
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
+        outState.putInt(KEY_SORT_SELECTED, mSortSelected);
+
+        if (mDateFrom != null) {
+            outState.putString(KEY_FROM_DATE, new MmxDate(mDateFrom).toIsoDateString());
+        }
+        if (mDateTo != null) {
+            outState.putString(KEY_TO_DATE, new MmxDate(mDateTo).toIsoDateString());
+        }
     }
 
     @Override
@@ -137,6 +159,30 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 });
             }
         }).start();
+    }
+
+    private void restoreInstanceState(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        if (savedInstanceState.containsKey(KEY_ITEM_SELECTED)) {
+            mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
+        }
+
+        if (savedInstanceState.containsKey(KEY_SORT_SELECTED)) {
+            mSortSelected = savedInstanceState.getInt(KEY_SORT_SELECTED);
+        }
+
+        if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
+            String dateFrom = savedInstanceState.getString(KEY_FROM_DATE);
+            mDateFrom = new MmxDate(dateFrom).toDate();
+        }
+
+        if (savedInstanceState.containsKey(KEY_TO_DATE)) {
+            String dateTo = savedInstanceState.getString(KEY_TO_DATE);
+            mDateTo = new MmxDate(dateTo).toDate();
+        }
     }
 
     private ReportTableModel buildModel() {
