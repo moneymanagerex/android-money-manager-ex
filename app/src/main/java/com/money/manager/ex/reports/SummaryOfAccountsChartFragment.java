@@ -24,18 +24,24 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SummaryOfAccountsChartFragment extends Fragment {
@@ -66,7 +72,7 @@ public class SummaryOfAccountsChartFragment extends Fragment {
             R.color.material_grey_500
     };
 
-    private BarChart chart;
+    private CombinedChart chart;
     private int textColor;
 
     @Override
@@ -77,7 +83,7 @@ public class SummaryOfAccountsChartFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.chart_bar_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.chart_combined_fragment, container, false);
         chart = rootView.findViewById(R.id.chartBar);
         chart.setDescription("");
         chart.setPinchZoom(false);
@@ -99,8 +105,13 @@ public class SummaryOfAccountsChartFragment extends Fragment {
             return;
         }
 
-        BarData data = buildBarData(chartInput);
-        chart.setData(data);
+        BarData barData = buildBarData(chartInput);
+        LineData lineData = buildLineData(chartInput);
+
+        CombinedData combinedData = new CombinedData(Arrays.asList(chartInput.xTitles));
+        combinedData.setData(barData);
+        combinedData.setData(lineData);
+        chart.setData(combinedData);
         chart.animateXY(1200, 1200);
         chart.invalidate();
 
@@ -139,6 +150,40 @@ public class SummaryOfAccountsChartFragment extends Fragment {
             data.setValueTextColor(getResources().getColor(textColor));
         }
         return data;
+    }
+
+    private LineData buildLineData(ChartInput chartInput) {
+        ArrayList<Entry> entries = createLineEntries(chartInput);
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.total));
+        dataSet.setColor(getResources().getColor(R.color.material_blue_grey_500));
+        dataSet.setLineWidth(2f);
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleRadius(4f);
+        dataSet.setCircleColor(getResources().getColor(R.color.material_blue_grey_500));
+        dataSet.setDrawValues(true);
+        if (textColor != -1) {
+            dataSet.setValueTextColor(getResources().getColor(textColor));
+        }
+
+        List<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataSet);
+
+        return new LineData(Arrays.asList(chartInput.xTitles), dataSets);
+    }
+
+    private ArrayList<Entry> createLineEntries(ChartInput chartInput) {
+        ArrayList<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < chartInput.xTitles.length; i++) {
+            float[] values = i < chartInput.stackValues.length
+                    ? chartInput.stackValues[i]
+                    : new float[0];
+            float total = 0f;
+            for (float value : values) {
+                total += value;
+            }
+            entries.add(new Entry(total, i));
+        }
+        return entries;
     }
 
     private ArrayList<BarEntry> createEntries(ChartInput chartInput) {
