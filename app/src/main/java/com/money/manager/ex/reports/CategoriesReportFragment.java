@@ -301,6 +301,7 @@ public class CategoriesReportFragment
         parameters.category = category;
         parameters.dateFrom = mDateFrom;
         parameters.dateTo = mDateTo;
+        parameters.accountFilterWhere = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
 
         showSearchActivityFor(parameters);
     }

@@ -48,6 +48,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
@@ -489,6 +490,11 @@ public class IncomeVsExpensesListFragment
                 }
                 dateTime.lastDayOfMonth();
                 params.dateTo = dateTime.toDate();
+
+                int mode = getAccountFilterMode();
+                LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+                params.accountFilterWhere = AccountFilterSupport.getSelectionForAccountIdColumn(
+                        mode, settings, PREF_FILTER_CUSTOM, QueryAllData.ACCOUNTID);
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), params);
                 startActivity(intent);
