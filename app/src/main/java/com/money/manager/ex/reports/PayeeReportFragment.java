@@ -292,6 +292,7 @@ public class PayeeReportFragment
         parameters.payeeName = payee.getName();
         parameters.dateFrom = mDateFrom;
         parameters.dateTo = mDateTo;
+        parameters.accountFilterWhere = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
 
         showSearchActivityFor(parameters);
     }

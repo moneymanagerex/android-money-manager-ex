@@ -34,6 +34,7 @@ public class SearchParameters {
 
     // Account
     public Long accountId;
+    public String accountFilterWhere;
 
     // Currency
     public Long currencyId;

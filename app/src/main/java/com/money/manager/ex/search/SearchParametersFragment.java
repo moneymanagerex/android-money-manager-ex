@@ -475,6 +475,10 @@ public class SearchParametersFragment
             );
         }
 
+        if (!TextUtils.isEmpty(searchParameters.accountFilterWhere)) {
+            where.addStatement(searchParameters.accountFilterWhere);
+        }
+
         // currency
         if (searchParameters.currencyId != null && searchParameters.currencyId != Constants.NOT_SET) {
             where.addStatement(QueryAllData.CURRENCYID, "=", searchParameters.currencyId);
