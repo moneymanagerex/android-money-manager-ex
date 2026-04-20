@@ -807,6 +807,9 @@
     <string name="msg_uploading_overwrite">Hochladen wird Ihre Remote-Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="msg_downloading_overwrite">Das Herunterladen wird Ihre lokale Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="menu_account_filter_all">Alle Konten</string>
+    <string name="menu_account_filter_open">Offene Konten</string>
+    <string name="menu_account_filter_favorite">Favorisierte Konten</string>
+    <string name="menu_account_filter_custom">Konten wählen&#8230;</string>
     <string name="cash_ledger">Kassenbuch</string>
     <!-- Merge -->
     <string name="merge_take_ours">Lokal behalten</string>
