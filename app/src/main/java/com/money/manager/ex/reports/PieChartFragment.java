@@ -18,13 +18,20 @@ package com.money.manager.ex.reports;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.lifecycle.Lifecycle;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -148,6 +155,7 @@ public class PieChartFragment
 
         mChart = mLayout.findViewById(R.id.chartPie);
         mChart.setUsePercentValues(true);
+        setupMenuProviders();
 
         // change the color of the center-hole
         mChart.setHoleColor(Color.TRANSPARENT);
@@ -181,6 +189,22 @@ public class PieChartFragment
     public void onResume() {
         super.onResume();
         buildChart();
+    }
+
+    private void setupMenuProviders() {
+        MenuHost menuHost = requireActivity();
+
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                // Intentionally empty: this fragment only intercepts toolbar home navigation.
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return PieChartFragment.this.onOptionsItemSelected(menuItem);
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     @Override
