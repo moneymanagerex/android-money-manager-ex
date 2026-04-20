@@ -1,6 +1,8 @@
 ## What's Changed
 * new: Download all stock prices in portfolio at once
 * new: Add summary of accounts report
+* new: all report can now be filtered for accounts
+* new: income vs expense report uses a more flexible date period selection
 
 * fix: Add dark mode support to about screen
 * Fix: duplicated toolbar actions in Income vs Expenses
