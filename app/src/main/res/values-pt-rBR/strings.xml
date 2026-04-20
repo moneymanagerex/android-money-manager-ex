@@ -802,9 +802,6 @@
     <string name="msg_uploading_overwrite">Fazer uploading irá substituir a sua versão remota.\nVocê quer continuar?</string>
     <string name="msg_downloading_overwrite">Baixando irá substituir a sua versão local.\nDeseja continuar?</string>
     <string name="menu_account_filter_all">Todas as contas</string>
-    <string name="menu_account_filter_open">Contas Abertas</string>
-    <string name="menu_account_filter_favorite">Contas Favoritas</string>
-    <string name="menu_account_filter_custom">Selecionar Contas&#8230;</string>
     <string name="cash_ledger">Contabilidade de Caixa</string>
     <!-- Merge -->
     <string name="merge_take_ours">Deixar local</string>

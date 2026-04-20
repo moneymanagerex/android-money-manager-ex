@@ -706,7 +706,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_account_filter_all">Tous les comptes</string>
-    <string name="menu_account_filter_custom">Sélectionnez les comptes&#8230;</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

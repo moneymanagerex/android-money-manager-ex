@@ -800,9 +800,6 @@
     <string name="msg_uploading_overwrite">上传操作将覆盖您的远程版本。\n确定要继续吗？</string>
     <string name="msg_downloading_overwrite">下载操作将覆盖您的本地版本。\n确定要继续吗？</string>
     <string name="menu_account_filter_all">所有账户</string>
-    <string name="menu_account_filter_open">打开账户</string>
-    <string name="menu_account_filter_favorite">收藏账户</string>
-    <string name="menu_account_filter_custom">选择账户</string>
     <string name="cash_ledger">现金账本</string>
     <!-- Merge -->
     <string name="merge_take_ours">保留本地版本</string>

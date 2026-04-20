@@ -580,9 +580,6 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_account_filter_all">كافة الحسابات</string>
-    <string name="menu_account_filter_open">الحسابات المفتوحة</string>
-    <string name="menu_account_filter_favorite">الحسابات المفضلة</string>
-    <string name="menu_account_filter_custom">حدد الحسابات&#8230;</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->
