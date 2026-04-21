@@ -37,4 +37,5 @@ public class InfoKeys {
     public static final String PASSCODE = "PASSCODEMOBILE";
     public static final String UID = "UID";
     public static final String LAST_SYNC_DATE = "LAST_SYNC_DATE";
+    public static final String DEVICE_ID = "android:device_id";
 }

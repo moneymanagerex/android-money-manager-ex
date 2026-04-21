@@ -29,13 +29,17 @@ import android.os.RemoteException;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmxContentProvider;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.TagLink;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +102,11 @@ public abstract class RepositoryBase<T extends EntityBase>
     public long add(EntityBase entity) {
         if (entity.getId() == null || entity.getId() == Constants.NOT_SET)
             entity.setId(newId());
+        
+        // PocketBase Sync Metadata
+        entity.setUpdatedAt(new MmxDate().toIsoString());
+        entity.setDirty(true);
+        
         return insert(entity.contentValues);
     }
 
@@ -130,6 +139,11 @@ public abstract class RepositoryBase<T extends EntityBase>
         Long id = entity.getId();
         if (id == null || id == Constants.NOT_SET)
             return add(entity) > 0; // upsert?
+        
+        // PocketBase Sync Metadata
+        entity.setUpdatedAt(new MmxDate().toIsoString());
+        entity.setDirty(true);
+            
         return update(entity, idColumn + "=?", MmxDatabaseUtils.getArgsForId(id));
     }
 
@@ -190,15 +204,46 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     long newId() {
-        long now = System.currentTimeMillis() * 1_000;
+        long now = System.currentTimeMillis();
+        
+        // 1. Core ID Refactoring
+        // Formula: ID = (Timestamp_ms * 1000 + Bulk_Counter) * 100 + Device_ID
+        
+        long deviceId = getDeviceId();
+        
         long id;
-
         do {
             long last = lastId.get();
-            id = Math.max(now, last + 1);
+            // Ensure timestamp is moving forward
+            long timestamp = Math.max(now, (last / 100) / 1000);
+            
+            // Extract bulk counter if still in same ms
+            long bulkCounter = 0;
+            if (timestamp == (last / 100) / 1000) {
+                bulkCounter = ((last / 100) % 1000) + 1;
+                if (bulkCounter >= 1000) {
+                    // overflow bulk counter, wait for next ms
+                    timestamp++;
+                    bulkCounter = 0;
+                }
+            }
+            
+            id = (timestamp * 1000 + bulkCounter) * 100 + deviceId;
         } while (!lastId.compareAndSet(lastId.get(), id));
 
         return id;
+    }
+
+    private long getDeviceId() {
+        InfoService infoService = new InfoService(getContext());
+        String deviceIdStr = infoService.getInfoValue(InfoKeys.DEVICE_ID);
+        long deviceId = NumericHelper.toLong(deviceIdStr);
+        if (deviceId <= 0 || deviceId > 99) {
+            // Default to a temporary ID or maybe we should force set it?
+            // For now, let's return 0 or 1.
+            return 1; 
+        }
+        return deviceId;
     }
 
     /**
@@ -253,12 +298,22 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     public boolean delete(Long id) {
         if (id == Constants.NOT_SET) return false;
+        
+        // PocketBase Sync: Implement Soft Delete
+        T entity = load(id);
+        if (entity != null) {
+            entity.setDeleted(true);
+            entity.setUpdatedAt(new MmxDate().toIsoString());
+            entity.setDirty(true);
+            return save(entity);
+        }
 
-        long result = delete(idColumn + "=?", MmxDatabaseUtils.getArgsForId(id));
-        return result > 0;
+        return false;
     }
 
     protected long delete(String where, String[] args) {
+        // Warning: This performs a hard delete. In an incremental sync system,
+        // we should prefer delete(Long id) which performs a soft delete.
         return getContext().getContentResolver().delete(this.getUri(),
                 where,
                 args
@@ -299,10 +354,18 @@ public abstract class RepositoryBase<T extends EntityBase>
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         for (Integer id : ids) {
-            ContentProviderOperation op = ContentProviderOperation.newDelete(this.getUri())
-                    .withSelection("_id = ?", new String[]{String.valueOf(id)})
-                    .build();
-            operations.add(op);
+            // For incremental sync, bulkDelete should also be soft-deletes
+            T entity = load(id.longValue());
+            if (entity != null) {
+                entity.setDeleted(true);
+                entity.setUpdatedAt(new MmxDate().toIsoString());
+                entity.setDirty(true);
+                ContentProviderOperation op = ContentProviderOperation.newUpdate(this.getUri())
+                        .withSelection("_id = ?", new String[]{String.valueOf(id)})
+                        .withValues(entity.contentValues)
+                        .build();
+                operations.add(op);
+            }
         }
 
         if (operations.isEmpty()) return null;
@@ -311,7 +374,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             return getContext().getContentResolver()
                     .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
-            Timber.e(e, "bulk deleting");
+            Timber.e(e, "bulk deleting (soft)");
             return null;
         }
     }

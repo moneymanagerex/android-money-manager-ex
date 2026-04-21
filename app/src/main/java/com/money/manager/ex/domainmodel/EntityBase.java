@@ -38,6 +38,10 @@ import info.javaperformance.money.MoneyFactory;
  */
 public abstract class EntityBase implements IEntity {
 
+    public static final String UPDATED_AT = "updated_at";
+    public static final String IS_DELETED = "is_deleted";
+    public static final String IS_DIRTY = "is_dirty";
+
     public ContentValues contentValues;
 
     public EntityBase() {
@@ -89,7 +93,7 @@ public abstract class EntityBase implements IEntity {
     }
 
     protected void setBoolean(String column, Boolean value) {
-        contentValues.put(column, value.toString().toUpperCase());
+        contentValues.put(column, value != null && value ? 1 : 0);
     }
 
     protected Money getMoney(String fieldName) {
@@ -152,8 +156,72 @@ public abstract class EntityBase implements IEntity {
         return getLong(this.getPrimaryKeyColumn());
     }
 
-    // Abstract method to return all columns
-    // public abstract String[] getAllColumns();
+    // Incremental Sync Metadata
+
+    public String getUpdatedAtColumn() {
+        return UPDATED_AT;
+    }
+
+    public String getIsDeletedColumn() {
+        return IS_DELETED;
+    }
+
+    public String getIsDirtyColumn() {
+        return IS_DIRTY;
+    }
+
+    public String getUpdatedAt() {
+        return getString(getUpdatedAtColumn());
+    }
+
+    public void setUpdatedAt(String value) {
+        setString(getUpdatedAtColumn(), value);
+    }
+
+    public boolean isDeleted() {
+        String col = getIsDeletedColumn();
+        if (TextUtils.isEmpty(col)) return false;
+        
+        Object val = contentValues.get(col);
+        if (val == null) return false;
+        
+        if (val instanceof Integer) {
+            return (Integer) val != 0;
+        } else if (val instanceof String) {
+            return !TextUtils.isEmpty((String) val);
+        }
+        return false;
+    }
+
+    public void setDeleted(boolean value) {
+        String col = getIsDeletedColumn();
+        if (TextUtils.isEmpty(col)) return;
+
+        if (value) {
+            // If it's a timestamp column (like DELETEDTIME), set the current time.
+            // If it's a boolean column, set 1.
+            if (col.contains("TIME")) {
+                setString(col, new MmxDate().toIsoString());
+            } else {
+                setInt(col, 1);
+            }
+        } else {
+            if (col.contains("TIME")) {
+                setString(col, null);
+            } else {
+                setInt(col, 0);
+            }
+        }
+    }
+
+    public boolean isDirty() {
+        Integer val = getInt(getIsDirtyColumn());
+        return val != null && val != 0;
+    }
+
+    public void setDirty(boolean value) {
+        setInt(getIsDirtyColumn(), value ? 1 : 0);
+    }
 
     // Abstract method to get primary key column (overridden by subclasses)
     public abstract String getPrimaryKeyColumn();

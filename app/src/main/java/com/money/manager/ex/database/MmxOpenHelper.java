@@ -55,7 +55,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      * Database schema version.
      */
     private static final int DATABASE_VERSION_MIN = 20;
-    private static final int DATABASE_VERSION_MAX = 21;
+    private static final int DATABASE_VERSION_MAX = 22;
     private final String dbPath;
 
     private int originalVersion;
@@ -106,6 +106,8 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         try {
             executeRawSql(db, R.raw.tables_v1);
             initDatabase(db);
+            // After initial creation, ensure all migrations are applied
+            updateDatabase(db, 1, DATABASE_VERSION_MAX);
         } catch (Exception e) {
             Timber.e(e, "initializing database");
         }

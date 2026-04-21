@@ -23,6 +23,7 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.List;
@@ -52,7 +53,8 @@ public class AccountRepository
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID ,
-                Account.INITIALDATE     // issue #2800 missing initial date in read
+                Account.INITIALDATE,     // issue #2800 missing initial date in read
+                EntityBase.UPDATED_AT, EntityBase.IS_DELETED, EntityBase.IS_DIRTY
         };
     }
 

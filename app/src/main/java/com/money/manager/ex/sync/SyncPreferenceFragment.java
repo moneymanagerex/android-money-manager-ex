@@ -176,6 +176,14 @@ public class SyncPreferenceFragment
             return false;
         });
 
+        // PocketBase
+        if (viewHolder.pocketBaseConnect != null) {
+            viewHolder.pocketBaseConnect.setOnPreferenceClickListener(preference -> {
+                testPocketBaseConnection();
+                return true;
+            });
+        }
+
         // reset preferences
         viewHolder.resetPreferences.setOnPreferenceClickListener(preference -> {
             // TODO
@@ -209,5 +217,17 @@ public class SyncPreferenceFragment
                 .setPositiveButton(R.string.btn_continue, (dialog, which) -> onConfirm.run())
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .show();
+    }
+
+    private void testPocketBaseConnection() {
+        PocketBaseSyncEngine engine = new PocketBaseSyncEngine(getContext());
+        if (!engine.isConfigured()) {
+            Toast.makeText(getContext(), "Please fill in all PocketBase settings first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new UIHelper(getActivity()).showToast("Testing PocketBase connection...");
+        // This would call engine.authenticate() or similar in a background thread
+        engine.sync();
     }
 }

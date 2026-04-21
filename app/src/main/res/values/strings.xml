@@ -817,6 +817,16 @@
     <string name="no_remote_file">Please select the remote file to use for synchronization.</string>
     <string name="request_conlict_reopen">Conflict between local and remote file. This cause your local copy cannot be synced with remote one. Please export DB if you want to save your local copy, or Reopen from remote if you want to load data from remote file.</string>
 
+    <!-- PocketBase Synchronization -->
+    <string name="pocketbase_sync">PocketBase Synchronization</string>
+    <string name="pocketbase_url">PocketBase Server URL</string>
+    <string name="pocketbase_email">Email</string>
+    <string name="pocketbase_password">Password</string>
+    <string name="pocketbase_login">Login</string>
+    <string name="pocketbase_connect">Connect to PocketBase</string>
+    <string name="pocketbase_url_summary">Example: https://your-pocketbase-app.pockethost.io</string>
+    <string name="pocketbase_sync_summary">Sync your data with a PocketBase instance</string>
+
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>
 

@@ -47,6 +47,7 @@ public class AccountTransaction
 
     public static final String TRANSID = "TRANSID";
     public static final String LASTUPDATEDTIME = "LASTUPDATEDTIME";
+    public static final String DELETEDTIME = "DELETEDTIME";
 
     private ArrayList<Attachment> mAttachments;
     private ArrayList<TagLink> tagLinks = null;
@@ -100,6 +101,16 @@ public class AccountTransaction
     @Override
     public String getPrimaryKeyColumn() {
         return TRANSID;  // This returns the column name
+    }
+
+    @Override
+    public String getUpdatedAtColumn() {
+        return LASTUPDATEDTIME;
+    }
+
+    @Override
+    public String getIsDeletedColumn() {
+        return DELETEDTIME;
     }
 
     public boolean hasId() {

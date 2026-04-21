@@ -21,6 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.EntityBase;
 
 /**
  * A repository for Categories.
@@ -52,7 +53,9 @@ public class CategoryRepository
                 Category.CATEGID,
                 Category.CATEGNAME,
                 Category.ACTIVE,
-                Category.PARENTID};
+                Category.PARENTID,
+                EntityBase.UPDATED_AT, EntityBase.IS_DELETED, EntityBase.IS_DIRTY
+        };
     }
 
     public long loadIdByName(String name, long parentId) {

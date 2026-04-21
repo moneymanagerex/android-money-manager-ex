@@ -23,6 +23,7 @@ import android.database.Cursor;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.RefType;
 
@@ -68,7 +69,9 @@ public class ScheduledTransactionRepository
                 ITransactionEntity.TOTRANSAMOUNT,
                 RecurringTransaction.REPEATS,
                 RecurringTransaction.NEXTOCCURRENCEDATE,
-                RecurringTransaction.NUMOCCURRENCES};
+                RecurringTransaction.NUMOCCURRENCES,
+                EntityBase.UPDATED_AT, EntityBase.IS_DELETED, EntityBase.IS_DIRTY
+        };
     }
 
     @Override

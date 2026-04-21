@@ -24,6 +24,7 @@ import androidx.loader.content.Loader;
 
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.Payee;
 
 /**
@@ -69,7 +70,8 @@ public class PayeeRepository
                 Payee.PAYEENAME,
                 Payee.CATEGID,
                 Payee.NUMBER,
-                Payee.ACTIVE
+                Payee.ACTIVE,
+                EntityBase.UPDATED_AT, EntityBase.IS_DELETED, EntityBase.IS_DIRTY
         };
     }
 

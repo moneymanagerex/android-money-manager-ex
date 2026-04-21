@@ -19,6 +19,7 @@ package com.money.manager.ex.sync;
 
 import com.money.manager.ex.R;
 
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -36,11 +37,24 @@ public class SyncPreferencesViewHolder {
     public PreferenceScreen upload;
     public SwitchPreferenceCompat syncOnStart;
 
+    // PocketBase
+    public EditTextPreference pocketBaseUrl;
+    public EditTextPreference pocketBaseEmail;
+    public EditTextPreference pocketBasePassword;
+    public EditTextPreference pocketBaseDeviceId;
+    public Preference pocketBaseConnect;
+
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
         syncInterval = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_interval));
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));
         download = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_download));
         upload = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_upload));
         syncOnStart = (SwitchPreferenceCompat) view.findPreference(view.getString(R.string.pref_sync_on_app_start));
+
+        pocketBaseUrl = view.findPreference("pocketbase_url");
+        pocketBaseEmail = view.findPreference("pocketbase_email");
+        pocketBasePassword = view.findPreference("pocketbase_password");
+        pocketBaseDeviceId = view.findPreference("pocketbase_device_id");
+        pocketBaseConnect = view.findPreference("pocketbase_connect");
     }
 }

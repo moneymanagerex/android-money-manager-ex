@@ -88,6 +88,41 @@ public class SyncPreferences
 
     public boolean shouldSyncMergeDatabase() { return get("pref_sync_merge_database", false); }
 
+    // PocketBase Settings
+
+    public String getPocketBaseUrl() {
+        return getPreferences().getString("pocketbase_url", "");
+    }
+
+    public String getPocketBaseEmail() {
+        return getPreferences().getString("pocketbase_email", "");
+    }
+
+    public String getPocketBasePassword() {
+        return getPreferences().getString("pocketbase_password", "");
+    }
+
+    public int getPocketBaseDeviceId() {
+        String id = getPreferences().getString("pocketbase_device_id", "1");
+        return Ints.tryParse(id) != null ? Ints.tryParse(id) : 1;
+    }
+
+    public String getPocketBaseToken() {
+        return getPreferences().getString("pocketbase_token", "");
+    }
+
+    public void setPocketBaseToken(String token) {
+        getPreferences().edit().putString("pocketbase_token", token).apply();
+    }
+
+    public String getPocketBaseLastSyncTime() {
+        return getPreferences().getString("pocketbase_last_sync_time", "1970-01-01T00:00:00Z");
+    }
+
+    public void setPocketBaseLastSyncTime(String time) {
+        getPreferences().edit().putString("pocketbase_last_sync_time", time).apply();
+    }
+
     // private
 
     private String getKey(Integer resourceId) {

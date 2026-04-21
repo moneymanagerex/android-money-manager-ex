@@ -17,57 +17,88 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- synchronization interval -->
-    <ListPreference
-        android:icon="@null"
-        android:defaultValue="10"
-        android:entries="@array/timeout_synchronize_items"
-        android:entryValues="@array/timeout_synchronize_values"
-        android:key="@string/pref_sync_interval"
-        android:summary="@string/summary_synchronization_interval"
-        android:title="@string/synchronization_interval" />
+    <PreferenceCategory android:title="@string/synchronization">
+        <!-- synchronization interval -->
+        <ListPreference
+            android:icon="@null"
+            android:defaultValue="10"
+            android:entries="@array/timeout_synchronize_items"
+            android:entryValues="@array/timeout_synchronize_values"
+            android:key="@string/pref_sync_interval"
+            android:summary="@string/summary_synchronization_interval"
+            android:title="@string/synchronization_interval" />
 
-    <!-- download -->
-    <PreferenceScreen
-        android:icon="@null"
-        android:key="@string/pref_sync_download"
-        android:summary="@string/cloud_download"
-        android:title="@string/download" />
-    <!-- upload -->
-    <PreferenceScreen
-        android:icon="@null"
-        android:key="@string/pref_sync_upload"
-        android:summary="@string/cloud_upload"
-        android:title="@string/upload" />
+        <!-- sync on start -->
+        <SwitchPreferenceCompat
+            android:title="@string/sync_on_start"
+            android:summary="@string/sync_on_app_start"
+            android:key="@string/pref_sync_on_app_start"
+            android:defaultValue="true"
+            android:icon="@null" />
 
-    <!-- sync on start -->
-    <SwitchPreferenceCompat
-        android:title="@string/sync_on_start"
-        android:summary="@string/sync_on_app_start"
-        android:key="@string/pref_sync_on_app_start"
-        android:defaultValue="true"
-        android:icon="@null" />
+        <!-- sync only on wi-fi -->
+        <SwitchPreferenceCompat
+            android:icon="@null"
+            android:defaultValue="false"
+            android:key="@string/pref_sync_via_wifi"
+            android:title="@string/auto_sync_via_wifi"
+            android:summary="@string/auto_sync_via_wifi_summary" />
 
-    <!-- sync only on wi-fi -->
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="false"
-        android:key="@string/pref_sync_via_wifi"
-        android:title="@string/auto_sync_via_wifi"
-        android:summary="@string/auto_sync_via_wifi_summary" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@null"
+            android:key="@string/pref_sync_merge_database"
+            android:summary="@string/sync_merge_database_on_sync"
+            android:title="@string/sync_merge_database" />
+    </PreferenceCategory>
 
-    <!-- log out -->
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:icon="@null"
-        android:key="@string/pref_sync_merge_database"
-        android:summary="@string/sync_merge_database_on_sync"
-        android:title="@string/sync_merge_database" />
+    <PreferenceCategory android:title="@string/pocketbase_sync">
+        <EditTextPreference
+            android:key="pocketbase_url"
+            android:title="@string/pocketbase_url"
+            android:summary="@string/pocketbase_url_summary"
+            android:dialogTitle="@string/pocketbase_url" />
+
+        <EditTextPreference
+            android:key="pocketbase_email"
+            android:title="@string/pocketbase_email"
+            android:dialogTitle="@string/pocketbase_email" />
+
+        <EditTextPreference
+            android:key="pocketbase_password"
+            android:title="@string/pocketbase_password"
+            android:dialogTitle="@string/pocketbase_password"
+            android:password="true" />
+
+        <EditTextPreference
+            android:key="pocketbase_device_id"
+            android:title="Device ID (1-99)"
+            android:summary="Unique ID for this device in the sync network"
+            android:defaultValue="1" />
+
+        <Preference
+            android:key="pocketbase_connect"
+            android:title="@string/pocketbase_connect" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Legacy File Sync">
+        <!-- download -->
+        <PreferenceScreen
+            android:icon="@null"
+            android:key="@string/pref_sync_download"
+            android:summary="@string/cloud_download"
+            android:title="@string/download" />
+        <!-- upload -->
+        <PreferenceScreen
+            android:icon="@null"
+            android:key="@string/pref_sync_upload"
+            android:summary="@string/cloud_upload"
+            android:title="@string/upload" />
+    </PreferenceCategory>
+
     <Preference
         android:icon="@null"
         android:key="@string/pref_reset_preferences"
         android:title="@string/reset_preferences" />
-
-    <!-- todo: help -->
 
 </PreferenceScreen>
