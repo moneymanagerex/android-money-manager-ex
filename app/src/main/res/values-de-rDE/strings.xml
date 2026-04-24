@@ -121,6 +121,7 @@
     <!-- category / subcategory -->
     <string name="category">Kategorie</string>
     <string name="subcategory">Unterkategorie</string>
+    <string name="navigation_mode">Navigationsmodus</string>
     <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen drücken Sie den grünen Plus-Knopf.</string>
     <string name="select_category">Kategorie wählen</string>
     <string name="add_category">Kategorie hinzufügen</string>
