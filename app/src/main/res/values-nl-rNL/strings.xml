@@ -489,6 +489,7 @@
     <string name="title_activity_currency_chart">Valutawisselkoers Grafiek </string>
     <string name="sort_by_ascending">Oplopend sorteren op jaar en maand</string>
     <string name="sort_by_desceding">Aflopend sorteren op jaar en maand</string>
+    <string name="group_by">Groeperen op</string>
     <string name="years">Jaren</string>
     <string name="select_the_years_to_be_displayed">Selecteer de jaren om weer te geven</string>
     <string name="to_date">Tot datum</string>
@@ -806,6 +807,9 @@
     <string name="msg_uploading_overwrite">Uploaden overschrijft uw externe versie.\nWilt u doorgaan?</string>
     <string name="msg_downloading_overwrite">Downloaden overschrijft uw lokale versie.\nWilt u doorgaan?</string>
     <string name="menu_account_filter_all">Alle rekeningen</string>
+    <string name="menu_account_filter_open">Open rekeningen</string>
+    <string name="menu_account_filter_favorite">Favoriete rekeningen</string>
+    <string name="menu_account_filter_custom">Selecteer rekeningen...</string>
     <string name="cash_ledger">Kasboek</string>
     <!-- Merge -->
     <string name="merge_take_ours">Lokale gegevens behouden</string>
