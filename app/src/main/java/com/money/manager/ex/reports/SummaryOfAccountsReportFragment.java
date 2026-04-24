@@ -75,6 +75,9 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     private static final String PREF_FILTER_MODE = "SummaryAccountsFilterMode";
     private static final String PREF_FILTER_CUSTOM = "SummaryAccountsFilterCustom";
     private static final String PREF_GROUP_MODE = "SummaryAccountsGroupMode";
+    private static final String PREF_PERIOD_SELECTED = "SummaryAccountsPeriodSelected";
+    private static final String PREF_PERIOD_DATE_FROM = "SummaryAccountsPeriodFromDate";
+    private static final String PREF_PERIOD_DATE_TO = "SummaryAccountsPeriodToDate";
 
     private static final int PERIOD_ALL_TIME = R.id.menu_all_time;
     private static final int SORT_ASCENDING = R.id.menu_sort_asceding;
@@ -163,6 +166,8 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
     private void restoreInstanceState(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
+            restorePeriodSelectionFromPreferences();
+            updateDateRangeForSelectedPeriod();
             return;
         }
 
@@ -183,6 +188,8 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             String dateTo = savedInstanceState.getString(KEY_TO_DATE);
             mDateTo = new MmxDate(dateTo).toDate();
         }
+
+        updateDateRangeForSelectedPeriod();
     }
 
     private ReportTableModel buildModel() {
@@ -626,6 +633,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
         mItemSelected = itemId;
         menuItem.setChecked(true);
+        savePeriodSelection();
         loadReportAsync();
         return true;
     }
@@ -671,6 +679,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
             mDateFrom = fromDate;
             mDateTo = toDate;
+            savePeriodSelection();
             loadReportAsync();
         });
     }
@@ -708,6 +717,65 @@ public class SummaryOfAccountsReportFragment extends Fragment {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
         AccountFilterSupport.showAndPersistAccountSelectionDialog(
                 requireContext(), settings, PREF_FILTER_CUSTOM, this::loadReportAsync);
+    }
+
+    private void restorePeriodSelectionFromPreferences() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+
+        String selectedValue = settings.get(PREF_PERIOD_SELECTED, Integer.toString(PERIOD_ALL_TIME));
+        try {
+            mItemSelected = Integer.parseInt(selectedValue);
+        } catch (Exception ignored) {
+            mItemSelected = PERIOD_ALL_TIME;
+        }
+
+        String fromDateString = settings.get(PREF_PERIOD_DATE_FROM, "");
+        if (!TextUtils.isEmpty(fromDateString)) {
+            try {
+                mDateFrom = new MmxDate(fromDateString).toDate();
+            } catch (Exception ignored) {
+                mDateFrom = null;
+            }
+        }
+
+        String toDateString = settings.get(PREF_PERIOD_DATE_TO, "");
+        if (!TextUtils.isEmpty(toDateString)) {
+            try {
+                mDateTo = new MmxDate(toDateString).toDate();
+            } catch (Exception ignored) {
+                mDateTo = null;
+            }
+        }
+    }
+
+    private void updateDateRangeForSelectedPeriod() {
+        if (mItemSelected == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+            return;
+        }
+
+        if (mItemSelected == R.id.menu_custom_dates) {
+            return;
+        }
+
+        com.money.manager.ex.core.DateRange dateRange = ReportDateRangeSupport.resolveDateRange(requireContext(), mItemSelected);
+        if (dateRange != null) {
+            mDateFrom = dateRange.dateFrom;
+            mDateTo = dateRange.dateTo;
+            return;
+        }
+
+        mItemSelected = PERIOD_ALL_TIME;
+        mDateFrom = null;
+        mDateTo = null;
+    }
+
+    private void savePeriodSelection() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(PREF_PERIOD_SELECTED, Integer.toString(mItemSelected));
+        settings.set(PREF_PERIOD_DATE_FROM, mDateFrom == null ? "" : new MmxDate(mDateFrom).toIsoDateString());
+        settings.set(PREF_PERIOD_DATE_TO, mDateTo == null ? "" : new MmxDate(mDateTo).toIsoDateString());
     }
 
     private LocalDate toLocalDate(@Nullable Date date) {
