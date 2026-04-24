@@ -130,6 +130,7 @@
     <!-- category / subcategory -->
     <string name="category">Category</string>
     <string name="subcategory">Subcategory</string>
+    <string name="navigation_mode">Navigation Mode</string>
     <string name="category_empty_list">No category has been found. To create one, tap the green plus button.</string>
     <string name="select_category">Select Category</string>
     <string name="add_category">Add Category</string>
