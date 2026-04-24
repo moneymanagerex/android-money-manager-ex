@@ -16,6 +16,10 @@
  */
 package com.money.manager.ex.account;
 
+import android.content.Context;
+
+import com.money.manager.ex.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,20 @@ public enum AccountTypes {
 
         String[] result = new String[list.size()];
         return list.toArray(result);
+    }
+
+    public static String getTranslation(Context context, String name) {
+        String[] values = getNames();
+        String[] displayItems = context.getResources().getStringArray(R.array.accounttype_items);
+
+        int size = Math.min(values.length, displayItems.length);
+        for (int i = 0; i < size; i++) {
+            if (values[i].equals(name)) {
+                return displayItems[i];
+            }
+        }
+
+        return name;
     }
 
     public final String title;
