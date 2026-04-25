@@ -78,6 +78,13 @@ public class AccountListFragment
                 layout, null,
                 new String[]{ Account.ACCOUNTNAME, Account.ACCOUNTTYPE },
                 new int[]{android.R.id.text1, android.R.id.text2}, 0);
+        adapter.setViewBinder((view, cursor, columnIndex) -> {
+            if (Account.ACCOUNTTYPE.equals(cursor.getColumnName(columnIndex))) {
+                ((android.widget.TextView) view).setText(AccountTypes.getTranslation(requireContext(), cursor.getString(columnIndex)));
+                return true;
+            }
+            return false;
+        });
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());

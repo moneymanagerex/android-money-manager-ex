@@ -88,7 +88,11 @@ public abstract class BaseReportFragment
                 String dateToString = savedInstanceState.getString(KEY_TO_DATE);
                 mDateTo = new MmxDate(dateToString).toDate();
             }
+        } else {
+            restorePeriodSelectionFromPreferences();
         }
+
+        mWhereClause = ReportDateRangeSupport.buildWhereClause(mDateFrom, mDateTo, QueryAllData.Date);
         //start loader
         startLoader(savedInstanceState);
     }
@@ -164,6 +168,7 @@ public abstract class BaseReportFragment
 
                 menuItem.setChecked(true);
                 mItemSelected = itemId;
+                savePeriodSelection();
 
                 Bundle args = new Bundle();
                 args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -270,6 +275,18 @@ public abstract class BaseReportFragment
         return getClass().getSimpleName() + ":FilterCustom";
     }
 
+    protected String getPeriodSelectionPrefKey() {
+        return getClass().getSimpleName() + ":PeriodSelection";
+    }
+
+    protected String getPeriodFromDatePrefKey() {
+        return getClass().getSimpleName() + ":PeriodFromDate";
+    }
+
+    protected String getPeriodToDatePrefKey() {
+        return getClass().getSimpleName() + ":PeriodToDate";
+    }
+
     protected String getAccountFilterSelection(String accountIdColumn) {
         LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
         int mode = getAccountFilterMode();
@@ -305,10 +322,60 @@ public abstract class BaseReportFragment
         ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
             mDateFrom = fromDate;
             mDateTo = toDate;
+            savePeriodSelection();
             String whereClause = ReportDateRangeSupport.buildWhereClause(mDateFrom, mDateTo, QueryAllData.Date);
             Bundle args = new Bundle();
             args.putString(KEY_WHERE_CLAUSE, whereClause);
             startLoader(args);
         });
+    }
+
+    private void restorePeriodSelectionFromPreferences() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+
+        String selectionValue = settings.get(getPeriodSelectionPrefKey(), Integer.toString(R.id.menu_all_time));
+        try {
+            mItemSelected = Integer.parseInt(selectionValue);
+        } catch (Exception ignored) {
+            mItemSelected = R.id.menu_all_time;
+        }
+
+        String fromDateString = settings.get(getPeriodFromDatePrefKey(), "");
+        if (!fromDateString.trim().isEmpty()) {
+            try {
+                mDateFrom = new MmxDate(fromDateString).toDate();
+            } catch (Exception ignored) {
+                mDateFrom = null;
+            }
+        }
+
+        String toDateString = settings.get(getPeriodToDatePrefKey(), "");
+        if (!toDateString.trim().isEmpty()) {
+            try {
+                mDateTo = new MmxDate(toDateString).toDate();
+            } catch (Exception ignored) {
+                mDateTo = null;
+            }
+        }
+
+        if (mItemSelected != R.id.menu_all_time && mItemSelected != R.id.menu_custom_dates) {
+            com.money.manager.ex.core.DateRange dateRange =
+                    ReportDateRangeSupport.resolveDateRange(requireContext(), mItemSelected);
+            if (dateRange != null) {
+                mDateFrom = dateRange.dateFrom;
+                mDateTo = dateRange.dateTo;
+            } else {
+                mItemSelected = R.id.menu_all_time;
+                mDateFrom = null;
+                mDateTo = null;
+            }
+        }
+    }
+
+    private void savePeriodSelection() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(getPeriodSelectionPrefKey(), Integer.toString(mItemSelected));
+        settings.set(getPeriodFromDatePrefKey(), mDateFrom == null ? "" : new MmxDate(mDateFrom).toIsoDateString());
+        settings.set(getPeriodToDatePrefKey(), mDateTo == null ? "" : new MmxDate(mDateTo).toIsoDateString());
     }
 }

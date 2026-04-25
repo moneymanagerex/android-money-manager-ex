@@ -263,7 +263,7 @@ public class NestedCategoryListFragment
         }
 
         // add menu option for navigatio
-        MenuItem menuNavigation = menu.findItem(R.id.menu_sort).getSubMenu().add("Navigation Mode");
+        MenuItem menuNavigation = menu.findItem(R.id.menu_sort).getSubMenu().add(R.string.navigation_mode);
         menuNavigation.setCheckable(true);
         menuNavigation.setChecked(levelMode != NAVMODE_LIST);
         menuNavigation.setOnMenuItemClickListener(item -> {

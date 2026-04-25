@@ -87,6 +87,9 @@ public class IncomeVsExpensesListFragment
     private static final String KEY_BUNDLE_DATE_FROM = "IncomeVsExpensesListFragment:DateFrom";
     private static final String KEY_BUNDLE_DATE_TO = "IncomeVsExpensesListFragment:DateTo";
     private static final String KEY_BUNDLE_ITEM_SELECTED = "IncomeVsExpensesListFragment:ItemSelected";
+    private static final String PREF_PERIOD_SELECTED = "IncomeVsExpensesPeriodSelected";
+    private static final String PREF_PERIOD_DATE_FROM = "IncomeVsExpensesPeriodFromDate";
+    private static final String PREF_PERIOD_DATE_TO = "IncomeVsExpensesPeriodToDate";
     private static final String PREF_FILTER_MODE = "IncomeVsExpensesFilterMode";
     private static final String PREF_FILTER_CUSTOM = "IncomeVsExpensesFilterCustom";
 
@@ -118,15 +121,11 @@ public class IncomeVsExpensesListFragment
                     mDateTo = new MmxDate(dateToString).toDate();
                 }
             }
+        } else {
+            restorePeriodSelectionFromPreferences();
         }
 
-        if (mDateFrom == null || mDateTo == null) {
-            com.money.manager.ex.core.DateRange defaultRange = ReportDateRangeSupport.resolveDateRange(requireContext(), R.id.menu_current_year);
-            if (defaultRange != null) {
-                mDateFrom = defaultRange.dateFrom;
-                mDateTo = defaultRange.dateTo;
-            }
-        }
+        updateDateRangeForSelectedPeriod();
 
         initializeListView();
 
@@ -330,6 +329,7 @@ public class IncomeVsExpensesListFragment
 
         menuItem.setChecked(true);
         mItemSelected = itemId;
+        savePeriodSelection();
         startLoader();
         return true;
     }
@@ -411,8 +411,71 @@ public class IncomeVsExpensesListFragment
         ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
             mDateFrom = fromDate;
             mDateTo = toDate;
+            savePeriodSelection();
             startLoader();
         });
+    }
+
+    private void restorePeriodSelectionFromPreferences() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+
+        String selectedValue = settings.get(PREF_PERIOD_SELECTED, Integer.toString(R.id.menu_current_year));
+        try {
+            mItemSelected = Integer.parseInt(selectedValue);
+        } catch (Exception ignored) {
+            mItemSelected = R.id.menu_current_year;
+        }
+
+        String fromDateString = settings.get(PREF_PERIOD_DATE_FROM, "");
+        if (!TextUtils.isEmpty(fromDateString)) {
+            try {
+                mDateFrom = new MmxDate(fromDateString).toDate();
+            } catch (Exception ignored) {
+                mDateFrom = null;
+            }
+        }
+
+        String toDateString = settings.get(PREF_PERIOD_DATE_TO, "");
+        if (!TextUtils.isEmpty(toDateString)) {
+            try {
+                mDateTo = new MmxDate(toDateString).toDate();
+            } catch (Exception ignored) {
+                mDateTo = null;
+            }
+        }
+    }
+
+    private void updateDateRangeForSelectedPeriod() {
+        if (mItemSelected == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+            return;
+        }
+
+        if (mItemSelected == R.id.menu_custom_dates) {
+            return;
+        }
+
+        com.money.manager.ex.core.DateRange dateRange = ReportDateRangeSupport.resolveDateRange(requireContext(), mItemSelected);
+        if (dateRange != null) {
+            mDateFrom = dateRange.dateFrom;
+            mDateTo = dateRange.dateTo;
+            return;
+        }
+
+        mItemSelected = R.id.menu_current_year;
+        com.money.manager.ex.core.DateRange defaultRange = ReportDateRangeSupport.resolveDateRange(requireContext(), mItemSelected);
+        if (defaultRange != null) {
+            mDateFrom = defaultRange.dateFrom;
+            mDateTo = defaultRange.dateTo;
+        }
+    }
+
+    private void savePeriodSelection() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(PREF_PERIOD_SELECTED, Integer.toString(mItemSelected));
+        settings.set(PREF_PERIOD_DATE_FROM, mDateFrom == null ? "" : new MmxDate(mDateFrom).toIsoDateString());
+        settings.set(PREF_PERIOD_DATE_TO, mDateTo == null ? "" : new MmxDate(mDateTo).toIsoDateString());
     }
 
     // Private
