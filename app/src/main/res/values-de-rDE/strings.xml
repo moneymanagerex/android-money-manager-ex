@@ -85,7 +85,7 @@
     <!-- account -->
     <string name="account">Konto</string>
     <string name="account_list">Kontenliste</string>
-    <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen, drücken Sie den grünen Plus-Knopf.</string>
+    <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="account_balance">Kontostand</string>
     <string name="account_reconciled_balance">abgestimmter Saldo</string>
     <string name="delete_account">Konto löschen</string>
@@ -115,14 +115,14 @@
     <string name="delete_payee">Zahlungsempfänger löschen</string>
     <string name="payee">Zahlungsempfänger</string>
     <string name="select_payee">Zahlungsempfänger wählen</string>
-    <string name="payee_empty_list">Kein Empfänger gefunden. Um einen Empfänger zu erstellen, drücken Sie den grünen Plus-Knopf.</string>
+    <string name="payee_empty_list">Kein Empfänger gefunden. Um einen Empfänger zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="from">Von</string>
     <string name="db_payee_update_failed">Aktualisieren des Empfängers fehlgeschlagen</string>
     <!-- category / subcategory -->
     <string name="category">Kategorie</string>
     <string name="subcategory">Unterkategorie</string>
     <string name="navigation_mode">Navigationsmodus</string>
-    <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen, drücken Sie den grünen Plus-Knopf.</string>
+    <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="select_category">Kategorie wählen</string>
     <string name="add_category">Kategorie hinzufügen</string>
     <string name="add_subcategory">Unterkategorie hinzufügen</string>
@@ -250,7 +250,7 @@
     <string name="in_x_months">In (x) Monaten</string>
     <string name="every_x_days">Alle (x) Tage</string>
     <string name="every_x_months">Alle (x) Monate</string>
-    <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
+    <string name="repeating_empty_transaction">Keine wiederkehrenden Transaktionen gefunden. Um eine zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="inactive">Inaktiv</string>
     <string name="activates">aktiviert</string>
     <string name="days_overdue">%d Tage überfällig!</string>
@@ -609,7 +609,7 @@
     <string name="delete_success">Element gelöscht</string>
     <!-- asset allocation -->
     <string name="asset_allocation">Vermögensaufteilung</string>
-    <string name="asset_classes_empty">Keine Assetklassen festgelegt. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
+    <string name="asset_classes_empty">Keine Anlagenklassen festgelegt. Um eine zu erstellen, tippen Sie auf die grüne plus-Taste.</string>
     <string name="title_activity_asset_class_edit">Bearbeite Anlagenklasse</string>
     <string name="asset_class_name">Name der Anlagenklasse</string>
     <string name="asset_class">Anlagenklasse</string>
@@ -618,7 +618,7 @@
     <string name="move_up">Nach oben verschieben</string>
     <string name="move_down">Nach unten verschieben</string>
     <string name="securities">Wertpapiere</string>
-    <string name="no_records_found_create">Keine Einträge gefunden. Um einen Eintrag zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
+    <string name="no_records_found_create">Keine Einträge gefunden. Um einen Eintrag zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="current_value">Aktueller Wert</string>
     <string name="current">Momentan</string>
     <string name="parent">Elternelement</string>
@@ -667,7 +667,7 @@
     <string name="update_menu_currency_exchange_rates">Aktualisiere Wechselkurs</string>
     <string name="question_update_currency_exchange_rates">Wollen Sie den Wechselkurs aktualisieren?</string>
     <string name="error_update_currency_exchange_rate">Beim Aktualisieren des Kurses trat ein Fehler auf</string>
-    <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus-Schaltfläche.</string>
+    <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="active_currencies">Aktive Währungen</string>
     <string name="inactive_currencies">Inaktive Währungen</string>
     <string name="all_currencies">Alle Währungen</string>
