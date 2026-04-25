@@ -48,12 +48,13 @@ public class AccountRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { ID_COLUMN + " AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+        String[] columns = new String[] { ID_COLUMN + " AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
                 Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
                 Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID ,
                 Account.INITIALDATE     // issue #2800 missing initial date in read
         };
+        return addPbColumnsIfNeeded(columns);
     }
 
     public String getTableName() {

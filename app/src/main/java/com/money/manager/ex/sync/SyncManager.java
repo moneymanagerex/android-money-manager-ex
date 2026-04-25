@@ -83,6 +83,16 @@ public class SyncManager {
     private final Context mContext;
     private SyncPreferences mPreferences;
 
+    /**
+     * Checks if cloud sync (PocketBase) is enabled for the current database.
+     */
+    public static boolean isCloudSyncEnabled() {
+        // Implementation logic: for now we check a preference or metadata.
+        // This will be set to true if the DB is opened/created via PocketBase flow.
+        SyncPreferences preferences = new SyncPreferences(MmexApplication.getApp());
+        return preferences.isPocketBaseSyncEnabled();
+    }
+
     public void abortScheduledUpload() {
         Timber.d("Aborting scheduled sync");
 

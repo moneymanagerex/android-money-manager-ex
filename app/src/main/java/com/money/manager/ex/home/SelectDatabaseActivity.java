@@ -31,6 +31,7 @@ import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.sync.PocketBaseSetupActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
@@ -57,6 +58,7 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         Toolbar mToolbar = findViewById(R.id.toolbar);
         Button createDatabaseButton = findViewById(R.id.createDatabaseButton);
         Button openDatabaseButton = findViewById(R.id.openDatabaseButton);
+        Button openCloudDatabaseButton = findViewById(R.id.openCloudDatabaseButton);
 
         // Request external storage permissions for Android 6+.
         MmxFileUtils fileUtils = new MmxFileUtils(this);
@@ -67,6 +69,7 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         // Set up click listeners for buttons
         createDatabaseButton.setOnClickListener(v -> onCreateDatabaseClick());
         openDatabaseButton.setOnClickListener(v -> onOpenDatabaseClick());
+        openCloudDatabaseButton.setOnClickListener(v -> onOpenCloudDatabaseClick());
     }
 
     @Override
@@ -108,6 +111,12 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
         helper.showStorageFilePicker();
+    }
+
+    private void onOpenCloudDatabaseClick() {
+        // Start the PocketBase setup wizard
+        Intent intent = new Intent(this, PocketBaseSetupActivity.class);
+        startActivity(intent);
     }
 
     private void onDatabaseSelected() {

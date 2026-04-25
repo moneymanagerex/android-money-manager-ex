@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDate;
 
 import java.util.Date;
@@ -37,6 +38,10 @@ import info.javaperformance.money.MoneyFactory;
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
 public abstract class EntityBase implements IEntity {
+
+    public static final String PB_ID = "pb_id";
+    public static final String PB_UPDATED_AT = "pb_updated_at";
+    public static final String PB_IS_DIRTY = "pb_is_dirty";
 
     public ContentValues contentValues;
 
@@ -150,6 +155,39 @@ public abstract class EntityBase implements IEntity {
     }
     public Long getId() {
         return getLong(this.getPrimaryKeyColumn());
+    }
+
+    // PocketBase sync fields
+
+    public String getPbId() {
+        return getString(PB_ID);
+    }
+
+    public void setPbId(String id) {
+        if (SyncManager.isCloudSyncEnabled()) {
+            setString(PB_ID, id);
+        }
+    }
+
+    public String getPbUpdatedAt() {
+        return getString(PB_UPDATED_AT);
+    }
+
+    public void setPbUpdatedAt(String timestamp) {
+        if (SyncManager.isCloudSyncEnabled()) {
+            setString(PB_UPDATED_AT, timestamp);
+        }
+    }
+
+    public Integer getPbIsDirty() {
+        Integer val = getInt(PB_IS_DIRTY);
+        return val != null ? val : 0;
+    }
+
+    public void setPbIsDirty(Integer status) {
+        if (SyncManager.isCloudSyncEnabled()) {
+            setInt(PB_IS_DIRTY, status);
+        }
     }
 
     // Abstract method to return all columns

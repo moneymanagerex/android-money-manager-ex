@@ -29,6 +29,8 @@ import com.money.manager.ex.R;
 public class SyncPreferences
     extends SettingsBase {
 
+    public static final String PREF_POCKETBASE_SYNC_ENABLED = "pref_pocketbase_sync_enabled";
+
     public SyncPreferences(Context context) {
         super(context);
 
@@ -87,6 +89,14 @@ public class SyncPreferences
     }
 
     public boolean shouldSyncMergeDatabase() { return get("pref_sync_merge_database", false); }
+
+    public boolean isPocketBaseSyncEnabled() {
+        return getPreferences().getBoolean(PREF_POCKETBASE_SYNC_ENABLED, false);
+    }
+
+    public void setPocketBaseSyncEnabled(boolean enabled) {
+        getPreferences().edit().putBoolean(PREF_POCKETBASE_SYNC_ENABLED, enabled).apply();
+    }
 
     // private
 
