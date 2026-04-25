@@ -68,9 +68,9 @@
     <string name="auto_sync_via_wifi_summary">Automatische Synchronisierung nur mit aktiver WiFi-Verbindung.</string>
     <string name="sync_on_app_start">Synchronisiere beim Start</string>
     <string name="sync_on_start">Beim Start synchronisieren</string>
-    <string name="sync_merge_database">EXPERIMENTIEL: Datenbanken zusammenführen</string>
+    <string name="sync_merge_database">EXPERIMENTELL: Datenbanken zusammenführen</string>
     <string name="sync_merge_database_on_sync">Datenbankunterschiede beim Synchronisieren zusammenführen.</string>
-    <string name="sync_merge_dialog_msg_format"></string>
+    <string name="sync_merge_dialog_msg_format">Alle %1$s%2$s zusammenführen</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Banktransaktions-SMS bearbeiten</string>
     <string name="summary_sms_auto_trans">Lies die Banktransaktions-Update SMS und erstelle automatisch eine Transaktion</string>
@@ -85,7 +85,7 @@
     <!-- account -->
     <string name="account">Konto</string>
     <string name="account_list">Kontenliste</string>
-    <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen drücken Sie den grünen Plus-Knopf.</string>
+    <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen, drücken Sie den grünen Plus-Knopf.</string>
     <string name="account_balance">Kontostand</string>
     <string name="account_reconciled_balance">abgestimmter Saldo</string>
     <string name="delete_account">Konto löschen</string>
@@ -96,10 +96,10 @@
     <string name="account_status">Kontostatus</string>
     <string name="favourite_account">Bevorzugtes Konto</string>
     <string name="select_currency">Währung auswählen</string>
-    <string name="checking">Girokonto</string>
+    <string name="checking">Bankkonto</string>
     <string name="investment">Anlagekonto</string>
     <string name="investment_accounts">Anlagekonten</string>
-    <string name="term">Sparkonto</string>
+    <string name="term">Festgeld</string>
     <string name="db_account_insert_failed">Fehler beim Einfügen des Kontos</string>
     <string name="db_account_update_failed">Fehler beim Aktualisieren des Kontos</string>
     <string name="error_currency_not_selected">Angabe der Währung ist erforderlich</string>
@@ -122,7 +122,7 @@
     <string name="category">Kategorie</string>
     <string name="subcategory">Unterkategorie</string>
     <string name="navigation_mode">Navigationsmodus</string>
-    <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen drücken Sie den grünen Plus-Knopf.</string>
+    <string name="category_empty_list">Keine Kategorie gefunden. Um eine Kategorie zu erstellen, drücken Sie den grünen Plus-Knopf.</string>
     <string name="select_category">Kategorie wählen</string>
     <string name="add_category">Kategorie hinzufügen</string>
     <string name="add_subcategory">Unterkategorie hinzufügen</string>
@@ -337,13 +337,13 @@
     <!-- Split Categories -->
     <string name="split_transaction">Geteilte Transaktion</string>
     <string name="split">Aufteilen</string>
-    <string name="error_split_transaction_empty">Mindestestens eine geteilte Transaktion ist erforderlich</string>
+    <string name="error_split_transaction_empty">Mindestens eine geteilte Transaktion ist erforderlich</string>
     <string name="swipe_to_dismiss">Wischen zum Entfernen.</string>
     <string name="export_data_to_csv">Daten in CSV-Datei exportieren</string>
     <string name="export_data_in_progress">Exportiere Daten. Bitte warten...</string>
     <string name="export_file_complete">Die Daten wurde erfolgreich in die Datei %1$s exportiert</string>
     <string name="export_file_failed">Export der Datei %1$s fehlgeschlagen</string>
-    <string name="donate_header">MoneyManager Ex für Android ist kostenlos. Wenn Ihnen die Anwendung gefällt, können Sie das Entwicklerteam mit einer Spende untersützen.</string>
+    <string name="donate_header">MoneyManager Ex für Android ist kostenlos. Wenn Ihnen die Anwendung gefällt, können Sie das Entwicklerteam mit einer Spende unterstützen.</string>
     <string name="donate_in_app_title">Google Play In-App Käufe</string>
     <string name="donate_in_app_description">Spenden Sie via Google Play In-App Käufe.</string>
     <string name="donate_in_app_spinner_text">Wählen Sie einen Spendenbetrag</string>
@@ -405,7 +405,7 @@
     <string name="default_status">Standard Status</string>
     <string name="default_payee">Standard-Zahlungsempfänger/Zahler</string>
     <string name="edit_transaction">Transaktion bearbeiten</string>
-    <string name="delete_one_selected_transaction">Sind Sie sicher die ausgwählte Transaktion löschen zu wollen?</string>
+    <string name="delete_one_selected_transaction">Sind Sie sicher die ausgewählte Transaktion löschen zu wollen?</string>
     <string name="delete_others_selected_transaction">Wollen Sie die %d ausgewählten Transaktionen wirklich löschen?</string>
     <string name="categories">Kategorien</string>
     <string name="payees">Empfänger</string>
@@ -482,7 +482,7 @@
     <string name="financial_overview">Finanzübersicht</string>
     <string name="tutorial_overview_1">Anzeigetafel für schnelle Übersicht, Budgets, benutzerdefinierte Berichte.</string>
     <string name="global">Global</string>
-    <string name="tutorial_global_1">Multiple Währungen und Sprachen. Open Source. Treten Sie unserer Übersetzungsmannschaft bei.</string>
+    <string name="tutorial_global_1">Multiple Währungen und Sprachen. Open Source. Treten Sie unserem Übersetzungsteam bei.</string>
     <string name="tutorial_sync_1">Unterstützung für unterschiedliche Plattformen, Synchronisation über unterschiedliche Cloud-Anbieter, Import und Export Ihrer Daten von und zu anderen Anwendungen.</string>
     <string name="transactions">Transaktionen</string>
     <string name="tutorial_transactions_1">Einzahlungen, Auszahlungen, Überweisungen, geplante Buchungen mit Erinnerungen.</string>
@@ -515,7 +515,7 @@
     <string name="downloaded_prices_count">%1$d/%2$d Preise heruntergeladen</string>
     <string name="confirm_price_download">Möchten Sie Sicherheitspreise online aktualisieren?</string>
     <string name="starting_price_update">Preise werden heruntergeladen, bitte warten&#8230;</string>
-    <string name="database_migrate_14_to_20">Migration der Datenbank von v1. 4</string>
+    <string name="database_migrate_14_to_20">Migration der Datenbank von v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Alte Daten wurde gefunden. Tippen Sie hier, um Ihre frühere Datenbank zu verwenden.</string>
     <string name="database_migrate_14_to_20_failure">Datenbankmigration fehlgeschlagen ist. Bitte kontaktieren Sie den Support.</string>
     <string name="database_migrate_14_to_20_success">Datenbankmigration war erfolgreich.</string>
@@ -592,7 +592,7 @@
     <string name="purchase_date">Kaufdatum</string>
     <string name="stock_name">Aktienname</string>
     <string name="symbol">Symbol</string>
-    <string name="number_of_shares">Anzahl der Aktien</string>
+    <string name="number_of_shares">Anzahl der Wertpapiere</string>
     <string name="purchase_price">Kaufpreis</string>
     <string name="current_price">Aktueller Preis</string>
     <string name="price_date">Preis Datum</string>
@@ -611,7 +611,7 @@
     <string name="asset_allocation">Vermögensaufteilung</string>
     <string name="asset_classes_empty">Keine Assetklassen festgelegt. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
     <string name="title_activity_asset_class_edit">Bearbeite Anlagenklasse</string>
-    <string name="asset_class_name">Name der Assetklasse</string>
+    <string name="asset_class_name">Name der Anlagenklasse</string>
     <string name="asset_class">Anlagenklasse</string>
     <string name="allocation">Zuordnungen</string>
     <string name="current_allocation">Aktuelle Aufteilung</string>
@@ -645,7 +645,7 @@
     <!-- budgets -->
     <string name="add_budget">Budget hinzufügen</string>
     <string name="budget_name">Budgetname</string>
-    <string name="budget_year">Jahres Budget</string>
+    <string name="budget_year">Jahresbudget</string>
     <string name="budget_month">Monatsbudget</string>
     <string name="budget_month_optional">Budget Monat (optional)</string>
     <!-- string name="copy">Copy</string -->
@@ -667,7 +667,7 @@
     <string name="update_menu_currency_exchange_rates">Aktualisiere Wechselkurs</string>
     <string name="question_update_currency_exchange_rates">Wollen Sie den Wechselkurs aktualisieren?</string>
     <string name="error_update_currency_exchange_rate">Beim Aktualisieren des Kurses trat ein Fehler auf</string>
-    <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus-Schaltfläche.</string>
+    <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf die grüne plus-Schaltfläche.</string>
     <string name="active_currencies">Aktive Währungen</string>
     <string name="inactive_currencies">Inaktive Währungen</string>
     <string name="all_currencies">Alle Währungen</string>
@@ -753,7 +753,7 @@
     <!-- Create Database screen -->
     <string name="select_language">Sprache wählen</string>
     <string name="run">Starte MoneyManager Ex</string>
-    <string name="create_db_info_1">Die Standardspeicherort der Datenbank ist:</string>
+    <string name="create_db_info_1">Der Standardspeicherort der Datenbank ist:</string>
     <!-- Settings -->
     <string name="per_database_settings">Per-Datenbank</string>
     <string name="save">Speichern</string>
@@ -762,10 +762,10 @@
     <string name="title_budget_reload_forecast">Geplante Buchungen neu laden</string>
     <string name="title_pref_budget_financial_year">Geschäftsjahr im Budget verwenden</string>
     <string name="summary_pref_budget_financial_year">Wenn angekreuzt, verwenden die Budgets das Haushaltsjahr anstelle des Kalenderjahres</string>
-    <string name="shares">Aktien</string>
+    <string name="shares">Wertpapiere</string>
     <string name="loan">Darlehen</string>
     <string name="loan_account">Darlehenskonten</string>
-    <string name="shares_accounts">Aktienkonto</string>
+    <string name="shares_accounts">Wertpapierkonten</string>
     <string name="currency">Währung</string>
     <string name="menu_create_database">Datenbank erstellen</string>
     <string name="create_database">Datenbank erstellen</string>
