@@ -935,4 +935,7 @@
     <string name="currency_save_error">Error while insert Currency. Probably currency %s is already defined.</string>
     <string name="menu_cashflow_24_months">24 months view</string>
 
+
+    <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Pocketbase server Url</string>
 </resources>

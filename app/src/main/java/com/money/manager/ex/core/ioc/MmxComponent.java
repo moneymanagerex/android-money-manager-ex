@@ -44,6 +44,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.sync.PocketBaseSyncEngine;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
@@ -102,6 +103,7 @@ public interface MmxComponent {
     void inject(SyncServiceMessageHandler handler);
     void inject(Passcode object);
     void inject(EditTransactionCommonFunctions object);
+    void inject(PocketBaseSyncEngine engine);
 
     // Helpers
     void inject(UIHelper helper);
