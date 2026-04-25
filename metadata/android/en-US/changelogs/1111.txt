@@ -1,0 +1,19 @@
+## What's Changed
+* new: Download all stock prices in portfolio at once
+* new: Add summary of accounts report
+* new: all report can now be filtered for accounts
+* new: income vs expense report uses a more flexible date period selection
+
+* fix: Add dark mode support to about screen
+* Fix: duplicated toolbar actions in Income vs Expenses
+* Fix: search transaction from category report
+* Fix: Tag Selection screen should not be closed if we click "Clear All" #2351 by @velmuruganc in https://github.com/moneymanagerex/android-money-manager-ex/pull/2866
+* Fix: Transaction list order is inconsistent for transactions created on the same day #2810 by @velmuruganc in https://github.com/moneymanagerex/android-money-manager-ex/pull/2867
+* fix: Some fixes in cashflow report
+* fix: Add new Currency
+* fix: minor fix
+* fix: Refactor reports to use shared account/date filter helpers
+
+## Contributors
+* @utafrali made their first contribution in https://github.com/moneymanagerex/android-money-manager-ex/pull/2863
+* @JoshuaLampert made lot of change in this release
