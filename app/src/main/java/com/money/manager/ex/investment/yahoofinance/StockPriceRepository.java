@@ -51,6 +51,7 @@ public class StockPriceRepository {
                             result.indicators.quote == null || result.indicators.quote.isEmpty() ||
                             result.indicators.quote.get(0).closePrices == null) {
                         Timber.e("Invalid stock price data for symbol: %s", symbol);
+                        liveData.postValue(null);
                         return;
                     }
 
@@ -76,13 +77,17 @@ public class StockPriceRepository {
                     }
                     catch (Exception e) {
                         Timber.e(e, "Error updating stock price");
+                        liveData.postValue(null);
                     }
+                } else {
+                    liveData.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<YahooChartResponse> call, @NonNull Throwable t) {
                 Timber.e(t, "Error fetching stock prices");
+                liveData.postValue(null);
             }
         });
 

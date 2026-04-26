@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_chart"
+        android:icon="?attr/ic_action_bargraph"
+        android:title="@string/show_chart"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_sort"
+        android:icon="?attr/ic_action_sort_1"
+        android:title="@string/sort"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_sort_asceding"
+                    android:title="@string/sort_by_ascending"
+                    android:checked="true" />
+                <item
+                    android:id="@+id/menu_sort_desceding"
+                    android:title="@string/sort_by_desceding" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_group_by"
+        android:title="@string/group_by"
+        app:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_group_by_account_type"
+                    android:title="@string/account_type"
+                    android:checked="true" />
+                <item
+                    android:id="@+id/menu_group_by_account"
+                    android:title="@string/account" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_summary_accounts"
+        android:icon="@drawable/ic_action_settings_dark"
+        android:title="@string/settings"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_account_filter_all"
+                    android:title="@string/menu_account_filter_all" />
+                <item
+                    android:id="@+id/menu_account_filter_open"
+                    android:title="@string/menu_account_filter_open" />
+                <item
+                    android:id="@+id/menu_account_filter_favorite"
+                    android:title="@string/menu_account_filter_favorite" />
+                <item
+                    android:id="@+id/menu_account_filter_custom"
+                    android:title="@string/menu_account_filter_custom" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

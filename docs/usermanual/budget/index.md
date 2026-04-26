@@ -49,7 +49,7 @@ From the budget category list, a long press on a category allows you to:
 - **Delete**: Remove the budget information for that category.
 - **View Transactions**: See the transactions that contribute to the "**Actual**" value.
 
-Choosing "**Edit**" will allow you to set **frequency** ![Static Badge](https://img.shields.io/badge/new_in-5.4-gree) and a **value** for that category relative to the budget.
+Choosing "**Edit**" will allow you to set **frequency** ![Static Badge](https://img.shields.io/badge/new_in-5.4-green) and a **value** for that category relative to the budget.
 
 ![4.AddBudgetValue.png](4.AddBudgetValue.png-th.png)
 
@@ -59,7 +59,7 @@ Use <span style="color:red">negative</span>. values for expenses and <span style
 ## table for frequency
 This are all supported frequency from desktop.
 
-**Notice** From release 5.4 it's possible to define budget frequency also on mobile. ![Static Badge](https://img.shields.io/badge/new_in-5.4-gree)
+**Notice** From release 5.4 it's possible to define budget frequency also on mobile. ![Static Badge](https://img.shields.io/badge/new_in-5.4-green)
 {: .notice--warning}
 
 
@@ -74,4 +74,3 @@ This are all supported frequency from desktop.
 | Half-Yearly     | 2                 | amount * 2      | amount * 2   / 12 = amount / 6      |
 | Yearly          | 1                 | amount * 1      | amount * 1   / 12 = amount / 12    |
 | Daily           | 365               | amount * 365    | amount * 365 / 12 = amount * 30,41  |
-

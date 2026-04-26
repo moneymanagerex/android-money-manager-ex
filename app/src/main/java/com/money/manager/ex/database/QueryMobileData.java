@@ -89,7 +89,7 @@ public class QueryMobileData
 
         // insert WHERE statement, filter.
         if(!TextUtils.isEmpty(where)) {
-            source += " WHERE ";
+			source += " AND ";
             source += where;
         }
 

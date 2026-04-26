@@ -65,9 +65,6 @@ public class PayeeReportFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setSearchMenuVisible(true);
-
-        // disable fab issue #2504
-        setFabVisible(false);
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -177,6 +174,11 @@ public class PayeeReportFragment
                 QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
                 QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
 
+        String accountFilterSelection = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
+        if (!TextUtils.isEmpty(accountFilterSelection)) {
+            selection += " AND " + accountFilterSelection;
+        }
+
         if (!TextUtils.isEmpty(whereClause)) {
             selection += " AND " + whereClause;
         }
@@ -205,10 +207,12 @@ public class PayeeReportFragment
 
     @Override
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_chart) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_chart) {
             showChart();
             return true;
         }
+
         return super.old_onOptionsItemSelected(item);
     }
 
@@ -288,6 +292,7 @@ public class PayeeReportFragment
         parameters.payeeName = payee.getName();
         parameters.dateFrom = mDateFrom;
         parameters.dateTo = mDateTo;
+        parameters.accountFilterWhere = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
 
         showSearchActivityFor(parameters);
     }

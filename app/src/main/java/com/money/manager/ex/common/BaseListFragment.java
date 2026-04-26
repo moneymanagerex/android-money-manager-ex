@@ -74,23 +74,27 @@ public abstract class BaseListFragment
 
         setupFloatingActionButton(view);
 
-        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-            private boolean isFabVisible = true;
+        if (isFabAutoToggleEnabled()) {
+            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                private boolean isFabVisible = true;
 
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem > 0 && isFabVisible) {
-                    isFabVisible = false;
-                } else if (firstVisibleItem == 0 && !isFabVisible) {
-                    isFabVisible = true;
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
                 }
-                setFabVisible(isFabVisible);
-            }
-        });
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if (firstVisibleItem > 0 && isFabVisible) {
+                        isFabVisible = false;
+                    } else if (firstVisibleItem == 0 && !isFabVisible) {
+                        isFabVisible = true;
+                    }
+                    setFabVisible(isFabVisible);
+                }
+            });
+        } else {
+            setFabVisible(false);
+        }
     }
 
     private void setupMenuProviders() {
@@ -100,6 +104,8 @@ public abstract class BaseListFragment
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                old_onCreateOptionsMenu(menu, menuInflater);
+
                 if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
                     // Place an action bar item for searching.
                     final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
@@ -130,7 +136,6 @@ public abstract class BaseListFragment
 
                     formatter.format(searchView);
                 }
-                old_onCreateOptionsMenu(menu, menuInflater);
             }
 
             @Override
@@ -299,5 +304,9 @@ public abstract class BaseListFragment
                 }
             });
         }
+    }
+
+    protected boolean isFabAutoToggleEnabled() {
+        return true;
     }
 }

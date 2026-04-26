@@ -19,8 +19,8 @@ See basic [Concept](concept.md).
 
 To start using Money Manager Ex - Android, simply download and install the app from the Google Play Store or F-Droid. Once installed, you can create an account and begin adding your financial information.
 
-You can also manually install from [github release page](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest). 
-Detail instruction [here](install.md).
+You can also manually install from [github release page](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest).
+Detailed instructions [here](install.md).
 
 Read [Quick Start Guide](../quickstart) for initial documentation.
 
@@ -28,7 +28,7 @@ Read [Quick Start Guide](../quickstart) for initial documentation.
 
 ## Open Database Format
 
-All information are stored in a sql-lite [database](database.md).
+All information is stored in a SQLite [database](database.md).
 
 ## Expense Tracking
 
@@ -48,24 +48,25 @@ Manage multiple accounts, including checking, savings, credit cards, and more. K
 
 Generate customizable reports to gain insights into your financial health. Analyze spending patterns, income trends, and more.
 
-### BuildIn Report
+### Built-in Reports
 
-internal report allow you to see information regarding your expenses like:
-- **Payee**: show amount spend for each payee
-- **Where the money goes**: show amount for each expenses category 
-- **Where the money comes**: show amount for each income category 
-- **Category**: show amount for each category 
-- **Income and Expenses**: show monthly income and expenses 
-- **Cash-flow**: this report show your future cash-flow based on schedule transaction 
+Built-in reports allow you to see information regarding your expenses, such as:
+- **Payee**: shows the amount spent for each payee
+- **Where the money goes**: shows the amount for each expense category
+- **Where the money comes**: shows the amount for each income category
+- **Category**: shows the amount for each category
+- **Income and Expenses**: shows monthly income and expenses
+- **Cash-flow**: this report shows your future cash flow based on scheduled transactions
+- **Summary of Accounts**: shows a month-by-month balance summary grouped by account types or accounts (with total), with period selection, sort order, account filters (open, favorite, custom), and chart view.
 
 ### General Report
 
-**Notice** this function is partially supported. 
+**Notice** this function is partially supported.
 {: .notice--danger}
 
-General report allow you to execute report loaded from [General Report Feature](https://moneymanagerex.org/docs/features/generalreports/)
+General reports allow you to execute reports loaded from [General Report Feature](https://moneymanagerex.org/docs/features/generalreports/)
 
-Actually only execute SQL and HTML work. No LUA capability, and report need to be loaded from desktop version. There is actually no way to load from Android.
+Currently, only SQL and HTML reports work. No LUA capability is available, and reports need to be loaded from the desktop version. There is currently no way to load them from Android.
 
 
 ## Data Sync
@@ -80,7 +81,7 @@ Protect your financial information with advanced security features, including pa
 
 ## Recurring Transactions
 
-Support for recurring and schedule transactions. Recurring can be Manual, Prompt (with notifications) or Automatic (controlled by setting switch).
+Support for recurring and scheduled transactions. Recurring can be Manual, Prompt (with notifications), or Automatic (controlled by a setting switch).
 
 {% capture notice-2 %}
 > Notice!**
@@ -89,7 +90,7 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
 > AUTO: Means that transaction is auto posted when expired
 >
 > PROMPT: Means that transaction is show in a notification with action skip/enter for user decision
-> 
+>
 > MANUAL: Means that no action is taken on recurring transaction (no auto post, no notification)
 {% endcapture %}
 <div class="notice--warning">
@@ -99,7 +100,7 @@ Support for recurring and schedule transactions. Recurring can be Manual, Prompt
 ## Nested Category ![Static Badge](https://img.shields.io/badge/from%20release-2024.08.25-green)
 
 Money Manager Ex on Desktop can manage nested subcategory. From 2024.08.25, nested category (means third level or more in category management) is available also on Android Version.
-You can define (virtually) infinite subcategory level to categorize expenses. 
+You can define (virtually) infinite subcategory level to categorize expenses.
 
 Read [how to use nested category](category)
 
@@ -107,15 +108,15 @@ Read [how to use nested category](category)
 
 ## Settings
 
-Setting area controll a lot of switches to customise behaviour of the app based on your need.
+The settings area controls many switches to customize app behavior based on your needs.
 
-Detail instructions [here](settings/)
+Detailed instructions [here](settings/)
 
 ## Adding Transactions
 
 To add a new transaction, simply navigate to the transactions tab and click on the add button. Then, enter the details of the transaction, including the date, amount, category, and any additional notes.
 
-Detail instructions to how to enter transaction [here](add_transaction.md)
+Detailed instructions on how to enter a transaction [here](add_transaction.md)
 
 ## Managing Accounts
 

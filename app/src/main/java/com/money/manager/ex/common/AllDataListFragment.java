@@ -329,17 +329,13 @@ public class AllDataListFragment
             }
 
             // set sort
-            String sort = "";
-            if (args != null && args.containsKey(KEY_ARGUMENTS_SORT)) {
-                sort = args.getString(KEY_ARGUMENTS_SORT);
-            } else {
-                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC) {
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " DESC";
-                }
-                if ((new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_ASC) {
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " ASC";
-                }
+            String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
 
+            //#2810: Transaction list order is inconsistent for transactions created on the same day
+            if (TextUtils.isEmpty(sort)) {
+                String sortDirection = (new AppSettings(getContext())).getTransactionSort() == 0 ? "DESC" : "ASC";
+                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " " + sortDirection + ", " +
+                            ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " " + sortDirection;
             }
 
             Select query = new Select(allData.getAllColumns())

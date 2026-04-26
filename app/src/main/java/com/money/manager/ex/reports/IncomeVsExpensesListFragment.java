@@ -48,11 +48,14 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -60,6 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import info.javaperformance.money.MoneyFactory;
@@ -78,32 +82,50 @@ public class IncomeVsExpensesListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ID_LOADER_REPORT = 1;
-    private static final int ID_LOADER_YEARS = 2;
     private static final String SORT_ASCENDING = "ASC";
     private static final String SORT_DESCENDING = "DESC";
-    private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
+    private static final String KEY_BUNDLE_DATE_FROM = "IncomeVsExpensesListFragment:DateFrom";
+    private static final String KEY_BUNDLE_DATE_TO = "IncomeVsExpensesListFragment:DateTo";
+    private static final String KEY_BUNDLE_ITEM_SELECTED = "IncomeVsExpensesListFragment:ItemSelected";
+    private static final String PREF_FILTER_MODE = "IncomeVsExpensesFilterMode";
+    private static final String PREF_FILTER_CUSTOM = "IncomeVsExpensesFilterCustom";
 
     private View mFooterListView;
-    private final SparseBooleanArray mYearsSelected = new SparseBooleanArray();
+    private Date mDateFrom;
+    private Date mDateTo;
+    private int mItemSelected = R.id.menu_current_year;
     private String mSort = SORT_ASCENDING;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // setHasOptionsMenu(true);
-        setupMenuProviders();
-    }
+    private boolean mMenuProviderRegistered = false;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
-                savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
-            for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
-                mYearsSelected.put(year, true);
+        setupMenuProviders();
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_BUNDLE_ITEM_SELECTED)) {
+                mItemSelected = savedInstanceState.getInt(KEY_BUNDLE_ITEM_SELECTED);
             }
-        } else {
-            mYearsSelected.put(Calendar.getInstance().get(Calendar.YEAR), true);
+            if (savedInstanceState.containsKey(KEY_BUNDLE_DATE_FROM)) {
+                String dateFromString = savedInstanceState.getString(KEY_BUNDLE_DATE_FROM);
+                if (!TextUtils.isEmpty(dateFromString)) {
+                    mDateFrom = new MmxDate(dateFromString).toDate();
+                }
+            }
+            if (savedInstanceState.containsKey(KEY_BUNDLE_DATE_TO)) {
+                String dateToString = savedInstanceState.getString(KEY_BUNDLE_DATE_TO);
+                if (!TextUtils.isEmpty(dateToString)) {
+                    mDateTo = new MmxDate(dateToString).toDate();
+                }
+            }
+        }
+
+        if (mDateFrom == null || mDateTo == null) {
+            com.money.manager.ex.core.DateRange defaultRange = ReportDateRangeSupport.resolveDateRange(requireContext(), R.id.menu_current_year);
+            if (defaultRange != null) {
+                mDateFrom = defaultRange.dateFrom;
+                mDateTo = defaultRange.dateTo;
+            }
         }
 
         initializeListView();
@@ -119,9 +141,13 @@ public class IncomeVsExpensesListFragment
         IncomeVsExpensesAdapter adapter = new IncomeVsExpensesAdapter(getActivity(), null);
         setListAdapter(adapter);
         setListShown(false);
-        // start loader
-        //getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
-        getLoaderManager().initLoader(ID_LOADER_YEARS, null, this);
+        startLoader();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mMenuProviderRegistered = false;
     }
 
     // To remove Obsolete code we need to:
@@ -136,6 +162,8 @@ public class IncomeVsExpensesListFragment
 
     // Loader
     private void setupMenuProviders() {
+        if (mMenuProviderRegistered) return;
+
         MenuHost menuHost = requireActivity();
 
         // MenuProvider comune
@@ -151,6 +179,8 @@ public class IncomeVsExpensesListFragment
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
+        mMenuProviderRegistered = true;
+
         // Chiamata al metodo che le classi derivate possono sovrascrivere
         addCustomMenuProviders(menuHost);
     }
@@ -162,32 +192,12 @@ public class IncomeVsExpensesListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = null;
-        Select query;
-
         switch (id) {
             case ID_LOADER_REPORT:
-                if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
-                    selection = IncomeVsExpenseReportEntity.YEAR + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
-                    if (!TextUtils.isEmpty(selection)) {
-                        selection = "(" + selection + ")";
-                    }
-                }
-                // if don't have selection abort query
-                if (TextUtils.isEmpty(selection)) {
-                    selection = "1=2";
-                }
-                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                query = new Select(report.getAllColumns())
-                    .where(selection)
-                    .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
+                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity(), buildReportFilterClause());
+                String reportSql = buildIncomeVsExpensesQuery(report);
+                Select query = new Select().where(reportSql);
 
-                return new MmxCursorLoader(getActivity(), report.getUri(), query);
-
-            case ID_LOADER_YEARS:
-                QueryMobileData mobileData = new QueryMobileData(getContext());
-                selection = "SELECT DISTINCT Year as Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
-                query = new Select().where(selection);
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
         return null;
@@ -240,19 +250,6 @@ public class IncomeVsExpensesListFragment
                     }, 1000);
                 }
                 break;
-
-            case ID_LOADER_YEARS:
-                if (data != null && data.moveToFirst()) {
-
-                    while (!data.isAfterLast()) {
-                        int year = data.getInt(data.getColumnIndexOrThrow(IncomeVsExpenseReportEntity.YEAR));
-                        if (!mYearsSelected.get(year, false)) {
-                            mYearsSelected.put(year, false);
-                        }
-                        data.moveToNext();
-                    }
-                    startLoader();
-                }
         }
     }
 
@@ -260,6 +257,22 @@ public class IncomeVsExpensesListFragment
 
     public void old_onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
+        inflater.inflate(R.menu.menu_period_picker, menu);
+        if (menu.findItem(R.id.menu_account_filter) == null) {
+            inflater.inflate(R.menu.menu_report_account_filter, menu);
+        }
+        MenuItem periodItem = menu.findItem(R.id.menu_period);
+        if (periodItem != null) {
+            periodItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+        MenuItem selectedPeriod = menu.findItem(mItemSelected);
+        if (selectedPeriod != null) {
+            selectedPeriod.setChecked(true);
+        }
+        MenuItem selectedFilter = menu.findItem(getAccountFilterMode());
+        if (selectedFilter != null) {
+            selectedFilter.setChecked(true);
+        }
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
@@ -279,11 +292,105 @@ public class IncomeVsExpensesListFragment
             item.setChecked(true);
         } else if (item.getItemId() == R.id.menu_chart) {
             showChart();
-        } else if (item.getItemId() == R.id.menu_period) {
-            showDialogYears();
+        } else if (handlePeriodSelection(item)) {
+            return true;
+        } else if (isAccountFilterMenuItem(item.getItemId())) {
+            item.setChecked(true);
+            saveAccountFilterMode(item.getItemId());
+            if (item.getItemId() == R.id.menu_account_filter_custom) {
+                showAccountSelectionDialog();
+            } else {
+                startLoader();
+            }
+            return true;
         }
 
         return false;
+    }
+
+    private boolean handlePeriodSelection(MenuItem menuItem) {
+        int itemId = menuItem.getItemId();
+
+        if (itemId == R.id.menu_all_time) {
+            mDateFrom = null;
+            mDateTo = null;
+        } else if (itemId == R.id.menu_custom_dates) {
+            menuItem.setChecked(true);
+            mItemSelected = itemId;
+            showDialogCustomDates();
+            return true;
+        } else {
+            com.money.manager.ex.core.DateRange dateRange = ReportDateRangeSupport.resolveDateRange(requireContext(), itemId);
+            if (dateRange == null) {
+                return false;
+            }
+            mDateFrom = dateRange.dateFrom;
+            mDateTo = dateRange.dateTo;
+        }
+
+        menuItem.setChecked(true);
+        mItemSelected = itemId;
+        startLoader();
+        return true;
+    }
+
+    private boolean isAccountFilterMenuItem(int itemId) {
+        return AccountFilterSupport.isAccountFilterMenuItem(itemId);
+    }
+
+    private int getAccountFilterMode() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        return AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
+    }
+
+    private void saveAccountFilterMode(int mode) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, mode);
+    }
+
+    private String getAccountFilterSelection() {
+        int mode = getAccountFilterMode();
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        return AccountFilterSupport.getSelectionForAccountIdColumn(
+                mode, settings, PREF_FILTER_CUSTOM, "TX.ACCOUNTID");
+    }
+
+    private void showAccountSelectionDialog() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        AccountFilterSupport.showAndPersistAccountSelectionDialog(
+                requireContext(), settings, PREF_FILTER_CUSTOM, this::startLoader);
+    }
+
+    private String buildReportFilterClause() {
+        String accountClause = getAccountFilterSelection();
+        String dateClause = ReportDateRangeSupport.buildWhereClause(mDateFrom, mDateTo, "date(TX.TransDate)");
+
+        if (TextUtils.isEmpty(accountClause)) {
+            return dateClause;
+        }
+        if (TextUtils.isEmpty(dateClause)) {
+            return accountClause;
+        }
+
+        return accountClause + " AND " + dateClause;
+    }
+
+    private String buildIncomeVsExpensesQuery(QueryReportIncomeVsExpenses report) {
+        StringBuilder sql = new StringBuilder("SELECT ");
+        String[] columns = report.getAllColumns();
+        for (int i = 0; i < columns.length; i++) {
+            if (i > 0) {
+                sql.append(", ");
+            }
+            sql.append(columns[i]);
+        }
+        sql.append(" FROM (").append(report.getSource()).append(") T");
+        sql.append(" ORDER BY ")
+                .append(IncomeVsExpenseReportEntity.YEAR).append(" ").append(mSort)
+                .append(", ")
+                .append(IncomeVsExpenseReportEntity.Month).append(" ").append(mSort);
+
+        return sql.toString();
     }
 
     //
@@ -291,68 +398,21 @@ public class IncomeVsExpensesListFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Integer> years = new ArrayList();
-        for (int i = 0; i < mYearsSelected.size(); i++) {
-            if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
-                years.add(mYearsSelected.keyAt(i));
-            }
+        if (mDateFrom != null) {
+            outState.putString(KEY_BUNDLE_DATE_FROM, new MmxDate(mDateFrom).toIsoDateString());
         }
-
-        // ArrayUtils.toPrimitive(years.toArray(new Integer[0]))
-        int[] yearsArray = Ints.toArray(years);
-        outState.putIntArray(KEY_BUNDLE_YEAR, yearsArray);
+        if (mDateTo != null) {
+            outState.putString(KEY_BUNDLE_DATE_TO, new MmxDate(mDateTo).toIsoDateString());
+        }
+        outState.putInt(KEY_BUNDLE_ITEM_SELECTED, mItemSelected);
     }
 
-    // Other
-
-    public void showDialogYears() {
-        // Assuming mYearsSelected is a SparseBooleanArray
-        ArrayList<String> years = new ArrayList<>();
-        List<Integer> selected = new ArrayList<>();
-
-        for (int i = 0; i < mYearsSelected.size(); i++) {
-            years.add(String.valueOf(mYearsSelected.keyAt(i)));
-
-            if (mYearsSelected.valueAt(i)) {
-                // SparseBooleanArray will be always in ASC order, so reversing the selection index
-                selected.add(mYearsSelected.size()-(i+1));
-            }
-        }
-
-        // SparseBooleanArray will be always in ASC order, so using sort option
-        Collections.sort(years, Collections.reverseOrder());
-
-        // Convert years to CharSequence array
-        final CharSequence[] items = years.toArray(new CharSequence[years.size()]);
-        // Convert selected to boolean array
-        final boolean[] checkedItems = new boolean[items.length];
-        for (int i = 0; i < items.length; i++) {
-            checkedItems[i] = selected.contains(i);
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        checkedItems[which] = isChecked;
-                    }
-                })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Reset all years to false
-                        for (int i = 0; i < mYearsSelected.size(); i++) {
-                            mYearsSelected.put(mYearsSelected.keyAt(i), false);
-                        }
-                        // Set selected years
-                        for (int i = 0; i < checkedItems.length; i++) {
-                            mYearsSelected.put(mYearsSelected.keyAt(checkedItems.length-(i+1)), checkedItems[i]);
-                        }
-                        startLoader();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+    private void showDialogCustomDates() {
+        ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
+            mDateFrom = fromDate;
+            mDateTo = toDate;
+            startLoader();
+        });
     }
 
     // Private
@@ -431,6 +491,11 @@ public class IncomeVsExpensesListFragment
                 dateTime.lastDayOfMonth();
                 params.dateTo = dateTime.toDate();
 
+                int mode = getAccountFilterMode();
+                LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+                params.accountFilterWhere = AccountFilterSupport.getSelectionForAccountIdColumn(
+                        mode, settings, PREF_FILTER_CUSTOM, QueryAllData.ACCOUNTID);
+
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), params);
                 startActivity(intent);
             }
@@ -438,19 +503,11 @@ public class IncomeVsExpensesListFragment
     }
 
     /**
-     * Start loader with arrays year
+     * Start loader with the current report date range.
      *
      */
     private void startLoader() {
-        Bundle bundle = new Bundle();
-        String years = "";
-        for (int i = 0; i < mYearsSelected.size(); i++) {
-            if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
-                years += (!TextUtils.isEmpty(years) ? ", " : "") + mYearsSelected.keyAt(i);
-            }
-        }
-        bundle.putString(KEY_BUNDLE_YEAR, years);
-        getLoaderManager().restartLoader(ID_LOADER_REPORT, bundle, this);
+        getLoaderManager().restartLoader(ID_LOADER_REPORT, null, this);
     }
 
     /**

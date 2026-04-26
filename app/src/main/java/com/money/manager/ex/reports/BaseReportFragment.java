@@ -16,15 +16,12 @@
  */
 package com.money.manager.ex.reports;
 
-import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
@@ -34,23 +31,19 @@ import androidx.lifecycle.Lifecycle;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.Lazy;
 import timber.log.Timber;
 
 public abstract class BaseReportFragment
@@ -62,20 +55,17 @@ public abstract class BaseReportFragment
     protected static final String KEY_WHERE_CLAUSE = "PayeeReportFragment:WhereClause";
     protected static final String KEY_FROM_DATE = "PayeeReportFragment:FromDate";
     protected static final String KEY_TO_DATE = "PayeeReportFragment:ToDate";
+    protected static final int ACCOUNT_FILTER_DEFAULT_MODE = R.id.menu_account_filter_open;
 
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @Override
+    protected boolean isFabAutoToggleEnabled() {
+        return false;
+    }
 
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        MmexApplication.getApp().iocComponent.inject(this);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -105,15 +95,29 @@ public abstract class BaseReportFragment
 
     @Override
     protected void addCustomMenuProviders(MenuHost menuHost) {
-        // add menu
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                // issue  #2841 multiple instance of period.
-                // move into original onCreateMenu
                 menuInflater.inflate(R.menu.menu_report, menu);
                 menuInflater.inflate(R.menu.menu_period_picker, menu);
-                //checked item
+
+                if (isPeriodPickerActionVisible()) {
+                    MenuItem periodItem = menu.findItem(R.id.menu_period);
+                    if (periodItem != null) {
+                        periodItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    }
+                }
+
+                if (isAccountFilterEnabled() && menu.findItem(R.id.menu_account_filter) == null) {
+                    menuInflater.inflate(R.menu.menu_report_account_filter, menu);
+
+                    int selectedMode = getAccountFilterMode();
+                    MenuItem selectedItem = menu.findItem(selectedMode);
+                    if (selectedItem != null) {
+                        selectedItem.setChecked(true);
+                    }
+                }
+
                 MenuItem item = menu.findItem(mItemSelected);
                 if (item != null) {
                     item.setChecked(true);
@@ -124,97 +128,51 @@ public abstract class BaseReportFragment
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                MmxDate dateTime = MmxDate.newDate();
-
                 int itemId = menuItem.getItemId();
 
-                if (itemId == R.id.menu_current_month) {
-                    mDateFrom = dateTime.firstDayOfMonth().toDate();
-                    mDateTo = dateTime.lastDayOfMonth().toDate();
-                } else if (itemId == R.id.menu_last_month) {
-                    mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
-                    mDateTo = dateTime.lastDayOfMonth().toDate();
-                } else if (itemId == R.id.menu_last_30_days) {
-                    mDateTo = dateTime.toDate();
-                    mDateFrom = dateTime.minusDays(30).toDate();
-                } else if (itemId == R.id.menu_current_year) {
-                    mDateFrom = dateTime.firstMonthOfYear().firstDayOfMonth().toDate();
-                    mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-                } else if (itemId == R.id.menu_last_year) {
-                    mDateFrom = dateTime.minusYears(1)
-                            .firstMonthOfYear()
-                            .firstDayOfMonth()
-                            .toDate();
-                    mDateTo = dateTime.lastMonthOfYear().lastDayOfMonth().toDate();
-// issue #1790 - handling financial year
-                } else if (itemId == R.id.menu_current_fin_year ||
-                        itemId == R.id.menu_last_fin_year) {
-                    InfoService infoService = new InfoService(getActivity());
-                    int financialYearStartDay = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, "1"));
-                    int financialYearStartMonth = Integer.valueOf(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, "1"))-1;
-                    if (financialYearStartMonth < 0) financialYearStartMonth = 0;
-                    MmxDate newDate = MmxDate.newDate();
-                    newDate.setDate(financialYearStartDay);
-                    newDate.setMonth(financialYearStartMonth);
-                    if (newDate.toDate().after(dateTime.toDate())) {
-                        // today is not part of current financial year, so we need to go back on year
-                        newDate.minusYears(1);
+                if (isAccountFilterEnabled() && isAccountFilterMenuItem(itemId)) {
+                    menuItem.setChecked(true);
+                    saveAccountFilterMode(itemId);
+
+                    if (itemId == R.id.menu_account_filter_custom) {
+                        showAccountSelectionDialog();
+                    } else {
+                        onAccountFilterChanged();
                     }
-                    // right now newDAte is start of current fiscal year
-                    if (itemId == R.id.menu_last_fin_year) {
-                        newDate.minusYears(1);
-                    }
-                    mDateFrom = newDate.toDate();
-                    mDateTo = newDate.addYear(1).minusDays(1).toDate();
-                    Timber.v("FISCAL YEAR from: " + mDateFrom.toString() + " to: " + mDateTo.toString());
-                } else if (itemId == R.id.menu_all_time) {
+                    return true;
+                }
+
+                if (itemId == R.id.menu_all_time) {
                     mDateFrom = null;
                     mDateTo = null;
                 } else if (itemId == R.id.menu_custom_dates) {
-                    // Check item
                     menuItem.setChecked(true);
                     mItemSelected = itemId;
-                    // Show custom dates dialog
                     showDialogCustomDates();
                     return true;
                 } else {
-                    return false;
+                    com.money.manager.ex.core.DateRange dateRange = ReportDateRangeSupport.resolveDateRange(requireContext(), itemId);
+                    if (dateRange == null) {
+                        return false;
+                    }
+                    mDateFrom = dateRange.dateFrom;
+                    mDateTo = dateRange.dateTo;
+                    Timber.v("Date range from: " + mDateFrom + " to: " + mDateTo);
                 }
 
-                String whereClause = null;
-                if (mDateFrom != null && mDateTo != null) {
-                    whereClause = QueryAllData.Date + " >= '" + new MmxDate(mDateFrom).toIsoDateString() +
-                            "' AND " + QueryAllData.Date + " <= '" + new MmxDate(mDateTo).toIsoDateString() + "'";
-                }
+                String whereClause = ReportDateRangeSupport.buildWhereClause(mDateFrom, mDateTo, QueryAllData.Date);
 
-                //check item
                 menuItem.setChecked(true);
-                mItemSelected = menuItem.getItemId();
+                mItemSelected = itemId;
 
-                //compose bundle
                 Bundle args = new Bundle();
                 args.putString(KEY_WHERE_CLAUSE, whereClause);
-
-                //starts loader
                 startLoader(args);
 
                 return true;
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
-
-//    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        super.old_onCreateOptionsMenu(menu, inflater);
-//        //inflate menu
-//    }
-
-//    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
-////        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
-//        return super.old_onOptionsItemSelected(item);
-//    }
-
-
-    // Loader events
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -296,37 +254,61 @@ public abstract class BaseReportFragment
         return mWhereClause;
     }
 
+    protected boolean isAccountFilterEnabled() {
+        return true;
+    }
+
+    protected boolean isPeriodPickerActionVisible() {
+        return true;
+    }
+
+    protected String getAccountFilterModePrefKey() {
+        return getClass().getSimpleName() + ":FilterMode";
+    }
+
+    protected String getAccountFilterCustomPrefKey() {
+        return getClass().getSimpleName() + ":FilterCustom";
+    }
+
+    protected String getAccountFilterSelection(String accountIdColumn) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        int mode = getAccountFilterMode();
+        return AccountFilterSupport.getSelectionForAccountIdColumn(
+                mode, settings, getAccountFilterCustomPrefKey(), accountIdColumn);
+    }
+
+    protected void onAccountFilterChanged() {
+        startLoader(new Bundle());
+    }
+
+    private boolean isAccountFilterMenuItem(int itemId) {
+        return AccountFilterSupport.isAccountFilterMenuItem(itemId);
+    }
+
+    private int getAccountFilterMode() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        return AccountFilterSupport.getFilterMode(settings, getAccountFilterModePrefKey(), ACCOUNT_FILTER_DEFAULT_MODE);
+    }
+
+    private void saveAccountFilterMode(int mode) {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        AccountFilterSupport.saveFilterMode(settings, getAccountFilterModePrefKey(), mode);
+    }
+
+    private void showAccountSelectionDialog() {
+        LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
+        AccountFilterSupport.showAndPersistAccountSelectionDialog(
+                requireContext(), settings, getAccountFilterCustomPrefKey(), this::onAccountFilterChanged);
+    }
+
     private void showDialogCustomDates() {
-        // Assuming mDateFrom, mDateTo, and KEY_WHERE_CLAUSE are class variables
-
-        // Inflate the custom view
-        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_choose_date_report, null);
-        DatePicker fromDatePicker = dialogView.findViewById(R.id.datePickerFromDate);
-        DatePicker toDatePicker = dialogView.findViewById(R.id.datePickerToDate);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    mDateFrom = dateTimeUtilsLazy.get().from(fromDatePicker);
-                    mDateTo = dateTimeUtilsLazy.get().from(toDatePicker);
-
-                    String whereClause =
-                            QueryAllData.Date + ">='" + new MmxDate(mDateFrom).toIsoDateString() +
-                                    "' AND " +
-                                    QueryAllData.Date + "<='" + new MmxDate(mDateTo).toIsoDateString() + "'";
-
-                    Bundle args = new Bundle();
-                    args.putString(KEY_WHERE_CLAUSE, whereClause);
-
-                    startLoader(args);
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-        // set date if is null
-        if (mDateFrom == null) mDateFrom = new MmxDate().today().toDate();
-        if (mDateTo == null) mDateTo = new MmxDate().today().toDate();
-
-        dateTimeUtilsLazy.get().setDatePicker(mDateFrom, fromDatePicker);
-        dateTimeUtilsLazy.get().setDatePicker(mDateTo, toDatePicker);
+        ReportDateRangeSupport.showCustomDateDialog(requireContext(), mDateFrom, mDateTo, (fromDate, toDate) -> {
+            mDateFrom = fromDate;
+            mDateTo = toDate;
+            String whereClause = ReportDateRangeSupport.buildWhereClause(mDateFrom, mDateTo, QueryAllData.Date);
+            Bundle args = new Bundle();
+            args.putString(KEY_WHERE_CLAUSE, whereClause);
+            startLoader(args);
+        });
     }
 }

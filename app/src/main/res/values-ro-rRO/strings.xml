@@ -606,7 +606,7 @@
     <!-- Builder button -->
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
-    <string name="menu_cashflow_all">Toate conturile</string>
+    <string name="menu_account_filter_all">Toate conturile</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->

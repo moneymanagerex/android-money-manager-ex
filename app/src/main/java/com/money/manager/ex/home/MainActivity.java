@@ -107,6 +107,7 @@ import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.GeneralReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
+import com.money.manager.ex.reports.SummaryOfAccountsReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
@@ -673,6 +674,8 @@ public class MainActivity
             startActivity(new Intent(this, IncomeVsExpensesActivity.class));
         } else if (itemId == R.id.menu_report_cashflow) {
             startActivity(new Intent(this, CashFlowReportActivity.class));
+        } else if (itemId == R.id.menu_report_summary_of_accounts) {
+            startActivity(new Intent(this, SummaryOfAccountsReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -904,11 +907,16 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                         .color(iconColor)));
+        // summary of accounts
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_accounts)
+            .withText(getString(R.string.menu_report_summary_of_accounts))
+            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                .color(iconColor)));
         // CashFlow
         childReports.add(new DrawerMenuItem().withId(R.id.menu_report_cashflow)
-                .withText(getString(R.string.menu_report_cashflow))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
-                        .color(iconColor)));
+            .withText(getString(R.string.menu_report_cashflow))
+            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_show_chart)
+                .color(iconColor)));
 
         childItems.add(childReports);
 

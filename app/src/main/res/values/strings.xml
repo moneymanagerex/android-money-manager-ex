@@ -331,6 +331,7 @@
     <string name="title_activity_general_report">General Report</string>
     <string name="menu_report_income_vs_expenses">Income Vs Expenses</string>
     <string name="menu_report_cashflow">Cash Flow</string>
+    <string name="menu_report_summary_of_accounts">Summary of Accounts</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">All Time</string>
@@ -555,6 +556,7 @@
     <string name="title_activity_currency_chart">Currency Exchange Rate Chart</string>
     <string name="sort_by_ascending">Sort by year and month ascending</string>
     <string name="sort_by_desceding">Sort by year and month descending</string>
+    <string name="group_by">Group by</string>
     <string name="years">Years</string>
     <string name="select_the_years_to_be_displayed">Select the years to be displayed</string>
     <string name="to_date">To Date</string>
@@ -570,10 +572,13 @@
     <string name="update_prices">Update prices</string>
     <string name="update_price">Update price</string>
     <string name="download_price">Download price</string>
+    <string name="download_all_prices">Download all prices</string>
     <string name="edit_price">Edit price</string>
     <string name="price_updated">Price updated</string>
     <string name="all_prices_updated">All prices have been updated.</string>
     <string name="download_complete">Download complete.</string>
+    <string name="downloaded_price_for_symbol">Downloaded: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">Downloaded %1$d/%2$d prices</string>
     <string name="confirm_price_download">Do you want to update security prices online?</string>
     <string name="starting_price_update">Downloading prices, please wait…</string>
     <string name="database_migrate_14_to_20">Migrate database from v1.4</string>
@@ -899,10 +904,10 @@
     <string name="local_file_change">Local file changes indicator: </string>
     <string name="msg_uploading_overwrite">Uploading will overwrite your remote version.\nDo you want to continue?</string>
     <string name="msg_downloading_overwrite">Downloading will overwrite your local version.\nDo you want to continue?</string>
-    <string name="menu_cashflow_all">All Accounts</string>
-    <string name="menu_cashflow_open">Open Accounts</string>
-    <string name="menu_cashflow_favorite">Favorite Accounts</string>
-    <string name="menu_cashflow_custom">Select Accounts…</string>
+    <string name="menu_account_filter_all">All Accounts</string>
+    <string name="menu_account_filter_open">Open Accounts</string>
+    <string name="menu_account_filter_favorite">Favorite Accounts</string>
+    <string name="menu_account_filter_custom">Select Accounts…</string>
     <string name="cash_ledger">Cash Ledger</string>
 
     <!-- Merge -->

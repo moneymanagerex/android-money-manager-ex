@@ -15,21 +15,21 @@ excerpt: >
   <a href="https://github.com/moneymanagerex/android-money-manager-ex/releases/latest"><img src="https://img.shields.io/github/v/release/moneymanagerex/android-money-manager-ex?include_prereleases&label=github%20release"></a>&nbsp;
   <a href="https://play.google.com/store/apps/details?id=com.money.manager.ex.android"><img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.money.manager.ex.android%26gl%3DUS%26hl%3Den%26l%3DAndroid%26m%3D%24version"></a>&nbsp;
   <a href="https://f-droid.org/packages/com.money.manager.ex"><img src="https://img.shields.io/f-droid/v/com.money.manager.ex?include_prereleases&label=f-droid%20release"></a>
-   
+
 
 feature_row:
   - title: "Quick Start Guide"
     excerpt: "Quick guide for easy and fast setup, element concept and basic usage"
     url: "/quickstart/"
     btn_class: "btn--primary"
-    btn_label: "Start read"
+    btn_label: "Start reading"
   - title: "User Manual"
-    excerpt: "User manual with detail instruction."
+    excerpt: "User manual with detailed instructions."
     url: "/usermanual/"
     btn_class: "btn--primary"
-    btn_label: "Start read"
+    btn_label: "Start reading"
   - title: "How to Contribute"
-    excerpt: "Contribute to this project. Test, Translate, Beta and many others stuff"
+    excerpt: "Contribute to this project. Test, translate, beta, and many other things"
     url: "/contribute/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
@@ -46,11 +46,11 @@ Support our development teams with a coffee.
 <table width="100%">
 <tr>
   <td>
-<center>    
-**Buy Me a Coffe**<br>
+<center>
+**Buy Me a Coffee**<br>
 <a href="https://www.buymeacoffee.com/wolfsolver" target="_blank">
 <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-</a>    
+</a>
   </center>
   </td>
 <td>
@@ -92,11 +92,11 @@ Money Manager Ex for Android is a port of the desktop personal finance applicati
 The Android version mirrors the best features of the desktop version while adding
 mobility and database synchronization.
 
-In Money Manager Ex project, we strive to develop good personal finance software that we use ourselves. 
+In Money Manager Ex project, we strive to develop good personal finance software that we use ourselves.
 We also do this for fun and the love of programming. We are a non-profit, informal organization although we do accept donations and use them towards the hosting fees.
 Any leftovers for the Android version will also go towards acquiring a device for the app testing.
 
-Money Manager Ex is a free, open-source, cross-platform, easy-to-use personal finance software. 
+Money Manager Ex is a free, open-source, cross-platform, easy-to-use personal finance software.
 It primarily helps organize one's finances and keeps track of where, when, and how the money goes.
 It is also a great tool to get a bird's eye view of your financial worth.
 
@@ -114,7 +114,7 @@ allowing you to manage your finances on the go.
 - **Security:** Protect your financial data with passwords and encryption to ensure privacy and security.
 - **Customization:** Customize categories, currencies, and other settings to suit your specific needs.
 
-All the feature requests can be tracked at our [issue tracker](https://github.com/moneymanagerex/android-money-manager-ex/issues) on GitHub. .
+All feature requests can be tracked at our [issue tracker](https://github.com/moneymanagerex/android-money-manager-ex/issues) on GitHub.
 
 ## Download
 
@@ -126,7 +126,7 @@ If you like to contribute you can also enroll as [beta tester](https://play.goog
 
 Check [here](supported_android_version.md) if your Android version is supported.
 
-## Screenshot
+## Screenshots
 ![Splash screen](/assets/images/screenshoot/0.splash.jpg-th.png)
 ![Select Or Create Db](/assets/images/screenshoot/1.SelectOrCreateDb.jpg-th.png)
 ![Open Db](/assets/images/screenshoot/2.OpenDb.jpg-th.png)
@@ -138,7 +138,7 @@ Check [here](supported_android_version.md) if your Android version is supported.
 ![Budget](/assets/images/screenshoot/budget_standard.png-th.png)
 ![Budget All Column](/assets/images/screenshoot/budget_all_column.png-th.png)
 ![CashFlow](/assets/images/screenshoot/CashFlow.png-th.png)
-![IncomeVsExpese](/assets/images/screenshoot/IncomeVsExpense.png-th.png)
+![IncomeVsExpense](/assets/images/screenshoot/IncomeVsExpense.png-th.png)
 
 ## Contact
 Discussions, questions, and useful advice can be found in the Android [forum](http://forum.moneymanagerex.org/viewforum.php?f=20&sid=e28426f96579a43121b1127cd887e186)

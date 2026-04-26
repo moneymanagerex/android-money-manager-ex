@@ -312,6 +312,7 @@
     <string name="title_activity_general_report">Allgemeiner Bericht</string>
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
     <string name="menu_report_cashflow">Geldfluss</string>
+    <string name="menu_report_summary_of_accounts">Kontenübersicht</string>
     <string name="total">Gesamt</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Gesamter Zeitraum</string>
@@ -488,6 +489,7 @@
     <string name="title_activity_currency_chart">Wechselkursdiagramm</string>
     <string name="sort_by_ascending">Nach Jahr und Monat aufsteigend ordnen</string>
     <string name="sort_by_desceding">Nach Jahr und Monat absteigend ordnen</string>
+    <string name="group_by">Gruppiere nach</string>
     <string name="years">Jahre</string>
     <string name="select_the_years_to_be_displayed">Wählen Sie die anzuzeigenden Jahre</string>
     <string name="to_date">Bis heute</string>
@@ -503,12 +505,15 @@
     <string name="update_prices">Preise aktualisieren</string>
     <string name="update_price">Preis aktualisieren</string>
     <string name="download_price">Preis herunterladen</string>
+    <string name="download_all_prices">Alle Preise herunterladen</string>
     <string name="edit_price">Preis bearbeiten</string>
     <string name="price_updated">Preis aktualisiert</string>
     <string name="all_prices_updated">Alle Preise wurden aktualisiert.</string>
     <string name="download_complete">Download abgeschlossen.</string>
+    <string name="downloaded_price_for_symbol">Heruntergeladen: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">%1$d/%2$d Preise heruntergeladen</string>
     <string name="confirm_price_download">Möchten Sie Sicherheitspreise online aktualisieren?</string>
-    <string name="starting_price_update">Download Preise, bitte warten...</string>
+    <string name="starting_price_update">Preise werden heruntergeladen, bitte warten&#8230;</string>
     <string name="database_migrate_14_to_20">Migration der Datenbank von v1. 4</string>
     <string name="database_migrate_14_to_20_explanation">Alte Daten wurde gefunden. Tippen Sie hier, um Ihre frühere Datenbank zu verwenden.</string>
     <string name="database_migrate_14_to_20_failure">Datenbankmigration fehlgeschlagen ist. Bitte kontaktieren Sie den Support.</string>
@@ -595,7 +600,7 @@
     <string name="view_transactions">Transaktionen anzeigen</string>
     <string name="view_transactions_sub">Transaktionen mit Unterkategorien anzeigen</string>
     <string name="switch_active">Aktivieren/Inaktiv wechseln</string>
-    <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
+    <string name="error_downloading_symbol">Fehler beim Herunterladen des Preises für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
     <string name="other">Diverses</string>
@@ -801,10 +806,10 @@
     <string name="local_file_change">Anzeige für lokale Dateiänderungen: </string>
     <string name="msg_uploading_overwrite">Hochladen wird Ihre Remote-Version überschreiben.\nMöchten Sie fortfahren?</string>
     <string name="msg_downloading_overwrite">Das Herunterladen wird Ihre lokale Version überschreiben.\nMöchten Sie fortfahren?</string>
-    <string name="menu_cashflow_all">Alle Konten</string>
-    <string name="menu_cashflow_open">Offene Konten</string>
-    <string name="menu_cashflow_favorite">Favorisierte Konten</string>
-    <string name="menu_cashflow_custom">Konten wählen&#8230;</string>
+    <string name="menu_account_filter_all">Alle Konten</string>
+    <string name="menu_account_filter_open">Offene Konten</string>
+    <string name="menu_account_filter_favorite">Favorisierte Konten</string>
+    <string name="menu_account_filter_custom">Konten wählen&#8230;</string>
     <string name="cash_ledger">Kassenbuch</string>
     <!-- Merge -->
     <string name="merge_take_ours">Lokal behalten</string>

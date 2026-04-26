@@ -26,8 +26,6 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 
-import timber.log.Timber;
-
 /**
  * About the app
  */
@@ -75,12 +73,4 @@ public class AboutActivity
         mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
     }
 
-    @Override
-    protected void setTheme() {
-        try {
-            this.setTheme(R.style.Theme_Money_Manager_Light);
-        } catch (Exception e) {
-            Timber.e(e, "setting theme");
-        }
-    }
 }

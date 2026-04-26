@@ -38,7 +38,6 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
@@ -54,6 +53,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.reports.AccountFilterSupport;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -88,10 +88,17 @@ public class CashFlowReportListFragment
         extends BaseListFragment {
 
 //    private static final int ID_LOADER_REPORT = 1;
+    private static final String PREF_FILTER_MODE = "CashFlowFilterMode";
+    private static final String PREF_FILTER_CUSTOM = "CashFlowFilterCustom";
     private double totalAmount = 0;
     private static final String ID = "_id";
     private static final String BALANCE = "BALANCE";
     private static int monthInAdvance = 12;
+
+    @Override
+    protected boolean isFabAutoToggleEnabled() {
+        return false;
+    }
 
     private UIHelper ui;
     private MatrixCursor matrixCursor;
@@ -228,6 +235,9 @@ public class CashFlowReportListFragment
         for (int x = 0; x < 31 * monthInAdvance; x++) {
             graphValue.add(null);
         }
+        if (!graphValue.isEmpty()) {
+            graphValue.set(0, totalAmount);
+        }
 
         Date olderDate = MmxDate.newDate().toDate();
         // copy to matrix cursor
@@ -270,20 +280,13 @@ public class CashFlowReportListFragment
 
     private void getTotalAmountAndAccounts() {
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
-        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
-        String accountCustomFilters = "";
-        if ( accountFilter == R.id.menu_cashflow_custom ) {
-            accountCustomFilters = settings.get("AccountFilterCustom", "");
-        }
+        int accountFilter = AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
         // compose whereClause
-        String where = "";
-        if (accountFilter == R.id.menu_cashflow_open) {
-            where += "LOWER(" + QueryAccountBills.STATUS + ") = 'open'";
-        } else if (accountFilter == R.id.menu_cashflow_favorite) {
-            where += "LOWER(" + QueryAccountBills.FAVORITEACCT + ") = 'true'";
-        } else if (accountFilter == R.id.menu_cashflow_custom) {
-            where += QueryAccountBills.ACCOUNTID + " IN ( " + accountCustomFilters + " )";
-        }
+        String where = AccountFilterSupport.getSelectionForAccountIdColumn(
+            accountFilter,
+            settings,
+            PREF_FILTER_CUSTOM,
+            QueryAccountBills.ACCOUNTID);
 
         QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
         selectedAccounts = new ArrayList<>();
@@ -305,7 +308,7 @@ public class CashFlowReportListFragment
 
     @Override
     public String getSubTitle() {
-        return monthInAdvance + " month view";
+        return getString(R.string.menu_cashflow_24_months).replace("24", String.valueOf(monthInAdvance));
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -331,6 +334,9 @@ public class CashFlowReportListFragment
                 } else {
                     adapter.swapCursor(matrixCursor);
                     adapter.notifyDataSetChanged();
+
+                    buildChartInfo();
+
                     getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -339,7 +345,7 @@ public class CashFlowReportListFragment
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //                            if (cursorPosition != null ) {
-                              if ( chart != null ) {
+                              if ( chart != null && chart.getData() != null && firstVisibleItem >= 0 && firstVisibleItem < dayPosition.size() ) {
 //                                Timber.d("Position: %d",firstVisibleItem);
 //                                chart.getXAxis().removeLimitLine(cursorPosition);
                                 int pos = dayPosition.get(firstVisibleItem);
@@ -352,7 +358,6 @@ public class CashFlowReportListFragment
                             }
                         }
                     });
-                    buildChartInfo();
                 }
                 setListShown(true);
             });
@@ -472,9 +477,6 @@ public class CashFlowReportListFragment
         setListShown(false);
 
 //        getLoaderManager().initLoader(ID_LOADER_REPORT, null, this);
-
-        // show floating button.
-        setFabVisible(false);
         // attachFloatingActionButtonToListView();
 
     }
@@ -522,7 +524,7 @@ public class CashFlowReportListFragment
             menu.findItem(R.id.menu_cashflow_24_months).setChecked(true);
         }
 
-        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
+        int accountFilter = AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
         if ( menu.findItem(accountFilter) != null ) {
             menu.findItem(accountFilter).setChecked(true);
         }
@@ -532,7 +534,6 @@ public class CashFlowReportListFragment
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle accounts filter
         LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
-//        int accountFilter = settings.get(R.menu.menu_cashflow, R.id.menu_cashflow_open);
         int itemId = item.getItemId();
         if (itemId == R.id.menu_cashflow_24_months) {
             monthInAdvance = (item.isChecked()) ? 12 : 24;
@@ -540,63 +541,12 @@ public class CashFlowReportListFragment
             settings.set(R.id.menu_cashflow_24_months, item.isChecked());
             getActivity().recreate();
             return true;
-        } else if (itemId == R.id.menu_cashflow_all || itemId == R.id.menu_cashflow_open || itemId == R.id.menu_cashflow_favorite || itemId == R.id.menu_cashflow_custom) {
+        } else if (AccountFilterSupport.isAccountFilterMenuItem(itemId)) {
             item.setChecked(true);
-            settings.set(R.menu.menu_cashflow, item.getItemId());
-            if (item.getItemId() == R.id.menu_cashflow_custom) {
-                // call popup
-                String where = "";
-                if (settings.getViewOpenAccounts()) {
-                    where = "LOWER(" + QueryAccountBills.STATUS + ")='open'";
-                }
-                selectedAccounts = new ArrayList<>();
-                String[] accountList = settings.get("AccountFilterCustom", "").split(",");
-                for (String x : accountList) {
-                    if (!x.isEmpty())
-                        try {
-                            selectedAccounts.add(Long.valueOf(x));
-                        } catch (Exception e) {
-                        }
-                }
-                QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
-                Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
-                        null,
-                        where,
-                        null,
-                        QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
-                if (c == null) return false;
-                MatrixCursor matrixCursor = new MatrixCursor(new String[]{"_id", QueryAccountBills.ACCOUNTNAME, "CHECKED"});
-                while (c.moveToNext()) {
-                    long id = c.getLong(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
-                    matrixCursor.newRow()
-                            .add("_id", id)
-                            .add(QueryAccountBills.ACCOUNTNAME, c.getString(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME)))
-                            .add("CHECKED", (selectedAccounts.contains(id) ? 1 : 0));
-                }
-                c.close();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Select Accounts");
-                builder.setCancelable(false);
-                builder.setMultiChoiceItems(matrixCursor, "CHECKED", QueryAccountBills.ACCOUNTNAME,
-                        (dialog, which, isChecked) -> {
-                            matrixCursor.moveToPosition(which);
-                            long id = matrixCursor.getLong(matrixCursor.getColumnIndexOrThrow("_id"));
-                            if (!isChecked) {
-//                                    if ( selectedAccounts.contains(id) ) {
-                                selectedAccounts.remove(id);
-//                                    }
-                            } else {
-                                if (!selectedAccounts.contains(id)) {
-                                    selectedAccounts.add(id);
-                                }
-                            }
-                        });
-                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    settings.set("AccountFilterCustom", selectedAccounts.toString().replace("[", "").replace("]", "").replace(" ", ""));
-                    getActivity().recreate();
-                });
-                builder.show();
-                settings.set("AccountFilterCustom", "");
+            AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, item.getItemId());
+            if (item.getItemId() == R.id.menu_account_filter_custom) {
+                AccountFilterSupport.showAndPersistAccountSelectionDialog(
+                        requireContext(), settings, PREF_FILTER_CUSTOM, () -> getActivity().recreate());
                 return true;
             }
             getActivity().recreate();

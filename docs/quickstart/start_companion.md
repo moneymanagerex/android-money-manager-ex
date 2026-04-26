@@ -4,16 +4,16 @@ title: Quick start as companion app for Desktop
 ---
 
 # First setup on Desktop
-To use this app as companion app for Desktop version, you will need, of course, to download and install Desktop version from [here](https://moneymanagerex.org/docs/downloads/latest/). Please read also read [Desktop documentation](https://moneymanagerex.org/moneymanagerex/en_US/index.html#section5) to know how to create your db.
+To use this app as a companion app for the Desktop version, you will need, of course, to download and install the Desktop version from [here](https://moneymanagerex.org/docs/downloads/latest/). Please also read the [Desktop documentation](https://moneymanagerex.org/moneymanagerex/en_US/index.html#section5) to know how to create your db.
 
-## Save your db on cloud provider
-From Desktop version, choose "file" -> "save as" and save your db into your preferred cloud provider like in this image
+## Save your db on a cloud provider
+From Desktop version, choose "file" -> "save as" and save your db to your preferred cloud provider, like in this image
 ![Save As](img/sc_0_file_save_as.png)
 
-**Notice!** At this point remember, next time you open Desktop version to select the file you saved in your cloud provider
+**Notice!** At this point, remember that the next time you open the Desktop version, you should select the file you saved in your cloud provider
 {: .notice--warning}
 
-**Notice!** Any cloud provider that support SAF (Storage Access Framework) will work as cloud provider to sync Money Manager DB. You can check if your Cloud Provider support Android SAF by simply search in google "Android SAF" + your_cloud_provider
+**Notice!** Any cloud provider that supports SAF (Storage Access Framework) will work as a cloud provider to sync a Money Manager DB. You can check if your Cloud Provider supports Android SAF by simply searching Google for "Android SAF" + your_cloud_provider
 {: .notice--info}
 
 **Supported & tested cloud provider**
@@ -23,7 +23,7 @@ From Desktop version, choose "file" -> "save as" and save your db into your pref
 - OwnCloud
 
 ## From mobile
-Starting with new installation simply select "Open Database" as in this screen
+Starting with a new installation, simply select "Open Database" as in this screen
 ![sc_1_select_open.png](img/sc_1_select_open.png)
 
 Select the "tree line menu"
@@ -35,17 +35,17 @@ Select your cloud provider
 Select your file
 ![Select File](img/sc_4_select_File.png)
 
-If your file is ".mmb" left password empty, otherwise insert your secret password (the same used on desktop)
+If your file is ".mmb" leave the password empty, otherwise insert your secret password (the same used on desktop)
 ![password](img/sc_5_password.png)
 
 All is done!
 ![img.png](img/sc_6_home.png)
 
-To force synchronization you can push it by selecting relative menu item.
+To force synchronization you can do it by selecting the relevant menu item.
 ![synchronization](img/sc_7_synchronization.png)
 
 ### Troubleshooting
-If you have issue in sync you can try to fix it making your remote file available offline in remote provider
+If you have sync issues, you can try to fix them by making your remote file available offline in the remote provider
 
 #### Google Drive
 Open Google Drive and navigate to your file
@@ -62,7 +62,7 @@ Set it as "Available Offline"
 ![img.png](img/sc_b_onedrive_available_offline.png)
 
 ### NextCloud / OwnCloud
-Open Microsoft OneDrive and navigate to your file
+Open NextCloud or OwnCloud and navigate to your file
 ![img.png](img/sc_c_nextcloud_file.png)
 
 Set it as "Download"
@@ -79,16 +79,16 @@ When the app detects a discrepancy, you will see a resolution screen with two op
 * Database Export (Manual Sync): Use this if your local Android changes are the most important ones. This allows you to export your current local database as a file. You can then manually upload this file to your cloud storage to overwrite the conflicting remote version.
 
 ### Sync Issue
-There is know issue on some cloud provider that lost connection to remote file. If this occurs, Android App is no longer able to sync file between local and remote provider. This can cause also lost of data.
-The app try to check if sync is available and, if not you get and error screen like this:
+There is a known issue on some cloud providers that lose connection to the remote file. If this occurs, the Android app is no longer able to sync files between local and remote providers. This can also cause data loss.
+The app tries to check if sync is available and, if not, you get an error screen like this:
 ![sync_error.png-th.png](../assets/images/screenshoot/sync_error.png-th.png)
 
-At this point you can choice if you what to:
-* loose your local changes and reopen from remote
-* export your data to manually (and externaly) sync or overwrite remote file
+At this point you can choose if you want to:
+* lose your local changes and reopen from remote
+* export your data to manually (and externally) sync or overwrite the remote file
 
 ### Merge Database ![Static Badge](https://img.shields.io/badge/new_in-5.4-green)
 
-Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under Setting --> Sync.
+Starting with version 5.4, an experimental feature called "Merge Database" is available in the app under Settings --> Sync.
 
 When this setting is active, if both your local and remote files have been modified, the app will attempt to identify conflicts. A progress window will be displayed during this potentially lengthy process. Once conflicts are identified, you'll be prompted to choose which version of the file you'd like to keep.
