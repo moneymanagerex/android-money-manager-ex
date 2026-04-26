@@ -460,7 +460,7 @@
     <string name="sort_date_asc">Aufsteigend nach Datum sortieren</string>
     <string name="choose_sorting">Wähle Sortierung</string>
     <string name="credit_card">Kreditkarte</string>
-    <string name="cash_accounts">Geldkonten</string>
+    <string name="cash_accounts">Bargeldkonten</string>
     <string name="bank_accounts">Bankkonten</string>
     <string name="term_accounts">Terminkonto/Festgeldkonto</string>
     <string name="credit_card_accounts">Kreditkartenkonten</string>
