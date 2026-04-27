@@ -1,5 +1,6 @@
 package com.money.manager.ex.sync;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import io.reactivex.Observable;
@@ -43,9 +45,11 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressBar);
         mTextViewStatus = findViewById(R.id.textViewStatus);
 
-        // Pre-fill from preferences if available
-        SyncPreferences prefs = new SyncPreferences(this);
-        mEditTextUrl.setText(prefs.loadPreference(R.string.pref_sync_url, ""));
+        // TODO: remove this in production
+        // Pre-fill with temporary debug values
+        mEditTextUrl.setText("http://192.168.1.20:8090");
+        mEditTextEmail.setText("test.user@yourdomain.com");
+        mEditTextPassword.setText("12345678");
 
         mButtonConnect.setOnClickListener(v -> startSetup());
     }
@@ -111,6 +115,12 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             setLoading(false);
             mTextViewStatus.setText("Sync Setup Complete!");
             Toast.makeText(this, "Setup Successful", Toast.LENGTH_LONG).show();
+            
+            // Restart MainActivity to refresh database connection and UI
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
             finish();
         }, throwable -> {
             setLoading(false);

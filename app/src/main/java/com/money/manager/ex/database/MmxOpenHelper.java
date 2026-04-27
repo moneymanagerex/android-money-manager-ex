@@ -105,9 +105,16 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         Timber.d("OpenHelper onCreate");
 
         try {
-            int tableSqlResource = SyncManager.isCloudSyncEnabled() ? R.raw.table_v1_completo : R.raw.tables_v1;
+            boolean isCloudEnabled = SyncManager.isCloudSyncEnabled();
+            int tableSqlResource = isCloudEnabled ? R.raw.table_v1_completo : R.raw.tables_v1;
+            
             executeRawSql(db, tableSqlResource);
-            initDatabase(db);
+            
+            // If cloud sync is enabled, we don't initialize the database with default records
+            // because they will be pulled from the cloud.
+            if (!isCloudEnabled) {
+                initDatabase(db);
+            }
         } catch (Exception e) {
             Timber.e(e, "initializing database");
         }

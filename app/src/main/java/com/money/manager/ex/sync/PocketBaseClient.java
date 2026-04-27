@@ -30,7 +30,7 @@ public class PocketBaseClient {
         mContext = context.getApplicationContext();
         
         SyncPreferences preferences = new SyncPreferences(mContext);
-        String baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "http://192.168.1.2:8090/");
+        String baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
@@ -59,6 +59,10 @@ public class PocketBaseClient {
         return mService;
     }
 
+    public boolean isAuthenticated() {
+        return mAuthToken != null;
+    }
+
     public boolean authenticate(String email, String password) {
         JsonObject body = new JsonObject();
         body.addProperty("identity", email);
@@ -71,7 +75,7 @@ public class PocketBaseClient {
                 return true;
             }
         } catch (IOException e) {
-            Timber.e(e, "Error authenticating with PocketBase");
+            Timber.e(e, "[SYNC_CLOUD] Error authenticating with PocketBase");
         }
         return false;
     }
