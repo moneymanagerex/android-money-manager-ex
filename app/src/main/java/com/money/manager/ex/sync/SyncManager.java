@@ -58,6 +58,9 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -115,6 +118,10 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
+        if (isCloudSyncEnabled()) {
+            return true;
+        }
+
         if (isPhoneStorage()) return true;
 
         // check if online
@@ -313,6 +320,11 @@ public class SyncManager {
     }
 
     public void triggerSynchronization() {
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+            return;
+        }
+
         if (!canSync())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
@@ -336,12 +348,68 @@ public class SyncManager {
         }});
     }
 
+    private void triggerCloudSync() {
+        Timber.d("Triggering PocketBase cloud sync");
+
+        PocketBaseClient client = PocketBaseClient.getInstance(mContext);
+        if (!client.isAuthenticated()) {
+            Timber.w("PocketBase not authenticated. Showing setup screen.");
+            Intent intent = new Intent(mContext, PocketBaseSetupActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            return;
+        }
+
+        AlertDialog progressDialog = null;
+        if (mContext instanceof AppCompatActivity) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View view = inflater.inflate(R.layout.progress_dialog, null);
+            builder.setView(view);
+            builder.setCancelable(false);
+            progressDialog = builder.create();
+            progressDialog.show();
+        }
+
+        final AlertDialog finalProgressDialog = progressDialog;
+
+        Observable.fromCallable(() -> {
+            PocketBaseSyncEngine engine = new PocketBaseSyncEngine(mContext);
+            engine.synchronize();
+            return true;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(success -> {
+            if (finalProgressDialog != null) finalProgressDialog.dismiss();
+            Timber.i("PocketBase sync completed");
+            Toast.makeText(mContext, "Sync Complete", Toast.LENGTH_SHORT).show();
+            
+            // Refresh MainActivity if we are currently there
+            if (mContext instanceof MainActivity) {
+                ((MainActivity) mContext).refreshData();
+            }
+        }, throwable -> {
+            if (finalProgressDialog != null) finalProgressDialog.dismiss();
+            Timber.e(throwable, "PocketBase sync failed");
+            Toast.makeText(mContext, "Sync Failed: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+        });
+    }
+
     public void triggerDownload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+        } else {
+            invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+        }
     }
 
     public void triggerUpload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+        } else {
+            invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+        }
     }
 
     /**

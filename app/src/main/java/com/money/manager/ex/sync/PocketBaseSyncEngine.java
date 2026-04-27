@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 //import android.database.sqlite.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import android.database.SQLException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -69,7 +71,7 @@ public class PocketBaseSyncEngine {
             String json = MmxFileUtils.getRawAsString(mContext, resId);
             mConfig = mGson.fromJson(json, SyncConfig.class);
         } catch (Exception e) {
-            Timber.e(e, "Error loading table_config.json");
+            Timber.e(e, "[SYNC_CLOUD] Error loading table_config.json");
         }
     }
 
@@ -78,6 +80,8 @@ public class PocketBaseSyncEngine {
      */
     public void synchronize() {
         if (!SyncManager.isCloudSyncEnabled() || mConfig == null) return;
+
+        Timber.d("[SYNC_CLOUD] start sync");
 
         SupportSQLiteDatabase db = openHelper.get().getWritableDatabase();
 
@@ -102,11 +106,16 @@ public class PocketBaseSyncEngine {
             prefs.set("pb_last_sync_time", syncStartTime);
 
             db.setTransactionSuccessful();
-            Timber.i("Synchronization cycle completed.");
+            Timber.i("[SYNC_CLOUD] Synchronization cycle completed.");
         } catch (Exception e) {
-            Timber.e(e, "Error during synchronization");
+            Timber.e(e, "[SYNC_CLOUD] Error during synchronization");
         } finally {
             db.endTransaction();
+        }
+        try {
+            db.close();
+        } catch (IOException e) {
+            Timber.e(e, "[SYNC_CLOUD] Error closing database");
         }
     }
 
@@ -130,6 +139,9 @@ public class PocketBaseSyncEngine {
                 if (pkIdx == -1) continue;
 
                 JsonObject payload = new JsonObject();
+                // Always include the local primary key in the payload for PocketBase
+                payload.addProperty(config.pk, cursor.getString(pkIdx));
+
                 for (String field : config.fields) {
                     int colIdx = cursor.getColumnIndex(field);
                     if (colIdx != -1 && !cursor.isNull(colIdx)) {
@@ -161,67 +173,89 @@ public class PocketBaseSyncEngine {
         TableConfig config = mConfig.SYNC_CONFIG.get(tableName);
         if (config == null) return;
 
-        Map<String, String> options = new HashMap<>();
-        options.put("filter", "updated > \"" + lastSync + "\"");
-        options.put("sort", "updated");
+        int page = 1;
+        int totalPages = 1;
 
-        Response<JsonObject> response = mService.getRecords(tableName, options).execute();
-        if (!response.isSuccessful() || response.body() == null) return;
+        while (page <= totalPages) {
+            Map<String, String> options = new HashMap<>();
+    // TODO: seems taat windows store in different timezone... for now remove filter
+            //            options.put("filter", "updated > \"" + lastSync + "\"");
+            options.put("sort", "updated");
+            options.put("page", String.valueOf(page));
+            options.put("perPage", "200"); // Aumentiamo il limite per pagina a 200
 
-        com.google.gson.JsonArray items = response.body().getAsJsonArray("items");
-        for (JsonElement itemElement : items) {
-            JsonObject rmt = itemElement.getAsJsonObject();
-            String pbId = rmt.get("id").getAsString();
-            String updatedAt = rmt.get("updated").getAsString();
+            Response<JsonObject> response = mService.getRecords(tableName, options).execute();
+            if (!response.isSuccessful() || response.body() == null) break;
 
-            // Check if deleted in remote
-            if (rmt.has("is_deleted") && rmt.get("is_deleted").getAsInt() == 1) {
-                db.execSQL("DELETE FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
-                continue;
-            }
+            JsonObject body = response.body();
+            totalPages = body.get("totalPages").getAsInt();
+            com.google.gson.JsonArray items = body.getAsJsonArray("items");
 
-            // Check if exists locally
-            Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
-            boolean existsLocally = localCursor != null && localCursor.moveToFirst();
-            if (localCursor != null) localCursor.close();
+            for (JsonElement itemElement : items) {
+                JsonObject rmt = itemElement.getAsJsonObject();
+                // Timber.d("[SYNC_CLOUD] IN: record of table: " + tableName + " Record:" + rmt.toString());
 
-            if (existsLocally) {
-                // UPDATE locally with pb_is_dirty = 2 (ignore triggers)
-                StringBuilder sql = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
-                Object[] values = new Object[config.fields.size() + 2];
-                int i = 0;
-                for (String field : config.fields) {
-                    sql.append(field).append(" = ?, ");
-                    values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+                String pbId = rmt.get("id").getAsString();
+                String updatedAt = rmt.get("updated").getAsString();
+
+                // Check if deleted in remote
+                if (rmt.has("is_deleted") && rmt.get("is_deleted").getAsInt() == 1) {
+                    db.execSQL("DELETE FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
+                    continue;
                 }
-                sql.append("pb_updated_at = ?, pb_is_dirty = 2 WHERE pb_id = ?");
-                values[i++] = updatedAt;
-                values[i] = pbId;
-                db.execSQL(sql.toString(), values);
-            } else {
-                // INSERT locally with pb_is_dirty = 2
-                StringBuilder sql = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
-                StringBuilder placeholders = new StringBuilder(" VALUES (");
-                Object[] values = new Object[config.fields.size() + 4]; // + pk, pb_id, pb_updated_at, pb_is_dirty
 
-                sql.append(config.pk).append(", ");
-                placeholders.append("?, ");
-                values[0] = rmt.get(config.pk).getAsLong();
+                // Check if exists locally
+                Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
+                boolean existsLocally = localCursor != null && localCursor.moveToFirst();
+                if (localCursor != null) localCursor.close();
 
-                int i = 1;
-                for (String field : config.fields) {
-                    sql.append(field).append(", ");
+                if (existsLocally) {
+                    // UPDATE locally with pb_is_dirty = 2 (ignore triggers)
+                    StringBuilder sql = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
+                    Object[] values = new Object[config.fields.size() + 2];
+                    int i = 0;
+                    for (String field : config.fields) {
+                        sql.append(field).append(" = ?, ");
+                        values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+                    }
+                    sql.append("pb_updated_at = ?, pb_is_dirty = 2 WHERE pb_id = ?");
+                    values[i++] = updatedAt;
+                    values[i] = pbId;
+                    try {
+                        db.execSQL(sql.toString(), values);
+                    } catch (SQLException e) {
+                        Timber.e(e, "[SYNC_CLOUD] Error updating record in table: %s", tableName);
+                    }
+                } else {
+                    // INSERT locally with pb_is_dirty = 2
+                    StringBuilder sql = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
+                    StringBuilder placeholders = new StringBuilder(" VALUES (");
+                    Object[] values = new Object[config.fields.size() + 3];
+
+                    sql.append(config.pk).append(", ");
                     placeholders.append("?, ");
-                    values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+                    values[0] = rmt.get(config.pk).getAsLong();
+
+                    int i = 1;
+                    for (String field : config.fields) {
+                        sql.append(field).append(", ");
+                        placeholders.append("?, ");
+                        values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+                    }
+
+                    sql.append("pb_id, pb_updated_at, pb_is_dirty)");
+                    placeholders.append("?, ?, 2)");
+                    values[i++] = pbId;
+                    values[i] = updatedAt;
+
+                    try {
+                        db.execSQL(sql.toString() + placeholders.toString(), values);
+                    } catch (SQLException e) {
+                        Timber.e(e, "[SYNC_CLOUD] Error inserting record into table: %s", tableName);
+                    }
                 }
-
-                sql.append("pb_id, pb_updated_at, pb_is_dirty)");
-                placeholders.append("?, ?, 2)");
-                values[i++] = pbId;
-                values[i] = updatedAt;
-
-                db.execSQL(sql.toString() + placeholders.toString(), values);
             }
+            page++;
         }
 
         // Reset pb_is_dirty to 0 for all pull-updated records

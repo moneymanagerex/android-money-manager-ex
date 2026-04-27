@@ -125,6 +125,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -692,8 +693,6 @@ public class MainActivity
      * for the change setting restart process application
      */
     public void restartActivity() {
-        if (!mRestartActivity) return;
-
         setRestartActivity(false);
 
         // kill process
@@ -705,6 +704,39 @@ public class MainActivity
         startActivity(intent);
 
         finish();
+    }
+
+    /**
+     * Refresh the current displayed data by notifying the visible fragment.
+     */
+    public void refreshData() {
+        runOnUiThread(() -> {
+            // 1. Refresh HomeFragment if it exists (might be in background or secondary panel)
+            String homeTag = HomeFragment.class.getSimpleName();
+            Fragment homeFragment = getSupportFragmentManager().findFragmentByTag(homeTag);
+            if (homeFragment instanceof HomeFragment) {
+                ((HomeFragment) homeFragment).startLoaders();
+                Timber.d("[SYNC_CLOUD] HomeFragment loaders restarted.");
+            }
+
+            // 2. Refresh the currently visible fragment in the main container
+            int containerId = isDualPanel() ? R.id.fragmentDetail : R.id.fragmentMain;
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(containerId);
+            
+            if (currentFragment != null && currentFragment != homeFragment) {
+                // Use reflection to call startLoaders() if it exists on the fragment
+                try {
+                    Method startLoadersMethod = currentFragment.getClass().getMethod("startLoaders");
+                    startLoadersMethod.invoke(currentFragment);
+                    Timber.d("[SYNC_CLOUD] Refreshed visible fragment: %s", currentFragment.getClass().getSimpleName());
+                } catch (Exception e) {
+                    // Fragment doesn't have startLoaders, ignore
+                    Timber.v("[SYNC_CLOUD] Fragment %s does not support startLoaders()", currentFragment.getClass().getSimpleName());
+                }
+            }
+
+            Timber.d("[SYNC_CLOUD] Data refresh requested after sync.");
+        });
     }
 
 //    private void shutdownApp() {
