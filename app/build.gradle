@@ -171,6 +171,7 @@ dependencies {
             , 'androidx.documentfile:documentfile:1.0.1'
             , 'com.caverock:androidsvg-aar:1.4'
             , 'androidx.core:core-splashscreen:1.0.1' // splash screen for Android 15
+            , 'androidx.security:security-crypto:1.0.0' // Security-crypto for EncryptedSharedPreferences
     )
     implementation libs.core
     implementation libs.appcompat

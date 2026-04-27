@@ -938,4 +938,5 @@
 
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase server Url</string>
+    <string name="pref_pocketbase_email">Pocketbase email</string>
 </resources>

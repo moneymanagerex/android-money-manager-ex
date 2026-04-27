@@ -29,6 +29,7 @@ import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -361,10 +362,12 @@ public class SyncManager {
         }
 
         AlertDialog progressDialog = null;
+        TextView progressMessage = null;
         if (mContext instanceof AppCompatActivity) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.progress_dialog, null);
+            progressMessage = view.findViewById(R.id.progress_message);
             builder.setView(view);
             builder.setCancelable(false);
             progressDialog = builder.create();
@@ -372,10 +375,17 @@ public class SyncManager {
         }
 
         final AlertDialog finalProgressDialog = progressDialog;
+        final TextView finalProgressMessage = progressMessage;
 
         Observable.fromCallable(() -> {
             PocketBaseSyncEngine engine = new PocketBaseSyncEngine(mContext);
-            engine.synchronize();
+            engine.synchronize((tableName, action) -> {
+                if (finalProgressMessage != null && mContext instanceof AppCompatActivity) {
+                    ((AppCompatActivity) mContext).runOnUiThread(() -> {
+                        finalProgressMessage.setText(action + " " + tableName + "...");
+                    });
+                }
+            });
             return true;
         })
         .subscribeOn(Schedulers.io())
@@ -383,7 +393,7 @@ public class SyncManager {
         .subscribe(success -> {
             if (finalProgressDialog != null) finalProgressDialog.dismiss();
             Timber.i("PocketBase sync completed");
-            Toast.makeText(mContext, "Sync Complete", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(mContext, "Sync Complete", Toast.LENGTH_SHORT).show();
             
             // Refresh MainActivity if we are currently there
             if (mContext instanceof MainActivity) {
@@ -392,7 +402,7 @@ public class SyncManager {
         }, throwable -> {
             if (finalProgressDialog != null) finalProgressDialog.dismiss();
             Timber.e(throwable, "PocketBase sync failed");
-            Toast.makeText(mContext, "Sync Failed: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(mContext, "Sync Failed: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
 

@@ -44,6 +44,10 @@ public class PocketBaseSyncEngine {
     @Inject
     Lazy<MmxOpenHelper> openHelper;
 
+    public interface SyncProgressListener {
+        void onProgress(String tableName, String action);
+    }
+
     public static class SyncConfig {
         public Map<String, TableConfig> SYNC_CONFIG;
         public List<String> SYNC_ORDER;
@@ -79,6 +83,13 @@ public class PocketBaseSyncEngine {
      * Orchestrates the sync cycle: Push followed by Pull.
      */
     public void synchronize() {
+        synchronize(null);
+    }
+
+    /**
+     * Orchestrates the sync cycle: Push followed by Pull with progress reporting.
+     */
+    public void synchronize(SyncProgressListener listener) {
         if (!SyncManager.isCloudSyncEnabled() || mConfig == null) return;
 
         Timber.d("[SYNC_CLOUD] start sync");
@@ -91,6 +102,7 @@ public class PocketBaseSyncEngine {
 
             // 1. Push local changes
             for (String tableName : mConfig.SYNC_ORDER) {
+                if (listener != null) listener.onProgress(tableName, "Pushing");
                 pushTableChanges(db, tableName);
             }
 
@@ -100,13 +112,14 @@ public class PocketBaseSyncEngine {
             String syncStartTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'", Locale.US).format(new Date());
 
             for (String tableName : mConfig.SYNC_ORDER) {
+                if (listener != null) listener.onProgress(tableName, "Pulling");
                 pullTableChanges(db, tableName, lastSync);
             }
 
             prefs.set("pb_last_sync_time", syncStartTime);
 
             db.setTransactionSuccessful();
-            Timber.i("[SYNC_CLOUD] Synchronization cycle completed.");
+            // Timber.i("[SYNC_CLOUD] Synchronization cycle completed.");
         } catch (Exception e) {
             Timber.e(e, "[SYNC_CLOUD] Error during synchronization");
         } finally {
