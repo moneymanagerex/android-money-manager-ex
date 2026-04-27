@@ -47,9 +47,9 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
         // TODO: remove this in production
         // Pre-fill with temporary debug values
-        mEditTextUrl.setText("http://192.168.1.20:8090");
-        mEditTextEmail.setText("test.user@yourdomain.com");
-        mEditTextPassword.setText("12345678");
+        //mEditTextUrl.setText("http://192.168.1.20:8090");
+        //mEditTextEmail.setText("test.user@yourdomain.com");
+        //mEditTextPassword.setText("12345678");
 
         mButtonConnect.setOnClickListener(v -> startSetup());
     }

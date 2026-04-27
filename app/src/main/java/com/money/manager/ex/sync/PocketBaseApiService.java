@@ -18,7 +18,7 @@ import retrofit2.http.QueryMap;
  */
 public interface PocketBaseApiService {
 
-    @POST("api/collections/_superusers/auth-with-password")
+    @POST("api/collections/users/auth-with-password")
     Call<JsonObject> authWithPassword(@Body JsonObject body);
 
     @GET("api/collections/{collection}/records")
