@@ -9,7 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.money.manager.ex.R;
@@ -35,8 +39,18 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocketbase_setup);
+
+        View mainView = findViewById(R.id.main_layout);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         mEditTextUrl = findViewById(R.id.editTextUrl);
         mEditTextEmail = findViewById(R.id.editTextEmail);
@@ -45,19 +59,67 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressBar);
         mTextViewStatus = findViewById(R.id.textViewStatus);
 
-        // TODO: remove this in production
-        // Pre-fill with temporary debug values
-        //mEditTextUrl.setText("http://192.168.1.20:8090");
-        //mEditTextEmail.setText("test.user@yourdomain.com");
-        //mEditTextPassword.setText("12345678");
+        loadSavedCredentials();
 
         mButtonConnect.setOnClickListener(v -> startSetup());
+
+        // Se abbiamo già URL ed Email, proviamo un refresh silenzioso del token
+        attemptSilentLogin();
     }
 
     @Override
     protected void onDestroy() {
         mDisposables.clear();
         super.onDestroy();
+    }
+
+    private void loadSavedCredentials() {
+        SyncPreferences prefs = new SyncPreferences(this);
+        String savedUrl = prefs.loadPreference(R.string.pref_sync_url, "");
+        String savedEmail = prefs.get(R.string.pref_pocketbase_email, "");
+
+        if (!TextUtils.isEmpty(savedUrl)) {
+            mEditTextUrl.setText(savedUrl);
+        }
+        if (!TextUtils.isEmpty(savedEmail)) {
+            mEditTextEmail.setText(savedEmail);
+        }
+    }
+
+    private void attemptSilentLogin() {
+        SyncPreferences prefs = new SyncPreferences(this);
+        String url = prefs.loadPreference(R.string.pref_sync_url, "");
+        String email = prefs.get(R.string.pref_pocketbase_email, "");
+
+        if (TextUtils.isEmpty(url) || TextUtils.isEmpty(email)) return;
+
+        setLoading(true);
+        mTextViewStatus.setText("Checking session...");
+
+        mDisposables.add(Observable.fromCallable(() -> {
+            PocketBaseClient client = PocketBaseClient.getInstance(this);
+            // Se siamo già autenticati (token presente), proviamo il refresh
+            if (client.isAuthenticated()) {
+                return client.refreshToken();
+            }
+            return false;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(success -> {
+            if (success) {
+                mTextViewStatus.setText("Session restored. Initializing database...");
+                performInitialPull();
+            } else {
+                setLoading(false);
+                mTextViewStatus.setText("Please enter your password to continue.");
+                mEditTextPassword.requestFocus();
+            }
+        }, throwable -> {
+            setLoading(false);
+            mTextViewStatus.setText("Session expired. Please login again.");
+            Timber.e(throwable);
+        }));
     }
 
     private void startSetup() {
@@ -70,9 +132,10 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             return;
         }
 
-        // Save URL temporarily to initialize client
+        // Save URL and Email in preferences
         SyncPreferences prefs = new SyncPreferences(this);
         prefs.set(getString(R.string.pref_sync_url), url);
+        prefs.set(getString(R.string.pref_pocketbase_email), email);
 
         setLoading(true);
         mTextViewStatus.setText("Authenticating...");
