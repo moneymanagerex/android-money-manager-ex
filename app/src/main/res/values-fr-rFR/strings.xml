@@ -23,9 +23,9 @@
     <string name="application_credits">MoneyManagerEx pour Android utilise la bibliothèque de ActionBarSherlock</string>
     <string name="application_license">Licences open source</string>
     <!-- database -->
-    <string name="db_insert_failed">L\'insertion de la base de données a échoué</string>
-    <string name="db_delete_failed">Suppression des données échouée</string>
-    <string name="db_update_failed">Mise à jour des données échouée</string>
+    <string name="db_insert_failed">L\'insertion de données a échoué</string>
+    <string name="db_delete_failed">La suppression des données a échoué</string>
+    <string name="db_update_failed">La mise à jour des données a échoué</string>
     <!-- menu -->
     <!--<string name="menu">Menu</string>-->
     <string name="menu_exit">Quitter</string>
@@ -47,6 +47,7 @@
     <!-- preferences -->
     <string name="preferences_general">Général</string>
     <string name="preferences_perdatabase">Par-Base de données</string>
+    <string name="preferences_display">Apparence</string>
     <string name="preferences_behaviour">Comportement</string>
     <string name="base_currency">Devise de référence</string>
     <string name="base_currency_changed">Devise de référence modifiée</string>
@@ -63,11 +64,20 @@
     <string name="summary_show_tutorial">Afficher le tutoriel au prochain lancement ?</string>
     <string name="preferences_behaviour_focus_filter_title">Afficher automatiquement le clavier</string>
     <string name="preferences_behaviour_focus_filter_summary">Affiche automatiquement le clavier sur les écrans de sélection.</string>
-    <string name="auto_sync_via_wifi">Synchronisation automatique en WiFi uniquement</string>
+    <string name="auto_sync_via_wifi">Synchronisation automatique en Wi-Fi uniquement</string>
     <string name="auto_sync_via_wifi_summary">Synchronisation automatique uniquement lorsqu\'une connexion Wi-Fi est disponible.</string>
     <string name="sync_on_app_start">Synchroniser sur le menu de démarrage de l’application.</string>
     <string name="sync_on_start">Synchronisation au démarrage</string>
+    <string name="sync_merge_database">EXPÉRIMENTAL : Fusionner les bases de données</string>
+    <string name="sync_merge_database_on_sync">Fusionne les différences lors de la synchronisation.</string>
+    <string name="sync_merge_dialog_msg_format">Fusionne tout %1$s%2$s</string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">Traiter les SMS de transaction bancaire</string>
+    <string name="summary_sms_auto_trans">Lire le SMS de transaction bancaire et créer une transaction</string>
+    <string name="deny_receive_sms_error">Vous avez refusé les droits de lecture des SMS, votre SMS de transaction bancaire ne sera pas traité</string>
+    <string name="granted_receive_sms_access">Permission déjà accordée pour RECEIVE_SMS</string>
+    <string name="notification_click_to_edit_transaction">Appuyez pour modifier la transaction&#8230;</string>
+    <string name="notification_process_sms_transaction_status">Traiter les SMS de transaction bancaire</string>
     <!-- account -->
     <string name="account">Compte</string>
     <string name="account_list">Liste des comptes</string>
@@ -100,19 +110,21 @@
     <string name="edit_payeeName">Modifier le bénéficiaire</string>
     <string name="delete_payee">Supprimer le bénéficiaire</string>
     <string name="payee">Bénéficiaire</string>
-    <string name="select_payee">Selectionner le bénéficiaire</string>
+    <string name="select_payee">Sélectionner le bénéficiaire</string>
     <string name="payee_empty_list">Aucun bénéficiaire n\'a été trouvé. Pour en créer un, appuyer sur le bouton plus vert.</string>
     <string name="from">A partir de</string>
-    <string name="db_payee_update_failed">Mise à jour du bénéficiaire a échouée</string>
+    <string name="db_payee_update_failed">La mise à jour du bénéficiaire a échoué</string>
     <!-- category / subcategory -->
     <string name="category">Catégorie</string>
     <string name="subcategory">Sous-catégorie</string>
+    <string name="navigation_mode">Mode de navigation</string>
     <string name="category_empty_list">Aucune catégorie n\'a été trouvée. Pour en créer une, appuyer sur le bouton plus vert.</string>
-    <string name="select_category">Selectionner une catégorie</string>
+    <string name="select_category">Sélectionner une catégorie</string>
     <string name="add_category">Ajouter une catégorie</string>
     <string name="add_subcategory">Ajouter une sous-catégorie</string>
     <string name="edit_categoryName">Modifier la catégorie</string>
     <string name="delete_category">Supprimer la catégorie</string>
+    <string name="search_sub_category">Inclure les sous-catégories</string>
     <!-- currency -->
     <string name="currency_name">Nom de la devise</string>
     <string name="currency_symbol">Symbole de la devise</string>
@@ -123,14 +135,15 @@
     <string name="suffix_symbol">Symbole du suffixe</string>
     <string name="decimal_char">Caractère des décimales</string>
     <string name="group_char">Caractère de groupement</string>
-    <string name="scale">Echelle</string>
+    <string name="scale">Échelle</string>
     <string name="currency_name_empty">Le nom de la devise est requis</string>
-    <string name="new_edit_currency">Créer/Éditer une devise</string>
+    <string name="new_edit_currency">Créer/Modifier une devise</string>
+    <string name="missing_default_currency">Devise par défaut absente des paramètres</string>
     <!-- transaction -->
     <string name="amount">Montant</string>
     <string name="total_amount">Montant total</string>
     <string name="deposit">Crédit</string>
-    <string name="status">Etat</string>
+    <string name="status">État</string>
     <string name="status_reconciled">Rapproché</string>
     <string name="status_void">Nul</string>
     <string name="status_follow_up">Suivi</string>
@@ -141,16 +154,17 @@
     <string name="transaction_type">Type d\'opération</string>
     <string name="transaction_status">Etat</string>
     <string name="withdrawal">Débit</string>
-    <string name="db_checking_insert_failed">L\'insertion de l\'opération a échouée</string>
-    <string name="db_checking_update_failed">La mise à jour de l\'opération a échouée</string>
+    <string name="db_checking_insert_failed">L\'insertion de l\'opération a échoué</string>
+    <string name="db_checking_update_failed">La mise à jour de l\'opération a échoué</string>
     <string name="delete_transaction">Suppression de l\'opération</string>
     <string name="new_transaction">Nouvelle opération</string>
     <string name="error_payee_not_selected">Le bénéficiaire est obligatoire</string>
+    <string name="error_fromaccount_not_selected">Compte émetteur requis </string>
     <string name="error_toaccount_not_selected">Vers Compte est obligatoire</string>
     <string name="error_category_not_selected">La catégorie est obligatoire</string>
     <string name="error_totamount_empty">Le montant total est obligatoire</string>
-    <string name="error_transfer_to_same_account">Les deux comptes lors du transfert doivent être distinct</string>
-    <string name="about">A propos</string>
+    <string name="error_transfer_to_same_account">Les deux comptes du transfert doivent être distincts</string>
+    <string name="about">À propos</string>
     <string name="add">Ajouter</string>
     <string name="confirmDelete">Êtes-vous sûr de vouloir supprimer l’enregistrement ?</string>
     <string name="date">Date</string>
@@ -170,7 +184,7 @@
     <string name="user">Utilisateur</string>
     <string name="upload">Envoyer vers</string>
     <string name="username">Nom de l\'utilisateur</string>
-    <string name="to">De</string>
+    <string name="to">À</string>
     <string name="website">Site web</string>
     <string name="contact">Contact</string>
     <string name="access_info">Information d\'accès</string>
@@ -183,7 +197,7 @@
     <string name="theme_light">Matériel clair</string>
     <!-- 20120906 -->
     <string name="close_application">Fermer l\'application</string>
-    <string name="question_close_application">Voulez-vous fermer l\'application?</string>
+    <string name="question_close_application">Voulez-vous fermer l\'application ?</string>
     <string name="error_intent_pick_file">Aucune activité trouvée pour gérer le fichier choisi</string>
     <string name="attention">Attention</string>
     <string name="payee_can_not_deleted">Le bénéficiaire sélectionné ne peut être effacé car il est référencé</string>
@@ -204,33 +218,38 @@
     <string name="widget_all_accounts">Tous les comptes</string>
     <string name="widget_add_transaction">Ajouter une opération</string>
     <!-- TAG -->
+    <string name="space_replaced_with__">Espace, &amp; et | remplacés par \"_\"</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Aucun</string>
     <string name="once">Une fois</string>
     <string name="weekly">Hebdomadaire</string>
-    <string name="bi_weekly">Bi-hebdomadaire</string>
+    <string name="bi_weekly">Bihebdomadaire</string>
     <string name="monthly">Mensuel</string>
-    <string name="bi_monthly">Bi-mensuel</string>
+    <string name="bi_monthly">Bimensuel</string>
+    <string name="quarterly">Trimestriel</string>
     <string name="half_year">Semestriel</string>
     <string name="yearly">Annuel</string>
     <string name="four_months">Quatre mois</string>
-    <string name="four_weeks">4 Semaines</string>
+    <string name="four_weeks">Quatre semaines</string>
     <string name="daily">Quotidien</string>
     <string name="in_x_days">Dans (x) jours</string>
     <string name="in_x_months">Dans (x) mois</string>
     <string name="every_x_days">Tous les (x) jours</string>
     <string name="every_x_months">Tous les (x) mois</string>
     <string name="inactive">Inactif</string>
-    <string name="activates">active </string>
+    <string name="activates">Activer</string>
+    <string name="days_overdue">%d jour(s) de retard !</string>
+    <string name="days_remaining">%d jour(s) restant(s)</string>
+    <string name="new_edit_repeating_transaction">Créer/Modifier une transaction planifiée</string>
     <string name="due_date">Date d\'échéance</string>
     <string name="next_occurrence">Occurrence suivante</string>
     <string name="payment_date">Date du versement</string>
     <string name="repeats">Répétitions</string>
-    <string name="occurs">Occurence</string>
+    <string name="occurs">Occurrence</string>
     <string name="payments_left">Versements Restants</string>
-    <string name="payments_left_required">Le montant des Versements Restants est requis</string>
+    <string name="payments_left_required">Le montant des versements restants est requis</string>
     <string name="due_date_required">La date d’échéance est requise</string>
-    <string name="error_next_occurrence_not_populate">Évènement suivant requis</string>
+    <string name="error_next_occurrence_not_populate">L\'évènement suivant est requis</string>
     <string name="enter_next_occurrence">Entrer l\'occurrence suivante</string>
     <string name="skip_next_occurrence">Ignorer l\'occurrence suivante</string>
     <string name="skip_next_occurrence_confirmation">Voulez-vous ignorer l\'occurrence suivante ?</string>
@@ -241,6 +260,7 @@
     <string name="enter_amount">Saisir le montant</string>
     <!-- EP Recurring mode recurring_mode -->
     <string name="recurringModeLabel">Transaction automatique</string>
+    <string name="manual">Saisie manuelle</string>
     <string name="auto">Entrée automatique</string>
     <!-- 20121121 -->
     <string name="send_feedback">Envoyer un commentaire</string>
@@ -257,9 +277,10 @@
     <string name="enter_your_previous_passcode">Saisissez votre code d\'accès précédent</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">Code d\'accès non mis à jour</string>
+    <string name="preferences_fingerprint_title">Authentification par empreinte digitale</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Vous pouvez utiliser le caractère générique % dans vos recherches</string>
-    <string name="income_vs_expenses_current_month">Revenus vs dépenses : Mois en cours</string>
+    <string name="income_vs_expenses_current_month">Revenus Vs Dépenses : Mois en cours</string>
     <string name="income">Revenu</string>
     <string name="expenses">Dépenses</string>
     <string name="difference">Différence</string>
@@ -267,7 +288,11 @@
     <string name="no_stock_data">Aucune donnée de stock disponible pour ce compte.</string>
     <string name="month">Mois</string>
     <string name="year">Année</string>
-    <string name="menu_report_income_vs_expenses">Revenus Vs dépenses</string>
+    <string name="menu_reports">Rapports intégrés</string>
+    <string name="menu_general_report_group">Rapports Généraux</string>
+    <string name="title_activity_general_report">Rapport général</string>
+    <string name="menu_report_income_vs_expenses">Revenus Vs Dépenses</string>
+    <string name="menu_report_summary_of_accounts">Résumé des comptes</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Totalité  des opérations </string>
@@ -281,8 +306,9 @@
     <string name="number_transaction_found">Nombre de transactions trouvé : %1$d</string>
     <!-- 20130108 -->
     <string name="date_format">Format de date</string>
-    <string name="financial_year_start_day">Exercice : Date de début</string>
-    <string name="financial_year_start_month">Exercice : Début mois</string>
+    <string name="financial_year_start_day">Exercice : Jour de début</string>
+    <string name="financial_year_start_month">Exercice : Mois de début</string>
+    <string name="financial_year_not_set">Fixer la date de début de l\'exercice dans les paramètres.</string>
     <string name="menu_move_database_to_external_storage">Exporter la base de données</string>
     <string name="database_has_been_moved">La base de données a été déplacée : %1$s</string>
     <string name="copy_database_on_external_storage_failed">La copie de la base de données sur le stockage externe a échoué</string>
@@ -293,7 +319,7 @@
     <string name="error_split_transaction_empty">Au moins une opération fractionnée est requise</string>
     <string name="swipe_to_dismiss">Balayez les éléments pour supprimer.</string>
     <string name="export_data_to_csv">Exporter vers un fichier CSV</string>
-    <string name="export_data_in_progress">Exportation des données. Veuillez patienter ...</string>
+    <string name="export_data_in_progress">Exportation des données. Veuillez patienter &#8230;</string>
     <string name="export_file_complete">Les données ont correctement été exportées vers le fichier %1$s</string>
     <string name="export_file_failed">L\'exportation du fichier %1$s a échoué</string>
     <string name="donate_header">L\'application MoneyManagerEx pour Android est disponible gratuitement. Si vous en êtes satisfait, vous pouvez toujours contribuer à son développement en envoyant un don à notre équipe.</string>
@@ -304,7 +330,7 @@
     <string name="donate_thank_you">Merci pour votre don !</string>
     <string name="donate">Donner</string>
     <string name="no_thanks">Non merci</string>
-    <string name="donate_exlamation">Donner!</string>
+    <string name="donate_exlamation">Donner !</string>
     <string name="donate_direct">Vous pouvez faire un don en cliquant sur le lien faire un don sur notre site  web. Cliquez ici pour ouvrir dans le navigateur.</string>
     <string name="donate_bitcoin">Nous acceptons également les dons de BitCoin.</string>
     <string name="donate_license">Pour des raisons de licence, nous ne sommes pas autorisés à placer des liens de don directement à l\'intérieur de l\'application.</string>
@@ -348,6 +374,7 @@
     <string name="empty_category">Catégorie vide</string>
     <string name="empty_payee">Bénéficiaire vide</string>
     <string name="help">Aide</string>
+    <string name="delete_repeating_transaction">Supprimer la transaction planifiée</string>
     <string name="last">Dernière</string>
     <string name="accounts">Comptes</string>
     <string name="to_account">Vers le compte</string>
@@ -373,7 +400,7 @@
     <string name="edit_repeating_transaction">Modifier une transaction planifiée</string>
     <string name="no_recurring_transaction">Le rapport de flux de trésorerie utilise la transaction planifiée, mais aucune transaction planifiée n\'a été trouvée</string>
     <string name="path_database_not_exists">Le chemin de la base de données n\'existe pas</string>
-    <string name="database_can_not_open_write">La base de données ne peut pas être ouvert en écriture</string>
+    <string name="database_can_not_open_write">La base de données ne peut pas être ouverte en écriture</string>
     <string name="time_frame">Délai</string>
     <string name="show_chart">Afficher le graphique</string>
     <string name="add_transaction">Ajouter une opération</string>
@@ -382,16 +409,18 @@
     <string name="welcome_body_dropbox">Si vous utilisez déjà MoneyManagerEx sous Windows, Linux ou Mac, vous pouvez vous connecter à un fournisseur de stockage cloud pour synchroniser votre base de données</string>
     <string name="configure_sync">Configurer la synchronisation</string>
     <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en début de texte</string>
-    <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc ... par contenu et non par les caractères du début</string>
+    <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc. par contenu et non par les caractères du début</string>
     <string name="rate_application">Noter l\'application</string>
     <string name="withdrawal_from">Retrait de %1$s</string>
     <string name="deposit_to">Dépôt de %1$s</string>
     <string name="mmex_website">Site Web MoneyManagerEx</string>
     <string name="android_website">Site Internet de MMEx pour Android</string>
     <string name="donate_in_app_already_donate">Vous avez déjà contribué au développement de MoneyManagerEx pour Android en envoyant votre don.\n\nUn grand merci de la part de l\'équipe de développement !</string>
-    <string name="donate_in_app_retrieving_status">Confirmation de vos dons depuis Google Play. Veuillez patienter ...</string>
+    <string name="donate_in_app_retrieving_status">Confirmation de vos dons depuis Google Play. Veuillez patienter&#8230;</string>
     <string name="donate_in_app_error">Impossible d\'effectuer des achats intégrés. Vérifiez si la dernière version de l\'application Play Store est installée.</string>
+    <string name="title_repeating_transaction_process">Traiter la transaction planifiée</string>
     <string name="title_use_nested_category">(BETA) Utiliser les catégories imbriquées</string>
+    <string name="summary_use_nested_category">Utiliser le nouveau modèle de catégorie imbriquée au lieu du modèle de catégorie:sous-catégorie</string>
     <string name="tools">Outils</string>
     <string name="entities">Données de référence</string>
     <string name="loading">Chargement &#8230;</string>
@@ -402,6 +431,8 @@
     <string name="sort_order">Ordre de Tri</string>
     <string name="sort_by_name">Trier par nom</string>
     <string name="sort_by_usage">Trier par utilisation</string>
+    <string name="sort_date_desc">Trier par date décroissante</string>
+    <string name="sort_date_asc">Trier par date croissante</string>
     <string name="choose_sorting">Choisir le tri</string>
     <string name="credit_card">Carte bancaire</string>
     <string name="cash_accounts">Comptes de caisse</string>
@@ -425,27 +456,28 @@
     <string name="tutorial_accounts_2">Balayez vers la gauche pour continuer&#8230;</string>
     <string name="financial_overview">Vue d\'ensemble</string>
     <string name="tutorial_overview_1">Vue d\'ensemble rapide, budgets, rapports personnalisables.</string>
-    <string name="global">Mondial</string>
+    <string name="global">Global</string>
     <string name="tutorial_global_1">De nombreuses devises et langues disponibles. Application open source. Rejoignez notre équipe de traduction.</string>
-    <string name="tutorial_sync_1">Disponible sur de nombreuses plates-formes, synchronisation via de nombreux services de cloud. Importez et exportez vos données vers d\'autres applications.</string>
+    <string name="tutorial_sync_1">Disponible sur de nombreuses plateformes, synchronisation via de nombreux services de cloud. Importez et exportez vos données vers d\'autres applications.</string>
     <string name="transactions">Opérations</string>
     <string name="tutorial_transactions_1">Dépôts, retraits, transferts. Transactions planifiées avec rappels </string>
     <string name="split_category">-Catégorie fractionnée-</string>
     <string name="title_activity_currency_chart">Tableau de taux de change de devise</string>
     <string name="sort_by_ascending">Trier par date croissante</string>
     <string name="sort_by_desceding">Trier par date décroissante</string>
+    <string name="group_by">Regrouper par</string>
     <string name="years">Années</string>
     <string name="select_the_years_to_be_displayed">Sélectionnez les années à afficher</string>
-    <string name="to_date">De</string>
-    <string name="from_date">À</string>
+    <string name="to_date">Au</string>
+    <string name="from_date">Du</string>
     <string name="custom_dates">Période personnalisée</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Cache les montants rapprochés des comptes du tableau de bord.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Cacher les montants rapprochés</string>
     <string name="pref_transaction_sort_by_type_summary">Organiser les transactions quotidiennes par type de transaction (dépôt, retrait, transfert)</string>
     <string name="pref_transaction_sort_by_type_title">Trier les Transactions par Type</string>
     <string name="warning">Attention</string>
-    <string name="no_transfer_splits">Vous avez choisi de passer au transfert, mais il y a plusieurs catégories sur la transaction. Voulez-vous continuer et supprimer ces catégories?</string>
-    <string name="qif_export">Export Qif</string>
+    <string name="no_transfer_splits">Vous avez choisi de passer au transfert, mais il y a plusieurs catégories sur la transaction. Voulez-vous continuer et supprimer ces catégories ?</string>
+    <string name="qif_export">Export QIF</string>
     <string name="update_prices">Mise à jour des prix</string>
     <string name="update_price">Mise à jour du prix</string>
     <string name="download_price">Téléchargement des cours</string>
@@ -453,7 +485,7 @@
     <string name="price_updated">Prix mis à jour</string>
     <string name="all_prices_updated">Tous les prix ont été mis à jour.</string>
     <string name="download_complete">Téléchargement réussi.</string>
-    <string name="confirm_price_download">Vous voulez mettre à jour les prix en ligne sécurisée?</string>
+    <string name="confirm_price_download">Vous voulez mettre à jour les prix en ligne sécurisée ?</string>
     <string name="starting_price_update">Téléchargement des prix, veuillez patienter...</string>
     <string name="database_migrate_14_to_20">Migrer la base de données v1.4</string>
     <string name="database_migrate_14_to_20_explanation">Des données anciennes ont été trouvées. Cliquez ici pour utiliser votre base de données précédente.</string>
@@ -476,7 +508,7 @@
     <string name="create_db_exists">Une base de données portant ce nom existe déjà !</string>
     <string name="db_check_integrity">Vérifier l\'intégrité de la base de données</string>
     <string name="db_check_integrity_summary">Vérifie l\'intégrité du fichier de base de données</string>
-    <string name="db_check_integrity_success">La base de données a réussi la vérification d\'intégrité.</string>
+    <string name="db_check_integrity_success">La base de données a passé la vérification d\'intégrité avec succès.</string>
     <string name="db_check_integrity_error">Erreur : le fichier de la base de données est corrompu !</string>
     <string name="db_check_schema">Vérifie le schéma de la base de données</string>
     <string name="db_check_schema_summary">Vérifie si toutes les tables sont présentes dans la base de données.</string>
@@ -489,7 +521,7 @@
     <string name="default_account">Compte par défaut</string>
     <string name="default_account_summary">Compte à utiliser lorsque vous entrez dans une nouvelle transaction.</string>
     <string name="default_account_not_set">Le compte par défaut n\'a pas été sélectionné.</string>
-    <string name="balance_account">Solde compte</string>
+    <string name="balance_account">Solde du compte</string>
     <string name="balance_adjustment">Ajustement du solde</string>
     <string name="cash">Espèces</string>
     <string name="select_account">Sélectionnez le compte</string>
@@ -587,15 +619,15 @@
     <string name="currencies_used">Devises, utilisées</string>
     <string name="open_currencies">Afficher les devises</string>
     <string name="import_all_currencies">Importer des devises</string>
-    <string name="import_currencies_in_progress">Importation de devises. Veuillez patienter ...</string>
+    <string name="import_currencies_in_progress">Importation de devises. Veuillez patienter&#8230;</string>
     <string name="question_import_currencies">Vous voulez importer des devises ?</string>
-    <string name="start_currency_exchange_rates">Mise à jour des taux de change des devises. Veuillez patienter...</string>
-    <string name="update_currency_exchange_rates">Mise à jour du taux de change:\n%1$s</string>
+    <string name="start_currency_exchange_rates">Mise à jour des taux de change des devises. Veuillez patienter&#8230;</string>
+    <string name="update_currency_exchange_rates">Mise à jour du taux de change :\n%1$s</string>
     <string name="success_currency_exchange_rates">Tous les taux de change des monnaies ont été mis à jour avec succès</string>
     <string name="update_menu_currency_exchange_rates">Mise à jour des taux de change</string>
     <string name="question_update_currency_exchange_rates">Vous voulez mettre à jour les taux de change ?</string>
     <string name="error_update_currency_exchange_rate">Il y a eu une erreur de mise à jour du taux</string>
-    <string name="currencies_empty">Aucune devise n\'a été trouvée. Pour créer une, appuyez sur le bouton vert.</string>
+    <string name="currencies_empty">Aucune devise n\'a été trouvée. Pour en créer une, appuyez sur le bouton vert.</string>
     <string name="active_currencies">Devises actives</string>
     <string name="inactive_currencies">Devises inactives</string>
     <string name="all_currencies">Toutes les devises</string>
@@ -614,7 +646,7 @@
     <string name="summary_download_from_drobpox">Appuyez pour télécharger manuellement le fichier depuis Dropbox</string>
     <string name="upload_to_drobpox">Charger sur Dropbox</string>
     <string name="summary_upload_to_drobpox">Appuyez pour charger manuellement le fichier sur Dropbox</string>
-    <string name="dropbox_how_it_works">Comment fonctionne Dropbox avec Money Manager Ex\?</string>
+    <string name="dropbox_how_it_works">Comment fonctionne Dropbox avec Money Manager Ex ?</string>
     <string name="dropbox_link">Associer à Dropbox</string>
     <string name="dropbox_unlink">Dissocier de Dropbox</string>
     <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Veuillez patienter&#8230;</string>
@@ -636,7 +668,7 @@
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
     <string name="sync_downloading">Téléchargement de la base de données. Veuillez patienter&#8230;</string>
     <string name="sync_uploading">Envoi de la base de données. Veuillez patienter&#8230;</string>
-    <string name="syncProgress">Synchronisation du fichier en cours. Veuillez patientez&#8230;</string>
+    <string name="syncProgress">Synchronisation du fichier en cours. Veuillez patienter&#8230;</string>
     <string name="database_is_synchronized">La base de données est à jour</string>
     <string name="upload_file_complete">Votre base de données a été envoyée avec succès</string>
     <string name="every_5_minutes">Toutes les 5 minutes</string>
@@ -654,23 +686,23 @@
     <string name="summary_sync_upload_immediate">Cette option permet d\'envoyer automatiquement la base de données dès qu\'elle est modifiée</string>
     <string name="dropbox_empty_folder">Le dossier contenu dans Dropbox/Apps/Money Manager Ex Android est vide. Si vous utilisez déjà MoneyManagerEx, copiez votre base de données dans ce dossier de votre ordinateur et actualisez-la.</string>
     <string name="select_remote_file">Sélectionnez un fichier distant dans le stockage cloud</string>
-    <string name="confirm_download">Voulez-vous télécharger ce fichier distant maintenant?</string>
+    <string name="confirm_download">Voulez-vous télécharger ce fichier distant maintenant ?</string>
     <string name="file_exists">Le fichier existe déjà</string>
-    <string name="file_exists_long">Un fichier avec le même nom existe déjà dans votre emplacement de stockage local. Souhaitez-vous le remplacer par celui-ci?</string>
+    <string name="file_exists_long">Un fichier avec le même nom existe déjà sur votre emplacement de stockage local. Souhaitez-vous le remplacer ?</string>
     <string name="synchronization_disabled">La synchronisation est désactivée.</string>
-    <string name="filenames_differ">Les noms du fichier distant et du fichier local sont différents. La synchronisation ne marche pas.</string>
+    <string name="filenames_differ">Les noms du fichier distant et du fichier local sont différents. Synchronisation annulée.</string>
     <string name="both_files_modified">Le fichier distant et le fichier local de la base de données ont été modifiés !</string>
     <string name="sync_conflict">Conflit de synchronisation</string>
     <string name="no_remote_file">Veuillez sélectionner le fichier distant à utiliser pour la synchronisation.</string>
     <string name="request_conlict_reopen">Conflit entre le fichier local et le fichier distant. Cela signifie que votre copie locale ne peut pas être synchronisée avec le fichier distant. Veuillez exporter la base de données manuellement si vous voulez enregistrer votre copie locale, ou télécharger manuellement le fichier distant si vous voulez charger les données du fichier distant.</string>
     <!-- Warnings -->
-    <string name="no_accounts_available_for_selection">Aucun compte à sélectionner. Veuillez ajuster vos préférences pour le filtrage du compte ou de marquer certains comptes comme favoris.</string>
+    <string name="no_accounts_available_for_selection">Aucun compte à sélectionner. Veuillez ajuster vos préférences pour le filtrage du compte ou marquer certains comptes comme favoris.</string>
     <!-- Errors -->
     <string name="error_parsing_value">Erreur d’analyse de la valeur saisie</string>
     <string name="remote_file_not_found">Fichier distant introuvable</string>
     <string name="error_checking_remote">Erreur de vérification des changements distants.</string>
     <string name="no_remote_change_date">La date de changement à distance est introuvable dans les métadonnées.</string>
-    <string name="remote_unavailable"></string>
+    <string name="remote_unavailable">Le fichier distant est indisponible.</string>
     <string name="request_reopen">Le fichier distant n\'est pas accessible. Votre copie locale ne peut pas être synchronisée avec le fichier distant. Veuillez exporter la base de données manuellement si vous voulez enregistrer votre copie locale, ou télécharger manuellement le fichier distant si vous voulez charger les données du fichier distant.</string>
     <!-- Select database screen -->
     <string name="intro_text">Pour commencer à utiliser Money Manager Ex, vous devez avoir un fichier de base de données pour stocker vos données. Veuillez sélectionner une des options disponibles ci-dessous.</string>
@@ -705,6 +737,7 @@
     <string name="CLEAR_ALL">Effacer tout</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
+    <string name="msg_uploading_overwrite">Le téléversement écrasera votre version distante.\nVoulez-vous continuer ?</string>
     <string name="menu_account_filter_all">Tous les comptes</string>
     <!-- Merge -->
     <!-- Error Handling -->

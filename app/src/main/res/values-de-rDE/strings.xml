@@ -604,7 +604,7 @@
     <string name="error_downloading_symbol">Fehler beim Herunterladen des Preises für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
-    <string name="other">Diverses</string>
+    <string name="other">Hinzufügen</string>
     <string name="cleared">Gelöscht</string>
     <string name="delete_success">Element gelöscht</string>
     <!-- asset allocation -->
