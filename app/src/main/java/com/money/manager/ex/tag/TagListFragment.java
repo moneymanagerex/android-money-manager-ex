@@ -147,39 +147,35 @@ public class TagListFragment     extends BaseListFragment
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         AppSettings settings = new AppSettings(getActivity());
 
-        switch (item.getItemId()) {
-            case R.id.menu_sort_name:
-                item.setChecked(true);
-                settings.setTagSort(TagRepository.SORT_BY_NAME);
-                // restart search
-                restartLoader();
-                return true;
-
-            case R.id.menu_sort_usage:
-                item.setChecked(true);
-                settings.setTagSort(TagRepository.SORT_BY_FREQUENCY);
-                // restart search
-                restartLoader();
-                return true;
-
-            case R.id.menu_sort_recent:
-                item.setChecked(true);
-                settings.setTagSort(TagRepository.SORT_BY_RECENT);
-                // restart search
-                restartLoader();
-                return true;
-
-            case R.id.menu_show_inactive:
-                item.setChecked(!item.isChecked());
-                settings.setShowInactive(item.isChecked());
-                // restart search
-                restartLoader();
-                return true;
-
-            case android.R.id.home:
-                getActivity().setResult(TagActivity.RESULT_CANCELED);
-                getActivity().finish();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_sort_name) {
+            item.setChecked(true);
+            settings.setTagSort(TagRepository.SORT_BY_NAME);
+            // restart search
+            restartLoader();
+            return true;
+        } else if (itemId == R.id.menu_sort_usage) {
+            item.setChecked(true);
+            settings.setTagSort(TagRepository.SORT_BY_FREQUENCY);
+            // restart search
+            restartLoader();
+            return true;
+        } else if (itemId == R.id.menu_sort_recent) {
+            item.setChecked(true);
+            settings.setTagSort(TagRepository.SORT_BY_RECENT);
+            // restart search
+            restartLoader();
+            return true;
+        } else if (itemId == R.id.menu_show_inactive) {
+            item.setChecked(!item.isChecked());
+            settings.setShowInactive(item.isChecked());
+            // restart search
+            restartLoader();
+            return true;
+        } else if (itemId == android.R.id.home) {
+            getActivity().setResult(TagActivity.RESULT_CANCELED);
+            getActivity().finish();
+            return true;
         }
         return super.old_onOptionsItemSelected(item);
     }

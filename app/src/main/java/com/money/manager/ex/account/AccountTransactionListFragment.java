@@ -328,20 +328,16 @@ public class AccountTransactionListFragment
         result = isFilterSelected(item);
         if (result) return true;
 
-        switch (item.getItemId()) {
-            case R.id.menu_add_transaction_account:
-                startCheckingAccountActivity();
-                result = true;
-                break;
-            case R.id.menu_export_to_csv:
-                if (mAllDataListFragment != null && mAccount != null)
-                    mAllDataListFragment.exportDataToCSVFile(mAccount.getName());
-                result = true;
-                break;
-
-            default:
-                result = false;
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_add_transaction_account) {
+            startCheckingAccountActivity();
+            result = true;
+        } else if (itemId == R.id.menu_export_to_csv) {
+            if (mAllDataListFragment != null && mAccount != null)
+                mAllDataListFragment.exportDataToCSVFile(mAccount.getName());
+            result = true;
+        } else {
+            result = false;
         }
 
         // If not consumed here (true), send for further processing to the parent.
@@ -579,26 +575,19 @@ public class AccountTransactionListFragment
         // turn filters on/off
         TransactionStatuses status = null;
 
-        switch(id) {
-            case R.id.menu_none:
-                status = TransactionStatuses.NONE;
-                break;
-            case R.id.menu_reconciled:
-                status = TransactionStatuses.RECONCILED;
-                break;
-            case R.id.menu_void:
-                status = TransactionStatuses.VOID;
-                break;
-            case R.id.menu_follow_up:
-                status = TransactionStatuses.FOLLOWUP;
-                break;
-            case R.id.menu_duplicate:
-                status = TransactionStatuses.DUPLICATE;
-                break;
-            default:
-                // not handled here.
-                result = false;
-                break;
+        if (id == R.id.menu_none) {
+            status = TransactionStatuses.NONE;
+        } else if (id == R.id.menu_reconciled) {
+            status = TransactionStatuses.RECONCILED;
+        } else if (id == R.id.menu_void) {
+            status = TransactionStatuses.VOID;
+        } else if (id == R.id.menu_follow_up) {
+            status = TransactionStatuses.FOLLOWUP;
+        } else if (id == R.id.menu_duplicate) {
+            status = TransactionStatuses.DUPLICATE;
+        } else {
+            // not handled here.
+            result = false;
         }
 
         if (result) {

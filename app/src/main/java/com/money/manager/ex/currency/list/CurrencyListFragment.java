@@ -185,28 +185,24 @@ public class CurrencyListFragment
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
-        switch (item.getItemId()) {
-            case R.id.menu_import_all_currencies:
-                ui.showDialogImportAllCurrencies();
-                return true;
-
-            case R.id.menu_update_exchange_rate:
-                ui.showDialogUpdateExchangeRates();
-                break;
-
-            case R.id.menu_show_used:
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    // list all accounts
-                    mShowOnlyUsedCurrencies = false;
-                    reloadData();
-                } else {
-                    item.setChecked(true);
-                    // list only used accounts
-                    mShowOnlyUsedCurrencies = true;
-                    reloadData();
-                }
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_import_all_currencies) {
+            ui.showDialogImportAllCurrencies();
+            return true;
+        } else if (itemId == R.id.menu_update_exchange_rate) {
+            ui.showDialogUpdateExchangeRates();
+        } else if (itemId == R.id.menu_show_used) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                // list all accounts
+                mShowOnlyUsedCurrencies = false;
+                reloadData();
+            } else {
+                item.setChecked(true);
+                // list only used accounts
+                mShowOnlyUsedCurrencies = true;
+                reloadData();
+            }
         }
         return super.old_onOptionsItemSelected(item);
     }

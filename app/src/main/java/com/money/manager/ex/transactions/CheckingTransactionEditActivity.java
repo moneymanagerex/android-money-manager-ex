@@ -151,13 +151,13 @@ public class CheckingTransactionEditActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                return onActionCancelClick();
-            case MenuHelper.save:
-                return onActionDoneClick();
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            return onActionCancelClick();
+        } else if (itemId == MenuHelper.save) {
+            return onActionDoneClick();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

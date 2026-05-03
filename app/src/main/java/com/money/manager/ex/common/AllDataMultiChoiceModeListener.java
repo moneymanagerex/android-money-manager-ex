@@ -60,36 +60,32 @@ public class AllDataMultiChoiceModeListener
     public boolean onActionItemClicked(ActionMode mode, android.view.MenuItem item) {
         boolean result;
 
-        switch (item.getItemId()) {
-            case R.id.menu_select_all:
-                mCallbacks.onSelectAllRecordsClicked();
-                // do not finish the selection mode after this!
-                result = false;
-                break;
-            case R.id.menu_change_status:
-                mCallbacks.onChangeTransactionStatusClicked();
-                result = true;
-                break;
-            case R.id.menu_duplicate_transactions:
-                mCallbacks.onDuplicateTransactionsClicked();
-                result = true;
-                break;
-            case R.id.menu_delete:
-                mCallbacks.onDeleteClicked();
-                result = true;
-                break;
-            case R.id.menu_none:
-            case R.id.menu_reconciled:
-            case R.id.menu_follow_up:
-            case R.id.menu_duplicate:
-            case R.id.menu_void:
-                String status = Character.toString(item.getAlphabeticShortcut());
-                mCallbacks.onTransactionStatusClicked(status);
-                result = true;
-                break;
-            default:
-                // nothing
-                result = false;
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_select_all) {
+            mCallbacks.onSelectAllRecordsClicked();
+            // do not finish the selection mode after this!
+            result = false;
+        } else if (itemId == R.id.menu_change_status) {
+            mCallbacks.onChangeTransactionStatusClicked();
+            result = true;
+        } else if (itemId == R.id.menu_duplicate_transactions) {
+            mCallbacks.onDuplicateTransactionsClicked();
+            result = true;
+        } else if (itemId == R.id.menu_delete) {
+            mCallbacks.onDeleteClicked();
+            result = true;
+        } else if (itemId == R.id.menu_none
+                || itemId == R.id.menu_reconciled
+                || itemId == R.id.menu_follow_up
+                || itemId == R.id.menu_duplicate
+                || itemId == R.id.menu_void) {
+            String status = Character.toString(item.getAlphabeticShortcut());
+            mCallbacks.onTransactionStatusClicked(status);
+            result = true;
+        } else {
+            // nothing
+            result = false;
         }
 
         if (result) {
