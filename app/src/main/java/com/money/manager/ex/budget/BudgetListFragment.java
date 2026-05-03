@@ -172,7 +172,7 @@ public class BudgetListFragment
         menuHelper.addEditToContextMenu();
         menuHelper.addDeleteToContextMenu(true);
 
-        menu.add(Menu.NONE, ContextMenuIds.COPY.getId(), Menu.NONE, getString(R.string.copy));
+        menu.add(Menu.NONE, ContextMenuIds.COPY.getId(), Menu.NONE, getString(R.string.menu_copy));
     }
 
     @Override

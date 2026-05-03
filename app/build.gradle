@@ -153,7 +153,7 @@ dependencies {
             // For control over item selection of both touch and mouse driven selection
             , "androidx.recyclerview:recyclerview-selection:1.1.0"
             , 'org.jsoup:jsoup:1.18.3'              // HTML parsing.
-            , 'androidx.multidex:multidex:2.0.1'  // multidex support
+            // , 'androidx.multidex:multidex:2.0.1'  // multidex support
             , 'io.reactivex.rxjava2:rxandroid:2.1.1'
             , 'io.reactivex.rxjava2:rxjava:2.2.21'
             , 'com.squareup.sqlbrite3:sqlbrite:3.2.0' // use SqlDelight
