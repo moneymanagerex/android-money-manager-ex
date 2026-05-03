@@ -107,17 +107,16 @@ public class PriceEditActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // cancel clicked. Prompt to confirm?
-                Timber.d("going back");
-                break;
-            case MenuHelper.save:
-                // save & close
-                save();
-                setResult(Activity.RESULT_OK);
-                finish();
-                return onActionDoneClick();
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            // cancel clicked. Prompt to confirm?
+            Timber.d("going back");
+        } else if (itemId == MenuHelper.save) {
+            // save & close
+            save();
+            setResult(Activity.RESULT_OK);
+            finish();
+            return onActionDoneClick();
         }
         return super.onOptionsItemSelected(item);
     }

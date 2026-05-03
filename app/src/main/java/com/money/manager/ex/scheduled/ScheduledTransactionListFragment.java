@@ -197,26 +197,16 @@ public class ScheduledTransactionListFragment
         int menuItemId = item.getItemId();
         long scheduledTransactionId = info.id;
 
-        switch (menuItemId) {
-            case R.id.menu_enter_next_occurrence:
-                showCreateTransactionActivity(scheduledTransactionId);
-                break;
-
-            case R.id.menu_skip_next_occurrence:
-                confirmSkip(scheduledTransactionId);
-                break;
-
-            case R.id.menu_edit:
-                startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
-                break;
-
-            case R.id.menu_duplicate_transactions:
-                startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_COPY_TRANSACTION);
-                break;
-
-            case R.id.menu_delete:
-                confirmDelete(scheduledTransactionId);
-                break;
+        if (menuItemId == R.id.menu_enter_next_occurrence) {
+            showCreateTransactionActivity(scheduledTransactionId);
+        } else if (menuItemId == R.id.menu_skip_next_occurrence) {
+            confirmSkip(scheduledTransactionId);
+        } else if (menuItemId == R.id.menu_edit) {
+            startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
+        } else if (menuItemId == R.id.menu_duplicate_transactions) {
+            startRecurringTransactionEditActivity(scheduledTransactionId, REQUEST_COPY_TRANSACTION);
+        } else if (menuItemId == R.id.menu_delete) {
+            confirmDelete(scheduledTransactionId);
         }
 
         return false;

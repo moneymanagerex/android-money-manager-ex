@@ -944,17 +944,17 @@ public class AllDataListFragment
         // Set the adapter
         builder.setAdapter(adapter, (dialog, position) -> {
             DrawerMenuItem item = adapter.getItem(position);
-            switch (item.getId()) {
-                case R.id.menu_none:
-                case R.id.menu_reconciled:
-                case R.id.menu_follow_up:
-                case R.id.menu_duplicate:
-                case R.id.menu_void:
-                    String status = item.getShortcut();
-                    if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
-                        ((AllDataAdapter) getListAdapter()).clearPositionChecked();
-                        loadData();
-                    }
+            int itemId = item.getId();
+            if (itemId == R.id.menu_none
+                    || itemId == R.id.menu_reconciled
+                    || itemId == R.id.menu_follow_up
+                    || itemId == R.id.menu_duplicate
+                    || itemId == R.id.menu_void) {
+                String status = item.getShortcut();
+                if (setStatusCheckingAccount(convertArrayListToArray(transIds), status)) {
+                    ((AllDataAdapter) getListAdapter()).clearPositionChecked();
+                    loadData();
+                }
             }
             dialog.dismiss();
         });

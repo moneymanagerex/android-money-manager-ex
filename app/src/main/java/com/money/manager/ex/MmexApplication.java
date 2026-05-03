@@ -24,7 +24,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import androidx.multidex.MultiDexApplication;
+import android.app.Application;
 import androidx.preference.PreferenceManager;
 
 import com.amplitude.android.Amplitude;
@@ -70,7 +70,7 @@ import timber.log.Timber;
         annotation = @Parcel(converter = MoneyParcelConverter.class))
 )
 public class MmexApplication
-    extends MultiDexApplication {
+    extends Application {
 
     static private Amplitude mAmplitude;
     private static MmexApplication appInstance;

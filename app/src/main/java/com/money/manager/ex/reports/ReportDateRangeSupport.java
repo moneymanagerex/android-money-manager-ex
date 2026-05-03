@@ -45,23 +45,22 @@ public final class ReportDateRangeSupport {
     }
 
     public static DateRange resolveDateRange(Context context, int itemId) {
-        switch (itemId) {
-            case R.id.menu_current_month:
-                return resolveCurrentMonthRange();
-            case R.id.menu_last_month:
-                return resolveLastMonthRange();
-            case R.id.menu_last_30_days:
-                return resolveLast30DaysRange();
-            case R.id.menu_current_year:
-                return resolveCurrentYearRange();
-            case R.id.menu_last_year:
-                return resolveLastYearRange();
-            case R.id.menu_current_fin_year:
-                return resolveFinancialYearRange(context, false);
-            case R.id.menu_last_fin_year:
-                return resolveFinancialYearRange(context, true);
-            default:
-                return null;
+        if (itemId == R.id.menu_current_month) {
+            return resolveCurrentMonthRange();
+        } else if (itemId == R.id.menu_last_month) {
+            return resolveLastMonthRange();
+        } else if (itemId == R.id.menu_last_30_days) {
+            return resolveLast30DaysRange();
+        } else if (itemId == R.id.menu_current_year) {
+            return resolveCurrentYearRange();
+        } else if (itemId == R.id.menu_last_year) {
+            return resolveLastYearRange();
+        } else if (itemId == R.id.menu_current_fin_year) {
+            return resolveFinancialYearRange(context, false);
+        } else if (itemId == R.id.menu_last_fin_year) {
+            return resolveFinancialYearRange(context, true);
+        } else {
+            return null;
         }
     }
 
