@@ -146,6 +146,8 @@ import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
+import com.money.manager.ex.BuildConfig;
+
 /**
  * Main activity of the application.
  */
@@ -1192,13 +1194,15 @@ public class MainActivity
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
-        // Menu item 'Open from Cloud'
-        DrawerMenuItem cloudItem = new DrawerMenuItem()
-                .withId(R.id.menu_open_cloud_database)
-                .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_cloud_download)
-                        .color(iconColor))
-                .withText(getString(R.string.menu_open_from_cloud));
-        childDatabases.add(cloudItem);
+        if (BuildConfig.IS_SYNC_ENABLED) {
+            // Menu item 'Open from Cloud'
+            DrawerMenuItem cloudItem = new DrawerMenuItem()
+                    .withId(R.id.menu_open_cloud_database)
+                    .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_cloud_download)
+                            .color(iconColor))
+                    .withText(getString(R.string.menu_open_from_cloud));
+            childDatabases.add(cloudItem);
+        }
 
         return childDatabases;
     }

@@ -953,5 +953,6 @@
     <string name="performing_initial_pull_this_may_take_a_while">Performing initial pull (this may take a while)...</string>
     <string name="sync_setup_complete">Sync Setup Complete!</string>
     <string name="sync_failed">"Sync failed: "</string>
+    <string name="sync_your_data_with_pocketbase_cloud">Sync your data with PocketBase Cloud</string>
 
 </resources>

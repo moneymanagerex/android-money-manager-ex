@@ -19,11 +19,13 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -59,6 +61,15 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
         Button createDatabaseButton = findViewById(R.id.createDatabaseButton);
         Button openDatabaseButton = findViewById(R.id.openDatabaseButton);
         Button openCloudDatabaseButton = findViewById(R.id.openCloudDatabaseButton);
+        View textCloudElement = findViewById(R.id.openCloudDatabaseText);
+        if (BuildConfig.IS_SYNC_ENABLED) {
+            openCloudDatabaseButton.setVisibility(View.VISIBLE);
+            textCloudElement.setVisibility(View.VISIBLE);
+        } else {
+            // Spesso è utile nasconderlo esplicitamente per gli altri flavor
+            openCloudDatabaseButton.setVisibility(View.GONE);
+            textCloudElement.setVisibility(View.GONE);
+        }
 
         // Request external storage permissions for Android 6+.
         MmxFileUtils fileUtils = new MmxFileUtils(this);

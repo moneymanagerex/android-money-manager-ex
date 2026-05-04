@@ -42,6 +42,8 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "IS_SYNC_ENABLED", "false"
     }
 
     base {
@@ -91,6 +93,7 @@ android {
             applicationIdSuffix ".synccloud"
             versionNameSuffix "-synccloud"
             manifestPlaceholders = [appName: "Money Manager Ex (Cloud version)"]
+            buildConfigField "boolean", "IS_SYNC_ENABLED", "true"
         }
         // beta {
         //     applicationId "com.money.manager.ex.beta"
