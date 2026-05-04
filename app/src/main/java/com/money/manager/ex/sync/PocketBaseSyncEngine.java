@@ -160,8 +160,12 @@ public class PocketBaseSyncEngine {
                 if (pkIdx == -1) continue;
 
                 JsonObject payload = new JsonObject();
-                // Always include the local primary key in the payload for PocketBase
                 payload.addProperty(config.pk, cursor.getString(pkIdx));
+                // Nota: Assicurati che pb_updated_at sia una stringa ISO o un formato accettato
+                int updatedAtIdx = cursor.getColumnIndex("pb_updated_at");
+                if (updatedAtIdx != -1) {
+                    payload.addProperty("_updated_at", cursor.getString(updatedAtIdx));
+                }
 
                 for (String field : config.fields) {
                     int colIdx = cursor.getColumnIndex(field);
@@ -172,22 +176,38 @@ public class PocketBaseSyncEngine {
 
                 String currentPbId = pbIdIdx != -1 ? cursor.getString(pbIdIdx) : null;
                 long localId = cursor.getLong(pkIdx);
+                Response<JsonObject> response = null;
 
-                Response<JsonObject> response;
-                if (TextUtils.isEmpty(currentPbId)) {
-                    response = mService.create(tableName, payload).execute();
-                } else {
-                    response = mService.update(tableName, currentPbId, payload).execute();
-                }
+                try {
+                    if (TextUtils.isEmpty(currentPbId)) {
+                        // CASO 1: Nessun ID remoto -> CREA
+                        response = mService.create(tableName, payload).execute();
+                    } else {
+                        // CASO 2: ID presente -> UPDATE
+                        response = mService.update(tableName, currentPbId, payload).execute();
 
-                if (response.isSuccessful() && response.body() != null) {
-                    String remoteId = response.body().get("id").getAsString();
-                    updateLocalRecordAfterPush(db, tableName, config.pk, localId, remoteId);
+                        // FALLBACK: Se l'update fallisce con 404, il record è sparito dal server
+                        if (!response.isSuccessful() && response.code() == 404) {
+                            // Aggiungiamo l'ID al payload per tentare di ricrearlo con lo stesso ID
+                            payload.addProperty("id", currentPbId);
+                            response = mService.create(tableName, payload).execute();
+                        }
+                    }
+
+                    // Verifica finale del risultato (sia da Create che da Update/Fallback)
+                    if (response.isSuccessful() && response.body() != null) {
+                        String remoteId = response.body().get("id").getAsString();
+                        updateLocalRecordAfterPush(db, tableName, config.pk, localId, remoteId);
+                    }
+
+                } catch (IOException e) {
+                    // Non fare il throw qui per permettere al ciclo di provare col record successivo
                 }
             }
         } finally {
             cursor.close();
         }
+
     }
 
     private boolean pullTableChanges(SupportSQLiteDatabase db, String tableName, String lastSync) throws IOException {
@@ -201,9 +221,8 @@ public class PocketBaseSyncEngine {
 
         while (page <= totalPages) {
             Map<String, String> options = new HashMap<>();
-    // TODO: seems taat windows store in different timezone... for now remove filter
             options.put("filter", "updated > \"" + lastSync + "\"");
-            options.put("sort", "updated");
+            options.put("sort", "_updated_at");
             options.put("page", String.valueOf(page));
             options.put("perPage", "200"); // Aumentiamo il limite per pagina a 200
 
@@ -219,10 +238,10 @@ public class PocketBaseSyncEngine {
                 // Timber.d("[SYNC_CLOUD] IN: record of table: " + tableName + " Record:" + rmt.toString());
 
                 String pbId = rmt.get("id").getAsString();
-                String updatedAt = rmt.get("updated").getAsString();
+                String updatedAt = rmt.get("_updated_at").getAsString();
 
                 // Check if deleted in remote
-                if (rmt.has("is_deleted") && rmt.get("is_deleted").getAsInt() == 1) {
+                if (rmt.has("_is_deleted") && rmt.get("_is_deleted").getAsInt() == 1) {
                     db.execSQL("DELETE FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
                     continue;
                 }
@@ -305,7 +324,7 @@ public class PocketBaseSyncEngine {
 
                 // Use soft-delete on PocketBase as per sync_core.js logic
                 JsonObject payload = new JsonObject();
-                payload.addProperty("is_deleted", 1);
+                payload.addProperty("_is_deleted", 1);
                 
                 Response<JsonObject> response = mService.update(tableName, pbId, payload).execute();
                 if (response.isSuccessful()) {
