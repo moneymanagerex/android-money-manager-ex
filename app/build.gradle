@@ -29,6 +29,7 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
         versionCode 1111
         //versionName getVersionAsDate() + "." + versionCode
@@ -84,6 +85,12 @@ android {
         gplay {
             dimension "distribution"
             applicationIdSuffix ".android"
+        }
+        sync {
+            dimension "distribution"
+            applicationIdSuffix ".synccloud"
+            versionNameSuffix "-synccloud"
+            manifestPlaceholders = [appName: "Money Manager Ex (Cloud version)"]
         }
         // beta {
         //     applicationId "com.money.manager.ex.beta"

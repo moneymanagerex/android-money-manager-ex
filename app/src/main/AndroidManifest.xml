@@ -56,7 +56,7 @@
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="@string/application_name"
+        android:label="${appName}"
         android:theme="@style/Theme.Splash"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:label"

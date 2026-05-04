@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.MmxOpenHelper;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxFileUtils;
 
@@ -93,8 +94,11 @@ public class PocketBaseSyncEngine {
         if (!SyncManager.isCloudSyncEnabled() || mConfig == null) return;
 
         Timber.d("[SYNC_CLOUD] start sync");
-
         SupportSQLiteDatabase db = openHelper.get().getWritableDatabase();
+
+        if (db == null || !db.isOpen() ) {
+            return;
+        }
 
         try {
             // Use exclusive transaction for the whole sync cycle
@@ -108,17 +112,20 @@ public class PocketBaseSyncEngine {
 
             // 2. Pull remote changes
             SyncPreferences prefs = new SyncPreferences(mContext);
-            String lastSync = prefs.get("pb_last_sync_time", "1970-01-01 00:00:00.000Z");
+            String lastSync = prefs.getPocketBaseSyncLastSyncTime();
+            // go back 5 seconds for buffering
+            lastSync = java.time.Instant.parse(lastSync.replace(" ", "T")).minusSeconds(5).toString().replace("T", " ");
+
             String syncStartTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'", Locale.US).format(new Date());
+
+            boolean hasError = false;
 
             for (String tableName : mConfig.SYNC_ORDER) {
                 if (listener != null) listener.onProgress(tableName, "Pulling");
-                pullTableChanges(db, tableName, lastSync);
+                hasError = hasError || !pullTableChanges(db, tableName, lastSync);
             }
-
-            prefs.set("pb_last_sync_time", syncStartTime);
-
             db.setTransactionSuccessful();
+            if (!hasError) prefs.setPocketBaseSyncLastSyncTime(syncStartTime);
             // Timber.i("[SYNC_CLOUD] Synchronization cycle completed.");
         } catch (Exception e) {
             Timber.e(e, "[SYNC_CLOUD] Error during synchronization");
@@ -130,6 +137,7 @@ public class PocketBaseSyncEngine {
         } catch (IOException e) {
             Timber.e(e, "[SYNC_CLOUD] Error closing database");
         }
+
     }
 
     private void pushTableChanges(SupportSQLiteDatabase db, String tableName) throws IOException {
@@ -142,7 +150,7 @@ public class PocketBaseSyncEngine {
         // Handle Dirty records
         String selection = "pb_is_dirty = 1 OR pb_id IS NULL OR pb_id = ''";
         Cursor cursor = db.query("SELECT * FROM " + tableName + " WHERE " + selection);
-        if (cursor == null) return;
+        // if (cursor == null) return;
 
         try {
             int pkIdx = cursor.getColumnIndex(config.pk);
@@ -182,17 +190,19 @@ public class PocketBaseSyncEngine {
         }
     }
 
-    private void pullTableChanges(SupportSQLiteDatabase db, String tableName, String lastSync) throws IOException {
+    private boolean pullTableChanges(SupportSQLiteDatabase db, String tableName, String lastSync) throws IOException {
         TableConfig config = mConfig.SYNC_CONFIG.get(tableName);
-        if (config == null) return;
+        if (config == null) return false;
 
         int page = 1;
         int totalPages = 1;
 
+        boolean hasError = false;
+
         while (page <= totalPages) {
             Map<String, String> options = new HashMap<>();
     // TODO: seems taat windows store in different timezone... for now remove filter
-            //            options.put("filter", "updated > \"" + lastSync + "\"");
+            options.put("filter", "updated > \"" + lastSync + "\"");
             options.put("sort", "updated");
             options.put("page", String.valueOf(page));
             options.put("perPage", "200"); // Aumentiamo il limite per pagina a 200
@@ -237,6 +247,7 @@ public class PocketBaseSyncEngine {
                     try {
                         db.execSQL(sql.toString(), values);
                     } catch (SQLException e) {
+                        hasError = true;
                         Timber.e(e, "[SYNC_CLOUD] Error updating record in table: %s", tableName);
                     }
                 } else {
@@ -264,7 +275,8 @@ public class PocketBaseSyncEngine {
                     try {
                         db.execSQL(sql.toString() + placeholders.toString(), values);
                     } catch (SQLException e) {
-                        Timber.e(e, "[SYNC_CLOUD] Error inserting record into table: %s", tableName);
+                        hasError = true;
+                        Timber.e(e, "[SYNC_CLOUD] Error inserting record into table: %s.%s", tableName,values[0]);
                     }
                 }
             }
@@ -273,6 +285,7 @@ public class PocketBaseSyncEngine {
 
         // Reset pb_is_dirty to 0 for all pull-updated records
         db.execSQL("UPDATE " + tableName + " SET pb_is_dirty = 0 WHERE pb_is_dirty = 2");
+        return !hasError;
     }
 
     private void processTableDeletions(SupportSQLiteDatabase db, String tableName) throws IOException {
@@ -308,4 +321,14 @@ public class PocketBaseSyncEngine {
         db.execSQL("UPDATE " + tableName + " SET pb_is_dirty = 0, pb_id = ? WHERE " + pkName + " = ?", 
                 new Object[]{newPbId, localId});
     }
+
+    // clear all sync engine data, like token, last sync time, etc.
+    public void clearSyncEngine() {
+        SyncPreferences prefs = new SyncPreferences(mContext);
+        prefs.setPocketBaseSyncEnabled(false);
+        prefs.setPocketBaseSyncLastSyncTimeToInitial();
+        PocketBaseClient.getInstance(mContext).clearSession();
+        new AppSettings(mContext).getDatabaseSettings().setDatabasePath("");
+    }
+
 }

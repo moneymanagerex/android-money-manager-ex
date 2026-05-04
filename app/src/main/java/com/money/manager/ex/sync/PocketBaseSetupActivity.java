@@ -10,14 +10,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.database.DatabaseManager;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import io.reactivex.Observable;
@@ -35,7 +40,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     private Button mButtonConnect;
     private ProgressBar mProgressBar;
     private TextView mTextViewStatus;
-    private CompositeDisposable mDisposables = new CompositeDisposable();
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,14 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
         // Se abbiamo già URL ed Email, proviamo un refresh silenzioso del token
         attemptSilentLogin();
+
+        // Handle back button to reset cloud sync flag if setup is not finished
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                cancelSetupAndExit();
+            }
+        });
     }
 
     @Override
@@ -94,7 +107,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(url) || TextUtils.isEmpty(email)) return;
 
         setLoading(true);
-        mTextViewStatus.setText("Checking session...");
+        mTextViewStatus.setText(R.string.checking_session);
 
         mDisposables.add(Observable.fromCallable(() -> {
             PocketBaseClient client = PocketBaseClient.getInstance(this);
@@ -108,16 +121,16 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             if (success) {
-                mTextViewStatus.setText("Session restored. Initializing database...");
+                mTextViewStatus.setText(R.string.session_restored_initializing_database);
                 performInitialPull();
             } else {
                 setLoading(false);
-                mTextViewStatus.setText("Please enter your password to continue.");
+                mTextViewStatus.setText(R.string.please_enter_your_password_to_continue);
                 mEditTextPassword.requestFocus();
             }
         }, throwable -> {
             setLoading(false);
-            mTextViewStatus.setText("Session expired. Please login again.");
+            mTextViewStatus.setText(R.string.session_expired_please_login_again);
             Timber.e(throwable);
         }));
     }
@@ -138,7 +151,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         prefs.set(getString(R.string.pref_pocketbase_email), email);
 
         setLoading(true);
-        mTextViewStatus.setText("Authenticating...");
+        mTextViewStatus.setText(R.string.authenticating);
 
         mDisposables.add(Observable.fromCallable(() -> {
             PocketBaseClient client = PocketBaseClient.getInstance(this);
@@ -148,27 +161,32 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             if (success) {
-                mTextViewStatus.setText("Authentication successful. Initializing database...");
+                mTextViewStatus.setText(R.string.authentication_successful_initializing_database);
                 performInitialPull();
             } else {
                 setLoading(false);
-                mTextViewStatus.setText("Authentication failed. Check credentials and URL.");
+                mTextViewStatus.setText(R.string.authentication_failed_check_credentials_and_url);
             }
         }, throwable -> {
             setLoading(false);
-            mTextViewStatus.setText("Error: " + throwable.getMessage());
+            mTextViewStatus.setText(getString(R.string.error_two_dots) + throwable.getMessage());
             Timber.e(throwable);
         }));
     }
 
     private void performInitialPull() {
-        mTextViewStatus.setText("Performing initial pull (this may take a while)...");
+        mTextViewStatus.setText(R.string.performing_initial_pull_this_may_take_a_while);
 
         mDisposables.add(Observable.fromCallable(() -> {
             SyncPreferences prefs = new SyncPreferences(this);
             prefs.setPocketBaseSyncEnabled(true); // Enable cloud mode to use the correct schema/engine
-            
-            PocketBaseSyncEngine engine = new PocketBaseSyncEngine(this);
+            // create db
+                    MmxOpenHelper openHelper = new MmxOpenHelper(this, new DatabaseManager(this).getDatabasePath() );
+                    SupportSQLiteDatabase db = openHelper.getWritableDatabase();
+                    db.close();
+
+                    PocketBaseSyncEngine engine = new PocketBaseSyncEngine(this);
+            ScheduledTransactionForecastListServices.destroyInstance();
             engine.synchronize(); // This will perform full pull if pb_last_sync_time is empty
             return true;
         })
@@ -176,7 +194,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             setLoading(false);
-            mTextViewStatus.setText("Sync Setup Complete!");
+            mTextViewStatus.setText(R.string.sync_setup_complete);
             Toast.makeText(this, "Setup Successful", Toast.LENGTH_LONG).show();
             
             // Restart MainActivity to refresh database connection and UI
@@ -187,7 +205,9 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             finish();
         }, throwable -> {
             setLoading(false);
-            mTextViewStatus.setText("Sync failed: " + throwable.getMessage());
+            // In case of error, ensure the cloud mode is disabled so it can be retried or fallback to local
+            new SyncPreferences(this).setPocketBaseSyncEnabled(false);
+            mTextViewStatus.setText(getString(R.string.sync_failed) + throwable.getMessage());
             Timber.e(throwable);
         }));
     }
@@ -198,5 +218,12 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         mEditTextUrl.setEnabled(!loading);
         mEditTextEmail.setEnabled(!loading);
         mEditTextPassword.setEnabled(!loading);
+    }
+
+    private void cancelSetupAndExit() {
+        // Important: Reset the cloud sync flag if we are exiting without finishing the setup.
+        // This prevents MainActivity from trying to open a half-configured cloud database.
+        new SyncPreferences(this).setPocketBaseSyncEnabled(false);
+        finish();
     }
 }

@@ -73,6 +73,8 @@ import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SecuritySettingsFragment;
+import com.money.manager.ex.sync.PocketBaseClient;
+import com.money.manager.ex.sync.PocketBaseSyncEngine;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -114,6 +116,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.SyncPreferences;
+import com.money.manager.ex.sync.PocketBaseSetupActivity;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -631,9 +634,12 @@ public class MainActivity
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
+            new SyncPreferences(this).setPocketBaseSyncEnabled(false);
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
+        } else if (itemId == R.id.menu_open_cloud_database) {
+            onOpenCloudDatabaseClick();
         } else if (itemId == R.id.menu_account) {
             showFragment(AccountListFragment.class);
         } else if (itemId == R.id.menu_category) {
@@ -1186,6 +1192,14 @@ public class MainActivity
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
+        // Menu item 'Open from Cloud'
+        DrawerMenuItem cloudItem = new DrawerMenuItem()
+                .withId(R.id.menu_open_cloud_database)
+                .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_cloud_download)
+                        .color(iconColor))
+                .withText(getString(R.string.menu_open_from_cloud));
+        childDatabases.add(cloudItem);
+
         return childDatabases;
     }
 
@@ -1662,6 +1676,38 @@ public class MainActivity
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
     }
 
+    private void onOpenCloudDatabaseClick() {
+        String currentDbPath = new DatabaseManager(this).getDatabasePath();
+        File dbFile = !TextUtils.isEmpty(currentDbPath) ? new File(currentDbPath) : null;
 
+        if (dbFile != null && dbFile.exists()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.confirm_cloud_import_title)
+                    .setMessage(R.string.confirm_cloud_import_message)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        // Delete current database
+                        if (dbFile.delete()) {
+                            Timber.d("Current database deleted successfully.");
+                            startCloudSetup();
+                        } else {
+                            Timber.w("Failed to delete current database.");
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        } else {
+            startCloudSetup();
+        }
+    }
+
+    private void startCloudSetup() {
+        // Reset preferences and old data.
+        PocketBaseClient.getInstance(this).clearSession();
+        new PocketBaseSyncEngine(this).clearSyncEngine();
+
+        // Start the PocketBase setup wizard directly
+        Intent intent = new Intent(this, PocketBaseSetupActivity.class);
+        startActivity(intent);
+    }
 
 }

@@ -939,4 +939,19 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase server Url</string>
     <string name="pref_pocketbase_email">Pocketbase email</string>
+    <string name="confirm_cloud_import_title">Delete all data and reload from cloud?</string>
+    <string name="confirm_cloud_import_message">Warning: This will delete your current local database and open the initial setup wizard to connect to the cloud. Proceed?</string>
+    <string name="menu_open_from_cloud">Open from cloud</string>
+    <string name="checking_session">Checking session...</string>
+    <string name="session_restored_initializing_database">Session restored. Initializing database...</string>
+    <string name="please_enter_your_password_to_continue">Please enter your password to continue.</string>
+    <string name="session_expired_please_login_again">Session expired. Please login again.</string>
+    <string name="authenticating">Authenticating...</string>
+    <string name="authentication_successful_initializing_database">Authentication successful. Initializing database...</string>
+    <string name="authentication_failed_check_credentials_and_url">Authentication failed. Check credentials and URL.</string>
+    <string name="error_two_dots">"Error: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Performing initial pull (this may take a while)...</string>
+    <string name="sync_setup_complete">Sync Setup Complete!</string>
+    <string name="sync_failed">"Sync failed: "</string>
+
 </resources>
